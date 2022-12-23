@@ -36,6 +36,7 @@ import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.concurrent.EolModuleParallel;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.launch.EolRunConfiguration;
+import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.test.util.EpsilonTestUtil;
 
 /**
@@ -119,11 +120,14 @@ public class EolAcceptanceTestUtil extends EpsilonTestUtil {
 			Path eolScript = Paths.get(FileUtil.getFileStandalone(testInput[0], inputResourceOwner).toURI());
 			Path modelFile = Paths.get(FileUtil.getFileStandalone(testInput[1], inputResourceOwner).toURI());
 			Path metamodelFile = Paths.get(FileUtil.getFileStandalone(testInput[2], inputResourceOwner).toURI());
+			String modelExt = FileUtil.getExtension(modelFile.toString());
+			// TODO use modelExt to determine correct model type
+			IModel modelObj = new EmfModel();
 			
 			for (Supplier<? extends M> moduleGetter : moduleGetters) {
 				scenarios.add(((EolRunConfiguration.Builder<C, ?>) EolRunConfiguration.Builder(clazz))
 					.withScript(eolScript)
-					.withModel(new EmfModel(), createModelProperties(modelFile, metamodelFile))
+					.withModel(modelObj, createModelProperties(modelFile, metamodelFile))
 					.withModule(moduleGetter.get())
 					.withId(idCalculator.apply(testInput))
 					.build()

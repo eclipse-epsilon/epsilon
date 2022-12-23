@@ -81,10 +81,9 @@ public class EolRuntimeException extends Exception {
 	@Override
 	public String getMessage() {
 		if (message == null) {
-			message = getReason();
-			if (message == null) message = "Unknown reason";
-			
-			//message = message != null ? message.replace('(','[').replace(')',']') : "Unkown reason";
+			if ((message = getReason()) == null) {
+				message = "Unknown reason";
+			}
 			
 			if (ast != null && ast.getModule() instanceof IEolModule) {
 				IEolContext context = ((IEolModule) ast.getModule()).getContext();

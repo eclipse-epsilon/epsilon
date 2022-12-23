@@ -37,7 +37,10 @@ public class EplAcceptanceTestUtil {
 			"test001_java.xmi",
 			"emf_cdo-example.xmi",
 		},
-		javaScripts[] = {"java_findbugs"};
+		javaScripts[] = {"java_findbugs"},
+		projectMetamodel = "project.ecore",
+		projectModels[] = {"project.xmi"},
+		projectScripts[] = {"project"};
 	
 	/*Nx3 array where N is number of test inputs;
 	 *  0 is the script path,
@@ -45,16 +48,10 @@ public class EplAcceptanceTestUtil {
 	 *  2 is the metamodel path.
 	 */
 	public static final List<String[]>
-		allInputs,
-		javaInputs;
+		projectInputs = addAllInputs(projectScripts, projectModels, projectMetamodel),
+		javaInputs = addAllInputs(javaScripts, javaModels, javaMetamodel),
+		allInputs = CollectionUtil.composeArrayListFrom(javaInputs);
 	
-	static {
-		javaInputs = addAllInputs(javaScripts, javaModels, javaMetamodel);
-		
-		allInputs = CollectionUtil.composeArrayListFrom(
-			//javaInputs
-		);
-	}
 	
 	public static Collection<Supplier<? extends IEplModule>> modules(boolean includeStandard) {
 		return parallelModules(THREADS,

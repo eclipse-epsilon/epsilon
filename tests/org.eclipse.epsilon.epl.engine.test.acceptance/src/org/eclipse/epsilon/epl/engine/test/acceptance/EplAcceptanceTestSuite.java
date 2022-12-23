@@ -16,6 +16,7 @@ package org.eclipse.epsilon.epl.engine.test.acceptance;
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 import org.eclipse.epsilon.epl.engine.test.acceptance.equivalence.EplModuleEquivalenceTests;
+import org.eclipse.epsilon.epl.engine.test.acceptance.equivalence.EplModuleStackTraceEquivalenceTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -23,7 +24,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	EplTests.class,
-	EplModuleEquivalenceTests.class
+	EplModuleEquivalenceTests.class,
+	EplModuleStackTraceEquivalenceTests.class
 })
 public class EplAcceptanceTestSuite {
 
