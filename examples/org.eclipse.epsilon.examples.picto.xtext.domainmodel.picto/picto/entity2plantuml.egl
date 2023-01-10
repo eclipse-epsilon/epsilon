@@ -1,0 +1,68 @@
+@startuml
+hide empty methods
+hide circle
+skinparam classBorderThickness 1
+!pragma layout smetana
+skinparam classFontName system-ui
+
+[%var entities = getVisibleEntities();%]
+
+[%for (ent in entities){%]
+	class [%=ent.name%] [[javascript:top.[%=ent.getLink()%]]] [%=ent.getColour()%] {
+		[%for (f in ent.features){%]
+			[%=f.name%] : [%=f.type.name%][%=(f.many ? " ["+"*"+"]" : "")%]
+		[%}%]
+	}
+[%}%]
+
+[%for (f in e.features.select(f|f.type.isTypeOf(Entity) and f.type <> e)){%]
+	[%=e.name%]-->[%=f.type.name%] : [%=f.name%][%=(f.many ? " ["+"*"+"]" : "")%]
+[%}%]
+
+[%if (e.superType.isDefined()){%]
+	[%=e.superType.Name%]<|--[%=e.name%]
+[%}%]
+
+[%for (subclass in Entity.all.select(ent | ent.superType = e)){%]
+	[%=e.name%]<|--[%=subclass.name%]
+[%}%]
+
+@enduml
+[%out.toString().println();%]
+[%
+
+operation getVisibleEntities() {
+	var visibleEntities : Set;
+	visibleEntities.add(e);
+	
+	// entity features
+	visibleEntities.addAll(
+			e.features.select(f|f.type.isTypeOf(Entity)).collect(f|f.type));
+
+	// supertype
+	if (e.superType.isDefined()) visibleEntities.add(e.superType);
+
+	// subtypes
+	visibleEntities.addAll(Entity.all.select(en|en.superType = e));
+
+	return visibleEntities;
+}
+
+operation Entity getColour() {
+	if (self == e) return "#DDFADC";
+	else return "#lemonchiffon";
+}
+
+// cannot use brackets (even encoded ones) in plantuml links, swapped with a string split
+operation getPath(path : Sequence) {
+	var separator = "@@";
+	return "'" + path.concat(separator) + "'" + ".split('" + separator + "')";
+}
+
+operation Entity getLink() {
+	if (self == e) {
+		return "showElement('" + self.id + "','" + self.eResource.uri + "')";
+	}
+	return "showView(" + getPath(Sequence{"Entities", self.name})% + ")";
+}
+%]

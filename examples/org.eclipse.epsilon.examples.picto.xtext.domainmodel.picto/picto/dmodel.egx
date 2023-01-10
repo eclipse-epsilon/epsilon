@@ -1,0 +1,36 @@
+rule Entity2Graphviz
+    transform e : Entity {
+
+    template : "entity2graphviz.egl"
+
+    parameters : Map{
+        "path" = Sequence{"Graphviz", e.name},
+        "icon" = "diagram-ffffff",
+        "format" = "graphviz-dot"
+    }
+
+}
+
+rule Entity2PlantUML
+    transform e : Entity {
+
+    template : "entity2plantuml.egl"
+
+    parameters : Map{
+        "path" = Sequence{"Entities", e.name},
+        "icon" = "diagram-ffffff",
+        "format" = "plantuml"
+    }
+
+}
+
+rule TypeStats {
+	template : "typeStats.pinset"
+	
+	parameters : Map {
+		"path" = Sequence{"Type stats"},
+		"icon" = "table",
+		"format" = "csv",
+		"position" = "0"
+	}
+}
