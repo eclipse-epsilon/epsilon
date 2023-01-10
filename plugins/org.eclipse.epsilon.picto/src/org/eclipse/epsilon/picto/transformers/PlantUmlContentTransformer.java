@@ -46,6 +46,7 @@ public class PlantUmlContentTransformer implements ViewContentTransformer {
 	 * @throws IOException If writing to file fails.
 	 */
 	public static String plantumlToRawSvg(String plant) throws IOException {
+		System.setProperty("PLANTUML_ALLOW_JAVASCRIPT_IN_LINK", "true");
 		SourceStringReader reader = new SourceStringReader(plant);
 		try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
 			reader.outputImage(os, new FileFormatOption(FileFormat.SVG));
