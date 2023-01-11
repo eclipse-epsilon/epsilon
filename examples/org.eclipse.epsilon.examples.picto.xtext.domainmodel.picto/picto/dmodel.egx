@@ -17,7 +17,7 @@ rule Entity2PlantUML
     template : "entity2plantuml.egl"
 
     parameters : Map{
-        "path" = Sequence{"Entities", e.name},
+        "path" = Sequence{"PlantUML", e.name},
         "icon" = "diagram-ffffff",
         "format" = "plantuml"
     }
