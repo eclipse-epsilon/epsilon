@@ -1,3 +1,8 @@
+[%
+// Enable javascript links (disabled by default for security reasons)
+Native("java.lang.System").setProperty("PLANTUML_ALLOW_JAVASCRIPT_IN_LINK", "true");
+%]
+
 @startuml
 hide empty methods
 hide circle
@@ -63,6 +68,6 @@ operation Entity getLink() {
 	if (self == e) {
 		return "showElement('" + self.id + "','" + self.eResource.uri + "')";
 	}
-	return "showView(" + getPath(Sequence{"Entities", self.name})% + ")";
+	return "showView(" + getPath(Sequence{"PlantUML", self.name})% + ")";
 }
 %]
