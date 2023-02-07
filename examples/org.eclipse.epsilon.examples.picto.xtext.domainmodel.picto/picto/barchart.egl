@@ -1,0 +1,77 @@
+[%
+// TODO: make a list of colours big enough to reuse this barchart with ease
+var labels = Sequence{"Data types",
+                      "Entities",
+                      "Features"};
+
+var values = Sequence{DataType.all.size(),
+                      Entity.all.size(),
+                      Feature.all.size()};
+%]
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        #graphContainer {
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="graphContainer">
+        <canvas id="myChart" width="900" height="300"></canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+    <script>
+    const labels = [[%=labels.quote()%]]
+    const data = {
+        labels: labels,
+        datasets: [{
+            axis: 'y',
+            data: [[%=values.quote()%]],
+            fill: true,
+            backgroundColor: [
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 205, 86, 0.2)',
+      'rgba(54, 162, 235, 0.2)',
+    ],
+    borderColor: [
+      'rgb(255, 99, 132)',
+      'rgb(255, 205, 86)',
+      'rgb(54, 162, 235)',
+    ],
+            borderWidth: 1
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data,
+        options: {
+            indexAxis: 'y',
+
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Number of Elements per Type',
+                    font: {size: 24}
+                },
+                legend: {
+                    display: false
+                }
+            },
+            responsive: false
+        }
+    };
+
+    // render the chart
+    var myChart = new Chart(document.getElementById('myChart'), config);
+    </script>
+</body>
+</html>
+[%
+operation Sequence quote() {
+	return self.collect(elem | '"' + elem + '"')
+	           .concat(", ");
+}
+%]

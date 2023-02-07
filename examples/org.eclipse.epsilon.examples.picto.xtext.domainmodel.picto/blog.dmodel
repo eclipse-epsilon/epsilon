@@ -1,6 +1,8 @@
 datatype String
 
 entity Blog {
+   "Main entity. A blog is composed of posts"
+
     title: String
     many posts: Post
 }
@@ -10,12 +12,16 @@ entity HasAuthor {
 }
 
 entity Post extends HasAuthor {
+    "Starting message of each blog entry"
+
     title: String
     content: String
     many comments: Comment
 }
 
 entity Comment extends HasAuthor {
+    "Messages that capture the discussion around a post"
+
     content: String
     many responses: Comment
 }

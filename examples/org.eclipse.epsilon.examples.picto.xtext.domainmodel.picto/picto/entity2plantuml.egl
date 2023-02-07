@@ -10,45 +10,62 @@ skinparam classBorderThickness 1
 !pragma layout smetana
 skinparam classFontName system-ui
 
-[%var entities = getVisibleEntities();%]
+[%
 
-[%for (ent in entities){%]
+var entities = getVisibleEntities();
+
+  for (ent in entities){%]
+	[% if (ent.doc != null) {%]
+		note "[%=ent.doc%]" as nn_[%=ent.name%] #f0ffff
+		nn_[%=ent.name%] .. [%=ent.name%]
+	[%}%]
 	class [%=ent.name%] [[javascript:top.[%=ent.getLink()%]]] [%=ent.getColour()%] {
+		
 		[%for (f in ent.features){%]
 			[%=f.name%] : [%=f.type.name%][%=(f.many ? " ["+"*"+"]" : "")%]
 		[%}%]
 	}
 [%}%]
 
-[%for (f in e.features.select(f|f.type.isTypeOf(Entity) and f.type <> e)){%]
-	[%=e.name%]-->[%=f.type.name%] : [%=f.name%][%=(f.many ? " ["+"*"+"]" : "")%]
-[%}%]
-
-[%if (e.superType.isDefined()){%]
-	[%=e.superType.Name%]<|--[%=e.name%]
-[%}%]
-
-[%for (subclass in Entity.all.select(ent | ent.superType = e)){%]
-	[%=e.name%]<|--[%=subclass.name%]
+[%if (e.isDefined()) {%]
+	[%for (f in e.features.select(f|f.type.isTypeOf(Entity) and f.type <> e)){%]
+		[%=e.name%]-->[%=f.type.name%] : [%=f.name%][%=(f.many ? " ["+"*"+"]" : "")%]
+	[%}%]
+	
+	[%if (e.superType.isDefined()){%]
+		[%=e.superType.Name%]<|--[%=e.name%]
+	[%}%]
+	
+	[%for (subclass in Entity.all.select(ent | ent.superType = e)){%]
+		[%=e.name%]<|--[%=subclass.name%]
+	[%}%]
 [%}%]
 
 @enduml
-[%out.toString().println();%]
+[%
+//out.toString().println();
+%]
 [%
 
 operation getVisibleEntities() {
 	var visibleEntities : Set;
-	visibleEntities.add(e);
 	
-	// entity features
-	visibleEntities.addAll(
-			e.features.select(f|f.type.isTypeOf(Entity)).collect(f|f.type));
-
-	// supertype
-	if (e.superType.isDefined()) visibleEntities.add(e.superType);
-
-	// subtypes
-	visibleEntities.addAll(Entity.all.select(en|en.superType = e));
+	if (e.isDefined()) {
+		visibleEntities.add(e);
+	
+		// entity features
+		visibleEntities.addAll(
+				e.features.select(f|f.type.isTypeOf(Entity)).collect(f|f.type));
+	
+		// supertype
+		if (e.superType.isDefined()) visibleEntities.add(e.superType);
+	
+		// subtypes
+		visibleEntities.addAll(Entity.all.select(en|en.superType = e));	
+	}
+	else if (inputEntities.isDefined()) {
+		visibleEntities.addAll(Entity.all.select(en | inputEntities.includes(en.name)));
+	}
 
 	return visibleEntities;
 }
@@ -68,6 +85,6 @@ operation Entity getLink() {
 	if (self == e) {
 		return "showElement('" + self.id + "','" + self.eResource.uri + "')";
 	}
-	return "showView(" + getPath(Sequence{"PlantUML", self.name})% + ")";
+	return "showView(" + getPath(Sequence{"Entities", self.name})% + ")";
 }
 %]

@@ -1,0 +1,16 @@
+<?nsuri picto?>
+<picto format="egx" transformation="platform:/plugin/org.eclipse.epsilon.examples.picto.xtext.domainmodel.picto/picto/dmodel.egx" standalone="true">
+    <model type="EMF">
+        <parameter name="name" value="M"/>
+        <parameter name="metamodelUri" value="http://www.eclipse.org/epsilon/examples/picto/xtext/domainmodel/Domainmodel"/>
+        <parameter name="modelFile" file="blog.dmodel"/>
+    </model>
+
+    <!-- A custom view produced by invoking an EGX rule -->
+	<view path="Custom, Core" icon="diagram-ff00ff" type="Entities2PlantUML">
+		<parameter name="inputEntities" values="Blog, Post, Comment"/>
+	</view>
+	
+	<!-- A custom static view that renders a Markdown document -->
+	<view path="Readme" icon="document" format="markdown" source="readme.md" position="0"/>
+</picto>
