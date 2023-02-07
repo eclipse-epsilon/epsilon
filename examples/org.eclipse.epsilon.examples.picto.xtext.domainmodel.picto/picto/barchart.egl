@@ -19,7 +19,7 @@ var values = Sequence{DataType.all.size(),
 </head>
 <body>
     <div id="graphContainer">
-        <canvas id="myChart" width="900" height="300"></canvas>
+        <canvas id="myChart" width="600" height="300"></canvas>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
     <script>
