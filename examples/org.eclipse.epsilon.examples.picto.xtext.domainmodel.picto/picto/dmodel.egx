@@ -1,14 +1,23 @@
-rule Entity2Graphviz
-    transform e : Entity {
+rule StatsChart {
+	template : "barchart.egl"
+	
+	parameters : Map {
+		"position" = "1",
+		"path" = List{"Stats"},
+		"icon" = "barchart",
+		"format" = "html"
+	}
+}
 
-    template : "entity2graphviz.egl"
-
-    parameters : Map{
-        "path" = Sequence{"Graphviz", e.name},
-        "icon" = "diagram-ffffff",
-        "format" = "graphviz-dot"
-    }
-
+rule TypesTable {
+	template : "typeStats.pinset"
+	
+	parameters : Map {
+		"position" = "2",
+		"path" = Sequence{"Types"},
+		"icon" = "table",
+		"format" = "csv"
+	}
 }
 
 rule Entity2PlantUML
@@ -17,20 +26,20 @@ rule Entity2PlantUML
     template : "entity2plantuml.egl"
 
     parameters : Map{
-        "path" = Sequence{"PlantUML", e.name},
+        "position" = "3",
+        "path" = Sequence{"Entities", e.name},
         "icon" = "diagram-ffffff",
         "format" = "plantuml"
     }
-
 }
 
-rule TypeStats {
-	template : "typeStats.pinset"
-	
-	parameters : Map {
-		"path" = Sequence{"Type stats"},
-		"icon" = "table",
-		"format" = "csv",
-		"position" = "0"
-	}
+@lazy
+rule Entities2PlantUML
+    transform e : Entity {
+
+    template : "entity2plantuml.egl"
+
+    parameters : Map{
+        "format" = "plantuml"
+    }
 }
