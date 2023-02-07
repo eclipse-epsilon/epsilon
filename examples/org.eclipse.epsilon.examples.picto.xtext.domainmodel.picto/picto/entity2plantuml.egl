@@ -11,57 +11,82 @@ skinparam classBorderThickness 1
 skinparam classFontName system-ui
 
 [%
-
+var mainEntity = getMainEntity();
 var entities = getVisibleEntities();
+%]
 
-  for (ent in entities){%]
-	[% if (ent.doc != null) {%]
+[%for (ent in entities){%]
+	[% if (isLayerActive("documentation") and ent.doc != null) {%]
 		note "[%=ent.doc%]" as nn_[%=ent.name%] #f0ffff
 		nn_[%=ent.name%] .. [%=ent.name%]
 	[%}%]
 	class [%=ent.name%] [[javascript:top.[%=ent.getLink()%]]] [%=ent.getColour()%] {
 		
 		[%for (f in ent.features){%]
-			[%=f.name%] : [%=f.type.name%][%=(f.many ? " ["+"*"+"]" : "")%]
+			[% if (not f.type.isTypeOf(Entity) or isLayerActive("inlineReferences")) {%]
+				[%=f.name%] : [%=f.type.name%][%=(f.many ? " ["+"*"+"]" : "")%]
+			[%}%]
 		[%}%]
 	}
 [%}%]
 
-[%if (e.isDefined()) {%]
-	[%for (f in e.features.select(f|f.type.isTypeOf(Entity) and f.type <> e)){%]
-		[%=e.name%]-->[%=f.type.name%] : [%=f.name%][%=(f.many ? " ["+"*"+"]" : "")%]
+
+[%if (mainEntity <> null) {%]
+	
+	[%for (f in mainEntity.features.select(f|f.type.isTypeOf(Entity))){%]
+		[%=mainEntity.name%]-->[%=f.type.name%] : [%=f.name%][%=f.getLabel()%]
 	[%}%]
 	
-	[%if (e.superType.isDefined()){%]
-		[%=e.superType.Name%]<|--[%=e.name%]
+	[%if (isLayerActive("supertype") and mainEntity.superType.isDefined()) {%]
+		[%=mainEntity.superType.Name%]<|--[%=mainEntity.name%]
 	[%}%]
 	
-	[%for (subclass in Entity.all.select(ent | ent.superType = e)){%]
-		[%=e.name%]<|--[%=subclass.name%]
+	[%if (isLayerActive("subtypes")) {
+		for (subType in mainEntity.getSubTypes()) {%]
+			[%=mainEntity.name%]<|--[%=subType.name%]
+		[%}%]
+	[%}%]
+[%} else {%]
+	[%for (ent in entities){%]
+	[%for (f in ent.features.select(f|f.type.isTypeOf(Entity) and entities.includes(f.type))){%]
+		[%=ent.name%]-->[%=f.type.name%][%=f.getLabel()%]
+	[%}%]
+	
+	[%if (isLayerActive("supertype") and entities.includes(ent.superType)) {%]
+		[%=ent.superType.Name%]<|--[%=ent.name%]
 	[%}%]
 [%}%]
-
+	
+[%}%]
 @enduml
 [%
 //out.toString().println();
 %]
 [%
 
+operation getMainEntity() {
+	return e.isDefined() ? e : null;
+}
+
 operation getVisibleEntities() {
 	var visibleEntities : Set;
 	
-	if (e.isDefined()) {
-		visibleEntities.add(e);
+	if (mainEntity <> null) {
+		visibleEntities.add(mainEntity);
 	
 		// entity features
 		visibleEntities.addAll(
-				e.features.select(f|f.type.isTypeOf(Entity)).collect(f|f.type));
+				mainEntity.features.select(f|f.type.isTypeOf(Entity)).collect(f|f.type));
 	
 		// supertype
-		if (e.superType.isDefined()) visibleEntities.add(e.superType);
+		if (isLayerActive("supertype") and mainEntity.superType.isDefined()) {
+			visibleEntities.add(e.superType);
+		}
 	
 		// subtypes
-		visibleEntities.addAll(Entity.all.select(en|en.superType = e));	
+		if (isLayerActive("subtypes")) {
+			visibleEntities.addAll(mainEntity.getSubTypes());
+		}
 	}
 	else if (inputEntities.isDefined()) {
 		visibleEntities.addAll(Entity.all.select(en | inputEntities.includes(en.name)));
@@ -70,8 +95,13 @@ operation getVisibleEntities() {
 	return visibleEntities;
 }
 
+@cached
+operation Entity getSubTypes() {
+	return Entity.all.select(ent | ent.superType = self);
+}
+
 operation Entity getColour() {
-	if (self == e) return "#DDFADC";
+	if (self == mainEntity) return "#DDFADC";
 	else return "#lemonchiffon";
 }
 
@@ -82,9 +112,27 @@ operation getPath(path : Sequence) {
 }
 
 operation Entity getLink() {
-	if (self == e) {
+	if (self == mainEntity) {
 		return "showElement('" + self.id + "','" + self.eResource.uri + "')";
 	}
 	return "showView(" + getPath(Sequence{"Entities", self.name})% + ")";
+}
+
+operation Feature getLabel() {
+	var label = "";
+	if (isLayerActive("referenceLabels")) {
+		label = " : " + self.name + (self.many ? " ["+"*"+"]" : "");
+	}
+	return label;
+}
+
+operation isLayerActive(id : String) {
+	var layer = layers.selectOne(l|l.id = id);
+	if (layer.isDefined()) {
+		return layer.active;
+	}
+	else {
+		return true;
+	}
 }
 %]
