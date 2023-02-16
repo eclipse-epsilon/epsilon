@@ -1,7 +1,5 @@
 dataset typeStats over t : Type {
 	properties[name as Name]
-	
 	column Type : t.isTypeOf(Entity) ? "Entity" : "DataType"
-	
 	column Usages : Feature.all.select(f | f.type == t).size()
 }
