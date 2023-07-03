@@ -225,17 +225,10 @@ specialType
 pathName
 	:	(metamodel=NAME '!'!)?
 		head=packagedType^
-		('#'! label=NAME)?
-	
 		{
 			if ($metamodel != null) {
 				$head.tree.token.setText(metamodel.getText() + "!" + $head.tree.token.getText());		
 			}
-			
-			if (label != null) {
-				$head.tree.token.setText($head.tree.token.getText() + "#" + label.getText());
-				$head.tree.token.setType(ENUMERATION_VALUE);
-			}	
 		}
 	;
 
@@ -548,8 +541,24 @@ keyvalExpression
 	{$eq.setType(KEYVAL);}
 	;
 
+enumLiteral
+	: (metamodel=NAME '!'!)? (typename=packagedType)? '#'! label=NAME^
+	{
+		$label.tree.token.setType(ENUMERATION_VALUE);
+		$label.tree.token.setText('#' + $label.tree.token.getText());
+		if (typename != null) {
+			$label.tree.token.setText(typename.tree.token.getText() + $label.tree.token.getText());
+		}
+		if ($metamodel != null) {
+			$label.tree.token.setText($metamodel.getText() + '!' + $label.tree.token.getText());
+		}
+	}
+	;
+
 primitiveExpression 
-	:	literalSequentialCollection | literalMapCollection | literal | featureCall | collectionType |
+	:	literalSequentialCollection | literalMapCollection | literal
+		| ((NAME '!')? packagedType? '#') => enumLiteral
+		| featureCall | collectionType |
 		pathName | specialType | logicalExpressionInBrackets | newExpression | variableDeclarationExpression
 	;
 
