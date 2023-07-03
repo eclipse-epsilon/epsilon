@@ -1,6 +1,6 @@
 package org.eclipse.epsilon.eml.parse;
 
-// $ANTLR 3.1b1 ErlParserRules.g 2020-08-12 13:05:39
+// $ANTLR 3.1b1 ErlParserRules.g 2023-07-03 20:54:47
 
 import org.antlr.runtime.*;
 import java.util.Stack;

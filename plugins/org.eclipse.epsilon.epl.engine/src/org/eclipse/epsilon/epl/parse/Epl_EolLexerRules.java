@@ -1,6 +1,6 @@
 package org.eclipse.epsilon.epl.parse;
 
-// $ANTLR 3.1b1 EolLexerRules.g 2020-08-12 13:05:34
+// $ANTLR 3.1b1 EolLexerRules.g 2023-07-03 20:54:40
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -1709,11 +1709,11 @@ public class Epl_EolLexerRules extends Lexer {
     static final String DFA14_eofS =
         "\25\uffff";
     static final String DFA14_minS =
-        "\1\102\1\uffff\1\145\1\uffff\1\157\1\uffff\1\161\1\154\3\uffff"+
-        "\1\143\1\165\2\162\1\145\1\156\1\164\1\102\2\uffff";
+        "\1\102\1\uffff\1\145\1\uffff\1\157\1\uffff\1\161\1\154\3\uffff\1"+
+        "\143\1\165\2\162\1\145\1\156\1\164\1\102\2\uffff";
     static final String DFA14_maxS =
-        "\1\123\1\uffff\1\145\1\uffff\1\157\1\uffff\1\164\1\156\3\uffff"+
-        "\1\143\1\165\2\162\1\145\1\156\1\164\1\123\2\uffff";
+        "\1\123\1\uffff\1\145\1\uffff\1\157\1\uffff\1\164\1\156\3\uffff\1"+
+        "\143\1\165\2\162\1\145\1\156\1\164\1\123\2\uffff";
     static final String DFA14_acceptS =
         "\1\uffff\1\1\1\uffff\1\4\1\uffff\1\6\2\uffff\1\2\1\3\1\5\10\uffff"+
         "\1\7\1\10";
@@ -1777,9 +1777,9 @@ public class Epl_EolLexerRules extends Lexer {
         }
     }
     static final String DFA21_eotS =
-        "\2\uffff\1\26\2\uffff\2\21\2\uffff\10\21\6\uffff\12\21\2\uffff"+
-        "\2\21\1\61\1\21\1\61\4\21\1\67\2\21\1\72\1\21\1\uffff\4\21\1\61"+
-        "\1\uffff\2\21\1\uffff\1\72\4\21\1\67\5\21\1\113\4\21\1\uffff\1\61"+
+        "\2\uffff\1\26\2\uffff\2\21\2\uffff\10\21\6\uffff\12\21\2\uffff\2"+
+        "\21\1\61\1\21\1\61\4\21\1\67\2\21\1\72\1\21\1\uffff\4\21\1\61\1"+
+        "\uffff\2\21\1\uffff\1\72\4\21\1\67\5\21\1\113\4\21\1\uffff\1\61"+
         "\6\21\2\61\7\21\2\61\1\67";
     static final String DFA21_eofS =
         "\137\uffff";

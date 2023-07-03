@@ -1,6 +1,6 @@
 package org.eclipse.epsilon.egl.parse;
 
-// $ANTLR 3.1b1 EgxParserRules.g 2022-12-05 18:57:58
+// $ANTLR 3.1b1 EgxParserRules.g 2023-07-03 20:54:48
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -409,7 +409,7 @@ public class Egx_EgxParserRules extends org.eclipse.epsilon.common.parse.Epsilon
                     int alt2=2;
                     int LA2_0 = input.LA(1);
 
-                    if ( (LA2_0==123) ) {
+                    if ( (LA2_0==122) ) {
                         alt2=1;
                     }
                     switch (alt2) {
@@ -502,7 +502,7 @@ public class Egx_EgxParserRules extends org.eclipse.epsilon.common.parse.Epsilon
             // EgxParserRules.g:69:2: (c= 'in' )
             // EgxParserRules.g:69:3: c= 'in'
             {
-            c=(Token)match(input,123,FOLLOW_123_in_domain141); if (state.failed) return retval;
+            c=(Token)match(input,122,FOLLOW_122_in_domain141); if (state.failed) return retval;
             if ( state.backtracking==0 ) {
             c_tree = (org.eclipse.epsilon.common.parse.AST)adaptor.create(c);
             root_0 = (org.eclipse.epsilon.common.parse.AST)adaptor.becomeRoot(c_tree, root_0);
@@ -1316,12 +1316,12 @@ public class Egx_EgxParserRules extends org.eclipse.epsilon.common.parse.Epsilon
     public static final BitSet FOLLOW_169_in_generationRule95 = new BitSet(new long[]{0x0000000000800000L});
     public static final BitSet FOLLOW_NAME_in_generationRule100 = new BitSet(new long[]{0x0000000000000000L,0x0000004000000000L,0x0000040000000000L});
     public static final BitSet FOLLOW_170_in_generationRule103 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_formalParameter_in_generationRule106 = new BitSet(new long[]{0x0000000000000000L,0x0800004000000000L});
+    public static final BitSet FOLLOW_formalParameter_in_generationRule106 = new BitSet(new long[]{0x0000000000000000L,0x0400004000000000L});
     public static final BitSet FOLLOW_domain_in_generationRule108 = new BitSet(new long[]{0x0000000000000000L,0x0000004000000000L});
     public static final BitSet FOLLOW_102_in_generationRule116 = new BitSet(new long[]{0x0000000000000000L,0x0000008000000000L,0x0007F8E000000000L});
     public static final BitSet FOLLOW_generationRuleConstructs_in_generationRule119 = new BitSet(new long[]{0x0000000000000000L,0x0000008000000000L});
     public static final BitSet FOLLOW_103_in_generationRule123 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_123_in_domain141 = new BitSet(new long[]{0x0000000000000000L,0x0000204000000000L});
+    public static final BitSet FOLLOW_122_in_domain141 = new BitSet(new long[]{0x0000000000000000L,0x0000204000000000L});
     public static final BitSet FOLLOW_expressionOrStatementBlock_in_domain145 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_171_in_target162 = new BitSet(new long[]{0x0000000000000000L,0x0000204000000000L});
     public static final BitSet FOLLOW_expressionOrStatementBlock_in_target165 = new BitSet(new long[]{0x0000000000000002L});
