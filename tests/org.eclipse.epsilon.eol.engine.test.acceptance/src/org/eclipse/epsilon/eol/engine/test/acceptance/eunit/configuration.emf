@@ -1,0 +1,16 @@
+@namespace(uri="configuration", prefix="configuration")
+
+package configuration;
+
+class Configuration {
+   attr CacheMode cacheMode;
+   attr SafetyMode safetyMode;
+}
+
+enum CacheMode {
+	ENABLED; DISABLED;
+}
+
+enum SafetyMode {
+	ENABLED; DISABLED;
+}

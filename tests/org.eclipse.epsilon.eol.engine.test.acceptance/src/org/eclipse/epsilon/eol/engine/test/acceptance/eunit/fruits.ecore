@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="fruits"
-    nsURI="fruits" nsPrefix="fruits">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="fruits" nsURI="fruits" nsPrefix="fruits">
   <eClassifiers xsi:type="ecore:EClass" name="Basket">
     <eStructuralFeatures xsi:type="ecore:EReference" name="fruits" upperBound="-1"
         eType="#//Fruit" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Fruit" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="FruitColour">
+    <eLiterals name="RED"/>
+    <eLiterals name="GREEN" value="1"/>
+    <eLiterals name="YELLOW" value="2"/>
+  </eClassifiers>
 </ecore:EPackage>

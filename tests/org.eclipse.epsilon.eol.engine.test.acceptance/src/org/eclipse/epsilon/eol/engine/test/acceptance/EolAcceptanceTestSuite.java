@@ -73,7 +73,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ParallelStreamTests.class,
 	CommentsTests.class,
 	EolUnparserTests.class,
-	BreakAndContinueTests.class
+	BreakAndContinueTests.class,
+	EnumResolutionTests.class
 })
 public class EolAcceptanceTestSuite {
 

@@ -30,6 +30,8 @@ public class ModelManager {
 		
 		register(FileUtil.getFileStandalone("ecore_lite.ecore", ModelManager.class).getAbsolutePath());
 		register(FileUtil.getFileStandalone("fruits.ecore",     ModelManager.class).getAbsolutePath());
+		register(FileUtil.getFileStandalone("traffic.ecore",    ModelManager.class).getAbsolutePath());
+		register(FileUtil.getFileStandalone("configuration.ecore", ModelManager.class).getAbsolutePath());
 	}
 	
 	private List<EPackage> register(String metamodelPath) throws Exception {

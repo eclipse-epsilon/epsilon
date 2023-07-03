@@ -1,0 +1,102 @@
+@setup
+operation setup() {
+	modelManager.unloadAllModels();
+}
+
+@test
+operation noWarningsWhenUsingUnambiguousUnqualifiedEnumLiteral() {
+  modelManager.createInMemoryEmfModel("First", "traffic");
+
+  var x = new TrafficLight;
+  x.state = #GREEN;
+
+  assertNoWarnings();
+}
+
+@test
+operation noWarningsWhenUsingModelQualifiedEnumLiteral() {
+  modelManager.createInMemoryEmfModel("First", "traffic");
+  modelManager.createInMemoryEmfModel("Second", "fruits");
+
+  var x = new TrafficLight;
+  x.state = First!#RED;
+
+  assertNoWarnings();
+}
+
+@test
+operation noWarningsWhenUsingTypeQualifiedEnumLiteral() {
+  modelManager.createInMemoryEmfModel("First", "traffic");
+  modelManager.createInMemoryEmfModel("Second", "fruits");
+
+  var x = new TrafficLight;
+  x.state = TrafficLightState#RED;
+
+  assertNoWarnings();
+}
+
+@test
+operation warningsWhenUsingAmbiguousUnqualifiedEnumLiteral() {
+  modelManager.createInMemoryEmfModel("First", "traffic");
+  modelManager.createInMemoryEmfModel("Second", "fruits");
+
+  var x = new TrafficLight;
+  x.state = #RED;
+
+  assertWarning("The enumeration literal '#RED' is ambiguous and could refer to any of the following: 'First!#RED' 'Second!#RED'. The enumeration literal 'First!#RED' has been assumed.");
+  assertEquals(First!TrafficLightState#RED, x.state);
+}
+
+@test
+operation noWarningsWhenUsingSameUnderlyingQualifiedEnumLiteral() {
+  modelManager.createInMemoryEmfModel("First", "traffic");
+  modelManager.createInMemoryEmfModel("Second", "traffic");
+
+  var x = new First!TrafficLight;
+  x.state = TrafficLightState#RED;
+
+  // Both references map to exactly the same object
+  assertNoWarnings();
+}
+
+@test
+operation noWarningsWhenUsingModelTypeQualifiedEnumLiteral() {
+  modelManager.createInMemoryEmfModel("First", "traffic");
+  modelManager.createInMemoryEmfModel("Second", "traffic");
+
+  var x = new First!TrafficLight;
+  x.state = First!TrafficLightState#RED;
+
+  assertNoWarnings();
+}
+
+@test
+operation noWarningsWhenUsingModelPackageTypeQualifiedEnumLiteral() {
+  modelManager.createInMemoryEmfModel("First", "traffic");
+  modelManager.createInMemoryEmfModel("Second", "traffic");
+
+  var x = new First!TrafficLight;
+  x.state = First!traffic::TrafficLightState#RED;
+
+  assertNoWarnings();  
+}
+
+@test
+operation warningsWhenUsingAmbiguousUnqualifiedEnumLiteralWithinSameModel() {
+  modelManager.createInMemoryEmfModel("First", "configuration");
+
+  var x = new Configuration;
+  x.cacheMode = #ENABLED;
+
+  assertWarning("The enumeration literal '#ENABLED' is ambiguous and could refer to any of the following: 'First!CacheMode#ENABLED' 'First!SafetyMode#ENABLED'. The enumeration literal 'First!CacheMode#ENABLED' has been assumed.");
+}
+
+@test
+operation noWarningsWhenUsingTypedEnumLiteralWithinSameModel() {
+  modelManager.createInMemoryEmfModel("First", "configuration");
+
+  var x = new Configuration;
+  x.safetyMode = SafetyMode#ENABLED;
+
+  assertNoWarnings();
+}
