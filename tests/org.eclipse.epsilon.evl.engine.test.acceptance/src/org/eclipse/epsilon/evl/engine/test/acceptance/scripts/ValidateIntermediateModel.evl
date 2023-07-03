@@ -1,0 +1,5 @@
+context ClassObject {
+		constraint ClassifierMustExist {
+		check : Metamodel!EClassifier.allInstances()
+	}
+}
