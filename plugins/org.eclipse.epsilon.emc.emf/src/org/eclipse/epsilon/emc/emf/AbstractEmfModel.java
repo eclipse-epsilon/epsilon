@@ -30,6 +30,7 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -54,6 +55,7 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.exceptions.models.EolNotInstantiableModelElementTypeException;
 import org.eclipse.epsilon.eol.models.CachedModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
+import org.eclipse.epsilon.eol.models.ModelRepository.AmbiguousEnumerationValue;
 import org.eclipse.epsilon.eol.models.transactions.IModelTransactionSupport;
 
 public abstract class AbstractEmfModel extends CachedModel<EObject> {
@@ -80,12 +82,13 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 	protected boolean expand = true;
 	protected EPackage.Registry registry;
 	Map<String, EClass> eClassCache;
+	Map<String, Object> enumCache;
 
 	// Null by default but allows the user to override this.
 	protected Map<Object, Object> resourceLoadOptions = null;
 	// Null by default but allows the user to override this.
 	protected Map<Object, Object> resourceStoreOptions = null;
-	
+
 	/**
 	 * @since 1.6
 	 */
@@ -95,18 +98,20 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 		propertyGetter = new EmfPropertyGetter();
 		propertySetter = new EmfPropertySetter();
 	}
-	
+
+	private <K, V> Map<K, V> createMap(Map<K, V> original) {
+		if (isConcurrent()) {
+			return original == null ? ConcurrencyUtils.concurrentMap() : ConcurrencyUtils.concurrentMap(original);
+		} else {
+			return original == null ? new HashMap<>() : new HashMap<>(original);
+		}
+	}
+
 	@Override
 	protected synchronized void initCaches() {
 		super.initCaches();
-		if (isConcurrent()) {
-			eClassCache = eClassCache != null ?
-				ConcurrencyUtils.concurrentMap(eClassCache) : ConcurrencyUtils.concurrentMap();
-		}
-		else {
-			eClassCache = eClassCache != null ?
-				new HashMap<>(eClassCache) : new HashMap<>();
-		}
+		eClassCache = createMap(eClassCache);
+		enumCache = createMap(enumCache);
 	}
 	
 	protected InputStream getInputStream(String file) throws IOException {
@@ -147,27 +152,50 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 	
 	@Override
 	public Object getEnumerationValue(String enumeration, String label) throws EolEnumerationValueNotFoundException {
-		
-		for (Object pkg : getPackageRegistry().values()) {
+		Object value = enumCache.computeIfAbsent(enumeration + '#' + label, (k) -> {
+			List<EEnumLiteral> optionLiterals = new ArrayList<>();
+			List<Enumerator> optionValues = new ArrayList<>();
 
-			if (EmfUtil.isEPackageOrDescriptor(pkg)) {
-				EPackage ePackage = EmfUtil.toEPackage(pkg);
-				
-				for (EClassifier classifier : EmfUtil.getAllEClassifiers(ePackage)) {
-				//for (EClassifier classifier : ePackage.getEClassifiers()) {
-					if (classifier instanceof EEnum && 
-							(((EEnum) classifier).getName().equals(enumeration) ||
-							getFullyQualifiedName(classifier).equals(enumeration))){
-						EEnum eEnum = (EEnum) classifier;
-						EEnumLiteral literal = eEnum.getEEnumLiteral(label);
-						
-						if (literal != null) return literal.getInstance();
+			for (Object pkg : getPackageRegistry().values()) {
+				if (EmfUtil.isEPackageOrDescriptor(pkg)) {
+					EPackage ePackage = EmfUtil.toEPackage(pkg);
+					
+					for (EClassifier classifier : EmfUtil.getAllEClassifiers(ePackage)) {
+						if (classifier instanceof EEnum
+							&& (((EEnum) classifier).getName().equals(enumeration)
+								|| getFullyQualifiedName(classifier).equals(enumeration)
+								|| "".equals(enumeration)))
+						{
+							EEnum eEnum = (EEnum) classifier;
+							EEnumLiteral literal = eEnum.getEEnumLiteral(label);
+							if (literal != null) {
+								optionLiterals.add(literal);
+								optionValues.add(literal.getInstance());
+							}
+						}
 					}
 				}
 			}
+
+			if (optionValues.size() == 1) {
+				return optionValues.get(0);
+			} else if (optionValues.isEmpty()) {
+				return null;
+			} else {
+				List<String> optionNames = optionLiterals.stream().map(
+					(l) -> String.format("%s!%s#%s", this.getName(), l.getEEnum().getName(), l.getName())).collect(Collectors.toList());
+				return new AmbiguousEnumerationValue(
+					optionNames,
+					optionNames.get(0),
+					optionValues.get(0)
+				);
+			}
+		});
+
+		if (value == null) {
+			throw new EolEnumerationValueNotFoundException(enumeration, label, this.getName());
 		}
-		
-		throw new EolEnumerationValueNotFoundException(enumeration, label, this.getName());
+		return value;
 	}
 	
 	@Override
