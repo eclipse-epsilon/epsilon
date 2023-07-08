@@ -1,0 +1,14 @@
+package tbl;
+
+class Table {
+	attr String name;
+	attr String row;
+	attr String ~package;
+	val Column[*] columns;
+}
+
+class Column {
+	attr String name;
+	attr String type;
+	attr boolean searchable;
+}

@@ -1,0 +1,25 @@
+[%import "util.eol";%]
+package [%=table.package%];
+[%for (class in table.columns.collect(c|c.type).asSet()){%]
+import [%=class%];
+[%}%]
+
+public class [%=table.row%] {
+
+    [%for (column in table.columns){%]
+    protected [%=column.type.getSimpleName()%] [%=column.name%];
+    [%}%]
+
+    public [%=table.row%]([%=table.columns.collect(column|column.type.getSimpleName() + " " + column.name).concat(", ")%]) {
+        [%for (column in table.columns){%]
+        this.[%=column.name%] = [%=column.name%];
+        [%}%]    
+    }
+
+    [%for (column in table.columns){%]
+    public [%=column.type.getSimpleName()%] get[%=column.name.ftuc()%]() {
+        return this.[%=column.name%];
+    }
+
+    [%}%]
+}

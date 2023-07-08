@@ -1,0 +1,6 @@
+<?nsuri tbl?>
+<table package="org.eclipse.epsilon.examples" name="ExaminationResults" row="Result">
+	<column name="student" type="java.lang.String" searchable="true"/>
+	<column name="module" type="java.lang.String" searchable="true"/>
+	<column name="mark" type="java.lang.Integer"/>
+</table>

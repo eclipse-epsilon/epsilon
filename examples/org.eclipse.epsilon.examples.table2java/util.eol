@@ -1,0 +1,11 @@
+operation String getSimpleName() {
+    return self.split("\\.").last();
+}
+
+operation Table getSearchableColumns() {
+    return self.columns.select(c|c.searchable);
+}
+
+operation Table getRows() {
+    return self.row.ftlc() + "s";
+}

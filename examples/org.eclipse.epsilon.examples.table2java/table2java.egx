@@ -1,0 +1,15 @@
+rule Table2Class
+    transform table : Table {
+
+    template: "table.egl"
+    
+    target: "src/main/java/org/eclipse/epsilon/examples/" + table.name + ".java"
+}
+
+rule Row2Class
+    transform table : Table {
+
+    template: "row.egl"
+    
+    target: "src/main/java/org/eclipse/epsilon/examples/" + table.row + ".java"
+}
