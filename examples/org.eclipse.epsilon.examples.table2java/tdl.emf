@@ -1,4 +1,4 @@
-package tbl;
+package tdl;
 
 class Table {
 	attr String name;
