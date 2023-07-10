@@ -10,9 +10,12 @@ public class ExaminationResultsApp {
         results.add("ab123", "ENG1", 60);
         results.add("ab123", "ENG2", 62);
         
-        results.searchByStudent("dk135").forEach(s -> { 
-            System.out.println(s.getModule() + "/" + s.getMark());
+        System.out.println("Examination results for student dk135");
+        results.searchByStudent("dk135").forEach(result -> { 
+            System.out.println(result.getModule() + " : " + result.getMark());
         });
+
+        System.out.println("Total examination results: " + results.getRows().size());
         
     }
 

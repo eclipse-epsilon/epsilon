@@ -1,8 +1,8 @@
-[%import "util.eol";%]
 package [%=table.package%];
 import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Collections;
 [%for (class in table.columns.collect(c|c.type).asSet()){%]
 import [%=class%];
 [%}%]
@@ -10,39 +10,73 @@ import [%=class%];
 public class [%=table.name%] {
 
     [*Create a list field to store all values*]
-    protected List<[%=table.row%]> [%=table.getRows()%] = new ArrayList<>();
+    protected List<Row> rows = new ArrayList<>();
     
     [*For each searchable column create a linked hash map to act as an index*]
     [%for (column in table.getSearchableColumns()){%]
-    protected LinkedHashMap<[%=column.type.getSimpleName()%], List<[%=table.row%]>> [%=column.name%]Index = new LinkedHashMap<>();
+    protected LinkedHashMap<[%=column.type.getSimpleName()%], List<Row>> [%=column.name%]Index = new LinkedHashMap<>();
     [%}%]
 
-    public [%=table.row%] add([%=table.columns.collect(column|column.type.getSimpleName() + " " + column.name).concat(", ")%]) {
+    public Row add([%=table.columns.collect(column|column.type.getSimpleName() + " " + column.name).concat(", ")%]) {
 
         [*Create a new row object from the parameters*]
-        [%=table.row%] [%=table.row.ftlc()%] = new [%=table.row%]([%=table.columns.collect(column|column.name).concat(", ")%]);
+        Row row = new Row([%=table.columns.collect(column|column.name).concat(", ")%]);
         
         [*Add the row object to the indices of all searchable columns*]
         [%for (column in table.getSearchableColumns()){%]
-        List<[%=table.row%]> [%=column.name%]IndexValues = [%=column.name%]Index.get([%=column.name%]);
+        List<Row> [%=column.name%]IndexValues = [%=column.name%]Index.get([%=column.name%]);
         if (![%=column.name%]Index.containsKey([%=column.name%])) {
             [%=column.name%]IndexValues = new ArrayList<>();
             [%=column.name%]Index.put([%=column.name%], [%=column.name%]IndexValues);
         }
-        [%=column.name%]IndexValues.add([%=table.row.ftlc()%]);
+        [%=column.name%]IndexValues.add(row);
 
         [%}%]
         [**]
         [*Add the row object to the list of all rows*]
-        [%=table.getRows()%].add([%=table.row.ftlc()%]);
-        return [%=table.row.ftlc()%];
+        rows.add(row);
+        return row;
+    }
+
+    [*Create a method to return all rows*]
+    public List<Row> getRows() {
+        return Collections.unmodifiableList(rows);
     }
 
     [*Create a searchBy method for every searchable column*]
     [%for (column in table.getSearchableColumns()){%]
-    public List<[%=table.row%]> searchBy[%=column.name.ftuc()%]([%=column.type.getSimpleName()%] [%=column.name%]) {
+    public List<Row> searchBy[%=column.name.ftuc()%]([%=column.type.getSimpleName()%] [%=column.name%]) {
         return [%=column.name%]Index.get([%=column.name%]);
     }
 
     [%}%]
+    [*The row class*]
+    public class Row {
+
+        [%for (column in table.columns){%]
+        protected [%=column.type.getSimpleName()%] [%=column.name%];
+        [%}%]
+
+        public Row([%=table.columns.collect(column|column.type.getSimpleName() + " " + column.name).concat(", ")%]) {
+            [%for (column in table.columns){%]
+            this.[%=column.name%] = [%=column.name%];
+            [%}%]
+        }
+
+        [%for (column in table.columns){%]
+        public [%=column.type.getSimpleName()%] get[%=column.name.ftuc()%]() {
+            return this.[%=column.name%];
+        }
+
+        [%}%]
+    }
 }
+[%
+operation String getSimpleName() {
+    return self.split("\\.").last();
+}
+
+operation Table getSearchableColumns() {
+    return self.columns.select(c|c.searchable);
+}
+%]
