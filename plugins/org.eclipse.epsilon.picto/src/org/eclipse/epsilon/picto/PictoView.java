@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.epsilon.common.dt.EpsilonCommonsPlugin;
 import org.eclipse.epsilon.common.dt.console.EpsilonConsole;
 import org.eclipse.epsilon.common.dt.util.LogUtil;
+import org.eclipse.epsilon.common.util.OperatingSystem;
 import org.eclipse.epsilon.picto.ViewRenderer.ZoomType;
 import org.eclipse.epsilon.picto.actions.BackAction;
 import org.eclipse.epsilon.picto.actions.CopyToClipboardAction;
@@ -164,7 +165,7 @@ public class PictoView extends ViewPart {
 		treeViewer.addDoubleClickListener(event -> filteredTree.clearFilterText());
 		
 		browserContainer = new BrowserContainer(sashForm, SWT.NONE);
-		viewRenderer = new ViewRenderer(new Browser(browserContainer, SWT.NONE));
+		viewRenderer = new ViewRenderer(createBrowser(browserContainer));
 		
 		Browser browser = viewRenderer.getBrowser();
 		for (PictoBrowserFunction pbf : browserFunctions) {
@@ -262,6 +263,17 @@ public class PictoView extends ViewPart {
 		
 		this.getSite().getPage().addPartListener(partListener);
 
+	}
+
+	protected Browser createBrowser(BrowserContainer container) {
+		int browserStyle = SWT.NONE;
+
+		if (OperatingSystem.isWindows() &&
+				EpsilonCommonsPlugin.getDefault().getPreferenceStore().getBoolean(PictoPreferencePage.INTERNAL_BROWSER_EDGE)) {
+			browserStyle = SWT.EDGE;
+		}
+
+		return new Browser(browserContainer, browserStyle);
 	}
 
 	public void render(IEditorPart editor) {
