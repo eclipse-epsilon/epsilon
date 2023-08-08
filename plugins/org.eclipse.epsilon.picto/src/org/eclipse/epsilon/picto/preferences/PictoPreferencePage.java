@@ -75,7 +75,7 @@ public class PictoPreferencePage extends PreferencePage implements IWorkbenchPre
 		lblSeparator2.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 2, 1));
 
 		internalBrowserEdgeEditor = new BooleanFieldEditor(INTERNAL_BROWSER_EDGE,
-				"In Windows, use Edge as the internal browser (requires reloading the Picto view(s))", composite);
+				"Use Edge as the embedded browser (requires reloading open Picto views, Windows only)", composite);
 		// Fills in the second column in the field editor
 		new Label(parent, SWT.NONE);
 
