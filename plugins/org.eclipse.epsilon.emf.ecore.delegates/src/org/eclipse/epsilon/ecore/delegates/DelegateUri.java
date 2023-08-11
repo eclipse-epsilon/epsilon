@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.epsilon.ecore.delegates;
 
+import java.util.Objects;
+
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.epsilon.ecore.delegates.notify.DelegateEPackageAdapter;
 
@@ -40,6 +42,9 @@ public abstract class DelegateUri {
 		adapter.addDelegate(this.uri, contex);
 	}
 	
+	public boolean is(String delegateURI) {
+		return Objects.equals(this.uri, delegateURI);
+	}
 	
 	@Override
 	public String toString() {
@@ -47,4 +52,5 @@ public abstract class DelegateUri {
 	}
 
 	protected final String uri;
+
 }

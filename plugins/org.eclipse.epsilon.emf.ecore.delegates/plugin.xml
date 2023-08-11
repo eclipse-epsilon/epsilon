@@ -4,14 +4,21 @@
    <extension
          point="org.eclipse.emf.ecore.validation_delegate">
       <delegate
-            class="org.eclipse.epsilon.ecore.delegates.validation.EvlDelegateFactory"
+            class="org.eclipse.epsilon.ecore.delegates.validation.DelegateFactory"
             uri="http://eclipse.dev/epsilon/ecore/EVL">
       </delegate>
    </extension>
    <extension
          point="org.eclipse.emf.ecore.invocation_delegate">
       <factory
-            class="org.eclipse.epsilon.ecore.delegates.invocation.EolDelegateFactory"
+            class="org.eclipse.epsilon.ecore.delegates.invocation.DelegateFactory"
+            uri="http://eclipse.dev/epsilon/ecore/EOL">
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.setting_delegate">
+      <factory
+            class="org.eclipse.epsilon.ecore.delegates.setting"
             uri="http://eclipse.dev/epsilon/ecore/EOL">
       </factory>
    </extension>

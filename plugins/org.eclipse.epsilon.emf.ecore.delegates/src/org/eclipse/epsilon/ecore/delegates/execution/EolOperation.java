@@ -7,7 +7,7 @@
  * Contributors:
  *     Horacio Hoyos Rodriguez - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.ecore.delegates.invocation;
+package org.eclipse.epsilon.ecore.delegates.execution;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +22,6 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
-import org.eclipse.epsilon.ecore.delegates.execution.Program;
 import org.eclipse.epsilon.eol.dom.Operation;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.models.IModel;

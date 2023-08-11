@@ -16,20 +16,20 @@ import org.eclipse.epsilon.ecore.delegates.AbstractDelegates;
 import org.eclipse.epsilon.ecore.delegates.DelegateUri;
 import org.eclipse.epsilon.ecore.delegates.Delegates;
 import org.eclipse.epsilon.ecore.delegates.notify.Adapters;
-import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate.Factory;
+import org.eclipse.epsilon.ecore.delegates.validation.EpsilonValidationDelegate.Factory;
 
 /**
- * Handle {@link EvlDelegate} creation
+ * Handle {@link EpsilonValidationDelegate} creation
  * 
  * @since 2.5
  */
 public class EvlDelegates
-		extends AbstractDelegates<EClassifier, EvlDelegate, Factory> 	
-		implements Delegates<EClassifier, EvlDelegate> {
+		extends AbstractDelegates<EClassifier, EpsilonValidationDelegate, Factory> 	
+		implements Delegates<EClassifier, EpsilonValidationDelegate> {
 
 	public EvlDelegates(
 		DelegateUri delegateUri,
-		EvlDelegate.Factory.Registry defaultRegistry,
+		EpsilonValidationDelegate.Factory.Registry defaultRegistry,
 		Adapters adapters) {
 		super(delegateUri, adapters);
 		this.defaultRegistry = defaultRegistry;
@@ -42,7 +42,7 @@ public class EvlDelegates
 	}
 	
 	@Override
-	public EvlDelegate create(EClassifier eClassifier) {
+	public EpsilonValidationDelegate create(EClassifier eClassifier) {
 		Factory factory = getFactory(eClassifier);
 		if (factory != null) {
 			return factory.createValidationDelegate(eClassifier);
@@ -52,7 +52,7 @@ public class EvlDelegates
 	
 
 	@Override
-	public EvlDelegate create(String uri, EClassifier eClassifier) {
+	public EpsilonValidationDelegate create(String uri, EClassifier eClassifier) {
 		Factory factory = this.getFactory(uri, eClassifier);
 		if (factory != null) {
 			return factory.createValidationDelegate(eClassifier);
@@ -64,11 +64,11 @@ public class EvlDelegates
 	public Factory getFactory(String delegateURI, EClassifier eClassifier) {
 		EValidator.ValidationDelegate.Registry registry = this.adapters.getRegistry(
 				eClassifier,
-				EvlDelegate.Registry.class,
+				EpsilonValidationDelegate.Registry.class,
 				this.defaultRegistry);
 	    return (Factory) registry.getValidationDelegate(delegateURI);
 	}
 
-	private final EvlDelegate.Factory.Registry defaultRegistry;
+	private final EpsilonValidationDelegate.Factory.Registry defaultRegistry;
 	
 }

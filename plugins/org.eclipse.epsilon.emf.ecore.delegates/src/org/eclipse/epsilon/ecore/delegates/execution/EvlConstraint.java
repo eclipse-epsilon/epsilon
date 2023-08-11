@@ -7,7 +7,7 @@
  * Contributors:
  *     Horacio Hoyos Rodriguez - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.ecore.delegates.validation;
+package org.eclipse.epsilon.ecore.delegates.execution;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
-import org.eclipse.epsilon.ecore.delegates.execution.Program;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.evl.dom.Constraint;
 import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;

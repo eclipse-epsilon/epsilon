@@ -24,17 +24,18 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.epsilon.ecore.delegates.DelegateLabelProvider;
 import org.eclipse.epsilon.ecore.delegates.EvlDelegateContext;
 import org.eclipse.epsilon.ecore.delegates.ExeedLabelProvider;
+import org.eclipse.epsilon.ecore.delegates.execution.EvlConstraint;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 
 /**
- * A basic {@link EvlDelegate} implementation that caches errors to avoid multiple exception
+ * A basic {@link EpsilonValidationDelegate} implementation that caches errors to avoid multiple exception
  * reporting.
  * 
  * @since 2.5
  */
-public class EcoreEvlDelegate implements EvlDelegate {
+public class EvlValidationDelegate implements EpsilonValidationDelegate {
 
-	public EcoreEvlDelegate(
+	public EvlValidationDelegate(
 		EvlDelegateContext delegateContext,
 		DelegateLabelProvider labelProvider) {
 		this.delegateContext = delegateContext;
@@ -81,9 +82,12 @@ public class EcoreEvlDelegate implements EvlDelegate {
 	}
 
 	@Override
-	public boolean validate(EDataType eDataType, Object value, Map<Object, Object> context, String constraint,
-			String expression) {
-		// TODO Complete
+	public boolean validate(
+		EDataType eDataType,
+		Object value,
+		Map<Object, Object> context,
+		String constraint,
+		String expression) {
 		return true;
 	}
 	
@@ -96,7 +100,7 @@ public class EcoreEvlDelegate implements EvlDelegate {
 	
 	private class Target {
 		
-		public Target(String constraint, EObject eObject) {
+		public Target(String constraint, Object eObject) {
 			super();
 			this.constraint = constraint;
 			this.eObject = eObject;
@@ -125,9 +129,9 @@ public class EcoreEvlDelegate implements EvlDelegate {
 		}
 
 		private final String constraint;
-		private final EObject eObject;
-		private EcoreEvlDelegate getEnclosingInstance() {
-			return EcoreEvlDelegate.this;
+		private final Object eObject;
+		private EvlValidationDelegate getEnclosingInstance() {
+			return EvlValidationDelegate.this;
 		}
 	}
 	

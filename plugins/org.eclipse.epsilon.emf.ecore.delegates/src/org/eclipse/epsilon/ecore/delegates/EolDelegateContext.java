@@ -20,7 +20,7 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
-import org.eclipse.epsilon.ecore.delegates.invocation.EolOperation;
+import org.eclipse.epsilon.ecore.delegates.execution.EolOperation;
 import org.eclipse.epsilon.ecore.delegates.invocation.InvocationUri;
 import org.eclipse.epsilon.ecore.delegates.notify.DelegateResourceAdapter;
 import org.eclipse.epsilon.eol.EolModule;

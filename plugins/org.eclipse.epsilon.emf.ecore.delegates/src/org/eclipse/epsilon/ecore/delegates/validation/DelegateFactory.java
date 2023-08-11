@@ -27,22 +27,24 @@ import org.eclipse.epsilon.ecore.delegates.ExeedLabelProvider;
 import org.eclipse.epsilon.ecore.delegates.notify.Adapters;
 import org.eclipse.epsilon.ecore.delegates.notify.EpsilonDelegatesAdapter;
 import org.eclipse.epsilon.ecore.delegates.notify.EvlAdapters;
-import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate.Factory;
+import org.eclipse.epsilon.ecore.delegates.validation.EpsilonValidationDelegate.Factory;
 
 /**
- * Delegates validation to the {@link EvlDelegate} associated with the respective EClassifier
+ * Delegates validation to the {@link EpsilonValidationDelegate} associated with the respective
+ * EClassifier
  * 
  * @since 2.5
  */
-public class EvlDelegateFactory implements EvlDelegate.Factory, EValidator.ValidationDelegate {
+public class DelegateFactory
+		implements EpsilonValidationDelegate.Factory, EValidator.ValidationDelegate {
 
-	public EvlDelegateFactory() {
+	public DelegateFactory() {
 		this(new ValidationUri(),
 			new ContextFactory.Registry.Fast(),
 			new Factory.Registry.Smart());
 	}
 
-	public EvlDelegateFactory(
+	public DelegateFactory(
 		ValidationUri delegateUri,
 		ContextFactory.Registry domainRegistry,
 		Factory.Registry delegateRegistry) {
@@ -62,7 +64,7 @@ public class EvlDelegateFactory implements EvlDelegate.Factory, EValidator.Valid
 	public boolean validate(EClass eClass, EObject eObject, Map<Object, Object> context, EOperation invariant,
 			String expression) {
 		if (this.delegateUri.isUsedBy(eClass)) {
-			EvlDelegate validationDelegate = validationDelegate(eClass);
+			EpsilonValidationDelegate validationDelegate = validationDelegate(eClass);
 			return validationDelegate.validate(eClass, eObject, context, invariant, expression);
 		}
 		return true;
@@ -72,7 +74,7 @@ public class EvlDelegateFactory implements EvlDelegate.Factory, EValidator.Valid
 	public boolean validate(EClass eClass, EObject eObject, Map<Object, Object> context, String constraint,
 			String expression) {
 		if (this.delegateUri.isUsedBy(eClass)) {
-			EvlDelegate validationDelegate = validationDelegate(eClass);
+			EpsilonValidationDelegate validationDelegate = validationDelegate(eClass);
 			return validationDelegate.validate(eClass, eObject, context, constraint, expression);
 		}
 		return true;
@@ -82,18 +84,17 @@ public class EvlDelegateFactory implements EvlDelegate.Factory, EValidator.Valid
 	public boolean validate(EDataType eDataType, Object value, Map<Object, Object> context, String constraint,
 			String expression) {
 		if (this.delegateUri.isUsedBy(eDataType)) {
-			EvlDelegate validationDelegate = validationDelegate(eDataType);
+			EpsilonValidationDelegate validationDelegate = validationDelegate(eDataType);
 			return validationDelegate.validate(eDataType, value, context, constraint, expression);
 		}
 		return true;
 	}
 
 	@Override
-	public EvlDelegate createValidationDelegate(EClassifier classifier) {
-		return new EcoreEvlDelegate(delegateContext(classifier.getEPackage()), this.labelProvider);
+	public EpsilonValidationDelegate createValidationDelegate(EClassifier classifier) {
+		return new EvlValidationDelegate(delegateContext(classifier.getEPackage()), this.labelProvider);
 	}
 	
-
 	private final ValidationUri delegateUri;
 	private final Adapters adapters;
 	private final DelegateLabelProvider labelProvider;
@@ -104,7 +105,7 @@ public class EvlDelegateFactory implements EvlDelegate.Factory, EValidator.Valid
 		return (EvlDelegateContext) this.delegateUri.context(this.adapters.getAdapter(ePackage));
 	}
 	
-	private EvlDelegate validationDelegate(EClassifier eClassifier) {
+	private EpsilonValidationDelegate validationDelegate(EClassifier eClassifier) {
 		return this.findAdapter(eClassifier).validationDelegate();
 	}
 	
@@ -115,8 +116,8 @@ public class EvlDelegateFactory implements EvlDelegate.Factory, EValidator.Valid
 			adapter = new EpsilonDelegatesAdapter();
 			eClassifier.eAdapters().add(adapter);
 		}
-		if (!adapter.hasEvlDelegate()) {
-			adapter.useEvlDelegate(this.delegates.create(eClassifier));
+		if (!adapter.hasValidationDelegate()) {
+			adapter.useValidationDelegate(this.delegates.create(eClassifier));
 		}
 		return adapter;
 	}

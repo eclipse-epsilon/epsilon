@@ -10,7 +10,6 @@
 package org.eclipse.epsilon.ecore.delegates.invocation;
 
 import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EOperation.Internal.InvocationDelegate;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.ecore.delegates.DelegateContext.ContextFactory;
 import org.eclipse.epsilon.ecore.delegates.EolDelegateContextFactory;
@@ -23,19 +22,19 @@ import org.eclipse.epsilon.ecore.delegates.notify.EpsilonDelegatesAdapter;
  * 
  * @since 2.5
  */
-public class EolDelegateFactory implements EOperation.Internal.InvocationDelegate.Factory {
+public class DelegateFactory implements EpsilonInvocationDelegate.Factory {
 
-	public EolDelegateFactory() {
+	public DelegateFactory() {
 		this(
 				new InvocationUri(), 
 				new ContextFactory.Registry.Fast(), 
-				EOperation.Internal.InvocationDelegate.Factory.Registry.INSTANCE);
+				new EpsilonInvocationDelegate.Factory.Registry.Smart());
 	}
 			
-	public EolDelegateFactory(
+	public DelegateFactory(
 			InvocationUri delegateUri,
 			ContextFactory.Registry domainRegistry,
-			InvocationDelegate.Factory.Registry delegateRegistry) {
+			EpsilonInvocationDelegate.Factory.Registry delegateRegistry) {
 			super();
 			this.delegateUri = delegateUri;
 			this.adapters = new EolAdapters(
@@ -49,18 +48,14 @@ public class EolDelegateFactory implements EOperation.Internal.InvocationDelegat
 		}
 
 	@Override
-	public InvocationDelegate createInvocationDelegate(EOperation operation) {
-		return invocationDelegate(operation);
+	public EpsilonInvocationDelegate createInvocationDelegate(EOperation operation) {
+		return this.findAdapter(operation).invocationDelegate();
 	}
 
 	private final InvocationUri delegateUri;
 	private final Adapters adapters;
 	private final EolDelegates delegates;
 
-	private InvocationDelegate invocationDelegate(EOperation operation) {
-		return this.findAdapter(operation).invocationDelegate();
-	}
-	
 	private EpsilonDelegatesAdapter findAdapter(EOperation operation) {
 		EpsilonDelegatesAdapter adapter = (EpsilonDelegatesAdapter) EcoreUtil
 			.getAdapter(operation.eAdapters(), EpsilonDelegatesAdapter.class);
@@ -68,8 +63,8 @@ public class EolDelegateFactory implements EOperation.Internal.InvocationDelegat
 			adapter = new EpsilonDelegatesAdapter();
 			operation.eAdapters().add(adapter);
 		}
-		if (!adapter.hasEolDelegate()) {
-			adapter.useEolDelegate(this.delegates.create(operation));
+		if (!adapter.hasInvocationDelegate()) {
+			adapter.useInvocationDelegate(this.delegates.create(operation));
 		}
 		return adapter;
 	}

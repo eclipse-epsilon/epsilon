@@ -18,20 +18,20 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EOperation.Internal.InvocationDelegate;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.epsilon.ecore.delegates.EolDelegateContext;
+import org.eclipse.epsilon.ecore.delegates.execution.EolOperation;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 
 /**
- * An {@link InvocationDelegate} that uses an Eol Operation
+ * An {@link EpsilonInvocationDelegate} that uses an Eol Operation
  * 
  * @since 2.5
  */
-public class OperationEolDelegate implements InvocationDelegate {
+public class EolInvocationDelegate implements EpsilonInvocationDelegate {
 	
-	public OperationEolDelegate(
+	public EolInvocationDelegate(
 		EOperation eOperation, 
 		EolDelegateContext delegateContext) {
 		super();
@@ -59,7 +59,13 @@ public class OperationEolDelegate implements InvocationDelegate {
 			throw new InvocationTargetException(e);
 		}
 	}
-
+	
+	@Override
+	public void reset() {
+		this.program = null;
+		this.errors.clear();
+		this.models.clear();
+	}
 
 	private final Map<Resource, InMemoryEmfModel> models = new HashMap<>();
 	private final Set<InternalEObject> errors = new HashSet<>();
@@ -83,5 +89,5 @@ public class OperationEolDelegate implements InvocationDelegate {
 		result.append("}");
 		return result.toString();
 	}
-	
+
 }

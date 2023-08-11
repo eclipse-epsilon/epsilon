@@ -24,6 +24,7 @@ public interface Delegates<E extends EModelElement, D> {
 
 	D create(E element);
 
+	@Deprecated
 	D create(String uri, E element);
 
 }

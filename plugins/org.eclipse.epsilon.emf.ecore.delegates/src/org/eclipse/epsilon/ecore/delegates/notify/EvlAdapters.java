@@ -11,9 +11,9 @@ package org.eclipse.epsilon.ecore.delegates.notify;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.epsilon.ecore.delegates.DelegateContext.ContextFactory;
-import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate;
+import org.eclipse.epsilon.ecore.delegates.validation.EpsilonValidationDelegate;
 import org.eclipse.epsilon.ecore.delegates.validation.ValidationUri;
-import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate.Factory;
+import org.eclipse.epsilon.ecore.delegates.validation.EpsilonValidationDelegate.Factory;
 
 /**
  * 
@@ -26,7 +26,7 @@ public class EvlAdapters extends Adapters {
 		ContextFactory defaultFactory,
 		ContextFactory.Registry defaultRegistry,
 		Factory.Registry delegateRegistry,
-		EvlDelegate.Factory delegateFactory) {
+		EpsilonValidationDelegate.Factory delegateFactory) {
 		super(validationURI, defaultFactory, defaultRegistry);
 		this.delegateFactory = delegateFactory;
 		this.delegateRegistry = delegateRegistry;
@@ -41,13 +41,13 @@ public class EvlAdapters extends Adapters {
 			((ValidationUri) this.delegateURI).register(
 					this.delegateRegistry,
 					this.delegateFactory);
-			adapter.putRegistry(EvlDelegate.Factory.Registry.class, this.delegateRegistry);
+			adapter.putRegistry(EpsilonValidationDelegate.Factory.Registry.class, this.delegateRegistry);
 			resourceSet.eAdapters().add(adapter);
 		}
 		return adapter;
 	}
 	
 	private final Factory.Registry delegateRegistry;
-	private final EvlDelegate.Factory delegateFactory;
+	private final EpsilonValidationDelegate.Factory delegateFactory;
 
 }

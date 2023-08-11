@@ -18,7 +18,7 @@ public class ValidationUri extends DelegateUri {
 		super("http://eclipse.dev/epsilon/ecore/EVL");
 	}
 
-	public void register(EvlDelegate.Factory.Registry delegateRegistry, EvlDelegate.Factory factory) {
+	public void register(EpsilonValidationDelegate.Factory.Registry delegateRegistry, EpsilonValidationDelegate.Factory factory) {
 		delegateRegistry.put(this.uri, factory);
 	}
 }

@@ -18,13 +18,11 @@ import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.ValidationDelegateRegistryImpl;
 
 /**
- * A revised interface for delegating validation expression evaluation
- * adopting the same Factory, Registry, Descriptor architecture as the
- * invocation and setting delegates.
+ * Add support for resetting the Validation Delegate
  * 
  * @since 2.5
  */
-public interface EvlDelegate extends EValidator.ValidationDelegate {
+public interface EpsilonValidationDelegate extends EValidator.ValidationDelegate {
 
 	/**
 	 * A factory for creating delegate domains.
@@ -47,17 +45,17 @@ public interface EvlDelegate extends EValidator.ValidationDelegate {
 
 			Factory getValidationDelegate(String uri);
 
-			class Smart extends ValidationDelegateRegistryImpl implements Factory.Registry {
+			class Smart extends ValidationDelegateRegistryImpl implements Registry {
 
-				private static final long serialVersionUID = 1L;
-
-				public EvlDelegate.Factory getValidationDelegate(String uri) {
+				public EpsilonValidationDelegate.Factory getValidationDelegate(String uri) {
 					return (Factory) get(uri);
 				}
+				
+				private static final long serialVersionUID = -6748383476427465359L;
 			}
 		}
 
-		EvlDelegate createValidationDelegate(EClassifier eClassifier);
+		EpsilonValidationDelegate createValidationDelegate(EClassifier eClassifier);
 
 	}
 	
