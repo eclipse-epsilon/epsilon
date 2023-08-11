@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon EMF Ecore Delegates Support
+Bundle-SymbolicName: org.eclipse.epsilon.ecore.delegates;singleton:=true
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-Version: 2.5.0.qualifier
+Export-Package: org.eclipse.epsilon.ecore.delegates,
+ org.eclipse.epsilon.ecore.delegates.execution,
+ org.eclipse.epsilon.ecore.delegates.invocation,
+ org.eclipse.epsilon.ecore.delegates.notify,
+ org.eclipse.epsilon.ecore.delegates.setting,
+ org.eclipse.epsilon.ecore.delegates.validation
+Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.25.0",
+ org.eclipse.epsilon.eol.engine;bundle-version="2.5.0",
+ org.eclipse.epsilon.evl.engine,
+ org.eclipse.epsilon.emc.emf
+Automatic-Module-Name: org.eclipse.epsilon.emf.ecore.delegates
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

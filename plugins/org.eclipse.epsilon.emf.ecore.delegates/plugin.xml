@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.emf.ecore.validation_delegate">
+      <delegate
+            class="org.eclipse.epsilon.ecore.delegates.validation.EvlDelegateFactory"
+            uri="http://eclipse.dev/epsilon/ecore/EVL">
+      </delegate>
+   </extension>
+
+</plugin>
