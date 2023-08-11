@@ -22,6 +22,7 @@
     <module>org.eclipse.epsilon.dt.exeed</module>
     <module>org.eclipse.epsilon.ecl.dt</module>
     <module>org.eclipse.epsilon.ecl.engine</module>
+    <module>org.eclipse.epsilon.ecore.delegates</module>
     <module>org.eclipse.epsilon.egl.dt</module>
     <module>org.eclipse.epsilon.egl.dt.traceability.editor</module>
     <module>org.eclipse.epsilon.egl.dt.traceability.fine.emf</module>

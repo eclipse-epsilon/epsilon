@@ -19,6 +19,7 @@
     <module>org.eclipse.epsilon.common.dt.test</module>
     <module>org.eclipse.epsilon.commons.test</module>
     <module>org.eclipse.epsilon.ecl.engine.test.acceptance</module>
+    <module>org.eclipse.epsilon.ecore.delegates.test.acceptance</module>
     <module>org.eclipse.epsilon.egl.dt.test</module>
     <module>org.eclipse.epsilon.egl.dt.traceability.editor.test</module>
     <module>org.eclipse.epsilon.egl.engine.test.acceptance</module>
