@@ -1,32 +1,43 @@
-package org.eclipse.epsilon.ecore.delegates.invocation;
+/*******************************************************************************
+ * Copyright (c) 2023 The University of York.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ * 
+ * Contributors:
+ *     Horacio Hoyos Rodriguez - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.epsilon.ecore.delegates.setting;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EOperation.Internal.InvocationDelegate;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EStructuralFeature.Internal.SettingDelegate;
 
 /**
- * Add support for resetting the Invocation Delegate
+ * Add support for resetting the Setting Delegate
  * 
  * @since 2.5
  */
-public interface EpsilonInvocationDelegate extends InvocationDelegate {
+public interface EpsilonSettingDelegate extends SettingDelegate {
 
-	interface Factory extends EOperation.Internal.InvocationDelegate.Factory {
+	interface Factory extends SettingDelegate.Factory {
 
-		interface Descriptor {
+		interface Descriptor extends SettingDelegate.Factory.Descriptor {
+
 			Factory getFactory();
+
 		}
 
-		interface Registry extends InvocationDelegate.Factory.Registry {
-	
+		interface Registry extends SettingDelegate.Factory.Registry {
+
 			class Smart implements Registry {
 
 				public Factory getFactory(String uri) {
 					return (Factory) get(uri);
-				}				
+				}
 
 				@Override
 				public Set<String> getTargetPlatformFactories() {
@@ -81,16 +92,15 @@ public interface EpsilonInvocationDelegate extends InvocationDelegate {
 					return this.delegate.entrySet();
 				}
 				
-				private final InvocationDelegate.Factory.Registry delegate = InvocationDelegate.Factory.Registry.INSTANCE;
+				private final SettingDelegate.Factory.Registry delegate = SettingDelegate.Factory.Registry.INSTANCE;
 
 			}
-			
-			Factory getFactory(String uri);
-			
-		}
-		
-		EpsilonInvocationDelegate createInvocationDelegate(EOperation operation);
 
+			Factory getFactory(String uri);
+
+		}
+
+		EpsilonSettingDelegate createSettingDelegate(EStructuralFeature eStructuralFeature);
 	}
 
 	void reset();

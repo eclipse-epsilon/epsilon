@@ -11,44 +11,42 @@ package org.eclipse.epsilon.ecore.delegates.notify;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.epsilon.ecore.delegates.DelegateContext.ContextFactory;
-import org.eclipse.epsilon.ecore.delegates.validation.EpsilonValidationDelegate;
-import org.eclipse.epsilon.ecore.delegates.validation.ValidationUri;
-import org.eclipse.epsilon.ecore.delegates.validation.EpsilonValidationDelegate.Factory;
+import org.eclipse.epsilon.ecore.delegates.DelegateUri;
+import org.eclipse.epsilon.ecore.delegates.setting.EpsilonSettingDelegate;
+import org.eclipse.epsilon.ecore.delegates.setting.SettingUri;
 
 /**
- * An {@link Adapters} implementation for Evl Validation
- * 
- * @since 2.5
+ * An {@link Adapters} implementation for Derived Settings
  */
-public class EvlAdapters extends Adapters {
-	
-	public EvlAdapters(
-		ValidationUri validationURI,
-		ContextFactory defaultFactory,
-		ContextFactory.Registry defaultRegistry,
-		Factory.Registry delegateRegistry,
-		EpsilonValidationDelegate.Factory delegateFactory) {
-		super(validationURI, defaultFactory, defaultRegistry);
+public class DerivedSettingAdapters extends Adapters {
+
+	public DerivedSettingAdapters(
+			DelegateUri delegateUri,
+			ContextFactory defaultCtxFctry,
+			ContextFactory.Registry defaultCtxFctryRegistry,
+			EpsilonSettingDelegate.Factory delegateFactory,
+			EpsilonSettingDelegate.Factory.Registry delegateRegistry) {
+		super(delegateUri, defaultCtxFctry, defaultCtxFctryRegistry);
 		this.delegateFactory = delegateFactory;
 		this.delegateRegistry = delegateRegistry;
 	}
-	
-	
+
+	@Override
 	public DelegateResourceSetAdapter getAdapter(ResourceSet resourceSet) {
 		DelegateResourceSetAdapter adapter = findAdapter(resourceSet);
 		if (adapter == null) {
 			adapter = new DelegateResourceSetAdapter();
 			// This mimics the extension point registration, so it will be useful when standalone
-			((ValidationUri) this.delegateURI).register(
+			((SettingUri) this.delegateURI).register(
 					this.delegateRegistry,
 					this.delegateFactory);
-			adapter.putRegistry(EpsilonValidationDelegate.Factory.Registry.class, this.delegateRegistry);
+			adapter.putRegistry(EpsilonSettingDelegate.Factory.Registry.class, this.delegateRegistry);
 			resourceSet.eAdapters().add(adapter);
 		}
 		return adapter;
 	}
 	
-	private final Factory.Registry delegateRegistry;
-	private final EpsilonValidationDelegate.Factory delegateFactory;
+	private final EpsilonSettingDelegate.Factory.Registry delegateRegistry;
+	private final EpsilonSettingDelegate.Factory delegateFactory;
 
 }

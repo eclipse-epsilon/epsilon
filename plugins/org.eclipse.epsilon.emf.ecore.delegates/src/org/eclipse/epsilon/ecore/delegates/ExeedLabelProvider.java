@@ -23,7 +23,7 @@ import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 
 /**
- * Use Exeed annotations if present to provide labels
+ * Use Exeed annotations, if present, to provide labels
  * 
  * @since 2.5
  */

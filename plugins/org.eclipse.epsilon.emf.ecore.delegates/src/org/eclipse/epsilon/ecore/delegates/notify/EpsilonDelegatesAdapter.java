@@ -12,9 +12,10 @@ package org.eclipse.epsilon.ecore.delegates.notify;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
-import org.eclipse.emf.ecore.EOperation.Internal.InvocationDelegate;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate;
+import org.eclipse.epsilon.ecore.delegates.invocation.EpsilonInvocationDelegate;
+import org.eclipse.epsilon.ecore.delegates.setting.EpsilonSettingDelegate;
+import org.eclipse.epsilon.ecore.delegates.validation.EpsilonValidationDelegate;
 
 /**
  * DelegateEClassifierAdapter adapts an EClassifier to cache its Validation, Setting and Invocation 
@@ -23,16 +24,6 @@ import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate;
  * @since 2.5
  */
 public class EpsilonDelegatesAdapter extends AdapterImpl {
-	
-	public EpsilonDelegatesAdapter() {
-		this(null, null);
-	}
-
-	public EpsilonDelegatesAdapter(InvocationDelegate eolDelegate, EvlDelegate evlDelegate) {
-		super();
-		this.eolDelegate = eolDelegate;
-		this.evlDelegate = evlDelegate;
-	}
 
 	@Override
 	public boolean isAdapterForType(Object type) {
@@ -42,9 +33,7 @@ public class EpsilonDelegatesAdapter extends AdapterImpl {
 	@Override
 	public void notifyChanged(Notification notification) {
 		if (notification.getFeature().equals(EcorePackage.Literals.EMODEL_ELEMENT__EANNOTATIONS)) {
-			if (this.evlDelegate != null) {
-				this.evlDelegate.reset();
-			}
+			resetDelegates();
 		}
 		super.notifyChanged(notification);
 	}
@@ -52,44 +41,65 @@ public class EpsilonDelegatesAdapter extends AdapterImpl {
 	@Override
 	public void setTarget(Notifier newTarget) {
 		super.setTarget(newTarget);
-		if (this.evlDelegate != null) {
-			this.evlDelegate.reset();
-		}
+		resetDelegates();
 	}
 
 	@Override
 	public void unsetTarget(Notifier oldTarget) {
 		super.unsetTarget(oldTarget);
-		if (this.evlDelegate != null) {
-			this.evlDelegate.reset();
-		}
+		resetDelegates();
 	}
 
-	public EvlDelegate validationDelegate() {
+	public EpsilonValidationDelegate validationDelegate() {
 		return this.evlDelegate;
 	}
 	
-	public InvocationDelegate invocationDelegate() {
+	public EpsilonInvocationDelegate invocationDelegate() {
 		return this.eolDelegate;
 	}
 	
-	public boolean hasEvlDelegate() {
+	public EpsilonSettingDelegate derivedFeatureDelegate() {
+		return this.derivedDelegate;
+	}
+	
+	public boolean hasValidationDelegate() {
 		return this.evlDelegate != null;
 	}
 	
-	public void useEvlDelegate(EvlDelegate evlDelegate) {
+	public void useValidationDelegate(EpsilonValidationDelegate evlDelegate) {
 		this.evlDelegate = evlDelegate;
 	}
 	
-	public boolean hasEolDelegate() {
+	public boolean hasInvocationDelegate() {
 		return this.eolDelegate != null;
 	}
 	
-	public void useEolDelegate(InvocationDelegate eolDelegate) {
+	public void useInvocationDelegate(EpsilonInvocationDelegate eolDelegate) {
 		this.eolDelegate = eolDelegate;
 	}
 	
-	private InvocationDelegate eolDelegate;
-	private EvlDelegate evlDelegate;
+	public boolean hasDerivedSettingDelegate() {
+		return this.derivedDelegate != null;
+	}
+	
+	public void useDerivedSettingDelegate(EpsilonSettingDelegate derivedDelegate) {
+		this.derivedDelegate = derivedDelegate;
+	}
+	
+	private EpsilonInvocationDelegate eolDelegate;
+	private EpsilonValidationDelegate evlDelegate;
+	private EpsilonSettingDelegate derivedDelegate;
+	
+	private void resetDelegates() {
+		if (this.evlDelegate != null) {
+			this.evlDelegate.reset();
+		}
+		if (this.eolDelegate != null) {
+			this.eolDelegate.reset();
+		}
+		if (this.derivedDelegate != null) {
+			this.derivedDelegate.reset();
+		}
+	}
 
 }

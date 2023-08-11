@@ -13,12 +13,12 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.ecore.delegates.DelegateContext.ContextFactory;
 import org.eclipse.epsilon.ecore.delegates.EolDelegateContextFactory;
-import org.eclipse.epsilon.ecore.delegates.notify.Adapters;
-import org.eclipse.epsilon.ecore.delegates.notify.EolAdapters;
 import org.eclipse.epsilon.ecore.delegates.notify.EpsilonDelegatesAdapter;
+import org.eclipse.epsilon.ecore.delegates.notify.InvocationAdapters;
 
 /**
- * The delegate factory for invocation delegates
+ * Delegates are created using the {@link EpsilonDelegatesAdapter} that are cached in the {@link EOperation}
+ * adapters.
  * 
  * @since 2.5
  */
@@ -36,14 +36,14 @@ public class DelegateFactory implements EpsilonInvocationDelegate.Factory {
 			ContextFactory.Registry domainRegistry,
 			EpsilonInvocationDelegate.Factory.Registry delegateRegistry) {
 			super();
-			this.delegateUri = delegateUri;
-			this.adapters = new EolAdapters(
-					delegateUri, 
-					new EolDelegateContextFactory(),
-					domainRegistry,
-					this,
-					delegateRegistry);
-			this.delegates =  new EolDelegates(this.delegateUri, this.adapters);
+			this.delegates =  new InvocationDelegates(
+					delegateUri,
+					new InvocationAdapters(
+							delegateUri, 
+							new EolDelegateContextFactory(),
+							domainRegistry,
+							this,
+							delegateRegistry));
 			
 		}
 
@@ -52,9 +52,7 @@ public class DelegateFactory implements EpsilonInvocationDelegate.Factory {
 		return this.findAdapter(operation).invocationDelegate();
 	}
 
-	private final InvocationUri delegateUri;
-	private final Adapters adapters;
-	private final EolDelegates delegates;
+	private final InvocationDelegates delegates;
 
 	private EpsilonDelegatesAdapter findAdapter(EOperation operation) {
 		EpsilonDelegatesAdapter adapter = (EpsilonDelegatesAdapter) EcoreUtil

@@ -18,7 +18,7 @@
    <extension
          point="org.eclipse.emf.ecore.setting_delegate">
       <factory
-            class="org.eclipse.epsilon.ecore.delegates.setting"
+            class="org.eclipse.epsilon.ecore.delegates.setting.DelegateFactory"
             uri="http://eclipse.dev/epsilon/ecore/EOL">
       </factory>
    </extension>

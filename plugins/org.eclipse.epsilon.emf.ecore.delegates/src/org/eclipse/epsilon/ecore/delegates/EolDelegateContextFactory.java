@@ -14,6 +14,8 @@ import org.eclipse.epsilon.ecore.delegates.DelegateContext.ContextFactory;
 import org.eclipse.epsilon.ecore.delegates.notify.DelegateResourceAdapter;
 
 /**
+ * A factory for creating EolOperationDelegateContext objects.
+ * 
  * @since 2.5
  */
 public class EolDelegateContextFactory implements ContextFactory {
@@ -23,7 +25,7 @@ public class EolDelegateContextFactory implements ContextFactory {
 		DelegateUri delegateURI,
 		EPackage ePackage,
 		DelegateResourceAdapter delegateRA) {
-		return new EolDelegateContext(delegateURI, ePackage, delegateRA);
+		return new EolOperationDelegateContext(delegateURI, ePackage, delegateRA);
 	}
 
 }

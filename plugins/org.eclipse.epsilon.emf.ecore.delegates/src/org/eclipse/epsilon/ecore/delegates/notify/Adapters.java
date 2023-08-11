@@ -46,9 +46,9 @@ public abstract class Adapters {
 		DelegateEPackageAdapter adapter = findAdapter(ePackage);
 		if (adapter == null) {
 			adapter = new DelegateEPackageAdapter();
-			this.delegateURI.addContext(adapter, this.createContext(ePackage));
 			ePackage.eAdapters().add(adapter);
 		}
+		this.delegateURI.addContext(adapter, () -> this.createContext(ePackage));
 		return adapter;
 	}
 	

@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.epsilon.ecore.delegates.AbstractDelegates;
 import org.eclipse.epsilon.ecore.delegates.Delegates;
-import org.eclipse.epsilon.ecore.delegates.EolDelegateContext;
+import org.eclipse.epsilon.ecore.delegates.EolOperationDelegateContext;
 import org.eclipse.epsilon.ecore.delegates.invocation.EpsilonInvocationDelegate.Factory;
 import org.eclipse.epsilon.ecore.delegates.notify.Adapters;
 
@@ -23,13 +23,13 @@ import org.eclipse.epsilon.ecore.delegates.notify.Adapters;
  * 
  * @since 2.5
  */
-public class EolDelegates 
+public class InvocationDelegates 
 		extends AbstractDelegates<EOperation, EpsilonInvocationDelegate, EpsilonInvocationDelegate.Factory> 	
 		implements Delegates<EOperation, EpsilonInvocationDelegate> {
 
-	public EolDelegates(InvocationUri delegateUri, Adapters adapters) {
+	public InvocationDelegates(InvocationUri delegateUri, Adapters adapters) {
 		super(delegateUri, adapters);
-		this.factory = new Smart();
+		this.factory = new FactoryImpl();
 	}
 	
 	@Override
@@ -47,14 +47,14 @@ public class EolDelegates
 		return null;
 	}
 
-	@Override
-	public EpsilonInvocationDelegate create(String uri, EOperation eOperation) {
-		Factory factory = this.getFactory(uri, eOperation);
-		if (factory != null) {
-			return factory.createInvocationDelegate(eOperation);
-		}
-		return null;
-	}
+//	@Override
+//	public EpsilonInvocationDelegate create(String uri, EOperation eOperation) {
+//		Factory factory = this.getFactory(uri, eOperation);
+//		if (factory != null) {
+//			return factory.createInvocationDelegate(eOperation);
+//		}
+//		return null;
+//	}
 
 	@Override
 	protected Factory getFactory(String delegateURI, EOperation eOperation) {
@@ -64,19 +64,20 @@ public class EolDelegates
 		return null;
 	}
 	
-	private class Smart implements Factory {
+	private class FactoryImpl implements Factory {
 
 		@Override
 		public EpsilonInvocationDelegate createInvocationDelegate(EOperation operation) {
 			return new EolInvocationDelegate(
 					operation,
-					delegateContext(getEPackage(operation)));
+					delegateContext(getEPackage(operation)),
+					(InvocationUri) delegateUri);
 		}
 	};
 	
 	private final Factory factory;
 	
-	private EolDelegateContext delegateContext(EPackage ePackage) {
-		return (EolDelegateContext) this.delegateUri.context(this.adapters.getAdapter(ePackage));
+	private EolOperationDelegateContext delegateContext(EPackage ePackage) {
+		return (EolOperationDelegateContext) this.delegateUri.context(this.adapters.getAdapter(ePackage));
 	}
 }

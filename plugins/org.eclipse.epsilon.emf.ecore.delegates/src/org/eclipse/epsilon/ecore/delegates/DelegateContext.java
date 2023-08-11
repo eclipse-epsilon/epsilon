@@ -16,6 +16,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.epsilon.ecore.delegates.notify.DelegateResourceAdapter;
 
 /**
+ * Provide caching and functionality for parsing Epsilon code embedded in the ECore model.
+ * 
  * @since 2.5
  */
 public interface DelegateContext {
@@ -57,7 +59,7 @@ public interface DelegateContext {
 	}
 
 	/**
-	 * Dispose of this delegate domain releasing any resources cached to support
+	 * Dispose of this delegate context releasing any resources cached to support
 	 * delegated behaviour for the associated package.
 	 */
 	void dispose();

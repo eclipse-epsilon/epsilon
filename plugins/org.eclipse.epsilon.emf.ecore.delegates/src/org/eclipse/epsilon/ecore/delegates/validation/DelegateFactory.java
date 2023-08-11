@@ -30,8 +30,8 @@ import org.eclipse.epsilon.ecore.delegates.notify.EvlAdapters;
 import org.eclipse.epsilon.ecore.delegates.validation.EpsilonValidationDelegate.Factory;
 
 /**
- * Delegates validation to the {@link EpsilonValidationDelegate} associated with the respective
- * EClassifier
+ * Delegates are created using the {@link EpsilonDelegatesAdapter} that are cached in the {@link EClassifier}
+ * adapters.
  * 
  * @since 2.5
  */
@@ -57,7 +57,7 @@ public class DelegateFactory
 				delegateRegistry,
 				this);
 		this.labelProvider = new ExeedLabelProvider();
-		this.delegates = new EvlDelegates(this.delegateUri, this.delegateRegistry, this.adapters);
+		this.delegates = new ValidationDelegates(this.delegateUri, this.delegateRegistry, this.adapters);
 	}
 	
 	@Override
@@ -99,7 +99,7 @@ public class DelegateFactory
 	private final Adapters adapters;
 	private final DelegateLabelProvider labelProvider;
 	private final Factory.Registry delegateRegistry;
-	private final EvlDelegates delegates;
+	private final ValidationDelegates delegates;
 	
 	private EvlDelegateContext delegateContext(EPackage ePackage) {
 		return (EvlDelegateContext) this.delegateUri.context(this.adapters.getAdapter(ePackage));

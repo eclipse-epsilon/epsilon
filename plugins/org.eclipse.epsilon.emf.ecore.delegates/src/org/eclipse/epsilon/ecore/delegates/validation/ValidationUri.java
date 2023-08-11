@@ -11,6 +11,11 @@ package org.eclipse.epsilon.ecore.delegates.validation;
 
 import org.eclipse.epsilon.ecore.delegates.DelegateUri;
 
+/**
+ * URI for Validation delegates.
+ * 
+ * @since 2.5
+ */
 public class ValidationUri extends DelegateUri {
 
 	

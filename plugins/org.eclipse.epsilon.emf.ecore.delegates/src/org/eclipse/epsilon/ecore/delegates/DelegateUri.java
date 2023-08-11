@@ -10,12 +10,13 @@
 package org.eclipse.epsilon.ecore.delegates;
 
 import java.util.Objects;
+import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.epsilon.ecore.delegates.notify.DelegateEPackageAdapter;
 
 /**
- * A Delegate URI is used for specific delegates
+ * A URI identifying the type of invocation delegate.
  * 
  * @since 2.5
  */
@@ -38,8 +39,8 @@ public abstract class DelegateUri {
 		 return registry.getFactory(this.uri);
 	}
 	
-	public void addContext(DelegateEPackageAdapter adapter,  DelegateContext contex) {
-		adapter.addDelegate(this.uri, contex);
+	public void addContext(DelegateEPackageAdapter adapter, Supplier<DelegateContext> factory) {
+		adapter.addDelegate(this.uri, uri -> factory.get());
 	}
 	
 	public boolean is(String delegateURI) {

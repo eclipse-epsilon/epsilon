@@ -11,6 +11,7 @@ package org.eclipse.epsilon.ecore.delegates.notify;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -54,8 +55,8 @@ public class DelegateEPackageAdapter extends AdapterImpl {
 		return this.contexts.get(uri);
 	}
 	
-	public void addDelegate(String uri, DelegateContext context) {
-		this.contexts.put(uri, context);
+	public void addDelegate(String uri, Function<String, DelegateContext> factory) {
+		this.contexts.computeIfAbsent(uri, factory);
 	}
 	
 	

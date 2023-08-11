@@ -9,19 +9,24 @@
  ******************************************************************************/
 package org.eclipse.epsilon.ecore.delegates.notify;
 
-import org.eclipse.emf.ecore.EOperation.Internal.InvocationDelegate;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.epsilon.ecore.delegates.DelegateContext.ContextFactory;
+import org.eclipse.epsilon.ecore.delegates.invocation.EpsilonInvocationDelegate;
 import org.eclipse.epsilon.ecore.delegates.invocation.InvocationUri;
 
-public class EolAdapters extends Adapters {
+/**
+ * An {@link Adapters} implementation for Eol Invocation
+ * 
+ * @since 2.5
+ */
+public class InvocationAdapters extends Adapters {
 
-	public EolAdapters(
+	public InvocationAdapters(
 		InvocationUri invocationUri,
 		ContextFactory defaultCtxFctry,
 		ContextFactory.Registry defaultCtxFctryRegistry,
-		InvocationDelegate.Factory delegateFactory,
-		InvocationDelegate.Factory.Registry delegateRegistry) {
+		EpsilonInvocationDelegate.Factory delegateFactory,
+		EpsilonInvocationDelegate.Factory.Registry delegateRegistry) {
 		super(invocationUri, defaultCtxFctry, defaultCtxFctryRegistry);
 		this.delegateFactory = delegateFactory;
 		this.delegateRegistry = delegateRegistry;
@@ -36,13 +41,13 @@ public class EolAdapters extends Adapters {
 			((InvocationUri) this.delegateURI).register(
 					this.delegateRegistry,
 					this.delegateFactory);
-			adapter.putRegistry(InvocationDelegate.Factory.Registry.class, this.delegateRegistry);
+			adapter.putRegistry(EpsilonInvocationDelegate.Factory.Registry.class, this.delegateRegistry);
 			resourceSet.eAdapters().add(adapter);
 		}
 		return adapter;
 	}
 	
-	private final InvocationDelegate.Factory.Registry delegateRegistry;
-	private final InvocationDelegate.Factory delegateFactory;
+	private final EpsilonInvocationDelegate.Factory.Registry delegateRegistry;
+	private final EpsilonInvocationDelegate.Factory delegateFactory;
 
 }

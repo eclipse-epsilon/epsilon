@@ -23,11 +23,11 @@ import org.eclipse.epsilon.ecore.delegates.validation.EpsilonValidationDelegate.
  * 
  * @since 2.5
  */
-public class EvlDelegates
+public class ValidationDelegates
 		extends AbstractDelegates<EClassifier, EpsilonValidationDelegate, Factory> 	
 		implements Delegates<EClassifier, EpsilonValidationDelegate> {
 
-	public EvlDelegates(
+	public ValidationDelegates(
 		DelegateUri delegateUri,
 		EpsilonValidationDelegate.Factory.Registry defaultRegistry,
 		Adapters adapters) {
@@ -51,15 +51,15 @@ public class EvlDelegates
 	}
 	
 
-	@Override
-	public EpsilonValidationDelegate create(String uri, EClassifier eClassifier) {
-		Factory factory = this.getFactory(uri, eClassifier);
-		if (factory != null) {
-			return factory.createValidationDelegate(eClassifier);
-		}
-		return null;
-	}
-	
+//	@Override
+//	public EpsilonValidationDelegate create(String uri, EClassifier eClassifier) {
+//		Factory factory = this.getFactory(uri, eClassifier);
+//		if (factory != null) {
+//			return factory.createValidationDelegate(eClassifier);
+//		}
+//		return null;
+//	}
+//	
 	@Override
 	public Factory getFactory(String delegateURI, EClassifier eClassifier) {
 		EValidator.ValidationDelegate.Registry registry = this.adapters.getRegistry(

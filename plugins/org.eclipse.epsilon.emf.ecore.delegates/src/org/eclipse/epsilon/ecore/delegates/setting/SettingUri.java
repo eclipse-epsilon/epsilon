@@ -7,32 +7,33 @@
  * Contributors:
  *     Horacio Hoyos Rodriguez - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.ecore.delegates.invocation;
+package org.eclipse.epsilon.ecore.delegates.setting;
 
-import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.ecore.delegates.DelegateUri;
 
 /**
+ * URI for Setting delegates.
  * 
  * @since 2.5
  */
-public class InvocationUri extends DelegateUri {
+public class SettingUri extends DelegateUri {
 
-	public InvocationUri() {
+	public SettingUri() {
 		super("http://eclipse.dev/epsilon/ecore/EOL");
 	}
-	
+
 	public void register(
-		EpsilonInvocationDelegate.Factory.Registry delegateRegistry, 
-		EpsilonInvocationDelegate.Factory factory) {
+		EpsilonSettingDelegate.Factory.Registry delegateRegistry,
+		EpsilonSettingDelegate.Factory factory) {
 		delegateRegistry.put(this.uri, factory);
 	}
 
-	public String getEannotionValue(EOperation eOperation, String key) {
-		String body = EcoreUtil.getAnnotation(eOperation, this.uri, key);
+	public String getEannotionValue(EModelElement element, String key) {
+		String body = EcoreUtil.getAnnotation(element, this.uri, key);
 		if (body == null) {
-			throw new IllegalArgumentException("No 'body' annotation found in operation");
+			throw new IllegalArgumentException("No " + key + " for uri " + this.uri + "found in element");
 		}
 		return body;
 	}

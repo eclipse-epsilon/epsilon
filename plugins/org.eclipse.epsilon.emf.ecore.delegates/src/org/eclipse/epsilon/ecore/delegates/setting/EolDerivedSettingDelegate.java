@@ -7,43 +7,43 @@
  * Contributors:
  *     Horacio Hoyos Rodriguez - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.ecore.delegates.invocation;
+package org.eclipse.epsilon.ecore.delegates.setting;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.BasicSettingDelegate;
 import org.eclipse.epsilon.ecore.delegates.EolOperationDelegateContext;
 import org.eclipse.epsilon.ecore.delegates.execution.EolOperation;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 
 /**
- * An {@link EpsilonInvocationDelegate} that uses an Eol Operation for execution
+ * A SettingDelegate for derived features.
+ * 
+ * Whenever a feature is described as derived, we assume it is also volatile, transient, and 
+ * non-changeable. 
  * 
  * @since 2.5
  */
-public class EolInvocationDelegate implements EpsilonInvocationDelegate {
-	
-	public EolInvocationDelegate(
-		EOperation eOperation, 
+public class EolDerivedSettingDelegate extends BasicSettingDelegate.Stateless implements EpsilonSettingDelegate  {
+
+	public EolDerivedSettingDelegate(
+		EStructuralFeature eStructuralFeature,
 		EolOperationDelegateContext delegateContext,
-		InvocationUri uri) {
-		super();
-		this.eOperation = eOperation;
+		SettingUri uri) {
+		super(eStructuralFeature);
 		this.delegateContext = delegateContext;
 		this.uri = uri;
 	}
-
+	
 	@Override
-	public Object dynamicInvoke(InternalEObject target, EList<?> arguments) throws InvocationTargetException {
-		if (this.errors.contains(target)) {
+	protected Object get(InternalEObject owner, boolean resolve, boolean coreType) {
+		if (this.errors.contains(owner)) {
 			// No need to throw the same exception multiple times.
 			return false;
 		}
@@ -51,17 +51,22 @@ public class EolInvocationDelegate implements EpsilonInvocationDelegate {
 			this.program = (EolOperation) this.delegateContext.parse(
 					toEolOperation(this.expression()));
 		}
-		this.program.invokeWith(arguments);
 		try {
 			return this.program.execute(
-					target,
-					this.models.computeIfAbsent(this.eOperation.eResource(), r -> new InMemoryEmfModel(r)));
+					owner,
+					this.models.computeIfAbsent(this.eStructuralFeature.eResource(), r -> new InMemoryEmfModel(r)));
 		} catch (Throwable e) {
-			this.errors.add(target);
-			throw new InvocationTargetException(e);
+			this.errors.add(owner);
+			throw new IllegalArgumentException("Error evaluating derived feature " 
+					+ this.eStructuralFeature.getName() + " on " + owner, e);
 		}
 	}
-	
+
+	@Override
+	protected boolean isSet(InternalEObject owner) {
+		return false;
+	}
+
 	@Override
 	public void reset() {
 		this.program = null;
@@ -71,28 +76,24 @@ public class EolInvocationDelegate implements EpsilonInvocationDelegate {
 
 	private final Map<Resource, InMemoryEmfModel> models = new HashMap<>();
 	private final Set<InternalEObject> errors = new HashSet<>();
-	private final EOperation eOperation;
 	private final EolOperationDelegateContext delegateContext;
-	private final InvocationUri uri;
 	private EolOperation program;
+	private final SettingUri uri;
 	
 	private String toEolOperation(String body) {
 		StringBuilder result = new StringBuilder();
 		result.append("operation ");
-		result.append(this.eOperation.getName());
+		result.append(this.eStructuralFeature.getName());
 		result.append("(");
-		result.append(this.eOperation.getEParameters()
-				.stream()
-				.map(p -> p.getName())
-			.collect(Collectors.joining(",")));
 		result.append(")");
 		result.append("{");
 		result.append(body);
 		result.append("}");
 		return result.toString();
 	}
-
+	
 	private String expression() {
-		return this.uri.getEannotionValue(this.eOperation, "body");
+		return this.uri.getEannotionValue(this.eStructuralFeature, "derivation");
 	}
+
 }

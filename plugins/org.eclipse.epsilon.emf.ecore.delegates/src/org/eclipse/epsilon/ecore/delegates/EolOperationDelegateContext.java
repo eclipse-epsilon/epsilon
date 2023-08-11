@@ -14,31 +14,29 @@ import java.util.List;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.TokenStream;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.ecore.delegates.execution.EolOperation;
-import org.eclipse.epsilon.ecore.delegates.invocation.InvocationUri;
 import org.eclipse.epsilon.ecore.delegates.notify.DelegateResourceAdapter;
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.parse.EolLexer;
 import org.eclipse.epsilon.eol.parse.EolParser;
 
 /**
- * The EOL Delegate context for invocation delegation
+ * A context for EOL operations.
  * 
  * @since 2.5
  */
-public class EolDelegateContext extends EpsilonDelegateContext<EolModule, Object> {
+public class EolOperationDelegateContext extends EpsilonDelegateContext<EolModule, Object> implements DelegateContext {
 
-	public EolDelegateContext(
-		DelegateUri delegateUri,
+	public EolOperationDelegateContext(
+		DelegateUri delegateURI,
 		EPackage ePackage,
 		DelegateResourceAdapter delegateRA) {
-		super(delegateUri, ePackage, delegateRA, new EolModule(), "eolModule");
+		super(delegateURI, ePackage, delegateRA, new EolModule(), "eolModule");
 	}
 
 	@Override
@@ -50,7 +48,6 @@ public class EolDelegateContext extends EpsilonDelegateContext<EolModule, Object
 	protected EpsilonParser createParser(TokenStream stream) {
 		return new EolParser(stream);
 	}
-	
 
 	@Override
 	protected EolLexer createLexer(ANTLRInputStream inputStream) throws IOException {
@@ -81,10 +78,6 @@ public class EolDelegateContext extends EpsilonDelegateContext<EolModule, Object
 			return  program().error(new IllegalStateException("Error parsing EOL, operation is malformed."));
 		};
 		return new EolOperation(this.module.getDeclaredOperations().get(0), parseProblems, this.module.getContext());
-	}
-	
-	public String body(EOperation eOperation) {
-		return ((InvocationUri) this.uri).getEannotionValue(eOperation, "body");
 	}
 
 }

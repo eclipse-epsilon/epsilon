@@ -34,7 +34,6 @@ public interface Program<T> {
 	 */
 	T execute(EObject eObject, IModel model) throws Throwable;
 
-
 	Program<T> error(IllegalStateException ex);
 
 	Program<T> error(Throwable ex, Token next);
