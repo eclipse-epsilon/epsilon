@@ -13,24 +13,25 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.epsilon.ecore.delegates.AbstractDelegates;
+import org.eclipse.epsilon.ecore.delegates.DelegateUri;
 import org.eclipse.epsilon.ecore.delegates.Delegates;
 import org.eclipse.epsilon.ecore.delegates.notify.Adapters;
 import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate.Factory;
-import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate.Factory.Registry;
 
 /**
- * Delegate factory
+ * Handle {@link EvlDelegate} creation
  * 
  * @since 2.5
  */
 public class EvlDelegates
 		extends AbstractDelegates<EClassifier, EvlDelegate, Factory> 	
-		implements Delegates<EClassifier, EvlDelegate>{
+		implements Delegates<EClassifier, EvlDelegate> {
 
 	public EvlDelegates(
-		Registry defaultRegistry,
+		DelegateUri delegateUri,
+		EvlDelegate.Factory.Registry defaultRegistry,
 		Adapters adapters) {
-		super(adapters);
+		super(delegateUri, adapters);
 		this.defaultRegistry = defaultRegistry;
 	}
 
@@ -58,7 +59,7 @@ public class EvlDelegates
 		}
 		return null;
 	}
-
+	
 	@Override
 	public Factory getFactory(String delegateURI, EClassifier eClassifier) {
 		EValidator.ValidationDelegate.Registry registry = this.adapters.getRegistry(
@@ -68,6 +69,6 @@ public class EvlDelegates
 	    return (Factory) registry.getValidationDelegate(delegateURI);
 	}
 
-	private final Registry defaultRegistry;
+	private final EvlDelegate.Factory.Registry defaultRegistry;
 	
 }

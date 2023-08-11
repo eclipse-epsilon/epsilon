@@ -14,7 +14,6 @@ package org.eclipse.epsilon.ecore.delegates;
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.epsilon.ecore.delegates.notify.Adapters;
-import org.eclipse.epsilon.ecore.delegates.notify.DelegateEPackageAdapter;
 	
 /**
  * A base Delegates implementation 
@@ -27,18 +26,15 @@ import org.eclipse.epsilon.ecore.delegates.notify.DelegateEPackageAdapter;
  */
 public abstract class AbstractDelegates<E extends EModelElement, D, F> implements Delegates<E, D> {
 
-	public AbstractDelegates(Adapters adapters) {
+	public AbstractDelegates(DelegateUri delegateUri, Adapters adapters) {
 		super();
+		this.delegateUri = delegateUri;
 		this.adapters = adapters;
 	}
 
 	protected final F getFactory(E eObject) {
-		EPackage ePackage = getEPackage(eObject);
-		DelegateEPackageAdapter adapter = this.adapters.getAdapter(ePackage);
-		DelegateContext delegateDomain = adapter.getDelegateDomain();
-		String uri = delegateDomain.getURI();
-		if (eObject.getEAnnotation(uri) != null) {
-			return getFactory(uri, eObject);
+		if (this.adapters.hasAdapter(eObject)) {
+			return getFactory(this.delegateUri.toString(), eObject);
 		}
 		return null;
 	}
@@ -47,6 +43,7 @@ public abstract class AbstractDelegates<E extends EModelElement, D, F> implement
 
 	protected abstract F getFactory(String uri, E eObject);
 	
+	protected final DelegateUri delegateUri;
 	protected final Adapters adapters;
 
 }

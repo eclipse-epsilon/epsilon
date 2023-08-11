@@ -8,5 +8,12 @@
             uri="http://eclipse.dev/epsilon/ecore/EVL">
       </delegate>
    </extension>
+   <extension
+         point="org.eclipse.emf.ecore.invocation_delegate">
+      <factory
+            class="org.eclipse.epsilon.ecore.delegates.invocation.EolDelegateFactory"
+            uri="http://eclipse.dev/epsilon/ecore/EOL">
+      </factory>
+   </extension>
 
 </plugin>

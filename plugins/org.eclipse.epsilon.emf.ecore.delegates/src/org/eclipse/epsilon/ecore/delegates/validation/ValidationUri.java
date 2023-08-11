@@ -7,23 +7,18 @@
  * Contributors:
  *     Horacio Hoyos Rodriguez - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.ecore.delegates.invocation;
+package org.eclipse.epsilon.ecore.delegates.validation;
 
-import java.util.List;
+import org.eclipse.epsilon.ecore.delegates.DelegateUri;
 
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.epsilon.ecore.delegates.DelegateContext;
+public class ValidationUri extends DelegateUri {
 
-/**
- * TODO Add implementation
- * 
- * @since 2.5
- */
-public class InvocationBehavior {
-
-	public List<DelegateContext> getDelegateDomains(EOperation eOperation) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public ValidationUri() {
+		super("http://eclipse.dev/epsilon/ecore/EVL");
 	}
 
+	public void register(EvlDelegate.Factory.Registry delegateRegistry, EvlDelegate.Factory factory) {
+		delegateRegistry.put(this.uri, factory);
+	}
 }

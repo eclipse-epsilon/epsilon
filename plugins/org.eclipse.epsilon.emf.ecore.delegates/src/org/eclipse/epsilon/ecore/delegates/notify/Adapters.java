@@ -16,41 +16,27 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.ecore.delegates.DelegateContext;
 import org.eclipse.epsilon.ecore.delegates.DelegateContext.ContextFactory;
-import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegateFactory;
-import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate;
-import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate.Factory;
+import org.eclipse.epsilon.ecore.delegates.DelegateUri;
 
 /**
  * Manage adapters used by the Epsilon ECore delegates
  * 
  * @since 2.5
  */
-public class Adapters {
-	
+public abstract class Adapters {
+
 	public Adapters(
-		String delegateURI,
-		ContextFactory defaultFactory, 
-		ContextFactory.Registry defaultRegistry,
-		Factory.Registry delegateRegistry) {
+		DelegateUri delegateUri,
+		ContextFactory defaultCtxFctry, 
+		ContextFactory.Registry defaultCtxFctryRegistry) {
 		super();
-		this.delegateURI = delegateURI;
-		this.defaultFactory = defaultFactory;
+		this.delegateURI = delegateUri;
+		this.defaultCtxFctry = defaultCtxFctry;
+		this.defaultCtxFctryRegistry = defaultCtxFctryRegistry;
 		this.dlgtRsrcAdptr = new DelegateResourceAdapter(this);
-		this.defaultRegistry = defaultRegistry;
-		this.delegateRegistry = delegateRegistry;
 	}
 	
-	public DelegateResourceSetAdapter getAdapter(ResourceSet resourceSet) {
-		DelegateResourceSetAdapter adapter = findAdapter(resourceSet);
-		if (adapter == null) {
-			adapter = new DelegateResourceSetAdapter();
-			this.delegateRegistry.put(this.delegateURI, new EvlDelegateFactory(this.delegateURI, this.defaultRegistry, this.delegateRegistry));
-			adapter.putRegistry(EvlDelegate.Factory.Registry.class, this.delegateRegistry);
-			// TODO Add invocation and setting delegates
-			resourceSet.eAdapters().add(adapter);
-		}
-		return adapter;
-	}
+	public abstract DelegateResourceSetAdapter getAdapter(ResourceSet resourceSet);
 
 	/**
 	 *	Return the DelegateEPackageAdapter for ePackage, creating
@@ -59,7 +45,8 @@ public class Adapters {
 	public DelegateEPackageAdapter getAdapter(EPackage ePackage) {
 		DelegateEPackageAdapter adapter = findAdapter(ePackage);
 		if (adapter == null) {
-			adapter = new DelegateEPackageAdapter(createDomain(ePackage));
+			adapter = new DelegateEPackageAdapter();
+			this.delegateURI.addContext(adapter, this.createContext(ePackage));
 			ePackage.eAdapters().add(adapter);
 		}
 		return adapter;
@@ -94,35 +81,37 @@ public class Adapters {
 		return registry != null ? registry : defaultRegistry;
 	}
 	
+	public boolean hasAdapter(EModelElement eObject) {
+		return this.delegateURI.isUsedBy(eObject);
+	}
 	
-	/**
-	 *	Return the DelegateEPackageAdapter for ePackage, if there is one, or null if none.
-	 *
-	 * @since 3.1
-	 */
+
+	protected final DelegateUri delegateURI;
+	
+	protected DelegateResourceSetAdapter findAdapter(ResourceSet resourceSet) {
+		return (DelegateResourceSetAdapter) EcoreUtil.getAdapter(resourceSet.eAdapters(), DelegateResourceSetAdapter.class);
+	}
+	
 	DelegateEPackageAdapter findAdapter(EPackage ePackage) {
 		return (DelegateEPackageAdapter) EcoreUtil.getAdapter(ePackage.eAdapters(), DelegateEPackageAdapter.class);
 	}
-	
-	private DelegateResourceSetAdapter findAdapter(ResourceSet resourceSet) {
-		return (DelegateResourceSetAdapter) EcoreUtil.getAdapter(resourceSet.eAdapters(), DelegateResourceSetAdapter.class);
-	}
 
-	private final String delegateURI;
-	private final ContextFactory defaultFactory;
+	private final ContextFactory defaultCtxFctry;
 	private final DelegateResourceAdapter dlgtRsrcAdptr;
-	private final ContextFactory.Registry defaultRegistry;
-	private final Factory.Registry delegateRegistry;
+	private final ContextFactory.Registry defaultCtxFctryRegistry;
 	
-	private DelegateContext createDomain(EPackage ePackage) {
+	
+	private DelegateContext createContext(EPackage ePackage) {
 		DelegateContext.ContextFactory.Registry registry = this.getRegistry(
 				ePackage,
 				DelegateContext.ContextFactory.Registry.class,
-				this.defaultRegistry);
-		DelegateContext.ContextFactory factory = registry.getFactory(this.delegateURI);
+				this.defaultCtxFctryRegistry);
+		DelegateContext.ContextFactory factory = this.delegateURI.factory(registry);
 		if (factory == null) {
-			factory = this.defaultFactory;
+			factory = this.defaultCtxFctry;
 		}
-		return factory.createDelegateDomain(this.delegateURI, ePackage, this.dlgtRsrcAdptr);
+		return factory.create(this.delegateURI, ePackage, this.dlgtRsrcAdptr);
 	}
+	
+	
 }

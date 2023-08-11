@@ -22,7 +22,8 @@ import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EValidator.SubstitutionLabelProvider;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.epsilon.ecore.delegates.DelegateLabelProvider;
-import org.eclipse.epsilon.ecore.delegates.execution.EvlProgram;
+import org.eclipse.epsilon.ecore.delegates.EvlDelegateContext;
+import org.eclipse.epsilon.ecore.delegates.ExeedLabelProvider;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 
 /**
@@ -31,9 +32,9 @@ import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
  * 
  * @since 2.5
  */
-public class BasicEvlDelegate implements EvlDelegate {
+public class EcoreEvlDelegate implements EvlDelegate {
 
-	public BasicEvlDelegate(
+	public EcoreEvlDelegate(
 		EvlDelegateContext delegateContext,
 		DelegateLabelProvider labelProvider) {
 		this.delegateContext = delegateContext;
@@ -62,33 +63,20 @@ public class BasicEvlDelegate implements EvlDelegate {
 			// No need to throw the same exception multiple times.
 			return false;
 		}
-		var program = this.programs.computeIfAbsent(
+		EvlConstraint program = this.programs.computeIfAbsent(
 				constraint,
-				c -> this.delegateContext.parse(toEvlContext(expression, eObject.eClass().getName(), c)));
+				c -> (EvlConstraint) this.delegateContext.parse(
+						toEvlContext(expression, eObject.eClass().getName(), c)));
 		addLabelProvider(context);
 		try {
 			var result = program.execute(
 					eObject,
 					this.models.computeIfAbsent(eObject.eResource(), r -> new InMemoryEmfModel(r)));
-			if (result.isPresent()) {
-				context.put("EVL_VALIDATION_MSG", result.get().getMessage());
-				return false;
-			}	
-			return true;
+			return result.isEmpty();
 		} catch (Throwable e) {
 			// Cache the execution exception (most probably due to sytax errors
 			this.errors.add(target);
 			throw new IllegalStateException(e);
-		}
-	}
-
-	private void addLabelProvider(Map<Object, Object> context) {
-		SubstitutionLabelProvider delegate = null;
-		if (context.containsKey(SubstitutionLabelProvider.class)) {
-			delegate = (SubstitutionLabelProvider) context.get(SubstitutionLabelProvider.class);
-			context.put(SubstitutionLabelProvider.class, this.labelProvider.delegate(delegate));
-		} else {
-			context.put(SubstitutionLabelProvider.class, this.labelProvider);
 		}
 	}
 
@@ -97,6 +85,13 @@ public class BasicEvlDelegate implements EvlDelegate {
 			String expression) {
 		// TODO Complete
 		return true;
+	}
+	
+	@Override
+	public void reset() {
+		this.errors.clear();
+		this.models.clear();
+		this.programs.clear();		
 	}
 	
 	private class Target {
@@ -131,13 +126,13 @@ public class BasicEvlDelegate implements EvlDelegate {
 
 		private final String constraint;
 		private final EObject eObject;
-		private BasicEvlDelegate getEnclosingInstance() {
-			return BasicEvlDelegate.this;
+		private EcoreEvlDelegate getEnclosingInstance() {
+			return EcoreEvlDelegate.this;
 		}
 	}
 	
 	private final Map<Resource, InMemoryEmfModel> models = new HashMap<>();
-	private final Map<String, EvlProgram> programs = new HashMap<>();
+	private final Map<String, EvlConstraint> programs = new HashMap<>();
 	private final Set<Target> errors = new HashSet<>();
 	private final EvlDelegateContext delegateContext;
 	private final DelegateLabelProvider labelProvider;
@@ -155,6 +150,19 @@ public class BasicEvlDelegate implements EvlDelegate {
 		result.append("}");
 		result.append("}");
 		return result.toString();
+	}
+	
+	private void addLabelProvider(Map<Object, Object> context) {
+		SubstitutionLabelProvider delegate = null;
+		if (context.containsKey(SubstitutionLabelProvider.class)) {
+			delegate = (SubstitutionLabelProvider) context.get(SubstitutionLabelProvider.class);
+			if (delegate instanceof ExeedLabelProvider) {
+				return;
+			}
+			context.put(SubstitutionLabelProvider.class, this.labelProvider.delegate(delegate));
+		} else {
+			context.put(SubstitutionLabelProvider.class, this.labelProvider);
+		}
 	}
 
 }

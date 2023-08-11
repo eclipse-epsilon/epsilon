@@ -22,8 +22,8 @@ import org.eclipse.emf.ecore.EModelElement;
  */
 public interface Delegates<E extends EModelElement, D> {
 
-	D create(E eClassifier);
+	D create(E element);
 
-	D create(String uri, E eClassifier);
+	D create(String uri, E element);
 
 }

@@ -7,10 +7,9 @@
  * Contributors:
  *     Horacio Hoyos Rodriguez - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.ecore.delegates.validation;
+package org.eclipse.epsilon.ecore.delegates;
 
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.epsilon.ecore.delegates.DelegateContext;
 import org.eclipse.epsilon.ecore.delegates.DelegateContext.ContextFactory;
 import org.eclipse.epsilon.ecore.delegates.notify.DelegateResourceAdapter;
 
@@ -30,8 +29,8 @@ public class EvlDelegateContextFactory implements ContextFactory {
 	 * @return the delegate context
 	 */
 	@Override
-	public DelegateContext createDelegateDomain(
-		String delegateURI, 
+	public DelegateContext create(
+		DelegateUri delegateURI, 
 		EPackage ePackage, 
 		DelegateResourceAdapter delegateRA) {
 		return new EvlDelegateContext(delegateURI, ePackage, delegateRA);

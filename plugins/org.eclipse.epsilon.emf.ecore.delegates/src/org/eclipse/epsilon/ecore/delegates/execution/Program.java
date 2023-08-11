@@ -9,6 +9,10 @@
  ******************************************************************************/
 package org.eclipse.epsilon.ecore.delegates.execution;
 
+import java.io.IOException;
+
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.Token;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.epsilon.eol.models.IModel;
 
@@ -16,6 +20,7 @@ import org.eclipse.epsilon.eol.models.IModel;
  * A wrapper for Epsilon scripts that may have parsing errors.
  *
  * @param <T> the type of execution results
+ * @since 2.5
  */
 public interface Program<T> {
 	
@@ -27,5 +32,14 @@ public interface Program<T> {
 	 * @return the t
 	 * @throws Throwable the throwable
 	 */
-	public T execute(EObject eObject, IModel model) throws Throwable;
+	T execute(EObject eObject, IModel model) throws Throwable;
+
+
+	Program<T> error(IllegalStateException ex);
+
+	Program<T> error(Throwable ex, Token next);
+
+	Program<T> error(RecognitionException ex);
+
+	Program<T> error(IOException ex);
 }

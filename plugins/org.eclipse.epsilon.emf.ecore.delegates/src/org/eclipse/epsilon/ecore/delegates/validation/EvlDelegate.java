@@ -37,7 +37,7 @@ public interface EvlDelegate extends EValidator.ValidationDelegate {
 		 */
 		interface Descriptor extends EValidator.ValidationDelegate.Descriptor {
 
-			EvlDelegate.Factory getValidationDelegate();
+			Factory getValidationDelegate();
 		}
 
 		/**
@@ -45,21 +45,21 @@ public interface EvlDelegate extends EValidator.ValidationDelegate {
 		 */
 		interface Registry extends EValidator.ValidationDelegate.Registry {
 
-			EvlDelegate.Factory getValidationDelegate(String uri);
+			Factory getValidationDelegate(String uri);
 
-			class Delegate extends ValidationDelegateRegistryImpl implements Factory.Registry {
+			class Smart extends ValidationDelegateRegistryImpl implements Factory.Registry {
 
 				private static final long serialVersionUID = 1L;
 
 				public EvlDelegate.Factory getValidationDelegate(String uri) {
-					return (EvlDelegate.Factory) get(uri);
+					return (Factory) get(uri);
 				}
 			}
 		}
 
 		EvlDelegate createValidationDelegate(EClassifier eClassifier);
 
-		String getURI();
-
 	}
+	
+	void reset();
 }

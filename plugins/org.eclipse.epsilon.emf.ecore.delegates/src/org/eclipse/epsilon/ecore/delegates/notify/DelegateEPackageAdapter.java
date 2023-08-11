@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.epsilon.ecore.delegates.notify;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EPackage;
@@ -16,15 +19,19 @@ import org.eclipse.epsilon.ecore.delegates.DelegateContext;
 
 /**
  * DelegateEPackageAdapter extends an EPackage to cache its DelegateDomain
- * that supervises installation of EVL annotations in ECore metamodel.
+ * that supervises installation of Epsilon annotations in ECore metamodel.
  * 
  * @since 2.5
  */
 public class DelegateEPackageAdapter extends AdapterImpl {
 	
-	public DelegateEPackageAdapter(DelegateContext delegateDomain) {
+	public DelegateEPackageAdapter() {
+		this(new HashMap<>());
+	}
+	
+	public DelegateEPackageAdapter(Map<String, DelegateContext> contexts) {
 		super();
-		this.delegateDomain = delegateDomain;
+		this.contexts = contexts;
 	}
 
 	@Override
@@ -43,22 +50,25 @@ public class DelegateEPackageAdapter extends AdapterImpl {
 		super.setTarget(resourceSet);
 	}
 
-	/**
-	 * Return the DelegateDomain for this package and for delegateURI, returning null it does not exist. 
-	 */
-	public DelegateContext getDelegateDomain() {
-		return delegateDomain;
+	public DelegateContext delegateContext(String uri) {
+		return this.contexts.get(uri);
 	}
-
-
+	
+	public void addDelegate(String uri, DelegateContext context) {
+		this.contexts.put(uri, context);
+	}
+	
+	
 	public void unloadDelegates() {
-		this.delegateDomain.dispose();
+		if (contexts != null) {
+			this.contexts.values().forEach(DelegateContext::dispose);			
+		}
 		EPackage ePackage = getTarget();
 		if (ePackage != null) {
 			ePackage.eAdapters().remove(this);
 		}
 	}
 
-	private final DelegateContext delegateDomain;
+	private final Map<String, DelegateContext> contexts;
 
 }

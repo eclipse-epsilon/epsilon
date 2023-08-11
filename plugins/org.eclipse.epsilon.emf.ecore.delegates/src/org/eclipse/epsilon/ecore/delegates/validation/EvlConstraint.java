@@ -7,7 +7,7 @@
  * Contributors:
  *     Horacio Hoyos Rodriguez - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.ecore.delegates.execution;
+package org.eclipse.epsilon.ecore.delegates.validation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
+import org.eclipse.epsilon.ecore.delegates.execution.Program;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.evl.dom.Constraint;
 import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
@@ -27,48 +28,55 @@ import org.eclipse.epsilon.evl.execute.context.IEvlContext;
 import org.eclipse.epsilon.eol.execute.ExecutorFactory;
 
 /**
- * An Evl Program
+ * The {@link Program} implementation for Evl Constriants
+ * 
+ * @since 2.5
  */
-public class EvlProgram implements Program<Optional<UnsatisfiedConstraint>> {
+public class EvlConstraint implements Program<Optional<UnsatisfiedConstraint>> {
 
-	public EvlProgram(Throwable ex, List<ParseProblem> problems) {
+	public EvlConstraint(Throwable ex, List<ParseProblem> problems) {
 		this(null, ex, problems, null);
 	}
 
-	public EvlProgram(Constraint program, List<ParseProblem> problems, IEvlContext context) {
+	public EvlConstraint(Constraint program, List<ParseProblem> problems, IEvlContext context) {
 		this(program, null, problems, context);
 	}
 
-	public EvlProgram() {
+	public EvlConstraint() {
 		this(null, null, Collections.emptyList(), null);
 	}
 
-	public EvlProgram error(IOException ex) {
-		return new EvlProgram(ex, Collections.singletonList(
+	@Override
+	public EvlConstraint error(IOException ex) {
+		return new EvlConstraint(ex, Collections.singletonList(
 				new ParseProblem("Exception during parsing: " + ex.getLocalizedMessage(), ParseProblem.ERROR)));
 	}
 
-	public EvlProgram error(RecognitionException ex) {
+	@Override
+	public EvlConstraint error(RecognitionException ex) {
 		ParseProblem problem = new ParseProblem();
 		problem.setLine(ex.line);
 		problem.setColumn(ex.charPositionInLine);
 		problem.setReason(ex.getMessage());
-		return new EvlProgram(ex, Collections.singletonList(problem));
+		return new EvlConstraint(ex, Collections.singletonList(problem));
 	}
 
-	public EvlProgram error(Throwable ex, Token next) {
+	@Override
+	public EvlConstraint error(Throwable ex, Token next) {
 		ParseProblem problem = new ParseProblem();
 		problem.setLine(next.getLine());
 		problem.setColumn(next.getCharPositionInLine());
 		problem.setReason("mismatched input: '" + next.getText() + "'");
-		return new EvlProgram(ex, Collections.singletonList(problem));
+		return new EvlConstraint(ex, Collections.singletonList(problem));
 	}
 
-	public EvlProgram error(IllegalStateException ex) {
-		return new EvlProgram(ex, Collections.singletonList(new ParseProblem(
+	@Override
+	public EvlConstraint error(IllegalStateException ex) {
+		return new EvlConstraint(ex, Collections.singletonList(new ParseProblem(
 				"Exception during invariant evaluation: " + ex.getLocalizedMessage(), ParseProblem.ERROR)));
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public Optional<UnsatisfiedConstraint> execute(EObject eObject, IModel model) throws Throwable {
 		if (this.error != null) {
@@ -82,16 +90,20 @@ public class EvlProgram implements Program<Optional<UnsatisfiedConstraint>> {
 		if (!context.getModelRepository().getModels().contains(model)) {
 			context.getModelRepository().addModel(model);
 		}
-		return (Optional<UnsatisfiedConstraint>) executorFactory.execute(this.program, context, eObject);
+		return (Optional<UnsatisfiedConstraint>) executorFactory.execute(this.module, context, eObject);
 	}
 
-	private final Constraint program;
+	private final Constraint module;
 	private List<ParseProblem> parseProblems = new ArrayList<>();
 	private final Throwable error;
 	private final IEvlContext context;
 
-	private EvlProgram(Constraint program, Throwable error, List<ParseProblem> problems, IEvlContext context) {
-		this.program = program;
+	private EvlConstraint(
+		Constraint module,
+		Throwable error,
+		List<ParseProblem> problems,
+		IEvlContext context) {
+		this.module = module;
 		this.error = error;
 		this.parseProblems.addAll(problems);
 		this.context = context;

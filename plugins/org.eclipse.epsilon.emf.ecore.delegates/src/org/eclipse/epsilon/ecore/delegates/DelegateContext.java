@@ -26,23 +26,17 @@ public interface DelegateContext {
 	interface ContextFactory {
 		
 		/**
-		 * Creates the delegate domain for the specified <tt>ePackage</tt>.
+		 * Creates the delegate domain for the specified <tt>ePackage</tt> and the specified delegation URI
+		 * @param delegateURI
 		 * @param ePackage
-		 *            the package
-		 * @param delegateEPackageAdapter TODO
-		 * 
-		 * @return its delegate domain
+		 * @param delegateRA
+		 * @param delegation TODO
+		 * @return
 		 */
-		DelegateContext createDelegateDomain(String delegateURI, EPackage ePackage, DelegateResourceAdapter delegateRA);
-
-		/**
-		 * A <code>Factory</code> wrapper that is used by the
-		 * {@link ContextFactory.Registry}.
-		 */
-		interface Descriptor {
-
-			DelegateContext.ContextFactory getFactory();
-		}
+		DelegateContext create(
+				DelegateUri delegateURI,
+				EPackage ePackage,
+				DelegateResourceAdapter delegateRA);
 
 		/**
 		 * A registry of delegate domain factories.
@@ -54,19 +48,6 @@ public interface DelegateContext {
 			final class Fast extends HashMap<String, DelegateContext.ContextFactory> implements Registry {
 
 				private static final long serialVersionUID = 1L;
-
-				@Override
-				public DelegateContext.ContextFactory get(Object key) {
-					DelegateContext.ContextFactory factory = super.get(key);
-					if (factory instanceof ContextFactory.Descriptor) {
-						ContextFactory.Descriptor factoryDescriptor = (ContextFactory.Descriptor) factory;
-						factory = factoryDescriptor.getFactory();
-						put((String) key, factory);
-						return factory;
-					} else {
-						return factory;
-					}
-				}
 
 				public DelegateContext.ContextFactory getFactory(String uri) {
 					return get(uri);
@@ -80,12 +61,5 @@ public interface DelegateContext {
 	 * delegated behaviour for the associated package.
 	 */
 	void dispose();
-
-	/**
-	 * Get the delegate domain name.
-	 * 
-	 * @return the delegate URI
-	 */
-	String getURI();
 
 }

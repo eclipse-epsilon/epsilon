@@ -21,10 +21,12 @@ import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.ecore.delegates.DelegateContext.ContextFactory;
 import org.eclipse.epsilon.ecore.delegates.DelegateLabelProvider;
+import org.eclipse.epsilon.ecore.delegates.EvlDelegateContext;
+import org.eclipse.epsilon.ecore.delegates.EvlDelegateContextFactory;
 import org.eclipse.epsilon.ecore.delegates.ExeedLabelProvider;
-import org.eclipse.epsilon.ecore.delegates.invocation.InvocationBehavior;
 import org.eclipse.epsilon.ecore.delegates.notify.Adapters;
-import org.eclipse.epsilon.ecore.delegates.notify.DelegateEClassifierAdapter;
+import org.eclipse.epsilon.ecore.delegates.notify.EpsilonDelegatesAdapter;
+import org.eclipse.epsilon.ecore.delegates.notify.EvlAdapters;
 import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate.Factory;
 
 /**
@@ -35,27 +37,32 @@ import org.eclipse.epsilon.ecore.delegates.validation.EvlDelegate.Factory;
 public class EvlDelegateFactory implements EvlDelegate.Factory, EValidator.ValidationDelegate {
 
 	public EvlDelegateFactory() {
-		this("http://eclipse.dev/epsilon/ecore/EVL",
+		this(new ValidationUri(),
 			new ContextFactory.Registry.Fast(),
-			new Factory.Registry.Delegate());
+			new Factory.Registry.Smart());
 	}
 
 	public EvlDelegateFactory(
-		final String delegateURI,
-		final ContextFactory.Registry domainRegistry,
-		final Factory.Registry delegateRegistry) {
-		this.delegateURI = delegateURI;
-		this.adapters = new Adapters(delegateURI, new EvlDelegateContextFactory(), domainRegistry, delegateRegistry);
-		this.valBehavior = new EvlDelegates(delegateRegistry, this.adapters);
-		this.invBehavior = new InvocationBehavior();
+		ValidationUri delegateUri,
+		ContextFactory.Registry domainRegistry,
+		Factory.Registry delegateRegistry) {
+		this.delegateUri = delegateUri;
+		this.delegateRegistry = delegateRegistry;
+		this.adapters = new EvlAdapters(
+				this.delegateUri,
+				new EvlDelegateContextFactory(),
+				domainRegistry,
+				delegateRegistry,
+				this);
 		this.labelProvider = new ExeedLabelProvider();
+		this.delegates = new EvlDelegates(this.delegateUri, this.delegateRegistry, this.adapters);
 	}
 	
 	@Override
 	public boolean validate(EClass eClass, EObject eObject, Map<Object, Object> context, EOperation invariant,
 			String expression) {
-		if (eClass.getEAnnotation(this.delegateURI) != null) {
-			EvlDelegate validationDelegate = getValidationDelegate(eClass);
+		if (this.delegateUri.isUsedBy(eClass)) {
+			EvlDelegate validationDelegate = validationDelegate(eClass);
 			return validationDelegate.validate(eClass, eObject, context, invariant, expression);
 		}
 		return true;
@@ -64,8 +71,8 @@ public class EvlDelegateFactory implements EvlDelegate.Factory, EValidator.Valid
 	@Override
 	public boolean validate(EClass eClass, EObject eObject, Map<Object, Object> context, String constraint,
 			String expression) {
-		if (eClass.getEAnnotation(this.delegateURI) != null) {
-			EvlDelegate validationDelegate = getValidationDelegate(eClass);
+		if (this.delegateUri.isUsedBy(eClass)) {
+			EvlDelegate validationDelegate = validationDelegate(eClass);
 			return validationDelegate.validate(eClass, eObject, context, constraint, expression);
 		}
 		return true;
@@ -74,8 +81,8 @@ public class EvlDelegateFactory implements EvlDelegate.Factory, EValidator.Valid
 	@Override
 	public boolean validate(EDataType eDataType, Object value, Map<Object, Object> context, String constraint,
 			String expression) {
-		if (eDataType.getEAnnotation(this.delegateURI) != null) {
-			EvlDelegate validationDelegate = getValidationDelegate(eDataType);
+		if (this.delegateUri.isUsedBy(eDataType)) {
+			EvlDelegate validationDelegate = validationDelegate(eDataType);
 			return validationDelegate.validate(eDataType, value, context, constraint, expression);
 		}
 		return true;
@@ -83,35 +90,33 @@ public class EvlDelegateFactory implements EvlDelegate.Factory, EValidator.Valid
 
 	@Override
 	public EvlDelegate createValidationDelegate(EClassifier classifier) {
-		EPackage ePackage = classifier.getEPackage();
-		return new BasicEvlDelegate(getDelegateDomain(ePackage), this.labelProvider);
+		return new EcoreEvlDelegate(delegateContext(classifier.getEPackage()), this.labelProvider);
 	}
 	
-	@Override
-	public String getURI() {
-		return this.delegateURI;
-	}
 
-	private final EvlDelegates valBehavior;
-	private final InvocationBehavior invBehavior;
-	private final String delegateURI;
+	private final ValidationUri delegateUri;
 	private final Adapters adapters;
 	private final DelegateLabelProvider labelProvider;
+	private final Factory.Registry delegateRegistry;
+	private final EvlDelegates delegates;
 	
-	private EvlDelegateContext getDelegateDomain(EPackage ePackage) {
-		return (EvlDelegateContext) this.adapters.getAdapter(ePackage).getDelegateDomain();
+	private EvlDelegateContext delegateContext(EPackage ePackage) {
+		return (EvlDelegateContext) this.delegateUri.context(this.adapters.getAdapter(ePackage));
 	}
 	
-	private EvlDelegate getValidationDelegate(EClassifier eClassifier) {
-		return this.findAdapter(eClassifier).getValidationDelegate();
+	private EvlDelegate validationDelegate(EClassifier eClassifier) {
+		return this.findAdapter(eClassifier).validationDelegate();
 	}
 	
-	private DelegateEClassifierAdapter findAdapter(EClassifier eClassifier) {
-		DelegateEClassifierAdapter adapter = (DelegateEClassifierAdapter) EcoreUtil
-			.getAdapter(eClassifier.eAdapters(), DelegateEClassifierAdapter.class);
+	private EpsilonDelegatesAdapter findAdapter(EClassifier eClassifier) {
+		EpsilonDelegatesAdapter adapter = (EpsilonDelegatesAdapter) EcoreUtil
+			.getAdapter(eClassifier.eAdapters(), EpsilonDelegatesAdapter.class);
 		if (adapter == null) {
-			adapter = new DelegateEClassifierAdapter(this.valBehavior, this.invBehavior);
+			adapter = new EpsilonDelegatesAdapter();
 			eClassifier.eAdapters().add(adapter);
+		}
+		if (!adapter.hasEvlDelegate()) {
+			adapter.useEvlDelegate(this.delegates.create(eClassifier));
 		}
 		return adapter;
 	}

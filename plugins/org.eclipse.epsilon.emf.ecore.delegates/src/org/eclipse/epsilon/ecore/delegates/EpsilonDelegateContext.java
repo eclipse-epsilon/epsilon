@@ -7,7 +7,7 @@
  * Contributors:
  *     Horacio Hoyos Rodriguez - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.ecore.delegates.validation;
+package org.eclipse.epsilon.ecore.delegates;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -21,40 +21,45 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.Lexer;
 import org.antlr.runtime.ParserRuleReturnScope;
 import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.Token;
+import org.antlr.runtime.TokenStream;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParseProblemManager;
+import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.parse.EpsilonTreeAdaptor;
 import org.eclipse.epsilon.common.parse.Position;
+import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.AstUtil;
-import org.eclipse.epsilon.ecore.delegates.DelegateContext;
-import org.eclipse.epsilon.ecore.delegates.execution.EvlProgram;
+import org.eclipse.epsilon.ecore.delegates.execution.Program;
 import org.eclipse.epsilon.ecore.delegates.notify.DelegateResourceAdapter;
+import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.parse.EolLexer;
 import org.eclipse.epsilon.eol.parse.EolParser;
 import org.eclipse.epsilon.eol.tools.EolSystem;
 import org.eclipse.epsilon.eol.util.ReflectionUtil;
-import org.eclipse.epsilon.evl.EvlModule;
-import org.eclipse.epsilon.evl.dom.ConstraintContext;
-import org.eclipse.epsilon.evl.parse.EvlLexer;
-import org.eclipse.epsilon.evl.parse.EvlParser;
 
 /**
- * A delegate context for Evl Delegates
+ * A delegate context for Epsilon Delegates
  * 
  * @since 2.5
  */
-public class EvlDelegateContext implements DelegateContext {
+public abstract class EpsilonDelegateContext<M extends IEolModule, R> implements DelegateContext {
 	
-	public EvlDelegateContext(String delegateURI, EPackage ePackage, DelegateResourceAdapter delegateRA) {
+	public EpsilonDelegateContext(
+		DelegateUri delegateURI,
+		EPackage ePackage,
+		DelegateResourceAdapter delegateRA,
+		M module, String mainParserRule) {
 		this.uri = delegateURI;
 		this.ePackage = ePackage;
 		this.delegateRA = delegateRA;
+		this.module = module;
+		this.mainParserRule = mainParserRule;
 		Resource res = ePackage.eResource();
 		EPackage.Registry packageRegistry = null;
 		if (res != null) {
@@ -68,7 +73,6 @@ public class EvlDelegateContext implements DelegateContext {
 		if (packageRegistry == null) { // Deprecated compatibility
 			packageRegistry = EPackage.Registry.INSTANCE;
 		}
-		this.module = new EvlModule();
 		this.prepareContext();
 	}
 
@@ -76,74 +80,72 @@ public class EvlDelegateContext implements DelegateContext {
 		this.module.getContext().dispose();
 	}
 
-
-	public String getURI() {
-		return uri;
-	}
-
 	public String toString() {
-		return ePackage.getName() + " : " + getURI(); //$NON-NLS-1$
+		return ePackage.getName() + " : " + this.uri; //$NON-NLS-1$
 	}
 	
-	public EvlProgram parse(String code) {
+	public Program<R> parse(String code) {
+		this.preParse();
 		String contents = code.trim();
 		ByteArrayInputStream noTabsStream = new ByteArrayInputStream(contents.replaceAll("\t", " ").getBytes());
 		Lexer lexer;
 		try {
-			lexer = new EvlLexer(new ANTLRInputStream(noTabsStream));
+			lexer = createLexer(new ANTLRInputStream(noTabsStream));
 		} catch (IOException e) {
-			return (new EvlProgram()).error(e);
+			return this.error(e);
 		}
-		this.module.getDeclaredConstraintContexts().clear();
+		
 		final CommonTokenStream stream = new CommonTokenStream(lexer);
 		List<CommonToken> comments = extractComments(stream);
-		EpsilonTreeAdaptor adaptor = new EpsilonTreeAdaptor((File) null, module);
-		EvlParser parser = new EvlParser(stream);
+		EpsilonTreeAdaptor adaptor = new EpsilonTreeAdaptor((File) null, this.module);
+		EpsilonParser parser = createParser(stream);
 		parser.setDeepTreeAdaptor(adaptor);
-		return invokeMainRule(parser, comments);
+		return invokeMainParserRule(parser, comments);
 	}
-	
 
-	private final String uri;
+	abstract protected Program<R> program();
+	abstract protected EpsilonParser createParser(TokenStream stream);
+	abstract protected Lexer createLexer(ANTLRInputStream inputStream) throws IOException;
+	abstract protected void preParse();
+	abstract protected void createAst(AST cst);
+	abstract protected Program<R> program(List<ParseProblem> parseProblems);
+	
+	protected final M module;
+	protected final DelegateUri uri;
 	private final EPackage ePackage;
 	private final DelegateResourceAdapter delegateRA;
-	private EvlModule module;
+	private final String mainParserRule;
 
-	private EvlProgram invokeMainRule(EvlParser parser, List<CommonToken> comments) {
+	private Program<R> invokeMainParserRule(EpsilonParser parser, List<CommonToken> comments) {
 		EpsilonParseProblemManager.INSTANCE.reset();
 		AST cst = null;
 		try {
-			cst = (AST) ((ParserRuleReturnScope) ReflectionUtil.executeMethod(parser, "evlModule")).getTree();
+			cst = (AST) ((ParserRuleReturnScope) ReflectionUtil
+					.executeMethod(parser, this.mainParserRule))
+					.getTree();
 		} catch (RecognitionException ex) {
-			return (new EvlProgram()).error(ex);
+			return this.error(ex);
 		} catch (Throwable ex) {
-			return (new EvlProgram()).error(ex, parser.input.LT(1));
+			return this.error(ex, parser.input.LT(1));
 		}
 		var parseProblems = new ArrayList<>(EpsilonParseProblemManager.INSTANCE.getParseProblems());
 		EpsilonParseProblemManager.INSTANCE.reset();
 		assignAnnotations(cst);
 		assignComments(cst, comments);
 		createAst(cst);
-		if (this.module.getDeclaredConstraintContexts().isEmpty()) {
-			return (new EvlProgram()).error(new IllegalStateException("Error parsing EVL, context is malformed."));
-		};
-		ConstraintContext contexts = this.module.getDeclaredConstraintContexts().get(0);
-		if (contexts.getConstraints().isEmpty()) {
-			return (new EvlProgram()).error(new IllegalStateException("Error parsing EVL, constraint is malformed."));
-		}
-		return new EvlProgram(contexts.getConstraints().get(0), parseProblems, this.module.getContext());
+		return this.program(parseProblems);
+	}
+	
+	private Program<R> error(IOException ex) {
+		return program().error(ex);
+	}
+	
+	private Program<R> error(Throwable ex, Token next) {
+		 return program().error(ex, next);
 	}
 
-	private void createAst(AST cst) {
-		if (cst == null)
-			return;
-		ModuleElement moduleElement = this.module.adapt(cst, null);
-		if (moduleElement != null) {
-			moduleElement.setUri(cst.getUri());
-			moduleElement.setModule(cst.getModule());
-			moduleElement.setRegion(cst.getRegion());
-			moduleElement.build(cst, cst.getModule());
-		}
+	private Program<R> error(RecognitionException ex) {
+		 return program().error(ex);
 	}
 
 	private void assignComments(AST root, List<CommonToken> comments) {
