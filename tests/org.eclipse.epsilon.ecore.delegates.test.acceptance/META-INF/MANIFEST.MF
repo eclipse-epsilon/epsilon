@@ -7,10 +7,10 @@ Bundle-ClassPath: .
 Bundle-Vendor: Eclipse Modeling Project
 Automatic-Module-Name: org.eclipse.epsilon.ecore.delegates.test.acceptance
 Require-Bundle: org.eclipse.epsilon.ecore.delegates,
- org.eclipse.epsilon.eol.engine;bundle-version="2.5.0",
+ org.eclipse.epsilon.eol.engine,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.epsilon.test.dependencies;bundle-version="2.5.0"
+ org.eclipse.epsilon.test.dependencies
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.epsilon.ecore.delegates.test.acceptance,
