@@ -13,6 +13,7 @@
 package org.eclipse.epsilon.test;
 
 import org.eclipse.epsilon.common.dt.test.CommonDevelopmentToolsTestSuite;
+import org.eclipse.epsilon.ecore.delegates.test.acceptance.DelegatesSuite;
 import org.eclipse.epsilon.emc.cdo.tests.CDOPluggedInTestSuite;
 import org.eclipse.epsilon.emc.emf.test.EmfPluggedInTestSuite;
 import org.eclipse.epsilon.picto.test.PictoTestSuite;

@@ -128,7 +128,7 @@ public abstract class EpsilonDelegateContext<M extends IEolModule, R> implements
 		} catch (Throwable ex) {
 			return this.error(ex, parser.input.LT(1));
 		}
-		var parseProblems = new ArrayList<>(EpsilonParseProblemManager.INSTANCE.getParseProblems());
+		ArrayList<ParseProblem> parseProblems = new ArrayList<>(EpsilonParseProblemManager.INSTANCE.getParseProblems());
 		EpsilonParseProblemManager.INSTANCE.reset();
 		assignAnnotations(cst);
 		assignComments(cst, comments);

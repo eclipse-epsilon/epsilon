@@ -41,7 +41,7 @@ public class ExeedLabelProvider implements DelegateLabelProvider {
 
 	@Override
 	public String getObjectLabel(EObject eObject) {
-		var labelCode = getEClassAnnotationDetail(eObject, "exeed", "label");
+		String labelCode = getEClassAnnotationDetail(eObject, "exeed", "label");
 		try {
 			if (labelCode != null && parse(labelCode)) {
 				FrameStack frameStack = module.getContext().getFrameStack();

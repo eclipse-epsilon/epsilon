@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
@@ -26,6 +27,7 @@ import org.eclipse.epsilon.ecore.delegates.EvlDelegateContext;
 import org.eclipse.epsilon.ecore.delegates.ExeedLabelProvider;
 import org.eclipse.epsilon.ecore.delegates.execution.EvlConstraint;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
+import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
 
 /**
  * A basic {@link EpsilonValidationDelegate} implementation that caches errors to avoid multiple exception
@@ -59,7 +61,7 @@ public class EvlValidationDelegate implements EpsilonValidationDelegate {
 		Map<Object, Object> context, 
 		String constraint,
 		String expression) {
-		var target = new Target(constraint, eObject);
+		Target target = new Target(constraint, eObject);
 		if (this.errors.contains(target)) {
 			// No need to throw the same exception multiple times.
 			return false;
@@ -70,10 +72,10 @@ public class EvlValidationDelegate implements EpsilonValidationDelegate {
 						toEvlContext(expression, eObject.eClass().getName(), c)));
 		addLabelProvider(context);
 		try {
-			var result = program.execute(
+			Optional<UnsatisfiedConstraint> result = program.execute(
 					eObject,
 					this.models.computeIfAbsent(eObject.eResource(), r -> new InMemoryEmfModel(r)));
-			return result.isEmpty();
+			return !result.isPresent();
 		} catch (Throwable e) {
 			// Cache the execution exception (most probably due to sytax errors
 			this.errors.add(target);
