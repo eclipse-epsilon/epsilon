@@ -1,3 +1,5 @@
+import "OO2DB.eol";
+
 pre {
 	'Running ETL'.println();
 	var db : new DB!Database;
@@ -64,7 +66,7 @@ rule SingleValuedAttribute2Column
 	guard : not a.isMany
 	
 	c.name := a.name;
-	c.table ::= a.owner;
+	c.setTable(a); // Done in a setTable function as a test for issue #53
 	c.type := a.type.name.toDbType();
 }
 

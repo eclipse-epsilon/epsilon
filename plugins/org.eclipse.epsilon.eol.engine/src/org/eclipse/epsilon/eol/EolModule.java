@@ -179,6 +179,11 @@ public class EolModule extends AbstractModule implements IEolModule {
 	public ModuleElement adapt(AST cst, ModuleElement parentAst) {
 		if (cst == null) return null;
 		
+		// Delegate adaptation to the parent (importing) module if one exists
+		if (getParentModule() != null && getParentModule() instanceof AbstractModule && cst.getParent() != null) {
+			return ((AbstractModule) getParentModule()).adapt(cst, parentAst);
+		}
+		
 		AST cstParent = cst.getParent();
 		
 		if (cstParent != null && cstParent.getType() == EolParser.EOLMODULE && cst.getType() == EolParser.BLOCK) {
