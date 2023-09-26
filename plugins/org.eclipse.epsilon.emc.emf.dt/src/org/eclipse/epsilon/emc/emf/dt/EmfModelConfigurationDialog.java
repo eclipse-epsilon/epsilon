@@ -318,7 +318,7 @@ public class EmfModelConfigurationDialog extends AbstractCachedModelConfiguratio
 
 		final Button addURIMetamodelButton = new Button(metamodelButtons, SWT.NONE);
 		addURIMetamodelButton.setText("Add URI...");
-		addURIMetamodelButton.addListener(SWT.Selection, new BrowseEPackagesListener() {
+		addURIMetamodelButton.addListener(SWT.Selection, new BrowseEPackagesListener(true) {
 			@Override
 			public void selectionChanged(String ePackageUri) {
 				URI uri = URI.createURI(ePackageUri);
