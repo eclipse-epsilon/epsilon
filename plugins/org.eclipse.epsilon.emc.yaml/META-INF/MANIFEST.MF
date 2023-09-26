@@ -4,7 +4,7 @@ Bundle-Name: YAML Driver for EMC
 Bundle-SymbolicName: org.eclipse.epsilon.emc.yaml
 Bundle-Version: 2.5.0.qualifier
 Require-Bundle: org.eclipse.epsilon.eol.engine,
- org.yaml.snakeyaml;bundle-version="1.27.0"
+ org.yaml.snakeyaml
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.epsilon.emc.yaml
 Bundle-Vendor: Eclipse Modeling Project
