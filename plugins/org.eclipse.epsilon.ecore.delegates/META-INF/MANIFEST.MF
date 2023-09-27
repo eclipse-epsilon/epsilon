@@ -10,10 +10,9 @@ Export-Package: org.eclipse.epsilon.ecore.delegates,
  org.eclipse.epsilon.ecore.delegates.notify,
  org.eclipse.epsilon.ecore.delegates.setting,
  org.eclipse.epsilon.ecore.delegates.validation
-Require-Bundle: org.eclipse.emf.ecore,
- org.eclipse.epsilon.eol.engine,
- org.eclipse.epsilon.evl.engine,
- org.eclipse.epsilon.emc.emf
+Require-Bundle: org.eclipse.epsilon.evl.engine,
+ org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.eol.engine
 Automatic-Module-Name: org.eclipse.epsilon.emf.ecore.delegates
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
