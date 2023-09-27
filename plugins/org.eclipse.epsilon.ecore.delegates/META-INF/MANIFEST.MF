@@ -10,7 +10,7 @@ Export-Package: org.eclipse.epsilon.ecore.delegates,
  org.eclipse.epsilon.ecore.delegates.notify,
  org.eclipse.epsilon.ecore.delegates.setting,
  org.eclipse.epsilon.ecore.delegates.validation
-Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.25.0",
+Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.epsilon.eol.engine,
  org.eclipse.epsilon.evl.engine,
  org.eclipse.epsilon.emc.emf
