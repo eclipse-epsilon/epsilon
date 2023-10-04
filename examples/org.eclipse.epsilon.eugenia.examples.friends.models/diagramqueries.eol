@@ -1,5 +1,0 @@
-for (shape in Shape.all) {
-	shape.id.println();
-	shape.layoutConstraint.println();
-	shape.element.type.println();
-}

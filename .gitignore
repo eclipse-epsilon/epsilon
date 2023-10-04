@@ -63,9 +63,6 @@ target-plain
 # /plugins/org.eclipse.epsilon.workflow.emf/lib/
 /plugins/org.eclipse.epsilon.workflow.emf/lib/*.jar
 
-# /plugins/org.eclipse.epsilon.workflow.eugenia/
-/plugins/org.eclipse.epsilon.workflow.eugenia/lib
-
 # /serverside/org.eclipse.epsilon.egl.servlet/
 /serverside/org.eclipse.epsilon.egl.servlet/build
 

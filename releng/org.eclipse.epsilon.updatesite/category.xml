@@ -39,9 +39,6 @@
    <feature url="features/org.eclipse.epsilon.ewl.gmf.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.ewl.gmf.feature" version="2.5.0.qualifier">
       <category name="Epsilon GMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.eugenia.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.eugenia.feature" version="2.5.0.qualifier">
-      <category name="Epsilon GMF Integration"/>
-   </feature>
    <feature url="features/org.eclipse.epsilon.hutn.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.hutn.feature" version="2.5.0.qualifier">
       <category name="Human Usable Textual Notation (HUTN)"/>
    </feature>

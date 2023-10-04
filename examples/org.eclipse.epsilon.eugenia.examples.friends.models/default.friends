@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<World xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="friends">
-  <people name="Bob" enemyOf="//@people.1"/>
-  <people name="Charlie"/>
-  <people name="Alan" friendOf="//@people.0 //@people.1"/>
-</World>

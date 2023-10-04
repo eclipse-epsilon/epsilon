@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Validation Plug-in
-Bundle-SymbolicName: org.eclipse.epsilon.eugenia.examples.filesystem.validation;singleton:=true
-Bundle-Version: 1.0.0
-Require-Bundle: org.eclipse.ui.ide;bundle-version="3.4.0",
- org.eclipse.epsilon.evl.emf.validation;bundle-version="0.8.1"

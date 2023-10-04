@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<flowchart:Flowchart xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowchart="flowchart">
-  <nodes xsi:type="flowchart:Action" name="a1" outgoing="//@transitions.0"/>
-  <nodes xsi:type="flowchart:Action" name="a2" incoming="//@transitions.0"/>
-  <transitions source="//@nodes.0" target="//@nodes.1"/>
-</flowchart:Flowchart>

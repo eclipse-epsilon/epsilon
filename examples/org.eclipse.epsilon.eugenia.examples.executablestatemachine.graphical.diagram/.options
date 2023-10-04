@@ -1,7 +1,0 @@
-# Tracing options for the org.eclipse.epsilon.eugenia.examples.executablestatemachine.graphical.diagram plug-in
-
-# Common issues
-org.eclipse.epsilon.eugenia.examples.executablestatemachine.graphical.diagram/debug=false
-
-# Visual IDs
-org.eclipse.epsilon.eugenia.examples.executablestatemachine.graphical.diagram/debug/visualID=false

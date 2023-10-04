@@ -1,7 +1,0 @@
-# Tracing options for the org.eclipse.epsilon.eugenia.examples.friends.diagram plug-in
-
-# Common issues
-org.eclipse.epsilon.eugenia.examples.friends.diagram/debug=false
-
-# Visual IDs
-org.eclipse.epsilon.eugenia.examples.friends.diagram/debug/visualID=false

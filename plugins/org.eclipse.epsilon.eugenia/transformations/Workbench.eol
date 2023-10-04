@@ -1,7 +1,0 @@
-import 'ECoreUtil.eol';
-
-'2'.~a := 1;
-
-'2'.~a.println();
-
-//ECore!EClass.all.selectOne(c|c.name = 'Modem').getAnnotationValue('gmf.node','label').println();

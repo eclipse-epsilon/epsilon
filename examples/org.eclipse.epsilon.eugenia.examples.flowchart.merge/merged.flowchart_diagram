@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:flowchart="flowchart" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="_EFUwQJDfEeCoEKjZ2xC8lQ" type="Flowchart" measurementUnit="Pixel">
-  <styles xmi:type="notation:DiagramStyle" xmi:id="_EFUwQZDfEeCoEKjZ2xC8lQ"/>
-  <element xmi:type="flowchart:Flowchart" href="merged.flowchart#/"/>
-</notation:Diagram>
