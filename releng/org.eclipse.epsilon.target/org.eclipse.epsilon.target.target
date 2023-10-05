@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Epsilon Target Platform" sequenceNumber="1696436386">
+<target name="Epsilon Target Platform" sequenceNumber="1696487677">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -12,10 +12,6 @@
       <unit id="org.eclipse.emf.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.emf.validation.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.equinox.sdk.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.gef.sdk.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.gmf.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.gmf.runtime.notation.sdk.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.gmf.runtime.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.pde.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.platform.feature.group" version="0.0.0"/>
@@ -61,7 +57,6 @@
       <unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
       <unit id="net.bytebuddy.byte-buddy" version="1.7.9.v20180420-1519"/>
       <unit id="net.bytebuddy.byte-buddy-agent" version="1.7.9.v20180420-1519"/>
-      <unit id="net.sourceforge.plantuml" version="1.2019.0.v20200820-1243"/>
       <unit id="org.antlr.runtime" version="3.5.2.v20200724-1452"/>
       <unit id="org.apache.commons.cli" version="1.4.0.v20200417-1444"/>
       <unit id="org.apache.commons.codec" version="1.14.0.v20200818-1422"/>
@@ -88,6 +83,27 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.acceleo.ui.interpreter.feature.group" version="0.0.0"/>
       <repository location="https://download.eclipse.org/acceleo/updates/releases/3.7/"/>
+    </location>
+    <location includeDependencyDepth="infinite" includeDependencyScopes="compile,test,runtime" includeSource="true" missingManifest="generate" type="Maven" label="MavenDependencies">
+    <feature id="net.sourceforge.plantuml" label="net.sourceforge.plantuml" provider-name="" version="1.2023.11.qualifier">
+    	<description url="http://www.example.com/description">
+    		[Enter Feature Description here.]
+    	</description>
+    	<copyright url="http://www.example.com/copyright">
+    		[Enter Copyright Description here.]
+    	</copyright>
+    	<license url="http://www.example.com/license">
+    		[Enter License Description here.]
+    	</license>
+    </feature>
+    <dependencies>
+    	<dependency>
+    		<groupId>net.sourceforge.plantuml</groupId>
+    		<artifactId>plantuml-epl</artifactId>
+    		<version>1.2023.11</version>
+    		<type>jar</type>
+    	</dependency>
+    </dependencies>
     </location>
   </locations>
   <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
