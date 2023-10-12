@@ -319,6 +319,8 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 		EObject instance = eClass.getEPackage().getEFactoryInstance().create(eClass);
 		modelImpl.getContents().add(instance);
 		instance.eAdapters().add(new ContainmentChangeAdapter(instance, modelImpl));
+		// In case the element is created by its factory with existing descendants, add containment change adapters to the descendants as well
+		instance.eAllContents().forEachRemaining(descendant -> descendant.eAdapters().add(new ContainmentChangeAdapter(descendant, modelImpl)));
 		return instance;
 	}
 	
