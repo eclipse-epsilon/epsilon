@@ -298,6 +298,7 @@ public abstract class ExecutableModuleTask extends EpsilonTask {
 			for (ParseProblem problem : module.getParseProblems()) {
 				log(problem.toString(), Project.MSG_ERR);
 			}
+			fail("Problems encountered during parsing.", null);
 		}
 	}
 
