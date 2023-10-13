@@ -63,17 +63,9 @@ public class EUnitBasicTests extends EUnitTestCase {
 		assertFalse("The XML report should have been suppressed", xmlReportFile.exists());
 	}
 
-	@Test
+	@Test(expected = Exception.class)
 	public void buildFailsWithBadImports() throws Exception {
-		try {
-			runTarget(ANT_BUILD_FILE, "badImports");
-		}
-		catch (BuildException ex) {
-			assertTrue(
-				"The cause of the build exception should be an Epsilon exception",
-				ex.getCause() instanceof EUnitParseException
-			);
-		}
+		runTarget(ANT_BUILD_FILE, "badImports");
 	}
 
 	@Test
