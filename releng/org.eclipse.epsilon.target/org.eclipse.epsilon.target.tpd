@@ -54,7 +54,6 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202112131738
 	javax.xml.stream [1.0.1,1.0.2)
 	net.bytebuddy.byte-buddy [1.7.9,1.7.10)
 	net.bytebuddy.byte-buddy-agent [1.7.9,1.7.10)
-	net.sourceforge.plantuml [1.2019.0,1.2019.1)
 	org.antlr.runtime [3.5.2.v20200724-1452,3.5.2.v20200724-1452]
 	org.apache.commons.cli [1.4.0,1.4.1)
 	org.apache.commons.codec  [1.14.0,1.14.1)
@@ -80,4 +79,12 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202112131738
 
 location "https://download.eclipse.org/acceleo/updates/releases/3.7/" {
 	org.eclipse.acceleo.ui.interpreter.feature.group lazy
+}
+
+maven MavenDependencies scope=compile,test,runtime dependencyDepth=infinite missingManifest=generate includeSources {
+	dependency {
+		groupId="net.sourceforge.plantuml"
+		artifactId="plantuml-epl"
+		version="1.2023.11"
+	}
 }

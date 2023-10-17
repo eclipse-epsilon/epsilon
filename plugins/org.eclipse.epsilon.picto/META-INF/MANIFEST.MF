@@ -39,8 +39,8 @@ Require-Bundle: org.eclipse.epsilon.flexmi,
  com.atlassian.commonmark-ins,
  com.atlassian.commonmark-task-list-items,
  com.atlassian.commonmark-yaml,
- net.sourceforge.plantuml,
- org.apache.commons.csv
+ org.apache.commons.csv,
+ wrapped.net.sourceforge.plantuml.plantuml-epl;bundle-version="1.2023.11"
 Bundle-Activator: org.eclipse.epsilon.picto.PictoPlugin
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.epsilon.picto,
