@@ -228,7 +228,6 @@ public class FlexmiEditor extends TextEditor {
 		
 		try {
 			resourceSet.getPackageRegistry().put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new FlexmiResourceFactory());
 			resource = (FlexmiResource) resourceSet.createResource(URI.createFileURI(file.getLocation().toOSString()));
 			resource.load(new ByteArrayInputStream(code.getBytes()), null);
 		}
