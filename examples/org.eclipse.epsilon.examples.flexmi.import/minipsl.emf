@@ -1,0 +1,10 @@
+package minipsl;
+
+class Task {
+	attr String name;
+	ref Person[*] persons;
+}
+
+class Person {
+	attr String name;
+}
