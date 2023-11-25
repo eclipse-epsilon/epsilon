@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JSON Driver for EMC
+Bundle-SymbolicName: org.eclipse.epsilon.emc.json
+Bundle-Version: 2.5.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.eol.engine,
+ org.apache.httpcomponents.httpclient,
+ org.apache.httpcomponents.httpcore,
+ org.apache.commons.codec,
+ com.googlecode.json-simple;bundle-version="1.1.1",
+ org.apache.commons.collections;bundle-version="3.2.2"
+Export-Package: org.eclipse.epsilon.emc.json
+Automatic-Module-Name: org.eclipse.epsilon.emc.json
+Bundle-Vendor: Eclipse Modeling Project

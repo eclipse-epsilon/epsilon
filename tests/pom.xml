@@ -35,6 +35,7 @@
     <module>org.eclipse.epsilon.emc.hutn.test</module>
     <module>org.eclipse.epsilon.emc.plainxml.test</module>
     <module>org.eclipse.epsilon.emc.yaml.test</module>
+    <module>org.eclipse.epsilon.emc.json.test</module>
     <module>org.eclipse.epsilon.emc.simulink.common.test</module>
     <module>org.eclipse.epsilon.emc.simulink.test</module>
     <module>org.eclipse.epsilon.emc.simulink.dictionary.test</module>

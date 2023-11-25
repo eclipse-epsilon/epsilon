@@ -105,6 +105,12 @@
    <feature id="org.eclipse.epsilon.emc.cdo.feature">
       <category name="Epsilon CDO Integration"/>
    </feature>
+   <feature id="org.eclipse.epsilon.emc.json.dt.feature">
+      <category name="Epsilon JSON Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.json.feature">
+      <category name="Epsilon JSON Integration"/>
+   </feature>
    <category-def name="Epsilon Core" label="Epsilon Core">
       <description>
          Parsers, execution engines, development tools (editors, launch configurations, debuggers etc.) for languages of the Epsilon platform.
@@ -168,6 +174,11 @@
    <category-def name="Epsilon CDO Integration" label="Epsilon CDO Integration">
       <description>
          Support for connecting to Eclipse CDO model repositories.
+      </description>
+   </category-def>
+   <category-def name="Epsilon JSON Integration" label="Epsilon JSON Integration">
+      <description>
+         Support for managing JSON-based models with languages of the Epsilon platform.
       </description>
    </category-def>
    <repository-reference location="http://download.eclipse.org/emfatic/update" enabled="true" />

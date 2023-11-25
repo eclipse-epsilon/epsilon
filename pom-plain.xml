@@ -139,6 +139,7 @@
     <module>plugins/org.eclipse.epsilon.emc.csv/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.emc.plainxml/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.emc.yaml/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.emc.json/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.eml.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.emg.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.eol.engine/pom-plain.xml</module>
@@ -710,6 +711,25 @@ same version of EMF / other bits always.
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
         <version>1.27</version>
+      </dependency>
+
+      <!-- JSON-simple -->
+      <dependency>
+        <groupId>com.googlecode.json-simple</groupId>
+        <artifactId>json-simple</artifactId>
+        <version>1.1.1</version>
+      </dependency>
+
+      <!-- HTTP client-->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.14</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.4.14</version>
       </dependency>
 
     </dependencies>

@@ -1,0 +1,6 @@
+M.root = new JSONObject;
+
+M.root.name = 'Antonio';
+M.root.email = 'antonio@example.com';
+M.root.id = 1234;
+M.root.accounts = Sequence { 123, 456 };

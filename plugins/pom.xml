@@ -53,6 +53,8 @@
     <module>org.eclipse.epsilon.emc.plainxml.dt</module>
     <module>org.eclipse.epsilon.emc.yaml</module>
     <module>org.eclipse.epsilon.emc.yaml.dt</module>
+    <module>org.eclipse.epsilon.emc.json</module>
+    <module>org.eclipse.epsilon.emc.json.dt</module>
     <module>org.eclipse.epsilon.emc.spreadsheets</module>
     <module>org.eclipse.epsilon.emc.spreadsheets.excel</module>
     <module>org.eclipse.epsilon.emc.spreadsheets.excel.dt</module>

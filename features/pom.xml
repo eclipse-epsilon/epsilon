@@ -18,8 +18,10 @@
     <module>org.eclipse.epsilon.emc.cdo.dt.feature</module>
     <module>org.eclipse.epsilon.emc.csv.feature</module>
     <module>org.eclipse.epsilon.emc.csv.dt.feature</module>
-	<module>org.eclipse.epsilon.emc.yaml.feature</module>
+    <module>org.eclipse.epsilon.emc.yaml.feature</module>
     <module>org.eclipse.epsilon.emc.yaml.dt.feature</module>
+    <module>org.eclipse.epsilon.emc.json.feature</module>
+    <module>org.eclipse.epsilon.emc.json.dt.feature</module>
     <module>org.eclipse.epsilon.emc.graphml.feature</module>
     <module>org.eclipse.epsilon.emc.html.feature</module>
     <module>org.eclipse.epsilon.emc.html.dt.feature</module>
