@@ -36,7 +36,6 @@ ANTLR 3 Runtime
 
 * License: New BSD license
 
-
 Apache Commons Command Line Interface CLI (1.4)
 
 * License: Apache-2.0
@@ -112,6 +111,12 @@ JQuery (1.8.1)
 * Project: http://jquery.com
 * Source: https://github.com/jquery/jquery
 
+json-simple (1.1.1)
+
+* License: Apache License 2.0
+* Project: https://code.google.com/archive/p/json-simple/
+* Source: https://github.com/fangyidong/json-simple
+
 jsoup (1.7.2)
 
 * License: MIT license
@@ -123,9 +128,7 @@ JUnit (4.13)
 Mockito
 
 * License: Apache License, 2.0, New BSD license, MIT license
-
 * License: MIT
-
 
 plantUML (2018.8)
 
