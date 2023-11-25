@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Epsilon Target Platform" sequenceNumber="1697565135">
+<target name="Epsilon Target Platform" sequenceNumber="1700868067">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -90,6 +90,12 @@
     		<groupId>net.sourceforge.plantuml</groupId>
     		<artifactId>plantuml-epl</artifactId>
     		<version>1.2023.11</version>
+    		<type>jar</type>
+    	</dependency>
+    	<dependency>
+    		<groupId>com.googlecode.json-simple</groupId>
+    		<artifactId>json-simple</artifactId>
+    		<version>1.1.1</version>
     		<type>jar</type>
     	</dependency>
     </dependencies>

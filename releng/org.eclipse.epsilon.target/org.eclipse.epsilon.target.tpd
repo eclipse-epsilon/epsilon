@@ -87,4 +87,9 @@ maven MavenDependencies scope=compile,test,runtime dependencyDepth=infinite miss
 		artifactId="plantuml-epl"
 		version="1.2023.11"
 	}
+	dependency {
+		groupId="com.googlecode.json-simple"
+		artifactId="json-simple"
+		version="1.1.1"
+	}
 }
