@@ -20,7 +20,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	JSONModelCreationTests.class,
 	JSONModelHttpTests.class,
 	JSONModelOptionsTests.class,
-	JSONModelReadTests.class
+	JSONModelReadTests.class,
+	JSONCreateInstanceTests.class
 })
 public class JSONModelTestSuite {
 

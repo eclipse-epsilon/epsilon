@@ -24,10 +24,24 @@ import org.json.simple.JSONArray;
 /**
  * Thin wrapper over a {@link JSONArray} which adds the concept of a container.
  */
-public class JsonModelArray implements List<Object>, Contained {
+public class JsonModelArray implements List<Object>, Contained, HasCreatorModel {
 
+	private final JsonModel creatorModel;
 	private Set<Object> containers = Collections.newSetFromMap(new IdentityHashMap<>());
 	private JSONArray array = new JSONArray();
+
+	public JsonModelArray() {
+		this.creatorModel = null;
+	}
+
+	public JsonModelArray(JsonModel creatorModel) {
+		this.creatorModel = creatorModel;
+	}
+
+	@Override
+	public JsonModel getCreatorModel() {
+		return creatorModel;
+	}
 
 	@Override
 	public Set<Object> getContainers() {

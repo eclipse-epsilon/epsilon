@@ -25,12 +25,27 @@ import org.json.simple.JSONObject;
  * Thin wrapper over a {@link JSONObject} which adds the concept of a container to its
  * values.
  */
-public class JsonModelObject implements Contained, Map<String, Object> {
+public class JsonModelObject implements Contained, Map<String, Object>, HasCreatorModel {
+
+	private final JsonModel creatorModel;
 
 	private Set<Object> containers = Collections.newSetFromMap(new IdentityHashMap<>());
 
 	// Underlying map is the same, but we can intercept all calls
 	private JSONObject object = new JSONObject();
+
+	public JsonModelObject() {
+		this.creatorModel = null;
+	}
+
+	public JsonModelObject(JsonModel creatorModel) {
+		this.creatorModel = creatorModel;
+	}
+
+	@Override
+	public JsonModel getCreatorModel() {
+		return creatorModel;
+	}
 
 	@Override
 	public Set<Object> getContainers() {

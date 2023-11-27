@@ -166,6 +166,16 @@ public class JsonModel extends CachedModel<Object> {
 
 	@Override
 	public boolean owns(Object instance) {
+		if (instance instanceof Contained) {
+			Contained contained = (Contained) instance;
+
+			if (contained.isContainedBy(this)) {
+				return true;
+			} else if (contained.getContainers().isEmpty() && contained instanceof HasCreatorModel) {
+				return ((HasCreatorModel) contained).getCreatorModel() == this;
+			}
+		}
+
 		return instance instanceof Contained && ((Contained) instance).isContainedBy(this); 
 	}
 
@@ -245,9 +255,9 @@ public class JsonModel extends CachedModel<Object> {
 	@Override
 	protected Object createInstanceInModel(String type) throws EolModelElementTypeNotFoundException, EolNotInstantiableModelElementTypeException {
 		if (JSON_OBJECT_TYPE.equals(type)) {
-			return new JsonModelObject();
+			return new JsonModelObject(this);
 		} else if (JSON_ARRAY_TYPE.equals(type)) {
-			return new JsonModelArray();
+			return new JsonModelArray(this);
 		}
 
 		throw new EolModelElementTypeNotFoundException(this.getName(), type);
