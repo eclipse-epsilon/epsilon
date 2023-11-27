@@ -29,4 +29,11 @@ which is available at https://www.eclipse.org/legal/epl-2.0
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="com.googlecode.json-simple"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
