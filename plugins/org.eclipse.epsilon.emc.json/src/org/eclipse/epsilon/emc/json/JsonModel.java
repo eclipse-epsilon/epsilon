@@ -415,5 +415,14 @@ public class JsonModel extends CachedModel<Object> {
 	public String toString() {
 		return "JsonModel [name=" + name + "]";
 	}
-	
+
+	/**
+	 * Convenience method for loading the JSON content directly from a string,
+	 * instead of loading it from a file or URI. The model will consider itself
+	 * loaded.
+	 */
+	public void setJsonContent(String s) {
+		setRoot(deepClone(JSONValue.parse(s)));
+	}
+
 }
