@@ -250,13 +250,13 @@ public class JsonModelConfigurationDialog extends AbstractCachedModelConfigurati
 	protected void storeProperties() {
 		super.storeProperties();
 
-		properties.put(JsonModel.PROPERTY_URI, uriText.getText().strip());
-		properties.put(JsonModel.PROPERTY_FILE, fileText.getText().strip());
+		properties.put(JsonModel.PROPERTY_URI, uriText.getText().trim());
+		properties.put(JsonModel.PROPERTY_FILE, fileText.getText().trim());
 
 		int iHeader = 0;
 		for (Header header : headers) {
 			properties.put(JsonModel.PROPERTY_HEADER_PREFIX + iHeader,
-				String.format("%s%s%s", header.name.strip(), JsonModel.PROPERTY_HEADER_SEPARATOR, header.value.strip()));
+				String.format("%s%s%s", header.name.trim(), JsonModel.PROPERTY_HEADER_SEPARATOR, header.value.trim()));
 
 			++iHeader;
 		}
