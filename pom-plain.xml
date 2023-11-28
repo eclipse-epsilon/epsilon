@@ -728,7 +728,7 @@ same version of EMF / other bits always.
       </dependency>
       <dependency>
         <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
+        <artifactId>httpcore</artifactId>
         <version>4.4.14</version>
       </dependency>
 
