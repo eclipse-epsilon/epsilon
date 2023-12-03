@@ -1,0 +1,14 @@
+// For every bundle, generate a PlantUML object diagram
+// containing its components and their dependencies
+rule Bundle2PlantUML
+    transform b : sdl::Bundle {
+
+    template : "bundle2plantuml.egl"
+
+    parameters : Map{
+        "path" = Sequence{"Bundles", b.name},
+        "icon" = "diagram-ffffff",
+        "format" = "plantuml"
+    }
+
+}

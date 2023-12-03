@@ -1,0 +1,32 @@
+[%var components = b.components.includingAll(b.components.closure(c|c.dependencies).flatten()).asSet();%]
+@startuml
+
+skinparam shadowing false
+skinparam object {
+	BackgroundColor FloralWhite
+	ArrowColor Grey
+	BorderColor Wheat
+}
+
+[*For every component generate a PlantUML object*]
+[%for (c in components){%]
+object "[%=c.name%]" as [%=c.getId()%] {
+[%for (j in c.jars){%]
+[%=j.filename%]
+[%}%]
+}
+[%}%]
+
+[*For every dependency between components generate an edge between the respective objects*]
+[%for (c in components){%]
+[%for(d in c.dependencies){%]
+[%=c.getId()%] ..> [%=d.getId()%]
+[%}%]
+[%}%]
+@enduml
+
+[%
+operation sdl::Component getId() {
+	return "C" + components.indexOf(self);
+}
+%]
