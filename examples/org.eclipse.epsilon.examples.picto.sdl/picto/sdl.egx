@@ -12,8 +12,10 @@ rule Bundle2PlantUML
 
     parameters : Map{
         "path" = Sequence{"Bundles", b.name},
-        "icon" = "diagram-ffffff",
-        "format" = "plantuml"
+        "format" = "plantuml",
+        "layers" = Sequence {
+            Map {"id"="jars", "title"="Jars", "active"=true}
+        }
     }
 
 }
@@ -27,7 +29,6 @@ rule Component2PlantUML
 	
     parameters : Map{
         "path" = Sequence{"Components", c.name},
-        "icon" = "diagram-ffffff",
         "format" = "plantuml"
     }
 

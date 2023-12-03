@@ -1,3 +1,13 @@
 operation sdl::Bundle getAllComponents() {
 	return self.components.includingAll(self.components.closure(c|c.dependencies).flatten()).asSet();
 }
+
+operation isLayerActive(id : String) {
+    var layer = layers.selectOne(l|l.id = id);
+    if (layer.isDefined()) {
+        return layer.active;
+    }
+    else {
+        return true;
+    }
+}
