@@ -1,0 +1,3 @@
+operation sdl::Bundle getAllComponents() {
+	return self.components.includingAll(self.components.closure(c|c.dependencies).flatten()).asSet();
+}

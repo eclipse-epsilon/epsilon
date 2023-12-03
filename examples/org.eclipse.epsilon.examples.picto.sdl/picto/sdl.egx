@@ -1,3 +1,8 @@
+pre {
+	// Needed for JavaScript links to work in PlantUML
+	Native("java.lang.System").setProperty("PLANTUML_JAVASCRIPT_UNSECURE", "true");
+}
+
 // For every bundle, generate a PlantUML object diagram
 // containing its components and their dependencies
 rule Bundle2PlantUML
@@ -7,6 +12,21 @@ rule Bundle2PlantUML
 
     parameters : Map{
         "path" = Sequence{"Bundles", b.name},
+        "icon" = "diagram-ffffff",
+        "format" = "plantuml"
+    }
+
+}
+
+// For every component, generate a PlantUML object diagram
+// containing the component and the bundles in which it is included
+rule Component2PlantUML
+    transform c : sdl::Component {
+
+    template : "component2plantuml.egl"
+	
+    parameters : Map{
+        "path" = Sequence{"Components", c.name},
         "icon" = "diagram-ffffff",
         "format" = "plantuml"
     }

@@ -1,6 +1,10 @@
-[%var components = b.components.includingAll(b.components.closure(c|c.dependencies).flatten()).asSet();%]
+[%import "sdl.eol";%]
+[%var components = b.getAllComponents();%]
 @startuml
 
+
+skinparam hyperlinkColor Black
+skinparam hyperlinkUnderline false
 skinparam shadowing false
 skinparam object {
 	BackgroundColor FloralWhite
@@ -10,7 +14,8 @@ skinparam object {
 
 [*For every component generate a PlantUML object*]
 [%for (c in components){%]
-object "[%=c.name%]" as [%=c.getId()%] {
+!define hyperlink javascript:top.showView(['Components','[%=c.name.replace(" ","%20")%]'])
+object "[[hyperlink [%=c.name%]]]" as [%=c.getId()%] {
 [%for (j in c.jars){%]
 [%=j.filename%]
 [%}%]
