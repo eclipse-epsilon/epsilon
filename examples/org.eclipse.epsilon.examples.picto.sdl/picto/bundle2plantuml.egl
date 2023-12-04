@@ -16,12 +16,13 @@ skinparam object {
 [%for (c in components){%]
 !define hyperlink javascript:top.showView(['Components','[%=c.name.replace(" ","%20")%]'])
 object "[[hyperlink [%=c.name%]]]" as [%=c.getId()%] {
-[%if (isLayerActive("jars")){%]
-[%for (j in c.jars){%]
-[%=j.filename%]
-[%}%]
+	[%if (isLayerActive("jars")){%]
+	[%for (j in c.jars){%]
+	[%=j.filename%]
+	[%}%]
 [%}%]
 }
+
 [%}%]
 
 [*For every dependency between components generate an edge between the respective objects*]
