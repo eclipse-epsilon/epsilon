@@ -34,7 +34,7 @@ var entities = getVisibleEntities();
 [%if (mainEntity <> null) {%]
 	
 	[%for (f in mainEntity.features.select(f|f.type.isTypeOf(Entity))){%]
-		[%=mainEntity.name%]-->[%=f.type.name%] : [%=f.name%][%=f.getLabel()%]
+		[%=mainEntity.name%]-->[%=f.type.name%][%=f.getReferenceLabel()%]
 	[%}%]
 	
 	[%if (isLayerActive("supertype") and mainEntity.superType.isDefined()) {%]
@@ -49,7 +49,7 @@ var entities = getVisibleEntities();
 [%} else {%]
 	[%for (ent in entities){%]
 	[%for (f in ent.features.select(f|f.type.isTypeOf(Entity) and entities.includes(f.type))){%]
-		[%=ent.name%]-->[%=f.type.name%][%=f.getLabel()%]
+		[%=ent.name%]-->[%=f.type.name%][%=f.getReferenceLabel()%]
 	[%}%]
 	
 	[%if (isLayerActive("supertype") and entities.includes(ent.superType)) {%]
@@ -118,9 +118,10 @@ operation Entity getLink() {
 	return "showView(" + getPath(Sequence{"Entities", self.name})% + ")";
 }
 
-operation Feature getLabel() {
+operation Feature getReferenceLabel() {
 	var label = "";
 	if (isLayerActive("referenceLabels")) {
+		// the initial " : " comes from PlantUML's syntax to add a label
 		label = " : " + self.name + (self.many ? " ["+"*"+"]" : "");
 	}
 	return label;
