@@ -27,7 +27,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({TestTemplateFactory.ResolutionTests.class, TestTemplateFactory.DefaultFormatterTests.class})
+@SuiteClasses({TestTemplateFactory.ResolutionTests.class, TestTemplateFactory.DefaultFormatterTests.class, TestTemplateFactory.InvalidTemplateTests.class})
 public class TestTemplateFactory {
 		
 	public static abstract class TemplateFactoryTests {
@@ -36,6 +36,15 @@ public class TestTemplateFactory {
 		@Before
 		public void setUp() {
 			tf = new EglTemplateFactory(new MockContext());
+		}
+	}
+	
+	public static class InvalidTemplateTests extends TemplateFactoryTests {
+		
+		@Test(expected = EglRuntimeException.class)
+		public void testTemplateWithEndOfComment() throws Exception {
+			EglTemplate template = tf.prepare("*]");
+			template.process();
 		}
 	}
 	

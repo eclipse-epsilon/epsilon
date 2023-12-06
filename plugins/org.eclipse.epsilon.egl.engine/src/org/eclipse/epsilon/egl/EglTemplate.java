@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.egl.exceptions.EglRuntimeException;
@@ -75,6 +76,13 @@ public class EglTemplate {
 	}
 	
 	public String process() throws EglRuntimeException {
+		
+		List<ParseProblem> parseErrors = module.getParseProblems().stream().filter(p -> p.getSeverity() == ParseProblem.ERROR).collect(Collectors.toList());
+		
+		if (!parseErrors.isEmpty()) {
+			throw new EglRuntimeException("Attempted to process a template with syntax errors: " + parseErrors.iterator().next().toString(), module);
+		}
+		
 		for (ITemplateExecutionListener listener : listeners) {
 			listener.aboutToProcess(this);
 		}
