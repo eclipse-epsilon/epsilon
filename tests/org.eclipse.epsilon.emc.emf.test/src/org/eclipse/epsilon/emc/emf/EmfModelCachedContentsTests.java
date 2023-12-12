@@ -11,9 +11,14 @@ package org.eclipse.epsilon.emc.emf;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.PrintStream;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.epsilon.common.util.FileUtil;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.junit.Test;
 
@@ -57,5 +62,44 @@ public class EmfModelCachedContentsTests {
 		model.getResource().getContents().remove(eClass);
 		assertEquals(0, model.allContents().size());
 	}
-	
+
+
+	@Test
+	public void disposeTwoCopiesSameModel() throws Exception {
+		final File treeEcore = FileUtil.getFileStandalone("Tree.ecore", EmfModelCachedContentsTests.class);
+		
+		EmfModel m1 = new EmfModel();
+		m1.setModelFile("dummy.xmi");
+		m1.setName("ModelA");
+		m1.setReadOnLoad(false);
+		m1.setMetamodelFile(treeEcore.getAbsolutePath());;
+		m1.setStoredOnDisposal(false);
+		m1.setCachingEnabled(true);
+		m1.load();
+		m1.createInstance("Tree");
+
+		EmfModel m2 = new EmfModel();
+		m2.setModelFile(m1.getModelFile());
+		m2.setName("ModelB");
+		m2.setReadOnLoad(false);
+		m2.setStoredOnDisposal(false);
+		m2.setMetamodelFile(treeEcore.getAbsolutePath());
+		m2.setCachingEnabled(true);
+		m2.load();
+
+		PrintStream oldErr = System.err;
+		try {
+			ByteArrayOutputStream bOS = new ByteArrayOutputStream();
+			System.setErr(new PrintStream(bOS));
+
+			m1.dispose();
+			m2.dispose();
+
+			String errOutput = bOS.toString();
+			assertEquals("Loading the same model twice and disposing both copies should not raise any errors", "", errOutput);
+		} finally {
+			System.setErr(oldErr);
+		}
+	}
+
 }

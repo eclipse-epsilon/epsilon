@@ -22,7 +22,6 @@ import java.util.stream.Stream;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -378,10 +377,10 @@ public class EmfModel extends AbstractReflectiveEmfModel {
 			}
 		}
 		if (isCachingEnabled()) {
-			modelImpl.eAdapters().add(new CachedContentsAdapter());
+			addContentsAdapter();
 		}
 	}
-	
+
 	/**
 	 * @since 1.6
 	 */
@@ -392,12 +391,30 @@ public class EmfModel extends AbstractReflectiveEmfModel {
 		
 		if (modelImpl != null) {
 			if (!wasEnabled && cachingEnabled && !hasAdapter(CachedContentsAdapter.class)) {
-				modelImpl.eAdapters().add(new CachedContentsAdapter());
+				addContentsAdapter();
 			}
 			else if (wasEnabled && !cachingEnabled) {
-				modelImpl.eAdapters().removeIf(a -> a instanceof CachedContentsAdapter);
+				removeContentsAdapter();
 			}
 		}
+	}
+
+	@Override
+	public void clearCache() {
+		if (modelImpl != null && isCachingEnabled()) {
+			removeContentsAdapter();
+		}
+
+		super.clearCache();
+	}
+
+	private void removeContentsAdapter() {
+		modelImpl.eAdapters().removeIf(a -> a instanceof CachedContentsAdapter);
+	}
+
+	private void addContentsAdapter() {
+		
+		modelImpl.eAdapters().add(new CachedContentsAdapter());
 	}
 	
 	public List<String> getMetamodelFiles() {
