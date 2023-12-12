@@ -411,6 +411,7 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 		}
 
 		eClassCache.clear();
+		enumCache.clear();
 	}
 
 	public Resource getResource() {
