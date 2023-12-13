@@ -399,24 +399,22 @@ public class EmfModel extends AbstractReflectiveEmfModel {
 		}
 	}
 
-	@Override
-	public void clearCache() {
-		if (modelImpl != null && isCachingEnabled()) {
-			removeContentsAdapter();
-		}
-
-		super.clearCache();
-	}
-
 	private void removeContentsAdapter() {
 		modelImpl.eAdapters().removeIf(a -> a instanceof CachedContentsAdapter);
 	}
 
 	private void addContentsAdapter() {
-		
 		modelImpl.eAdapters().add(new CachedContentsAdapter());
 	}
-	
+
+	@Override
+	public void disposeModel() {
+		if (modelImpl != null && isCachingEnabled()) {
+			removeContentsAdapter();
+		}
+		super.disposeModel();
+	}
+
 	public List<String> getMetamodelFiles() {
 		final List<String> files = new ArrayList<>(metamodelFileUris.size());
 		for (URI metamodelFileUri : this.metamodelFileUris) {
