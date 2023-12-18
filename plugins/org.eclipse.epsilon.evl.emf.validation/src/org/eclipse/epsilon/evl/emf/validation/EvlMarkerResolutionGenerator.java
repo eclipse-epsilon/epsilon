@@ -52,7 +52,9 @@ public class EvlMarkerResolutionGenerator implements IMarkerResolutionGenerator 
 			
 			if (this.resolutions.get(elementId) != null) {
 				for (FixInstance fix : this.resolutions.get(elementId)) {
-					if (message.equals(messages.get(fix))) {
+					// Use endsWith instead of equals as EMF prepends [platform:/...] to the
+					// actual error message in elements from imported resources
+					if (message.endsWith(messages.get(fix))) {
 						resolutions.add(new EvlMarkerResolution(elementId, fix, modelNames.get(fix), ePackageUris.get(fix)));
 					}
 				}
