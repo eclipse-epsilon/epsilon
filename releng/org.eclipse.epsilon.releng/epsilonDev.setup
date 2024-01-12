@@ -12,18 +12,18 @@
     xmlns:setup.p2="http://www.eclipse.org/oomph/setup/p2/1.0"
     xmlns:setup.workingsets="http://www.eclipse.org/oomph/setup/workingsets/1.0"
     xmlns:workingsets="http://www.eclipse.org/oomph/workingsets/1.0"
-    xsi:schemaLocation="http://www.eclipse.org/oomph/setup/git/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/Git.ecore http://www.eclipse.org/oomph/setup/jdt/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/JDT.ecore http://www.eclipse.org/oomph/setup/pde/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/PDE.ecore http://www.eclipse.org/oomph/predicates/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/Predicates.ecore http://www.eclipse.org/oomph/setup/projects/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/Projects.ecore http://www.eclipse.org/oomph/setup/workingsets/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/SetupWorkingSets.ecore http://www.eclipse.org/oomph/workingsets/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/WorkingSets.ecore"
+    xsi:schemaLocation="http://www.eclipse.org/oomph/setup/git/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/Git.ecore http://www.eclipse.org/oomph/setup/jdt/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/JDT.ecore http://www.eclipse.org/oomph/setup/pde/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/PDE.ecore http://www.eclipse.org/oomph/predicates/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/Predicates.ecore http://www.eclipse.org/oomph/setup/projects/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/Projects.ecore http://www.eclipse.org/oomph/setup/workingsets/1.0 http://git.eclipse.org/c/oomph/org.eclipse.oomph.git/plain/setups/models/SetupWorkingSets.ecore http://www.eclipse.org/oomph/workingsets/1.0 https://raw.githubusercontent.com/eclipse-oomph/oomph/master/setups/models/WorkingSets.ecore"
     name="epsilon"
     label="Epsilon">
   <annotation
       source="http://www.eclipse.org/oomph/setup/BrandingInfo">
     <detail
         key="imageURI">
-      <value>https://git.eclipse.org/c/www.eclipse.org/epsilon.git/plain/mkdocs/docs/assets/images/epsilon-eclipse-installer.png</value>
+      <value>https://eclipse.dev/epsilon/assets/images/epsilon-eclipse-installer.png</value>
     </detail>
     <detail
         key="siteURI">
-      <value>https://www.eclipse.org/epsilon</value>
+      <value>https://eclipse.dev/epsilon/</value>
     </detail>
   </annotation>
   <setupTask
@@ -102,19 +102,14 @@
     </content>
   </setupTask>
   <setupTask
-      xsi:type="pde:TargetPlatformTask"
-      name="Epsilon Target Platform">
-    <description></description>
-  </setupTask>
-  <setupTask
       xsi:type="git:GitCloneTask"
-      id="epsilon.git.clone"
-      remoteURI="epsilon/org.eclipse.epsilon.git">
+      id="epsilon.github.clone"
+      remoteURI="eclipse/epsilon">
     <annotation
         source="http://www.eclipse.org/oomph/setup/InducedChoices">
       <detail
           key="inherit">
-        <value>eclipse.git.gerrit.remoteURIs</value>
+        <value>github.remoteURIs</value>
       </detail>
       <detail
           key="label">
@@ -129,13 +124,14 @@
   </setupTask>
   <setupTask
       xsi:type="git:GitCloneTask"
-      id="www.epsilon.git.clone"
-      remoteURI="www.eclipse.org/epsilon.git">
+      id="www.epsilon.github.clone"
+      remoteURI="eclipse/epsilon-website"
+      checkoutBranch="master">
     <annotation
         source="http://www.eclipse.org/oomph/setup/InducedChoices">
       <detail
           key="inherit">
-        <value>eclipse.git.gerrit.remoteURIs</value>
+        <value>github.remoteURIs</value>
       </detail>
       <detail
           key="label">
@@ -150,8 +146,9 @@
   </setupTask>
   <setupTask
       xsi:type="git:GitCloneTask"
-      id="epsilon.antlr.git.clone"
-      remoteURI="https://github.com/epsilonlabs/epsilon-antlr-dev">
+      id="epsilon.antlr.github.clone"
+      remoteURI="epsilonlabs/epsilon-antlr-dev"
+      checkoutBranch="master">
     <annotation
         source="http://www.eclipse.org/oomph/setup/InducedChoices">
       <detail
@@ -162,23 +159,27 @@
           key="target">
         <value>remoteURI</value>
       </detail>
+      <detail
+          key="inherit">
+        <value>github.remoteURIs</value>
+      </detail>
     </annotation>
     <description>Epsilon ANTLR repo</description>
   </setupTask>
   <setupTask
       xsi:type="projects:ProjectsImportTask">
     <sourceLocator
-        rootFolder="${epsilon.git.clone.location/plugins}"/>
+        rootFolder="${epsilon.github.clone.location/plugins}"/>
     <sourceLocator
-        rootFolder="${epsilon.git.clone.location/tests}"/>
+        rootFolder="${epsilon.github.clone.location/tests}"/>
     <sourceLocator
-        rootFolder="${epsilon.git.clone.location/examples}"/>
+        rootFolder="${epsilon.github.clone.location/examples}"/>
     <sourceLocator
-        rootFolder="${epsilon.git.clone.location/features}"/>
+        rootFolder="${epsilon.github.clone.location/features}"/>
     <sourceLocator
-        rootFolder="${epsilon.git.clone.location/releng}"/>
+        rootFolder="${epsilon.github.clone.location/releng}"/>
     <sourceLocator
-        rootFolder="${epsilon.antlr.git.clone.location}"/>
+        rootFolder="${epsilon.antlr.github.clone.location}"/>
     <description>Development Projects</description>
   </setupTask>
   <setupTask
@@ -192,7 +193,7 @@
             project="org.eclipse.epsilon.releng"/>
         <operand
             xsi:type="predicates:LocationPredicate"
-            pattern="${epsilon.git.clone.location/plugins}"/>
+            pattern="${epsilon.github.clone.location}/plugins"/>
       </predicate>
     </workingSet>
     <workingSet
@@ -204,7 +205,7 @@
             project="org.eclipse.epsilon.releng"/>
         <operand
             xsi:type="predicates:LocationPredicate"
-            pattern="${epsilon.git.clone.location/tests}"/>
+            pattern="${epsilon.github.clone.location}/tests"/>
       </predicate>
     </workingSet>
     <workingSet
@@ -216,7 +217,7 @@
             project="org.eclipse.epsilon.releng"/>
         <operand
             xsi:type="predicates:LocationPredicate"
-            pattern="${epsilon.git.clone.location/features}"/>
+            pattern="${epsilon.github.clone.location}/features"/>
       </predicate>
     </workingSet>
     <workingSet
@@ -225,7 +226,7 @@
           xsi:type="predicates:AndPredicate">
         <operand
             xsi:type="predicates:LocationPredicate"
-            pattern="${epsilon.git.clone.location/examples}"/>
+            pattern="${epsilon.github.clone.location}/examples"/>
         <operand
             xsi:type="predicates:RepositoryPredicate"
             project="org.eclipse.epsilon.releng"/>
@@ -237,7 +238,7 @@
           xsi:type="predicates:AndPredicate">
         <operand
             xsi:type="workingsets:ExclusionPredicate"
-            excludedWorkingSet="//@setupTasks.11/@workingSets[name='Epsilon%20Plugins'] //@setupTasks.11/@workingSets[name='Epsilon%20Examples'] //@setupTasks.11/@workingSets[name='Epsilon%20Features'] //@setupTasks.11/@workingSets[name='Epsilon%20Tests']"/>
+            excludedWorkingSet="//@setupTasks.10/@workingSets[name='Epsilon%20Plugins'] //@setupTasks.10/@workingSets[name='Epsilon%20Examples'] //@setupTasks.10/@workingSets[name='Epsilon%20Features'] //@setupTasks.10/@workingSets[name='Epsilon%20Tests']"/>
         <operand
             xsi:type="predicates:OrPredicate">
           <operand
@@ -251,12 +252,17 @@
     </workingSet>
     <description>The dynamic working sets for ${scope.project.label}</description>
   </setupTask>
-  <stream name="master"
-      label="Master">
+  <setupTask
+      xsi:type="pde:TargetPlatformTask"
+      name="Epsilon Target Platform">
+    <description></description>
+  </setupTask>
+  <stream name="main"
+      label="Main">
     <setupTask
         xsi:type="setup:EclipseIniTask"
         option="-Doomph.redirection.epsilon.git"
-        value="=https://git.eclipse.org/c/epsilon/org.eclipse.epsilon.git/plain/releng/org.eclipse.epsilon.releng/epsilonDev.setup->${epsilon.git.clone.location|uri}/releng/org.eclipse.epsilon.releng/epsilonDev.setup"
+        value="=https://raw.githubusercontent.com/eclipse/epsilon/main/releng/org.eclipse.epsilon.releng/epsilonDev.setup->${epsilon.github.clone.location|uri}/releng/org.eclipse.epsilon.releng/epsilonDev.setup"
         vm="true">
       <description>Set an Oomph redirection system property to redirect the logical location of this setup to its physical location in the Git clone.</description>
     </setupTask>
