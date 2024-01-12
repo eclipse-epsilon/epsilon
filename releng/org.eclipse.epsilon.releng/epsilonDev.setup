@@ -193,7 +193,7 @@
             project="org.eclipse.epsilon.releng"/>
         <operand
             xsi:type="predicates:LocationPredicate"
-            pattern="${epsilon.github.clone.location}/plugins"/>
+            pattern=".*/plugins/.*"/>
       </predicate>
     </workingSet>
     <workingSet
@@ -205,7 +205,7 @@
             project="org.eclipse.epsilon.releng"/>
         <operand
             xsi:type="predicates:LocationPredicate"
-            pattern="${epsilon.github.clone.location}/tests"/>
+            pattern=".*/tests/.*"/>
       </predicate>
     </workingSet>
     <workingSet
@@ -217,7 +217,7 @@
             project="org.eclipse.epsilon.releng"/>
         <operand
             xsi:type="predicates:LocationPredicate"
-            pattern="${epsilon.github.clone.location}/features"/>
+            pattern=".*/features/.*"/>
       </predicate>
     </workingSet>
     <workingSet
@@ -226,7 +226,7 @@
           xsi:type="predicates:AndPredicate">
         <operand
             xsi:type="predicates:LocationPredicate"
-            pattern="${epsilon.github.clone.location}/examples"/>
+            pattern=".*/examples/.*"/>
         <operand
             xsi:type="predicates:RepositoryPredicate"
             project="org.eclipse.epsilon.releng"/>
