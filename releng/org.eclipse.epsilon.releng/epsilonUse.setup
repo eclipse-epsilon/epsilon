@@ -19,7 +19,7 @@
     </detail>
     <detail
         key="imageURI">
-      <value>https://git.eclipse.org/c/www.eclipse.org/epsilon.git/plain/mkdocs/docs/assets/images/epsilon-eclipse-installer.png</value>
+      <value>https://eclipse.dev/epsilon/assets/images/epsilon-eclipse-installer.png</value>
     </detail>
     <detail
         key="siteURI">
