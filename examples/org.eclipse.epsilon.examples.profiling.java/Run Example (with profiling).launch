@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate">
+    <booleanAttribute key="fine_grained_profiling" value="true"/>
+    <stringAttribute key="implementation_name" value="Parallel"/>
+    <listAttribute key="models"/>
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
+    <intAttribute key="parallelism" value="7"/>
+    <listAttribute key="parameters"/>
+    <booleanAttribute key="profile_model_loading" value="false"/>
+    <booleanAttribute key="profiling_enabled" value="true"/>
+    <booleanAttribute key="reset_profiler" value="false"/>
+    <stringAttribute key="source" value="/org.eclipse.epsilon.examples.profiling.java/src/org/eclipse/epsilon/examples/profiling/java/example.eol"/>
+</launchConfiguration>
