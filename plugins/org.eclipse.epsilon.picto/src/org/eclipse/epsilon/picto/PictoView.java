@@ -19,9 +19,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
-import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
+import org.eclipse.core.runtime.jobs.JobGroup;
 import org.eclipse.epsilon.common.dt.EpsilonCommonsPlugin;
 import org.eclipse.epsilon.common.dt.console.EpsilonConsole;
 import org.eclipse.epsilon.common.dt.util.LogUtil;
@@ -392,7 +392,7 @@ public class PictoView extends ViewPart {
 			view
 		);
 		job.setUser(true);
-		job.setRule(new SamePictoViewRule(this));
+		job.setJobGroup(viewRenderingJobs);
 
 		job.addJobChangeListener(new JobChangeAdapter() {
 			@Override
@@ -431,6 +431,13 @@ public class PictoView extends ViewPart {
 			}
 		});
 
+		/*
+		 * Note: we want to cancel the individual jobs and not the job group itself,
+		 * as we want to continue executing future jobs.
+		 */
+		for (Job otherJob : viewRenderingJobs.getActiveJobs()) {
+			otherJob.cancel();
+		}
 		job.schedule();
 	}
 	
@@ -450,29 +457,10 @@ public class PictoView extends ViewPart {
 		viewRenderer.getBrowser().setFocus();
 	}
 
-	/** Scheduling rule which only allows one view to be rendered at a time. */
-	private static class SamePictoViewRule implements ISchedulingRule {
-		private PictoView picto;
-
-		public SamePictoViewRule(PictoView picto) {
-			this.picto = picto;
-		}
-
-		@Override
-		public boolean isConflicting(ISchedulingRule rule) {
-			return rule instanceof SamePictoViewRule && ((SamePictoViewRule) rule).picto == this.picto;
-		}
-
-		@Override
-		public boolean contains(ISchedulingRule rule) {
-			return rule == this;
-		}
-	}
-
 	/**
 	 * Runs the EGX script in the background, populates the tree, and shows the initial text.
 	 */
-	private class TreeRenderingJob extends Job {
+	class TreeRenderingJob extends Job {
 		private TreeRenderingJob(String name) {
 			super(name);
 		}
@@ -528,7 +516,7 @@ public class PictoView extends ViewPart {
 	/**
 	 * Renders a specific view (whether from loading Picto, or from selecting a tree item).
 	 */
-	private class ViewRenderingJob extends Job {
+	class ViewRenderingJob extends Job {
 		private final ViewTree view;
 		private ViewContent content;
 
@@ -540,7 +528,7 @@ public class PictoView extends ViewPart {
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
 			// Check if one of the source contents of the view is active
-			for (Iterator<ViewContent> contentIterator = view.getContents(PictoView.this).iterator(); contentIterator.hasNext() && content == null; ) {
+			for (Iterator<ViewContent> contentIterator = view.getContents(PictoView.this).iterator(); !monitor.isCanceled() && contentIterator.hasNext() && content == null; ) {
 				ViewContent next = contentIterator.next();
 				if (next.isActive()) {
 					content = next.getSourceContent(PictoView.this);
@@ -548,16 +536,25 @@ public class PictoView extends ViewPart {
 			}
 			
 			// ... if not, show the final rendered result
-			if (content == null) {
+			if (content == null && !monitor.isCanceled()) {
 				ViewContent viewContent = view.getContent();
-				if (viewContent != null) {
+				if (viewContent != null && !monitor.isCanceled()) {
 					content = viewContent.getFinal(PictoView.this);
 				}
 			}
 
-			return Status.OK_STATUS;
+			if (monitor.isCanceled()) {
+				return Status.CANCEL_STATUS;
+			} else {
+				return Status.OK_STATUS;
+			}
 		}		
 	}
+
+	/**
+	 * Ensures we only render one view at a time, and allows us to cancel pending jobs if the selection changes.
+	 */
+	protected JobGroup viewRenderingJobs = new JobGroup("Picto view rendering jobs", 1, 0);
 
 	class EditorPropertyListener implements IPropertyListener {
 		@Override
