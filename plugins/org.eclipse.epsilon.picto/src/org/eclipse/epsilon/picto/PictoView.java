@@ -527,6 +527,8 @@ public class PictoView extends ViewPart {
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
+			view.getPromise().setProgressMonitor(monitor);
+
 			// Check if one of the source contents of the view is active
 			for (Iterator<ViewContent> contentIterator = view.getContents(PictoView.this).iterator(); !monitor.isCanceled() && contentIterator.hasNext() && content == null; ) {
 				ViewContent next = contentIterator.next();
