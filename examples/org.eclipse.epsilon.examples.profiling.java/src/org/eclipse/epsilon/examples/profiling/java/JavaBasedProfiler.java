@@ -10,6 +10,13 @@ import org.eclipse.epsilon.profiling.ProfilingExecutionListener;
 
 public class JavaBasedProfiler {
 
+    /*
+	 * This is just a tag to identify this module: it does not have to be the filename of the script.
+	 * For instance, it could have simply been "example" or "my_script".
+	 *
+	 * If we run the script multiple times and want the results of all its executions to be aggregated
+	 * we need to use the same tag.
+	 */
 	private static final String EOL_NAME = "example.eol"; 
 
 	public static void main(String[] args) throws Exception {
