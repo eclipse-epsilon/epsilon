@@ -10,8 +10,11 @@
 package org.eclipse.epsilon.egl.merge;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+
 import org.eclipse.epsilon.egl.merge.output.LocatedRegion;
 import org.eclipse.epsilon.egl.merge.output.Output;
 import org.eclipse.epsilon.egl.merge.output.RegionType;
@@ -81,7 +84,7 @@ public class Merger {
 	
 	public String mergeProtectedRegions() {
 		warnings.clear();
-		final List<String> idsPresentInGenerated = new LinkedList<>();
+		final Set<String> idsPresentInGenerated = new HashSet<>();
 		
 		for (LocatedRegion generatedRegion : generated.getLocatedRegions()) {
 			final LocatedRegion existingRegion = existing.getLocatedRegion(generatedRegion.getId());
