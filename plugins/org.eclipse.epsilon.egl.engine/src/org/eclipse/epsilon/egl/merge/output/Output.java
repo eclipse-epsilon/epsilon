@@ -17,6 +17,7 @@ public class Output {
 	private final List<Region> regions = new ArrayList<>(0);
 	private final Collection<String> locatedRegionIds = new LinkedHashSet<>();
 	private final Collection<String> duplicatedLocatedRegionIds = new LinkedHashSet<>();
+	private final Map<String, LocatedRegion> locatedRegionCache = new HashMap<>();
 	
 	public Output(Region... regions) {
 		this(Arrays.asList(regions));	
@@ -37,6 +38,7 @@ public class Output {
 				}
 				else {
 					locatedRegionIds.add(id);
+					locatedRegionCache.put(id, lr);
 				}
 			}
 		}
@@ -54,16 +56,7 @@ public class Output {
 	}
 	
 	public LocatedRegion getLocatedRegion(String id) {
-		for (Region region : regions) {
-			if (region instanceof LocatedRegion) {
-				LocatedRegion locatedRegion = (LocatedRegion)region;
-				if (locatedRegion.getId().equals(id)) {
-					return locatedRegion;
-				}
-			}
-		}
-		
-		return null;
+		return locatedRegionCache.get(id);
 	}
 	
 	public List<String> getProblems() {
