@@ -43,6 +43,9 @@ public class JavaBasedProfiler {
 					summary.getExecutionTime().getAggregate(),
 					summary.getExecutionTime().getIndividual());
 			}
+		} finally {
+			// Reset the profiler after producing the CSV, to save memory
+			Profiler.INSTANCE.reset();
 		}
 	}
 
