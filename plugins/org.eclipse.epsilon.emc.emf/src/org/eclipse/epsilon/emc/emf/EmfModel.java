@@ -399,11 +399,20 @@ public class EmfModel extends AbstractReflectiveEmfModel {
 		}
 	}
 
-	private void removeContentsAdapter() {
+	/**
+	 * Removes the contents adapter that was added by {@link #addContentsAdapter()}.
+	 */
+	protected void removeContentsAdapter() {
 		modelImpl.eAdapters().removeIf(a -> a instanceof CachedContentsAdapter);
 	}
 
-	private void addContentsAdapter() {
+	/**
+	 * Adds an adapter which incrementally maintains {@code Type.all} queries.
+	 *
+	 * If you override this method to add a different implementation, make sure that
+	 * {@link #removeContentsAdapter()} will still remove it.
+	 */
+	protected void addContentsAdapter() {
 		modelImpl.eAdapters().add(new CachedContentsAdapter());
 	}
 
