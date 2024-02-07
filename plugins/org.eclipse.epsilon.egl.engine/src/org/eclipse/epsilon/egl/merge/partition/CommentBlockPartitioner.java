@@ -12,6 +12,7 @@ package org.eclipse.epsilon.egl.merge.partition;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.eclipse.epsilon.egl.merge.output.Output;
@@ -23,8 +24,7 @@ import org.eclipse.epsilon.egl.util.FileUtil;
 public class CommentBlockPartitioner implements Partitioner {
 	
 	private final String startComment, endComment;
-	private String firstLine, lastLine;
-	private String contents = "(.*^[\\s]*)";
+	private Pattern regionPattern;
 	
 	private static String escape(String text) {
 		return text.replaceAll("\\*", "\\\\*");
@@ -37,11 +37,10 @@ public class CommentBlockPartitioner implements Partitioner {
 	}
 	
 	private void init() {
-		initFirstLine();
-		initLastLine();
+		initPattern();
 	}
 	
-	private void initFirstLine() {
+	private void initPattern() {
 		final StringBuilder regex = new StringBuilder();
 		
 		if (startComment.length() > 0) {
@@ -58,42 +57,8 @@ public class CommentBlockPartitioner implements Partitioner {
 		// The region's id, matched reluctantly and terminated with a space
 		regex.append("(.*?) ");
 		
-		// on or off followed by begin
-		regex.append("(on|off) begin");
-	
-		if (endComment.length() > 0) {
-			// whitespace
-			regex.append("[\\s]*");
-	
-			// The end comment delimiter
-			regex.append(escape(endComment));
-		}
-		
-		// Any amount of whitespace, up to the end of the line
-		regex.append("[\\s]*^");
-		
-		firstLine = regex.toString();
-	}
-	
-	private void initLastLine() {
-		final StringBuilder regex = new StringBuilder();
-		
-		if (startComment.length() > 0) {
-			// The start comment delimiter
-			regex.append(escape(startComment));
-			
-			// whitespace
-			regex.append("[\\s]*");
-		}
-		
-		// The protected region literal
-		regex.append("\\1 region ");
-		
-		// The region's id terminated with a space
-		regex.append("\\2 ");
-		
-		// end
-		regex.append("end");
+		// end or (on or off followed by begin)
+		regex.append("(end|(on|off) begin)");
 		
 		if (endComment.length() > 0) {
 			// whitespace
@@ -103,7 +68,7 @@ public class CommentBlockPartitioner implements Partitioner {
 			regex.append(escape(endComment));
 		}
 		
-		lastLine = regex.toString();
+		regionPattern = Pattern.compile(regex.toString());
 	}
 	
 	public String getStartComment() {
@@ -170,29 +135,107 @@ public class CommentBlockPartitioner implements Partitioner {
 	
 	public Output partition(String text, int offset) {
 		final List<Region> regions = new LinkedList<>();
+
+		// We will read the text line by line, as this is the most performent way to process the text. 
+		final Scanner scanner = new Scanner(text);
+		final StringBuilder buffer = new StringBuilder();
 		
-		final Pattern pattern = Pattern.compile(firstLine + contents + lastLine, Pattern.MULTILINE | Pattern.DOTALL);
-		final Matcher matcher = pattern.matcher(text);
-	
-		int previousEnd = 0;
+		// Keep track of variables that will change as we read the text
+		boolean isRegionEnabled = false;
+		String regionId = null;
+		RegionType regionType = null;
+		int regionOffset = 0;
 		
-		while (matcher.find()) {
-			if (matcher.start() > previousEnd) {
-				regions.add(new Region(text.substring(previousEnd, matcher.start())));
+		// We need to keep a track of the offset within the text
+		int textOffset = 0;
+		
+		// Loop over each line
+		while (scanner.hasNextLine()) {
+			// Get the line (will not include line terminators)
+			String line = scanner.nextLine();
+			int currentLineOffset = 0;
+			
+			// Add the line terminators back in if appropriate
+			if (scanner.hasNextLine() || text.endsWith(System.lineSeparator())) {
+				line += System.lineSeparator();
 			}
 			
-			previousEnd = matcher.end();
+			// Match the line against the region pattern
+			Matcher matcher = regionPattern.matcher(line);
 			
-			boolean enabled = matcher.group(3) != null && matcher.group(3).equals("on");
+			boolean didMatchPreviously = false;
+			while(true) {
+				boolean doesMatch = matcher.find();
+				
+				if (doesMatch) {
+					didMatchPreviously = true;
+					
+					// If there is any content before the region marker, add it to the buffer
+					if (currentLineOffset < matcher.start()) {
+						buffer.append(line.substring(currentLineOffset, matcher.start()));
+					}
+					
+					// Keep a track of where we are in the line
+					currentLineOffset = matcher.start();
+					
+					// This is a region marker
+					if (matcher.group(3).equals("end")) {
+						// This is the end of a region
+						
+						// Pull the contents from the buffer and reset it
+						final String regionContents = buffer.toString();
+						buffer.setLength(0);
+						
+						// Create the protected region
+						final LocatedRegion region = new CommentedProtectedRegion(regionId, regionOffset, isRegionEnabled, regionContents);
+						region.setType(regionType);
+						regions.add(region);
+						
+						// Keep a track of where we are in the line
+						currentLineOffset = matcher.end();
+					} else {
+						// This is the start of a region
+						isRegionEnabled = matcher.group(4) != null && matcher.group(4).equals("on");
+						regionType = regionTypeFromString(matcher.group(1));
+						regionId = matcher.group(2);
+						regionOffset = offset + textOffset + currentLineOffset;
+						
+						// If the buffer contains any content, create a region for it and reset it
+						if (buffer.length() > 0) {
+							regions.add(new Region(buffer.toString()));
+							buffer.setLength(0);
+						}
+						
+						// Keep a track of where we are in the line
+						// There is always a new line at the end of a starting region
+						currentLineOffset = matcher.end() + System.lineSeparator().length();
+					}
+				} else {
+					if (didMatchPreviously) {
+						// If there was a match on this line and there is additional content after the match, add it to the buffer
+						if (currentLineOffset < line.length()) {
+							buffer.append(line.substring(currentLineOffset));							
+						}
+					} else {
+						// Nothing on this line was matched, add the whole line to the buffer
+						buffer.append(line);
+					}
+					// Break out of the while loop as there are no more matches in this line
+					break;
+				}
+			}
 			
-			final LocatedRegion region = new CommentedProtectedRegion(matcher.group(2), matcher.start() + offset, enabled, matcher.group(4));
-			region.setType(regionTypeFromString(matcher.group(1)));
-			
-			regions.add(region);
+			// Increase the offset number
+			textOffset += line.length();
 		}
 		
-		if (previousEnd < text.length()) {
-			regions.add(new Region(text.substring(previousEnd)));
+		// Close the scanner to release resources
+		scanner.close();
+		
+		// If the buffer still has length, we need to add it as another region
+		if (buffer.length() > 0) {
+			regions.add(new Region(buffer.toString()));
+			buffer.setLength(0);
 		}
 		
 		return new Output(regions);

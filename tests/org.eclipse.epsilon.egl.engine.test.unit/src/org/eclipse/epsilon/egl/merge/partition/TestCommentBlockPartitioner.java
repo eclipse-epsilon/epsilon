@@ -99,8 +99,9 @@ public abstract class TestCommentBlockPartitioner {
 		                              startComment + "protected region test end" + endComment;
 		
 		final Output expected = new Output(partitioner.new CommentedProtectedRegion("test", 0, false, regionContents));
+		final Output actual = partitioner.partition(text);
 		
-		assertEquals(expected, partitioner.partition(text));
+		assertEquals(expected, actual);
 	}
 
 	public void testPartitionSingleProtectedRegionEmpty() {
@@ -148,8 +149,9 @@ public abstract class TestCommentBlockPartitioner {
 		                              unprotected;
 		
 		final Output expected = new Output(partitioner.new CommentedProtectedRegion("test", 0, true, regionContents), new Region(unprotected));
+		final Output actual = partitioner.partition(text);
 		
-		assertEquals(expected, partitioner.partition(text));
+		assertEquals(expected, actual);
 	}
 
 	public void testPartitionTwoProtectedRegions() {
@@ -165,8 +167,9 @@ public abstract class TestCommentBlockPartitioner {
 		
 		final Output expected = new Output(partitioner.new CommentedProtectedRegion("test",  0, true, firstRegionContents),
 		                                   partitioner.new CommentedProtectedRegion("test2", text.indexOf(startComment + "protected region test2"), true, secondRegionContents));
+		final Output actual = partitioner.partition(text);
 		
-		assertEquals(expected, partitioner.partition(text));
+		assertEquals(expected, actual);
 	}
 
 	public void testPartitionComplex() {
