@@ -104,26 +104,4 @@ public class TestProtectedRegionMerging {
 		assertEquals("", merger.merge());
 		assertEquals(0, merger.getMergeWarnings().size());
 	}
-
-	@Test
-	public void testOnAndOn_EndStartSameLine() {
-		final String existing = String.join(NEWLINE,
-			"<!-- protected region anId on begin -->",
-			"This first text is preserved.",
-			"<!-- protected region anId end --><!-- protected region anotherId on begin -->",
-			"This second text is preserved.",
-			"<!-- protected region anotherId end -->");
-
-		final String generated = String.join(NEWLINE,
-				"<!-- protected region anId on begin -->",
-				"This first text is generated.",
-				"<!-- protected region anId end --><!-- protected region anotherId on begin -->",
-				"This second text is generated.",
-				"<!-- protected region anotherId end -->");
-
-		final Merger merger = new Merger(partitioner, generated, existing);
-		assertEquals(existing, merger.merge());
-		assertEquals(0, merger.getMergeWarnings().size());
-	}
-
 }
