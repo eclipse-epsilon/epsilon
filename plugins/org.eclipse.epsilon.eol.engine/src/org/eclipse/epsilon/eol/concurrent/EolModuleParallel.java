@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.execute.context.concurrent.EolContextParallel;
 import org.eclipse.epsilon.eol.execute.context.concurrent.IEolContextParallel;
@@ -38,8 +40,8 @@ public class EolModuleParallel extends EolModule {
 	}
 	
 	@Override
-	protected HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	protected HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("eol", EolModuleParallel.class);
 		return importConfiguration;
 	}

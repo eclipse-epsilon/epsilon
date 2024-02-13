@@ -142,8 +142,8 @@ public class EtlModule extends ErlModule implements IEtlModule {
 	}
 	
 	@Override
-	public HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	public HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("etl", EtlModule.class);
 		return importConfiguration;
 	}

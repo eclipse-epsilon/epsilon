@@ -226,8 +226,8 @@ public class EglModule extends EolModule implements IEglModule {
 	}
 	
 	@Override
-	protected HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	protected HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("egl", EglModule.class);
 		return importConfiguration;
 	}

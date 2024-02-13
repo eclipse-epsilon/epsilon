@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.emg.execute.operations.contributors.EmgOperationContributor;
 import org.eclipse.epsilon.eol.dom.Annotation;
 import org.eclipse.epsilon.eol.dom.AnnotationBlock;
@@ -136,8 +138,8 @@ public class EmgModule extends EplModule implements IEmgModule {
 	 * @see org.eclipse.epsilon.epl.EplModule#getImportConfiguration()
 	 */
 	@Override
-	public HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	public HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("emg", EmgModule.class);
 		return importConfiguration;
 	}

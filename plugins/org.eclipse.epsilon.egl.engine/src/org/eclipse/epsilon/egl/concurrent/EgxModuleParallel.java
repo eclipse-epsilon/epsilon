@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.egl.exceptions.EglRuntimeException;
 import org.eclipse.epsilon.egl.execute.context.concurrent.EgxContextParallel;
@@ -52,8 +54,8 @@ public abstract class EgxModuleParallel extends EgxModule {
 	}
 	
 	@Override
-	public HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	public HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("egx", EgxModuleParallelAnnotation.class);
 		return importConfiguration;
 	}

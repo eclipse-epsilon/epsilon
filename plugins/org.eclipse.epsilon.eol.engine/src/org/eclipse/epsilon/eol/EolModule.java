@@ -126,7 +126,7 @@ public class EolModule extends AbstractModule implements IEolModule {
 		super.build(cst, module);
 		checkImports(cst);
 		
-		for (Map.Entry<String, Class<?>> entry : getImportConfiguration().entrySet()) {
+		for (Map.Entry<String, Class<?  extends IModule>> entry : getImportConfiguration().entrySet()) {
 			imports.addAll(getImportsByExtension(cst, entry.getKey(), entry.getValue()));
 		}
 		
@@ -334,8 +334,8 @@ public class EolModule extends AbstractModule implements IEolModule {
 		return declaredOperations;
 	}
 	
-	protected HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = new HashMap<>(4);
+	protected HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = new HashMap<>(4);
 		importConfiguration.put("eol", EolModule.class);
 		return importConfiguration;
 	}
@@ -385,7 +385,7 @@ public class EolModule extends AbstractModule implements IEolModule {
 		return operations;
 	}
 	
-	protected Collection<Import> getImportsByExtension(AST cst, String extension, Class<?> moduleImplClass) {
+	protected Collection<Import> getImportsByExtension(AST cst, String extension, Class<? extends IModule> moduleImplClass) {
 		List<AST> importAsts = AstUtil.getChildren(cst, EolParser.IMPORT);
 		List<Import> imports = new ArrayList<>(importAsts.size());
 		
