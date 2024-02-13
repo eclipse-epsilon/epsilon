@@ -26,7 +26,11 @@ public class Import extends AbstractModuleElement {
 	private boolean loaded = false;
 	private boolean found = false;
 	protected StringLiteral pathLiteral;
-	
+
+	public IEolModule getParentModule() {
+		return parentModule;
+	}
+
 	public void setParentModule(IEolModule parentModule) {
 		this.parentModule = parentModule;
 	}
@@ -101,6 +105,10 @@ public class Import extends AbstractModuleElement {
 	
 	public boolean isLoaded() {
 		return loaded;
+	}
+
+	public void setLoaded(boolean loaded) {
+		this.loaded = loaded;
 	}
 	
 	public boolean isFound() {

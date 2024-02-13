@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.epsilon.eol;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -92,6 +94,7 @@ public class EolModule extends AbstractModule implements IEolModule {
 	protected List<ModelDeclaration> declaredModelDeclarations;
 	protected Set<ModelDeclaration> modelDeclarations;
 	private IEolModule parent;
+	private IImportManager importManager;
 	
 	/**
 	 * The type of {@link #context} when using {@link #getContext()} and {@link #setContext(IEolContext)}.
@@ -389,49 +392,45 @@ public class EolModule extends AbstractModule implements IEolModule {
 		List<AST> importAsts = AstUtil.getChildren(cst, EolParser.IMPORT);
 		List<Import> imports = new ArrayList<>(importAsts.size());
 		
+		
 		for (AST importAst : importAsts) {
-			IModule module = null;
-			try {
-				module = (IModule) moduleImplClass.getDeclaredConstructor().newInstance();
-				if (module instanceof IEolModule) {
-					((IEolModule)module).setParentModule(this);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				continue;
-			}
-			
 			Import import_ = (Import) createAst(importAst, this);
-			
 			if (!import_.getPath().endsWith("." + extension)) continue;
 			
 			import_.setParentModule(this);
-			import_.setImportedModule(module);
 			
-			if (sourceUri == null && sourceFile == null) {
-				import_.load(null);
-			
-			} else if (sourceUri != null) {
-				import_.load(sourceUri);
-				
-			} else {
-				import_.load(sourceFile.toURI());
+			URI uri = null;
+			if (sourceUri != null) {
+				uri = sourceUri;
+			} else if (sourceFile != null) {
+				uri = sourceFile.toURI();
 			}
-			if (!import_.isLoaded()) {
+
+			try {
+				getImportManager().loadModuleForImport(import_, moduleImplClass, uri);
+
+				if (!import_.isLoaded()) {
+					ParseProblem problem = new ParseProblem();
+					problem.setLine(import_.getRegion().getStart().getLine());
+
+					String reason = import_.isFound()
+							? String.format("File %s not found", import_.getPath())
+							: String.format("File %s contains errors: %s", import_.getPath(),
+									import_.getModule().getParseProblems());
+
+					problem.setReason(reason);
+					getParseProblems().add(problem);
+				}
+			} catch (URISyntaxException ex) {
 				ParseProblem problem = new ParseProblem();
 				problem.setLine(import_.getRegion().getStart().getLine());
-				String reason;
-				if (!import_.isFound()) {
-					reason = "File " + import_.getPath() + " not found";
-				}
-				else {
-					reason = "File " + import_.getPath() + " contains errors: " + import_.getModule().getParseProblems();
-				}
-				problem.setReason(reason);
+				problem.setReason("Imported URI is invalid: " + uri);
 				getParseProblems().add(problem);
 			}
+
 			imports.add(import_);
 		}
+
 		return imports;
 	}
 	
@@ -531,5 +530,18 @@ public class EolModule extends AbstractModule implements IEolModule {
 			op.clearCache();
 		}
 		getContext().getExtendedProperties().clear();
+	}
+	
+	@Override
+	public IImportManager getImportManager() {
+		if (importManager == null) {
+			importManager = new ImportManager();
+		}
+		return importManager;
+	}
+	
+	@Override
+	public void setImportManager(IImportManager importManager) {
+		this.importManager = importManager;
 	}
 }

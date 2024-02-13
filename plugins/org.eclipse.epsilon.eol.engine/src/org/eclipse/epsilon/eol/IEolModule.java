@@ -75,4 +75,8 @@ public interface IEolModule extends IModule {
 	default Set<String> getConfigurationProperties() {
 		return Collections.emptySet();
 	}
+	
+	IImportManager getImportManager();
+	
+	void setImportManager(IImportManager importManager);
 }
