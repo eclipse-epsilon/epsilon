@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.epsilon.dt.exeed;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.epsilon.common.dt.AbstractEpsilonUIPlugin;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 public class ExeedPlugin extends AbstractEpsilonUIPlugin {
 
@@ -24,6 +29,19 @@ public class ExeedPlugin extends AbstractEpsilonUIPlugin {
 
 	public static final String MODELINK_EDITOR_ID = "org.eclipse.epsilon.dt.exeed.modelink.ModeLinkEditor";
 	
-
-
+	public ImageDescriptor getImageDescriptor(URI uri) {
+		
+		ImageDescriptor imageDescriptor = getImageDescriptorRegistry().getDescriptor(uri.toString());
+		if (imageDescriptor == null) {
+				try {
+					imageDescriptor = ImageDescriptor.createFromURL(new java.net.URI(uri.toString()).toURL());
+				} catch (MalformedURLException | URISyntaxException e) {
+					// Can be ignored
+				}
+				// Even if null cache, so we stop trying to create it
+				getImageDescriptorRegistry().put(uri.toString(), imageDescriptor);
+		}
+		
+		return imageDescriptor;
+	}
 }

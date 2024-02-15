@@ -182,21 +182,18 @@ public class ExeedActionBarContributor extends EcoreActionBarContributor {
 			
 			ArrayList<String> registeredPackages = new ArrayList<>(EPackage.Registry.INSTANCE.keySet());
 			Collections.sort(registeredPackages);
-			
-			ListSelectionDialog dlg = new ListSelectionDialog(
-					editor.getSite().getShell(),
-					registeredPackages,
-					new ListContentProvider(),
-					new LabelProvider() {
-						 
-						@Override
-						public Image getImage(Object element) {
-							return getPlugin().getImageDescriptor("icons/package.gif").createImage();
-						}
-						
-					},
-					"Select registered EPackages"
-			);
+			ListSelectionDialog dlg =  ListSelectionDialog.of(registeredPackages)
+						.contentProvider(new ListContentProvider())
+						.labelProvider(new LabelProvider() {
+							 
+							@Override
+							public Image getImage(Object element) {
+								return getPlugin().getImageDescriptor("icons/package.gif").createImage();
+							}
+							
+						})
+						.message("Select registered EPackages")
+						.create(editor.getSite().getShell());
 			
 			dlg.setBlockOnOpen(true);
 			if (dlg.open() == Window.OK) {

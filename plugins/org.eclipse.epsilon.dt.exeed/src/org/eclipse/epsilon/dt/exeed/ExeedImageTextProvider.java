@@ -12,6 +12,7 @@ package org.eclipse.epsilon.dt.exeed;
 
 import java.util.Collection;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -89,13 +90,25 @@ public class ExeedImageTextProvider {
 
 	private ImageDescriptor getImageDescriptor(String icon) {
 		ImageDescriptor imageDescriptor = null;
-		
-		imageDescriptor = plugin.getImageDescriptor("icons/" + icon + ".gif");
-		if (imageDescriptor == null) {
-			imageDescriptor = plugin.getImageDescriptor("icons/" + icon + ".png");
+		// icon might be a platform:/resource uri
+		if (icon != null) {
+			if (icon.startsWith ("platform:/")) {
+				try {
+					URI iconuri = URI.createURI(icon, false);
+					imageDescriptor = plugin.getImageDescriptor(iconuri);
+				}
+				catch (IllegalArgumentException ex) {
+					// icon is not a valid uri
+				}
+			}
+			else {
+				imageDescriptor = plugin.getImageDescriptor("icons/" + icon + ".gif");
+				if (imageDescriptor == null) {
+					imageDescriptor = plugin.getImageDescriptor("icons/" + icon + ".png");
+				}
+				
+			}
 		}
-		
 		return imageDescriptor;
 	}
-
 }
