@@ -99,6 +99,7 @@ public class ExeedImageTextProvider {
 				}
 				catch (IllegalArgumentException ex) {
 					// icon is not a valid uri
+					LogUtil.log("Provided icon url is incorret: " + icon, ex);
 				}
 			}
 			else {
