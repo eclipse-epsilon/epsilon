@@ -29,8 +29,7 @@ public class ImportManager implements IImportManager {
 			try {
 				module = moduleImplClass.getDeclaredConstructor().newInstance();
 			} catch (Exception e) {
-				e.printStackTrace();
-				return;
+				throw new RuntimeException(e);
 			}
 			
 			/*
