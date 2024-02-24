@@ -22,6 +22,7 @@ import org.eclipse.epsilon.eol.engine.test.acceptance.exceptions.ExceptionTests;
 import org.eclipse.epsilon.eol.engine.test.acceptance.firstOrder.*;
 import org.eclipse.epsilon.eol.engine.test.acceptance.firstOrder.lambda.*;
 import org.eclipse.epsilon.eol.engine.test.acceptance.firstOrder.nested.*;
+import org.eclipse.epsilon.eol.engine.test.acceptance.importCaching.ImportCachingTests;
 import org.eclipse.epsilon.eol.engine.test.acceptance.recording.*;
 import org.eclipse.epsilon.eol.engine.test.acceptance.unparser.EolUnparserTests;
 import org.junit.runner.RunWith;
@@ -77,7 +78,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	EolUnparserTests.class,
 	BreakAndContinueTests.class,
 	EnumResolutionTests.class,
-	CircularImportTests.class
+	CircularImportTests.class,
+	ImportCachingTests.class
 })
 public class EolAcceptanceTestSuite {
 
@@ -85,3 +87,4 @@ public class EolAcceptanceTestSuite {
 		return new junit.extensions.RepeatedTest(new JUnit4TestAdapter(EolAcceptanceTestSuite.class), 10);
 	}
 }
+
