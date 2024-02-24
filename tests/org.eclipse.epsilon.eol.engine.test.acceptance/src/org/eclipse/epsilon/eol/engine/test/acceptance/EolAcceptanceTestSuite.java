@@ -14,6 +14,8 @@ package org.eclipse.epsilon.eol.engine.test.acceptance;
 
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
+
+import org.eclipse.epsilon.eol.engine.test.acceptance.circularImports.CircularImportTests;
 import org.eclipse.epsilon.eol.engine.test.acceptance.dom.*;
 import org.eclipse.epsilon.eol.engine.test.acceptance.equalityStatement.*;
 import org.eclipse.epsilon.eol.engine.test.acceptance.exceptions.ExceptionTests;
@@ -74,7 +76,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	CommentsTests.class,
 	EolUnparserTests.class,
 	BreakAndContinueTests.class,
-	EnumResolutionTests.class
+	EnumResolutionTests.class,
+	CircularImportTests.class
 })
 public class EolAcceptanceTestSuite {
 

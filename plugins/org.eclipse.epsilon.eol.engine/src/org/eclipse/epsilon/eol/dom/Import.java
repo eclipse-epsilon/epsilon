@@ -127,9 +127,11 @@ public class Import extends AbstractModuleElement {
 	public void setContext(IEolContext context) {
 		if (importedModule instanceof IEolModule) {
 			IEolModule module = (IEolModule) importedModule;
-			module.setContext(context);
-			for (Import import_ : module.getImports()) {
-				import_.setContext(context);
+			if (module.getContext() != context) {
+				module.setContext(context);
+				for (Import import_ : module.getImports()) {
+					import_.setContext(context);
+				}
 			}
 		}
 	}
