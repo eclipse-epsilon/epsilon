@@ -16,13 +16,14 @@ import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.egl.incremental.IncrementalitySettings;
 import org.eclipse.epsilon.egl.internal.IEglModule;
 import org.eclipse.epsilon.egl.traceability.Template;
+import org.eclipse.epsilon.eol.IImportManager;
 
 class ResourceBackedTemplateSpecification extends EglTemplateSpecification {
 
 	private final URI resource;
 	
-	protected ResourceBackedTemplateSpecification(String name, URI resource, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, Collection<ITemplateExecutionListener> listeners) {
-		super(name, defaultFormatter, incrementalitySettings, listeners);
+	protected ResourceBackedTemplateSpecification(String name, URI resource, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, Collection<ITemplateExecutionListener> listeners) {
+		super(name, defaultFormatter, incrementalitySettings, importManager, listeners);
 		
 		this.resource = resource;
 	}

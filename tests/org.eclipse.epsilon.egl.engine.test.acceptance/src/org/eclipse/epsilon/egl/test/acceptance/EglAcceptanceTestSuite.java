@@ -9,9 +9,6 @@
  ******************************************************************************/
 package org.eclipse.epsilon.egl.test.acceptance;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.Test;
-
 import org.eclipse.epsilon.egl.test.acceptance.engine.Engine;
 import org.eclipse.epsilon.egl.test.acceptance.engine.reset.ResettingTemplates;
 import org.eclipse.epsilon.egl.test.acceptance.engine.subtemplates.InvokingSubtemplates;
@@ -19,6 +16,7 @@ import org.eclipse.epsilon.egl.test.acceptance.eol.ConsistencyWithEolSuite;
 import org.eclipse.epsilon.egl.test.acceptance.exceptions.Exceptions;
 import org.eclipse.epsilon.egl.test.acceptance.extensibility.Extensibility;
 import org.eclipse.epsilon.egl.test.acceptance.formatters.Formatters;
+import org.eclipse.epsilon.egl.test.acceptance.importCaching.ImportCachingTests;
 import org.eclipse.epsilon.egl.test.acceptance.merge.Merge;
 import org.eclipse.epsilon.egl.test.acceptance.operations.template.TemplateOperations;
 import org.eclipse.epsilon.egl.test.acceptance.outdentation.OutdentationTests;
@@ -31,6 +29,9 @@ import org.eclipse.epsilon.egl.test.acceptance.traceability.Traceability;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+import junit.framework.JUnit4TestAdapter;
+import junit.framework.Test;
 
 @RunWith(Suite.class)
 @SuiteClasses({Engine.class,
@@ -47,7 +48,8 @@ import org.junit.runners.Suite.SuiteClasses;
                CurrentLineNumber.class,
                Formatters.class,
                PatchTestSuite.class,
-               OutdentationTests.class})
+               OutdentationTests.class,
+               ImportCachingTests.class})
 public class EglAcceptanceTestSuite {
 
 	public static Test suite() {

@@ -15,6 +15,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.eclipse.epsilon.common.util.UriUtil;
 import org.eclipse.epsilon.egl.exceptions.EglRuntimeException;
 import org.eclipse.epsilon.egl.execute.context.IEglContext;
@@ -30,6 +31,7 @@ import org.eclipse.epsilon.egl.spec.EglTemplateSpecificationFactory;
 import org.eclipse.epsilon.egl.status.ProtectedRegionWarning;
 import org.eclipse.epsilon.egl.traceability.OutputFile;
 import org.eclipse.epsilon.egl.util.FileUtil;
+import org.eclipse.epsilon.eol.ImportManager;
 
 public class EglFileGeneratingTemplate extends EglPersistentTemplate {
 
@@ -47,7 +49,7 @@ public class EglFileGeneratingTemplate extends EglPersistentTemplate {
 	
 	// For tests
 	protected EglFileGeneratingTemplate(URI path, IEglContext context, URI outputRoot) throws Exception {
-		this(new EglTemplateSpecificationFactory(new NullFormatter(), new IncrementalitySettings()).fromResource(path.toString(), path), context, outputRoot);
+		this(new EglTemplateSpecificationFactory(new NullFormatter(), new IncrementalitySettings(), new ImportManager()).fromResource(path.toString(), path), context, outputRoot);
 	}
 
 	public EglFileGeneratingTemplate(EglTemplateSpecification spec, IEglContext context, URI outputRoot, String outputRootPath) throws Exception {

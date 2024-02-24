@@ -1,0 +1,7 @@
+rule FirstRule transform o: Any {
+  template: 'first.egl'
+}
+
+rule SecondRule transform o: Any {
+  template: 'second.egl'
+}
