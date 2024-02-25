@@ -20,6 +20,7 @@ import org.eclipse.epsilon.egl.incremental.IncrementalitySettings;
 import org.eclipse.epsilon.egl.internal.IEglModule;
 import org.eclipse.epsilon.egl.traceability.Template;
 import org.eclipse.epsilon.eol.IImportManager;
+import org.eclipse.epsilon.eol.ImportManager;
 
 public abstract class EglTemplateSpecification {
 
@@ -29,6 +30,16 @@ public abstract class EglTemplateSpecification {
 	private final Collection<ITemplateExecutionListener> listeners;
 	private final IImportManager importManager;
 	
+	/**
+	 * @deprecated From 2.5.0, switch to
+	 *             {@link #EglTemplateSpecification(String, Formatter, IncrementalitySettings, IImportManager, Collection)}
+	 *             for reuse of imported modules across templates.
+	 */
+	@Deprecated
+	protected EglTemplateSpecification(String name, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, Collection<ITemplateExecutionListener> listeners) {
+		this(name, defaultFormatter, incrementalitySettings, new ImportManager(), listeners);
+	}
+
 	protected EglTemplateSpecification(String name, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, Collection<ITemplateExecutionListener> listeners) {
 		this.name = name;
 		this.defaultFormatter = defaultFormatter;
