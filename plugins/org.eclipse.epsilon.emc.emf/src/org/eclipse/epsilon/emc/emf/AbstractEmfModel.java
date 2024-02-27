@@ -44,6 +44,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.epsilon.common.concurrent.ConcurrencyUtils;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.emc.emf.CachedResourceSet.Cache;
@@ -699,9 +700,15 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 	/**
 	 * @since 2.3.0
 	 */
-	public Map<Object, Object> getResourceLoadOptions(){
+	public Map<Object, Object> getResourceLoadOptions() {
+		if (resourceLoadOptions == null && modelImpl instanceof XMLResource) {
+			resourceLoadOptions = new HashMap<Object, Object>();
+			// Setting this option significantly improves loading time
+			resourceLoadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
+		}
 		return resourceLoadOptions;
 	}
+	
 	/**
 	 * @since 2.3.0
 	 */
@@ -712,7 +719,7 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 	 * @since 2.3.0
 	 */
 	public Object putResourceLoadOption(Object key, Object value){
-		if (resourceLoadOptions == null) {
+		if (getResourceLoadOptions() == null) {
 			resourceLoadOptions = new HashMap<>();
 		}
 		return resourceLoadOptions.put(key, value);
