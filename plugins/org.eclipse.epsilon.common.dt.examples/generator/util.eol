@@ -3,3 +3,7 @@ operation t_example getShortDescription() {
 	shortDescription = shortDescription.replaceAll('<a(.*?)>', "").replaceAll("</a>","").trim();
 	return shortDescription;
 }
+
+operation t_example getIndex() {
+	return t_example.all.indexOf(self) + 1;
+}

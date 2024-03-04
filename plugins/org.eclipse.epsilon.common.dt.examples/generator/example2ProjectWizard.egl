@@ -1,3 +1,4 @@
+[%import "util.eol";%]
 /*********************************************************************
 * Copyright (c) 2008 The University of York.
 *
@@ -9,11 +10,11 @@
 **********************************************************************/
 package org.eclipse.epsilon.common.dt.examples;
 
-public class ExampleProjectWizard34 extends WebGitProjectNewWizard {
+public class ExampleProjectWizard[%=example.getIndex()%] extends WebGitProjectNewWizard {
 	
-	public ExampleProjectWizard34() {
-		super("Generate PetriNet models using EMG", "In this example we demonstrate how to generate PetriNet elements and how to define relations between them.", "org.eclipse.epsilon.examples.emg.petrinet",
-				"https://git.eclipse.org", "/c/epsilon/org.eclipse.epsilon.git/plain/examples/org.eclipse.epsilon.examples.emg.petrinet/");
+	public ExampleProjectWizard[%=example.getIndex()%]() {
+		super("[%=example.a_title%]", "[%=example.getShortDescription()%]", "[%=example.a_src%]",
+				"https://git.eclipse.org", "/c/epsilon/org.eclipse.epsilon.git/plain/examples/[%=example.a_src%]/");
 		
 	}
 

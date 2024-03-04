@@ -13,7 +13,7 @@
       <wizard
             name="[%=example.a_title%]"
             category="org.eclipse.ui.Examples/org.eclipse.epsilon.common.dt.examples"
-            class="org.eclipse.epsilon.common.dt.examples.ExampleProjectWizard[%=example.~index%]"
+            class="org.eclipse.epsilon.common.dt.examples.ExampleProjectWizard[%=example.getIndex()%]"
             project="true"
             icon="icons/project.gif"
             id="[%=example.a_src%]">

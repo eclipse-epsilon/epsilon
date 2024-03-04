@@ -1,0 +1,19 @@
+import "util.eol";
+
+rule Examples2PluginXml {
+	
+	template : "examples2PluginXml.egl"
+	
+	target : "../plugin.xml"
+		
+}
+
+rule Example2Wizard
+	transform example : t_example {
+	
+	template : "example2ProjectWizard.egl"
+	
+	target : "../src-gen/org/eclipse/epsilon/common/dt/examples/" + 
+		"ExampleProjectWizard" + example.getIndex() + ".java"
+		
+}

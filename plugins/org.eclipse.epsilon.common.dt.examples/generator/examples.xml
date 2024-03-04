@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<examples>
+	<category name="eol" title="Epsilon Object Language">
+		<example src="org.eclipse.epsilon.examples.buildooinstance" title="Create an OO model with EOL">
+			<description>
+			<![CDATA[In this example we use EOL to programmatically construct a model that conforms to an object-oriented metamodel.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.modelmodification" title="Modify a Tree model with EOL">
+			<description>
+			<![CDATA[In this example we use EOL to programmatically modify a model that conforms to a Tree metamodel and store the modified version as a new model.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.calljava" title="Call Java code from Epsilon">
+			<description>
+			<![CDATA[In this example, we create a JFrame from EOL. The aim of this example is to show how to call Java code from within Epsilon languages.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.tools" title="Creating custom Java tools for Epsilon">
+			<description>
+			<![CDATA[In this example, we create a custom tool for Epsilon.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.plainxml" title="Building and querying plain XML documents with EOL">
+			<description>
+			<![CDATA[In this example, we use the plain XML driver of Epsilon to build and query an XML document that is not backed by a XSD/DTD.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.plainxml.copyfromtemplate" title="Cloning and copying XML elements across documents with EOL">
+			<description>
+			<![CDATA[In this example, we use the plain XML driver of Epsilon to clone and copy XML elements across different documents with EOL.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.clone" title="Cloning EMF model elements with EOL">
+			<description>
+			<![CDATA[In this example, we demonstrate how the EmfTool built-in tool can be used to perform deep-copy (cloning) of EMF model elements using EOL.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.profiling" title="Profiling and caching in EOL">
+			<description>
+			<![CDATA[This example demonstrates the caching capabilities and the profiling tools provided by Epsilon.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.xsdxml" title="Manage XSD-backed XML files with EOL">
+			<description>
+			<![CDATA[In this example we demonstrate using EOL to query an XSD-backed XML file.]]>
+			</description>
+		</example>
+	</category>
+	<category name="etl" title="Epsilon Transformation Language">
+		<example src="org.eclipse.epsilon.examples.tree2graph" title="Transform a Tree model to a Graph model with ETL">
+			<description>
+			<![CDATA[In this example, we use ETL to transform a model that conforms to a Tree metamodel to a model that conforms to a Graph metamodel.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.rss2atom" title="Transform an RSS feed to an Atom feed using ETL">
+			<description>
+			<![CDATA[In this example, we use ETL and the plain XML driver to transform an RSS feed to an Atom feed.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.etl.flowchart2html" title="Experiment with the different types of transformation rule in ETL using a Flowchart-to-HTML transformation.">
+			<description>
+			<![CDATA[In this example, we show the different types of transformation rule that are provided by ETL, including plain, abstract, lazy, primary and greedy rules. We also explore rule inheritance and rules that generate more than model element. We transform from a Flowchart model to an HTML model.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.oo2db" title="Transform an OO model to a DB model with ETL">
+			<description>
+			<![CDATA[In this example, we use ETL to transform a model that conforms to an Object-Oriented metamodel to a model that conforms to the Database metamodel.]]>
+			</description>
+		</example>
+	</category>
+	<category name="egl" title="Epsilon Generation Language">
+		<example src="org.eclipse.epsilon.examples.egl.flowchart" title="Experiment with the different features of EGL using a Flowchart-to-HTML transformation.">
+			<description>
+			<![CDATA[In this example, we explore the main features of EGL by generating HTML text from an EMF model of a flowchart. We demonstrate the EGX coordination language, code formatters, preserving hand-written text with protected regions and generating a fine-grained trace model.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.egl.library" title="Generating HTML pages from an XML document">
+			<description>
+			<![CDATA[In this example, we use the plain XML driver of Epsilon in the context of an EGL model-to-text transformation.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.egldoc" title="Generate HTML documentation from an Ecore metamodel with EGL">
+			<description>
+			<![CDATA[In this example, we demonstrate how EGL can be used to generate HTML documentation from an Ecore metamodel.]]>
+			</description>
+		</example>
+	</category>
+	<category name="evl" title="Epsilon Validation Language">
+		<example src="org.eclipse.epsilon.examples.validateoo" title="Validate an OO model with EVL">
+			<description>
+			<![CDATA[In this example, we use EVL, to express constraints for models that conform to an Object-Oriented metamodel.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.evl.intermodel" title="Validate an OO model against a DB model with EVL">
+			<description>
+			<![CDATA[In this example, we use EVL to expressing inter-model constraints.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.shortestpath" title="Dijkstra's shortest path algorithm with EOL/EVL">
+			<description>
+			<![CDATA[In this example, we use EOL and EVL to implement Dijkstra's shortest path algorithm.]]>
+			</description>
+		</example>
+	</category>
+	<category name="eml" title="Epsilon Merging Language">
+		<example src="org.eclipse.epsilon.examples.mergeentitywithvocabulary" title="Heterogeneous Model Merging with ECL/EML">
+			<description>
+			<![CDATA[In this example, we demonstrate merging heterogeneous models using ECL and EML.]]>
+			</description>
+		</example>
+	</category>
+	<category name="flock" title="Epsilon Flock">
+		<example src="org.eclipse.epsilon.examples.flock.petrinets" title="Migrate Petri net models with Epsilon Flock">
+			<description>
+			<![CDATA[In this example we demonstrate how to migrate a model in response to metamodel changes with Epsilon Flock.]]>
+			</description>
+		</example>
+	</category>
+	<category name="combination" title="Combining the Epsilon Languages">
+		<example src="org.eclipse.epsilon.examples.standalone" title="Use Epsilon in standalone Java applications">
+			<description>
+			<![CDATA[In this example, we demonstrate how Epsilon languages can be used in standalone, non-Eclipse-based Java applications.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.mddtif" title="MDD-TIF complete case study">
+			<description>
+			<![CDATA[In this example, we demonstrate how different languages in Epsilon (EVL, EGL, EML, ETL and ECL) can be combined to implement more complex operations.]]>
+			</description>
+		</example>	
+		<example src="org.eclipse.epsilon.examples.oomerging" title="Compare, validate and merge OO models">
+			<description>
+			<![CDATA[In this example, we use ECL to compare two OO models, then use EVL to check the identified matches for consistency and finally EML to merge them.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.workflow.flowchart" title="Construct a workflow to orchestrate several Epsilon programs with Ant">
+			<description>
+			<![CDATA[In this example we demonstrate how to use the built-in Epsilon Ant tasks to define a workflow by combining several Epsilon programs. Here, we validate, transform and generate HTML from a flowchart model.]]>
+			</description>
+			<file name="workflow.xml"/>
+		</example>
+		<example src="org.eclipse.epsilon.workflow.extension.example" title="Provide custom/extended tasks for the workflow">
+			<description>
+			<![CDATA[In this example we demonstrate how you can define your own ANT tasks that extend the Epsilon workflow tasks.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.examples.workflow.transactions" title="Use model transactions in a workflow">
+			<description>
+			<![CDATA[In this example we demonstrate using the ant-contrib try/catch tasks and the Epsilon model transactions tasks to conditionally rollback changes in models modified in a workflow.]]>
+			</description>
+		</example>
+	</category>
+	<category name="eunit" title="EUnit">
+		<example src="org.eclipse.epsilon.eunit.examples.eol" title="Test EOL scripts with EUnit">
+			<description>
+			<![CDATA[In this example we show the basic structure of an EUnit test, some useful assertions for the basic types and how to test for errors and define our own assertions.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.eunit.examples.bindings" title="Reuse EUnit tests with model and data bindings">
+			<description>
+			<![CDATA[In this example we show how the same EUnit test can be reused for several models, and how EUnit supports several levels of parametric tests.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.eunit.examples.evl" title="Test a model validation script with EUnit">
+			<description>
+			<![CDATA[In this example we show how a model validation script written in EVL can be tested with EUnit, using the exportAsModel attribute of the EVL workflow task.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.eunit.examples.egl.files" title="Test a model-to-text transformation with EUnit">
+			<description>
+			<![CDATA[In this example we show how a model-to-text transformation written in EGL can be tested with EUnit and HUTN.]]>
+			</description>
+		</example>
+		<example src="org.eclipse.epsilon.eunit.examples.junit" title="Integrate EUnit into a standard JUnit plug-in test">
+			<description>
+			<![CDATA[In this example we show how to write an EUnit/JUnit plug-in test of an ETL transformation.]]>
+			</description>
+		</example>
+	</category>
+	<category name="epl" title="Epsilon Pattern Language">
+		<example src="org.eclipse.epsilon.examples.epl" title="Find pattern matches in railway models using EPL">
+			<description>
+			<![CDATA[In this example we demonstrate how to find matches of the patterns in the Train Benchmark models with EPL.]]>
+			</description>
+		</example>
+	</category>
+	<category name="emg" title="Epsilon Model Generation Language">
+		<example src="org.eclipse.epsilon.examples.emg.petrinet" title="Generate PetriNet models using EMG">
+			<description>
+			<![CDATA[In this example we demonstrate how to generate PetriNet elements and how to define relations between them.]]>
+			</description>
+		</example>
+	</category>
+	<category name="simulink" title="Simulink">
+		<example src="org.eclipse.epsilon.emc.simulink.examples" title="Manage Matlab Simulink/Stateflow blocks from Epsilon">
+			<description>
+			<![CDATA[In this example we show how to manage Matlab Simulink/Stateflow blocks with EOL.]]>
+			</description>
+		</example>
+	</category>
+</examples>
