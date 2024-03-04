@@ -1,0 +1,5 @@
+package people;
+
+class Person {
+	attr String name;
+}
