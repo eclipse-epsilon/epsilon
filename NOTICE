@@ -6,7 +6,7 @@ This content is produced and maintained by the Eclipse Epsilon project.
 
 ## Trademarks
 
-Eclipse Epsilon, and Epsilon are trademarks of the Eclipse Foundation.
+Eclipse Epsilon™ is a trademark of the Eclipse Foundation.
 
 ## Copyright
 
@@ -26,7 +26,8 @@ SPDX-License-Identifier: EPL-2.0
 
 The project maintains the following source code repositories:
 
-* https://git.eclipse.org/r/plugins/gitiles/epsilon/org.eclipse.epsilon
+* https://github.com/eclipse/epsilon
+* https://github.com/eclipse/epsilon-website
 
 ## Third-party Content
 
@@ -125,6 +126,11 @@ JUnit (4.13)
 
 * License: Eclipse Public License
 
+Material for MkDocs (9.1.19)
+
+* License: MIT license
+* Project: https://github.com/squidfunk/mkdocs-material
+
 Mockito
 
 * License: Apache License, 2.0, New BSD license, MIT license
@@ -144,12 +150,6 @@ SLF4J API (1.7.2)
 slf4j log4j12 (1.7.2)
 
 * License: MIT License
-
-Twitter Bootstrap (2.1.1)
-
-* License: Apache License, 2.0
-* Project: http://twitter.github.com/bootstrap/
-* Source: https://github.com/twitter/bootstrap
 
 ## Cryptography
 
