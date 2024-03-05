@@ -20,7 +20,6 @@ import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetModel;
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetRow;
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetUtils;
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetWorksheet;
-import org.eclipse.epsilon.emc.spreadsheets.google.GSConstants;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
 
@@ -29,7 +28,6 @@ public class SharedTestMethods {
 		new SpreadsheetConstants();
 		new ORMConstants();
 		new SpreadsheetUtils();
-		new GSConstants();
 	}
 
 	/**

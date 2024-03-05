@@ -48,12 +48,6 @@
    <feature url="features/org.eclipse.epsilon.emc.graphml.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emc.graphml.feature" version="2.5.0.qualifier">
       <category name="Epsilon EMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.google.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.google.feature" version="2.5.0.qualifier">
-      <category name="Epsilon Spreadsheet Integration"/>
-   </feature>
-   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.google.dt.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.google.dt.feature" version="2.5.0.qualifier">
-      <category name="Epsilon Spreadsheet Integration"/>
-   </feature>
    <feature url="features/org.eclipse.epsilon.emc.spreadsheets.excel.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.excel.feature" version="2.5.0.qualifier">
       <category name="Epsilon Spreadsheet Integration"/>
    </feature>

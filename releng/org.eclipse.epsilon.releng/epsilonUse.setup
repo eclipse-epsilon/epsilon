@@ -461,10 +461,6 @@
       <requirement
           name="org.eclipse.epsilon.emc.spreadsheets.excel.dt.feature.feature.group"/>
       <requirement
-          name="org.eclipse.epsilon.emc.spreadsheets.google.feature.feature.group"/>
-      <requirement
-          name="org.eclipse.epsilon.emc.spreadsheets.google.dt.feature.feature.group"/>
-      <requirement
           name="org.eclipse.epsilon.picto.feature.feature.group"/>
       <requirement
           name="org.eclipse.epsilon.flexmi.feature.feature.group"/>

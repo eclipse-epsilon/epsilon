@@ -30,8 +30,6 @@
     <module>org.eclipse.epsilon.emc.spreadsheets.excel.dt.feature</module>
     <module>org.eclipse.epsilon.emc.spreadsheets.excel.feature</module>
     <module>org.eclipse.epsilon.emc.spreadsheets.feature</module>
-    <module>org.eclipse.epsilon.emc.spreadsheets.google.dt.feature</module>
-    <module>org.eclipse.epsilon.emc.spreadsheets.google.feature</module>
     <module>org.eclipse.epsilon.emf.dt.feature</module>
     <module>org.eclipse.epsilon.emf.feature</module>
     <module>org.eclipse.epsilon.eunit.dt.emf.feature</module>

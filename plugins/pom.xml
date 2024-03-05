@@ -58,8 +58,6 @@
     <module>org.eclipse.epsilon.emc.spreadsheets</module>
     <module>org.eclipse.epsilon.emc.spreadsheets.excel</module>
     <module>org.eclipse.epsilon.emc.spreadsheets.excel.dt</module>
-    <module>org.eclipse.epsilon.emc.spreadsheets.google</module>
-    <module>org.eclipse.epsilon.emc.spreadsheets.google.dt</module>
     <module>org.eclipse.epsilon.emc.uml</module>
     <module>org.eclipse.epsilon.emc.uml.dt</module>
     <module>org.eclipse.epsilon.emc.simulink.common</module>

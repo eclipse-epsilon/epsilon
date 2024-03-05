@@ -195,7 +195,6 @@
     <!-- Spreadsheets component -->
     <module>plugins/org.eclipse.epsilon.emc.spreadsheets/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.emc.spreadsheets.excel/pom-plain.xml</module>
-    <module>plugins/org.eclipse.epsilon.emc.spreadsheets.google/pom-plain.xml</module>
 
     <!-- CLI component -->
     <module>plugins/org.eclipse.epsilon.common.cli/pom-plain.xml</module>
@@ -562,11 +561,6 @@ same version of EMF / other bits always.
 
       <!-- Other libraries: this is just so we are consistent across projects -->
       <!-- Note that they're in alphabetical order, to make it easier to find libraries -->
-      <dependency>
-        <groupId>com.google.gdata</groupId>
-        <artifactId>core</artifactId>
-        <version>1.47.1</version>
-      </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>

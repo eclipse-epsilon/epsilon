@@ -18,7 +18,6 @@ import org.eclipse.epsilon.emc.spreadsheets.ISpreadsheetMetadata.SpreadsheetRefe
 import org.eclipse.epsilon.emc.spreadsheets.ISpreadsheetMetadata.SpreadsheetWorksheetMetadata;
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetModel;
 import org.eclipse.epsilon.emc.spreadsheets.excel.ExcelModel;
-import org.eclipse.epsilon.emc.spreadsheets.google.GSModel;
 import org.eclipse.epsilon.emc.spreadsheets.test.SharedTestMethods;
 import org.eclipse.epsilon.emc.spreadsheets.test.TestModelFactory;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
@@ -59,9 +58,6 @@ public class MetadataTest {
 			if (model instanceof ExcelModel) {
 				((ExcelModel) model).setConfigurationFile(configFile);
 			}
-			else if (model instanceof GSModel) {
-				((GSModel) model).setConfigurationFile(configFile);
-			}
 			model.load();
 			fail("Expecting worksheet metadata not to be loaded as worksheet name must be set");
 		}
@@ -79,9 +75,6 @@ public class MetadataTest {
 			String configFile = SharedTestMethods.getBasePath() + "resources/metadata/ColumnMissingNameTestConfig.xml";
 			if (model instanceof ExcelModel) {
 				((ExcelModel) model).setConfigurationFile(configFile);
-			}
-			else if (model instanceof GSModel) {
-				((GSModel) model).setConfigurationFile(configFile);
 			}
 			model.load();
 			fail("Expecting worksheet metadata not to be loaded as column index or name must be set");
@@ -102,9 +95,6 @@ public class MetadataTest {
 			if (model instanceof ExcelModel) {
 				((ExcelModel) model).setConfigurationFile(configFile);
 			}
-			else if (model instanceof GSModel) {
-				((GSModel) model).setConfigurationFile(configFile);
-			}
 			model.load();
 			fail("Expecting worksheet metadata not to be loaded as reference source must be set");
 		}
@@ -123,9 +113,6 @@ public class MetadataTest {
 				+ "resources/metadata/ReferenceMissingTargetTestConfig.xml";
 			if (model instanceof ExcelModel) {
 				((ExcelModel) model).setConfigurationFile(configFile);
-			}
-			else if (model instanceof GSModel) {
-				((GSModel) model).setConfigurationFile(configFile);
 			}
 			model.load();
 			fail("Expecting worksheet metadata not to be loaded as reference target must be set");

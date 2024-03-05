@@ -103,8 +103,6 @@
 		<unit id="org.eclipse.epsilon.emc.spreadsheets.excel.dt.feature.feature.group" version="0.0.0"/>
 		<unit id="org.eclipse.epsilon.emc.spreadsheets.excel.feature.feature.group" version="0.0.0"/>
 		<unit id="org.eclipse.epsilon.emc.spreadsheets.feature.feature.group" version="0.0.0"/>
-		<unit id="org.eclipse.epsilon.emc.spreadsheets.google.dt.feature.feature.group" version="0.0.0"/>
-		<unit id="org.eclipse.epsilon.emc.spreadsheets.google.feature.feature.group" version="0.0.0"/>
 		<unit id="org.eclipse.epsilon.emf.dt.feature.feature.group" version="0.0.0"/>
 		<unit id="org.eclipse.epsilon.emf.feature.feature.group" version="0.0.0"/>
 		<unit id="org.eclipse.epsilon.eunit.dt.emf.feature.feature.group" version="0.0.0"/>
