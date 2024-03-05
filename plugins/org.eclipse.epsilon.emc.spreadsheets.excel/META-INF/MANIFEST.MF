@@ -15,6 +15,5 @@ Require-Bundle: org.eclipse.epsilon.emc.spreadsheets;visibility:=reexport,
  org.apache.commons.compress;bundle-version="1.19.0";visibility:=reexport,
  org.apache.commons.math3;bundle-version="3.6.1";visibility:=reexport,
  org.apache.commons.codec;bundle-version="1.14.0";visibility:=reexport,
- org.apache.commons.logging;bundle-version="1.2.0";resolution:=optional;visibility:=reexport,
- com.github.virtuald.curvesapi;bundle-version="1.6.0";visibility:=reexport
+ org.apache.commons.logging;bundle-version="1.2.0";resolution:=optional;visibility:=reexport
 Automatic-Module-Name: org.eclipse.epsilon.emc.spreadsheets.excel

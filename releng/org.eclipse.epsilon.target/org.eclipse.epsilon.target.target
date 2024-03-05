@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Epsilon Target Platform" sequenceNumber="1700868067">
+<target name="Epsilon Target Platform" sequenceNumber="1709630535">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -52,7 +52,6 @@
       <unit id="com.atlassian.commonmark-ins" version="0.15.1.v20200707-1444"/>
       <unit id="com.atlassian.commonmark-task-list-items" version="0.15.1.v20200707-1444"/>
       <unit id="com.atlassian.commonmark-yaml" version="0.15.1.v20200707-1444"/>
-      <unit id="com.github.virtuald.curvesapi" version="1.6.0.v20200807-0931"/>
       <unit id="com.google.gdata" version="1.47.1.v20200819-2030"/>
       <unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
       <unit id="net.bytebuddy.byte-buddy" version="1.7.9.v20180420-1519"/>

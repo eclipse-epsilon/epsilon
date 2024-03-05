@@ -49,7 +49,6 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202112131738
 	com.atlassian.commonmark-ins [0.15.1,0.15.2)
 	com.atlassian.commonmark-task-list-items [0.15.1,0.15.2)
 	com.atlassian.commonmark-yaml [0.15.1,0.15.2)
-	com.github.virtuald.curvesapi [1.6.0,1.6.1)
 	com.google.gdata [1.47.1,1.47.2)
 	javax.xml.stream [1.0.1,1.0.2)
 	net.bytebuddy.byte-buddy [1.7.9,1.7.10)

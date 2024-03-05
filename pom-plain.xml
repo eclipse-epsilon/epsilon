@@ -563,11 +563,6 @@ same version of EMF / other bits always.
       <!-- Other libraries: this is just so we are consistent across projects -->
       <!-- Note that they're in alphabetical order, to make it easier to find libraries -->
       <dependency>
-        <groupId>com.github.virtuald</groupId>
-        <artifactId>curvesapi</artifactId>
-        <version>1.06</version>
-      </dependency>
-      <dependency>
         <groupId>com.google.gdata</groupId>
         <artifactId>core</artifactId>
         <version>1.47.1</version>
