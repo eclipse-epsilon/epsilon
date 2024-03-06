@@ -38,7 +38,7 @@
       <artifactId>org.eclipse.ui</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jopendocument</groupId>
+      <groupId>org.jdom</groupId>
       <artifactId>jdom</artifactId>
     </dependency>
   </dependencies>
