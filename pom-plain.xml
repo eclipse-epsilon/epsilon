@@ -792,6 +792,13 @@ same version of EMF / other bits always.
       <id>cbi</id>
       <url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
     </pluginRepository>
+    <pluginRepository>
+        <id>dash-licenses-snapshots</id>
+        <url>https://repo.eclipse.org/content/repositories/dash-licenses-releases/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+    </pluginRepository>
   </pluginRepositories>
 
   <distributionManagement>
