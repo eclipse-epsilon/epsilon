@@ -104,3 +104,6 @@ target-plain
 /examples/**/TEST-*.xml
 /examples/**/DELTA-*.xmi
 /examples/**/eunit-temp/
+
+# Metadata from Dash tool
+DEPENDENCIES*
