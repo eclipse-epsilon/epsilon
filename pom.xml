@@ -50,16 +50,6 @@
       <id>ossrh</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
-    <!--repository>
-      <id>eclipse-repo-releases</id>
-      <name>Epsilon Repository - Releases</name>
-      <url>https://repo.eclipse.org/content/repositories/epsilon-releases</url>
-    </repository>
-    <snapshotRepository>
-      <id>eclipse-repo-snapshots</id>
-      <name>Epsilon Repository - Snapshots</name>
-      <url>https://repo.eclipse.org/content/repositories/epsilon-snapshots</url>
-    </snapshotRepository-->
   </distributionManagement>
 
   <modules>
@@ -136,15 +126,6 @@
               <version>${epsilon.version}</version>
             </artifact>
           </target>
-          <!--dependency-resolution>
-            <extraRequirements>
-              <requirement>
-                <type>eclipse-plugin</type>
-                <id></id>
-                <versionRange>0.0.0</versionRange>
-              </requirement>
-            </extraRequirements>
-          </dependency-resolution-->
           <environments>
             <environment>
               <os>linux</os>
@@ -247,21 +228,5 @@
         </plugins>
       </build>
     </profile>
-
-    <!--profile>
-      <id>maven-sign</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jarsigner-plugin</artifactId>
-            <version>3.0.0</version>
-          </plugin>
-        </plugins>
-      </build>
-    </profile-->
   </profiles>
 </project>
