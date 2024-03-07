@@ -783,8 +783,16 @@ same version of EMF / other bits always.
           </execution>
         </executions>
       </plugin>
-
     </plugins>
+    <pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.5.0</version>
+            </plugin>
+        </plugins>
+    </pluginManagement>
   </build>
 
   <pluginRepositories>

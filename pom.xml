@@ -181,6 +181,16 @@
         <version>2.8.2</version>
       </plugin>
     </plugins>
+
+    <pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.5.0</version>
+            </plugin>
+        </plugins>
+    </pluginManagement>
   </build>
 
   <reporting>
