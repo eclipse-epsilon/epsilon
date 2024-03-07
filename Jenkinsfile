@@ -73,7 +73,7 @@ pipeline {
               }
             }
             steps {
-              sh 'mvn -B javadoc:aggregate'
+              sh 'mvn -B initialize javadoc:aggregate'
             }
           }
           stage('Update site') {
