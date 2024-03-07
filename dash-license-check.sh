@@ -20,6 +20,7 @@ DASH_REPO=https://github.com/eclipse/epsilon
 
 DASH_OPTIONS_TYCHO="-Ddash.summary=DEPENDENCIES"
 DASH_OPTIONS_PLAIN="-Ddash.summary=DEPENDENCIES-PLAIN"
+REVIEW=0
 for arg in "$@"; do
     shift
     if [ "$arg" = "-r" -o "$arg" = "--review" ]; then
@@ -29,6 +30,7 @@ for arg in "$@"; do
         fi
         DASH_OPTIONS_TYCHO="-Ddash.iplab.token=${DASH_API_TOKEN} -Ddash.projectId=${DASH_PROJECT_ID} -Ddash.repo=${DASH_REPO}"
         DASH_OPTIONS_PLAIN="$DASH_OPTIONS_TYCHO"
+        REVIEW=1
     fi
 done
 
@@ -53,3 +55,48 @@ mvn -f pom-plain.xml org.eclipse.dash:license-tool-plugin:license-check \
 mvn org.eclipse.dash:license-tool-plugin:license-check \
     -Dtycho.target.eager=true $DASH_OPTIONS_TYCHO \
     -DexcludeArtifactIds=org.eclipse.emf.cdo.common,org.eclipse.emf.cdo.net4j,org.eclipse.emf.cdo.server.net4j,org.eclipse.emf.cdo.server,org.eclipse.emf.cdo,org.eclipse.emf.codegen.ecore,org.eclipse.emf.codegen,org.eclipse.emf.common.ui,org.eclipse.emf.common,org.eclipse.emf.compare.edit,org.eclipse.emf.compare.ide.ui,org.eclipse.emf.compare.ide,org.eclipse.emf.compare.rcp.ui,org.eclipse.emf.compare.rcp,org.eclipse.emf.compare,org.eclipse.emf.databinding,org.eclipse.emf.ecore.edit,org.eclipse.emf.ecore.editor,org.eclipse.emf.edit.ui,org.eclipse.emf.edit,org.eclipse.emf.emfatic.core,org.eclipse.emf.emfatic.ui,org.eclipse.emf.mapping.ecore2xml,org.eclipse.emf.transaction,org.eclipse.emf.validation,org.eclipse.emf.workspace,org.eclipse.emf,org.eclipse.gymnast.runtime.core,org.eclipse.gymnast.runtime.ui,org.eclipse.net4j.jvm,org.eclipse.net4j.util,org.eclipse.net4j,org.eclipse.xsd
+
+# The above command may highlight issues around wrapped.* artifactIds: these
+# come from Maven Central, and they may be just fine, but the Dash License tool
+# doesn't automatically translate them to plain Maven dependencies.
+#
+# One approach is to filter these out if they are not 'restricted' in
+# DEPENDENCIES-PLAIN.
+#
+# Note that plantuml-epl is not in the plain Maven build, but it has been
+# approved in IPZilla:
+#   https://gitlab.eclipse.org/eclipsefdn/emo-team/iplab/-/issues/10595
+
+find_wrapped_restricted() {
+    grep 'wrapped.*restricted' DEPENDENCIES | cut --delim=/ -f4 | sed 's#wrapped.##'
+}
+
+classify_wrapped_restricted() {
+    ARTIFACT_ID="$1"
+    if grep -q "${ARTIFACT_ID}/.*restricted" DEPENDENCIES-PLAIN; then
+        echo "${ARTIFACT_ID} is restricted in both DEPENDENCIES and DEPENDENCIES-PLAIN"
+        grep "${ARTIFACT_ID}/" DEPENDENCIES*
+    elif grep -q "${ARTIFACT_ID}/" DEPENDENCIES-PLAIN; then
+        echo "${ARTIFACT_ID} is restricted in DEPENDENCIES but is not restricted in DEPENDENCIES-PLAIN:"
+        grep "${ARTIFACT_ID}/" DEPENDENCIES*
+    else
+        echo "${ARTIFACT_ID} is restricted in DEPENDENCIES but does not appear in DEPENDENCIES-PLAIN"
+        grep "${ARTIFACT_ID}/" DEPENDENCIES*
+    fi
+}
+
+wrapped_restricted_report() {
+    find_wrapped_restricted | (
+        while read wrapped_restricted; do
+            classify_wrapped_restricted "$wrapped_restricted"
+            # add a newline between items
+            echo
+        done)
+}
+
+# During license search, find wrapped artifacts that are not approved in the
+# DEPENDENCIES-PLAIN file.
+
+if [ "$REVIEW" = 0 ]; then
+    wrapped_restricted_report | tee DEPENDENCIES-WRAPPED-RESTRICTED
+fi
