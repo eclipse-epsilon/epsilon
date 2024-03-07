@@ -13,13 +13,9 @@ package org.eclipse.epsilon.emc.json.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.emc.json.JsonModel;
@@ -28,9 +24,10 @@ import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.util.Callback;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.junit.After;
@@ -39,7 +36,7 @@ import org.junit.Test;
 
 public class JSONModelHttpTests {
 
-	private final class StaticJSONWithAuthHandler extends AbstractHandler {
+	private final class StaticJSONWithAuthHandler extends Handler.Abstract {
 		private final JSONObject root;
 		private String username, password;
 
@@ -50,11 +47,9 @@ public class JSONModelHttpTests {
 		}
 
 		@Override
-		public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-			baseRequest.setHandled(true);
-
+		public boolean handle(Request request, Response response, Callback callback) throws Exception {
 			final String expectedChallengePrefix = "Basic ";
-			final String challengeResponse = baseRequest.getHeader(HttpHeader.AUTHORIZATION.name());
+			final String challengeResponse = request.getHeaders().get(HttpHeader.AUTHORIZATION.name());
 			if (challengeResponse == null || !challengeResponse.startsWith(expectedChallengePrefix)) {
 				requestAuth(response);
 			} else {
@@ -68,19 +63,22 @@ public class JSONModelHttpTests {
 				if (!username.equals(challengeUser) || !password.equals(challengePassword)) {
 					response.setStatus(HttpStatus.NOT_FOUND_404);
 				} else {
-					response.getWriter().print(JSONValue.toJSONString(root));
+					writeIntoResponse(response, JSONValue.toJSONString(root), callback);
 				}
 			}
+
+			callback.succeeded();
+			return true;
 		}
 
-		private void requestAuth(HttpServletResponse response) {
+		private void requestAuth(Response response) {
 			response.setStatus(HttpStatus.UNAUTHORIZED_401);
-			response.setHeader("WWW-Authenticate",
+			response.getHeaders().add(HttpHeader.WWW_AUTHENTICATE,
 				String.format("Basic realm=localhost:%d, charset=\"UTF-8\"", serverPort));
 		}
 	}
 
-	private static class StaticJSONHandler extends AbstractHandler {
+	private static class StaticJSONHandler extends Handler.Abstract {
 		private final String responseText;
 
 		public StaticJSONHandler(Object json) {
@@ -88,9 +86,9 @@ public class JSONModelHttpTests {
 		}
 
 		@Override
-		public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-			baseRequest.setHandled(true);
-			response.getWriter().print(responseText);
+		public boolean handle(Request request, Response response, Callback callback) throws Exception {
+			writeIntoResponse(response, responseText, callback);
+			return true;
 		}
 	}
 
@@ -216,18 +214,20 @@ public class JSONModelHttpTests {
 		JSONObject root = new JSONObject();
 		root.put("hello", "world");
 
-		serve(new AbstractHandler() {
+		serve(new Handler.Abstract() {
 			@Override
-			public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-				baseRequest.setHandled(true);
+			public boolean handle(Request request, Response response, Callback callback) throws Exception {
+				String target = request.getHttpURI().getPath();
 				if ("/model".equals(target)) {
-					response.getWriter().print(JSONValue.toJSONString(root));
+					writeIntoResponse(response, JSONValue.toJSONString(root), callback);
 				} else if ("/".equals(target)) {
 					response.setStatus(HttpStatus.TEMPORARY_REDIRECT_307);
-					response.setHeader(HttpHeader.LOCATION.name(), serverUri + "/model");
+					response.getHeaders().add(HttpHeader.LOCATION.name(), serverUri + "/model");
 				} else {
 					response.setStatus(HttpStatus.NOT_FOUND_404);
 				}
+				callback.succeeded();
+				return true;
 			}
 		});
 
@@ -249,15 +249,17 @@ public class JSONModelHttpTests {
 		root.put("hello", "world");
 
 		final String authValue = "Bearer TOKEN";
-		serve(new AbstractHandler() {
+		serve(new Handler.Abstract() {
 			@Override
-			public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-				baseRequest.setHandled(true);
-				if (!authValue.equals(baseRequest.getHeader(HttpHeader.AUTHORIZATION.name()))) {
+			public boolean handle(Request request, Response response, Callback callback) throws Exception {
+				if (!authValue.equals(request.getHeaders().get(HttpHeader.AUTHORIZATION))) {
 					response.setStatus(HttpStatus.FORBIDDEN_403);
+					callback.succeeded();
 				} else {
-					response.getWriter().print(JSONValue.toJSONString(root));
+					writeIntoResponse(response, JSONValue.toJSONString(root), callback);
 				}
+				callback.succeeded();
+				return true;
 			}
 		});
 
@@ -281,17 +283,18 @@ public class JSONModelHttpTests {
 
 		final String authValue = "Bearer TOKEN";
 		final String expectedMimeType = "application/vnd.github+json";
-		serve(new AbstractHandler() {
+		serve(new Handler.Abstract() {
 			@Override
-			public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-				baseRequest.setHandled(true);
-				if (!authValue.equals(baseRequest.getHeader(HttpHeader.AUTHORIZATION.name()))) {
+			public boolean handle(Request request, Response response, Callback callback) throws Exception {
+				if (!authValue.equals(request.getHeaders().get(HttpHeader.AUTHORIZATION))) {
 					response.setStatus(HttpStatus.FORBIDDEN_403);
-				} else if (!expectedMimeType.equals(baseRequest.getHeader(HttpHeader.ACCEPT.name()))) {
+				} else if (!expectedMimeType.equals(request.getHeaders().get(HttpHeader.ACCEPT))) {
 					response.setStatus(HttpStatus.BAD_REQUEST_400);
 				} else {
-					response.getWriter().print(JSONValue.toJSONString(root));
+					writeIntoResponse(response, JSONValue.toJSONString(root), callback);
 				}
+				callback.succeeded();
+				return true;
 			}
 		});
 
@@ -317,5 +320,11 @@ public class JSONModelHttpTests {
 
 		serverPort = ((ServerConnector) server.getConnectors()[0]).getLocalPort();
 		serverUri = "http://localhost:" + serverPort;
+	}
+
+	private static void writeIntoResponse(Response response, String jsonString, Callback callback) {
+		byte[] jsonBytes = jsonString.getBytes(StandardCharsets.UTF_8);
+		ByteBuffer buffer = ByteBuffer.wrap(jsonBytes);
+		response.write(true, buffer, callback);
 	}
 }

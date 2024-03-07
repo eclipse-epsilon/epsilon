@@ -1,10 +1,10 @@
-target "Epsilon Target Platform" environment JavaSE-1.8 with configurePhase requirements source
+target "Epsilon Target Platform" environment JavaSE-17 with configurePhase requirements source
 
 location "https://download.eclipse.org/cbi/updates/license" {
 	org.eclipse.license.feature.group lazy
 }
 
-location "https://download.eclipse.org/releases/2021-12" {
+location "https://download.eclipse.org/releases/2023-12" {
 	org.eclipse.e4.core.tools.feature.feature.group lazy
 	org.eclipse.emf.sdk.feature.group lazy
 	org.eclipse.emf.validation.sdk.feature.group lazy
@@ -12,14 +12,13 @@ location "https://download.eclipse.org/releases/2021-12" {
 	org.eclipse.jdt.feature.group lazy
 	org.eclipse.pde.feature.group lazy
 	org.eclipse.platform.feature.group lazy
-	org.eclipse.platform.sdk lazy
+	org.eclipse.sdk lazy
 	org.eclipse.rcp.feature.group lazy
 	org.eclipse.sdk.ide lazy
 	org.eclipse.egit.feature.group lazy
 	org.eclipse.ocl.all.sdk.feature.group lazy
 	org.eclipse.sirius.runtime.feature.group lazy
 	org.eclipse.sirius.runtime.ide.ui.feature.group lazy
-	org.eclipse.sirius.runtime.ide.eef.feature.group lazy
 	org.eclipse.sirius.properties.feature.feature.group lazy
 	org.eclipse.eef.sdk.feature.feature.group lazy
 	org.eclipse.xsd.sdk.feature.group lazy
@@ -33,7 +32,7 @@ location "https://download.eclipse.org/emfatic/update" {
 	org.eclipse.emf.emfatic.feature.group lazy
 }
 
-location "https://download.eclipse.org/modeling/emf/compare/updates/releases/3.3/R201911051515" {
+location "https://download.eclipse.org/modeling/emf/compare/updates/releases/3.3/R202401051648" {
 	org.eclipse.emf.compare.feature.group lazy
 	org.eclipse.emf.compare.ide.ui.feature.group lazy
 	org.eclipse.emf.compare.rcp.ui.feature.group lazy
@@ -51,6 +50,7 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202112131738
 	com.atlassian.commonmark-yaml [0.15.1,0.15.2)
 	com.google.gdata [1.47.1,1.47.2)
 	javax.xml.stream [1.0.1,1.0.2)
+	javax.annotation [1.3.5,1.4.0)
 	net.bytebuddy.byte-buddy [1.7.9,1.7.10)
 	net.bytebuddy.byte-buddy-agent [1.7.9,1.7.10)
 	org.antlr.runtime [3.5.2.v20200724-1452,3.5.2.v20200724-1452]
@@ -60,6 +60,7 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202112131738
 	org.apache.commons.collections4 [4.4.0,4.4.1)
 	org.apache.commons.compress [1.19.0,1.21.1)
 	org.apache.commons.csv [1.8.0,1.8.1)
+	org.apache.commons.io [2.8.0,3.0.0)
 	org.apache.commons.lang3 [3.1.0,3.1.1)
 	org.apache.commons.logging [1.2.0,1.2.1)
 	org.apache.commons.math3 [3.6.1,3.6.2)
@@ -70,6 +71,7 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202112131738
 	org.jsoup.source [1.7.2,1.7.3)
 	org.mockito [2.23.0,2.23.1)
 	org.objenesis [2.6.0,2.6.1)
+	org.slf4j.api [1.7.2,1.7.3)
 	org.yaml.snakeyaml [1.27.0,1.27.1)
 }
 

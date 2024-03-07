@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Epsilon Target Platform" sequenceNumber="1709810949">
+<target name="Epsilon Target Platform" sequenceNumber="1709827035">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -15,14 +15,13 @@
       <unit id="org.eclipse.jdt.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.pde.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.platform.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.platform.sdk" version="0.0.0"/>
+      <unit id="org.eclipse.sdk" version="0.0.0"/>
       <unit id="org.eclipse.rcp.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
       <unit id="org.eclipse.egit.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.ocl.all.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.sirius.runtime.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.sirius.runtime.ide.ui.feature.group" version="0.0.0"/>
-      <unit id="org.eclipse.sirius.runtime.ide.eef.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.sirius.properties.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.eef.sdk.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.xsd.sdk.feature.group" version="0.0.0"/>
@@ -30,7 +29,7 @@
       <unit id="org.eclipse.xtext.runtime.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.m2m.qvt.oml.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.emf.cdo.sdk.feature.group" version="0.0.0"/>
-      <repository location="https://download.eclipse.org/releases/2021-12"/>
+      <repository location="https://download.eclipse.org/releases/2023-12"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.emf.emfatic.feature.group" version="0.0.0"/>
@@ -41,7 +40,7 @@
       <unit id="org.eclipse.emf.compare.ide.ui.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.emf.compare.rcp.ui.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.emf.compare.uml2.feature.group" version="0.0.0"/>
-      <repository location="https://download.eclipse.org/modeling/emf/compare/updates/releases/3.3/R201911051515"/>
+      <repository location="https://download.eclipse.org/modeling/emf/compare/updates/releases/3.3/R202401051648"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="com.atlassian.commonmark" version="0.15.1.v20200707-1444"/>
@@ -54,6 +53,7 @@
       <unit id="com.atlassian.commonmark-yaml" version="0.15.1.v20200707-1444"/>
       <unit id="com.google.gdata" version="1.47.1.v20200819-2030"/>
       <unit id="javax.xml.stream" version="1.0.1.v201004272200"/>
+      <unit id="javax.annotation" version="1.3.5.v20200909-1856"/>
       <unit id="net.bytebuddy.byte-buddy" version="1.7.9.v20180420-1519"/>
       <unit id="net.bytebuddy.byte-buddy-agent" version="1.7.9.v20180420-1519"/>
       <unit id="org.antlr.runtime" version="3.5.2.v20200724-1452"/>
@@ -63,6 +63,7 @@
       <unit id="org.apache.commons.collections4" version="4.4.0.v20200420-1700"/>
       <unit id="org.apache.commons.compress" version="1.21.0.v20211103-2100"/>
       <unit id="org.apache.commons.csv" version="1.8.0.v20200804-1438"/>
+      <unit id="org.apache.commons.io" version="2.8.0.v20210415-0900"/>
       <unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
       <unit id="org.apache.commons.logging" version="1.2.0.v20180409-1502"/>
       <unit id="org.apache.commons.math3" version="3.6.1.v20200817-1830"/>
@@ -73,6 +74,7 @@
       <unit id="org.jsoup.source" version="1.7.2.v201411291515"/>
       <unit id="org.mockito" version="2.23.0.v20200310-1642"/>
       <unit id="org.objenesis" version="2.6.0.v20180420-1519"/>
+      <unit id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
       <unit id="org.yaml.snakeyaml" version="1.27.0.v20201111-1638"/>
       <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository"/>
     </location>
@@ -115,5 +117,5 @@
     </dependencies>
     </location>
   </locations>
-  <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+  <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
 </target>
