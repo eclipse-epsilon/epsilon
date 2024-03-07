@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Epsilon Target Platform" sequenceNumber="1709630535">
+<target name="Epsilon Target Platform" sequenceNumber="1709810949">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -66,9 +66,6 @@
       <unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
       <unit id="org.apache.commons.logging" version="1.2.0.v20180409-1502"/>
       <unit id="org.apache.commons.math3" version="3.6.1.v20200817-1830"/>
-      <unit id="org.apache.poi" version="4.1.1.v20200604-1524"/>
-      <unit id="org.apache.poi.ooxml" version="4.1.1.v20200820-1148"/>
-      <unit id="org.apache.poi.ooxml.schemas" version="4.1.1.v20200922-2105"/>
       <unit id="org.apache.santuario.xmlsec" version="2.2.0.v20200818-1422"/>
       <unit id="org.apache.xmlbeans" version="3.1.0.v20200922-1359"/>
       <unit id="org.jdom" version="1.1.1.v201101151400"/>
@@ -95,6 +92,24 @@
     		<groupId>com.googlecode.json-simple</groupId>
     		<artifactId>json-simple</artifactId>
     		<version>1.1.1</version>
+    		<type>jar</type>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.apache.poi</groupId>
+    		<artifactId>poi</artifactId>
+    		<version>4.1.2</version>
+    		<type>jar</type>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.apache.poi</groupId>
+    		<artifactId>poi-ooxml</artifactId>
+    		<version>4.1.2</version>
+    		<type>jar</type>
+    	</dependency>
+    	<dependency>
+    		<groupId>org.apache.poi</groupId>
+    		<artifactId>poi-ooxml-schemas</artifactId>
+    		<version>4.1.2</version>
     		<type>jar</type>
     	</dependency>
     </dependencies>

@@ -7,13 +7,13 @@ Export-Package: org.eclipse.epsilon.emc.spreadsheets.excel
 Bundle-Vendor: Eclipse Modeling Project
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.epsilon.emc.spreadsheets;visibility:=reexport,
- org.apache.poi.ooxml.schemas;bundle-version="4.0.0";visibility:=reexport,
- org.apache.poi.ooxml;bundle-version="4.0.0";visibility:=reexport,
- org.apache.poi;bundle-version="4.0.0";visibility:=reexport,
  org.apache.xmlbeans;bundle-version="3.0.0";visibility:=reexport,
  org.apache.commons.collections4;bundle-version="4.4.0";visibility:=reexport,
  org.apache.commons.compress;bundle-version="1.19.0";visibility:=reexport,
  org.apache.commons.math3;bundle-version="3.6.1";visibility:=reexport,
  org.apache.commons.codec;bundle-version="1.14.0";visibility:=reexport,
- org.apache.commons.logging;bundle-version="1.2.0";resolution:=optional;visibility:=reexport
+ org.apache.commons.logging;bundle-version="1.2.0";resolution:=optional;visibility:=reexport,
+ wrapped.org.apache.poi.poi;bundle-version="4.1.2";visibility:=reexport,
+ wrapped.org.apache.poi.poi-ooxml;bundle-version="4.1.2";visibility:=reexport,
+ wrapped.org.apache.poi.poi-ooxml-schemas;bundle-version="4.1.2";visibility:=reexport
 Automatic-Module-Name: org.eclipse.epsilon.emc.spreadsheets.excel
