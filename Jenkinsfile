@@ -28,8 +28,8 @@ pipeline {
       buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '14', numToKeepStr: ''))
     }
     tools {
-        maven 'apache-maven-3.8.6'
-        jdk 'openjdk-jdk11-latest'
+        maven 'apache-maven-3.9.5'
+        jdk 'openjdk-jdk17-latest'
     }
     triggers {
         pollSCM('H/5 * * * *')
