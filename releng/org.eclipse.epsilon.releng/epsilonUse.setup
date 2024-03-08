@@ -320,7 +320,7 @@
     <description>Epsilon v2.4</description>
   </version>
   <version name="Interim"
-      requiredJavaVersion="1.8">
+      requiredJavaVersion="17">
     <setupTask
         xsi:type="setup.p2:P2Task"
         label="${scope.product.label} ${scope.product.version.label} tools">
@@ -481,7 +481,7 @@
       <requirement
           name="org.eclipse.epsilon.sirius.widget.feature.feature.group"/>
       <repository
-          url="http://download.eclipse.org/releases/2021-12"/>
+          url="http://download.eclipse.org/releases/2023-12"/>
       <repository
           url="http://download.eclipse.org/oomph/updates/milestone"/>
       <repository
@@ -490,8 +490,6 @@
           url="http://download.eclipse.org/emfatic/update"/>
       <repository
           url="http://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository"/>
-      <repository
-          url="http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases"/>
     </setupTask>
     <description>Latest version of Epsilon</description>
   </version>
