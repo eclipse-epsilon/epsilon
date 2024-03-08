@@ -77,7 +77,7 @@
     <dependency>
       <groupId>org.eclipse.emf</groupId>
       <artifactId>org.eclipse.emf.compare</artifactId>
-      <version>3.5.3.202111290942</version>
+      <version>3.5.3.202311200811</version>
     </dependency>
 
     <!-- From EMF Compare -->
