@@ -176,7 +176,6 @@
       </description>
    </category-def>
    <repository-reference location="http://download.eclipse.org/emfatic/update" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/releases/2021-12" enabled="true" />
+   <repository-reference location="http://download.eclipse.org/releases/2023-12" enabled="true" />
    <repository-reference location="http://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" enabled="true" />
 </site>
