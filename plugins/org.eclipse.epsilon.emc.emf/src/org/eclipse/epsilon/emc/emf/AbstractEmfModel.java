@@ -157,7 +157,13 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 			List<EEnumLiteral> optionLiterals = new ArrayList<>();
 			List<Enumerator> optionValues = new ArrayList<>();
 
-			for (Object pkg : getPackageRegistry().values()) {
+			/*
+			 * We make a defensive copy to avoid a ConcurrentModificationException if
+			 * iterating through the EPackages results in more EPackages being added
+			 * to the registry.
+			 */
+			List<Object> availablePackages = new ArrayList<>(getPackageRegistry().values());
+			for (Object pkg : availablePackages) {
 				if (EmfUtil.isEPackageOrDescriptor(pkg)) {
 					EPackage ePackage = EmfUtil.toEPackage(pkg);
 					
