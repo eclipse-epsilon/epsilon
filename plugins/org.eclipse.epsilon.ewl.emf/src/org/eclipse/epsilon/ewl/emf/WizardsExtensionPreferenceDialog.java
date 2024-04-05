@@ -84,7 +84,7 @@ public class WizardsExtensionPreferenceDialog extends TitleAreaDialog {
 		Composite zuper = (Composite) super.createDialogArea(parent);
 		
 		setTitle("Configure wizards");
-		getShell().setText("GMF Wizards");
+		getShell().setText("EMF Wizards");
 		setMessage("Configure wizards for an EMF namespace URI");
 		
 		GridLayout layout = new GridLayout(2, false);

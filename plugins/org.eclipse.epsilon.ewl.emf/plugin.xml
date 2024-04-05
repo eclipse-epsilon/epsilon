@@ -22,8 +22,8 @@
       <page
             category="Epsilon"
             class="org.eclipse.epsilon.ewl.emf.WizardsPreferencePage"
-            id="org.eclipse.epsilon.ewl.gmf.WizardsPreferencePage"
-            name="EMF/GMF Wizards">
+            id="org.eclipse.epsilon.ewl.emf.WizardsPreferencePage"
+            name="EMF Wizards">
       </page>
    </extension>
 
