@@ -9,5 +9,6 @@ Require-Bundle: org.junit,
  org.eclipse.epsilon.picto,
  org.eclipse.epsilon.flexmi,
  org.eclipse.core.runtime,
- org.eclipse.swt
+ org.eclipse.swt,
+ org.eclipse.epsilon.emc.emf.dt
 Export-Package: org.eclipse.epsilon.picto.test
