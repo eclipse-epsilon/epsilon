@@ -83,6 +83,7 @@ public class ViewTreeLabelProvider extends LabelProvider {
 		for (int i=10;i<15;i++) {
 			imageData.setPixel(i, 8, hex);
 		}
+		icon.dispose();
 		return new Image(Display.getCurrent(), imageData);
 	}
 	
