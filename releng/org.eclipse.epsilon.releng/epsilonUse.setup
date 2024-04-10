@@ -140,7 +140,7 @@
     <description>Creates the workspace and points Eclipse to it, with default preferences pre-configured.</description>
   </setupTask>
   <version name="2.4"
-      requiredJavaVersion="1.8">
+      requiredJavaVersion="11">
     <setupTask
         xsi:type="setup.p2:P2Task"
         label="${scope.product.label} ${scope.product.version.label} tools">
@@ -482,7 +482,7 @@
     <description>Latest version of Epsilon</description>
   </version>
   <version name="2.3"
-      requiredJavaVersion="1.8">
+      requiredJavaVersion="11">
     <setupTask
         xsi:type="setup.p2:P2Task"
         label="${scope.product.label} ${scope.product.version.label} tools">
