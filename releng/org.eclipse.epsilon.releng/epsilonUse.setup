@@ -257,6 +257,8 @@
       <requirement
           name="org.eclipse.epsilon.uml.dt.feature.feature.group"/>
       <requirement
+          name="org.eclipse.epsilon.eugenia.feature.feature.group"/>
+      <requirement
           name="org.eclipse.epsilon.hutn.feature.feature.group"/>
       <requirement
           name="org.eclipse.epsilon.hutn.dt.feature.feature.group"/>
@@ -597,6 +599,8 @@
       <requirement
           name="org.eclipse.epsilon.uml.dt.feature.feature.group"/>
       <requirement
+          name="org.eclipse.epsilon.eugenia.feature.feature.group"/>          
+      <requirement
           name="org.eclipse.epsilon.hutn.feature.feature.group"/>
       <requirement
           name="org.eclipse.epsilon.hutn.dt.feature.feature.group"/>
@@ -763,6 +767,8 @@
       <requirement
           name="org.eclipse.epsilon.uml.dt.feature.feature.group"/>
       <requirement
+          name="org.eclipse.epsilon.eugenia.feature.feature.group"/>          
+      <requirement
           name="org.eclipse.epsilon.hutn.feature.feature.group"/>
       <requirement
           name="org.eclipse.epsilon.hutn.dt.feature.feature.group"/>
@@ -928,6 +934,8 @@
           name="org.eclipse.epsilon.uml.feature.feature.group"/>
       <requirement
           name="org.eclipse.epsilon.uml.dt.feature.feature.group"/>
+      <requirement
+          name="org.eclipse.epsilon.eugenia.feature.feature.group"/>          
       <requirement
           name="org.eclipse.epsilon.hutn.feature.feature.group"/>
       <requirement
@@ -1096,6 +1104,8 @@
           name="org.eclipse.epsilon.uml.feature.feature.group"/>
       <requirement
           name="org.eclipse.epsilon.uml.dt.feature.feature.group"/>
+      <requirement
+          name="org.eclipse.epsilon.eugenia.feature.feature.group"/>          
       <requirement
           name="org.eclipse.epsilon.concordance.feature.feature.group"/>
       <requirement
