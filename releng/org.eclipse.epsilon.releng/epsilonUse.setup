@@ -315,7 +315,7 @@
       <repository
           url="http://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository"/>
       <repository
-          url="http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases"/>
+          url="https://github.com/epsilonlabs/gmf-tooling/raw/main/"/>
     </setupTask>
     <description>Epsilon v2.4</description>
   </version>
@@ -641,7 +641,7 @@
       <repository
           url="http://download.eclipse.org/tools/orbit/downloads/drops/R20210223232630/repository"/>
       <repository
-          url="http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases"/>
+          url="https://github.com/epsilonlabs/gmf-tooling/raw/main/"/>
     </setupTask>
     <description>Epsilon v2.3</description>
   </version>
@@ -807,7 +807,7 @@
       <repository
           url="http://download.eclipse.org/tools/orbit/downloads/drops/R20200831200620/repository"/>
       <repository
-          url="http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases"/>
+          url="https://github.com/epsilonlabs/gmf-tooling/raw/main/"/>
     </setupTask>
     <description>Epsilon v2.2</description>
   </version>
@@ -973,7 +973,7 @@
       <repository
           url="http://download.eclipse.org/tools/orbit/downloads/drops/R20200529191137/repository"/>
       <repository
-          url="http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases"/>
+          url="https://github.com/epsilonlabs/gmf-tooling/raw/main/"/>
     </setupTask>
     <description>Epsilon v2.1</description>
   </version>
@@ -1135,7 +1135,7 @@
       <repository
           url="http://download.eclipse.org/emfatic/update"/>
       <repository
-          url="http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases"/>
+          url="https://github.com/epsilonlabs/gmf-tooling/raw/main/"/>
       <repository
           url="http://archive.eclipse.org/mmt/qvto/updates/releases/3.9.1"/>
     </setupTask>
