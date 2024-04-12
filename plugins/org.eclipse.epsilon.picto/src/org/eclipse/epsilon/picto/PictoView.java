@@ -127,7 +127,7 @@ public class PictoView extends ViewPart {
 			if (view != null) {
 				activeViewHistory.put(renderedEditor, view);
 
-				// If the selection happens as a result of undo/redo 
+				// If the selection happens as a result of back/forward 
 				// we should not execute a new command
 				if (viewTreeSelectionHistory.isAutomatedSelection()) return;
 				
@@ -231,7 +231,7 @@ public class PictoView extends ViewPart {
 				}
 				
 				if (editor == editorPart) {
-					Display.getCurrent().asyncExec(() -> render(null));
+					render(null);
 				}
 			}
 		};
@@ -387,6 +387,12 @@ public class PictoView extends ViewPart {
 	}
 	
 	public void renderView(ViewTree view) throws Exception {
+		
+		if (view.getPromise() == null) {
+			viewRenderer.nothingToRender();
+			return;
+		}
+		
 		ViewRenderingJob job = new ViewRenderingJob(
 			String.format("Rendering view %s in %s", String.join("/", view.getPath()), editor.getTitle()),
 			view
