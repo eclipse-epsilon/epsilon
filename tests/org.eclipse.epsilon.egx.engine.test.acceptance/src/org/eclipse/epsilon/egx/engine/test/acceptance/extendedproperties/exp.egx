@@ -1,0 +1,23 @@
+pre {
+    for (p in t_person.all) {
+        p.~index = loopCount;
+        //p.~index.println();
+    }
+}
+
+rule Person2TaskList
+    transform p : t_person {
+
+    template: "exp.egl"
+    
+    target {
+    	values.put(p.a_name == "Alice" ? "aliceIndexRule" : "bobIndexRule", p.~index);
+    	return p.~index + ".html";
+    }
+}
+
+post {
+    for (p in t_person.all) {
+        values.put(p.a_name == "Alice" ? "aliceIndexPost" : "bobIndexPost", p.~index);
+    }
+}

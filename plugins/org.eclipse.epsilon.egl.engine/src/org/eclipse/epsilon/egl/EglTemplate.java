@@ -36,6 +36,7 @@ import org.eclipse.epsilon.eol.IImportManager;
 import org.eclipse.epsilon.eol.ImportManager;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.ModelDeclaration;
+import org.eclipse.epsilon.eol.dom.Operation;
 import org.eclipse.epsilon.eol.dom.OperationList;
 
 public class EglTemplate {
@@ -190,6 +191,9 @@ public class EglTemplate {
 		processed = false;
 		template.reset();
 		contents = "";
-		((EglModule) module).clearCache();
+		// Clear the caches of any cached operations
+		for (Operation op : ((EglModule) module).getOperations()) {
+			op.clearCache();
+		}
 	}
 }

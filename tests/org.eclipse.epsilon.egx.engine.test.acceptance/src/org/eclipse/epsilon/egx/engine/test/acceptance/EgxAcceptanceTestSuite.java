@@ -11,6 +11,7 @@ package org.eclipse.epsilon.egx.engine.test.acceptance;
 
 import org.eclipse.epsilon.egx.engine.test.acceptance.contributors.OperationContributorTests;
 import org.eclipse.epsilon.egx.engine.test.acceptance.equivalence.EgxModuleEquivalenceTests;
+import org.eclipse.epsilon.egx.engine.test.acceptance.extendedproperties.ExtendedPropertiesTests;
 import org.eclipse.epsilon.egx.engine.test.acceptance.formatter.FormatterTests;
 import org.eclipse.epsilon.egx.engine.test.acceptance.hutn.EgxHutnTestSuite;
 import org.eclipse.epsilon.egx.engine.test.acceptance.operations.*;
@@ -29,7 +30,8 @@ import junit.framework.Test;
 	PrintTests.class,
 	GenerationRuleConstructsTests.class,
 	EgxModuleEquivalenceTests.class,
-	FormatterTests.class
+	FormatterTests.class,
+	ExtendedPropertiesTests.class
 })
 public class EgxAcceptanceTestSuite {
 
