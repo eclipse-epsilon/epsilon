@@ -23,7 +23,7 @@ public class RenderActiveViewAction extends Action {
 	protected List<ViewContent> viewContents;
 	
 	public RenderActiveViewAction(PictoView pictoView, List<ViewContent> viewContents) {
-		setText("Close source view");
+		setText("Close Source View");
 		setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_REMOVE_DISABLED));
 		this.pictoView = pictoView;
 		this.viewContents = viewContents;

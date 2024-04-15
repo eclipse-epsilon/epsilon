@@ -36,7 +36,7 @@ public class CopyToClipboardAction extends Action {
 	public CopyToClipboardAction(PictoView pictoView) {
 		this.viewRenderer = pictoView.getViewRenderer();
 		this.pictoView = pictoView;
-		setText("Copy to clipboard");
+		setText("Copy to Clipboard");
 		setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
 	}
 

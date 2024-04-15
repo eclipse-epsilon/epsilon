@@ -23,11 +23,11 @@ public class ZoomAction extends Action {
 		this.type = type;
 		this.viewRenderer = viewRenderer;
 		if (type == ZoomType.IN) {
-			setText("Zoom in");
+			setText("Zoom In");
 			setImageDescriptor(PictoPlugin.getDefault().getImageDescriptor("icons/zoomin.gif"));
 		}
 		else if (type == ZoomType.OUT){
-			setText("Zoom out");
+			setText("Zoom Out");
 			setImageDescriptor(PictoPlugin.getDefault().getImageDescriptor("icons/zoomout.gif"));	
 		}
 		else {

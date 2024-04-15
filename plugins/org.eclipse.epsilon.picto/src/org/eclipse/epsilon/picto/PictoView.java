@@ -576,7 +576,7 @@ public class PictoView extends ViewPart {
 	
 	class ToggleTreeViewerAction extends Action {
 		public ToggleTreeViewerAction() {
-			super("Toggle tree", AS_CHECK_BOX);
+			super("Toggle Tree", AS_CHECK_BOX);
 			setImageDescriptor(PictoPlugin.getDefault().getImageDescriptor("icons/tree.png"));
 		}
 		
@@ -610,7 +610,7 @@ public class PictoView extends ViewPart {
 		}
 		
 		protected String getText(int position) {
-			return "Move tree to the " + (position == SWT.LEFT ? "left" : "right");
+			return "Move Tree to the " + (position == SWT.LEFT ? "Left" : "Right");
 		}
 		
 		protected ImageDescriptor getImageDescriptor(int position) {
@@ -620,7 +620,7 @@ public class PictoView extends ViewPart {
 	
 	class ClearViewTreeLabelProviderIconCacheAction extends Action {
 		public ClearViewTreeLabelProviderIconCacheAction() {
-			super("Clear tree icon cache");
+			super("Clear Tree Icon Cache");
 		}
 		
 		@Override
@@ -631,7 +631,7 @@ public class PictoView extends ViewPart {
 	
 	class ToggleVerbatimSourcesAction extends Action {
 		public ToggleVerbatimSourcesAction() {
-			super("Render verbatim sources", AS_CHECK_BOX);
+			super("Render Verbatim Sources", AS_CHECK_BOX);
 			renderVerbatimSources = EpsilonCommonsPlugin.getDefault().getPreferenceStore().getBoolean(PictoPreferencePage.PROPERTY_RENDER_VERBATIM);
 			setChecked(renderVerbatimSources);
 		}
