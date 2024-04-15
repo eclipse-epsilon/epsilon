@@ -159,6 +159,7 @@
     <!-- EMF component -->
     <module>plugins/org.eclipse.epsilon.emc.emf/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.flexmi/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.ecore.delegates/pom-plain.xml</module>
 
     <!-- UML component -->
     <module>plugins/org.eclipse.epsilon.emc.uml/pom-plain.xml</module>

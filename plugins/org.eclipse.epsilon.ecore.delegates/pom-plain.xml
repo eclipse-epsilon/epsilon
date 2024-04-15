@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.epsilon</groupId>
   <artifactId>org.eclipse.epsilon.ecore.delegates</artifactId>
-  <name>Epsilon EMF Ecore Delegates Support</name>
+  <name>Eclipse Epsilon EMF Ecore Delegates Support</name>
 
   <parent>
     <groupId>org.eclipse.epsilon</groupId>
