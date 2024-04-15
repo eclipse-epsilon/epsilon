@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Pattern Language Engine
 Bundle-SymbolicName: org.eclipse.epsilon.epl.engine
 Automatic-Module-Name: org.eclipse.epsilon.epl.engine
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.erl.engine;visibility:=reexport,
  org.eclipse.epsilon.eol.engine

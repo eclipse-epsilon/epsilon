@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EOL CLI
 Bundle-SymbolicName: org.eclipse.epsilon.eol.cli
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Automatic-Module-Name: org.eclipse.epsilon.eol.cli
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

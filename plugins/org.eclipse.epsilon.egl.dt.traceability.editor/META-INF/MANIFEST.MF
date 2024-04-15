@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EGL Development Tools: Textlink Editor
 Bundle-SymbolicName: org.eclipse.epsilon.egl.dt.traceability.editor;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

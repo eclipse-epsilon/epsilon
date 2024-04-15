@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Pinset Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.pinset.dt;singleton:=true
 Automatic-Module-Name: org.eclipse.epsilon.pinset.dt
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.pinset.dt.PinsetPlugin
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.eol.dt,

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Object Language Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.eol.dt;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Bundle-Activator: org.eclipse.epsilon.eol.dt.EolPlugin
 Require-Bundle: org.eclipse.jface.text,

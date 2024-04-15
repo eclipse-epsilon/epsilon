@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.core.dt.feature"
       label="Epsilon Core Development Tools"
-      version="2.5.0.qualifier"
+      version="2.6.0.qualifier"
       provider-name="Eclipse Modeling Project"
       plugin="org.eclipse.epsilon.common.dt"
       license-feature="org.eclipse.license"
@@ -21,7 +21,7 @@
 
    <includes
          id="org.eclipse.epsilon.core.feature"
-         version="2.5.0.qualifier"/>
+         version="2.6.0.qualifier"/>
 
    <plugin
          id="org.eclipse.epsilon.ecl.dt"

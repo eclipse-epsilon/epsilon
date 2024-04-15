@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Composite Model Plug-in
 Bundle-SymbolicName: org.eclipse.epsilon.emc.composite
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.ecl.engine,
  org.eclipse.epsilon.eol.engine

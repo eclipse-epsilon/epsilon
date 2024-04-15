@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Simulink Dictionary Deverlopment Tools
 Bundle-SymbolicName: org.eclipse.epsilon.emc.simulink.dictionary.dt;singleton:=true
 Automatic-Module-Name: org.eclipse.epsilon.emc.simuink.dictionary.dt
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.epsilon.emc.simulink.common.dt;visibility:=reexport,
  org.eclipse.epsilon.emc.simulink.dictionary

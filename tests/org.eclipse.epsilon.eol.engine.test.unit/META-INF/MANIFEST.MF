@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Object Language Unit Tests (Incubation)
 Bundle-SymbolicName: org.eclipse.epsilon.eol.engine.test.unit
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse.org
 Require-Bundle: org.eclipse.epsilon.test.dependencies
 Export-Package: org.eclipse.epsilon.eol.test.unit

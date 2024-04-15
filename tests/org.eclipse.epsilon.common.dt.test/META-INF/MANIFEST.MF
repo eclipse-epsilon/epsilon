@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Common Development Tools Tests (Incubation)
 Bundle-SymbolicName: org.eclipse.epsilon.common.dt.test;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse.org
 Require-Bundle: org.eclipse.epsilon.common.dt;visibility:=reexport,
  org.eclipse.epsilon.test.dependencies

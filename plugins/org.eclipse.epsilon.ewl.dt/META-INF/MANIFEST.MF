@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Wizard Language Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.ewl.dt;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.ewl.dt.EwlPlugin
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.eol.dt,

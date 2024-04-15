@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Human Usable Textual Notation Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.hutn.dt;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Export-Package: org.eclipse.epsilon.hutn.dt.actions,
  org.eclipse.epsilon.hutn.dt.editor,
  org.eclipse.epsilon.hutn.dt.editor.contentAssist,

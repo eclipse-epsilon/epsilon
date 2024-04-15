@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Exeed EMF Model Editor
 Bundle-SymbolicName: org.eclipse.epsilon.dt.exeed;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.dt.exeed.ExeedPlugin
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.emc.emf;visibility:=reexport,

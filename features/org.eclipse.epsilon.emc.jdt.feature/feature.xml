@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.emc.jdt.feature"
       label="EMC JDT Feature"
-      version="2.5.0.qualifier"
+      version="2.6.0.qualifier"
       provider-name="Eclipse.org">
 
    <description>
@@ -18,7 +18,7 @@
 
    <includes
          id="org.eclipse.epsilon.core.feature"
-         version="2.5.0.qualifier"/>
+         version="2.6.0.qualifier"/>
          
    <plugin
          id="org.eclipse.epsilon.emc.jdt"

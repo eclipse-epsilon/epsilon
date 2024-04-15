@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon EMF Ecore Delegates Support
 Bundle-SymbolicName: org.eclipse.epsilon.ecore.delegates;singleton:=true
 Bundle-Vendor: Eclipse Modeling Project
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Export-Package: org.eclipse.epsilon.ecore.delegates,
  org.eclipse.epsilon.ecore.delegates.execution,
  org.eclipse.epsilon.ecore.delegates.invocation,

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Human Usable Textual Notation Unit Tests (Incubation)
 Bundle-SymbolicName: org.eclipse.epsilon.hutn.test.unit
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Export-Package: org.eclipse.epsilon.hutn.test.unit;uses:="junit.framework"
 Require-Bundle: org.eclipse.epsilon.hutn.test.dependencies
 Bundle-Vendor: Eclipse.org

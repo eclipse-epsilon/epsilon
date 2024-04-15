@@ -3,7 +3,7 @@ Automatic-Module-Name: org.eclipse.epsilon.evl.dt
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Validation Language Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.evl.dt;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.evl.dt.EvlPlugin
 Bundle-Vendor: Eclipse Modeling Project
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

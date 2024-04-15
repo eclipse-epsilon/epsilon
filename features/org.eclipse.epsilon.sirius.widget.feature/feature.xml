@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.sirius.widget.feature"
       label="Sirius Embedded Editor Widget"
-      version="2.5.0.qualifier"
+      version="2.6.0.qualifier"
       provider-name="Eclipse Modeling Project"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">

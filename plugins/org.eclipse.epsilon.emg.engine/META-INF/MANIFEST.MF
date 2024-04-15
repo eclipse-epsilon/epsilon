@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: EMG Engine
 Bundle-SymbolicName: org.eclipse.epsilon.emg.engine;singleton:=true
 Automatic-Module-Name: org.eclipse.epsilon.emg.engine
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.epsilon.eol.engine,

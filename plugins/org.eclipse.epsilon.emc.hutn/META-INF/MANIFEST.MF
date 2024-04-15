@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: HUTN Driver for EMC
 Bundle-SymbolicName: org.eclipse.epsilon.emc.hutn
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.emc.emf,
  org.eclipse.epsilon.hutn.engine,

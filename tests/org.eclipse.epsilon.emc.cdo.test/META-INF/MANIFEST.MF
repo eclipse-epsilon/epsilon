@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon CDO Model Support Tests
 Bundle-SymbolicName: org.eclipse.epsilon.emc.cdo.test
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Export-Package: org.eclipse.epsilon.emc.cdo.tests
 Require-Bundle: org.junit;bundle-version="4.0.0",
  org.eclipse.emf.cdo.net4j;bundle-version="4.0.0",

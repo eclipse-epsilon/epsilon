@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Antlr AST Postprocessor
 Bundle-SymbolicName: org.eclipse.epsilon.antlr.postprocessor
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Require-Bundle: org.eclipse.epsilon.antlr.postprocessor.model;visibility:=reexport,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.epsilon.common

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EGL Fine-Grained Traceability Unit Tests (Incubation)
 Bundle-SymbolicName: org.eclipse.epsilon.egl.traceability.fine.test.unit
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse.org
 Require-Bundle: org.eclipse.epsilon.egl.traceability.fine;visibility:=reexport,
  org.eclipse.epsilon.test.dependencies;visibility:=reexport

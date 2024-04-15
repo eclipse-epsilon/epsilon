@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon EMF Decorator Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.emc.emf.decorator.dt;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.emc.emf.decorator.dt.Activator
 Require-Bundle: org.eclipse.epsilon.common.dt,
  org.eclipse.epsilon.emc.emf.dt,

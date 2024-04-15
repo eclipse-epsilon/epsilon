@@ -3,7 +3,7 @@ Automatic-Module-Name: org.eclipse.epsilon.evl.engine.test.acceptance
 Bundle-ManifestVersion: 2
 Bundle-Name: EVL Engine Acceptance Tests (Incubation)
 Bundle-SymbolicName: org.eclipse.epsilon.evl.engine.test.acceptance
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.epsilon.evl.engine.test.acceptance,

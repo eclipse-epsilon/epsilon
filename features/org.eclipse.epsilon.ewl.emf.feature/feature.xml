@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.ewl.emf.feature"
       label="Epsilon Wizard Language EMF Integration"
-      version="2.5.0.qualifier"
+      version="2.6.0.qualifier"
       provider-name="Eclipse Modeling Project"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
@@ -18,7 +18,7 @@
         which is available at https://www.eclipse.org/legal/epl-2.0
    </copyright>
    
-   <includes id="org.eclipse.epsilon.emf.dt.feature" version="2.5.0.qualifier"/>
+   <includes id="org.eclipse.epsilon.emf.dt.feature" version="2.6.0.qualifier"/>
 
    <plugin
          id="org.eclipse.epsilon.ewl.emf"

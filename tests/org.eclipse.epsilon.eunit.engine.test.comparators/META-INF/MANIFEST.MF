@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EUnit Custom non-OSGi Test Comparators
 Bundle-SymbolicName: org.eclipse.epsilon.eunit.engine.test.comparators
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Fragment-Host: org.eclipse.epsilon.eunit.engine;bundle-version="2.3.0"
 Automatic-Module-Name: org.eclipse.epsilon.eunit.test.comparators

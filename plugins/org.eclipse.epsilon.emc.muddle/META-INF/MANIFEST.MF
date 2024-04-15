@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Muddle driver
 Bundle-SymbolicName: org.eclipse.epsilon.emc.muddle;singleton:=true
 Automatic-Module-Name: org.eclipse.epsilon.emc.muddle
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: Eclipse Modeling Project
 Bundle-Localization: plugin

@@ -4,7 +4,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Validation Language Engine
 Bundle-SymbolicName: org.eclipse.epsilon.evl.engine
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.erl.engine;visibility:=reexport
 Export-Package: org.eclipse.epsilon.evl,

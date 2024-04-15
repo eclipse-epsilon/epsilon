@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.emf.dt.feature"
       label="Epsilon Development Tools for EMF"
-      version="2.5.0.qualifier"
+      version="2.6.0.qualifier"
       provider-name="Eclipse Modeling Project"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
@@ -26,8 +26,8 @@
       <discovery label="Emfatic" url="http://download.eclipse.org/emfatic/update"/>
    </url>
    
-   <includes id="org.eclipse.epsilon.emf.feature" version="2.5.0.qualifier"/>
-   <includes id="org.eclipse.epsilon.core.dt.feature" version="2.5.0.qualifier"/>
+   <includes id="org.eclipse.epsilon.emf.feature" version="2.6.0.qualifier"/>
+   <includes id="org.eclipse.epsilon.core.dt.feature" version="2.6.0.qualifier"/>
 
    <plugin
          id="org.eclipse.epsilon.dt.epackageregistryexplorer"
