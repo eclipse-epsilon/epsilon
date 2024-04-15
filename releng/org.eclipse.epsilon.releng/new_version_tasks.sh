@@ -6,8 +6,8 @@ UpdatesName=updates
 JavadocsName=javadoc
 StableName=stable
 InterimVersion=interim
-NewVersion=2.5
-OldVersion=2.4
+NewVersion=2.6
+OldVersion=2.5
 InterimJavadocs=$InterimVersion-$JavadocsName
 StableJavadocs=$StableName-$JavadocsName
 
