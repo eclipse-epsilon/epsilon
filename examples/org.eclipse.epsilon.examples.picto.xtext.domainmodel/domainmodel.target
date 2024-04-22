@@ -47,7 +47,7 @@
 		<unit id="org.eclipse.gmf.tooling.codegen.xtend2.feature.group" version="3.2.1.201409171321"/>
 		<unit id="org.eclipse.gmf.tooling.feature.group" version="3.2.1.201409171321"/>
 		<unit id="org.eclipse.gmf.tooling.runtime.feature.group" version="3.2.1.201409171321"/>
-		<repository location="http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases"/>
+		<repository location="https://github.com/epsilonlabs/gmf-tooling/raw/main/"/>
 	</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="com.atlassian.commonmark" version="0.15.1.v20200707-1444"/>
