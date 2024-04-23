@@ -82,7 +82,7 @@ public class ExcelRowTest {
 	public void testReadInteger() {
 		try {
 			String value = testReadType(1);
-			assertTrue(value.equals("12345.0"));
+			assertEquals("12345", value);
 		}
 		catch (Exception e) {
 			fail(e.getMessage());
@@ -115,7 +115,7 @@ public class ExcelRowTest {
 	public void testReadEvaluatedFormula() {
 		try {
 			String value = testReadType(4);
-			assertTrue(value.equals("3.0"));
+			assertEquals("3", value);
 		}
 		catch (Exception e) {
 			fail(e.getMessage());

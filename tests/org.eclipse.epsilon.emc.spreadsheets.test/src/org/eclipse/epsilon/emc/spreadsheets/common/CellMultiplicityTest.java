@@ -9,6 +9,7 @@
 **********************************************************************/
 package org.eclipse.epsilon.emc.spreadsheets.common;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -160,12 +161,12 @@ public class CellMultiplicityTest {
 		List<SpreadsheetRow> rows = (List<SpreadsheetRow>) model.getAllOfKind("S2");
 		SpreadsheetRow row1 = rows.get(0);
 		final List<String> column4value = row1.getAllVisibleCellValuesAsIs(worksheet.getColumn(4));
-		assertTrue(column4value.size() == 1);
-		assertTrue(column4value.get(0).equals("0"));
+		assertEquals(1, column4value.size());
+		assertEquals("0", column4value.get(0));
 		final List<String> column5value = row1.getAllVisibleCellValuesAsIs(worksheet.getColumn(5));
-		assertTrue(column5value.size() == 2);
-		assertTrue(column5value.get(0).equals("123.456"));
-		assertTrue(column5value.get(1).equals("789.00098"));
+		assertEquals(2, column5value.size());
+		assertEquals("123.456", column5value.get(0));
+		assertEquals("789.00098", column5value.get(1));
 
 		worksheet.removeRow(row1);
 		assertTrue(worksheet.getRows().size() == 0);

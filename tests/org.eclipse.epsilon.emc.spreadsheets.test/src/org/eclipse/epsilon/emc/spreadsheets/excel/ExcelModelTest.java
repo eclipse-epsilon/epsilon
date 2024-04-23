@@ -9,6 +9,7 @@
 **********************************************************************/
 package org.eclipse.epsilon.emc.spreadsheets.excel;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -25,19 +26,21 @@ import org.eclipse.epsilon.eol.models.IRelativePathResolver;
 import org.junit.Test;
 
 public class ExcelModelTest {
-	private final String PATH_TO_FILE = SharedTestMethods.getBasePath() + "resources/excel/ModelTest.xlsx";
-	private final String PATH_TO_GENERATED_FILE = SharedTestMethods.getBasePath()
-		+ "resources/excel/ModelTest.gen.xlsx";
-	private final String PATH_TO_XLS_FILE = SharedTestMethods.getBasePath() + "resources/excel/ModelTest.xls";
-	private final String PATH_TO_CONFIG = SharedTestMethods.getBasePath() + "resources/excel/ModelTestConfig.xml";
-	private final String PATH_TO_INVALID_CONFIG = SharedTestMethods.getBasePath()
-		+ "resources/excel/ModelTestInvalidConfig.xml";
-	private final String PATH_TO_PROTECTED_FILE = SharedTestMethods.getBasePath()
-		+ "resources/excel/ModelTestProtected.xlsx";
-	private final String PATH_TO_GENERATED_PROTECTED_FILE = SharedTestMethods.getBasePath()
-		+ "resources/excel/ModelTestProtected.gen.xlsx";
-	private final String PATH_TO_PROTECTED_XLS_FILE = SharedTestMethods.getBasePath()
-		+ "resources/excel/ModelTestProtected.xls";
+	private static final String PATH_TO_FILE = SharedTestMethods.getBasePath() + "resources/excel/ModelTest.xlsx";
+	private static final String PATH_TO_GENERATED_FILE = SharedTestMethods.getBasePath() + "resources/excel/ModelTest.gen.xlsx";
+	private static final String PATH_TO_XLS_FILE = SharedTestMethods.getBasePath() + "resources/excel/ModelTest.xls";
+	private static final String PATH_TO_CONFIG = SharedTestMethods.getBasePath() + "resources/excel/ModelTestConfig.xml";
+	private static final String PATH_TO_INVALID_CONFIG = SharedTestMethods.getBasePath() + "resources/excel/ModelTestInvalidConfig.xml";
+	private static final String PATH_TO_PROTECTED_FILE = SharedTestMethods.getBasePath() + "resources/excel/ModelTestProtected.xlsx";
+	private static final String PATH_TO_GENERATED_PROTECTED_FILE = SharedTestMethods.getBasePath() + "resources/excel/ModelTestProtected.gen.xlsx";
+	private static final String PATH_TO_PROTECTED_XLS_FILE = SharedTestMethods.getBasePath() + "resources/excel/ModelTestProtected.xls";
+
+	private static final String PATH_TO_LONGCODE_FILE = SharedTestMethods.getBasePath() + "resources/excel/ModelTestLongCode.xlsx";
+	private static final String PATH_TO_LONGCODE_CONFIG = SharedTestMethods.getBasePath() + "resources/excel/ModelTestLongCodeConfig.xml";
+	private static final String PATH_TO_LONGCODE_CONFIG_FLOAT = SharedTestMethods.getBasePath() + "resources/excel/ModelTestLongCodeConfigAsFloat.xml";
+	private static final String PATH_TO_LONGCODE_CONFIG_DOUBLE = SharedTestMethods.getBasePath() + "resources/excel/ModelTestLongCodeConfigAsDouble.xml";
+	private static final String PATH_TO_LONGCODE_CONFIG_INTEGER = SharedTestMethods.getBasePath() + "resources/excel/ModelTestLongCodeConfigAsInteger.xml";
+	private static final String PATH_TO_LONGCODE_CONFIG_BOOLEAN = SharedTestMethods.getBasePath() + "resources/excel/ModelTestLongCodeConfigAsBoolean.xml";
 
 	@Test
 	public void testNullModel() {
@@ -467,5 +470,85 @@ public class ExcelModelTest {
 		model.setConfigurationFile(PATH_TO_CONFIG);
 		model.load();
 		assertTrue(model.isInstantiable("Sheet1"));
+	}
+
+	@Test
+	public void testLongCodeDefaultType() throws Exception {
+		try (ExcelModel model = new ExcelModel()) {
+			model.setSpreadsheetFile(PATH_TO_LONGCODE_FILE);
+			model.setConfigurationFile(PATH_TO_LONGCODE_CONFIG);
+			model.load();
+
+			EolModule module = new EolModule();
+			module.parse("return Sheet1.all.first().longcode;");
+			module.getContext().getModelRepository().addModel(model);
+			assertEquals("1234567890", module.execute());
+		}
+	}
+
+	@Test
+	public void testLongCodeAsFloat() throws Exception {
+		try (ExcelModel model = new ExcelModel()) {
+			model.setSpreadsheetFile(PATH_TO_LONGCODE_FILE);
+			model.setConfigurationFile(PATH_TO_LONGCODE_CONFIG_FLOAT);
+			model.load();
+
+			EolModule module = new EolModule();
+			module.parse("return Sheet1.all.first().longcode;");
+			module.getContext().getModelRepository().addModel(model);
+			assertEquals(1.23456789E9f, (float) module.execute(), 1e-4f);
+		}
+	}
+
+	@Test
+	public void testLongCodeAsDouble() throws Exception {
+		try (ExcelModel model = new ExcelModel()) {
+			model.setSpreadsheetFile(PATH_TO_LONGCODE_FILE);
+			model.setConfigurationFile(PATH_TO_LONGCODE_CONFIG_DOUBLE);
+			model.load();
+
+			EolModule module = new EolModule();
+			module.parse("return Sheet1.all.first().longcode;");
+			module.getContext().getModelRepository().addModel(model);
+			assertEquals(1.23456789E9, (double) module.execute(), 1e-4);
+		}
+	}
+
+	@Test
+	public void testLongCodeAsInteger() throws Exception {
+		try (ExcelModel model = new ExcelModel()) {
+			model.setSpreadsheetFile(PATH_TO_LONGCODE_FILE);
+			model.setConfigurationFile(PATH_TO_LONGCODE_CONFIG_INTEGER);
+			model.load();
+
+			EolModule module = new EolModule();
+			module.parse("return Sheet1.all.first().longcode;");
+			module.getContext().getModelRepository().addModel(model);
+			assertEquals(1234567890, module.execute());
+		}
+	}
+
+	@Test
+	public void testLongCodeAsBoolean() throws Exception {
+		try (ExcelModel model = new ExcelModel()) {
+			model.setSpreadsheetFile(PATH_TO_LONGCODE_FILE);
+			model.setConfigurationFile(PATH_TO_LONGCODE_CONFIG_BOOLEAN);
+			model.load();
+
+			{
+				EolModule module = new EolModule();
+				module.parse("return Sheet1.all.first().longcode;");
+				module.getContext().getModelRepository().addModel(model);
+				assertEquals(true, module.execute());
+			}
+
+			{
+				EolModule module = new EolModule();
+				module.parse("return Sheet1.all.second().longcode;");
+				module.getContext().getModelRepository().addModel(model);
+				assertEquals(false, module.execute());
+			}
+
+		}
 	}
 }
