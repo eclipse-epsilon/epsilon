@@ -29,7 +29,8 @@ Require-Bundle: org.eclipse.ant.core,
  org.eclipse.epsilon.pinset.engine;visibility:=reexport,
  org.eclipse.epsilon.pinset.dt,
  org.eclipse.epsilon.emg.dt,
- org.eclipse.epsilon.emg.engine
+ org.eclipse.epsilon.emg.engine,
+ org.eclipse.epsilon.eol.dap
 Export-Package: org.eclipse.epsilon.workflow.tasks,
  org.eclipse.epsilon.workflow.tasks.hosts,
  org.eclipse.epsilon.workflow.tasks.nestedelements,

@@ -143,6 +143,7 @@
     <module>plugins/org.eclipse.epsilon.eml.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.emg.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.eol.engine/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.eol.dap/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.eol.tools/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.epl.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.erl.engine/pom-plain.xml</module>

@@ -42,6 +42,11 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.eol.dap</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>org.eclipse.epsilon.epl.engine</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -92,12 +97,6 @@
       <artifactId>org.eclipse.epsilon.profiling</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!--dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>org.eclipse.epsilon.emc.hutn</artifactId>
-      <version>${project.version}</version>
-      <optional>true</optional>
-    </dependency-->
 
     <dependency>
       <groupId>org.apache.ant</groupId>

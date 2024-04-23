@@ -99,6 +99,7 @@ target-plain
 
 # Backup files from Emacs
 *~
+*.swp
 
 # EUnit test files in examples
 /examples/**/TEST-*.xml

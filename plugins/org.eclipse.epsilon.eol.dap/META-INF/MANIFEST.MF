@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Debug Adapter
+Bundle-SymbolicName: org.eclipse.epsilon.eol.dap
+Bundle-Version: 2.6.0.qualifier
+Export-Package: org.eclipse.epsilon.eol.dap
+Require-Bundle: org.eclipse.epsilon.eol.engine;bundle-version="2.6.0",
+ org.eclipse.lsp4j.debug,
+ org.eclipse.lsp4j.jsonrpc,
+ org.eclipse.lsp4j.jsonrpc.debug,
+ com.google.gson;bundle-version="2.0.0",
+ com.google.guava;bundle-version="19.0.0"
+Bundle-Vendor: Eclipse.org
+Automatic-Module-Name: org.eclipse.epsilon.eol.da
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

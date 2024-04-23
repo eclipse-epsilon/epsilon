@@ -37,4 +37,7 @@ public interface Host {
 
 	public <T> List<T> getExtensionsOfType(Class<T> klazz) throws Exception;
 
+	default void setDebugPort(int port) {
+		// do nothing
+	}
 }

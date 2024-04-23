@@ -11,6 +11,7 @@
 		<jar destfile="lib/org.eclipse.epsilon.workflow.jar" basedir="bin"></jar>
 		
 		<echo>Building Standalone ANT jar</echo>
+
 		<jar destfile="epsilon-ant-standalone.jar">
 			<fileset dir="../org.eclipse.epsilon.eol.engine/bin"/>
 			<fileset dir="../org.eclipse.epsilon.egl.engine/bin"/>
@@ -27,6 +28,7 @@
 			<fileset dir="../org.eclipse.epsilon.emc.composite/bin"/>
 			<fileset dir="../org.eclipse.epsilon.emc.plainxml/bin"/>
 			<fileset dir="../org.eclipse.epsilon.workflow/bin"/>
+			<fileset dir="../org.eclipse.epsilon.eol.dap/bin" />
 		</jar>
 		
 	</target>

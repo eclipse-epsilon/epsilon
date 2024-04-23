@@ -1,0 +1,33 @@
+configurations {
+    epsilon
+}
+
+repositories {
+  // Allows us to use locally-built artifacts, to test code changes
+  mavenLocal()
+  // For everything else
+  mavenCentral()
+}
+
+dependencies {
+  epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.6.0-SNAPSHOT'
+  epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow.emf:2.6.0-SNAPSHOT'
+}
+
+task setupEpsilonTasks {
+    // Set up the core Epsilon tasks
+    ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/tasks.xml', 
+        classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+    // Set up the Epsilon EMF tasks
+    ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/emf/tasks.xml', 
+        classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+    // Set logging level to info so that EOL's println() is not suppressed
+    ant.lifecycleLogLevel = 'INFO'
+}
+
+task runHello {
+    dependsOn tasks.setupEpsilonTasks
+    doLast {
+      ant.'epsilon.eol'(src: '01-hello.eol', debug: true, debugPort: 4040)
+    }
+}

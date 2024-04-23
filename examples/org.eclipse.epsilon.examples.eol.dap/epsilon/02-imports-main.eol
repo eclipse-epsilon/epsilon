@@ -1,0 +1,4 @@
+import '02-imports-imported.eol';
+
+produceGreeting('Bob', 'Someone').println();
+produceGreeting('Alice', 'Important').println();
