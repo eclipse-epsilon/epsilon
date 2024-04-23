@@ -9,9 +9,12 @@
 **********************************************************************/
 package org.eclipse.epsilon.emc.spreadsheets.excel;
 
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Row;
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetColumn;
-import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetDataType;
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetRow;
 
 public class ExcelRow extends SpreadsheetRow {
@@ -38,23 +41,30 @@ public class ExcelRow extends SpreadsheetRow {
 				switch (cellValue.getCellType()) {
 					case NUMERIC:
 						double numericValue = cellValue.getNumberValue();
-						if (column.getDataType() == SpreadsheetDataType.INTEGER) {
+						switch (column.getDataType()) {
+						case INTEGER:
 							visibleCellValue += Math.round(numericValue);
-						}
-						else if (column.getDataType() == SpreadsheetDataType.FLOAT) {
+							break;
+						case FLOAT:
 							visibleCellValue += (float) numericValue;
-						}
-						else {
+							break;
+						case STRING:
+							visibleCellValue += new DataFormatter().formatCellValue(cell, evaluator);
+							break;
+						case DOUBLE:
 							visibleCellValue += numericValue;
+							break;
+						case BOOLEAN:
+							visibleCellValue += Boolean.valueOf(numericValue != 0);
+							break;
 						}
-						break;
-					case STRING:
-						visibleCellValue = cellValue.getStringValue();
 						break;
 					case BOOLEAN:
 						visibleCellValue += cellValue.getBooleanValue();
 						break;
-					default: visibleCellValue = cellValue.getStringValue();
+					case STRING:
+					default:
+						visibleCellValue = cellValue.getStringValue();
 				}
 			}
 			else {
