@@ -251,4 +251,8 @@ public interface IOutputBuffer {
 	
 	public void setParent(IOutputBuffer parent);
 	
+	public default int getLength() {
+		return toString().length();
+	}
+	
 }
