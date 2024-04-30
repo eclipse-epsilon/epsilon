@@ -13,7 +13,6 @@
     <tycho.version>4.0.3</tycho.version>
     <tycho.scmUrl>scm:git:https://github.com/eclipse/epsilon.git</tycho.scmUrl>
     <java.version>17</java.version>
-    <javadoc.opts>-Xdoclint:none</javadoc.opts>
     <epsilon.version>2.6.0-SNAPSHOT</epsilon.version>
   </properties>
 
@@ -149,12 +148,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.6.3</version>
-        <configuration>
-          <doclint>none</doclint>
-          <failOnError>false</failOnError>
-          <additionalparam>${javadoc.opts}</additionalparam>
-        </configuration>
       </plugin>
 
       <plugin>
@@ -171,6 +164,18 @@
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>3.5.0</version>
             </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <version>3.6.3</version>
+              <configuration>
+                <doclint>none</doclint>
+                <doctitle>Epsilon API</doctitle>
+                <sourceFileIncludes>
+                  <sourceFileInclude>org/eclipse/epsilon/**/*.java</sourceFileInclude>
+                </sourceFileIncludes>
+              </configuration>
+            </plugin>
         </plugins>
     </pluginManagement>
   </build>
@@ -185,16 +190,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.3.2</version>
-        <configuration>
-          <doclint>none</doclint>
-          <failOnError>false</failOnError>
-          <additionalparam>${javadoc.opts}</additionalparam>
-          <doctitle>Epsilon Interim API</doctitle>
-          <sourceFileIncludes>
-            <sourceFileInclude>org/eclipse/epsilon/**/*.java</sourceFileInclude>
-          </sourceFileIncludes>
-        </configuration>
       </plugin>
     </plugins>
   </reporting>
