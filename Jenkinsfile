@@ -73,7 +73,7 @@ pipeline {
               }
             }
             steps {
-              sh 'mvn -B initialize javadoc:aggregate'
+              sh 'mvn -f plugins -B initialize javadoc:aggregate'
             }
           }
           stage('Update site') {
@@ -100,7 +100,7 @@ pipeline {
                       scp -r "$SITEDIR/repository" genie.epsilon@projects-storage.eclipse.org:$INTERIM
                       scp "$SITEDIR"/*.zip genie.epsilon@projects-storage.eclipse.org:$INTERIM/epsilon-interim-site.zip
                     fi
-                    JAVADOCDIR="$WORKSPACE/target/site/apidocs"
+                    JAVADOCDIR="$WORKSPACE/plugins/target/site/apidocs"
                     if [ -d "$JAVADOCDIR" ]; then
                       ssh genie.epsilon@projects-storage.eclipse.org "rm -rf $JAVADOC"
                       scp -r "$JAVADOCDIR" genie.epsilon@projects-storage.eclipse.org:$JAVADOC
