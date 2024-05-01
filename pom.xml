@@ -170,7 +170,7 @@
               <version>3.6.3</version>
               <configuration>
                 <doclint>none</doclint>
-                <doctitle>Epsilon API</doctitle>
+		<doctitle>Epsilon ${project.version} API</doctitle>
                 <sourceFileIncludes>
                   <sourceFileInclude>org/eclipse/epsilon/**/*.java</sourceFileInclude>
                 </sourceFileIncludes>
