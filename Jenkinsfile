@@ -93,17 +93,20 @@ pipeline {
                 sshagent (['projects-storage.eclipse.org-bot-ssh']) {
                   sh '''
                     INTERIM=/home/data/httpd/download.eclipse.org/epsilon/interim
-                    JAVADOC=/home/data/httpd/download.eclipse.org/epsilon/interim-javadoc
                     SITEDIR="$WORKSPACE/releng/org.eclipse.epsilon.updatesite/target"
                     if [ -d "$SITEDIR" ]; then
                       ssh genie.epsilon@projects-storage.eclipse.org rm -rf $INTERIM
                       scp -r "$SITEDIR/repository" genie.epsilon@projects-storage.eclipse.org:$INTERIM
                       scp "$SITEDIR"/*.zip genie.epsilon@projects-storage.eclipse.org:$INTERIM/epsilon-interim-site.zip
                     fi
+                    PROJECT_VERSION=$(mvn -f pom-plain.xml help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT//')
+                    JAVADOC=/home/data/httpd/download.eclipse.org/epsilon/interim-javadoc
+                    JAVADOC_VERSIONED=/home/data/httpd/download.eclipse.org/epsilon/${PROJECT_VERSION}-javadoc
                     JAVADOCDIR="$WORKSPACE/plugins/target/site/apidocs"
                     if [ -d "$JAVADOCDIR" ]; then
-                      ssh genie.epsilon@projects-storage.eclipse.org "rm -rf $JAVADOC"
+                      ssh genie.epsilon@projects-storage.eclipse.org "rm -rf $JAVADOC $JAVADOC_VERSIONED"
                       scp -r "$JAVADOCDIR" genie.epsilon@projects-storage.eclipse.org:$JAVADOC
+                      scp -r "$JAVADOCDIR" genie.epsilon@projects-storage.eclipse.org:$JAVADOC_VERSIONED
                     fi
                   '''
                 }
