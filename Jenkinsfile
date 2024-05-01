@@ -106,10 +106,17 @@ pipeline {
                       ssh genie.epsilon@projects-storage.eclipse.org "rm -rf $JAVADOC"
                       scp -r "$JAVADOCDIR" genie.epsilon@projects-storage.eclipse.org:$JAVADOC
                       if echo "$PROJECT_VERSION" | grep -Eq "^[0-9]+.[0-9]+.[0-9]+$"; then
+                        echo "Uploading Javadocs for Epsilon ${PROJECT_VERSION}"
                         JAVADOC_VERSIONED=/home/data/httpd/download.eclipse.org/epsilon/${PROJECT_VERSION}-javadoc
                         ssh genie.epsilon@projects-storage.eclipse.org "rm -rf $JAVADOC_VERSIONED"
                         scp -r "$JAVADOCDIR" genie.epsilon@projects-storage.eclipse.org:$JAVADOC_VERSIONED
+                      else
+                        echo "Project version does not follow the expected X.Y.Z format: ${PROJECT_VERSION}"
+                        exit 2
                       fi
+                    else
+                      echo "Could not find the Javadocs folder"
+                      exit 1
                     fi
                   '''
                 }
