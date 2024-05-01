@@ -113,16 +113,6 @@ pipeline {
               }
             }
           }
-          /*stage('NEW VERSION') { 
-            // This stage should only be uncommented when creating a new release!
-            steps {
-              lock('download-area') {
-                sshagent (['projects-storage.eclipse.org-bot-ssh']) {
-                  sh 'cat "$WORKSPACE/releng/org.eclipse.epsilon.releng/new_version_tasks.sh" | ssh genie.epsilon@projects-storage.eclipse.org'
-                }
-              }
-            }
-          }*/
           stage('Plain Maven build') {
             when {
               anyOf {
