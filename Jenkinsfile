@@ -99,7 +99,7 @@ pipeline {
                       scp -r "$SITEDIR/repository" genie.epsilon@projects-storage.eclipse.org:$INTERIM
                       scp "$SITEDIR"/*.zip genie.epsilon@projects-storage.eclipse.org:$INTERIM/epsilon-interim-site.zip
                     fi
-                    PROJECT_VERSION=$(grep Bundle-Version plugins/org.eclipse.epsilon.eol.engine/META-INF/MANIFEST.MF | awk '{print $2}' | sed 's/.qualifier//')
+                    PROJECT_VERSION=$(grep Bundle-Version plugins/org.eclipse.epsilon.eol.engine/META-INF/MANIFEST.MF | awk '{print $2}' | tr -d '\r' | sed 's/.qualifier//')
                     JAVADOC=/home/data/httpd/download.eclipse.org/epsilon/interim-javadoc
                     JAVADOCDIR="$WORKSPACE/plugins/target/site/apidocs"
                     if [ -d "$JAVADOCDIR" ]; then
