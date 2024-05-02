@@ -10,7 +10,7 @@
 package org.eclipse.epsilon.flock.dt;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
-import org.eclipse.epsilon.eol.dt.debug.EolDebugger;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.flock.model.domain.common.ClassifierTypedConstruct;
 
 public class FlockDebugger extends EolDebugger {

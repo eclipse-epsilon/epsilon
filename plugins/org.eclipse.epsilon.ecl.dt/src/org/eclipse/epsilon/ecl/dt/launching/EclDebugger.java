@@ -11,7 +11,7 @@ package org.eclipse.epsilon.ecl.dt.launching;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.ecl.dom.MatchRule;
-import org.eclipse.epsilon.eol.dt.debug.EolDebugger;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 
 public class EclDebugger extends EolDebugger {
 

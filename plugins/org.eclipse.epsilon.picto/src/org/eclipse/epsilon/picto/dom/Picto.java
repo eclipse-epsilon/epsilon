@@ -7,8 +7,6 @@
  *
  * SPDX-License-Identifier: EPL-2.0
 **********************************************************************/
-/**
- */
 package org.eclipse.epsilon.picto.dom;
 
 import org.eclipse.emf.common.util.EList;

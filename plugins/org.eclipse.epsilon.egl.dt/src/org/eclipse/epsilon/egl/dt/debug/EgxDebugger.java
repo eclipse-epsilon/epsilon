@@ -11,7 +11,7 @@ package org.eclipse.epsilon.egl.dt.debug;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.egl.dom.GenerationRule;
-import org.eclipse.epsilon.eol.dt.debug.EolDebugger;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 
 public class EgxDebugger extends EolDebugger {
 	

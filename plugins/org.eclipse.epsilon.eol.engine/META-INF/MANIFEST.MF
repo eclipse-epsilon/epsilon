@@ -9,6 +9,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.epsilon.common;visibility:=reexport
 Export-Package: org.eclipse.epsilon.eol,
  org.eclipse.epsilon.eol.concurrent,
+ org.eclipse.epsilon.eol.debug,
  org.eclipse.epsilon.eol.dom,
  org.eclipse.epsilon.eol.exceptions,
  org.eclipse.epsilon.eol.exceptions.concurrent,
@@ -39,5 +40,6 @@ Export-Package: org.eclipse.epsilon.eol,
  org.eclipse.epsilon.eol.parse,
  org.eclipse.epsilon.eol.tools,
  org.eclipse.epsilon.eol.types,
+ org.eclipse.epsilon.eol.types.concurrent,
  org.eclipse.epsilon.eol.userinput,
  org.eclipse.epsilon.eol.util

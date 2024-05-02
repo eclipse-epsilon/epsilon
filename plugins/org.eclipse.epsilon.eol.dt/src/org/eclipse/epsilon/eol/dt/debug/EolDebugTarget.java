@@ -9,19 +9,35 @@
  ******************************************************************************/
 package org.eclipse.epsilon.eol.dt.debug;
 
+import java.io.File;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.IThread;
+import org.eclipse.epsilon.common.dt.util.EclipseUtil;
+import org.eclipse.epsilon.common.dt.util.LogUtil;
+import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.eol.IEolModule;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
+import org.eclipse.epsilon.eol.debug.IEpsilonDebugTarget;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 
-public class EolDebugTarget extends EolDebugElement implements IDebugTarget {
+public class EolDebugTarget extends EolDebugElement implements IDebugTarget, IEpsilonDebugTarget {
 
 	protected boolean suspended;
 	protected boolean terminated;
@@ -31,6 +47,7 @@ public class EolDebugTarget extends EolDebugElement implements IDebugTarget {
 	protected IProcess process;
 	protected IEolModule module;
 	protected String name;
+	protected Map<String, IFile> iFiles = new HashMap<>();
 	
 	public EolDebugTarget(ILaunch launch, IEolModule module, EolDebugger debugger, String name) {
 		super(null);
@@ -41,7 +58,8 @@ public class EolDebugTarget extends EolDebugElement implements IDebugTarget {
 		module.getContext().getExecutorFactory().setExecutionController(debugger);
 		this.name = name;
 	}
-	
+
+	@Override
 	public IEolModule getModule() {
 		return module;
 	}
@@ -66,7 +84,14 @@ public class EolDebugTarget extends EolDebugElement implements IDebugTarget {
 
 	public Object debug() throws DebugException, EolRuntimeException {
 		fireCreationEvent();
-		return debugger.debug(module);
+
+		final Object result = module.execute();
+		try {
+			terminate();
+		} catch (DebugException e) {
+			throw new EolRuntimeException(e.getLocalizedMessage());
+		}
+		return result;
 	}
 
 	@Override
@@ -164,8 +189,89 @@ public class EolDebugTarget extends EolDebugElement implements IDebugTarget {
 	}
 
 	/*
+	 * Methods for the *Debugger classes
+	 */
+
+	@Override
+	public boolean hasBreakpointItself(ModuleElement ast) {
+		if (!DebugPlugin.getDefault().getBreakpointManager().isEnabled()) {
+			// Debugging has been globally disabled
+			return false;
+		}
+	
+		IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(EolDebugConstants.MODEL_IDENTIFIER);
+		for (IBreakpoint breakpoint : breakpoints) {
+			IMarker marker = breakpoint.getMarker();
+			if (marker.getResource().equals(getIFile(ast))) {
+				final int markerLine = marker.getAttribute(IMarker.LINE_NUMBER, 0);
+				final int astLine = ast.getRegion().getStart().getLine();
+				if (markerLine == astLine) {
+					try {
+						return breakpoint.isEnabled();
+					} catch (CoreException e) {
+						LogUtil.log(e);
+						return false;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	private IFile getIFile(ModuleElement ast) {
+		if (ast.getFile() != null) {
+			return getIFile(ast.getFile());
+		} else {
+			return getIFile(ast.getUri());
+		}
+	}
+
+	private IFile getIFile(File file) {
+		IFile iFile = iFiles.get(file.getAbsolutePath());
+		if (iFile == null) {
+			iFile = getIFile(file.toURI());
+			iFiles.put(file.getAbsolutePath(), iFile);
+		}
+		return iFile;
+	}
+
+	private IFile getIFile(URI uri) {
+		// If the URI starts by platform:/resource, we need to strip that off
+		// before invoking ResourcesPlugin - see bug #286017 and its patch
+		final String[] uriParts = uri.toString().split("platform:/resource");
+		if (uriParts.length > 1) {
+			return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(uriParts[1]));
+		}
+		return ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(uri)[0];
+	}
+
+	/*
 	 * Irrelevant methods
 	 */
+
+	@Override
+	public void suspend(ModuleElement ast) {
+		try {
+			this.suspend();
+
+			IFile file = getIFile(ast);
+			EclipseUtil.openEditorAt(file, ast.getRegion().getStart().getLine(), 1, false);
+			while (this.isSuspended()
+					&& !debugger.isStepping()
+					&& debugger.getStopAfterModuleElement() == null
+					&& debugger.getStopAfterFrameStackSizeDropsBelow() == null) {
+				synchronized (this) {
+					try {
+						wait(500);
+					} catch (InterruptedException ex) {
+						// timeout
+					}
+				}
+			}
+		} catch (Exception ex) {
+			// nothing to do
+		}
+	}
 
 	@Override
 	public boolean canDisconnect() {

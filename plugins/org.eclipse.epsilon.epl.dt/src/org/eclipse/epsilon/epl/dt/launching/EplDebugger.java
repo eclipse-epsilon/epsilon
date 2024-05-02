@@ -10,7 +10,7 @@
 package org.eclipse.epsilon.epl.dt.launching;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
-import org.eclipse.epsilon.eol.dt.debug.EolDebugger;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.epl.dom.Pattern;
 
 public class EplDebugger extends EolDebugger {
