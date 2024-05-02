@@ -15,6 +15,7 @@ import org.eclipse.epsilon.common.dt.launching.extensions.ModuleImplementationEx
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dt.launching.EpsilonLaunchConfigurationDelegate;
+import org.eclipse.epsilon.etl.debug.EtlDebugger;
 
 public class EtlLaunchConfigurationDelegate extends EpsilonLaunchConfigurationDelegate {
 	

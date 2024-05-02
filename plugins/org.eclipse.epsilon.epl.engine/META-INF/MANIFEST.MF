@@ -12,6 +12,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.epsilon.epl,
  org.eclipse.epsilon.epl.combinations,
  org.eclipse.epsilon.epl.concurrent,
+ org.eclipse.epsilon.epl.debug,
  org.eclipse.epsilon.epl.dom,
  org.eclipse.epsilon.epl.execute,
  org.eclipse.epsilon.epl.execute.context,

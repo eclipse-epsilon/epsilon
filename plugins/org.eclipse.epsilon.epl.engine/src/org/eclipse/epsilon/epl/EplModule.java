@@ -13,10 +13,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.Variable;
-import org.eclipse.epsilon.epl.combinations.*;
+import org.eclipse.epsilon.epl.combinations.CombinationGenerator;
+import org.eclipse.epsilon.epl.combinations.CombinationGeneratorListener;
+import org.eclipse.epsilon.epl.combinations.CompositeCombinationGenerator;
+import org.eclipse.epsilon.epl.combinations.DynamicList;
+import org.eclipse.epsilon.epl.combinations.DynamicListCombinationGenerator;
+import org.eclipse.epsilon.epl.debug.EplDebugger;
 import org.eclipse.epsilon.epl.dom.NoMatch;
 import org.eclipse.epsilon.epl.dom.Pattern;
 import org.eclipse.epsilon.epl.dom.Role;
@@ -146,4 +153,11 @@ public class EplModule extends AbstractEplModule {
 		
 		return combinationGenerator;
 	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new EplDebugger();
+	}
+
+	
 }

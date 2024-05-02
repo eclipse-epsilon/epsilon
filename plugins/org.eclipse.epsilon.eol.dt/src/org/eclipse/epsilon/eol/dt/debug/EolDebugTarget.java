@@ -35,6 +35,7 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.debug.IEpsilonDebugTarget;
+import org.eclipse.epsilon.eol.debug.SuspendReason;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 
 public class EolDebugTarget extends EolDebugElement implements IDebugTarget, IEpsilonDebugTarget {
@@ -245,12 +246,8 @@ public class EolDebugTarget extends EolDebugElement implements IDebugTarget, IEp
 		return ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(uri)[0];
 	}
 
-	/*
-	 * Irrelevant methods
-	 */
-
 	@Override
-	public void suspend(ModuleElement ast) {
+	public void suspend(ModuleElement ast, SuspendReason reason) {
 		try {
 			this.suspend();
 
@@ -272,6 +269,10 @@ public class EolDebugTarget extends EolDebugElement implements IDebugTarget, IEp
 			// nothing to do
 		}
 	}
+
+	/*
+	 * Irrelevant methods
+	 */
 
 	@Override
 	public boolean canDisconnect() {

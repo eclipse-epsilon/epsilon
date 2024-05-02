@@ -12,6 +12,7 @@ package org.eclipse.epsilon.ecl;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.Lexer;
 import org.antlr.runtime.TokenStream;
@@ -20,14 +21,15 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.util.AstUtil;
+import org.eclipse.epsilon.ecl.debug.EclDebugger;
 import org.eclipse.epsilon.ecl.dom.MatchRule;
 import org.eclipse.epsilon.ecl.execute.EclOperationFactory;
 import org.eclipse.epsilon.ecl.execute.context.EclContext;
 import org.eclipse.epsilon.ecl.execute.context.IEclContext;
 import org.eclipse.epsilon.ecl.parse.EclLexer;
 import org.eclipse.epsilon.ecl.parse.EclParser;
-import org.eclipse.epsilon.ecl.parse.Ecl_EclParserRules.rightDomain_return;
 import org.eclipse.epsilon.ecl.trace.MatchTrace;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
@@ -179,4 +181,10 @@ public class EclModule extends ErlModule implements IEclModule {
 	public List<MatchRule> getDeclaredMatchRules() {
 		return declaredMatchRules;
 	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new EclDebugger();
+	}
+	
 }

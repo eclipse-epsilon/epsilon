@@ -7,17 +7,17 @@
  * Contributors:
  *     Dimitrios Kolovos - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.flock.dt;
+package org.eclipse.epsilon.epl.debug;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
-import org.eclipse.epsilon.flock.model.domain.common.ClassifierTypedConstruct;
+import org.eclipse.epsilon.epl.dom.Pattern;
 
-public class FlockDebugger extends EolDebugger {
+public class EplDebugger extends EolDebugger {
 	
 	@Override
 	protected boolean isStructuralBlock(ModuleElement ast) {
-		return super.isStructuralBlock(ast) || ast instanceof ClassifierTypedConstruct;
+		return super.isStructuralBlock(ast) || ast instanceof Pattern;
 	}
 	
 }

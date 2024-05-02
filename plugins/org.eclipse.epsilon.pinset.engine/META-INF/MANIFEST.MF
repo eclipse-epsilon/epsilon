@@ -9,5 +9,6 @@ Require-Bundle: org.eclipse.epsilon.erl.engine;visibility:=reexport,
  org.apache.commons.lang3
 Export-Package: org.eclipse.epsilon.pinset,
  org.eclipse.epsilon.pinset.columnGenerators,
+ org.eclipse.epsilon.pinset.debug,
  org.eclipse.epsilon.pinset.parse
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

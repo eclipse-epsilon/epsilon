@@ -24,7 +24,7 @@ import org.eclipse.epsilon.common.dt.util.LogUtil;
 import org.eclipse.epsilon.common.util.FileUtil;
 import org.eclipse.epsilon.common.util.StringUtil;
 import org.eclipse.epsilon.egl.*;
-import org.eclipse.epsilon.egl.dt.debug.EgxDebugger;
+import org.eclipse.epsilon.egl.debug.EgxDebugger;
 import org.eclipse.epsilon.egl.dt.extensions.fineGrainedTracePostprocessor.FineGrainedTracePostprocessorSpecification;
 import org.eclipse.epsilon.egl.dt.extensions.fineGrainedTracePostprocessor.FineGrainedTracePostprocessorSpecificationFactory;
 import org.eclipse.epsilon.egl.dt.extensions.formatter.FormatterSpecification;

@@ -7,11 +7,11 @@
  * Contributors:
  *     Dimitrios Kolovos - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.eml.dt.launching;
+package org.eclipse.epsilon.eml.debug;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.eml.dom.MergeRule;
-import org.eclipse.epsilon.etl.dt.launching.EtlDebugger;
+import org.eclipse.epsilon.etl.debug.EtlDebugger;
 
 public class EmlDebugger extends EtlDebugger {
 	

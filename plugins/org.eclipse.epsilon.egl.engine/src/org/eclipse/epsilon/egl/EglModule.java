@@ -30,6 +30,7 @@ import org.eclipse.epsilon.egl.execute.context.IEglContext;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.IImportManager;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.ModelDeclaration;
 import org.eclipse.epsilon.eol.dom.OperationList;
@@ -290,5 +291,9 @@ public class EglModule implements IEglModule {
 		current.module.setImportManager(importManager);
 	}
 
+	@Override
+	public EolDebugger createDebugger() {
+		return current.module.createDebugger();
+	}
 
 }

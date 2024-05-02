@@ -28,6 +28,7 @@ import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.AstUtil;
 import org.eclipse.epsilon.common.util.ListSet;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.AbortStatement;
 import org.eclipse.epsilon.eol.dom.AnnotationBlock;
 import org.eclipse.epsilon.eol.dom.AssignmentStatement;
@@ -543,5 +544,10 @@ public class EolModule extends AbstractModule implements IEolModule {
 	@Override
 	public void setImportManager(IImportManager importManager) {
 		this.importManager = importManager;
+	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new EolDebugger();
 	}
 }

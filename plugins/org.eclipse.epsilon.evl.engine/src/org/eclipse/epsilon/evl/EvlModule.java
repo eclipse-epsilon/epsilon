@@ -10,7 +10,16 @@
  ******************************************************************************/
 package org.eclipse.epsilon.evl;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.Lexer;
 import org.antlr.runtime.TokenStream;
@@ -20,12 +29,18 @@ import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.util.AstUtil;
 import org.eclipse.epsilon.common.util.CollectionUtil;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.erl.ErlModule;
-import org.eclipse.epsilon.evl.dom.*;
+import org.eclipse.epsilon.evl.debug.EvlDebugger;
+import org.eclipse.epsilon.evl.dom.Constraint;
+import org.eclipse.epsilon.evl.dom.ConstraintContext;
+import org.eclipse.epsilon.evl.dom.ConstraintSelectTransfomer;
+import org.eclipse.epsilon.evl.dom.Fix;
+import org.eclipse.epsilon.evl.dom.GlobalConstraintContext;
 import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
 import org.eclipse.epsilon.evl.execute.context.EvlContext;
 import org.eclipse.epsilon.evl.execute.context.IEvlContext;
@@ -345,6 +360,11 @@ public class EvlModule extends ErlModule implements IEvlModule {
 	@Override
 	public Set<String> getConfigurationProperties() {
 		return CONFIG_PROPERTIES;
+	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new EvlDebugger();
 	}
 	
 }

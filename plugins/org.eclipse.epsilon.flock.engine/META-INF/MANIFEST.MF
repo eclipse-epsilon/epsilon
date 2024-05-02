@@ -8,6 +8,7 @@ Require-Bundle: org.eclipse.epsilon.eol.engine;visibility:=reexport,
  org.eclipse.epsilon.erl.engine
 Export-Package: org.eclipse.epsilon.flock,
  org.eclipse.epsilon.flock.context,
+ org.eclipse.epsilon.flock.debug,
  org.eclipse.epsilon.flock.emc.wrappers,
  org.eclipse.epsilon.flock.equivalences,
  org.eclipse.epsilon.flock.equivalences.factory,

@@ -19,6 +19,7 @@ import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dt.launching.EpsilonLaunchConfigurationDelegate;
 import org.eclipse.epsilon.pinset.PinsetModule;
+import org.eclipse.epsilon.pinset.debug.PinsetDebugger;
 
 
 /**

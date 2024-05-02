@@ -9,6 +9,7 @@ Require-Bundle: org.eclipse.epsilon.eol.engine,
  com.google.guava;bundle-version="27.1.0"
 Export-Package: org.eclipse.epsilon.etl,
  org.eclipse.epsilon.etl.concurrent,
+ org.eclipse.epsilon.etl.debug,
  org.eclipse.epsilon.etl.dom,
  org.eclipse.epsilon.etl.execute.context,
  org.eclipse.epsilon.etl.execute.context.concurrent,

@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *********************************************************************/
-package org.eclipse.epsilon.pinset.dt.launching;
+package org.eclipse.epsilon.pinset.debug;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.eol.debug.EolDebugger;

@@ -7,9 +7,11 @@ Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.ecl.engine,
  org.eclipse.epsilon.etl.engine
 Export-Package: org.eclipse.epsilon.eml,
+ org.eclipse.epsilon.eml.debug,
  org.eclipse.epsilon.eml.dom,
  org.eclipse.epsilon.eml.execute.context,
  org.eclipse.epsilon.eml.execute.operations,
+ org.eclipse.epsilon.eml.launch,
  org.eclipse.epsilon.eml.parse,
  org.eclipse.epsilon.eml.strategy,
  org.eclipse.epsilon.eml.trace

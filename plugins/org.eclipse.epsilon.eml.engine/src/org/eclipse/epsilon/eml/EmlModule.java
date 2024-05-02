@@ -11,6 +11,7 @@ package org.eclipse.epsilon.eml;
 
 import java.util.HashMap;
 import java.util.List;
+
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.Lexer;
 import org.antlr.runtime.TokenStream;
@@ -19,13 +20,15 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.util.AstUtil;
-import org.eclipse.epsilon.eml.dom.MergeRule;
+import org.eclipse.epsilon.eml.debug.EmlDebugger;
 import org.eclipse.epsilon.eml.dom.EquivalentAssignmentStatement;
+import org.eclipse.epsilon.eml.dom.MergeRule;
 import org.eclipse.epsilon.eml.execute.context.EmlContext;
 import org.eclipse.epsilon.eml.execute.context.IEmlContext;
 import org.eclipse.epsilon.eml.execute.operations.EmlOperationFactory;
 import org.eclipse.epsilon.eml.parse.EmlLexer;
 import org.eclipse.epsilon.eml.parse.EmlParser;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.Variable;
@@ -144,4 +147,10 @@ public class EmlModule extends EtlModule implements IEmlModule {
 		}
 		return mergeRules;
 	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new EmlDebugger();
+	}
+	
 }

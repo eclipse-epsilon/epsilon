@@ -7,19 +7,17 @@
  * Contributors:
  *     Dimitrios Kolovos - initial API and implementation
  ******************************************************************************/
-package org.eclipse.epsilon.evl.dt.launching;
+package org.eclipse.epsilon.ecl.debug;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
+import org.eclipse.epsilon.ecl.dom.MatchRule;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
-import org.eclipse.epsilon.evl.dom.Constraint;
-import org.eclipse.epsilon.evl.dom.ConstraintContext;
-import org.eclipse.epsilon.evl.dom.Fix;
 
-public class EvlDebugger extends EolDebugger {
-	
+public class EclDebugger extends EolDebugger {
+
 	@Override
 	protected boolean isStructuralBlock(ModuleElement ast) {
-		return super.isStructuralBlock(ast) || ast instanceof ConstraintContext || ast instanceof Constraint || ast instanceof Fix;
+		return super.isStructuralBlock(ast) || ast instanceof MatchRule;
 	}
 	
 }

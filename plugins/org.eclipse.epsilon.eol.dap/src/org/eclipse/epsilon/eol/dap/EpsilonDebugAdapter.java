@@ -30,15 +30,16 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.Region;
 import org.eclipse.epsilon.eol.IEolModule;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
+import org.eclipse.epsilon.eol.debug.IEpsilonDebugTarget;
+import org.eclipse.epsilon.eol.debug.SuspendReason;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.Operation;
-import org.eclipse.epsilon.eol.dom.Statement;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.Frame;
 import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
-import org.eclipse.epsilon.eol.execute.control.DefaultExecutionController;
 import org.eclipse.epsilon.eol.execute.control.IExecutionListener;
 import org.eclipse.lsp4j.debug.Breakpoint;
 import org.eclipse.lsp4j.debug.Capabilities;
@@ -86,7 +87,7 @@ import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
  * <a href="https://microsoft.github.io/debug-adapter-protocol/overview">Microsoft's website</a>.
  * </p>
  */
-public class EpsilonDebugAdapter extends DefaultExecutionController implements IDebugProtocolServer {
+public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugTarget {
 
 	private static final int EPSILON_THREAD_ID = 1;
 
@@ -112,50 +113,6 @@ public class EpsilonDebugAdapter extends DefaultExecutionController implements I
 				sendTerminated();
 				sendExited(1);
 			}
-		}
-	}
-
-	@Override
-	public void control(ModuleElement ast, IEolContext context) {
-		if (isTerminated) {
-			return;
-		}
-
-		LOGGER.info("About to execute statement: " + ast + ", region: " + ast.getRegion());
-		if (controls(ast, context)) {
-			try {
-				if (stepping) {
-					stepping = false;
-					sendStopped(StoppedEventArgumentsReason.STEP);
-					suspend();
-				} else if (hasBreakpoint(ast)) {
-					sendStopped(StoppedEventArgumentsReason.BREAKPOINT);
-					suspend();
-				}
-			} catch (InterruptedException e) {
-				LOGGER.log(Level.SEVERE, e.getMessage(), e);
-			}
-		}
-	}
-
-	protected boolean controls(ModuleElement ast, IEolContext context) {
-		return ast instanceof Statement;
-	}
-
-	protected boolean hasBreakpoint(ModuleElement ast) {
-		Set<Integer> lineBreakpoints = lineBreakpointsByFile.get(ast.getFile().getPath());
-		return lineBreakpoints != null && lineBreakpoints.contains(ast.getRegion().getStart().getLine());
-	}
-
-	@Override
-	public void done(ModuleElement ast, IEolContext context) {
-		if (stopAfterModuleElement != null && stopAfterModuleElement == ast) {
-			stepping = true;
-			stopAfterModuleElement = null;
-		}
-		if (stopAfterFrameStackSizeDropsBelow != null && getFrameStackSize() < stopAfterFrameStackSizeDropsBelow) {
-			stepping = true;
-			stopAfterFrameStackSizeDropsBelow = null;
 		}
 	}
 
@@ -191,10 +148,10 @@ public class EpsilonDebugAdapter extends DefaultExecutionController implements I
 	/** Epsilon module being debugged. */
 	private IEolModule module;
 
+	/** Debugger created from the module. */
+	private EolDebugger debugger;
+
 	private volatile boolean isTerminated = false;
-	private volatile boolean stepping = false;
-	private ModuleElement stopAfterModuleElement = null;
-	private Integer stopAfterFrameStackSizeDropsBelow = null;
 
 	/** Converts a remote line to a local one (Epsilon uses 1-based lines). */
 	private LocationConverter lineConverter;
@@ -214,6 +171,12 @@ public class EpsilonDebugAdapter extends DefaultExecutionController implements I
 	private SuspendedState suspendedState = new SuspendedState();
 
 	public void connect(IDebugProtocolClient client) {
+		if (module == null) {
+			throw new IllegalStateException("connect(): the module has not been set up yet");
+		}
+		this.debugger = module.createDebugger();
+		this.debugger.setTarget(this);
+
 		this.client = client;
 		client.initialized();
 	}
@@ -250,7 +213,7 @@ public class EpsilonDebugAdapter extends DefaultExecutionController implements I
 
 			// Listen to module completion, and allow for termination
 			module.getContext().getExecutorFactory().addExecutionListener(new ModuleCompletionListener());
-			module.getContext().getExecutorFactory().setExecutionController(this);
+			module.getContext().getExecutorFactory().setExecutionController(debugger);
 
 			// Run the onAttach hook (e.g. for starting the configured module)
 			if (this.onAttach != null) {
@@ -480,7 +443,7 @@ public class EpsilonDebugAdapter extends DefaultExecutionController implements I
 	@Override
 	public CompletableFuture<Void> stepIn(StepInArguments args) {
 		return CompletableFuture.runAsync(() -> {
-			stepping = true;
+			debugger.step();
 			resume();
 		});
 	}
@@ -488,7 +451,7 @@ public class EpsilonDebugAdapter extends DefaultExecutionController implements I
 	@Override
 	public CompletableFuture<Void> next(NextArguments args) {
 		return CompletableFuture.runAsync(() -> {
-			stopAfterModuleElement = getCurrentStatement();
+			debugger.stepOver();
 			resume();
 		});
 	}
@@ -496,13 +459,9 @@ public class EpsilonDebugAdapter extends DefaultExecutionController implements I
 	@Override
 	public CompletableFuture<Void> stepOut(StepOutArguments args) {
 		return CompletableFuture.runAsync(() -> {
-			stopAfterFrameStackSizeDropsBelow = getFrameStackSize();
+			debugger.stepReturn();
 			resume();
 		});
-	}
-
-	protected int getFrameStackSize() {
-		return module.getContext().getFrameStack().getFrames().size();
 	}
 
 	protected Source createSource(ModuleElement resolvedModule) {
@@ -624,6 +583,7 @@ public class EpsilonDebugAdapter extends DefaultExecutionController implements I
 		return isTerminated;
 	}
 
+	@Override
 	public IEolModule getModule() {
 		return module;
 	}
@@ -654,15 +614,33 @@ public class EpsilonDebugAdapter extends DefaultExecutionController implements I
 		}
 	}
 
-	protected void suspend() throws InterruptedException {
-		suspendedState.suspended();
-		suspendSemaphore.acquire();
-	}
-
 	protected void resume() {
 		if (suspendSemaphore.availablePermits() == 0) {
 			suspendSemaphore.release();
 		}
+	}
+
+	@Override
+	public boolean hasBreakpointItself(ModuleElement ast) {
+		Set<Integer> lineBreakpoints = lineBreakpointsByFile.get(ast.getFile().getPath());
+		return lineBreakpoints != null && lineBreakpoints.contains(ast.getRegion().getStart().getLine());
+	}
+
+	@Override
+	public void suspend(ModuleElement ast, SuspendReason reason) throws InterruptedException {
+		switch (reason) {
+		case STEP:
+			sendStopped(StoppedEventArgumentsReason.STEP);
+			break;
+		case BREAKPOINT:
+			sendStopped(StoppedEventArgumentsReason.BREAKPOINT);
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown suspend reason");
+		}
+
+		suspendedState.suspended();
+		suspendSemaphore.acquire();
 	}
 	
 }

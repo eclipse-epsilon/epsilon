@@ -9,17 +9,6 @@
 **********************************************************************/
 package org.eclipse.epsilon.eol.debug;
 
-import org.eclipse.epsilon.common.module.ModuleElement;
-import org.eclipse.epsilon.eol.IEolModule;
-
-public interface IEpsilonDebugTarget {
-
-	boolean isTerminated();
-
-	boolean hasBreakpointItself(ModuleElement ast);
-
-	void suspend(ModuleElement ast, SuspendReason reason) throws InterruptedException;
-
-	IEolModule getModule();
-
+public enum SuspendReason {
+	STEP, BREAKPOINT;
 }

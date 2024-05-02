@@ -18,7 +18,7 @@ import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dt.launching.EpsilonLaunchConfigurationDelegate;
 import org.eclipse.epsilon.eol.exceptions.EolInternalException;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
-import org.eclipse.epsilon.flock.dt.FlockDebugger;
+import org.eclipse.epsilon.flock.debug.FlockDebugger;
 import org.eclipse.epsilon.flock.execute.FlockResult;
 import org.eclipse.epsilon.flock.execute.context.IFlockContext;
 import org.eclipse.epsilon.flock.execute.exceptions.FlockUnsupportedModelException;

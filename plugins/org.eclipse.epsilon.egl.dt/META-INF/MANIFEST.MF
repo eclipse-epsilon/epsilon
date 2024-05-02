@@ -14,7 +14,6 @@ Require-Bundle: org.eclipse.epsilon.egl.engine,
  org.eclipse.epsilon.erl.dt
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.epsilon.egl.dt,
- org.eclipse.epsilon.egl.dt.debug,
  org.eclipse.epsilon.egl.dt.editor,
  org.eclipse.epsilon.egl.dt.editor.outline,
  org.eclipse.epsilon.egl.dt.extensions,

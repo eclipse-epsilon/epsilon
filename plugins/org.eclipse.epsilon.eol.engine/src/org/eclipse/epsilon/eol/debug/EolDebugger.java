@@ -45,10 +45,6 @@ public class EolDebugger implements ExecutionController {
 		return target;
 	}
 
-	protected void suspend(ModuleElement ast) {
-		target.suspend(ast);
-	}
-
 	protected IEolModule getModule() {
 		return target.getModule();
 	}
@@ -58,12 +54,15 @@ public class EolDebugger implements ExecutionController {
 		if (!controls(ast, context)) return;
 		currentModuleElement = ast;
 	
-		if (stepping) {
-			stepping = false;
-			suspend(ast);
-		}
-		else if (hasBreakpoint(ast)) {
-			suspend(ast);
+		try {
+			if (stepping) {
+				stepping = false;
+				target.suspend(ast, SuspendReason.STEP);
+			} else if (hasBreakpoint(ast)) {
+				target.suspend(ast, SuspendReason.BREAKPOINT);
+			}
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
 		}
 	
 		if (isTerminated()) return;
@@ -154,14 +153,12 @@ public class EolDebugger implements ExecutionController {
 	}
 
 	private boolean isFirstStatement(ModuleElement ast) {
-		
 		ModuleElement parent = getParent(ast);
 		if (parent == null) return false;
 		if (!(parent instanceof StatementBlock)) return false;
 		ModuleElement grandparent = getParent(parent);
 		if (!isExpressionOrStatementBlockContainer(grandparent)) return false;
 		return parent.getChildren().get(0) == ast;
-		
 	}
 
 	private boolean isStatement(ModuleElement ast) {
