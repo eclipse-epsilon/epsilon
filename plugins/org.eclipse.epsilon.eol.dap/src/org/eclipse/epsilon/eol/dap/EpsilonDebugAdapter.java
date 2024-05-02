@@ -30,7 +30,7 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.Region;
 import org.eclipse.epsilon.eol.IEolModule;
-import org.eclipse.epsilon.eol.debug.EolDebugger;
+import org.eclipse.epsilon.eol.debug.IEolDebugger;
 import org.eclipse.epsilon.eol.debug.IEpsilonDebugTarget;
 import org.eclipse.epsilon.eol.debug.SuspendReason;
 import org.eclipse.epsilon.eol.dom.Import;
@@ -149,7 +149,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	private IEolModule module;
 
 	/** Debugger created from the module. */
-	private EolDebugger debugger;
+	private IEolDebugger debugger;
 
 	private volatile boolean isTerminated = false;
 

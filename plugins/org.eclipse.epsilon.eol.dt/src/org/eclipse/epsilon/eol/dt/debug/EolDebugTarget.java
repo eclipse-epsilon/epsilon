@@ -33,7 +33,7 @@ import org.eclipse.epsilon.common.dt.util.EclipseUtil;
 import org.eclipse.epsilon.common.dt.util.LogUtil;
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.eol.IEolModule;
-import org.eclipse.epsilon.eol.debug.EolDebugger;
+import org.eclipse.epsilon.eol.debug.IEolDebugger;
 import org.eclipse.epsilon.eol.debug.IEpsilonDebugTarget;
 import org.eclipse.epsilon.eol.debug.SuspendReason;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
@@ -42,7 +42,7 @@ public class EolDebugTarget extends EolDebugElement implements IDebugTarget, IEp
 
 	protected boolean suspended;
 	protected boolean terminated;
-	protected EolDebugger debugger;
+	protected IEolDebugger debugger;
 	protected ILaunch launch;
 	protected IThread[] threads = new IThread[1];
 	protected IProcess process;
@@ -50,7 +50,7 @@ public class EolDebugTarget extends EolDebugElement implements IDebugTarget, IEp
 	protected String name;
 	protected Map<String, IFile> iFiles = new HashMap<>();
 	
-	public EolDebugTarget(ILaunch launch, IEolModule module, EolDebugger debugger, String name) {
+	public EolDebugTarget(ILaunch launch, IEolModule module, IEolDebugger debugger, String name) {
 		super(null);
 		this.launch = launch;
 		threads[0] = new EolThread(this);

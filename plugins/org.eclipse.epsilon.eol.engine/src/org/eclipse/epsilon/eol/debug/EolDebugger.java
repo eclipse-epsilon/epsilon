@@ -16,9 +16,8 @@ import org.eclipse.epsilon.eol.dom.Operation;
 import org.eclipse.epsilon.eol.dom.Statement;
 import org.eclipse.epsilon.eol.dom.StatementBlock;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
-import org.eclipse.epsilon.eol.execute.control.ExecutionController;
 
-public class EolDebugger implements ExecutionController {
+public class EolDebugger implements IEolDebugger {
 
 	private IEpsilonDebugTarget target = null;
 
@@ -37,10 +36,12 @@ public class EolDebugger implements ExecutionController {
 		target = null;
 	}
 
+	@Override
 	public void setTarget(IEpsilonDebugTarget target) {
 		this.target = target;
 	}
 	
+	@Override
 	public IEpsilonDebugTarget getTarget() {
 		return target;
 	}
@@ -85,14 +86,17 @@ public class EolDebugger implements ExecutionController {
 		// nothing to do
 	}
 
+	@Override
 	public void step() {
 		stepping = true;
 	}
 
+	@Override
 	public void stepOver() {
 		stopAfterModuleElement = currentModuleElement;
 	}
 
+	@Override
 	public void stepReturn() {
 		stopAfterFrameStackSizeDropsBelow = frameStackSize();
 	}
@@ -165,14 +169,17 @@ public class EolDebugger implements ExecutionController {
 		return ast instanceof Statement;
 	}
 
+	@Override
 	public boolean isStepping() {
 		return stepping;
 	}
 
+	@Override
 	public ModuleElement getStopAfterModuleElement() {
 		return stopAfterModuleElement;
 	}
 
+	@Override
 	public Integer getStopAfterFrameStackSizeDropsBelow() {
 		return stopAfterFrameStackSizeDropsBelow;
 	}

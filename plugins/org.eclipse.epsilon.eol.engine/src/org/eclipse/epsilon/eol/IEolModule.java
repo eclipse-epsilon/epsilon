@@ -17,7 +17,7 @@ import java.util.Set;
 
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
-import org.eclipse.epsilon.eol.debug.EolDebugger;
+import org.eclipse.epsilon.eol.debug.IEolDebugger;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.ModelDeclaration;
 import org.eclipse.epsilon.eol.dom.OperationList;
@@ -81,5 +81,5 @@ public interface IEolModule extends IModule {
 	
 	void setImportManager(IImportManager importManager);
 
-	EolDebugger createDebugger();
+	IEolDebugger createDebugger();
 }
