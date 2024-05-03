@@ -7,10 +7,7 @@
  * SPDX-License-Identifier: EPL-2.0
  * 
  * Contributors: Sina Madani
- ******************************************************************************
- *
- * $Id$
- */
+ *******************************************************************************/
 package org.eclipse.epsilon.test;
 
 import org.eclipse.epsilon.commons.test.CommonsTestSuite;
