@@ -38,6 +38,7 @@
     <module>org.eclipse.epsilon.emc.spreadsheets.test</module>
     <module>org.eclipse.epsilon.emg.engine.test.acceptance</module>
     <module>org.eclipse.epsilon.eml.engine.test.acceptance</module>
+    <module>org.eclipse.epsilon.eol.dap.test</module>
     <module>org.eclipse.epsilon.eol.engine.test.acceptance</module>
     <module>org.eclipse.epsilon.eol.engine.test.unit</module>
     <module>org.eclipse.epsilon.epl.engine.test.acceptance</module>

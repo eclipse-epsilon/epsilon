@@ -10,11 +10,13 @@
 package org.eclipse.epsilon.eol.dap;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -29,8 +31,8 @@ import org.eclipse.lsp4j.jsonrpc.Launcher;
 
 /**
  * <p>
- * Network-based server for the debug adapter protocol, which listens at a given
- * TCP port and exposes a given {@link IEolModule}.
+ * Network-based server for the debug adapter protocol, which listens via TCP at
+ * a given host and port, and exposes a given {@link IEolModule}.
  * </p>
  *
  * <p>
@@ -38,44 +40,78 @@ import org.eclipse.lsp4j.jsonrpc.Launcher;
  * this server. The server will automatically call {@link IEolModule#execute()} the
  * first time that anyone connects to it.
  * </p>
+ *
+ * <p>
+ * An instance of this class can only be {@link #run()} once. If you need to
+ * restart the server, you will need to create another instance.
+ * </p>
  */
 public class EpsilonDebugServer implements Runnable {
 
 	private static final Logger LOGGER = Logger.getLogger(EpsilonDebugServer.class.getCanonicalName());
 
+	private final String host;
 	private final int port;
 	private final IEolModule module;
 
-	private AtomicBoolean listening = new AtomicBoolean(false);
-	private AtomicBoolean moduleStarted = new AtomicBoolean(false);
+	private final CompletableFuture<Boolean> started = new CompletableFuture<>();
+	private final AtomicBoolean running = new AtomicBoolean(false);
+	private final AtomicBoolean moduleStarted = new AtomicBoolean(false);
+	private final List<Future<Void>> listeningLaunchers = new ArrayList<>();
+
 	private ServerSocket serverSocket;
-	private List<Future<Void>> listeningLaunchers = new ArrayList<>();
 	private ExecutorService executorService;
 
+	/**
+	 * Convenience version of
+	 * {@link EpsilonDebugServer#EpsilonDebugServer(IEolModule, String, int)} for
+	 * listening at the loopback address (i.e. {@code localhost}).
+	 */
 	public EpsilonDebugServer(IEolModule module, int port) {
+		this(module, null, port);
+	}
+
+	/**
+	 * Creates a new instance, without starting the server.
+	 *
+	 * @param module Module to be debugged.
+	 * @param port   Port to listen on, or {@code 0} to use an available port from
+	 *               an ephemeral range.
+	 */
+	public EpsilonDebugServer(IEolModule module, String host, int port) {
 		if (module == null) {
 			throw new IllegalArgumentException("Module must not be null");
 		}
+		this.host = host;
 		this.port = port;
 		this.module = module;
 	}
 
 	/**
 	 * Runs the server in the current thread. In the absence of
-	 * server errors, this method will block until the module
-	 * has completed its execution. 
+	 * server errors, this method will block until a DAP client
+	 * has attached to the module, and the module has completed
+	 * its execution.
 	 */
 	@Override
 	public void run() {
 		try {
-			if (listening.compareAndSet(false, true)) {
-				serverSocket = new ServerSocket(port);
+			if (running.compareAndSet(false, true)) {
+				serverSocket = new ServerSocket(port, 0, InetAddress.getByName(host));
+				started.complete(true);
+				LOGGER.info(() -> String.format("Started Epsilon debug server on %s:%d",
+					serverSocket.getInetAddress().getHostName(), serverSocket.getLocalPort()));
 			} else {
-				throw new IllegalStateException("Server is already listening");
+				throw new IllegalStateException("Server has already been started");
 			}
-			LOGGER.info(() -> "Started Epsilon debug server on port " + port);
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, String.format(
+				"Failed to start server on %s:%d", host, port), e);
+			started.complete(false);
+		}
 
-			while (listening.get()) {
+		try {
+			while (running.get()) {
 				Socket conn = serverSocket.accept();
 
 				EpsilonDebugAdapter debugAdapter = new EpsilonDebugAdapter();
@@ -136,17 +172,11 @@ public class EpsilonDebugServer implements Runnable {
 	}
 
 	/**
-	 * Returns true iff the server is listening for connections.
+	 * Returns a Future that can be used to check if the server has started and if
+	 * it has started successfully, or wait until that moment.
 	 */
-	public boolean isListening() {
-		return listening.get();
-	}
-
-	/**
-	 * Returns true iff the Epsilon module has started its execution.
-	 */
-	public boolean isModuleStarted() {
-		return moduleStarted.get();
+	public Future<Boolean> isStarted() {
+		return started;
 	}
 
 	/**
@@ -155,10 +185,15 @@ public class EpsilonDebugServer implements Runnable {
 	 * already been shut down.
 	 */
 	public void shutdown() {
-		if (listening.compareAndSet(true, false)) {
+		if (running.compareAndSet(true, false)) {
+			String host = null;
+			int localPort = port;
+
 			if (serverSocket != null) {
 				// Stop accepting connections
 				try {
+					host = serverSocket.getInetAddress().getHostName();
+					localPort = serverSocket.getLocalPort();
 					serverSocket.close();
 				} catch (IOException e) {
 					LOGGER.log(Level.SEVERE, "Error while shutting down debug server", e);
@@ -181,8 +216,27 @@ public class EpsilonDebugServer implements Runnable {
 				executorService = null;
 			}			
 
-			LOGGER.info(() -> "Shut down Epsilon debug server on port " + port);
+			LOGGER.info(String.format("Shut down Epsilon debug server on %s:%d", host, localPort));
 		}
 	}
 
+	public String getHost() {
+		if (running.get()) {
+			return serverSocket.getInetAddress().getHostName();
+		} else {
+			return host;
+		}
+	}
+
+	public int getPort() {
+		if (running.get()) {
+			/*
+			 * Best to ask the actual socket if listening: the user may have
+			 * specified 0 as the port.
+			 */
+			return serverSocket.getLocalPort();
+		} else {
+			return port;
+		}
+	}
 }

@@ -28,6 +28,7 @@ import org.eclipse.epsilon.emc.plainxml.test.PlainXmlTestSuite;
 import org.eclipse.epsilon.emc.spreadsheets.test.SpreadsheetDriverTestSuite;
 import org.eclipse.epsilon.emc.yaml.test.YamlTestSuite;
 import org.eclipse.epsilon.eml.engine.test.acceptance.EmlAcceptanceTestSuite;
+import org.eclipse.epsilon.eol.dap.test.EpsilonDebugAdapterTestSuite;
 import org.eclipse.epsilon.eol.engine.test.acceptance.EolAcceptanceTestSuite;
 import org.eclipse.epsilon.eol.test.unit.EolUnitTestSuite;
 import org.eclipse.epsilon.epl.engine.test.acceptance.EplAcceptanceTestSuite;
@@ -91,7 +92,8 @@ import junit.framework.Test;
 	FlexmiTestSuite.class,
 	PinsetTestSuite.class,
 	EUnitJUnitTestSuite.class,
-	JSONModelTestSuite.class
+	JSONModelTestSuite.class,
+	EpsilonDebugAdapterTestSuite.class
 })
 public class EpsilonJenkinsTestSuite {
 	public static Test suite() {

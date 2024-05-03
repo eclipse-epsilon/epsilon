@@ -1,8 +1,4 @@
-produceGreeting('Bob', 'Someone').println();
-produceGreeting('Alice', 'Important').println();
-
 operation produceGreeting(firstName: String, lastName: String) {
   var fullName = firstName + ' ' + lastName;
-
   return 'Hello ' + fullName;
 }

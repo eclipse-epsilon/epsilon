@@ -53,4 +53,5 @@ Require-Bundle: org.eclipse.epsilon.test.dependencies,
  org.eclipse.epsilon.eunit.junit.test,
  org.eclipse.epsilon.emc.cdo.test,
  org.eclipse.epsilon.ecore.delegates.test.acceptance,
- org.eclipse.epsilon.emc.json.test
+ org.eclipse.epsilon.emc.json.test,
+ org.eclipse.epsilon.eol.dap.test
