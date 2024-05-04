@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.Map;
 
 import org.eclipse.epsilon.eol.EolModule;
@@ -42,7 +41,8 @@ public class ImportingEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertTrue("The breakpoint on the imported file should be recognised",
 			breakpoints.getBreakpoints()[0].isVerified());
 
-		adapter.attach(Collections.emptyMap()).get();
+		attach();
+
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 		Map<String, Variable> variablesByName = getVariablesFromTopStackFrame();
 		assertEquals("Bob Someone", variablesByName.get("fullName").getValue());

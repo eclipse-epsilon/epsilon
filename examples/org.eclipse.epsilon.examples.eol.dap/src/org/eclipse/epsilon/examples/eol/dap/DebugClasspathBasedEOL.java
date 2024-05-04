@@ -1,15 +1,16 @@
 package org.eclipse.epsilon.examples.eol.dap;
 
-import java.io.File;
+import java.net.URI;
 
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 
-public class DebugEOL {
-
+public class DebugClasspathBasedEOL {
 	public static void main(String[] args) throws Exception {
 		EolModule module = new EolModule();
-		module.parse(new File(args[0]));
+
+		URI classpathUri = DebugFileBasedEOL.class.getResource("03-helloFromClasspath.eol").toURI();
+		module.parse(classpathUri);
 
 		EpsilonDebugServer server = new EpsilonDebugServer(module, 4040);
 		server.run();

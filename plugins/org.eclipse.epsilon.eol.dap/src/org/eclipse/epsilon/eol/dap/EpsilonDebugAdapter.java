@@ -10,14 +10,17 @@
 package org.eclipse.epsilon.eol.dap;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -160,7 +163,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	private LocationConverter columnConverter;
 
 	/** Breakpoints for each source file. */
-	private Map<String, Set<Integer>> lineBreakpointsByFile = new ConcurrentHashMap<>();
+	private Map<URI, Set<Integer>> lineBreakpointsByURI = new ConcurrentHashMap<>();
 
 	/**
 	 * Semaphore used for suspending. Should only be used through {@link #suspend()}
@@ -168,7 +171,18 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	 */
 	private Semaphore suspendSemaphore = new Semaphore(0);
 
+	/**
+	 * Abstraction over the state of the program while stopped. Used to keep track
+	 * of DAP variable references.
+	 */
 	private SuspendedState suspendedState = new SuspendedState();
+
+	/**
+	 * Lazily-initialized map from module URI to the actual IModule.
+	 *
+	 * Do not access this field directly: instead, use {@link #getURIToModuleMap()}.
+	 */
+	private Map<String, IModule> uriToModule;
 
 	public void connect(IDebugProtocolClient client) {
 		if (module == null) {
@@ -370,21 +384,13 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 			SetBreakpointsResponse response = new SetBreakpointsResponse();
 
 			try {
-				/*
-				 * Step 1. Map from path-based source to IEolModule
-				 *
-				 * TODO: deal with more complicated mappings (e.g. scripts loaded through platform:/ URIs).
-				 * Could use something approximate where we map by basename if it's unique?
-				 */
-				Map<String, IModule> pathToModule = new HashMap<>();
-				addAllModules(pathToModule, module);
+				// Step 1. Map from DAP path (likely a file opened in the IDE) to an IEolModule
+				IModule resolvedModule = resolveModule(args.getSource().getPath());
 				Set<Integer> localBreakpoints = null;
-				IModule resolvedModule = null;
-				if (args.getSource().getPath() != null) {
-					resolvedModule = pathToModule.get(args.getSource().getPath());
-					if (resolvedModule != null) {
-						localBreakpoints = new HashSet<>();
-						this.lineBreakpointsByFile.put(resolvedModule.getFile().getPath(), localBreakpoints);
+				if (resolvedModule != null) {
+					localBreakpoints = new HashSet<>();
+					synchronized (this.lineBreakpointsByURI) {
+						this.lineBreakpointsByURI.put(resolvedModule.getSourceUri(), localBreakpoints);
 					}
 				}
 
@@ -417,10 +423,79 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 		});
 	}
 
+	/**
+	 * Tries to resolve the specific module referenced by a path reported via DAP.
+	 * This will be a file in the developer's IDE, whose URI may not match 1:1 with
+	 * the URI of the module being executed (e.g. if the module is being loaded from
+	 * the classpath and not from the filesystem).
+	 */
+	protected IModule resolveModule(final String argsSourcePath) throws IOException {
+		// Stop if we don't actually have a path
+		if (argsSourcePath == null) {
+			return null;
+		}
+
+		// Stop if the DAP path does not resolve to a file in our filesystem
+		File argsSourceFile = new File(argsSourcePath);
+		if (!argsSourceFile.exists()) {
+			return null;
+		}
+
+		// Collect all the imports
+		Map<String, IModule> uriToModule = getURIToModuleMap();
+
+		// Try to use a direct file: URI first
+		final String argsSourceFileURI = argsSourceFile.toURI().toString();
+		IModule resolvedModule = uriToModule.get(argsSourceFileURI);
+		if (resolvedModule != null) {
+			return resolvedModule;
+		}
+
+		// If that doesn't work, try an approximate match based on basename + longest sequence of matching parents
+		int longestSuffixLength = 0;
+		List<Entry<String, IModule>> candidates = new ArrayList<>();
+
+		for (Entry<String, IModule> e : uriToModule.entrySet()) {
+			int suffixLength = CommonSuffix.countMatchingTrailingComponents("/", argsSourcePath, e.getKey());
+			if (suffixLength > longestSuffixLength) {
+				longestSuffixLength = suffixLength;
+				candidates.clear();
+			}
+			if (longestSuffixLength > 0 && suffixLength == longestSuffixLength) {
+				candidates.add(e);
+			}
+		}
+
+		if (candidates.size() == 1) {
+			// We have one best candidate: resolve to that
+			return candidates.get(0).getValue();
+		}
+		if (!candidates.isEmpty() && LOGGER.isLoggable(Level.WARNING)) {
+			// Ambiguous reference: log a warning and then consider the module not resolved
+			StringBuilder sb = new StringBuilder("Ambiguous breakpoint - candidates for resolving '%s' are:");
+			for (Entry<String, IModule> e : candidates) {
+				sb.append("\n  * ");
+				sb.append(e.getKey());
+			}
+			LOGGER.warning(sb.toString());
+		}
+		return null;
+	}
+
+	protected synchronized Map<String, IModule> getURIToModuleMap() throws IOException {
+		if (this.uriToModule == null) {
+			this.uriToModule = new HashMap<>();
+			addAllModules(uriToModule, module);
+		}
+		return uriToModule;
+	}
+
 	private void addAllModules(Map<String, IModule> pathToModule, IModule module) throws IOException {
-		String modulePath = module.getFile().getCanonicalPath();
-		if (!pathToModule.containsKey(modulePath)) {
-			pathToModule.put(modulePath, module);
+		String moduleURI = module.getFile() != null
+			? module.getFile().getCanonicalFile().toURI().toString() : module.getUri().toString();
+
+		if (!pathToModule.containsKey(moduleURI)) {
+			pathToModule.put(moduleURI, module);
 			if (module instanceof IEolModule) {
 				for (Import imp : ((IEolModule) module).getImports()) {
 					addAllModules(pathToModule, imp.getModule());
@@ -622,7 +697,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 
 	@Override
 	public boolean hasBreakpointItself(ModuleElement ast) {
-		Set<Integer> lineBreakpoints = lineBreakpointsByFile.get(ast.getFile().getPath());
+		Set<Integer> lineBreakpoints = lineBreakpointsByURI.get(ast.getUri());
 		return lineBreakpoints != null && lineBreakpoints.contains(ast.getRegion().getStart().getLine());
 	}
 

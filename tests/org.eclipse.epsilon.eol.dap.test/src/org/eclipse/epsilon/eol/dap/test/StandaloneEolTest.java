@@ -14,29 +14,20 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugAdapter;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.NextArguments;
 import org.eclipse.lsp4j.debug.ScopesResponse;
-import org.eclipse.lsp4j.debug.SetBreakpointsArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExceptionBreakpointsArguments;
-import org.eclipse.lsp4j.debug.Source;
-import org.eclipse.lsp4j.debug.SourceBreakpoint;
-import org.eclipse.lsp4j.debug.StackTraceArguments;
 import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StepInArguments;
 import org.eclipse.lsp4j.debug.StepOutArguments;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.TerminateArguments;
-import org.eclipse.lsp4j.debug.ThreadsResponse;
 import org.eclipse.lsp4j.debug.Variable;
 import org.eclipse.lsp4j.debug.VariablesResponse;
 import org.junit.Test;
@@ -57,11 +48,14 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 	public void breakThenContinue() throws Exception {
 		SetBreakpointsResponse breakResult = adapter.setBreakpoints(createBreakpoints(createBreakpoint(1))).get();
 		assertEquals(1, breakResult.getBreakpoints().length);
+		assertTrue("The breakpoint should have been verified", breakResult.getBreakpoints()[0].isVerified());
 		assertEquals(1, (int) breakResult.getBreakpoints()[0].getLine());
 
 		// Note: this is just to check that the operation does not throw an OperationUnsupportedException
 		adapter.setExceptionBreakpoints(new SetExceptionBreakpointsArguments()).get();
-		adapter.attach(Collections.emptyMap()).get();
+
+		// We're done with set up - we can let the module start execution now
+		attach();
 
 		// Wait for the client to be stopped at the breakpoint
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
@@ -106,7 +100,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 	public void breakThenNext() throws Exception {
 		// Break at the first call of the operation 
 		adapter.setBreakpoints(createBreakpoints(createBreakpoint(1))).get();
-		adapter.attach(Collections.emptyMap()).get();
+		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// Step over should stop the program at line 2
@@ -125,7 +119,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 	public void breakThenStepIn() throws Exception {
 		// Break at the second call of the operation 
 		adapter.setBreakpoints(createBreakpoints(createBreakpoint(2))).get();
-		adapter.attach(Collections.emptyMap()).get();
+		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// Step over should stop the program at the first line of the operation
@@ -142,7 +136,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 	@Test
 	public void breakThenTerminate() throws Exception {
 		adapter.setBreakpoints(createBreakpoints(createBreakpoint(1))).get();
-		adapter.attach(Collections.emptyMap()).get();
+		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		adapter.terminate(new TerminateArguments());
@@ -153,7 +147,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 	public void breakThenStepOut() throws Exception {
 		// Break at the first line of the operation 
 		adapter.setBreakpoints(createBreakpoints(createBreakpoint(5))).get();
-		adapter.attach(Collections.emptyMap()).get();
+		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// First step out should stop the program at the line after the operation
@@ -179,78 +173,10 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 
 		// Let the program finish while we do the assertions
 		adapter.setBreakpoints(createBreakpoints()).get();
-		adapter.attach(Collections.emptyMap()).get();
+		attach();
 		assertProgramCompletedSuccessfully();
 
 		assertEquals("The breakpoint on the empty line should have been remapped to the first non-empty line after it",
 			7, (int) breakpoints.getBreakpoints()[0].getLine());
 	}
-
-	protected void assertProgramCompletedSuccessfully() throws InterruptedException {
-		client.isExited.acquire();
-		assertEquals("The script should have completed its execution successfully", 0, client.exitedArgs.getExitCode());
-		client.exitedArgs = null;
-	}
-
-	protected void assertProgramFailed() throws InterruptedException {
-		client.isExited.acquire();
-		assertEquals("The script should have completed its execution with an error", 1, client.exitedArgs.getExitCode());
-		client.exitedArgs = null;
-	}
-	
-	protected StackTraceResponse getStackTrace() throws Exception {
-		ThreadsResponse threads = adapter.threads().get(5, TimeUnit.SECONDS);
-		final int threadId = threads.getThreads()[0].getId();
-		final StackTraceArguments stackTraceArgs = createStackTraceArgs(threadId);
-		StackTraceResponse stackTrace = adapter.stackTrace(stackTraceArgs).get(5, TimeUnit.SECONDS);
-		return stackTrace;
-	}
-
-	protected Map<String, Variable> getVariablesByName(VariablesResponse variables) {
-		Map<String, Variable> variablesByName = new HashMap<>();
-		for (Variable v : variables.getVariables()) {
-			variablesByName.put(v.getName(), v);
-		}
-		return variablesByName;
-	}
-
-	protected Source createSource() throws IOException {
-		Source source = new Source();
-		source.setPath(module.getFile().getCanonicalPath());
-		return source;
-	}
-
-	protected StackTraceArguments createStackTraceArgs(final int threadId) {
-		final StackTraceArguments stackTraceArgs = new StackTraceArguments();
-		stackTraceArgs.setThreadId(threadId);
-		return stackTraceArgs;
-	}
-
-	protected SetBreakpointsArguments createBreakpoints(SourceBreakpoint... breakpoints) throws IOException {
-		SetBreakpointsArguments setBreaks = new SetBreakpointsArguments();
-		setBreaks.setSource(createSource());
-		setBreaks.setBreakpoints(breakpoints);
-		return setBreaks;
-	}
-
-	protected SourceBreakpoint createBreakpoint(final int line) {
-		SourceBreakpoint sbp = new SourceBreakpoint();
-		sbp.setLine(line);
-		return sbp;
-	}
-
-	protected void onAttach() {
-		Thread epsilonThread = new Thread(this::runModule);
-		epsilonThread.setName("EpsilonDebuggee");
-		epsilonThread.start();
-	}
-
-	protected void runModule() {
-		try {
-			module.execute();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
 }
-

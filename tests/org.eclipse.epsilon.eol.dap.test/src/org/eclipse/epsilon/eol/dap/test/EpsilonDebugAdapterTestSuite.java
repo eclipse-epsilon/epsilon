@@ -20,7 +20,9 @@ import junit.framework.Test;
 @SuiteClasses({
     EpsilonDebugServerTest.class,
     ImportingEolTest.class,
-    StandaloneEolTest.class
+    StandaloneEolTest.class,
+    ClasspathEolTest.class,
+    CommonSuffixTests.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {

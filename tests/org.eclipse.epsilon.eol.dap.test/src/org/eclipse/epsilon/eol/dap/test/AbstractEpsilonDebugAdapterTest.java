@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -216,6 +217,10 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 			.map(o -> o.getOutput())
 			.reduce("", (a, b) -> a + b);
 		return allOutput;
+	}
+
+	protected void attach() throws InterruptedException, ExecutionException {
+		adapter.attach(Collections.emptyMap()).get();
 	}
 
 }
