@@ -4,7 +4,12 @@ Bundle-Name: Examples for the Eclipse Epsilon Debug Adapter
 Bundle-SymbolicName: org.eclipse.epsilon.examples.eol.dap
 Bundle-Version: 2.6.0.qualifier
 Require-Bundle: org.eclipse.epsilon.eol.engine,
- org.eclipse.epsilon.eol.dap
+ org.eclipse.epsilon.eol.dap,
+ org.eclipse.lsp4j.debug,
+ org.eclipse.lsp4j.jsonrpc,
+ org.eclipse.lsp4j.jsonrpc.debug,
+ com.google.guava,
+ com.google.gson
 Bundle-Vendor: Eclipse.org
 Automatic-Module-Name: org.eclipse.epsilon.examples.eol.dap
 Bundle-RequiredExecutionEnvironment: JavaSE-11

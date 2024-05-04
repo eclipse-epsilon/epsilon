@@ -1,8 +1,8 @@
-# Example scripts for Epsilon Debug Adapter
+# Gradle example for Epsilon Debug Adapter support in VS Code
 
-This is a minimal Gradle project to try out the Debug Adapter support in Epsilon.
+This is a minimal Gradle project to try out the Debug Adapter support in Epsilon from VS Code.
 
-To experiment with this functionality, first run a plain Maven build from the root of the repository, installing the new versions of the workflow tasks which include the Epsilon DAP server:
+To experiment with this functionality from VS Code, first run a plain Maven build from the root of the repository, installing the new versions of the workflow tasks which include the Epsilon DAP server:
 
 ```sh
 # Go to the root directory of the Epsilon sources

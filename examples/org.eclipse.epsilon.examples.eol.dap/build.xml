@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="eol.dap.example">
+	<target name="01-hello-debug">
+		<epsilon.eol src="epsilon/01-hello.eol" debug="true" debugPort="4040"/>
+    </target>
+
+	<target name="02-imports-debug">
+		<epsilon.eol src="epsilon/02-imports-main.eol" debug="true" debugPort="4040"/>
+    </target>
+</project>
