@@ -105,6 +105,9 @@
    <feature id="org.eclipse.epsilon.emc.json.feature">
       <category name="Epsilon JSON Integration"/>
    </feature>
+   <feature id="org.eclipse.epsilon.eol.dap.feature">
+      <category name="org.eclipse.epsilon.dap"/>
+   </feature>
    <category-def name="Epsilon Core" label="Epsilon Core">
       <description>
          Parsers, execution engines, development tools (editors, launch configurations, debuggers etc.) for languages of the Epsilon platform.
@@ -175,6 +178,7 @@
          Support for managing JSON-based models with languages of the Epsilon platform.
       </description>
    </category-def>
+   <category-def name="org.eclipse.epsilon.dap" label="Epsilon Debug Adapter Support"/>
    <repository-reference location="http://download.eclipse.org/emfatic/update" enabled="true" />
    <repository-reference location="http://download.eclipse.org/releases/2023-12" enabled="true" />
    <repository-reference location="http://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" enabled="true" />

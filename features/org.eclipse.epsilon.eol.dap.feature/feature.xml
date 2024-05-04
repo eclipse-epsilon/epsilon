@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.epsilon.eol.dap.feature"
+      label="Epsilon Debug Adapter Support"
+      version="2.6.0.qualifier"
+      provider-name="Eclipse Modeling Project"
+      license-feature="org.eclipse.license"
+      license-feature-version="0.0.0">
+
+   <description url="http://www.eclipse.org/epsilon">
+      This feature provides support for the Debug Adapter protocol, for remote debugging of the Epsilon languages.
+   </description>
+
+   <copyright>
+      Copyright (c) 2024 The University of York.
+      This program and the accompanying materials are made
+      available under the terms of the Eclipse Public License 2.0
+      which is available at https://www.eclipse.org/legal/epl-2.0
+   </copyright>
+
+   <includes
+         id="org.eclipse.epsilon.core.feature"
+         version="0.0.0"/>
+
+   <requires>
+      <import plugin="org.eclipse.lsp4j.debug"/>
+      <import plugin="org.eclipse.lsp4j.jsonrpc"/>
+      <import plugin="org.eclipse.lsp4j.jsonrpc.debug"/>
+      <import plugin="com.google.gson"/>
+      <import plugin="com.google.guava"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.epsilon.eol.dap"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
