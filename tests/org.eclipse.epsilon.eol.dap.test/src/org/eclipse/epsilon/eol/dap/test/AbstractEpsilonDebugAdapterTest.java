@@ -88,6 +88,9 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	protected TestClient client;
 
 	protected abstract void setupModule() throws Exception;
+	protected void setupAdapter() throws Exception {
+		// do nothing by default
+	}
 
 	@Before
 	public void setup() throws Exception {
@@ -96,13 +99,15 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		this.adapter = new EpsilonDebugAdapter();
 		adapter.setModule(module);
 		adapter.setOnAttach(this::onAttach);
+		setupAdapter();
+
 		this.client = new TestClient();
 
 		final InitializeRequestArguments initArgs = new InitializeRequestArguments();
 		initArgs.setClientID("test-client");
 		initArgs.setAdapterID("epsilon-adapter");
-
 		adapter.initialize(initArgs).get();
+
 		adapter.connect(client);
 	}
 

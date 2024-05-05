@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -183,6 +185,12 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	 * Do not access this field directly: instead, use {@link #getURIToModuleMap()}.
 	 */
 	private Map<String, IModule> uriToModule;
+
+	/**
+	 * Mappings from module URIs to filesystem paths. Useful when debugging
+	 * code that is loaded from a non-file URI. The URIs must have a trailing slash.
+	 */
+	private final Map<URI, Path> uriToPathMappings = new HashMap<>();
 
 	public void connect(IDebugProtocolClient client) {
 		if (module == null) {
@@ -385,7 +393,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 
 			try {
 				// Step 1. Map from DAP path (likely a file opened in the IDE) to an IEolModule
-				IModule resolvedModule = resolveModule(args.getSource().getPath());
+				final String argsSourcePath = args.getSource().getPath();
+				IModule resolvedModule = resolveModule(argsSourcePath);
 				Set<Integer> localBreakpoints = null;
 				if (resolvedModule != null) {
 					localBreakpoints = new HashSet<>();
@@ -451,34 +460,21 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 			return resolvedModule;
 		}
 
-		// If that doesn't work, try an approximate match based on basename + longest sequence of matching parents
-		int longestSuffixLength = 0;
-		List<Entry<String, IModule>> candidates = new ArrayList<>();
+		// Try to use the URI-to-path mappings in reverse
+		for (Entry<URI, Path> e : this.uriToPathMappings.entrySet()) {
+			final String baseUri = e.getKey().toString();
+			final File canonicalFile = e.getValue().toFile().getCanonicalFile();
+			final String basePath = canonicalFile.getPath() + (canonicalFile.isDirectory() ? File.separator : "");
 
-		for (Entry<String, IModule> e : uriToModule.entrySet()) {
-			int suffixLength = CommonSuffix.countMatchingTrailingComponents("/", argsSourcePath, e.getKey());
-			if (suffixLength > longestSuffixLength) {
-				longestSuffixLength = suffixLength;
-				candidates.clear();
-			}
-			if (longestSuffixLength > 0 && suffixLength == longestSuffixLength) {
-				candidates.add(e);
+			if (argsSourcePath.startsWith(basePath)) {
+				String mappedUri = baseUri + argsSourcePath.substring(basePath.length());
+				resolvedModule = uriToModule.get(mappedUri);
+				if (resolvedModule != null) {
+					return resolvedModule;
+				}
 			}
 		}
 
-		if (candidates.size() == 1) {
-			// We have one best candidate: resolve to that
-			return candidates.get(0).getValue();
-		}
-		if (!candidates.isEmpty() && LOGGER.isLoggable(Level.WARNING)) {
-			// Ambiguous reference: log a warning and then consider the module not resolved
-			StringBuilder sb = new StringBuilder("Ambiguous breakpoint - candidates for resolving '%s' are:");
-			for (Entry<String, IModule> e : candidates) {
-				sb.append("\n  * ");
-				sb.append(e.getKey());
-			}
-			LOGGER.warning(sb.toString());
-		}
 		return null;
 	}
 
@@ -539,16 +535,61 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 		});
 	}
 
+	/**
+	 * Creates a DAP Source object from a module element. It will prefer using
+	 * files if available (as they will probably be the same as those in the IDE),
+	 * but it will fall back to URIs if there is no file to refer back to.
+	 */
 	protected Source createSource(ModuleElement resolvedModule) {
-		Source bpSource = new Source();
-		bpSource.setName(resolvedModule.getFile().getName());
-		try {
-			bpSource.setPath(resolvedModule.getFile().getCanonicalPath());
-		} catch (IOException e) {
-			LOGGER.log(Level.WARNING, "Cannot produce canonical path: falling back to regular path", e);
-			bpSource.setPath(resolvedModule.getFile().getPath());
+		final Source bpSource = new Source();
+		final File moduleFile = resolvedModule.getFile();
+		if (moduleFile != null) {
+			bpSource.setName(moduleFile.getName());
+			try {
+				bpSource.setPath(moduleFile.getCanonicalPath());
+			} catch (IOException e) {
+				final String rawPath = moduleFile.getPath();
+
+				LOGGER.log(Level.WARNING,
+					String.format(
+						"Cannot produce canonical path for '%s': "
+						+ "falling back to regular path", rawPath),
+					e);
+				bpSource.setPath(rawPath);
+			}
+		} else if (resolvedModule.getUri().getPath() != null) {
+			String path = resolvedModule.getUri().getPath();
+			String basename = Paths.get(path).getFileName().toString();
+			bpSource.setName(basename);
+			mapUriToSourcePath(resolvedModule.getUri().toString(), bpSource);
 		}
 		return bpSource;
+	}
+
+	protected void mapUriToSourcePath(String uri, Source bpSource) {
+		for (Entry<URI, Path> mapping : this.uriToPathMappings.entrySet()) {
+			final String uriPrefix = mapping.getKey().toString();
+			final Path pathPrefix = mapping.getValue();
+
+			if (uri.startsWith(uriPrefix)) {
+				Path mappedPath = pathPrefix.resolve(uri.substring(uriPrefix.length()));
+				final File mappedFile = mappedPath.toFile();
+				if (mappedFile.exists()) {
+					try {
+						bpSource.setPath(mappedFile.getCanonicalPath());
+					} catch (IOException e) {
+						bpSource.setPath(mappedFile.getPath());
+						LOGGER.log(Level.WARNING,
+							String.format(
+								"Cannot produce canonical path for '%s':"
+								+ " falling back to regular path",
+								mappedFile.getPath()),
+							e);
+					}
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -669,6 +710,15 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 
 	public void setOnAttach(Runnable onAttach) {
 		this.onAttach = onAttach;
+	}
+
+	/**
+	 * Mappings from module URIs to filesystem paths. Useful when debugging
+	 * code that is loaded from a non-file URI. When populating it, users
+	 * must ensure that URIs referring to a folder have a trailing slash.
+	 */
+	public Map<URI, Path> getUriToPathMappings() {
+		return uriToPathMappings;
 	}
 
 	private String getStackFrameName(int position, Frame frame) {

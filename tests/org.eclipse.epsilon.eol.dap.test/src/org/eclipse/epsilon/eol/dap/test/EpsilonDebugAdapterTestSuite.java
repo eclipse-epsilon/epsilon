@@ -22,7 +22,7 @@ import junit.framework.Test;
     ImportingEolTest.class,
     StandaloneEolTest.class,
     ClasspathEolTest.class,
-    CommonSuffixTests.class
+    HttpEolTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {

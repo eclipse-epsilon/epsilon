@@ -19,6 +19,22 @@ import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.junit.Test;
 
+/**
+ * <p>
+ * Tests that we can set breakpoints on scripts loaded from the classpath, and
+ * that the breakpoints operate as intended. Unfortunately, this test works
+ * differently when run from Eclipse and when run from Tycho:
+ * </p>
+ *
+ * <ul>
+ * <li>When run from Eclipse, the module is parsed from a file:/ URL so the
+ * stack trace when stopped can refer to a filesystem path.</li>
+ * <li>When run from Tycho, the module is not parsed from a file:/ URL, and the
+ * stack trace can only mention the filename at the end of the URL but not
+ * really the path (as that makes LSP4E try to open it as a filesystem path,
+ * which produces errors).</li>
+ * </ul>
+ */
 public class ClasspathEolTest extends AbstractEpsilonDebugAdapterTest {
 
 	private static final String RESOURCE_NAME = "03-fromClasspath.eol";
@@ -28,7 +44,14 @@ public class ClasspathEolTest extends AbstractEpsilonDebugAdapterTest {
 	@Override
 	protected void setupModule() throws Exception {
 		this.module = new EolModule();
-		module.parse(ClasspathEolTest.class.getResource("03-fromClasspath.eol").toURI());
+		module.parse(ClasspathEolTest.class.getResource(RESOURCE_NAME).toURI());
+	}
+
+	@Override
+	protected void setupAdapter() throws Exception {
+		adapter.getUriToPathMappings().put(
+			ClasspathEolTest.class.getResource(RESOURCE_NAME).toURI(),
+			SCRIPT_FILE.toPath());
 	}
 
 	@Test
@@ -40,6 +63,7 @@ public class ClasspathEolTest extends AbstractEpsilonDebugAdapterTest {
 
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}

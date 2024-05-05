@@ -5,7 +5,7 @@ This example project shows how to debug an Epsilon script from two different IDE
 * From Eclipse, using the [LSP4E](https://github.com/eclipse/lsp4e) tools: details are provided below.
 * From VS Code, using its built-in support for DAP: details are provided in the [README of the Gradle project](epsilon/README.md).
 
-## Starting an Epsilon script from a local file, with remote debugging
+## Remote debug for a local file
 
 Currently, the Debug Adapter support is attach-based.
 We expect users to set up the Epsilon script with the appropriate models and configuration, and then hand it over to the Epsilon DAP server for remote debugging.
@@ -33,30 +33,29 @@ There are two launch configurations for this as well:
 * `Run Debug Adapter on 01-hello from Ant.launch`
 * `Run Debug Adapter on 02-imports-main from Ant.launch`
 
-## Starting an Epsilon script from a classpath resource, with remote debugging
+## Remote debug for a classpath resource
 
 The [DebugClasspathBasedEOL](src/org/eclipse/epsilon/examples/eol/dap/DebugClasspathBasedEOL.java) class shows how to do this.
 
-In order to allow breakpoints on local files to apply to resources loaded from the classpath without requiring configuration, the debug adapter uses a longest-matching-component-suffix matching strategy to decide which module corresponds to a given path.
+The class includes comments on how the experience differs depending on whether the classpath resource resides directly in a local folder as a regular file (e.g. within the `bin` folder of an Eclipse project), or not (e.g. when it is inside a JAR).
+In the second case, we will need to tell the debug adapter how to map module URIs to filesystem paths, so it can:
 
-For instance, suppose we had a breakpoint on:
+* Associate incoming requests for breakpoints to modules (DAP client path -> module URI),
+* Relate a breakpoint hit in a module to the file to show in the DAP client (module URI -> DAP client path).
 
-```
-file:/path/to/sources/main/a.eol
-```
-
-If our running program was made up of:
-
-```
-jar:/path/to/binaries/main/a.eol
-jar:/path/to/binaries/common/a.eol
-```
-
-Then the first option would be chosen, as it has the longest suffix of matching trailing components (two: `a.eol`, and then `main`).
-
-The matching strategy will refuse to verify a breakpoint if there are two or more candidates with the same number of matching trailing components, to avoid ambiguity.
+This can be done by adding entries to the `adapter.getUriToPathMappings()` map, where the key is the URI, and the value is the filesystem path that it refers to.
+The adapter can map both individual files, or entire subtrees.
 
 This example can be launched from the `Run Debug Adapter on 03-helloFromClasspath from Java` launch configuration.
+
+## Remote debug for an HTTP file
+
+The [DebugHttpBasedEOL](src/org/eclipse/epsilon/examples/eol/dap/DebugHttpBasedEOL.java) class shows how to do this.
+
+This is the most general case, where the module is being loaded from a non-file URI.
+In this case, the adapter needs to be explicitly told how to map the `http://` URIs used by the modules to filesystem paths that it can report to the DAP client.
+
+This example can be launched from the `Run Debug Adapter on 01-hello via HTTP from Java` launch configuration.
 
 ## Connecting to the Epsilon Debug Adapter Protocol server 
 

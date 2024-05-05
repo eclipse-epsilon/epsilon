@@ -61,6 +61,7 @@ public class EpsilonDebugServer implements Runnable {
 
 	private ServerSocket serverSocket;
 	private ExecutorService executorService;
+	private final EpsilonDebugAdapter debugAdapter = new EpsilonDebugAdapter();
 
 	/**
 	 * Convenience version of
@@ -114,7 +115,6 @@ public class EpsilonDebugServer implements Runnable {
 			while (running.get()) {
 				Socket conn = serverSocket.accept();
 
-				EpsilonDebugAdapter debugAdapter = new EpsilonDebugAdapter();
 				debugAdapter.setModule(module);
 				debugAdapter.setOnAttach(this::onAttach);
 
@@ -218,6 +218,10 @@ public class EpsilonDebugServer implements Runnable {
 
 			LOGGER.info(String.format("Shut down Epsilon debug server on %s:%d", host, localPort));
 		}
+	}
+
+	public EpsilonDebugAdapter getDebugAdapter() {
+		return this.debugAdapter;
 	}
 
 	public String getHost() {
