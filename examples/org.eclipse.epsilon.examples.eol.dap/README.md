@@ -3,7 +3,7 @@
 This example project shows how to debug an Epsilon script from two different IDEs through the [Debug Adapter Protocol (DAP)](https://microsoft.github.io/debug-adapter-protocol/):
 
 * From Eclipse, using the [LSP4E](https://github.com/eclipse/lsp4e) tools: details are provided below.
-* From VS Code, using its built-in support for DAP: details are provided in the [README of the Gradle project](epsilon/README.md).
+* From VS Code, using its built-in support for DAP: open the `epsilon` folder from VS Code, and read the details in its [README](epsilon/README.md).
 
 ## Remote debug for a local file
 
