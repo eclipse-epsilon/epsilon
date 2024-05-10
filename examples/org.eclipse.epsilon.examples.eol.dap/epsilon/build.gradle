@@ -2,6 +2,9 @@ configurations {
     epsilon
 }
 
+def debugPort = 4040
+def debugEpsilon = false
+
 repositories {
   // Allows us to use locally-built artifacts, to test code changes
   mavenLocal()
@@ -15,19 +18,48 @@ dependencies {
 }
 
 task setupEpsilonTasks {
-    // Set up the core Epsilon tasks
-    ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/tasks.xml', 
-        classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
-    // Set up the Epsilon EMF tasks
-    ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/emf/tasks.xml', 
-        classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
-    // Set logging level to info so that EOL's println() is not suppressed
-    ant.lifecycleLogLevel = 'INFO'
+  // Set up the core Epsilon tasks
+  ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/tasks.xml', 
+    classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+  // Set up the Epsilon EMF tasks
+  ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/emf/tasks.xml', 
+    classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+  // Set logging level to info so that EOL's println() is not suppressed
+  ant.lifecycleLogLevel = 'INFO'
 }
 
 task runHello {
-    dependsOn tasks.setupEpsilonTasks
-    doLast {
-      ant.'epsilon.eol'(src: '01-hello.eol', debug: true, debugPort: 4040)
-    }
+  dependsOn tasks.setupEpsilonTasks
+  doLast {
+    ant.'epsilon.eol'(src: '01-hello.eol', debug: debugEpsilon, debugPort: debugPort)
+  }
+}
+
+task debugHello {
+  finalizedBy "runHello"
+  doLast {
+    debugEpsilon = true
+  }
+}
+
+task waitForServer {
+  doLast {
+    waitForSocket(debugPort)
+  }
+}
+
+def checkSocket(portS) {
+  try {
+    new Socket("localhost", portS.toInteger())
+    return true
+  } catch (Exception e) {
+    return false
+  }
+}
+
+def waitForSocket(portS) {
+  while(!checkSocket(portS)) {
+    println "Waiting on ${portS}"
+    Thread.sleep(500)
+  }
 }

@@ -16,8 +16,6 @@ The current WIP branch for remote debugging is available from:
 
 https://github.com/agarciadom/vscode-epsilon/tree/remote-debug
 
-You can then use the VS Code Gradle support to run the `runHello` task, which will leave the `01-hello.eol` script waiting for a Debug Adapter connection on port 4040.
+Try setting a breakpoint, and then debug the program by going to the `Run and Debug` section of VS Code, and launching the "Debug 01-hello" configuration.
 
-Try setting a breakpoint, and then debug the program by going to the `Run and Debug` section of VS Code, and launching the "Attach to Epsilon script" configuration.
-
-The program will then start, and should stop at the designated breakpoint.
+VS Code will start the script on debug mode in the background, connect to the DAP server of the script, and stop at the designated breakpoint.

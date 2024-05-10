@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "debugWaitHello",
+            "type": "shell",
+            "command": "./gradlew debugHello & ./gradlew waitForServer",
+            "windows": {
+                // TODO test on Windows
+                "command": "start /b gradlew.bat debugHello && gradlew.bat waitForServer"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

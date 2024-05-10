@@ -7,8 +7,9 @@
         {
             "type": "epsilon",
             "request": "attach",
-            "name": "Attach to Epsilon script",
-            "port": 4040
+            "name": "Debug 01-hello",
+            "port": 4040,
+            "preLaunchTask": "debugWaitHello"
         }
     ]
 }
