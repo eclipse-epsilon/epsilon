@@ -542,26 +542,28 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	 */
 	protected Source createSource(ModuleElement resolvedModule) {
 		final Source bpSource = new Source();
-		final File moduleFile = resolvedModule.getFile();
-		if (moduleFile != null) {
+
+		// First, try to use the URI-to-path mappings
+		if (resolvedModule.getUri().getPath() != null) {
+			String path = resolvedModule.getUri().getPath();
+			String basename = Paths.get(path).getFileName().toString();
+			bpSource.setName(basename);
+			mapUriToSourcePath(resolvedModule.getUri().toString(), bpSource);
+		}
+
+		// If that didn't produce a path, fall back to the module file if it's available
+		if (bpSource.getPath() == null && resolvedModule.getFile() != null) {
+			final File moduleFile = resolvedModule.getFile();
 			bpSource.setName(moduleFile.getName());
 			try {
 				bpSource.setPath(moduleFile.getCanonicalPath());
 			} catch (IOException e) {
 				final String rawPath = moduleFile.getPath();
 
-				LOGGER.log(Level.WARNING,
-					String.format(
-						"Cannot produce canonical path for '%s': "
-						+ "falling back to regular path", rawPath),
-					e);
+				LOGGER.log(Level.WARNING, String.format(
+					"Cannot produce canonical path for '%s': " + "falling back to regular path", rawPath), e);
 				bpSource.setPath(rawPath);
 			}
-		} else if (resolvedModule.getUri().getPath() != null) {
-			String path = resolvedModule.getUri().getPath();
-			String basename = Paths.get(path).getFileName().toString();
-			bpSource.setName(basename);
-			mapUriToSourcePath(resolvedModule.getUri().toString(), bpSource);
 		}
 		return bpSource;
 	}
