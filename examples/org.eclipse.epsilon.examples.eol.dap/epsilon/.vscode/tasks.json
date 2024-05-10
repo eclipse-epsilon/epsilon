@@ -2,14 +2,19 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "debugWaitHello",
+            "label": "debugHello",
             "type": "shell",
-            "command": "./gradlew debugHello & ./gradlew waitForServer",
+            "command": "./gradlew",
+            "args": [
+                "--info",    // INFO logging level is needed to detect DAP server start
+                "debugHello" // Actual Gradle task to be run
+            ],
             "windows": {
-                // TODO test on Windows
-                "command": "start /b gradlew.bat debugHello && gradlew.bat waitForServer"
+                "command": ".\\gradlew.bat"
             },
-            "problemMatcher": []
+            "problemMatcher": "$epsilon-debug",
+            "isBackground": true,
+            "group": "none"
         }
     ]
 }

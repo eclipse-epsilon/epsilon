@@ -41,25 +41,3 @@ task debugHello {
     debugEpsilon = true
   }
 }
-
-task waitForServer {
-  doLast {
-    waitForSocket(debugPort)
-  }
-}
-
-def checkSocket(portS) {
-  try {
-    new Socket("localhost", portS.toInteger())
-    return true
-  } catch (Exception e) {
-    return false
-  }
-}
-
-def waitForSocket(portS) {
-  while(!checkSocket(portS)) {
-    println "Waiting on ${portS}"
-    Thread.sleep(500)
-  }
-}
