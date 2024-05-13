@@ -2,19 +2,16 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "debugHello",
-            "type": "shell",
-            "command": "./gradlew",
-            "args": [
-                "--info",    // INFO logging level is needed to detect DAP server start
-                "debugHello" // Actual Gradle task to be run
-            ],
-            "windows": {
-                "command": ".\\gradlew.bat"
-            },
+            "type": "gradle",
+            "script": "debugHello",
+            "group": "other",
+            "buildFile": "${workspaceFolder}/build.gradle",
+            "workspaceFolder": "${workspaceFolder}",
+            "projectFolder": "${workspaceFolder}",
+            "args": "--info",
             "problemMatcher": "$epsilon-debug",
-            "isBackground": true,
-            "group": "none"
+            "label": "epsilonDebug: hello",
+            "isBackground": true
         }
     ]
 }

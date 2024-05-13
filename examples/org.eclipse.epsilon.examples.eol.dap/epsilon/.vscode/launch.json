@@ -9,7 +9,7 @@
             "request": "attach",
             "name": "Debug 01-hello",
             "port": 4040,
-            "preLaunchTask": "debugHello"
+            "preLaunchTask": "epsilonDebug: hello"
         }
     ]
 }
