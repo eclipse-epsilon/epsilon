@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package org.eclipse.epsilon.eol.dap;
+package org.eclipse.epsilon.eol.dap.variables;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -24,30 +24,46 @@ import com.google.common.collect.HashBiMap;
 public class SuspendedState {
 
 	private final AtomicInteger nextReference = new AtomicInteger();
-	private final BiMap<Integer, SingleFrame> frames = HashBiMap.create();
+	private final BiMap<Integer, IVariableReference> references = HashBiMap.create();
 
 	public void suspended() {
-		synchronized (frames) {
+		synchronized (references) {
 			nextReference.set(0);
-			frames.clear();
+			references.clear();
 		}
 	}
 
-	public int getReference(SingleFrame sc) {
-		synchronized (frames) {
-			Integer reference = frames.inverse().get(sc);
-			if (reference == null) {
-				reference = nextReference.incrementAndGet();
-				frames.put(reference, sc);
-			}
-			return reference;
+	public IVariableReference getReference(SingleFrame sc) {
+		synchronized (references) {
+			return putOrGetReference(new SingleFrameReference(sc));
 		}
 	}
 
-	public SingleFrame getFrame(int reference) {
-		synchronized (frames) {
-			return frames.get(reference);
+	public IVariableReference getReference(int id) {
+		synchronized (references) {
+			return references.get(id);
 		}
+	}
+
+	public Integer getReferenceId(IVariableReference r) {
+		synchronized (references) {
+			return references.inverse().get(r);
+		}
+	}
+
+	protected IVariableReference getValueReference(String name, Object value) {
+		// TODO: structured values
+		return new OpaqueValueReference(name, value);
+	}
+
+	protected IVariableReference putOrGetReference(IdentifiableReference<?> ref) {
+		Integer reference = references.inverse().get(ref);
+		if (reference == null) {
+			reference = nextReference.incrementAndGet();
+			ref.setId(reference);
+			references.put(reference, ref);
+		}
+		return ref;
 	}
 
 }

@@ -35,6 +35,8 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.Region;
 import org.eclipse.epsilon.eol.IEolModule;
+import org.eclipse.epsilon.eol.dap.variables.IVariableReference;
+import org.eclipse.epsilon.eol.dap.variables.SuspendedState;
 import org.eclipse.epsilon.eol.debug.IEolDebugger;
 import org.eclipse.epsilon.eol.debug.IEpsilonDebugTarget;
 import org.eclipse.epsilon.eol.debug.SuspendReason;
@@ -300,17 +302,11 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 
 			Scope sc = new Scope();
 			sc.setExpensive(false);
-			sc.setNamedVariables(localFrame.getAll().size());
-			sc.setVariablesReference(suspendedState.getReference(localFrame));
 
-			switch (localFrame.getType()) {
-			case PROTECTED:
-				sc.setName("Protected");
-				break;
-			case UNPROTECTED:
-				sc.setName("Unprotected");
-				break;
-			}
+			IVariableReference ref = suspendedState.getReference(localFrame);
+			sc.setVariablesReference(ref.getId());
+			sc.setNamedVariables(localFrame.getAll().size());
+			sc.setName(ref.getName());
 
 			ScopesResponse resp = new ScopesResponse();
 			resp.setScopes(new Scope[] { sc });
@@ -323,33 +319,23 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 		return CompletableFuture.supplyAsync(() -> {
 			VariablesResponse resp = new VariablesResponse();
 
-			SingleFrame sf = suspendedState.getFrame(args.getVariablesReference());
-			if (sf != null) {
-				// reference points to a frame, list all variables
+			IVariableReference ref = suspendedState.getReference(args.getVariablesReference());
+			if (ref != null) {
 				List<Variable> respVariables = new ArrayList<>();
-				for (org.eclipse.epsilon.eol.execute.context.Variable localV : sf.getAll().values()) {
-					Variable respVariable = createVariable(localV);
+
+				for (IVariableReference vRef : ref.getVariables(suspendedState)) {
+					Variable respVariable = new Variable();
+					respVariable.setName(vRef.getName());
+					respVariable.setValue(vRef.getValue());
+					respVariable.setVariablesReference(vRef.getId());
 					respVariables.add(respVariable);
 				}
 
 				resp.setVariables(respVariables.toArray(new Variable[respVariables.size()]));
 			}
 
-			// TODO: support structured variables (e.g. fields, collections)
-
 			return resp;
 		});
-	}
-
-	protected Variable createVariable(org.eclipse.epsilon.eol.execute.context.Variable localV) {
-		Variable respVariable = new Variable();
-		respVariable.setName(localV.getName());
-		respVariable.setValue(localV.getValue() + "");
-		// TODO: support variable types
-
-		// TODO: support structured variables (e.g. fields, collections)
-		respVariable.setVariablesReference(0);
-		return respVariable;
 	}
 
 	protected void setStackFrameLocation(StackFrame responseFrame, ModuleElement frameEntrypoint) {
