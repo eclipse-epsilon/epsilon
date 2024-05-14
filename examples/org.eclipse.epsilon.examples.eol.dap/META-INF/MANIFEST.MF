@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.eclipse.epsilon.examples.eol.dap
 Bundle-Version: 2.6.0.qualifier
 Require-Bundle: org.eclipse.epsilon.eol.engine,
  org.eclipse.epsilon.eol.dap,
+ org.eclipse.epsilon.emc.emf,
  org.eclipse.lsp4j.debug,
  org.eclipse.lsp4j.jsonrpc,
  org.eclipse.lsp4j.jsonrpc.debug,

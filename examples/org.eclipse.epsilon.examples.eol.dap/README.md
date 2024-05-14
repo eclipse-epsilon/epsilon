@@ -5,21 +5,24 @@ This example project shows how to debug an Epsilon script from two different IDE
 * From Eclipse, using the [LSP4E](https://github.com/eclipse/lsp4e) tools: details are provided below.
 * From VS Code, using its built-in support for DAP: open the `epsilon` folder from VS Code, and read the details in its [README](epsilon/README.md).
 
-## Remote debug for a local file
-
 Currently, the Debug Adapter support is attach-based.
-We expect users to set up the Epsilon script with the appropriate models and configuration, and then hand it over to the Epsilon DAP server for remote debugging.
-There are two approaches for doing this: via Java code, and through the Ant workflow tasks.
+We expect users to follow these steps:
+
+1. Set up the Epsilon script with the appropriate models and configuration, and then hand it over to the Epsilon DAP server for remote debugging. The server will wait for connections before starting the Epsilon script.
+1. Connect to the DAP server using your IDE. The process for LSP4E is provided at the end of this document.
+
+## Epsilon DAP server for a local file
 
 ### Via Java code
 
 The [DebugFileBasedEOL](src/org/eclipse/epsilon/examples/eol/dap/DebugFileBasedEOL.java) class shows how to do this.
 This requires creating a `EpsilonDebugServer` instance with the configured module and the port to listen on, and invoking the `.run()` method which will block until the script has completed its execution.
 
-The example provided includes two launch configurations for this:
+The example provided includes several launch configurations for this:
 
 * `Run Debug Adapter on 01-hello from Java.launch`
 * `Run Debug Adapter on 02-imports-main from Java.launch`
+* `Run Debug Adapter on 04-inspectObject from Java.launch`
 
 These can be executed by right-clicking on them in the Project Explorer, and selecting their entries within the "Run as..." menu.
 
@@ -33,7 +36,7 @@ There are two launch configurations for this as well:
 * `Run Debug Adapter on 01-hello from Ant.launch`
 * `Run Debug Adapter on 02-imports-main from Ant.launch`
 
-## Remote debug for a classpath resource
+## Epsilon DAP server for a classpath resource
 
 The [DebugClasspathBasedEOL](src/org/eclipse/epsilon/examples/eol/dap/DebugClasspathBasedEOL.java) class shows how to do this.
 
@@ -48,7 +51,7 @@ The adapter can map both individual files, or entire subtrees.
 
 This example can be launched from the `Run Debug Adapter on 03-helloFromClasspath from Java` launch configuration.
 
-## Remote debug for an HTTP file
+## Epsilon DAP server for an HTTP file
 
 The [DebugHttpBasedEOL](src/org/eclipse/epsilon/examples/eol/dap/DebugHttpBasedEOL.java) class shows how to do this.
 
@@ -57,7 +60,7 @@ In this case, the adapter needs to be explicitly told how to map the `http://` U
 
 This example can be launched from the `Run Debug Adapter on 01-hello via HTTP from Java` launch configuration.
 
-## Connecting to the Epsilon Debug Adapter Protocol server 
+## Connecting to the Epsilon DAP server
 
 Once the DAP server is running and waiting for connections, you can use a DAP client (e.g. LSP4E) to debug the Epsilon script that it is controlling.
 
