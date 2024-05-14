@@ -54,7 +54,6 @@ public abstract class IdentifiableReference<T> implements IVariableReference {
 		return Objects.hash(target);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

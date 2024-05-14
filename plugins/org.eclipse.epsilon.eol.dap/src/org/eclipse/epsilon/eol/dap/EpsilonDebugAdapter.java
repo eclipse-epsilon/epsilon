@@ -177,9 +177,9 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 
 	/**
 	 * Abstraction over the state of the program while stopped. Used to keep track
-	 * of DAP variable references.
+	 * of DAP variable references. May need to interact with the module at times.
 	 */
-	private SuspendedState suspendedState = new SuspendedState();
+	private SuspendedState suspendedState;
 
 	/**
 	 * Lazily-initialized map from module URI to the actual IModule.
@@ -231,6 +231,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	@Override
 	public CompletableFuture<Void> attach(Map<String, Object> args) {
 		return CompletableFuture.runAsync(() -> {
+			suspendedState = new SuspendedState(module.getContext());
+			
 			// Attach to the module's output and error streams
 			module.getContext().setOutputStream(createStream(OutputEventArgumentsCategory.STDOUT));
 			module.getContext().setErrorStream(createStream(OutputEventArgumentsCategory.STDERR));

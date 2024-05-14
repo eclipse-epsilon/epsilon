@@ -11,7 +11,10 @@ package org.eclipse.epsilon.eol.dap.variables;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
+import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.epsilon.eol.models.IReflectiveModel;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -25,6 +28,11 @@ public class SuspendedState {
 
 	private final AtomicInteger nextReference = new AtomicInteger();
 	private final BiMap<Integer, IVariableReference> references = HashBiMap.create();
+	private final IEolContext context;
+
+	public SuspendedState(IEolContext context) {
+		this.context = context;
+	}
 
 	public void suspended() {
 		synchronized (references) {
@@ -51,8 +59,18 @@ public class SuspendedState {
 		}
 	}
 
+	public IEolContext getContext() {
+		return context;
+	}
+
 	protected IVariableReference getValueReference(String name, Object value) {
-		// TODO: structured values
+		IModel model = context.getModelRepository().getOwningModel(value);
+		if (model instanceof IReflectiveModel) {
+			IReflectiveModel rModel = (IReflectiveModel) model;
+			return putOrGetReference(new ModelElementReference(rModel, name, value));
+		}
+
+		// TODO: other structured values
 		return new OpaqueValueReference(name, value);
 	}
 
