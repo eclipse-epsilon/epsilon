@@ -30,6 +30,7 @@ import org.eclipse.lsp4j.debug.ExitedEventArguments;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
 import org.eclipse.lsp4j.debug.OutputEventArguments;
 import org.eclipse.lsp4j.debug.OutputEventArgumentsCategory;
+import org.eclipse.lsp4j.debug.Scope;
 import org.eclipse.lsp4j.debug.ScopesArguments;
 import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsArguments;
@@ -202,9 +203,14 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		}
 	}
 
-	protected VariablesResponse getVariables(ScopesResponse scopes) throws Exception {
+	protected VariablesResponse getVariables(Scope scope) throws Exception {
+		return getVariables(scope.getVariablesReference());
+	}
+
+	protected VariablesResponse getVariables(final int variablesReference)
+			throws InterruptedException, ExecutionException {
 		VariablesArguments variablesArgs = new VariablesArguments();
-		variablesArgs.setVariablesReference(scopes.getScopes()[0].getVariablesReference());
+		variablesArgs.setVariablesReference(variablesReference);
 		VariablesResponse variables = adapter.variables(variablesArgs).get();
 		return variables;
 	}
@@ -226,6 +232,14 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 
 	protected void attach() throws InterruptedException, ExecutionException {
 		adapter.attach(Collections.emptyMap()).get();
+	}
+
+	protected Map<String, Variable> getVariablesFromTopStackFrame() throws Exception {
+		StackTraceResponse stackTrace = getStackTrace();
+		ScopesResponse scopes = getScopes(stackTrace.getStackFrames()[0]);
+		VariablesResponse variables = getVariables(scopes.getScopes()[0]);
+		Map<String, Variable> variablesByName = getVariablesByName(variables);
+		return variablesByName;
 	}
 
 }

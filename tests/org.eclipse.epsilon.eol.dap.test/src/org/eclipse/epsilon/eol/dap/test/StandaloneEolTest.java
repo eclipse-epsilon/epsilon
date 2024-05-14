@@ -78,7 +78,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 			scopes.getScopes()[0].getVariablesReference() > 0);
 
 		// Variables
-		VariablesResponse variables = getVariables(scopes);
+		VariablesResponse variables = getVariables(scopes.getScopes()[0]);
 		assertEquals("The debugger should list 2 variables", 2, variables.getVariables().length);
 
 		Map<String, Variable> variablesByName = getVariablesByName(variables);

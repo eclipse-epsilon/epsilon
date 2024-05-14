@@ -31,7 +31,7 @@ import org.junit.Test;
  */
 public class HttpEolTest extends AbstractEpsilonDebugAdapterTest {
 
-	private static final File SCRIPT_FILE = new File("../org.eclipse.epsilon.eol.dap.test/epsilon/01-hello.eol");
+	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "01-hello.eol");
 	private String serverUrl;
 
 	@Override

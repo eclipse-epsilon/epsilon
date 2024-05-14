@@ -57,7 +57,8 @@ public class ClasspathEolTest extends AbstractEpsilonDebugAdapterTest {
 	@Test
 	public void canMapFilesToUriModule() throws Exception {
 		SetBreakpointsResponse breakpoints = adapter.setBreakpoints(
-			createBreakpoints(SCRIPT_FILE.getCanonicalPath(), createBreakpoint(1))).get();
+			createBreakpoints(SCRIPT_FILE.getCanonicalPath(), createBreakpoint(1))
+		).get();
 		assertTrue("The file-based breakpoint was mapped to a script loaded from the classpath",
 			breakpoints.getBreakpoints()[0].isVerified());
 

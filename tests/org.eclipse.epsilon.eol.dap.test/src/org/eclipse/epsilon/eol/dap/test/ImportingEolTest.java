@@ -17,20 +17,19 @@ import java.util.Map;
 
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.lsp4j.debug.ContinueArguments;
-import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
-import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Variable;
-import org.eclipse.lsp4j.debug.VariablesResponse;
 import org.junit.Test;
 
 public class ImportingEolTest extends AbstractEpsilonDebugAdapterTest {
 
+	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "02-imports-main.eol");
+
 	@Override
 	protected void setupModule() throws Exception {
 		this.module = new EolModule();
-		module.parse(new File(BASE_RESOURCE_FOLDER, "02-imports-main.eol"));
+		module.parse(SCRIPT_FILE);
 	}
 
 	@Test
@@ -51,14 +50,6 @@ public class ImportingEolTest extends AbstractEpsilonDebugAdapterTest {
 		adapter.setBreakpoints(createBreakpoints(importedFile.getCanonicalPath()));
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
-	}
-
-	protected Map<String, Variable> getVariablesFromTopStackFrame() throws Exception {
-		StackTraceResponse stackTrace = getStackTrace();
-		ScopesResponse scopes = getScopes(stackTrace.getStackFrames()[0]);
-		VariablesResponse variables = getVariables(scopes);
-		Map<String, Variable> variablesByName = getVariablesByName(variables);
-		return variablesByName;
 	}
 
 }
