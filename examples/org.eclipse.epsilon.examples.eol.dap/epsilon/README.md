@@ -16,6 +16,6 @@ The current WIP branch for remote debugging is available from:
 
 https://github.com/agarciadom/vscode-epsilon/tree/remote-debug
 
-Try setting a breakpoint, and then debug the program by going to the `Run and Debug` section of VS Code, and launching the "Debug 01-hello" configuration.
+Try setting a breakpoint, and then debug the program by going to the `Run and Debug` section of VS Code, and launching the "Debug 01-hello" or "Debug 04-inspectObject" configurations.
 
 VS Code will start the script on debug mode in the background, connect to the DAP server of the script, and stop at the designated breakpoint.

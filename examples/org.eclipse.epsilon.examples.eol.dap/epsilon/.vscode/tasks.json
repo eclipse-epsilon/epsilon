@@ -12,6 +12,20 @@
             "problemMatcher": "$epsilon-debug",
             "label": "epsilonDebug: hello",
             "isBackground": true
+        },
+        {
+            "type": "gradle",
+            "script": "debugInspectObject",
+            "group": "other",
+            "buildFile": "${workspaceFolder}/build.gradle",
+            "projectFolder": "${workspaceFolder}",
+            "workspaceFolder": "${workspaceFolder}",
+            "args": "--info",
+            "problemMatcher": [
+                "$epsilon-debug"
+            ],
+            "label": "epsilonDebug: inspectObject",
+            "isBackground": true
         }
     ]
 }

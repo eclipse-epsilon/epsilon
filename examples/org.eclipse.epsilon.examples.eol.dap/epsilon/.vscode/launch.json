@@ -10,6 +10,13 @@
             "name": "Debug 01-hello",
             "port": 4040,
             "preLaunchTask": "epsilonDebug: hello"
+        },
+        {
+            "type": "epsilon",
+            "request": "attach",
+            "name": "Debug 04-inspectObject",
+            "port": 4040,
+            "preLaunchTask": "epsilonDebug: inspectObject"
         }
     ]
 }

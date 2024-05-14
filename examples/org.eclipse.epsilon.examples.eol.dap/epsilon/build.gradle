@@ -41,3 +41,21 @@ task debugHello {
     debugEpsilon = true
   }
 }
+
+task runInspectObject {
+  dependsOn tasks.setupEpsilonTasks
+  doLast {
+    ant.'epsilon.emf.loadModel'(modelFile: 'models/person.model', metamodelFile: 'models/person.ecore', read: true, store: false, name: 'M')
+    ant.'epsilon.eol'(src: '04-inspectObject.eol', debug: debugEpsilon, debugPort: debugPort) {
+      model(ref: 'M')
+    }
+    ant.'epsilon.disposeModel'(model: 'M')
+  }
+}
+
+task debugInspectObject {
+  finalizedBy "runInspectObject"
+  doLast {
+    debugEpsilon = true
+  }
+}
