@@ -23,7 +23,9 @@ import junit.framework.Test;
     StandaloneEolTest.class,
     ClasspathEolTest.class,
     HttpEolTest.class,
-    ModelElementPropertiesTest.class
+    ModelElementPropertiesTest.class,
+    SmallCollectionTest.class,
+    LargeCollectionTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {

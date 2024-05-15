@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.models.java.JavaModel;
+import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Variable;
 import org.eclipse.lsp4j.debug.VariablesResponse;
@@ -81,5 +82,8 @@ public class ModelElementPropertiesTest extends AbstractEpsilonDebugAdapterTest 
 		Variable lastNameVariable = pVarsByName.get("lastName");
 		assertEquals("lastName", lastNameVariable.getName());
 		assertEquals("Doe", lastNameVariable.getValue());
+
+		adapter.continue_(new ContinueArguments());
+		assertProgramCompletedSuccessfully();
 	}
 }

@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.epsilon.eol.dap.variables;
 
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
@@ -25,6 +26,9 @@ import com.google.common.collect.HashBiMap;
  * suspends, to allow it to reset.
  */
 public class SuspendedState {
+
+	public static final int LARGE_COLLECTION_THRESHOLD = 200;
+	public static final int SLICE_SIZE = LARGE_COLLECTION_THRESHOLD / 2;
 
 	private final AtomicInteger nextReference = new AtomicInteger();
 	private final BiMap<Integer, IVariableReference> references = HashBiMap.create();
@@ -63,11 +67,24 @@ public class SuspendedState {
 		return context;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected IVariableReference getValueReference(String name, Object value) {
 		IModel model = context.getModelRepository().getOwningModel(value);
 		if (model instanceof IReflectiveModel) {
 			IReflectiveModel rModel = (IReflectiveModel) model;
 			return putOrGetReference(new ModelElementReference(rModel, name, value));
+		}
+
+		if (value instanceof Collection) {
+			Collection<Object> c = (Collection<Object>) value;
+
+			IdentifiableReference<?> ref;
+			if (c.size() >= LARGE_COLLECTION_THRESHOLD) {
+				ref = new SlicedCollectionReference(name, c, SLICE_SIZE);
+			} else {
+				ref = new PerElementCollectionReference(name, c);
+			}
+			return putOrGetReference(ref);
 		}
 
 		// TODO: other structured values

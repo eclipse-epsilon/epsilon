@@ -1,6 +1,12 @@
 produceGreeting('Bob', 'Someone').println();
 produceGreeting('Alice', 'Important').println();
 
+var smallCollection = 1.to(10);
+smallCollection.println('Small collection: ');
+
+var largeCollection = 1.to(1000).asSet();
+largeCollection.size.println('Large collection size: ');
+
 operation produceGreeting(firstName: String, lastName: String) {
   var fullName = firstName + ' ' + lastName;
 
