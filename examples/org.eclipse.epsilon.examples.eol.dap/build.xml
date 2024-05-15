@@ -7,4 +7,18 @@
 	<target name="02-imports-debug">
 		<epsilon.eol src="epsilon/02-imports-main.eol" debug="true" debugPort="4040"/>
     </target>
+
+	<target name="04-inspectObject">
+		<epsilon.emf.loadModel name="M"
+			metamodelfile="epsilon/models/person.ecore"
+			modelfile="epsilon/models/person.model"
+			read="true" store="false" />
+
+		<epsilon.eol src="epsilon/04-inspectObject.eol" debug="true" debugPort="4040">
+			<model ref="M"/>
+		</epsilon.eol>
+
+		<epsilon.disposeModel model="M" />
+    </target>
+	
 </project>

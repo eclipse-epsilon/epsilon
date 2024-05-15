@@ -18,7 +18,10 @@ We expect users to follow these steps:
 The [DebugFileBasedEOL](src/org/eclipse/epsilon/examples/eol/dap/DebugFileBasedEOL.java) class shows how to do this.
 This requires creating a `EpsilonDebugServer` instance with the configured module and the port to listen on, and invoking the `.run()` method which will block until the script has completed its execution.
 
-The example provided includes several launch configurations for this:
+The [DebugWithModel](src/org/eclipse/epsilon/examples/eol/dap/DebugWithModel.java) class shows how we can debug scripts that use models.
+Again, this only requires passing the set up module to the server, and letting the server run.
+
+The project includes several launch configurations for this:
 
 * `Run Debug Adapter on 01-hello from Java.launch`
 * `Run Debug Adapter on 02-imports-main from Java.launch`
@@ -31,10 +34,11 @@ These can be executed by right-clicking on them in the Project Explorer, and sel
 The [provided Ant file](build.xml) shows how to do this.
 When an executable Ant task is configured with `debug="true"` and `debugPort="PORT"`, it will wait for a DAP client before it starts running.
 
-There are two launch configurations for this as well:
+There are several launch configurations for this as well:
 
 * `Run Debug Adapter on 01-hello from Ant.launch`
 * `Run Debug Adapter on 02-imports-main from Ant.launch`
+* `Run Debug Adapter on 04-inspectObject from Ant.launch`
 
 ## Epsilon DAP server for a classpath resource
 
