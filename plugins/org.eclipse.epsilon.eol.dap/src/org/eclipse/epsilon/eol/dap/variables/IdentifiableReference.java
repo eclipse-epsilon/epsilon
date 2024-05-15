@@ -62,7 +62,7 @@ public abstract class IdentifiableReference<T> implements IVariableReference {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IdentifiableReference other = (IdentifiableReference) obj;
+		IdentifiableReference<?> other = (IdentifiableReference<?>) obj;
 		return Objects.equals(target, other.target);
 	}
 	
