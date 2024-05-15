@@ -30,6 +30,7 @@ import org.eclipse.epsilon.egl.debug.EgxDebugger;
 import org.eclipse.epsilon.eml.IEmlModule;
 import org.eclipse.epsilon.eml.debug.EmlDebugger;
 import org.eclipse.epsilon.eol.IEolModule;
+import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dt.ExtensionPointToolNativeTypeDelegate;
 import org.eclipse.epsilon.eol.dt.debug.EolDebugTarget;
@@ -49,6 +50,8 @@ import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IOConsole;
 
 public class EclipseHost implements Host {
+
+	private Integer debugPort;
 
 	@Override
 	public boolean isRunning() {
@@ -89,20 +92,36 @@ public class EclipseHost implements Host {
 	
 	@Override
 	public Object debug(IEolModule module, File file) throws Exception {
-		final EolDebugger debugger = (EolDebugger) createDebugger(module);
+		if (debugPort == null) {
+			// No debug port has been set: use the old debug UI
+			final EolDebugger debugger = (EolDebugger) createDebugger(module);
 
-		// HACK: we assume the only running launch is the Ant launch. There's no clear way to
-		// tell apart an Ant launch from a regular Run launch, apart from using internal classes
-		// in the Eclipse Ant internal API.
-		final ILaunch currentLaunch = DebugPlugin.getDefault().getLaunchManager().getLaunches()[0];
-		// HACK: we need to remove the Ant source locator so Eclipse can find the source file
-		currentLaunch.setSourceLocator(null);
+			/*
+			 * HACK: we assume the only running launch is the Ant launch. There's no clear
+			 * way to tell apart an Ant launch from a regular Run launch, apart from using
+			 * internal classes in the Eclipse Ant internal API.
+			 */
+			final ILaunch currentLaunch = DebugPlugin.getDefault().getLaunchManager().getLaunches()[0];
 
-		final EolDebugTarget target = new EolDebugTarget(
-			currentLaunch, module, debugger, file.getAbsolutePath());
-		debugger.setTarget(target);
-		currentLaunch.addDebugTarget(target);
-		return target.debug();
+			/*
+			 * HACK: we need to remove the Ant source locator so Eclipse can find the source
+			 * file.
+			 */
+			currentLaunch.setSourceLocator(null);
+
+			final EolDebugTarget target = new EolDebugTarget(currentLaunch, module, debugger, file.getAbsolutePath());
+			debugger.setTarget(target);
+			currentLaunch.addDebugTarget(target);
+			return target.debug();
+		} else {
+			/*
+			 * A debug port has been set: launch the DAP server and wait for attachment from
+			 * LSP4E.
+			 */
+			EpsilonDebugServer server = new EpsilonDebugServer(module, debugPort);
+			server.run();
+			return server;
+		}
 	}
 	
 	private Object createDebugger(IEolModule module) {
@@ -172,4 +191,9 @@ public class EclipseHost implements Host {
 		}
 	}
 
+	@Override
+	public void setDebugPort(int port) {
+		this.debugPort = port;
+	}
+	
 }
