@@ -207,8 +207,8 @@ public class EpsilonDebugServer implements Runnable {
 					LOGGER.log(Level.WARNING, e.getMessage(), e);
 				}
 				executorService = null;
-			}			
-			
+			}
+
 			if (serverSocket != null) {
 				// Stop accepting connections
 				try {
