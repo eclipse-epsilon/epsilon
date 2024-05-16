@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -189,6 +190,25 @@ public class EpsilonDebugServer implements Runnable {
 			String host = null;
 			int localPort = port;
 
+			synchronized(listeningLaunchers) {
+				// Cancel all listening launchers
+				for (Future<Void> l : listeningLaunchers) {
+					l.cancel(true);
+				}
+				listeningLaunchers.clear();
+			}
+
+			if (executorService != null) {
+				// Shut down the thread pool used to process incoming messages
+				executorService.shutdown();
+				try {
+					executorService.awaitTermination(10, TimeUnit.SECONDS);
+				} catch (InterruptedException e) {
+					LOGGER.log(Level.WARNING, e.getMessage(), e);
+				}
+				executorService = null;
+			}			
+			
 			if (serverSocket != null) {
 				// Stop accepting connections
 				try {
@@ -201,20 +221,6 @@ public class EpsilonDebugServer implements Runnable {
 					serverSocket = null;
 				}
 			}
-
-			synchronized(listeningLaunchers) {
-				// Cancel all listening launchers
-				for (Future<Void> l : listeningLaunchers) {
-					l.cancel(true);
-				}
-				listeningLaunchers.clear();
-			}
-
-			if (executorService != null) {
-				// Shut down the thread pool used to process incoming messages
-				executorService.shutdown();
-				executorService = null;
-			}			
 
 			LOGGER.info(String.format("Shut down Epsilon debug server on %s:%d", host, localPort));
 		}
