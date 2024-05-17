@@ -37,7 +37,7 @@ public class DebugClasspathBasedEOL {
 		 * back to a file that the DAP client can show to the user.
 		 */
 		server.getDebugAdapter().getUriToPathMappings().put(
-			DebugFileBasedEOL.class.getResource("03-helloFromClasspath.eol").toURI(),
+			classpathUri,
 			Paths.get("src/org/eclipse/epsilon/examples/eol/dap/03-helloFromClasspath.eol"));
 
 		server.run();
