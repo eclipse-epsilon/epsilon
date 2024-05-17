@@ -18,7 +18,7 @@ import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 public class DebugClasspathBasedEOL {
 	public static void main(String[] args) throws Exception {
 		EolModule module = new EolModule();
-		URI classpathUri = DebugFileBasedEOL.class.getResource("03-helloFromClasspath.eol").toURI();
+		URI classpathUri = DebugClasspathBasedEOL.class.getResource("03-helloFromClasspath.eol").toURI();
 		module.parse(classpathUri);
 
 		EpsilonDebugServer server = new EpsilonDebugServer(module, 4040);
