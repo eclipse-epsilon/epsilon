@@ -105,11 +105,8 @@ public class EolVariableValue extends EolDebugElement implements IValue {
 						f.setAccessible(true);
 						subvars.add(new EolVariable(getDebugTarget(), f.getName(), f.get(value)));
 						f.setAccessible(oldAccessible);
-					} catch (IllegalAccessException ex) {
-						// could not access the field
-					}
-					catch (SecurityException ex) {
-						// could not make the field accessible
+					} catch (Exception ex) {
+						// could not make the field accessible or access it
 					}
 				}
 
