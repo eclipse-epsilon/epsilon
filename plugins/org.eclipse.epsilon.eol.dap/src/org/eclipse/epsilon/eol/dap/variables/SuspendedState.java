@@ -96,12 +96,15 @@ public class SuspendedState {
 	}
 
 	protected IVariableReference putOrGetReference(IdentifiableReference<?> ref) {
-		Integer reference = references.inverse().get(ref);
-		if (reference == null) {
-			reference = nextReference.incrementAndGet();
-			ref.setId(reference);
-			references.put(reference, ref);
+		synchronized (references) {
+			Integer reference = references.inverse().get(ref);
+			if (reference == null) {
+				reference = nextReference.incrementAndGet();
+				ref.setId(reference);
+				references.put(reference, ref);
+			}
 		}
+
 		return ref;
 	}
 
