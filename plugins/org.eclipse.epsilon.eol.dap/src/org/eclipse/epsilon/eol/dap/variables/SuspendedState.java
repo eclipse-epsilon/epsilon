@@ -16,6 +16,7 @@ import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IReflectiveModel;
+import org.eclipse.epsilon.eol.types.EolTuple;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -87,7 +88,10 @@ public class SuspendedState {
 			return putOrGetReference(ref);
 		}
 
-		// TODO: other structured values
+		if (value instanceof EolTuple) {
+			return putOrGetReference(new TupleReference(name, (EolTuple) value));
+		}
+
 		return new OpaqueValueReference(name, value);
 	}
 

@@ -13,7 +13,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.epsilon.eol.types.EolAnyType;
+import org.eclipse.epsilon.eol.types.EolPrimitiveType;
+import org.eclipse.epsilon.eol.types.EolType;
+
 public abstract class IdentifiableReference<T> implements IVariableReference {
+
+	private static final EolType[] PREDEFINED_TYPES = {
+		EolPrimitiveType.Integer,
+		EolPrimitiveType.Boolean,
+		EolPrimitiveType.Real,
+		EolPrimitiveType.String
+	};
 
 	protected int id;
 	protected T target;
@@ -42,6 +53,21 @@ public abstract class IdentifiableReference<T> implements IVariableReference {
 	@Override
 	public String getValue() {
 		return target + "";
+	}
+
+	@Override
+	public String getTypeName() {
+		if (target == null) {
+			return new EolAnyType().getName();
+		}
+
+		for (EolType type : PREDEFINED_TYPES) {
+			if (type.isKind(target)) {
+				return type.getName();
+			}
+		}
+		
+		return target.getClass().getName();
 	}
 
 	@Override

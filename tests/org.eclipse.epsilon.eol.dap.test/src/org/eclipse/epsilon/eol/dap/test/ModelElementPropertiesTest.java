@@ -68,6 +68,8 @@ public class ModelElementPropertiesTest extends AbstractEpsilonDebugAdapterTest 
 		Map<String, Variable> topVariables = getVariablesFromTopStackFrame();
 		Variable personVariable = topVariables.get("p");
 		assertNotNull("The top scope should have a 'p' variable", personVariable);
+		assertEquals("The 'p' variable should use the same type as in EOL",
+			Person.class.getCanonicalName(), personVariable.getType());
 		assertNotEquals("The 'p' variable should have its own reference",
 			0, personVariable.getVariablesReference());
 

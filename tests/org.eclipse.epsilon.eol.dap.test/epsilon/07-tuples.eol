@@ -1,0 +1,5 @@
+var t = new Tuple;
+t.name = 'X';
+t.value = 1234;
+
+t.println('value of tuple: ');

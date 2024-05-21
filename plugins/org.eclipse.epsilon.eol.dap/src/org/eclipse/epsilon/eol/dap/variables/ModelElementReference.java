@@ -38,6 +38,11 @@ public class ModelElementReference extends IdentifiableReference<Object> {
 	}
 
 	@Override
+	public String getTypeName() {
+		return this.model.getTypeNameOf(target);
+	}
+
+	@Override
 	public List<IVariableReference> getVariables(SuspendedState state) {
 		List<IVariableReference> refs = new ArrayList<>();
 

@@ -329,6 +329,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 					Variable respVariable = new Variable();
 					respVariable.setName(vRef.getName());
 					respVariable.setValue(vRef.getValue());
+					respVariable.setType(vRef.getTypeName());
 					respVariable.setVariablesReference(vRef.getId());
 					respVariables.add(respVariable);
 				}

@@ -23,9 +23,9 @@ import org.eclipse.lsp4j.debug.Variable;
 import org.eclipse.lsp4j.debug.VariablesResponse;
 import org.junit.Test;
 
-public class SmallCollectionTest extends AbstractEpsilonDebugAdapterTest {
+public class TupleTest extends AbstractEpsilonDebugAdapterTest {
 
-	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "05-smallCollection.eol");
+	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "07-tuples.eol");
 
 	@Override
 	protected void setupModule() throws Exception {
@@ -35,29 +35,30 @@ public class SmallCollectionTest extends AbstractEpsilonDebugAdapterTest {
 
 	@Test
 	public void canShowElements() throws Exception {
-		adapter.setBreakpoints(createBreakpoints(createBreakpoint(3))).get();
+		adapter.setBreakpoints(createBreakpoints(createBreakpoint(5))).get();
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		Map<String, Variable> topVariables = getVariablesFromTopStackFrame();
-		Variable numbersVariable = topVariables.get("numbers");
-		assertNotNull("The top scope should have a 'numbers' variable", numbersVariable);
-		assertEquals("Sequence", numbersVariable.getType());
-		assertNotEquals("The 'numbers' variable should have its own reference",
-			0, numbersVariable.getVariablesReference());
+		Variable tupleVariable = topVariables.get("t");
+		assertNotNull("The top scope should have a 't' variable", tupleVariable);
+		assertEquals("Tuple", tupleVariable.getType());
+		assertNotEquals("The 't' variable should have its own reference",
+			0, tupleVariable.getVariablesReference());
 
-		VariablesResponse numbersVars = getVariables(numbersVariable.getVariablesReference());
-		Map<String, Variable> numbersVarsByName = getVariablesByName(numbersVars);
-		assertEquals("The 'numbers' variable should list ten elements", 10, numbersVarsByName.size());
+		VariablesResponse tupleVars = getVariables(tupleVariable.getVariablesReference());
+		Map<String, Variable> tupleVarsByName = getVariablesByName(tupleVars);
+		assertEquals("The 't' variable should list two elements", 2, tupleVarsByName.size());
 
-		Variable firstVariable = numbersVarsByName.get("numbers[0]");
-		assertEquals("numbers[0]", firstVariable.getName());
-		assertEquals("1", firstVariable.getValue());
-		assertEquals("Integer", firstVariable.getType());
+		Variable nameVariable = tupleVarsByName.get("name");
+		assertEquals("name", nameVariable.getName());
+		assertEquals("X", nameVariable.getValue());
+		assertEquals("String", nameVariable.getType());
 
-		Variable lastVariable = numbersVarsByName.get("numbers[9]");
-		assertEquals("numbers[9]", lastVariable.getName());
-		assertEquals("10", lastVariable.getValue());
+		Variable valueVariable = tupleVarsByName.get("value");
+		assertEquals("value", valueVariable.getName());
+		assertEquals("1234", valueVariable.getValue());
+		assertEquals("Integer", valueVariable.getType());
 
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();

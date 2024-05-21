@@ -25,7 +25,8 @@ import junit.framework.Test;
     HttpEolTest.class,
     ModelElementPropertiesTest.class,
     SmallCollectionTest.class,
-    LargeCollectionTest.class
+    LargeCollectionTest.class,
+    TupleTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {

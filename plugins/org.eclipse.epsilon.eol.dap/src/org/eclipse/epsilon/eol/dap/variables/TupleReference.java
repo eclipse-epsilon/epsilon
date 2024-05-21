@@ -10,16 +10,19 @@
 package org.eclipse.epsilon.eol.dap.variables;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
 
-public class PerElementCollectionReference extends CollectionReference {
+import org.eclipse.epsilon.eol.types.EolTuple;
+import org.eclipse.epsilon.eol.types.EolTupleType;
+
+public class TupleReference extends IdentifiableReference<EolTuple> {
 
 	private final String name;
 
-	public PerElementCollectionReference(String name, Collection<Object> collection) {
-		super(collection);
+	public TupleReference(String name, EolTuple tuple) {
+		super(tuple);
 		this.name = name;
 	}
 
@@ -29,12 +32,16 @@ public class PerElementCollectionReference extends CollectionReference {
 	}
 
 	@Override
+	public String getTypeName() {
+		return new EolTupleType().getName();
+	}
+
+	@Override
 	public List<IVariableReference> getVariables(SuspendedState state) {
 		final List<IVariableReference> refs = new ArrayList<>(target.size());
 
-		int i = 0;
-		for (Object e : target) {
-			refs.add(state.getValueReference(String.format("%s[%d]", name, i++), e));
+		for (Entry<String, Object> entry : target.entrySet()) {
+			refs.add(state.getValueReference(entry.getKey(), entry.getValue()));
 		}
 
 		return refs;
@@ -56,7 +63,7 @@ public class PerElementCollectionReference extends CollectionReference {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PerElementCollectionReference other = (PerElementCollectionReference) obj;
+		TupleReference other = (TupleReference) obj;
 		return Objects.equals(name, other.name);
 	}
 

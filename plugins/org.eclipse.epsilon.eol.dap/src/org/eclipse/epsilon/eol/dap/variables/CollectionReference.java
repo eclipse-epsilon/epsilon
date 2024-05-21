@@ -9,14 +9,19 @@
  *******************************************************************************/
 package org.eclipse.epsilon.eol.dap.variables;
 
-import java.util.List;
+import java.util.Collection;
 
-public interface IVariableReference {
+import org.eclipse.epsilon.eol.types.EolCollectionType;
 
-	int getId();
-	String getName();
-	String getValue();
-	String getTypeName();
-	List<IVariableReference> getVariables(SuspendedState state);
+public abstract class CollectionReference extends IdentifiableReference<Collection<Object>> {
+
+	public CollectionReference(Collection<Object> t) {
+		super(t);
+	}
+
+	@Override
+	public String getTypeName() {
+		return EolCollectionType.getTypeName(target);
+	}
 
 }

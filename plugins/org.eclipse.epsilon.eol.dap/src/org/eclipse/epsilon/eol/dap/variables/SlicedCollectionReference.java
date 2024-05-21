@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-public class SlicedCollectionReference extends IdentifiableReference<Collection<Object>> {
+public class SlicedCollectionReference extends CollectionReference {
 
 	private final String name;
 	private final int sliceSize;
