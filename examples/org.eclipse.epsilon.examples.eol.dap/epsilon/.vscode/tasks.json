@@ -9,7 +9,10 @@
             "workspaceFolder": "${workspaceFolder}",
             "projectFolder": "${workspaceFolder}",
             "args": "--info",
-            "problemMatcher": "$epsilon-debug",
+            "problemMatcher": [
+                "$gradle",
+                "$epsilon-debug"
+            ],
             "label": "epsilonDebug: hello",
             "isBackground": true
         },
@@ -22,6 +25,7 @@
             "workspaceFolder": "${workspaceFolder}",
             "args": "--info",
             "problemMatcher": [
+                "$gradle",
                 "$epsilon-debug"
             ],
             "label": "epsilonDebug: inspectObject",
