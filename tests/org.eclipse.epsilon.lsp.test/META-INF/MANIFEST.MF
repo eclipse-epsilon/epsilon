@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests for Epsilon Language Server
+Bundle-SymbolicName: org.eclipse.epsilon.lsp.test
+Bundle-Version: 2.6.0.qualifier
+Require-Bundle: org.eclipse.epsilon.lsp,
+ org.junit;bundle-version="4.0.0",
+ org.eclipse.lsp4j;bundle-version="0.22.0"
+Bundle-Vendor: Eclipse.org
+Automatic-Module-Name: org.eclipse.epsilon.lsp.test
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
