@@ -113,6 +113,7 @@
     <module>org.eclipse.epsilon.hutn.xmi.dt</module>
     <module>org.eclipse.epsilon.flexmi</module>
     <module>org.eclipse.epsilon.flexmi.dt</module>
+    <module>org.eclipse.epsilon.lsp</module>
     <module>org.eclipse.epsilon.perspective</module>
     <module>org.eclipse.epsilon.picto</module>
     <module>org.eclipse.epsilon.pinset.engine</module>

@@ -127,6 +127,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <swt.version>3.114.0</swt.version>
+    <lsp4j.version>0.23.1</lsp4j.version>
   </properties>
 
   <modules>
@@ -154,6 +155,7 @@
     <module>plugins/org.eclipse.epsilon.evl.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.ewl.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.flock.engine/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.lsp/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.pinset.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.profiling/pom-plain.xml</module>
 
@@ -560,6 +562,25 @@ same version of EMF / other bits always.
         <groupId>org.eclipse.emf</groupId>
         <artifactId>org.eclipse.emf.mapping.ecore2xml</artifactId>
         <version>2.11.0</version>
+      </dependency>
+
+      <!-- LSP4J -->
+      <dependency>
+          <groupId>org.eclipse.lsp4j</groupId>
+          <artifactId>org.eclipse.lsp4j.debug</artifactId>
+          <version>${lsp4j.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.lsp4j</groupId>
+          <artifactId>org.eclipse.lsp4j</artifactId>
+          <version>${lsp4j.version}</version>
+      </dependency>
+
+      <!-- Emfatic -->
+      <dependency>
+          <groupId>org.eclipse.emfatic</groupId>
+          <artifactId>org.eclipse.emfatic.core</artifactId>
+          <version>1.1.0</version>
       </dependency>
 
       <!-- Other libraries: this is just so we are consistent across projects -->
