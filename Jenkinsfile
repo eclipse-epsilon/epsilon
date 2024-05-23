@@ -67,7 +67,7 @@ pipeline {
           stage('Javadocs') {
             when {
               anyOf {
-                changeset comparator: 'REGEXP', pattern: "${baseTriggers}"
+                changeset comparator: 'REGEXP', pattern: "${updateTriggers}"
                 expression { return currentBuild.number == 1 }
                 triggeredBy 'UserIdCause'
               }
