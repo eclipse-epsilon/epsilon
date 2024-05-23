@@ -83,7 +83,7 @@ location "https://download.eclipse.org/lsp4j/updates/releases/0.22.0/" {
 	org.eclipse.lsp4j.debug lazy
 }
 
-location "https://download.eclipse.org/lsp4e/releases/latest/" {
+location "https://download.eclipse.org/lsp4e/releases/0.26.0/" {
 	org.eclipse.lsp4e lazy
 	org.eclipse.lsp4e.debug lazy
 }
