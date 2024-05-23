@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2024 The University of York.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
 package org.eclipse.epsilon.lsp;
 
 import java.io.ByteArrayInputStream;
@@ -44,12 +53,13 @@ import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.TextDocumentItem;
 import org.eclipse.lsp4j.services.TextDocumentService;
 
 public class EpsilonTextDocumentService implements TextDocumentService {
 
-    protected EpsilonLanguageServer languageServer;
-    protected Map<String, String> uriLanguageMap = new HashMap<>();
+    protected final Map<String, String> uriLanguageMap = new HashMap<>();
+	protected final EpsilonLanguageServer languageServer;
     
     public EpsilonTextDocumentService(EpsilonLanguageServer languageServer) {
         this.languageServer = languageServer;
@@ -57,14 +67,13 @@ public class EpsilonTextDocumentService implements TextDocumentService {
 
     @Override
     public void didOpen(DidOpenTextDocumentParams params) {
-
-        // Remember the ID of the language used to edit this file as the ID
-        // is not provided again in didChange
-        uriLanguageMap.put(params.getTextDocument().getUri(), params.getTextDocument().getLanguageId());
-
-        publishDiagnostics(params.getTextDocument().getText(), 
-            params.getTextDocument().getUri(), 
-            params.getTextDocument().getLanguageId());
+		/*
+		 * Remember the ID of the language used to edit this file, as the ID is not
+		 * provided again in didChange.
+		 */
+        final TextDocumentItem doc = params.getTextDocument();
+		uriLanguageMap.put(doc.getUri(), doc.getLanguageId());
+        publishDiagnostics(doc.getText(), doc.getUri(), doc.getLanguageId());
     }
     
     protected List<Diagnostic> getDiagnostics(EmfaticResource resource, String text) {
@@ -73,7 +82,9 @@ public class EpsilonTextDocumentService implements TextDocumentService {
             Diagnostic diagnostic = new Diagnostic();
             diagnostic.setSeverity(parseMessage instanceof ParseError ? DiagnosticSeverity.Error : DiagnosticSeverity.Warning);
             diagnostic.setMessage(parseMessage.getMessage());
-            //TODO: Emfatic produces messages with "at line X, column Y" suffix, which are more accurate than the offset/length
+
+            // TODO: Emfatic produces messages with "at line X, column Y" suffix, which are more accurate than the offset/length
+
             diagnostic.setRange(new Range(getPosition(text, parseMessage.getOffset()), getPosition(text, parseMessage.getOffset() + parseMessage.getLength())));
             diagnostics.add(diagnostic);
         }
@@ -199,7 +210,7 @@ public class EpsilonTextDocumentService implements TextDocumentService {
 
     @Override
     public void didSave(DidSaveTextDocumentParams params) {
-
+        // nothing to do
     }
     
     protected IEolModule createModule(String languageId) {

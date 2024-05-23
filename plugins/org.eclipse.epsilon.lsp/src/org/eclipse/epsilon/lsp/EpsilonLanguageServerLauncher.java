@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package org.eclipse.epsilon.eol.dap;
+package org.eclipse.epsilon.lsp;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -25,94 +25,56 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.epsilon.eol.IEolModule;
-import org.eclipse.lsp4j.debug.launch.DSPLauncher;
-import org.eclipse.lsp4j.debug.services.IDebugProtocolClient;
 import org.eclipse.lsp4j.jsonrpc.Launcher;
+import org.eclipse.lsp4j.services.LanguageClient;
 
 /**
- * <p>
- * Network-based server for the debug adapter protocol, which listens via TCP at
- * a given host and port, and exposes a given {@link IEolModule}.
- * </p>
+ * Network-based server for the language server protocol, which listens via TCP
+ * on a given host and port.
  *
- * <p>
- * The module should be fully configured the first time that someone connects to
- * this server. The server will automatically call {@link IEolModule#execute()}
- * the first time that anyone connects to it.
- * </p>
- *
- * <p>
  * An instance of this class can only be {@link #run()} once. If you need to
- * restart the server, you will need to create another instance. After
- * {@link #run()} completes, the result of executing the module will be
- * available via {@link #getResult()}.
- * </p>
+ * restart the server, you will need to create another instance.
  */
-public class EpsilonDebugServer implements Runnable {
+public class EpsilonLanguageServerLauncher implements Runnable {
 
-	private static final Logger LOGGER = Logger.getLogger(EpsilonDebugServer.class.getCanonicalName());
+	private static final Logger LOGGER = Logger.getLogger(EpsilonLanguageServer.class.getName());
 
 	private final String host;
 	private final int port;
-	private final IEolModule module;
 
 	private final CompletableFuture<Boolean> started = new CompletableFuture<>();
 	private final AtomicBoolean running = new AtomicBoolean(false);
-	private final AtomicBoolean moduleStarted = new AtomicBoolean(false);
 	private final List<Future<Void>> listeningLaunchers = new ArrayList<>();
 
-	/*
-	 * The module can complete its execution in two ways: successfully with a
-	 * result, or unsuccessfully with an exception.
-	 */
-	private final CompletableFuture<Object> result = new CompletableFuture<>();
-
-	private Runnable onStart;
 	private ServerSocket serverSocket;
 	private ExecutorService executorService;
-	private final EpsilonDebugAdapter debugAdapter = new EpsilonDebugAdapter();
-
-	/**
-	 * Convenience version of
-	 * {@link EpsilonDebugServer#EpsilonDebugServer(IEolModule, String, int)} for
-	 * listening at the loopback address (i.e. {@code localhost}).
-	 */
-	public EpsilonDebugServer(IEolModule module, int port) {
-		this(module, null, port);
-	}
+	private final EpsilonLanguageServer languageServer;
 
 	/**
 	 * Creates a new instance, without starting the server.
 	 *
-	 * @param module Module to be debugged.
+	 * @param server Server to be exposed via the network.
 	 * @param host   Host to bind to, or {@code null} to use the loopback address
 	 *               (i.e. {@code localhost}).
 	 * @param port   Port to listen on, or {@code 0} to use an available port from
 	 *               an ephemeral range.
 	 */
-	public EpsilonDebugServer(IEolModule module, String host, int port) {
-		if (module == null) {
-			throw new IllegalArgumentException("Module must not be null");
+	public EpsilonLanguageServerLauncher(EpsilonLanguageServer server, String host, int port) {
+		if (server == null) {
+			throw new IllegalArgumentException("Language server must not be null");
 		}
+		this.languageServer = server;
 		this.host = host;
 		this.port = port;
-		this.module = module;
 	}
 
-	/**
-	 * Runs the server in the current thread. In the absence of
-	 * server errors, this method will block until a DAP client
-	 * has attached to the module, and the module has completed
-	 * its execution.
-	 */
 	@Override
 	public void run() {
 		try {
 			if (running.compareAndSet(false, true)) {
 				serverSocket = new ServerSocket(port, 0, InetAddress.getByName(host));
 				started.complete(true);
-				LOGGER.info(() -> String.format("Started Epsilon debug server on %s:%d",
+				LOGGER.info(() -> String.format("Started Epsilon language server on %s:%d",
 					serverSocket.getInetAddress().getHostName(), serverSocket.getLocalPort()));
 			} else {
 				throw new IllegalStateException("Server has already been started");
@@ -124,29 +86,24 @@ public class EpsilonDebugServer implements Runnable {
 		}
 
 		try {
-			if (executorService == null) {
-				executorService = Executors.newCachedThreadPool();
-			}
-			if (onStart != null) {
-				executorService.execute(onStart);
-			}
-
 			while (running.get()) {
 				Socket conn = serverSocket.accept();
 
-				debugAdapter.setModule(module);
-				debugAdapter.setOnAttach(this::onAttach);
+				if (executorService == null) {
+					executorService = Executors.newCachedThreadPool();
+				}
 
-				Launcher<IDebugProtocolClient> launcher = DSPLauncher.createServerLauncher(
-					debugAdapter,
+				Launcher<LanguageClient> launcher = Launcher.createLauncher(
+					languageServer,
+					LanguageClient.class,
 					conn.getInputStream(),
 					conn.getOutputStream(),
 					executorService,
 					null
 				);
-				debugAdapter.connect(launcher.getRemoteProxy());
+				languageServer.connect(launcher.getRemoteProxy());
 
-				synchronized(listeningLaunchers) {
+				synchronized (listeningLaunchers) {
 					listeningLaunchers.add(launcher.startListening());
 				}
 			}
@@ -155,31 +112,6 @@ public class EpsilonDebugServer implements Runnable {
 			LOGGER.log(Level.FINEST, sock.getMessage(), sock);
 		} catch (IOException e) {
 			throw new RuntimeException("Error during execution of debug server", e);
-		} finally {
-			shutdown();
-		}
-	}
-
-	/**
-	 * Starts the module in a background thread upon first attachment.
-	 * Needed because modules don't track the fact that they are running
-	 * themselves. 
-	 */
-	protected void onAttach() {
-		if (moduleStarted.compareAndSet(false, true)) {
-			executorService.execute(this::runModule);
-		}
-	}
-
-	/**
-	 * Runs the module, and shuts down the server when execution completes
-	 * (whether successfully or unsuccessfully).
-	 */
-	protected void runModule() {
-		try {
-			result.complete(module.execute());
-		} catch (Throwable e) {
-			result.completeExceptionally(e);
 		} finally {
 			shutdown();
 		}
@@ -229,18 +161,14 @@ public class EpsilonDebugServer implements Runnable {
 					localPort = serverSocket.getLocalPort();
 					serverSocket.close();
 				} catch (IOException e) {
-					LOGGER.log(Level.SEVERE, "Error while shutting down debug server", e);
+					LOGGER.log(Level.SEVERE, "Error while shutting down language server", e);
 				} finally {
 					serverSocket = null;
 				}
 			}
 
-			LOGGER.info(String.format("Shut down Epsilon debug server on %s:%d", host, localPort));
+			LOGGER.info(String.format("Shut down Epsilon language server on %s:%d", host, localPort));
 		}
-	}
-
-	public EpsilonDebugAdapter getDebugAdapter() {
-		return this.debugAdapter;
 	}
 
 	public String getHost() {
@@ -263,28 +191,4 @@ public class EpsilonDebugServer implements Runnable {
 		}
 	}
 
-	/**
-	 * Returns the {@code Runnable} to be executed in its own thread once
-	 * the server is started.
-	 */
-	public Runnable getOnStart() {
-		return onStart;
-	}
-
-	/**
-	 * Sets the {@code Runnable} to be executed in its own thread once the server is
-	 * started.
-	 */
-	public void setOnStart(Runnable onStart) {
-		this.onStart = onStart;
-	}
-
-	/**
-	 * Returns a Future which will contain the result of running the Epsilon script.
-	 * This result may be a regular object (equivalent to the value returned by
-	 * {@link IEolModule#execute()}), or an exception thrown by it.
-	 */
-	public Future<Object> getResult() {
-		return result;
-	}
 }
