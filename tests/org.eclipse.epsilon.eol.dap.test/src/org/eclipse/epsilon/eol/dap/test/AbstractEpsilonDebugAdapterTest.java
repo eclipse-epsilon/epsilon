@@ -89,8 +89,12 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	protected TestClient client;
 
 	protected abstract void setupModule() throws Exception;
+
 	protected void setupAdapter() throws Exception {
 		// do nothing by default
+	}
+	protected void setupInitializeArguments(InitializeRequestArguments args) {
+		args.setSupportsVariableType(true);
 	}
 
 	@Before
@@ -107,6 +111,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		final InitializeRequestArguments initArgs = new InitializeRequestArguments();
 		initArgs.setClientID("test-client");
 		initArgs.setAdapterID("epsilon-adapter");
+		setupInitializeArguments(initArgs);
 		adapter.initialize(initArgs).get();
 
 		adapter.connect(client);

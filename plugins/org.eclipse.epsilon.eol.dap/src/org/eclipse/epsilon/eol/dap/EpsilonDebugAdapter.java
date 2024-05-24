@@ -194,6 +194,12 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	 */
 	private final Map<URI, Path> uriToPathMappings = new HashMap<>();
 
+	/**
+	 * Arguments passed by client for the adapter to initialise itself.
+	 * Mostly useful as a set of flags with the client's capabilities.
+	 */
+	private InitializeRequestArguments initializeArguments;
+
 	public void connect(IDebugProtocolClient client) {
 		if (module == null) {
 			throw new IllegalStateException("connect(): the module has not been set up yet");
@@ -216,6 +222,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 				? new RemoteIsOneBasedConverter() : new RemoteIsZeroBasedConverter();
 			this.columnConverter = args.getColumnsStartAt1() == null || args.getColumnsStartAt1()
 				? new RemoteIsOneBasedConverter() : new RemoteIsZeroBasedConverter();
+
+			this.initializeArguments = args;
 
 			Capabilities caps = new Capabilities();
 			caps.setSupportsTerminateRequest(true);
@@ -329,7 +337,9 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 					Variable respVariable = new Variable();
 					respVariable.setName(vRef.getName());
 					respVariable.setValue(vRef.getValue());
-					respVariable.setType(vRef.getTypeName());
+					if (initializeArguments.getSupportsVariableType()) {
+						respVariable.setType(vRef.getTypeName());
+					}
 					respVariable.setVariablesReference(vRef.getId());
 					respVariables.add(respVariable);
 				}
