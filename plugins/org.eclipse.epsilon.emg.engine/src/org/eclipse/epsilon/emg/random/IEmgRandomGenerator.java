@@ -77,8 +77,19 @@ public interface IEmgRandomGenerator<K extends CharacterSet> extends RandomGener
 	 * @return
 	 * @throws EolRuntimeException
 	 */
-	public double nextDobule(double upper) throws EolRuntimeException;
-
+	public double nextDouble(double upper) throws EolRuntimeException;
+	
+	/**
+	 * Alias for nextDouble. Introduced to maintain API compatibility until 3.0.
+	 * @param upper
+	 * @return
+	 * @throws EolRuntimeException
+	 */
+	@Deprecated
+	default public double nextDobule(double upper) throws EolRuntimeException {
+		return nextDouble(upper);
+	}
+	
 	/**
 	 * Returns a pseudorandom, uniformly distributed double value between lower and
 	 * upper (endpoints included), drawn from this random attribute generator's
@@ -89,8 +100,21 @@ public interface IEmgRandomGenerator<K extends CharacterSet> extends RandomGener
 	 * @return
 	 * @throws EolRuntimeException
 	 */
-	public double nextDobule(double lower, double upper) throws EolRuntimeException;
-
+	public double nextDouble(double lower, double upper) throws EolRuntimeException;
+	
+	/**
+	 * Alias for nextDouble. Introduced to maintain API compatibility until 3.0.
+	 * @param lower
+	 * @param upper
+	 * @return
+	 * @throws EolRuntimeException
+	 */
+	@Deprecated
+	default public double nextDobule(double lower, double upper) throws EolRuntimeException {
+		return nextDouble(lower, upper);
+	}
+	
+	
 	/**
 	 * Generates a random value from the Exponential Distribution.
 	 * 

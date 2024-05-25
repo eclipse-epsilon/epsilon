@@ -233,9 +233,9 @@ public class EmgRandomGenerator implements IEmgRandomGenerator<IEmgRandomGenerat
 	 * @see org.eclipse.epsilon.emg.random.IEmgRandomGenerator#nextDobule(double)
 	 */
 	@Override
-	public double nextDobule(double upper) throws EolRuntimeException {
+	public double nextDouble(double upper) throws EolRuntimeException {
 
-		return nextDobule(0, upper);
+		return nextDouble(0, upper);
 	}
 
 	/*
@@ -245,7 +245,7 @@ public class EmgRandomGenerator implements IEmgRandomGenerator<IEmgRandomGenerat
 	 * double)
 	 */
 	@Override
-	public double nextDobule(double lower, double upper) {
+	public double nextDouble(double lower, double upper) {
 
 		double diff = upper - lower;
 		if (diff == 0) {
