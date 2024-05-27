@@ -549,8 +549,16 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 
 		// First, try to use the URI-to-path mappings
 		if (resolvedModule.getUri().getPath() != null) {
-			String path = resolvedModule.getUri().getPath();
-			String basename = Paths.get(path).getFileName().toString();
+			Path path;
+			
+			// URI#getPath() does not correctly convert `file:/` URIs to valid paths on Windows, so use Paths#get(URI) instead
+			if (resolvedModule.getUri().getScheme().equals("file")) {
+				path = Paths.get(resolvedModule.getUri());
+			} else {
+				path = Paths.get(resolvedModule.getUri().getPath());
+			}
+
+			String basename = path.getFileName().toString();
 			bpSource.setName(basename);
 			mapUriToSourcePath(resolvedModule.getUri().toString(), bpSource);
 		}
