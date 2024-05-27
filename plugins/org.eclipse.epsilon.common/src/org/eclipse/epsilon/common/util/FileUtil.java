@@ -359,8 +359,8 @@ public class FileUtil {
 			
 			// Compare each line (ignoring line endings)
 			while (expectedIterator.hasNext() && actualIterator.hasNext()) {
-				String expected = expectedIterator.next();
-				String actual = actualIterator.next();
+				final String expected = expectedIterator.next();
+				final String actual = actualIterator.next();
 				
 				if (!expected.equals(actual)) {
 					return false;
