@@ -61,6 +61,10 @@ public class ExtraEUnitOperationContributor extends OperationContributor {
 	public void assertEqualFiles(String pathExpected, String pathActual) throws EolAssertionException, EolInternalException {
 		compareTrees(pathExpected, pathActual, true);
 	}
+	
+	public void assertEqualFilesIgnoringLineEndings(String pathExpected, String pathActual) throws EolAssertionException, EolInternalException {
+		compareTrees(pathExpected, pathActual, true, true);
+	}
 
 	public void assertEqualDirectories(String pathExpected, String pathActual) throws EolAssertionException, EolInternalException {
 		compareTrees(pathExpected, pathActual, true);
@@ -84,6 +88,10 @@ public class ExtraEUnitOperationContributor extends OperationContributor {
 
 	public void assertNotEqualFiles(String pathExpected, String pathActual) throws EolAssertionException, EolInternalException {
 		compareTrees(pathExpected, pathActual, false);
+	}
+	
+	public void assertNotEqualFilesIgnoringLineEndings(String pathExpected, String pathActual) throws EolAssertionException, EolInternalException {
+		compareTrees(pathExpected, pathActual, false, true);
 	}
 
 	public void assertNotEqualDirectories(String pathExpected, String pathActual) throws EolAssertionException, EolInternalException {
@@ -150,13 +158,17 @@ public class ExtraEUnitOperationContributor extends OperationContributor {
 	}
 
 	private void compareTrees(final String pathExpected, final String pathActual, boolean mustBeEqual) throws EolAssertionException, EolInternalException {
+		compareTrees(pathExpected, pathActual, mustBeEqual, false);
+	}
+	
+	private void compareTrees(final String pathExpected, final String pathActual, boolean mustBeEqual, boolean ignoreLineEndings) throws EolAssertionException, EolInternalException {
 		File fileExpected = new File(pathExpected);
 		File fileActual = new File(pathActual);
 		try {
 			// Compare and check against results
 			FileUtil.checkFileExists(fileExpected);
 			FileUtil.checkFileExists(fileActual);
-			if (FileUtil.sameContents(fileExpected, fileActual, ASSERTEQUALDIRS_IGNORED_FILENAMES) == mustBeEqual) {
+			if (FileUtil.sameContents(fileExpected, fileActual, ASSERTEQUALDIRS_IGNORED_FILENAMES, ignoreLineEndings) == mustBeEqual) {
 				return;
 			}
 

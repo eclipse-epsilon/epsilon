@@ -326,7 +326,7 @@ public class FileUtil {
 	 * We implement our own comparison algorithm here, so we don't need Eclipse
 	 * Compare to compute differences, but rather only to show them in the UI.
 	 */
-	public static boolean sameContents(File fileExpected, File fileActual, Set<String> ignoreFilenames) throws IOException {
+	public static boolean sameContents(File fileExpected, File fileActual, Set<String> ignoreFilenames, boolean ignoreLineEndings) throws IOException {
 		if (fileExpected.isDirectory() != fileActual.isDirectory()) {
 			// One is a file, the other is a directory: not the same
 			return false;
@@ -352,6 +352,24 @@ public class FileUtil {
 			}
 			return true;
 		}
+		else if (ignoreLineEndings) {
+			// Use stream iterators to read the files
+			final Iterator<String> expectedIterator = Files.lines(fileExpected.toPath()).iterator();
+			final Iterator<String> actualIterator = Files.lines(fileActual.toPath()).iterator();
+			
+			// Compare each line (ignoring line endings)
+			while (expectedIterator.hasNext() && actualIterator.hasNext()) {
+				String expected = expectedIterator.next();
+				String actual = actualIterator.next();
+				
+				if (!expected.equals(actual)) {
+					return false;
+				}
+			}
+		    
+			// Ensure that both files have no further content
+			return !expectedIterator.hasNext() && !actualIterator.hasNext();
+		}
 		else {
 			if (fileExpected.length() != fileActual.length()) {
 				// Different length: no need to read the files
@@ -364,6 +382,10 @@ public class FileUtil {
 				}
 			}
 		}
+	}
+	
+	public static boolean sameContents(File fileExpected, File fileActual, Set<String> ignoreFilenames) throws IOException {
+		return sameContents(fileExpected, fileActual, ignoreFilenames, false);
 	}
 
 	public static boolean sameContents(InputStream isExpected, InputStream isActual) throws IOException {
