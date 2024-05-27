@@ -233,7 +233,7 @@ public class CommentBlockPartitioner implements Partitioner {
 						 * The region will either end at the beginning of the next region, or the end of
 						 * the line.
 						 */
-						final int regionEndIndex = nextRegionMatch == null ? line.length() : nextRegionMatch.getStart();
+						final int regionIdEndIndex = nextRegionMatch == null ? line.length() : nextRegionMatch.getStart();
 
 						// If there is any content before the match, add it to the buffer
 						if (currentLineOffset < regionStartIndex) {
@@ -247,8 +247,8 @@ public class CommentBlockPartitioner implements Partitioner {
 						 * Extract out the region ID and start/end marks (and possible postamble) from
 						 * the line for this region.
 						 */
-						final String lineSegment = line.substring(regionIdStartIndex, regionEndIndex);
-						Matcher regionIdMatcher = regionIdPattern.matcher(lineSegment);
+						final String regionIdSegment = line.substring(regionIdStartIndex, regionIdEndIndex);
+						Matcher regionIdMatcher = regionIdPattern.matcher(regionIdSegment);
 
 						if (regionIdMatcher.find()) {
 							// This is a region marker
