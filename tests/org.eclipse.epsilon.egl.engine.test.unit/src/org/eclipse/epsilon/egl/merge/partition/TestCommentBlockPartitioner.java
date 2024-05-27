@@ -112,6 +112,18 @@ public abstract class TestCommentBlockPartitioner {
 		
 		assertEquals(expected, partitioner.partition(text));
 	}
+	
+	public void testPartitionSingleProtectedRegionWithEnd() {
+		final String regionContents = "This text is protected" + NEWLINE;
+		final String text           = startComment + "protected region test endpoint off begin" + endComment + NEWLINE +
+		                              regionContents +
+		                              startComment + "protected region test endpoint end" + endComment;
+		
+		final Output expected = new Output(partitioner.new CommentedProtectedRegion("test endpoint", 0, false, regionContents));
+		final Output actual = partitioner.partition(text);
+		
+		assertEquals(expected, actual);
+	}
 
 	public void testPartitionSingleProtectedRegionWhiteSpace() {
 		final String start = (startComment.length() > 0 ? startComment + "\t" : "");

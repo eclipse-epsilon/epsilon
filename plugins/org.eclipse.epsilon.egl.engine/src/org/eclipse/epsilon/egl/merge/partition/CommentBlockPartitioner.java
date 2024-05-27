@@ -29,33 +29,34 @@ import org.eclipse.epsilon.egl.util.FileUtil;
 public class CommentBlockPartitioner implements Partitioner {
 
 	private static final int GROUP_REGION_TYPE = 1;
-	private static final int GROUP_REGION_ID = 2;
-	private static final int GROUP_END_OR_BEGIN = 3;
+
+	private static final int GROUP_REGION_ID = 1;
+	private static final int GROUP_END = 3;
 	private static final int GROUP_ON_OR_OFF = 4;
 
 	private final String startComment, endComment;
 	private final Pattern regionPattern;
-	
+	private final Pattern regionIdPattern;
+
 	private static String escape(String text) {
 		return text.replaceAll("\\*", "\\\\*");
 	}
 	
 	public CommentBlockPartitioner(String startComment, String endComment) {
 		this.startComment = startComment == null ? "" : startComment;
-		this.endComment   = endComment   == null ? "" : endComment;
-		this.regionPattern = initPattern();
+		this.endComment = endComment == null ? "" : endComment;
+		this.regionPattern = initRegionPattern();
+		this.regionIdPattern = initRegionIdPattern();
 	}
 
 	/**
-	 * Computes the regular expression used to match protected region start/end markers.
-	 * When editing this method, please maintain the {@code GROUP_*} constants up to date.
+	 * Computes the regular expression used to match the start of protected region
+	 * start/end markers. When editing this method, please maintain the
+	 * {@code GROUP_*} constants up to date.
 	 *
-	 * @see #GROUP_REGION_ID
 	 * @see #GROUP_REGION_TYPE
-	 * @see #GROUP_END_OR_BEGIN
-	 * @see #GROUP_ON_OR_OFF
 	 */
-	protected Pattern initPattern() {
+	protected Pattern initRegionPattern() {
 		final StringBuilder regex = new StringBuilder();
 		
 		if (startComment.length() > 0) {
@@ -65,15 +66,42 @@ public class CommentBlockPartitioner implements Partitioner {
 			// whitespace
 			regex.append("[\\s]*");
 		}
-		
-		// The protected region literal (GROUP_REGION_TYPE)
+
+		// The protected region literal (GROUP_REGION_TYPE) terminated with a space
 		regex.append("(controlled|protected) region ");
 
-		// The region's id, matched reluctantly and terminated with a space (GROUP_REGION_ID)
-		regex.append("(.*?) ");
-		
-		// end (GROUP_END_OR_BEGIN) or (on or off followed by begin, GROUP_ON_OR_OFF)
-		regex.append("(end|(on|off) begin)");
+		return Pattern.compile(regex.toString());
+	}
+
+	/**
+	 * Computes the regular expression used to match the end of protected region
+	 * start/end markers. When editing this method, please maintain the
+	 * {@code GROUP_*} constants up to date.
+	 *
+	 * @see #GROUP_REGION_ID
+	 * @see #GROUP_END_OR_BEGIN
+	 * @see #GROUP_ON_OR_OFF
+	 */
+	protected Pattern initRegionIdPattern() {
+		final StringBuilder regex = new StringBuilder();
+
+		// The region's id, matched greedily and terminated with a space
+		// (GROUP_REGION_ID)
+		regex.append("(.*) ");
+
+		// end (GROUP_END) or ...
+		regex.append("((end)");
+
+		if (endComment.length() > 0) {
+			// whitespace
+			regex.append("[\\s]*");
+
+			// The end comment delimiter
+			regex.append(escape(endComment));
+		}
+
+		// ... or (on or off followed by begin (GROUP_ON_OR_OFF)
+		regex.append("|(on|off) begin");
 
 		if (endComment.length() > 0) {
 			// whitespace
@@ -82,7 +110,10 @@ public class CommentBlockPartitioner implements Partitioner {
 			// The end comment delimiter
 			regex.append(escape(endComment));
 		}
-		
+
+		// Optional whitespace following by end of line
+		regex.append("[\\s]*$)");
+
 		return Pattern.compile(regex.toString());
 	}
 	
@@ -175,66 +206,87 @@ public class CommentBlockPartitioner implements Partitioner {
 					line += NEWLINE;
 				}
 
-				// Match the line against the region pattern
-				Matcher matcher = regionPattern.matcher(line);
+				// Pull out all of the region matches (there may be multiple per line)
+				List<RegionMatch> regionMatches = this.findRegionsInLine(line);
 
-				boolean doesMatch, didMatchPreviously = false;
-				do {
-					doesMatch = matcher.find();
+				if (regionMatches.isEmpty()) {
+					// Nothing on this line was matched, add the whole line to the buffer
+					buffer.append(line);
+				} else {
+					// Loop over the matches in a more traditional style, since one match needs
+					// context
+					// as to if there are additional matches or not.
+					for (int i = 0; i < regionMatches.size(); i++) {
 
-					if (doesMatch) {
-						didMatchPreviously = true;
+						// Get this region and (maybe) the next one
+						final RegionMatch regionMatch = regionMatches.get(i);
+						final RegionMatch nextRegionMatch = i + 1 < regionMatches.size() ? regionMatches.get(i + 1)
+								: null;
 
-						// If there is any content before the region marker, add it to the buffer
-						if (currentLineOffset < matcher.start()) {
-							buffer.append(line.substring(currentLineOffset, matcher.start()));
+						// The region starts and the start of the match
+						final int regionStartIndex = regionMatch.getStart();
+						// The ID of the region starts where the region match ends
+						final int regionIdStartIndex = regionMatch.getEnd();
+						// The region will either end at the begging of the next region, or the end of
+						// the line
+						final int regionEndIndex = nextRegionMatch == null ? line.length() : nextRegionMatch.getStart();
+
+						// If there is any content before the match, add it to the buffer
+						if (currentLineOffset < regionStartIndex) {
+							buffer.append(line.substring(currentLineOffset, regionStartIndex));
 						}
 
 						// Keep a track of where we are in the line
-						currentLineOffset = matcher.start();
+						currentLineOffset = regionStartIndex;
 
-						// This is a region marker
-						if ("end".equals(matcher.group(GROUP_END_OR_BEGIN))) {
-							// This is the end of a region
+						// Extract out the region ID and start/end marks (and possible postamble) from
+						// the line for this region
+						final String lineSegment = line.substring(regionIdStartIndex, regionEndIndex);
+						Matcher regionIdMatcher = regionIdPattern.matcher(lineSegment);
 
-							// Pull the contents from the buffer and reset it
-							final String regionContents = buffer.toString();
-							buffer.setLength(0);
+						if (regionIdMatcher.find()) {
+							// This is a region marker
+							if ("end".equals(regionIdMatcher.group(GROUP_END))) {
+								// This is the end of a region
 
-							// Create the protected region
-							final LocatedRegion region = new CommentedProtectedRegion(regionId, regionOffset, isRegionEnabled, regionContents);
-							region.setType(regionType);
-							regions.add(region);
-
-							// Keep a track of where we are in the line
-							currentLineOffset = matcher.end();
-						} else {
-							// This is the start of a region
-							isRegionEnabled = "on".equals(matcher.group(GROUP_ON_OR_OFF));
-							regionType = regionTypeFromString(matcher.group(GROUP_REGION_TYPE));
-							regionId = matcher.group(GROUP_REGION_ID);
-							regionOffset = offset + textOffset + currentLineOffset;
-
-							// If the buffer contains any content, create a region for it and reset it
-							if (buffer.length() > 0) {
-								regions.add(new Region(buffer.toString()));
+								// Pull the contents from the buffer and reset it
+								final String regionContents = buffer.toString();
 								buffer.setLength(0);
-							}
 
-							// Keep a track of where we are in the line
-							// There is always a new line at the end of a starting region
-							currentLineOffset = matcher.end() + NEWLINE.length();
+								// Create the protected region
+								final LocatedRegion region = new CommentedProtectedRegion(regionId, regionOffset,
+										isRegionEnabled, regionContents);
+								region.setType(regionType);
+								regions.add(region);
+
+								// Keep a track of where we are in the line
+								currentLineOffset = regionIdStartIndex + regionIdMatcher.end();
+							} else {
+								// This is the start of a region
+								isRegionEnabled = "on".equals(regionIdMatcher.group(GROUP_ON_OR_OFF));
+								regionId = regionIdMatcher.group(GROUP_REGION_ID);
+								regionType = regionMatch.getRegionType();
+								regionOffset = offset + textOffset + currentLineOffset;
+
+								// If the buffer contains any content, create a region for it and reset it
+								if (buffer.length() > 0) {
+									regions.add(new Region(buffer.toString()));
+									buffer.setLength(0);
+								}
+
+								// Keep a track of where we are in the line
+								// There is always a new line at the end of a starting region
+								currentLineOffset = regionIdStartIndex + regionIdMatcher.end() + NEWLINE.length();
+							}
 						}
-					} else if (didMatchPreviously) {
-						// If there was a match on this line and there is additional content after the match, add it to the buffer
-						if (currentLineOffset < line.length()) {
-							buffer.append(line.substring(currentLineOffset));							
-						}
-					} else {
-						// Nothing on this line was matched, add the whole line to the buffer
-						buffer.append(line);
 					}
-				} while (doesMatch);
+
+					// If there are no more regions but there is still unprocessed content in the
+					// line, add it to the buffer
+					if (currentLineOffset < line.length()) {
+						buffer.append(line.substring(currentLineOffset));
+					}
+				}
 
 				// Increase the offset number
 				textOffset += line.length();
@@ -249,7 +301,25 @@ public class CommentBlockPartitioner implements Partitioner {
 
 		return new Output(regions);
 	}
-	
+
+	/**
+	 * Finds all regions in a given line
+	 *
+	 * @param line
+	 * @return
+	 */
+	private List<RegionMatch> findRegionsInLine(String line) {
+		Matcher regionMatcher = regionPattern.matcher(line);
+
+		List<RegionMatch> regionMatches = new LinkedList<RegionMatch>();
+
+		while (regionMatcher.find()) {
+			regionMatches.add(new RegionMatch(regionMatcher));
+		}
+
+		return regionMatches;
+	}
+
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName() + 
@@ -288,5 +358,31 @@ public class CommentBlockPartitioner implements Partitioner {
 			return result;
 		}
 	}
-	
+
+	/**
+	 * A representation of the start of a protected region marker
+	 */
+	class RegionMatch {
+		protected final int start;
+		protected final int end;
+		protected final RegionType regionType;
+
+		public RegionMatch(Matcher matcher) {
+			this.start = matcher.start();
+			this.end = matcher.end();
+			this.regionType = regionTypeFromString(matcher.group(GROUP_REGION_TYPE));
+		}
+
+		public int getEnd() {
+			return this.end;
+		}
+
+		public int getStart() {
+			return this.start;
+		}
+
+		public RegionType getRegionType() {
+			return this.regionType;
+		}
+	}
 }
