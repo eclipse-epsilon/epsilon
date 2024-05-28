@@ -126,7 +126,7 @@
       xsi:type="git:GitCloneTask"
       id="www.epsilon.github.clone"
       remoteURI="eclipse/epsilon-website"
-      checkoutBranch="master">
+      checkoutBranch="main">
     <annotation
         source="http://www.eclipse.org/oomph/setup/InducedChoices">
       <detail
