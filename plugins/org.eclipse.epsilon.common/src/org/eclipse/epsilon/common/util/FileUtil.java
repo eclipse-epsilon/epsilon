@@ -34,8 +34,19 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileUtil {
 	private FileUtil() {}
@@ -346,7 +357,7 @@ public class FileUtil {
 			for (String filename : expectedFilenames) {
 				final File expectedEntry = new File(fileExpected, filename);
 				final File actualEntry = new File(fileActual, filename);
-				if (!sameContents(expectedEntry, actualEntry, ignoreFilenames)) {
+				if (!sameContents(expectedEntry, actualEntry, ignoreFilenames, ignoreLineEndings)) {
 					return false;
 				}
 			}
@@ -354,21 +365,26 @@ public class FileUtil {
 		}
 		else if (ignoreLineEndings) {
 			// Use stream iterators to read the files
-			final Iterator<String> expectedIterator = Files.lines(fileExpected.toPath()).iterator();
-			final Iterator<String> actualIterator = Files.lines(fileActual.toPath()).iterator();
-			
-			// Compare each line (ignoring line endings)
-			while (expectedIterator.hasNext() && actualIterator.hasNext()) {
-				final String expected = expectedIterator.next();
-				final String actual = actualIterator.next();
-				
-				if (!expected.equals(actual)) {
-					return false;
+			try (
+				final Stream<String> expectedStream = Files.lines(fileExpected.toPath());
+				final Stream<String> actualStream = Files.lines(fileActual.toPath())
+			) {
+				final Iterator<String> expectedIterator = expectedStream.iterator();
+				final Iterator<String> actualIterator = actualStream.iterator();
+
+				// Compare each line (ignoring line endings)
+				while (expectedIterator.hasNext() && actualIterator.hasNext()) {
+					final String expected = expectedIterator.next();
+					final String actual = actualIterator.next();
+
+					if (!expected.equals(actual)) {
+						return false;
+					}
 				}
+
+				// Ensure that both files have no further content
+				return !expectedIterator.hasNext() && !actualIterator.hasNext();
 			}
-		    
-			// Ensure that both files have no further content
-			return !expectedIterator.hasNext() && !actualIterator.hasNext();
 		}
 		else {
 			if (fileExpected.length() != fileActual.length()) {
@@ -376,10 +392,11 @@ public class FileUtil {
 				return false;
 			}
 
-			try (FileInputStream isExpected = new FileInputStream(fileExpected)) {
-				try (FileInputStream isActual = new FileInputStream(fileActual)) {
-					return sameContents(isExpected, isActual);
-				}
+			try (
+				FileInputStream isExpected = new FileInputStream(fileExpected);
+				FileInputStream isActual = new FileInputStream(fileActual)
+			) {
+				return sameContents(isExpected, isActual);
 			}
 		}
 	}
