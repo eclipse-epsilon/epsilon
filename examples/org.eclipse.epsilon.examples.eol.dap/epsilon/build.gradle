@@ -6,9 +6,9 @@ def debugPort = 4040
 def debugEpsilon = false
 
 repositories {
-  // Allows us to use locally-built artifacts, to test code changes
-  mavenLocal()
-  // For everything else
+  maven {
+    url "https://oss.sonatype.org/content/repositories/snapshots"
+  }
   mavenCentral()
 }
 
