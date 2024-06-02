@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -58,8 +59,20 @@ import org.eclipse.lsp4j.services.TextDocumentService;
 
 public class EpsilonTextDocumentService implements TextDocumentService {
 
+    public static final String LANGUAGE_EVL = "evl";
+    public static final String LANGUAGE_ETL = "etl";
+    public static final String LANGUAGE_EGL = "egl";
+    public static final String LANGUAGE_EGX = "egx";
+    public static final String LANGUAGE_ECL = "ecl";
+    public static final String LANGUAGE_EML = "eml";
+    public static final String LANGUAGE_FLOCK = "mig";
+    public static final String LANGUAGE_PINSET = "pinset";
+    public static final String LANGUAGE_EPL = "epl";
+    public static final String LANGUAGE_EOL = "eol";
+
     protected final Map<String, String> uriLanguageMap = new HashMap<>();
-	protected final EpsilonLanguageServer languageServer;
+    protected final EpsilonLanguageServer languageServer;
+    private static final Logger LOGGER = Logger.getLogger(EpsilonTextDocumentService.class.getName());
     
     public EpsilonTextDocumentService(EpsilonLanguageServer languageServer) {
         this.languageServer = languageServer;
@@ -67,12 +80,12 @@ public class EpsilonTextDocumentService implements TextDocumentService {
 
     @Override
     public void didOpen(DidOpenTextDocumentParams params) {
-		/*
-		 * Remember the ID of the language used to edit this file, as the ID is not
-		 * provided again in didChange.
-		 */
+        /*
+         * Remember the ID of the language used to edit this file, as the ID is not
+         * provided again in didChange.
+         */
         final TextDocumentItem doc = params.getTextDocument();
-		uriLanguageMap.put(doc.getUri(), doc.getLanguageId());
+        uriLanguageMap.put(doc.getUri(), doc.getLanguageId());
         publishDiagnostics(doc.getText(), doc.getUri(), doc.getLanguageId());
     }
     
@@ -132,7 +145,7 @@ public class EpsilonTextDocumentService implements TextDocumentService {
             uriLanguageMap.get(params.getTextDocument().getUri()));
     }
 
-    public void publishDiagnostics(String code, String uri, String language) {
+    protected void publishDiagnostics(String code, String uri, String language) {
         IEolModule module = createModule(language);
         List<Diagnostic> diagnostics = Collections.emptyList();
 
@@ -215,17 +228,19 @@ public class EpsilonTextDocumentService implements TextDocumentService {
     
     protected IEolModule createModule(String languageId) {
         switch (languageId) {
-            case "evl": return new EvlModule();
-            case "etl": return new EtlModule();
-            case "egl": return new EglModule();
-            case "egx": return new EgxModule();
-            case "ecl": return new EclModule();
-            case "eml": return new EmlModule();
-            case "mig": return new FlockModule();
-            case "pinset": return new PinsetModule();
-            case "epl": return new EplModule();
-            case "eol": return new EolModule();
-            default: return null;
+            case LANGUAGE_EVL: return new EvlModule();
+            case LANGUAGE_ETL: return new EtlModule();
+            case LANGUAGE_EGL: return new EglModule();
+            case LANGUAGE_EGX: return new EgxModule();
+            case LANGUAGE_ECL: return new EclModule();
+            case LANGUAGE_EML: return new EmlModule();
+            case LANGUAGE_FLOCK:  return new FlockModule();
+            case LANGUAGE_PINSET: return new PinsetModule();
+            case LANGUAGE_EPL: return new EplModule();
+            case LANGUAGE_EOL: return new EolModule();
+            default:
+                LOGGER.warning("Unknown language " + languageId);
+                return null;
         }
     }
 
