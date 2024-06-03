@@ -42,6 +42,20 @@ task debugHello {
   }
 }
 
+task runImported {
+  dependsOn tasks.setupEpsilonTasks
+  doLast {
+    ant.'epsilon.eol'(src: '02-imports-main.eol', debug: debugEpsilon, debugPort: debugPort)
+  }
+}
+
+task debugImported {
+  finalizedBy "runImported"
+  doLast {
+    debugEpsilon = true
+  }
+}
+
 task runInspectObject {
   dependsOn tasks.setupEpsilonTasks
   doLast {
@@ -55,6 +69,20 @@ task runInspectObject {
 
 task debugInspectObject {
   finalizedBy "runInspectObject"
+  doLast {
+    debugEpsilon = true
+  }
+}
+
+task runHelloEGL {
+  dependsOn tasks.setupEpsilonTasks
+  doLast {
+    ant.'epsilon.egl'(src: '05-hello.egl', debug: debugEpsilon, debugPort: debugPort)
+  }
+}
+
+task debugHelloEGL {
+  finalizedBy "runHelloEGL"
   doLast {
     debugEpsilon = true
   }
