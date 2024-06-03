@@ -23,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.epsilon.eol.EolModule;
+import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugAdapter;
 import org.eclipse.lsp4j.debug.DisconnectArguments;
 import org.eclipse.lsp4j.debug.ExitedEventArguments;
@@ -52,8 +52,8 @@ import org.junit.rules.Timeout;
 
 public abstract class AbstractEpsilonDebugAdapterTest {
 
-    @Rule
-    public Timeout globalTimeout = Timeout.seconds(10);
+	@Rule
+	public Timeout globalTimeout = Timeout.seconds(10);
 
 	protected class TestClient implements IDebugProtocolClient {
 		Semaphore isStopped = new Semaphore(0);
@@ -84,7 +84,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 
 	protected static final File BASE_RESOURCE_FOLDER = new File("../org.eclipse.epsilon.eol.dap.test/epsilon/");
 
-	protected EolModule module;
+	protected IEolModule module;
 	protected EpsilonDebugAdapter adapter;
 	protected TestClient client;
 

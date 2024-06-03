@@ -106,7 +106,11 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 
 		@Override
 		public void finishedExecuting(ModuleElement ast, Object result, IEolContext context) {
-			if (ast == module) {
+			/*
+			 * Note: we use a parent check as the external EglModule executes
+			 * a generated, internal EglModule (with its own DOM).
+			 */
+			if (ast.getParent() == null) {
 				module.getContext().getOutputStream().flush();
 				module.getContext().getErrorStream().flush();
 				sendTerminated();
@@ -116,7 +120,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 
 		@Override
 		public void finishedExecutingWithException(ModuleElement ast, EolRuntimeException exception, IEolContext context) {
-			if (ast == module) {
+			// See above for explanation of using a parent check
+			if (ast.getParent() == null) {
 				sendTerminated();
 				sendExited(1);
 			}
@@ -601,8 +606,16 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	protected int findFirstLineGreaterThanOrEqualTo(ModuleElement root, int localLine) {
 		// This is a leaf node: either we find the line or we don't
 		if (root.getChildren().isEmpty()) {
-			final int ownLine = root.getRegion().getStart().getLine();
-			return ownLine >= localLine ? ownLine : -1; 
+			final Region region = root.getRegion();
+			final int regionStartLine = region.getStart().getLine();
+			final int regionEndLine = region.getEnd().getLine();
+			if (regionEndLine >= localLine) {
+				// Region may start later than the line we set the breakpoint on
+				return Math.max(localLine, regionStartLine);
+			} else {
+				// Region does not include the line
+				return -1;
+			}
 		}
 
 		/*
