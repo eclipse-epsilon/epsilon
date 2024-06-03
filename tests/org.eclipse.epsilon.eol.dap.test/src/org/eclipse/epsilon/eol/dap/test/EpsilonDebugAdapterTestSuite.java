@@ -28,7 +28,8 @@ import junit.framework.Test;
     LargeCollectionTest.class,
     TupleTest.class,
     ClientLacksVariableTypeSupportTest.class,
-    EglDebugTest.class
+    EglDebugTest.class,
+    ImportingEglTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {
