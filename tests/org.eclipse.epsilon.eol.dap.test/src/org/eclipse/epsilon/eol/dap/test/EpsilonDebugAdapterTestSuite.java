@@ -9,6 +9,16 @@
  *******************************************************************************/
 package org.eclipse.epsilon.eol.dap.test;
 
+import org.eclipse.epsilon.eol.dap.test.egl.EglDebugTest;
+import org.eclipse.epsilon.eol.dap.test.egl.ImportingEglTest;
+import org.eclipse.epsilon.eol.dap.test.eol.ClasspathEolTest;
+import org.eclipse.epsilon.eol.dap.test.eol.HttpEolTest;
+import org.eclipse.epsilon.eol.dap.test.eol.ImportingEolTest;
+import org.eclipse.epsilon.eol.dap.test.eol.LargeCollectionTest;
+import org.eclipse.epsilon.eol.dap.test.eol.ModelElementPropertiesTest;
+import org.eclipse.epsilon.eol.dap.test.eol.SmallCollectionTest;
+import org.eclipse.epsilon.eol.dap.test.eol.StandaloneEolTest;
+import org.eclipse.epsilon.eol.dap.test.eol.TupleTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
