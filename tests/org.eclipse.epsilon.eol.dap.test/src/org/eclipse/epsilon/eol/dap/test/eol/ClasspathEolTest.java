@@ -40,7 +40,9 @@ public class ClasspathEolTest extends AbstractEpsilonDebugAdapterTest {
 
 	private static final String RESOURCE_NAME = "03-fromClasspath.eol";
 	private static final File SCRIPT_FILE = new File(
-		"../org.eclipse.epsilon.eol.dap.test/src/org/eclipse/epsilon/eol/dap/test/" + RESOURCE_NAME);
+		"../org.eclipse.epsilon.eol.dap.test/src/"
+		+ ClasspathEolTest.class.getPackageName().replaceAll("[.]", "/")
+		+ "/" + RESOURCE_NAME);
 
 	@Override
 	protected void setupModule() throws Exception {
@@ -57,6 +59,8 @@ public class ClasspathEolTest extends AbstractEpsilonDebugAdapterTest {
 
 	@Test
 	public void canMapFilesToUriModule() throws Exception {
+		assertTrue("The script file exists at " + SCRIPT_FILE, SCRIPT_FILE.isFile());
+		
 		SetBreakpointsResponse breakpoints = adapter.setBreakpoints(
 			createBreakpoints(SCRIPT_FILE.getCanonicalPath(), createBreakpoint(1))
 		).get();
