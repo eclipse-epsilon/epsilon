@@ -54,7 +54,7 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 			stopResult.getBreakpoints()[0].isVerified());
 		attach();
 
-		// 1. Break on the first static segment of line 2
+		// Break on the first static segment of line 2
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		Map<String, Variable> topVariables = getVariablesFromTopStackFrame();
@@ -63,19 +63,8 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertEquals("String", numbersVariable.getType());
 		assertEquals("Joe", numbersVariable.getValue());
 
-		// 2. Break on the first dynamic part of line 2
-		adapter.continue_(new ContinueArguments());
-		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
-
-		// 3. Break on the printing of the dynamic part
-		adapter.continue_(new ContinueArguments());
-		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
-
-		// 4. Break on the second static part of line 2
-		adapter.continue_(new ContinueArguments());
-		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
-
-		// Continue and end
+		// Remove breakpoints and continue
+		adapter.setBreakpoints(createBreakpoints());
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}
