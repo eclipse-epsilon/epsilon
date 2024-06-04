@@ -1,0 +1,4 @@
+[% import '10-utils.eol'; %]
+# [%=p.name%] [%=p.lastName%]
+
+[%=p.generateGreeting()%]

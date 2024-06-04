@@ -1,0 +1,8 @@
+operation computeTarget(firstName, lastName) {
+  return firstName + '-' + lastName + '.txt';
+}
+
+rule Person2Text transform p: Person {
+  template: '07-person.egl'
+  target: computeTarget(p.firstName, p.lastName)
+}

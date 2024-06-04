@@ -1,0 +1,3 @@
+operation Person generateGreeting() {
+  return 'Hello ' + self.firstName + ' ' + self.lastName;
+}
