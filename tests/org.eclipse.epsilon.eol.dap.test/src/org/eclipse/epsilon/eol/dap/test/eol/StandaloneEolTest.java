@@ -94,8 +94,10 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		// Execution should complete successfully
 		assertProgramCompletedSuccessfully();
 
-		final String expected = "Hello Bob Someone" + System.getProperty("line.separator") + "Hello Alice Important"
-				+ System.getProperty("line.separator");
+		final String expected = "Hello Bob Someone"
+			+ System.lineSeparator()
+			+ "Hello Alice Important"
+			+ System.lineSeparator();
 
 		assertEquals(expected, getStdout());
 	}
