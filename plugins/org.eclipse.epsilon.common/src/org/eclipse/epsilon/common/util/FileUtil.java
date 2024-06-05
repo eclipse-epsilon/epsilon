@@ -479,9 +479,13 @@ public class FileUtil {
 	 */
 	public static Map<Path, byte[]> readDirectory(final Path dir) throws IOException {		
 		Map<Path, byte[]> contents = new HashMap<>();
-		for (Path path : ((Iterable<Path>)Files.walk(dir)::iterator)) {
-			if (Files.isRegularFile(path)) {
-				contents.put(path, Files.readAllBytes(path));
+		try (Stream<Path> pathStream = Files.walk(dir)) {
+			Iterator<Path> itPaths = pathStream.iterator();
+			while (itPaths.hasNext()) {
+				Path path = itPaths.next();
+				if (Files.isRegularFile(path)) {
+					contents.put(path, Files.readAllBytes(path));
+				}
 			}
 		}
 		return contents;
