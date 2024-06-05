@@ -552,7 +552,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 			Path path;
 			
 			// URI#getPath() does not correctly convert `file:/` URIs to valid paths on Windows, so use Paths#get(URI) instead
-			if (resolvedModule.getUri().getScheme().equals("file")) {
+			if ("file".equals(resolvedModule.getUri().getScheme())) {
 				path = Paths.get(resolvedModule.getUri());
 			} else {
 				path = Paths.get(resolvedModule.getUri().getPath());
