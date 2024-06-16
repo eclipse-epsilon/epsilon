@@ -25,9 +25,12 @@ import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.epsilon.eol.models.java.JavaModel;
 import org.eclipse.lsp4j.debug.BreakpointNotVerifiedReason;
 import org.eclipse.lsp4j.debug.ContinueArguments;
+import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
+import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Variable;
+import org.eclipse.lsp4j.debug.VariablesResponse;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -143,10 +146,20 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
-		Map<String, Variable> topVariables = getVariablesFromTopStackFrame();
-		assertNotNull("The top scope should have a 'p' variable", topVariables.get("p"));
-		assertNotNull("The top scope should have an 'out' variable", topVariables.get("out"));
+		StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("There should be two stack frames: local and global", 2, stackTrace.getStackFrames().length);
 
+		ScopesResponse localScopes = getScopes(stackTrace.getStackFrames()[0]);
+		VariablesResponse localVariables = getVariables(localScopes.getScopes()[0]);
+		Map<String, Variable> localVariablesByName = getVariablesByName(localVariables);
+		assertNotNull("The local scope should have a 'p' variable", localVariablesByName.get("p"));
+
+		ScopesResponse globalScopes = getScopes(stackTrace.getStackFrames()[1]);
+		VariablesResponse globalVariables = getVariables(globalScopes.getScopes()[0]);
+		Map<String, Variable> globalVariablesByName = getVariablesByName(globalVariables);
+		assertNotNull("The glocal scope should have a 'null' variable", globalVariablesByName.get("null"));
+
+		adapter.setBreakpoints(createBreakpoints(EGL_FILE.getCanonicalPath()));
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}

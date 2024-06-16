@@ -10,8 +10,8 @@
 package org.eclipse.epsilon.eol.debug;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Logger;
 
 import org.eclipse.epsilon.common.module.IModule;
@@ -53,12 +53,9 @@ public class BreakpointResult {
 	}
 
 	public static BreakpointResult pending(BreakpointRequest request) {
-		try {
-			return new BreakpointResult(request, null, new URI(request.getPath()), request.getLine(), BreakpointState.PENDING);
-		} catch (URISyntaxException e) {
-			LOGGER.log(Level.SEVERE, e.getMessage(), e);
-			return failed(request);
-		}
+		final Path requestPath = Paths.get(request.getPath());
+		final URI requestURI = requestPath.toUri();
+		return new BreakpointResult(request, null, requestURI, request.getLine(), BreakpointState.PENDING);
 	}
 
 	public BreakpointRequest getRequest() {
