@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,17 +31,18 @@ import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.Region;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dap.variables.IVariableReference;
 import org.eclipse.epsilon.eol.dap.variables.SuspendedState;
+import org.eclipse.epsilon.eol.debug.BreakpointRequest;
+import org.eclipse.epsilon.eol.debug.BreakpointResult;
+import org.eclipse.epsilon.eol.debug.BreakpointState;
 import org.eclipse.epsilon.eol.debug.IEolDebugger;
 import org.eclipse.epsilon.eol.debug.IEpsilonDebugTarget;
 import org.eclipse.epsilon.eol.debug.SuspendReason;
-import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.Operation;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.Frame;
@@ -49,6 +51,7 @@ import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
 import org.eclipse.epsilon.eol.execute.control.IExecutionListener;
 import org.eclipse.lsp4j.debug.Breakpoint;
+import org.eclipse.lsp4j.debug.BreakpointNotVerifiedReason;
 import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.ContinueResponse;
@@ -185,13 +188,6 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	 * of DAP variable references. May need to interact with the module at times.
 	 */
 	private SuspendedState suspendedState;
-
-	/**
-	 * Lazily-initialized map from module URI to the actual IModule.
-	 *
-	 * Do not access this field directly: instead, use {@link #getURIToModuleMap()}.
-	 */
-	private Map<String, IModule> uriToModule;
 
 	/**
 	 * Mappings from module URIs to filesystem paths. Useful when debugging
@@ -395,113 +391,61 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 		return CompletableFuture.supplyAsync(() -> {
 			SetBreakpointsResponse response = new SetBreakpointsResponse();
 
-			try {
-				// Step 1. Map from DAP path (likely a file opened in the IDE) to an IEolModule
-				final String argsSourcePath = args.getSource().getPath();
-				IModule resolvedModule = resolveModule(argsSourcePath);
-				Set<Integer> localBreakpoints = null;
-				if (resolvedModule != null) {
-					localBreakpoints = new HashSet<>();
-					synchronized (this.lineBreakpointsByURI) {
-						this.lineBreakpointsByURI.put(resolvedModule.getSourceUri(), localBreakpoints);
+			List<Breakpoint> responseBreakpoints = new ArrayList<>(args.getBreakpoints().length);
+			synchronized (lineBreakpointsByURI) {
+				final String sourcePath = args.getSource().getPath();
+
+				if (args.getBreakpoints().length == 0) {
+					/*
+					 * This is just a request to clear all breakpoints: ask the debugger
+					 * for a module URI, using line 1 as a placeholder.
+					 */
+					BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, 1);
+					BreakpointResult result = debugger.verifyBreakpoint(request);
+					if (result.getModuleURI() != null) {
+						lineBreakpointsByURI.put(result.getModuleURI(), Collections.emptySet());
 					}
+					response.setBreakpoints(new Breakpoint[0]);
+					return response;
 				}
 
-				// Step 2. Build response while we update internal breakpoint list
-				List<Breakpoint> responseBreakpoints = new ArrayList<>(args.getBreakpoints().length);
+				Set<Integer> addedBreakpoints = null;
 				for (SourceBreakpoint sbp : args.getBreakpoints()) {
 					Breakpoint bp = new Breakpoint();
 					responseBreakpoints.add(bp);
-
 					bp.setVerified(false);
-					if (resolvedModule != null) {
-						final int localSBPLine = lineConverter.fromRemoteToLocal(sbp.getLine());
-						final int localBPLine = findFirstLineGreaterThanOrEqualTo(resolvedModule, localSBPLine);
 
-						if (localBPLine >= 1) {
-							bp.setLine(lineConverter.fromLocalToRemote(localBPLine));
-							localBreakpoints.add(localBPLine);
-							bp.setSource(createSource(resolvedModule));
-							bp.setVerified(true);
+					BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, sbp.getLine());
+					BreakpointResult result = debugger.verifyBreakpoint(request);
+
+					bp.setVerified(result.getState() == BreakpointState.VERIFIED);
+					if (result.getState() != BreakpointState.FAILED) {
+						bp.setLine(lineConverter.fromLocalToRemote(result.getLine()));
+						bp.setSource(createSource(result, sourcePath));
+
+						if (addedBreakpoints == null) {
+							addedBreakpoints = new HashSet<>();
+							lineBreakpointsByURI.put(result.getModuleURI(), addedBreakpoints);
 						}
+						addedBreakpoints.add(result.getLine());
+					}
+
+					switch (result.getState()) {
+					case VERIFIED:
+						break;
+					case FAILED:
+						bp.setReason(BreakpointNotVerifiedReason.FAILED);
+						break;
+					case PENDING:
+						bp.setReason(BreakpointNotVerifiedReason.PENDING);
+						break;
 					}
 				}
-
-				response.setBreakpoints(responseBreakpoints.toArray(new Breakpoint[responseBreakpoints.size()]));
-			} catch (IOException e) {
-				LOGGER.log(Level.SEVERE, "Failed to obtain canonical path for module file", e);
 			}
 
+			response.setBreakpoints(responseBreakpoints.toArray(new Breakpoint[responseBreakpoints.size()]));
 			return response;
 		});
-	}
-
-	/**
-	 * Tries to resolve the specific module referenced by a path reported via DAP.
-	 * This will be a file in the developer's IDE, whose URI may not match 1:1 with
-	 * the URI of the module being executed (e.g. if the module is being loaded from
-	 * the classpath and not from the filesystem).
-	 */
-	protected IModule resolveModule(final String argsSourcePath) throws IOException {
-		// Stop if we don't actually have a path
-		if (argsSourcePath == null) {
-			return null;
-		}
-
-		// Stop if the DAP path does not resolve to a file in our filesystem
-		File argsSourceFile = new File(argsSourcePath);
-		if (!argsSourceFile.exists()) {
-			return null;
-		}
-
-		// Collect all the imports
-		Map<String, IModule> uriToModule = getURIToModuleMap();
-
-		// Try to use a direct file: URI first
-		final String argsSourceFileURI = argsSourceFile.toURI().toString();
-		IModule resolvedModule = uriToModule.get(argsSourceFileURI);
-		if (resolvedModule != null) {
-			return resolvedModule;
-		}
-
-		// Try to use the URI-to-path mappings in reverse
-		for (Entry<URI, Path> e : this.uriToPathMappings.entrySet()) {
-			final String baseUri = e.getKey().toString();
-			final File canonicalFile = e.getValue().toFile().getCanonicalFile();
-			final String basePath = canonicalFile.getPath() + (canonicalFile.isDirectory() ? File.separator : "");
-
-			if (argsSourcePath.startsWith(basePath)) {
-				String mappedUri = baseUri + argsSourcePath.substring(basePath.length());
-				resolvedModule = uriToModule.get(mappedUri);
-				if (resolvedModule != null) {
-					return resolvedModule;
-				}
-			}
-		}
-
-		return null;
-	}
-
-	protected synchronized Map<String, IModule> getURIToModuleMap() throws IOException {
-		if (this.uriToModule == null) {
-			this.uriToModule = new HashMap<>();
-			addAllModules(uriToModule, module);
-		}
-		return uriToModule;
-	}
-
-	private void addAllModules(Map<String, IModule> pathToModule, IModule module) throws IOException {
-		String moduleURI = module.getFile() != null
-			? module.getFile().getCanonicalFile().toURI().toString() : module.getUri().toString();
-
-		if (!pathToModule.containsKey(moduleURI)) {
-			pathToModule.put(moduleURI, module);
-			if (module instanceof IEolModule) {
-				for (Import imp : ((IEolModule) module).getImports()) {
-					addAllModules(pathToModule, imp.getModule());
-				}
-			}
-		}
 	}
 
 	@Override
@@ -539,6 +483,16 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 		});
 	}
 
+	protected Source createSource(BreakpointResult result, final String sourcePath) {
+		Source src = new Source();
+		if (result.getModule() != null) {
+			return createSource(result.getModule());
+		} else {
+			populateSourceFromMappings(src, result.getModuleURI(), Paths.get(sourcePath));
+			return src;
+		}
+	}
+
 	/**
 	 * Creates a DAP Source object from a module element. It will prefer using
 	 * files if available (as they will probably be the same as those in the IDE),
@@ -548,19 +502,18 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 		final Source bpSource = new Source();
 
 		// First, try to use the URI-to-path mappings
-		if (resolvedModule.getUri().getPath() != null) {
+		final URI moduleURI = resolvedModule.getUri();
+		if (moduleURI.getPath() != null) {
 			Path path;
 			
 			// URI#getPath() does not correctly convert `file:/` URIs to valid paths on Windows, so use Paths#get(URI) instead
-			if ("file".equals(resolvedModule.getUri().getScheme())) {
-				path = Paths.get(resolvedModule.getUri());
+			if ("file".equals(moduleURI.getScheme())) {
+				path = Paths.get(moduleURI);
 			} else {
-				path = Paths.get(resolvedModule.getUri().getPath());
+				path = Paths.get(moduleURI.getPath());
 			}
 
-			String basename = path.getFileName().toString();
-			bpSource.setName(basename);
-			mapUriToSourcePath(resolvedModule.getUri().toString(), bpSource);
+			populateSourceFromMappings(bpSource, moduleURI, path);
 		}
 
 		// If that didn't produce a path, fall back to the module file if it's available
@@ -578,6 +531,12 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 			}
 		}
 		return bpSource;
+	}
+
+	protected void populateSourceFromMappings(final Source bpSource, final URI moduleURI, Path path) {
+		String basename = path.getFileName().toString();
+		bpSource.setName(basename);
+		mapUriToSourcePath(moduleURI.toString(), bpSource);
 	}
 
 	protected void mapUriToSourcePath(String uri, Source bpSource) {
@@ -604,64 +563,6 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 				}
 			}
 		}
-	}
-
-	/**
-	 * Finds the first line greater than or equal to the given line that actually
-	 * has a module element in it. This handles cases where we set a breakpoint
-	 * on an empty line: it will instead break on the first non-empty line after it.
-	 */
-	protected int findFirstLineGreaterThanOrEqualTo(ModuleElement root, int localLine) {
-		// This is a leaf node: either we find the line or we don't
-		if (root.getChildren().isEmpty()) {
-			final Region region = root.getRegion();
-			final int regionStartLine = region.getStart().getLine();
-			final int regionEndLine = region.getEnd().getLine();
-			if (regionEndLine >= localLine) {
-				// Region may start later than the line we set the breakpoint on
-				return Math.max(localLine, regionStartLine);
-			} else {
-				// Region does not include the line
-				return -1;
-			}
-		}
-
-		/*
-		 * Not a leaf node: find earliest child whose region spans the line or something
-		 * after the line. We scan over all elements, because the children of a module
-		 * element do not have to be in the same order as they appear on the file.
-		 * 
-		 * This is the case, for instance, for the operations that appear below a bit of
-		 * top-level code, which will appear before that top-level code in the list of
-		 * children.
-		 */
-		ModuleElement earliest = null;
-		int earliestLine = Integer.MAX_VALUE;
-		for (ModuleElement child : root.getChildren()) {
-			final Region childRegion = child.getRegion();
-			final int startLine = childRegion.getStart().getLine();
-			final int endLine = childRegion.getEnd().getLine();
-			if (startLine < earliestLine && endLine >= localLine) {
-				earliest = child;
-				earliestLine = startLine;
-			}
-		}
-
-		if (earliest != null) {
-			int earliestStart = earliest.getRegion().getStart().getLine();
-			if (earliestStart >= localLine) {
-				// We've already hit a line that is greater than or equal to localLine
-				return earliestStart;
-			} else {
-				/*
-				 * We haven't crossed the target line yet, but we know the module element spans
-				 * over this line, so we go over its children.
-				 */
-				return findFirstLineGreaterThanOrEqualTo(earliest, localLine);
-			}
-		}
-
-		return -1;
 	}
 
 	protected void sendExited(int exitCode) {

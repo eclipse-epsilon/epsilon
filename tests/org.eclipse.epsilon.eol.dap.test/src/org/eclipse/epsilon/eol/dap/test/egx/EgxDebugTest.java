@@ -10,6 +10,7 @@
 package org.eclipse.epsilon.eol.dap.test.egx;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -22,6 +23,7 @@ import java.util.Map;
 import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.epsilon.eol.models.java.JavaModel;
+import org.eclipse.lsp4j.debug.BreakpointNotVerifiedReason;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
@@ -133,7 +135,11 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 	public void canStopWithinExecutedTemplate() throws Exception {
 		SetBreakpointsResponse stopResult = adapter.setBreakpoints(
 			createBreakpoints(EGL_FILE.getCanonicalPath(), createBreakpoint(2))).get();
-		assertTrue("The breakpoint on the template was verified", stopResult.getBreakpoints()[0].isVerified());
+		assertFalse("The breakpoint on the template was not verified",
+			stopResult.getBreakpoints()[0].isVerified());
+		assertEquals("The breakpoint on the template was left pending",
+			BreakpointNotVerifiedReason.PENDING,
+			stopResult.getBreakpoints()[0].getReason());
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
