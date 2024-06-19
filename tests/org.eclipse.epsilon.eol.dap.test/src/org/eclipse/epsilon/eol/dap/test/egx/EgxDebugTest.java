@@ -200,7 +200,7 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 
 		ThreadsResponse threads = adapter.threads().get();
 		assertEquals("There should be one thread for EGX and one for EGL", 2, threads.getThreads().length);
-		
+
 		// Second thread is the EGL template (which includes invocations of EOL)
 		StackTraceResponse stackTrace = getStackTrace(threads.getThreads()[1].getId());
 		assertEquals(EOL_FILE.getCanonicalPath(), stackTrace.getStackFrames()[0].getSource().getPath());
@@ -210,7 +210,11 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 		Map<String, Variable> localVariablesByName = getVariablesByName(localVariables);
 		assertNotNull("The top scope should have a 'self' variable", localVariablesByName.get("self"));
 
-		adapter.setBreakpoints(createBreakpoints(EOL_FILE.getCanonicalPath()));
+		// Should stop a second time as we have 2 rules invoking the EOL operation
+		adapter.continue_(new ContinueArguments());
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		// After that, it should complete its execution
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}

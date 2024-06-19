@@ -102,31 +102,37 @@ import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
 public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugTarget {
 
 	protected class ModuleCompletionListener implements IExecutionListener {
+		private ModuleElement topElement;
+
 		@Override
 		public void aboutToExecute(ModuleElement ast, IEolContext context) {
-			// nothing for now
+			if (ast.getParent() == null && topElement == null) {
+				/*
+				 * The very first node we will run is assumed to be the
+				 * "top" element of our program. When this completes, the
+				 * program will be assumed to have completed its execution.
+				 */
+				topElement = ast;
+			}
 		}
 
 		@Override
 		public void finishedExecuting(ModuleElement ast, Object result, IEolContext context) {
-			/*
-			 * Note: we use a parent check as the external EglModule executes
-			 * a generated, internal EglModule (with its own DOM).
-			 */
-			if (ast.getParent() == null) {
+			if (ast == topElement) {
 				module.getContext().getOutputStream().flush();
 				module.getContext().getErrorStream().flush();
 				sendTerminated();
 				sendExited(0);
+				topElement = null;
 			}
 		}
 
 		@Override
 		public void finishedExecutingWithException(ModuleElement ast, EolRuntimeException exception, IEolContext context) {
-			// See above for explanation of using a parent check
-			if (ast.getParent() == null) {
+			if (ast == topElement) {
 				sendTerminated();
 				sendExited(1);
+				topElement = null;
 			}
 		}
 	}
