@@ -1,6 +1,7 @@
 package org.eclipse.epsilon.examples.eol.dap;
 
 import java.io.File;
+import java.nio.file.Paths;
 
 import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.emc.emf.EmfModel;
@@ -9,7 +10,7 @@ import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 public class DebugFileBasedEGX {
 
 	public static void main(String[] args) throws Exception {
-		EgxModule module = new EgxModule();
+		EgxModule module = new EgxModule(Paths.get("epsilon"));
 		module.parse(new File(args[0]));
 
 		EmfModel model = new EmfModel();
