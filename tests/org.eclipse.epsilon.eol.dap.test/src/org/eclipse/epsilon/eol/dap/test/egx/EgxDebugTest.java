@@ -99,7 +99,7 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertNotNull("The top scope should have a 'firstName' variable", firstNameVariable);
 		assertEquals("John", firstNameVariable.getValue());
 
-		adapter.setBreakpoints(createBreakpoints());
+		adapter.setBreakpoints(createBreakpoints()).get();
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}
@@ -181,7 +181,7 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertNotNull("The local scope should have a 'p' variable", localVariablesByName.get("p"));
 		assertNotNull("The local scope should have an 'out' variable", localVariablesByName.get("out"));
 
-		adapter.setBreakpoints(createBreakpoints(EGL_FILE.getCanonicalPath()));
+		adapter.setBreakpoints(createBreakpoints(EGL_FILE.getCanonicalPath())).get();
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}
