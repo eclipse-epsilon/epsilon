@@ -9,7 +9,7 @@
  **********************************************************************/
 package org.eclipse.epsilon.eol.debug;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.eol.execute.control.ExecutionController;
@@ -18,7 +18,7 @@ public interface IEolDebugger extends ExecutionController {
 
 	BreakpointResult verifyBreakpoint(BreakpointRequest request);
 
-	List<IEolThread> getThreads();
+	Collection<IEolThread> getThreads();
 
 	void setTarget(IEpsilonDebugTarget target);
 

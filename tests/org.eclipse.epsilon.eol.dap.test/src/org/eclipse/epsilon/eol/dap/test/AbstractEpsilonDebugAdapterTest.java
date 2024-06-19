@@ -148,6 +148,10 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		assertEquals("The debugger should report one thread", 1, threads.getThreads().length);
 
 		final int threadId = threads.getThreads()[0].getId();
+		return getStackTrace(threadId);
+	}
+
+	protected StackTraceResponse getStackTrace(final int threadId) throws Exception {
 		final StackTraceArguments stackTraceArgs = createStackTraceArgs(threadId);
 		StackTraceResponse stackTrace = adapter.stackTrace(stackTraceArgs).get(5, TimeUnit.SECONDS);
 		return stackTrace;

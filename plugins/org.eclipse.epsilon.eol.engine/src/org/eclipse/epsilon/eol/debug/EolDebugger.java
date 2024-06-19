@@ -13,9 +13,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -35,8 +36,31 @@ import org.eclipse.epsilon.eol.execute.context.IEolContext;
 
 public class EolDebugger implements IEolDebugger {
 
-	public static final int EPSILON_THREAD_ID = 1;
-	
+	protected class EolModuleThread implements IEolThread {
+		private final IEolModule module;
+		private final int id;
+
+		protected EolModuleThread(int id, IEolModule module) {
+			this.id = id;
+			this.module = module;
+		}
+
+		@Override
+		public int getId() {
+			return id;
+		}
+
+		@Override
+		public String getName() {
+			return String.format("%s - %s", module.getClass(), module.getSourceUri().toString());
+		}
+
+		@Override
+		public FrameStack getFrameStack() {
+			return module.getContext().getFrameStack();
+		}
+	}
+
 	private static final Logger LOGGER = Logger.getLogger(EolDebugger.class.getName());
 
 	/**
@@ -52,6 +76,9 @@ public class EolDebugger implements IEolDebugger {
 	protected ModuleElement currentModuleElement;
 	protected ModuleElement stopAfterModuleElement;
 	protected Integer stopAfterFrameStackSizeDropsBelow;
+
+	protected int nextThreadId = 1;
+	protected Map<IEolModule, IEolThread> threads = new LinkedHashMap<>();
 
 	@Override
 	public boolean isTerminated() {
@@ -79,6 +106,17 @@ public class EolDebugger implements IEolDebugger {
 
 	@Override
 	public void control(ModuleElement ast, IEolContext context) {
+		if (ast.getParent() == null && ast instanceof IEolModule) {
+			/*
+			 * Keep track of all threads - we may have one module invoking another module
+			 * (e.g. EGX invoking EGL). Each module has its own frame stack, therefore is
+			 * its own thread.
+			 */
+			IEolModule module = (IEolModule) ast;
+			IEolThread moduleThread = new EolModuleThread(nextThreadId++, module);
+			threads.put(module, moduleThread);
+		}
+
 		if (!controls(ast, context)) return;
 		currentModuleElement = ast;
 	
@@ -98,6 +136,11 @@ public class EolDebugger implements IEolDebugger {
 
 	@Override
 	public void done(ModuleElement ast, IEolContext context) {
+		if (ast.getParent() == null && ast instanceof IEolModule) {
+			IEolModule module = (IEolModule) ast;
+			threads.remove(module);
+		}
+
 		if (stopAfterModuleElement != null && ast == stopAfterModuleElement) {
 			stepping = true;
 			stopAfterModuleElement = null;
@@ -360,23 +403,8 @@ public class EolDebugger implements IEolDebugger {
 	}
 
 	@Override
-	public List<IEolThread> getThreads() {
-		return Collections.singletonList(new IEolThread() {
-			@Override
-			public int getId() {
-				return EPSILON_THREAD_ID;
-			}
-
-			@Override
-			public String getName() {
-				return "Epsilon";
-			}
-
-			@Override
-			public FrameStack getFrameStack() {
-				return target.getModule().getContext().getFrameStack();
-			}
-		});
+	public Collection<IEolThread> getThreads() {
+		return Collections.unmodifiableCollection(threads.values());
 	}
 	
 }

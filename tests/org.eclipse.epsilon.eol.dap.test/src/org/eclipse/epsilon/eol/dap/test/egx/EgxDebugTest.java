@@ -29,6 +29,7 @@ import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
+import org.eclipse.lsp4j.debug.ThreadsResponse;
 import org.eclipse.lsp4j.debug.Variable;
 import org.eclipse.lsp4j.debug.VariablesResponse;
 import org.junit.Rule;
@@ -39,6 +40,7 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 
 	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "10-orchestration.egx");
 	private static final File EGL_FILE = new File(BASE_RESOURCE_FOLDER, "10-person.egl");
+	private static final File EOL_FILE = new File(BASE_RESOURCE_FOLDER, "10-utils.eol");
 
 	@Rule
 	public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -146,22 +148,50 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
-		StackTraceResponse stackTrace = getStackTrace();
-		assertEquals("There should be two stack frames: local and global", 2, stackTrace.getStackFrames().length);
+		ThreadsResponse threads = adapter.threads().get();
+		assertEquals("There should be one thread for EGX and one for EGL", 2, threads.getThreads().length);
+
+		// Second thread is the EGL template
+		StackTraceResponse stackTrace = getStackTrace(threads.getThreads()[1].getId());
+		assertEquals("There should be two stack frames: local, template-specific-global, and global",
+			3, stackTrace.getStackFrames().length);
 
 		ScopesResponse localScopes = getScopes(stackTrace.getStackFrames()[0]);
 		VariablesResponse localVariables = getVariables(localScopes.getScopes()[0]);
 		Map<String, Variable> localVariablesByName = getVariablesByName(localVariables);
 		assertNotNull("The local scope should have a 'p' variable", localVariablesByName.get("p"));
-
-		ScopesResponse globalScopes = getScopes(stackTrace.getStackFrames()[1]);
-		VariablesResponse globalVariables = getVariables(globalScopes.getScopes()[0]);
-		Map<String, Variable> globalVariablesByName = getVariablesByName(globalVariables);
-		assertNotNull("The glocal scope should have a 'null' variable", globalVariablesByName.get("null"));
+		assertNotNull("The local scope should have an 'out' variable", localVariablesByName.get("out"));
 
 		adapter.setBreakpoints(createBreakpoints(EGL_FILE.getCanonicalPath()));
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}
 
+	@Test
+	public void canStopWithinImportedEOL() throws Exception {
+		SetBreakpointsResponse stopResult = adapter.setBreakpoints(
+			createBreakpoints(EOL_FILE.getCanonicalPath(), createBreakpoint(2))).get();
+		assertFalse("The breakpoint on the template was not verified",
+			stopResult.getBreakpoints()[0].isVerified());
+		assertEquals("The breakpoint on the template was left pending",
+			BreakpointNotVerifiedReason.PENDING,
+			stopResult.getBreakpoints()[0].getReason());
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		ThreadsResponse threads = adapter.threads().get();
+		assertEquals("There should be one thread for EGX and one for EGL", 2, threads.getThreads().length);
+		
+		// Second thread is the EGL template (which includes invocations of EOL)
+		StackTraceResponse stackTrace = getStackTrace(threads.getThreads()[1].getId());
+
+		ScopesResponse localScopes = getScopes(stackTrace.getStackFrames()[0]);
+		VariablesResponse localVariables = getVariables(localScopes.getScopes()[0]);
+		Map<String, Variable> localVariablesByName = getVariablesByName(localVariables);
+		assertNotNull("The top scope should have a 'self' variable", localVariablesByName.get("self"));
+
+		adapter.setBreakpoints(createBreakpoints(EOL_FILE.getCanonicalPath()));
+		adapter.continue_(new ContinueArguments());
+		assertProgramCompletedSuccessfully();
+	}
 }
