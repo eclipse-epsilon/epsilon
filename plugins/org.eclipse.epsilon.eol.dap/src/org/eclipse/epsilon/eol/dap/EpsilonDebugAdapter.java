@@ -36,17 +36,18 @@ import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.Region;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dap.variables.IVariableReference;
+import org.eclipse.epsilon.eol.dap.variables.SingleFrameReference;
 import org.eclipse.epsilon.eol.dap.variables.SuspendedState;
 import org.eclipse.epsilon.eol.debug.BreakpointRequest;
 import org.eclipse.epsilon.eol.debug.BreakpointResult;
 import org.eclipse.epsilon.eol.debug.BreakpointState;
 import org.eclipse.epsilon.eol.debug.IEolDebugger;
+import org.eclipse.epsilon.eol.debug.IEolThread;
 import org.eclipse.epsilon.eol.debug.IEpsilonDebugTarget;
 import org.eclipse.epsilon.eol.debug.SuspendReason;
 import org.eclipse.epsilon.eol.dom.Operation;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.Frame;
-import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
 import org.eclipse.epsilon.eol.execute.control.IExecutionListener;
@@ -79,6 +80,7 @@ import org.eclipse.lsp4j.debug.StoppedEventArguments;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.TerminateArguments;
 import org.eclipse.lsp4j.debug.TerminatedEventArguments;
+import org.eclipse.lsp4j.debug.Thread;
 import org.eclipse.lsp4j.debug.ThreadsResponse;
 import org.eclipse.lsp4j.debug.Variable;
 import org.eclipse.lsp4j.debug.VariablesArguments;
@@ -98,8 +100,6 @@ import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
  * </p>
  */
 public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugTarget {
-
-	private static final int EPSILON_THREAD_ID = 1;
 
 	protected class ModuleCompletionListener implements IExecutionListener {
 		@Override
@@ -260,16 +260,16 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	@Override
 	public CompletableFuture<ThreadsResponse> threads() {
 		return CompletableFuture.supplyAsync(() -> {
+			List<Thread> threads = new ArrayList<>();
+			for (IEolThread t : debugger.getThreads()) {
+				Thread lspThread = new Thread();
+				lspThread.setId(t.getId());
+				lspThread.setName(t.getName());
+				threads.add(lspThread);
+			}
+
 			ThreadsResponse r = new ThreadsResponse();
-
-			org.eclipse.lsp4j.debug.Thread epsilonThread
-				= new org.eclipse.lsp4j.debug.Thread();
-			epsilonThread.setId(EPSILON_THREAD_ID);
-			epsilonThread.setName("Epsilon");
-			r.setThreads(new org.eclipse.lsp4j.debug.Thread[] {
-				epsilonThread
-			});
-
+			r.setThreads(threads.toArray(new Thread[threads.size()]));
 			return r;
 		});
 	}
@@ -278,18 +278,26 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	public CompletableFuture<StackTraceResponse> stackTrace(StackTraceArguments args) {
 		return CompletableFuture.supplyAsync(() -> {
 			StackTraceResponse resp = new StackTraceResponse();
-			if (args.getThreadId() != EPSILON_THREAD_ID) {
+
+			IEolThread thread = null;
+			for (IEolThread t : debugger.getThreads()) {
+				if (t.getId() == args.getThreadId()) {
+					thread = t;
+					break;
+				}
+			}
+			if (thread == null) {
 				return resp;
 			}
 
 			List<StackFrame> responseFrames = new ArrayList<>();
 			int i = 0;
-			for (SingleFrame moduleFrame : module.getContext().getFrameStack().getFrames()) {
+			for (SingleFrame moduleFrame : thread.getFrameStack().getFrames()) {
 				StackFrame responseFrame = new StackFrame();
 				responseFrames.add(responseFrame);
 
-				// ID is just 0-based index
-				responseFrame.setId(i++);
+				final IVariableReference mfReference = suspendedState.getReference(moduleFrame);
+				responseFrame.setId(mfReference.getId());
 				responseFrame.setName(getStackFrameName(i, moduleFrame));
 
 				ModuleElement frameStatement = moduleFrame.getCurrentStatement();
@@ -308,13 +316,17 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 
 	public CompletableFuture<ScopesResponse> scopes(ScopesArguments args) {
 		return CompletableFuture.supplyAsync(() -> {
-			FrameStack moduleStack = module.getContext().getFrameStack();
-			SingleFrame localFrame = moduleStack.getFrames().get(args.getFrameId());
+			IVariableReference ref = suspendedState.getReference(args.getFrameId());
+			SingleFrameReference sfRef = null;
+			if (ref instanceof SingleFrameReference) {
+				sfRef = (SingleFrameReference) ref;
+			} else {
+				return new ScopesResponse();
+			}
 
+			SingleFrame localFrame = sfRef.getTarget();
 			Scope sc = new Scope();
 			sc.setExpensive(false);
-
-			IVariableReference ref = suspendedState.getReference(localFrame);
 			sc.setVariablesReference(ref.getId());
 			sc.setNamedVariables(localFrame.getAll().size());
 			sc.setName(ref.getName());
@@ -612,7 +624,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 		if (client != null) {
 			StoppedEventArguments stoppedArgs = new StoppedEventArguments();
 			stoppedArgs.setReason(reason);
-			stoppedArgs.setThreadId(EPSILON_THREAD_ID);
+			stoppedArgs.setAllThreadsStopped(true);
 			client.stopped(stoppedArgs);
 		}
 	}

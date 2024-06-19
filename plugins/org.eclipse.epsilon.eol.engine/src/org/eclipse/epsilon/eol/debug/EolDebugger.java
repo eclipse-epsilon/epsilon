@@ -13,7 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -28,10 +30,13 @@ import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.Operation;
 import org.eclipse.epsilon.eol.dom.Statement;
 import org.eclipse.epsilon.eol.dom.StatementBlock;
+import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 
 public class EolDebugger implements IEolDebugger {
 
+	public static final int EPSILON_THREAD_ID = 1;
+	
 	private static final Logger LOGGER = Logger.getLogger(EolDebugger.class.getName());
 
 	/**
@@ -352,4 +357,24 @@ public class EolDebugger implements IEolDebugger {
 		return -1;
 	}
 
+	@Override
+	public List<IEolThread> getThreads() {
+		return Collections.singletonList(new IEolThread() {
+			@Override
+			public int getId() {
+				return EPSILON_THREAD_ID;
+			}
+
+			@Override
+			public String getName() {
+				return "Epsilon";
+			}
+
+			@Override
+			public FrameStack getFrameStack() {
+				return target.getModule().getContext().getFrameStack();
+			}
+		});
+	}
+	
 }
