@@ -147,7 +147,9 @@ public class EolDebugger implements IEolDebugger {
 	}
 
 	private boolean hasBreakpoint(ModuleElement ast) {
-		if (target.hasBreakpointItself(ast)) return true;
+		if (target.hasBreakpointItself(ast)) {
+			return true;
+		}
 		
 		if (isFirstStatement(ast)) {
 			return hasBreakpoint(getGrandparent(ast));
