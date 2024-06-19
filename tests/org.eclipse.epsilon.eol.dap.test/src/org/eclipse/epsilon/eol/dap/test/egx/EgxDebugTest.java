@@ -99,6 +99,7 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertNotNull("The top scope should have a 'firstName' variable", firstNameVariable);
 		assertEquals("John", firstNameVariable.getValue());
 
+		adapter.setBreakpoints(createBreakpoints());
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}
@@ -137,6 +138,23 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 	}
 
 	@Test
+	public void canStopAtTargetExpression() throws Exception {
+		SetBreakpointsResponse stopResult = adapter.setBreakpoints(
+			createBreakpoints(createBreakpoint(15))).get();
+		assertTrue("The breakpoint on the operation was verified",
+			stopResult.getBreakpoints()[0].isVerified());
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		final StackTraceResponse stackTrace = getStackTrace();
+		assertEquals(SCRIPT_FILE.getCanonicalPath(),
+			stackTrace.getStackFrames()[0].getSource().getPath());
+
+		adapter.continue_(new ContinueArguments());
+		assertProgramCompletedSuccessfully();
+	}
+
+	@Test
 	public void canStopWithinExecutedTemplate() throws Exception {
 		SetBreakpointsResponse stopResult = adapter.setBreakpoints(
 			createBreakpoints(EGL_FILE.getCanonicalPath(), createBreakpoint(2))).get();
@@ -153,6 +171,7 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 
 		// Second thread is the EGL template
 		StackTraceResponse stackTrace = getStackTrace(threads.getThreads()[1].getId());
+		assertEquals(EGL_FILE.getCanonicalPath(), stackTrace.getStackFrames()[0].getSource().getPath());
 		assertEquals("There should be two stack frames: local, template-specific-global, and global",
 			3, stackTrace.getStackFrames().length);
 
@@ -184,6 +203,7 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 		
 		// Second thread is the EGL template (which includes invocations of EOL)
 		StackTraceResponse stackTrace = getStackTrace(threads.getThreads()[1].getId());
+		assertEquals(EOL_FILE.getCanonicalPath(), stackTrace.getStackFrames()[0].getSource().getPath());
 
 		ScopesResponse localScopes = getScopes(stackTrace.getStackFrames()[0]);
 		VariablesResponse localVariables = getVariables(localScopes.getScopes()[0]);

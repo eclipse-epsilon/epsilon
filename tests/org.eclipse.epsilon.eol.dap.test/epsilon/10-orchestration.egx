@@ -9,3 +9,8 @@ rule Person2Text transform p: Person {
     return t;
   }
 }
+
+rule Person2TextExpressionTarget transform p: Person {
+  template: '10-person.egl'
+  target: computeTarget(p.name, p.lastName)
+}

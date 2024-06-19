@@ -301,6 +301,18 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 				responseFrame.setName(getStackFrameName(i, moduleFrame));
 
 				ModuleElement frameStatement = moduleFrame.getCurrentStatement();
+				if (frameStatement == null) {
+					/*
+					 * Fall back to frame entrypoint if we don't have a statement yet (e.g. we are
+					 * running a target expression within an EGX script).
+					 *
+					 * NOTE: ideally we'd want to combine the execution information from the
+					 * StackTraceManager (which is more fine-grained) with the variable information
+					 * from the FrameStack.
+					 */
+					frameStatement = moduleFrame.getEntryPoint();
+				}
+
 				if (frameStatement != null) {
 					setStackFrameLocation(responseFrame, frameStatement);
 				} else {
