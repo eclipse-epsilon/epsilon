@@ -52,7 +52,7 @@ import org.junit.rules.Timeout;
 
 public abstract class AbstractEpsilonDebugAdapterTest {
 
-	//@Rule
+	@Rule
 	public Timeout globalTimeout = Timeout.seconds(10);
 
 	protected class TestClient implements IDebugProtocolClient {
