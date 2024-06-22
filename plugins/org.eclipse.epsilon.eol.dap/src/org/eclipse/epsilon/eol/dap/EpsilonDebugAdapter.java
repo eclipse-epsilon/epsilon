@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -100,7 +99,7 @@ import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
  * <a href="https://microsoft.github.io/debug-adapter-protocol/overview">Microsoft's website</a>.
  * </p>
  */
-public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugTarget {
+public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 	/**
 	 * Keeps track of the modules that start and complete execution. Note that there should
@@ -206,18 +205,73 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	private IEolModule mainModule;
 
 	/**
+	 * <p>
 	 * Represents the debugger and other state needed to debug an execution thread.
 	 * Some Epsilon scripts invoke other Epsilon scripts (specifically, EGX runs EGL
 	 * scripts), so we treat the invoked script as its own execution thread.
+	 * </p>
+	 *
+	 * <p>
+	 * The script may resolve breakpoints somewhat differently than the original
+	 * one, so it has its own set of breakpoints.
+	 * </p>
 	 */
-	protected class ThreadState {
+	protected class ThreadState implements IEpsilonDebugTarget {
 		protected final IEolModule module;
 		protected final IEolDebugger debugger;
+
+		/** Breakpoints by URI: these are the ones resolved to specific module URIs. */
+		private Map<URI, Set<Integer>> lineBreakpointsByURI = new ConcurrentHashMap<>();
 
 		public ThreadState(IEolModule module) {
 			this.module = module;
 			this.debugger = module.createDebugger();
-			this.debugger.setTarget(EpsilonDebugAdapter.this);
+			this.debugger.setTarget(this);
+
+			// When creating a new ThreadState, populate breakpoints from path-based map
+			for (Entry<String, Set<Integer>> e : lineBreakpointsByPath.entrySet()) {
+				for (Integer localLine : e.getValue()) {
+					setBreakpoint(e.getKey(), localLine);
+				}
+			}
+		}
+
+		@Override
+		public boolean isTerminated() {
+			return isTerminated;
+		}
+
+		@Override
+		public boolean hasBreakpointItself(ModuleElement ast) {
+			Set<Integer> lineBreakpoints = lineBreakpointsByURI.get(ast.getUri());
+			return lineBreakpoints != null && lineBreakpoints.contains(ast.getRegion().getStart().getLine());
+		}
+
+		@Override
+		public void suspend(ModuleElement ast, SuspendReason reason) throws InterruptedException {
+			// The suspend latch is the same across all threads, so this is done at the adapter level
+			EpsilonDebugAdapter.this.suspend(ast, reason);
+		}
+
+		@Override
+		public IEolModule getModule() {
+			return module;
+		}
+
+		protected BreakpointResult setBreakpoint(final String sourcePath, Integer localLine) {
+			BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, localLine);
+			BreakpointResult result = debugger.verifyBreakpoint(request);
+
+			if (result.getState() != BreakpointState.FAILED) {
+				Set<Integer> uriBreakpoints = lineBreakpointsByURI.get(result.getModuleURI());
+				if (uriBreakpoints == null) {
+					uriBreakpoints = new HashSet<>();
+					lineBreakpointsByURI.put(result.getModuleURI(), uriBreakpoints);
+				}
+				uriBreakpoints.add(result.getLine());
+			}
+
+			return result;
 		}
 	}
 
@@ -265,8 +319,11 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	/** Converts a remote column to a local one (Epsilon uses 1-based columns). */
 	private LocationConverter columnConverter;
 
-	/** Breakpoints for each source file. */
-	private Map<URI, Set<Integer>> lineBreakpointsByURI = new ConcurrentHashMap<>();
+	/**
+	 * Breakpoints by path: these are prior to resolution (needed to resolve
+	 * breakpoints on dynamically loaded modules over classpath resources).
+	 */
+	private Map<String, Set<Integer>> lineBreakpointsByPath = new ConcurrentHashMap<>();
 
 	/**
 	 * Mappings from module URIs to filesystem paths. Useful when debugging
@@ -502,66 +559,29 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 	public CompletableFuture<SetBreakpointsResponse> setBreakpoints(SetBreakpointsArguments args) {
 		return CompletableFuture.supplyAsync(() -> {
 			SetBreakpointsResponse response = new SetBreakpointsResponse();
-
 			List<Breakpoint> responseBreakpoints = new ArrayList<>(args.getBreakpoints().length);
-			synchronized (lineBreakpointsByURI) {
+
+			synchronized (this.threads) {
 				final String sourcePath = args.getSource().getPath();
-
-				if (args.getBreakpoints().length == 0) {
-					/*
-					 * This is just a request to clear all breakpoints: ask the debuggers
-					 * for a module URI, using line 1 as a placeholder.
-					 */
-					BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, 1);
-					response.setBreakpoints(new Breakpoint[0]);
-
-					// We propagate requests across all debuggers
-					for (ThreadState e : this.threads.values()) {
-						BreakpointResult result = e.debugger.verifyBreakpoint(request);
-						if (result.getModuleURI() != null) {
-							lineBreakpointsByURI.put(result.getModuleURI(), Collections.emptySet());
-						}
-					}
-					return response;
+				final Set<Integer> localLines = new HashSet<>();
+				for (SourceBreakpoint sbp : args.getBreakpoints()) {
+					localLines.add(lineConverter.fromRemoteToLocal(sbp.getLine()));
 				}
 
-				Set<Integer> addedBreakpoints = null;
-				for (SourceBreakpoint sbp : args.getBreakpoints()) {
-					Breakpoint bp = new Breakpoint();
-					responseBreakpoints.add(bp);
-					bp.setVerified(false);
-					bp.setReason(BreakpointNotVerifiedReason.FAILED);
+				// First, clear all existing breakpoints
+				removeAllBreakpoints(sourcePath);
+				if (!localLines.isEmpty()) {
+					lineBreakpointsByPath.put(sourcePath, localLines);
 
-					BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, sbp.getLine());
+					for (Integer localLine : localLines) {
+						Breakpoint bp = new Breakpoint();
+						responseBreakpoints.add(bp);
+						bp.setVerified(false);
+						bp.setReason(BreakpointNotVerifiedReason.FAILED);
 
-					for (ThreadState e : this.threads.values()) {
-						BreakpointResult result = e.debugger.verifyBreakpoint(request);
-
-						switch (result.getState()) {
-						case VERIFIED:
-							bp.setVerified(true);
-							bp.setReason(null);
-							break;
-						case PENDING:
-							if (!bp.isVerified()) {
-								bp.setVerified(false);
-								bp.setReason(BreakpointNotVerifiedReason.PENDING);
-							}
-							break;
-						case FAILED:
-							// nothing to do
-							break;
-						}
- 
-						if (result.getState() != BreakpointState.FAILED) {
-							bp.setLine(lineConverter.fromLocalToRemote(result.getLine()));
-							bp.setSource(createSource(result, sourcePath));
-
-							if (addedBreakpoints == null) {
-								addedBreakpoints = new HashSet<>();
-								lineBreakpointsByURI.put(result.getModuleURI(), addedBreakpoints);
-							}
-							addedBreakpoints.add(result.getLine());
+						for (ThreadState thread : this.threads.values()) {
+							BreakpointResult result = thread.setBreakpoint(sourcePath, localLine);
+							updateResponseBreakpointFromResult(sourcePath, bp, result);
 						}
 					}
 				}
@@ -570,6 +590,47 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 			response.setBreakpoints(responseBreakpoints.toArray(new Breakpoint[responseBreakpoints.size()]));
 			return response;
 		});
+	}
+
+	protected void updateResponseBreakpointFromResult(final String sourcePath, Breakpoint bp, BreakpointResult result) {
+		switch (result.getState()) {
+		case VERIFIED:
+			bp.setVerified(true);
+			bp.setReason(null);
+			break;
+		case PENDING:
+			if (!bp.isVerified()) {
+				bp.setVerified(false);
+				bp.setReason(BreakpointNotVerifiedReason.PENDING);
+			}
+			break;
+		case FAILED:
+			// nothing to do
+			break;
+		}
+
+		if (result.getState() != BreakpointState.FAILED) {
+			bp.setLine(lineConverter.fromLocalToRemote(result.getLine()));
+			bp.setSource(createSource(result, sourcePath));
+		}
+	}
+
+	protected void removeAllBreakpoints(final String sourcePath) {
+		lineBreakpointsByPath.remove(sourcePath);
+
+		/*
+		 * This is just a request to clear all breakpoints: ask the debuggers
+		 * for a module URI, using line 1 as a placeholder.
+		 */
+		BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, 1);
+
+		// We propagate requests across all debuggers
+		for (ThreadState e : this.threads.values()) {
+			BreakpointResult result = e.debugger.verifyBreakpoint(request);
+			if (result.getModuleURI() != null) {
+				e.lineBreakpointsByURI.remove(result.getModuleURI());
+			}
+		}
 	}
 
 	@Override
@@ -752,12 +813,6 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 		}
 	}
 
-	@Override
-	public boolean isTerminated() {
-		return isTerminated;
-	}
-
-	@Override
 	public IEolModule getModule() {
 		return mainModule;
 	}
@@ -797,21 +852,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 		}
 	}
 
-	protected void resumeAllThreads() {
-		synchronized (suspendedLatch) {
-			suspendedLatch.set(false);
-			suspendedLatch.notifyAll();
-		}
-	}
-
-	@Override
-	public boolean hasBreakpointItself(ModuleElement ast) {
-		Set<Integer> lineBreakpoints = lineBreakpointsByURI.get(ast.getUri());
-		return lineBreakpoints != null && lineBreakpoints.contains(ast.getRegion().getStart().getLine());
-	}
-
-	@Override
-	public void suspend(ModuleElement ast, SuspendReason reason) throws InterruptedException {
+	protected void suspend(ModuleElement ast, SuspendReason reason) throws InterruptedException {
 		switch (reason) {
 		case STEP:
 			sendStopped(StoppedEventArgumentsReason.STEP);
@@ -828,6 +869,13 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 			do {
 				suspendedLatch.wait();
 			} while (suspendedLatch.get());
+		}
+	}
+	
+	protected void resumeAllThreads() {
+		synchronized (suspendedLatch) {
+			suspendedLatch.set(false);
+			suspendedLatch.notifyAll();
 		}
 	}
 	

@@ -153,7 +153,7 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertEquals(SCRIPT_FILE.getCanonicalPath(), topFrame.getSource().getPath());
 		assertEquals(line, topFrame.getLine());
 
-		adapter.continue_(new ContinueArguments());
+		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
 

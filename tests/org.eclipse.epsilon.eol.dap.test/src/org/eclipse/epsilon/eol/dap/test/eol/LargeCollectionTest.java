@@ -88,7 +88,7 @@ public class LargeCollectionTest extends AbstractEpsilonDebugAdapterTest {
 			assertEquals(nExpected + "", lastElementVariable.getValue());
 		}
 
-		adapter.continue_(new ContinueArguments());
+		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
 

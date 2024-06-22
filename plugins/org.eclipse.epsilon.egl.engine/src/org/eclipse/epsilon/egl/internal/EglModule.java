@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
@@ -43,6 +44,7 @@ import org.eclipse.epsilon.egl.parse.problem.EglParseProblem;
 import org.eclipse.epsilon.egl.preprocessor.Preprocessor;
 import org.eclipse.epsilon.egl.types.EglComplexType;
 import org.eclipse.epsilon.eol.EolModule;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.TypeExpression;
 import org.eclipse.epsilon.eol.exceptions.EolInternalException;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
@@ -258,4 +260,10 @@ public class EglModule extends EolModule implements IEglModule {
 			return false;
 		}
 	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new EglDebugger();
+	}
+
 }

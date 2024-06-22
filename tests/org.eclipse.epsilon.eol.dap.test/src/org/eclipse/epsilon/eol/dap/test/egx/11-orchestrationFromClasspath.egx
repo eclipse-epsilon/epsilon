@@ -1,0 +1,4 @@
+rule Person2Text transform p: Person {
+  template: '11-person.egl'
+  target: 'example.txt'
+}
