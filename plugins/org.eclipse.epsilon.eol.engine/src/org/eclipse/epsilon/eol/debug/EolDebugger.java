@@ -76,7 +76,7 @@ public class EolDebugger implements IEolDebugger {
 	public void control(ModuleElement ast, IEolContext context) {
 		if (!controls(ast, context)) return;
 		currentModuleElement = ast;
-	
+
 		try {
 			if (stepping) {
 				stepping = false;

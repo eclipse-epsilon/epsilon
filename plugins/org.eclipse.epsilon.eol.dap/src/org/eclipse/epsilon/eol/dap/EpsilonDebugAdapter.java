@@ -36,10 +36,6 @@ import java.util.logging.Logger;
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.Region;
-import org.eclipse.epsilon.egl.EglTemplate;
-import org.eclipse.epsilon.egl.EglTemplateFactory;
-import org.eclipse.epsilon.egl.IEgxModule;
-import org.eclipse.epsilon.egl.execute.control.DefaultTemplateExecutionListener;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dap.variables.IVariableReference;
 import org.eclipse.epsilon.eol.dap.variables.SingleFrameReference;
@@ -107,17 +103,6 @@ import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
 public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugTarget {
 
 	/**
-	 * Template execution listener for propagating an execution listener to the
-	 * resulting templates.
-	 */
-	protected class TemplateDebugListener extends DefaultTemplateExecutionListener {
-		@Override
-		public void aboutToProcess(EglTemplate template) {
-			attachTo(template.getModule());
-		}
-	}
-
-	/**
 	 * Keeps track of the modules that start and complete execution. Note that there should
 	 * only be exactly one instance of this listener per execution: the same listener should
 	 * be propagated across all scripts being launched (e.g. from EGX to EGL scripts).
@@ -147,13 +132,6 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer, IEpsilonDebugT
 				if (ast instanceof IEolModule) {
 					// Set up thread in our list if we don't have it yet
 					attachTo((IEolModule) ast);
-				}
-
-				// Set up template listener for EGX modules
-				if (ast instanceof IEgxModule) {
-					IEgxModule egxModule = (IEgxModule) ast;
-					final EglTemplateFactory templateFactory = egxModule.getContext().getTemplateFactory();
-					templateFactory.getTemplateExecutionListeners().add(new TemplateDebugListener());
 				}
 			}
 		}
