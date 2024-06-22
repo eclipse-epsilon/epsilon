@@ -14,12 +14,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
+
 public class PerElementCollectionReference extends CollectionReference {
 
 	private final String name;
 
-	public PerElementCollectionReference(String name, Collection<Object> collection) {
-		super(collection);
+	public PerElementCollectionReference(IEolContext context, String name, Collection<Object> collection) {
+		super(context, collection);
 		this.name = name;
 	}
 
@@ -34,7 +36,7 @@ public class PerElementCollectionReference extends CollectionReference {
 
 		int i = 0;
 		for (Object e : target) {
-			refs.add(state.getValueReference(String.format("%s[%d]", name, i++), e));
+			refs.add(state.getValueReference(context, String.format("%s[%d]", name, i++), e));
 		}
 
 		return refs;

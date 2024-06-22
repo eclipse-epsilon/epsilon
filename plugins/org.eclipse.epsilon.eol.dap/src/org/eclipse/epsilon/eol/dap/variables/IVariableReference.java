@@ -11,8 +11,11 @@ package org.eclipse.epsilon.eol.dap.variables;
 
 import java.util.List;
 
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
+
 public interface IVariableReference {
 
+	IEolContext getContext();
 	int getId();
 	String getName();
 	String getValue();

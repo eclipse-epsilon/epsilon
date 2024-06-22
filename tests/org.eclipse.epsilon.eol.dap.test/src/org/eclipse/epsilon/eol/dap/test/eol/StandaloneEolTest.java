@@ -110,7 +110,9 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// Step over should stop the program at line 2
-		adapter.next(new NextArguments());
+		final NextArguments args = new NextArguments();
+		args.setThreadId(adapter.threads().get().getThreads()[0].getId());
+		adapter.next(args);
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.STEP);
 
 		StackTraceResponse stackTrace = getStackTrace();
@@ -129,7 +131,10 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// Step over should stop the program at the first line of the operation
-		adapter.stepIn(new StepInArguments());
+		final StepInArguments args = new StepInArguments();
+		args.setThreadId(adapter.threads().get().getThreads()[0].getId());
+		adapter.stepIn(args);
+
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.STEP);
 		StackTraceResponse stackTrace = getStackTrace();
 		assertEquals("After the next() call, the program should be stopped at the first line of the operation",
@@ -157,7 +162,10 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// First step out should stop the program at the line after the operation
-		adapter.stepOut(new StepOutArguments());
+		final StepOutArguments args = new StepOutArguments();
+		args.setThreadId(adapter.threads().get().getThreads()[0].getId());
+		adapter.stepOut(args);
+		
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.STEP);
 		StackTraceResponse stackTrace = getStackTrace();
 		assertEquals("After the stepOut() call, the program should be stopped at the line after the operation call",
@@ -168,7 +176,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// Second step out should just have the problem complete successfully
-		adapter.stepOut(new StepOutArguments());
+		adapter.stepOut(args);
 		assertProgramCompletedSuccessfully();
 	}
 

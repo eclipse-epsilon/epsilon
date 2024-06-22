@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
 
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.types.EolTuple;
 import org.eclipse.epsilon.eol.types.EolTupleType;
 
@@ -21,8 +22,8 @@ public class TupleReference extends IdentifiableReference<EolTuple> {
 
 	private final String name;
 
-	public TupleReference(String name, EolTuple tuple) {
-		super(tuple);
+	public TupleReference(IEolContext context, String name, EolTuple tuple) {
+		super(context, tuple);
 		this.name = name;
 	}
 
@@ -41,7 +42,7 @@ public class TupleReference extends IdentifiableReference<EolTuple> {
 		final List<IVariableReference> refs = new ArrayList<>(target.size());
 
 		for (Entry<String, Object> entry : target.entrySet()) {
-			refs.add(state.getValueReference(entry.getKey(), entry.getValue()));
+			refs.add(state.getValueReference(context, entry.getKey(), entry.getValue()));
 		}
 
 		return refs;

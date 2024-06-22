@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.models.IReflectiveModel;
 
 public class ModelElementReference extends IdentifiableReference<Object> {
@@ -26,8 +27,8 @@ public class ModelElementReference extends IdentifiableReference<Object> {
 	private final String name;
 	private final IReflectiveModel model;
 
-	public ModelElementReference(IReflectiveModel rModel, String name, Object value) {
-		super(value);
+	public ModelElementReference(IEolContext context, IReflectiveModel rModel, String name, Object value) {
+		super(context, value);
 		this.model = rModel;
 		this.name = name;
 	}
@@ -50,13 +51,13 @@ public class ModelElementReference extends IdentifiableReference<Object> {
 			for (String propName : model.getPropertiesOf(model.getTypeNameOf(target))) {
 				Object propValue;
 				try {
-					propValue = model.getPropertyGetter().invoke(target, propName, state.getContext());
+					propValue = model.getPropertyGetter().invoke(target, propName, context);
 				} catch (EolRuntimeException e) {
 					LOGGER.log(Level.SEVERE, e.getMessage(), e);
 					propValue = "<error obtaining value>";
 				}
 
-				refs.add(state.getValueReference(propName, propValue));
+				refs.add(state.getValueReference(context, propName, propValue));
 			}
 		} catch (EolModelElementTypeNotFoundException e) {
 			LOGGER.log(Level.SEVERE, e.getMessage(), e);

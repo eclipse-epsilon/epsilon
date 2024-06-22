@@ -14,14 +14,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
+
 public class SlicedCollectionReference extends CollectionReference {
 
 	private final String name;
 	private final int sliceSize;
 	
-	public SlicedCollectionReference(String name, Collection<Object> t, int sliceSize) {
-		super(t);
-
+	public SlicedCollectionReference(IEolContext context, String name, Collection<Object> t, int sliceSize) {
+		super(context, t);
 		this.name = name;
 		this.sliceSize = sliceSize;
 	}
@@ -41,7 +42,7 @@ public class SlicedCollectionReference extends CollectionReference {
 		final List<IVariableReference> refs = new ArrayList<>(target.size() / sliceSize + 1);
 		for (int from = 0; from < target.size(); from += sliceSize) {
 			final int to = Math.min(target.size(), from + sliceSize);
-			refs.add(state.putOrGetReference(new CollectionSliceReference(name, target, from, to)));
+			refs.add(state.putOrGetReference(new CollectionSliceReference(context, name, target, from, to)));
 		}
 		return refs;
 	}

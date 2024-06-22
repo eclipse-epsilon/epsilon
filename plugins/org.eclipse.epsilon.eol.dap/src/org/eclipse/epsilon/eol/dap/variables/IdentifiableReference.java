@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.types.EolAnyType;
 import org.eclipse.epsilon.eol.types.EolPrimitiveType;
 import org.eclipse.epsilon.eol.types.EolType;
@@ -26,10 +27,12 @@ public abstract class IdentifiableReference<T> implements IVariableReference {
 		EolPrimitiveType.String
 	};
 
+	protected final IEolContext context;
+	protected final T target;
 	protected int id;
-	protected T target;
 
-	public IdentifiableReference(T t) {
+	public IdentifiableReference(IEolContext context, T t) {
+		this.context = context;
 		this.target = t;
 	}
 
@@ -37,12 +40,13 @@ public abstract class IdentifiableReference<T> implements IVariableReference {
 		return target;
 	}
 
-	public void setTarget(T target) {
-		this.target = target;
-	}
-
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	@Override
+	public IEolContext getContext() {
+		return context;
 	}
 
 	@Override

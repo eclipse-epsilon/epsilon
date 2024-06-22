@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
+
 public class CollectionSliceReference extends IdentifiableReference<Collection<Object>>{
 
 	private final String name;
@@ -37,8 +39,8 @@ public class CollectionSliceReference extends IdentifiableReference<Collection<O
 	 * @param from Starting 0-based index, included.
 	 * @param to   Final 0-based index, excluded.
 	 */
-	public CollectionSliceReference(String name, Collection<Object> t, int from, int to) {
-		super(t);
+	public CollectionSliceReference(IEolContext context, String name, Collection<Object> t, int from, int to) {
+		super(context, t);
 
 		if (from < 0) {
 			throw new IllegalArgumentException("from cannot be negative");
@@ -76,7 +78,7 @@ public class CollectionSliceReference extends IdentifiableReference<Collection<O
 
 		int i = from;
 		for (Object e : l) {
-			refs.add(state.getValueReference(String.format("%s[%d]", name, i++), e));
+			refs.add(state.getValueReference(context, String.format("%s[%d]", name, i++), e));
 		}
 
 		return refs;

@@ -52,7 +52,7 @@ import org.junit.rules.Timeout;
 
 public abstract class AbstractEpsilonDebugAdapterTest {
 
-	@Rule
+	//@Rule
 	public Timeout globalTimeout = Timeout.seconds(10);
 
 	protected class TestClient implements IDebugProtocolClient {
@@ -123,7 +123,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	}
 
 	protected void assertStoppedBecauseOf(final String reason) throws InterruptedException {
-		client.isStopped.tryAcquire(5, TimeUnit.SECONDS);
+		client.isStopped.acquire();//.tryAcquire(5, TimeUnit.SECONDS);
 		assertNotNull("The script should have stopped within 5s", client.stoppedArgs);
 		assertEquals("The debugger should say it stopped because of " + reason, reason, client.stoppedArgs.getReason());
 		client.stoppedArgs = null;

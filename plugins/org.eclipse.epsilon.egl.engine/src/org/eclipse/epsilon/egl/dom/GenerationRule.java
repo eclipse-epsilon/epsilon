@@ -26,7 +26,6 @@ import org.eclipse.epsilon.egl.EglTemplateFactory;
 import org.eclipse.epsilon.egl.execute.context.IEgxContext;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.egl.parse.EgxParser;
-import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
 import org.eclipse.epsilon.eol.dom.IExecutableModuleElement;
 import org.eclipse.epsilon.eol.dom.IExecutableModuleElementParameter;
@@ -37,7 +36,6 @@ import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.Variable;
-import org.eclipse.epsilon.eol.execute.control.ExecutionController;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.parse.EolParser;
 import org.eclipse.epsilon.eol.types.EolMap;
@@ -168,13 +166,6 @@ public class GenerationRule extends ExtensibleNamedRule implements IExecutableMo
 		
 		if (templateCache == null || (eglTemplate = templateCache.get(templateUri)) == null) {
 			eglTemplate = templateFactory.load(templateUri);
-
-			// Ensure we use the same execution controller as the main EGX module (for debugging)
-			final IEolModule ruleModule = (IEolModule) module;
-			final ExecutorFactory eglExecutorFactory = eglTemplate.getModule().getContext().getExecutorFactory();
-			final ExecutorFactory ruleExecutorFactory = ruleModule.getContext().getExecutorFactory();
-			final ExecutionController ruleExecutionController = ruleExecutorFactory.getExecutionController();
-			eglExecutorFactory.setExecutionController(ruleExecutionController);
 
 			List<ParseProblem> problems = eglTemplate.getParseProblems();
 			if (!problems.isEmpty()) {

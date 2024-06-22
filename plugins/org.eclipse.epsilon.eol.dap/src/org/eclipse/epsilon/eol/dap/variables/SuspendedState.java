@@ -33,11 +33,6 @@ public class SuspendedState {
 
 	private final AtomicInteger nextReference = new AtomicInteger();
 	private final BiMap<Integer, IVariableReference> references = HashBiMap.create();
-	private final IEolContext context;
-
-	public SuspendedState(IEolContext context) {
-		this.context = context;
-	}
 
 	public void suspended() {
 		synchronized (references) {
@@ -46,9 +41,9 @@ public class SuspendedState {
 		}
 	}
 
-	public IVariableReference getReference(SingleFrame sc) {
+	public IVariableReference getReference(IEolContext context, SingleFrame sc) {
 		synchronized (references) {
-			return putOrGetReference(new SingleFrameReference(sc));
+			return putOrGetReference(new SingleFrameReference(context, sc));
 		}
 	}
 
@@ -64,16 +59,12 @@ public class SuspendedState {
 		}
 	}
 
-	public IEolContext getContext() {
-		return context;
-	}
-
 	@SuppressWarnings("unchecked")
-	protected IVariableReference getValueReference(String name, Object value) {
+	protected IVariableReference getValueReference(IEolContext context, String name, Object value) {
 		IModel model = context.getModelRepository().getOwningModel(value);
 		if (model instanceof IReflectiveModel) {
 			IReflectiveModel rModel = (IReflectiveModel) model;
-			return putOrGetReference(new ModelElementReference(rModel, name, value));
+			return putOrGetReference(new ModelElementReference(context, rModel, name, value));
 		}
 
 		if (value instanceof Collection) {
@@ -81,18 +72,18 @@ public class SuspendedState {
 
 			IdentifiableReference<?> ref;
 			if (c.size() >= LARGE_COLLECTION_THRESHOLD) {
-				ref = new SlicedCollectionReference(name, c, SLICE_SIZE);
+				ref = new SlicedCollectionReference(context, name, c, SLICE_SIZE);
 			} else {
-				ref = new PerElementCollectionReference(name, c);
+				ref = new PerElementCollectionReference(context, name, c);
 			}
 			return putOrGetReference(ref);
 		}
 
 		if (value instanceof EolTuple) {
-			return putOrGetReference(new TupleReference(name, (EolTuple) value));
+			return putOrGetReference(new TupleReference(context, name, (EolTuple) value));
 		}
 
-		return new OpaqueValueReference(name, value);
+		return new OpaqueValueReference(context, name, value);
 	}
 
 	protected IVariableReference putOrGetReference(IdentifiableReference<?> ref) {

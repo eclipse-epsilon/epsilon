@@ -11,12 +11,13 @@ package org.eclipse.epsilon.eol.dap.variables;
 
 import java.util.Collection;
 
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.types.EolCollectionType;
 
 public abstract class CollectionReference extends IdentifiableReference<Collection<Object>> {
 
-	public CollectionReference(Collection<Object> t) {
-		super(t);
+	public CollectionReference(IEolContext context, Collection<Object> t) {
+		super(context, t);
 	}
 
 	@Override

@@ -12,12 +12,13 @@ package org.eclipse.epsilon.eol.dap.variables;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
 
 public class SingleFrameReference extends IdentifiableReference<SingleFrame> {
 
-	public SingleFrameReference(SingleFrame sf) {
-		super(sf);
+	public SingleFrameReference(IEolContext context, SingleFrame sf) {
+		super(context, sf);
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class SingleFrameReference extends IdentifiableReference<SingleFrame> {
 	public List<IVariableReference> getVariables(SuspendedState state) {
 		List<IVariableReference> variables = new ArrayList<>();
 		for (org.eclipse.epsilon.eol.execute.context.Variable localV : target.getAll().values()) {
-			variables.add(state.getValueReference(localV.getName(), localV.getValue()));
+			variables.add(state.getValueReference(context, localV.getName(), localV.getValue()));
 		}
 		return variables;
 	}

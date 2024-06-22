@@ -9,12 +9,14 @@
  *******************************************************************************/
 package org.eclipse.epsilon.eol.dap.variables;
 
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
+
 public class OpaqueValueReference extends IdentifiableReference<Object> {
 
 	private final String name;
 
-	public OpaqueValueReference(String name, Object value) {
-		super(value);
+	public OpaqueValueReference(IEolContext context, String name, Object value) {
+		super(context, value);
 		this.name = name;
 	}
 
