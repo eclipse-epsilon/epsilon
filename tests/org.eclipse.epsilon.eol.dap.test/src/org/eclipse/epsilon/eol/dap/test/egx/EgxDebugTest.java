@@ -27,6 +27,7 @@ import org.eclipse.lsp4j.debug.BreakpointNotVerifiedReason;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
+import org.eclipse.lsp4j.debug.StackFrame;
 import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.ThreadsResponse;
@@ -139,16 +140,18 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 
 	@Test
 	public void canStopAtTargetExpression() throws Exception {
+		final int line = 15;
 		SetBreakpointsResponse stopResult = adapter.setBreakpoints(
-			createBreakpoints(createBreakpoint(15))).get();
+			createBreakpoints(createBreakpoint(line))).get();
 		assertTrue("The breakpoint on the operation was verified",
 			stopResult.getBreakpoints()[0].isVerified());
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		final StackTraceResponse stackTrace = getStackTrace();
-		assertEquals(SCRIPT_FILE.getCanonicalPath(),
-			stackTrace.getStackFrames()[0].getSource().getPath());
+		final StackFrame topFrame = stackTrace.getStackFrames()[0];
+		assertEquals(SCRIPT_FILE.getCanonicalPath(), topFrame.getSource().getPath());
+		assertEquals(line, topFrame.getLine());
 
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
