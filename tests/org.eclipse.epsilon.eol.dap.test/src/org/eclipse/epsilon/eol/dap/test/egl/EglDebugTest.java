@@ -43,7 +43,7 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
-		adapter.continue_(new ContinueArguments());
+		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
 
@@ -65,8 +65,8 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertEquals("Joe", numbersVariable.getValue());
 
 		// Remove breakpoints and continue
-		adapter.setBreakpoints(createBreakpoints());
-		adapter.continue_(new ContinueArguments());
+		adapter.setBreakpoints(createBreakpoints()).get();
+		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
 }
