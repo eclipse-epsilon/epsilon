@@ -89,7 +89,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertNotNull("The null variable should have a value", variablesByName.get("null").getValue());
 		
 		// Continue execution
-		adapter.continue_(new ContinueArguments());
+		adapter.continue_(new ContinueArguments()).get();
 
 		// Execution should complete successfully
 		assertProgramCompletedSuccessfully();

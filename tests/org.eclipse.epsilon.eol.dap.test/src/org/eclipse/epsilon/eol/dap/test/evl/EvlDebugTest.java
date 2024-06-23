@@ -79,8 +79,8 @@ public class EvlDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		Map<String, Variable> topVariables = getVariablesFromTopStackFrame();
-		Variable personVariable = topVariables.get("l");
-		assertNotNull("The top scope should have an 'l' variable", personVariable);
+		Variable lastNameVariable = topVariables.get("l");
+		assertNotNull("The top scope should have an 'l' variable", lastNameVariable);
 
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
