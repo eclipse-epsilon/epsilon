@@ -1,0 +1,4 @@
+migrate Node {
+  migrated.label = original.name;
+  migrated.outgoing ::= original.outgoing;
+}
