@@ -53,4 +53,24 @@ public class ImportingEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertProgramCompletedSuccessfully();
 	}
 
+	@Test
+	public void breakOnImportMovesToFirstStatement() throws Exception {
+		SetBreakpointsResponse breakpoints = adapter.setBreakpoints(
+			createBreakpoints(createBreakpoint(1))).get();
+		assertTrue("The breakpoint on the imported file should be recognised",
+			breakpoints.getBreakpoints()[0].isVerified());
+		assertEquals("The breakpoint on the imported file should be moved to the line of the first statement",
+				(Integer) 3, breakpoints.getBreakpoints()[0].getLine());
+
+		attach();
+
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		assertEquals(3, getStackTrace().getStackFrames()[0].getLine());
+
+		// Remove breakpoints from the file and continue
+		adapter.setBreakpoints(createBreakpoints());
+		adapter.continue_(new ContinueArguments());
+		assertProgramCompletedSuccessfully();
+	}
+	
 }

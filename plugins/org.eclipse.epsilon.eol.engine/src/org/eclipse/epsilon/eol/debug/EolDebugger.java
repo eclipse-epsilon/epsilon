@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
-import org.eclipse.epsilon.common.parse.Region;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
 import org.eclipse.epsilon.eol.dom.Import;
@@ -74,7 +73,9 @@ public class EolDebugger implements IEolDebugger {
 
 	@Override
 	public void control(ModuleElement ast, IEolContext context) {
-		if (!controls(ast, context)) return;
+		if (!controls(ast)) {
+			return;
+		}
 		currentModuleElement = ast;
 
 		try {
@@ -123,9 +124,11 @@ public class EolDebugger implements IEolDebugger {
 		stopAfterFrameStackSizeDropsBelow = frameStackSize();
 	}
 
-	private boolean controls(ModuleElement ast, IEolContext context) {
+	private boolean controls(ModuleElement ast) {
 		// Top level element or block
-		if (ast.getParent() == null || ast instanceof StatementBlock) return false;
+		if (ast.getParent() == null || ast instanceof StatementBlock) {
+			return false;
+		}
 		return isStatement(ast) || isContainedExpression(ast);
 	}
 
@@ -166,7 +169,6 @@ public class EolDebugger implements IEolDebugger {
 	}
 
 	protected boolean isExpressionOrStatementBlockContainer(ModuleElement ast) {
-		if (ast == null) return false;
 		return ast instanceof Operation || ast instanceof ExecutableBlock<?>;
 	}
 
@@ -297,61 +299,33 @@ public class EolDebugger implements IEolDebugger {
 	}
 
 	/**
-	 * Finds the first line greater than or equal to the given line that actually
-	 * has a module element in it. This handles cases where we set a breakpoint
-	 * on an empty line: it will instead break on the first non-empty line after it.
+	 * Finds the first line greater than or equal to the given line that has a
+	 * module element that we control. This handles cases where we set a breakpoint
+	 * on an empty line or an import statement.
 	 */
 	protected int findFirstLineGreaterThanOrEqualTo(ModuleElement root, int localLine) {
-		// This is a leaf node: either we find the line or we don't
-		if (root.getChildren().isEmpty()) {
-			final Region region = root.getRegion();
-			final int regionStartLine = region.getStart().getLine();
-			final int regionEndLine = region.getEnd().getLine();
-			if (regionEndLine >= localLine) {
-				// Region may start later than the line we set the breakpoint on
-				return Math.max(localLine, regionStartLine);
-			} else {
-				// Region does not include the line
-				return -1;
-			}
+		if (controls(root) && root.getRegion().getEnd().getLine() >= localLine) {
+			return root.getRegion().getStart().getLine();
 		}
 
 		/*
-		 * Not a leaf node: find earliest child whose region spans the line or something
-		 * after the line. We scan over all elements, because the children of a module
-		 * element do not have to be in the same order as they appear on the file.
+		 * Otherwise, find earliest child whose region spans the line or something after
+		 * the line. We scan over all elements, because the children of a module element
+		 * do not have to be in the same order as they appear on the file.
 		 * 
 		 * This is the case, for instance, for the operations that appear below a bit of
 		 * top-level code, which will appear before that top-level code in the list of
 		 * children.
 		 */
-		ModuleElement earliest = null;
 		int earliestLine = Integer.MAX_VALUE;
 		for (ModuleElement child : root.getChildren()) {
-			final Region childRegion = child.getRegion();
-			final int startLine = childRegion.getStart().getLine();
-			final int endLine = childRegion.getEnd().getLine();
-			if (startLine < earliestLine && endLine >= localLine) {
-				earliest = child;
-				earliestLine = startLine;
+			int childLine = findFirstLineGreaterThanOrEqualTo(child, localLine);
+			if (childLine != -1 && childLine < earliestLine) {
+				earliestLine = childLine;
 			}
 		}
 
-		if (earliest != null) {
-			int earliestStart = earliest.getRegion().getStart().getLine();
-			if (earliestStart >= localLine) {
-				// We've already hit a line that is greater than or equal to localLine
-				return earliestStart;
-			} else {
-				/*
-				 * We haven't crossed the target line yet, but we know the module element spans
-				 * over this line, so we go over its children.
-				 */
-				return findFirstLineGreaterThanOrEqualTo(earliest, localLine);
-			}
-		}
-
-		return -1;
+		return earliestLine == Integer.MAX_VALUE ? -1 : earliestLine;
 	}
 	
 }
