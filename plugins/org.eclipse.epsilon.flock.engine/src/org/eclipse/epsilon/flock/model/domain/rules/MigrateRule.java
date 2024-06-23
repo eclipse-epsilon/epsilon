@@ -75,9 +75,10 @@ public class MigrateRule extends ClassifierTypedConstruct {
 
 	@Override
 	public String toString() {
-		return getAnnotationBlock().toString() + "migrate "  + getOriginalType() + " " +
-		       "ignoring " + ignoredProperties + " " + 
-		       "when "     + getGuard()        + " " + 
-		       "do "       + body;
+		return (getAnnotationBlock() == null ? "" : getAnnotationBlock()) +
+			"migrate "  + getOriginalType() + " " +
+			"ignoring " + ignoredProperties + " " +
+			"when "     + getGuard()        + " " +
+			"do "       + body;
 	}
 }
