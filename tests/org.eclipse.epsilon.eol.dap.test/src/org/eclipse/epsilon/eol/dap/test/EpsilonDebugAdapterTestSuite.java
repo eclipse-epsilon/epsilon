@@ -23,6 +23,7 @@ import org.eclipse.epsilon.eol.dap.test.eol.ModelElementPropertiesTest;
 import org.eclipse.epsilon.eol.dap.test.eol.SmallCollectionTest;
 import org.eclipse.epsilon.eol.dap.test.eol.StandaloneEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.TupleTest;
+import org.eclipse.epsilon.eol.dap.test.epl.EplDebugTest;
 import org.eclipse.epsilon.eol.dap.test.etl.EtlDebugTest;
 import org.eclipse.epsilon.eol.dap.test.evl.EvlDebugTest;
 import org.junit.runner.RunWith;
@@ -51,7 +52,8 @@ import junit.framework.Test;
     EvlDebugTest.class,
     EtlDebugTest.class,
     EclDebugTest.class,
-    EmlDebugTest.class
+    EmlDebugTest.class,
+    EplDebugTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {
