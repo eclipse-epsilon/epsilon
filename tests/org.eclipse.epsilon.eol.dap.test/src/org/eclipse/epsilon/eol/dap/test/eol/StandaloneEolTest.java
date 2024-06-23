@@ -65,6 +65,9 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		final StackTraceResponse stackTrace = getStackTrace();
 		assertEquals("The debugger should only report one frame", 1, (int) stackTrace.getStackFrames().length);
 		assertEquals("The stack frame should be on line 1", 1, stackTrace.getStackFrames()[0].getLine());
+		assertEquals("The stack frame should mention end line as well", (Integer) 1, stackTrace.getStackFrames()[0].getEndLine());
+		assertEquals("The stack frame should mention column as well", 1, stackTrace.getStackFrames()[0].getColumn());
+		assertEquals("The stack frame should mention end column as well", (Integer) 45, stackTrace.getStackFrames()[0].getEndColumn());
 
 		final String stackFramePath = stackTrace.getStackFrames()[0].getSource().getPath();
 		final String modulePath = module.getFile().getCanonicalPath();

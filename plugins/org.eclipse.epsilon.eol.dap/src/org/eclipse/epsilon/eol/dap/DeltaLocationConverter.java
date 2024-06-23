@@ -9,14 +9,20 @@
  *******************************************************************************/
 package org.eclipse.epsilon.eol.dap;
 
-class RemoteIsZeroBasedConverter implements LocationConverter {
+public class DeltaLocationConverter implements LocationConverter {
+	private final int fromLocalToRemoteAdd;
+
+	public DeltaLocationConverter(int fromLocalToRemoteAdd) {
+		this.fromLocalToRemoteAdd = fromLocalToRemoteAdd;
+	}
+
 	@Override
 	public int fromRemoteToLocal(int remote) {
-		return remote + 1;
+		return remote - fromLocalToRemoteAdd;
 	}
 
 	@Override
 	public int fromLocalToRemote(int local) {
-		return local - 1;
+		return local + fromLocalToRemoteAdd;
 	}
 }

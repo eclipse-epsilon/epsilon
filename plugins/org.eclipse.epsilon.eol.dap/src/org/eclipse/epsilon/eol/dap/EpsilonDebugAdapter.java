@@ -316,7 +316,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	/** Converts a remote line to a local one (Epsilon uses 1-based lines). */
 	private LocationConverter lineConverter;
 
-	/** Converts a remote column to a local one (Epsilon uses 1-based columns). */
+	/** Converts a remote column to a local one (Epsilon uses 0-based columns). */
 	private LocationConverter columnConverter;
 
 	/**
@@ -370,12 +370,13 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		return CompletableFuture.supplyAsync(() -> {
 			/*
 			 * Note: according to the DAP 1.65 spec, the defaults are that lines and columns
-			 * are 1-based.
+			 * are 1-based. Epsilon itself has 1-based lines, and 0-based columns (matching
+			 * the Eclipse IDE).
 			 */
 			this.lineConverter = args.getLinesStartAt1() == null || args.getLinesStartAt1()
-				? new RemoteIsOneBasedConverter() : new RemoteIsZeroBasedConverter();
+				? new DeltaLocationConverter(0) : new DeltaLocationConverter(-1);
 			this.columnConverter = args.getColumnsStartAt1() == null || args.getColumnsStartAt1()
-				? new RemoteIsOneBasedConverter() : new RemoteIsZeroBasedConverter();
+				? new DeltaLocationConverter(1) : new DeltaLocationConverter(0);
 
 			this.initializeArguments = args;
 
@@ -519,9 +520,14 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	protected void setStackFrameLocationFrom(StackFrame responseFrame, ModuleElement frameEntrypoint) {
 		// We only set a location if we don't have a full location yet (including the path to the source)
 		if (frameEntrypoint != null && (responseFrame.getSource() == null || responseFrame.getSource().getPath() == null)) {
-			Position frameStart = frameEntrypoint.getRegion().getStart();
+			final Position frameStart = frameEntrypoint.getRegion().getStart();
+			final Position frameEnd = frameEntrypoint.getRegion().getEnd();
+
 			responseFrame.setLine(lineConverter.fromLocalToRemote(frameStart.getLine()));
+			responseFrame.setEndLine(lineConverter.fromLocalToRemote(frameEnd.getLine()));
 			responseFrame.setColumn(columnConverter.fromLocalToRemote(frameStart.getColumn()));
+			responseFrame.setEndColumn(columnConverter.fromLocalToRemote(frameEnd.getColumn()));
+
 			responseFrame.setSource(createSource(frameEntrypoint));
 		}
 	}
