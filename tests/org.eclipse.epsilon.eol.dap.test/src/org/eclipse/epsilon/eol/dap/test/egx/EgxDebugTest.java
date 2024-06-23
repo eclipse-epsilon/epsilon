@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
+import org.eclipse.epsilon.eol.dap.test.metamodel.Person;
 import org.eclipse.epsilon.eol.models.java.JavaModel;
 import org.eclipse.lsp4j.debug.BreakpointNotVerifiedReason;
 import org.eclipse.lsp4j.debug.ContinueArguments;
@@ -45,35 +46,6 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 
 	@Rule
 	public TemporaryFolder tempFolder = new TemporaryFolder();
-
-	public static class Person {
-		private String name, lastName;
-
-		public Person() {
-			// nothing to do
-		}
-
-		public Person(String firstName, String lastName) {
-			this.name = firstName;
-			this.lastName = lastName;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String getLastName() {
-			return lastName;
-		}
-
-		public void setLastName(String lastName) {
-			this.lastName = lastName;
-		}
-	}
 
 	@Override
 	protected void setupModule() throws Exception {

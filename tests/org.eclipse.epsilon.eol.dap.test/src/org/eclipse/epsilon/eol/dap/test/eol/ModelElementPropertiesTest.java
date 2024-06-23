@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
+import org.eclipse.epsilon.eol.dap.test.metamodel.Person;
 import org.eclipse.epsilon.eol.models.java.JavaModel;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
@@ -30,26 +31,6 @@ import org.junit.Test;
 public class ModelElementPropertiesTest extends AbstractEpsilonDebugAdapterTest {
 
 	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "04-fields.eol");
-
-	public static class Person {
-		private String name, lastName;
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String getLastName() {
-			return lastName;
-		}
-
-		public void setLastName(String lastName) {
-			this.lastName = lastName;
-		}
-	}
 
 	@Override
 	protected void setupModule() throws Exception {
