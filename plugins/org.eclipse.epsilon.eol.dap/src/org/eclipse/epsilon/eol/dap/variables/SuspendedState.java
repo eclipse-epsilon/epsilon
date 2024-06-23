@@ -88,12 +88,17 @@ public class SuspendedState {
 
 	protected IVariableReference putOrGetReference(IdentifiableReference<?> ref) {
 		synchronized (references) {
+			/*
+			 * If we do not have an ID for this reference, generate one.
+			 *
+			 * Otherwise, reuse the ID.
+			 */
 			Integer reference = references.inverse().get(ref);
 			if (reference == null) {
 				reference = nextReference.incrementAndGet();
-				ref.setId(reference);
 				references.put(reference, ref);
 			}
+			ref.setId(reference);
 		}
 
 		return ref;

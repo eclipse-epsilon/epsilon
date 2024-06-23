@@ -27,6 +27,7 @@ import org.eclipse.epsilon.eol.dap.test.eol.TupleTest;
 import org.eclipse.epsilon.eol.dap.test.epl.EplDebugTest;
 import org.eclipse.epsilon.eol.dap.test.etl.EtlDebugTest;
 import org.eclipse.epsilon.eol.dap.test.evl.EvlDebugTest;
+import org.eclipse.epsilon.eol.dap.test.pinset.PinsetDebugTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -55,7 +56,8 @@ import junit.framework.Test;
     EclDebugTest.class,
     EmlDebugTest.class,
     EplDebugTest.class,
-    EmgDebugTest.class
+    EmgDebugTest.class,
+    PinsetDebugTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {

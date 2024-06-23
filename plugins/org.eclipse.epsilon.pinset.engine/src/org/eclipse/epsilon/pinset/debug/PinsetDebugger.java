@@ -12,6 +12,7 @@ package org.eclipse.epsilon.pinset.debug;
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.pinset.DatasetRule;
+import org.eclipse.epsilon.pinset.columnGenerators.Column;
 
 /**
  * PinsetDebugger.
@@ -21,8 +22,9 @@ import org.eclipse.epsilon.pinset.DatasetRule;
  */
 public class PinsetDebugger extends EolDebugger {
 
-	public PinsetDebugger() {
-		super();
+	@Override
+	protected boolean isExpressionOrStatementBlockContainer(ModuleElement ast) {
+		return super.isExpressionOrStatementBlockContainer(ast) || ast instanceof Column;
 	}
 
 	@Override
