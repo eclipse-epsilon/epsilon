@@ -1,0 +1,22 @@
+rule TransformGraph 
+    transform s : Source!Graph
+    to t : Target!Graph
+{
+  t.nodes ::= s.nodes;
+}
+
+rule TransformNode
+    transform s : Source!Node
+    to t : Target!Node
+{
+  t.name = s.name;
+  t.outgoing ::= s.outgoing;
+}
+
+rule TransformEdge 
+    transform s : Source!Edge
+    to t : Target!Edge
+{
+    t.source ::= s.source;
+    t.target ::= s.target;
+}
