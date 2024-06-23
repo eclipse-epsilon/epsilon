@@ -21,6 +21,7 @@ import org.eclipse.epsilon.eol.dap.test.eol.ModelElementPropertiesTest;
 import org.eclipse.epsilon.eol.dap.test.eol.SmallCollectionTest;
 import org.eclipse.epsilon.eol.dap.test.eol.StandaloneEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.TupleTest;
+import org.eclipse.epsilon.eol.dap.test.evl.EvlDebugTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -43,7 +44,8 @@ import junit.framework.Test;
     EglDebugTest.class,
     ImportingEglTest.class,
     EgxDebugTest.class,
-    ClasspathEgxTest.class
+    ClasspathEgxTest.class,
+    EvlDebugTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {

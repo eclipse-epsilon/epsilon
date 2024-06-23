@@ -1,0 +1,13 @@
+context Person {
+  constraint HasName {
+    check: self.name.isDefined() and self.name.trim().length() > 0
+  }
+
+  constraint HasLastName {
+    guard: self.satisfies('HasName')
+    check {
+      var l = self.lastName;
+      return l.isDefined() and l.trim().length() > 0;
+    }
+  }
+}
