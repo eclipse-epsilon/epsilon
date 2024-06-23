@@ -87,3 +87,21 @@ task debugHelloEGL {
     debugEpsilon = true
   }
 }
+
+task runEGX {
+  dependsOn tasks.setupEpsilonTasks
+  doLast {
+    ant.'epsilon.emf.loadModel'(modelFile: 'models/person.model', metamodelFile: 'models/person.ecore', read: true, store: false, name: 'M')
+    ant.'epsilon.egl'(src: '07-orchestration.egx', debug: debugEpsilon, debugPort: debugPort) {
+      model(ref: 'M')
+    }
+    ant.'epsilon.disposeModel'(model: 'M')
+  }
+}
+
+task debugEGX {
+  finalizedBy "runEGX"
+  doLast {
+    debugEpsilon = true
+  }
+}

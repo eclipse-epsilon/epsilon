@@ -30,6 +30,21 @@
             ],
             "label": "epsilonDebug: inspectObject",
             "isBackground": true
+        },
+        {
+            "type": "gradle",
+            "script": "debugEGX",
+            "group": "other",
+            "buildFile": "${workspaceFolder}/build.gradle",
+            "projectFolder": "${workspaceFolder}",
+            "workspaceFolder": "${workspaceFolder}",
+            "args": "--info",
+            "problemMatcher": [
+                "$gradle",
+                "$epsilon-debug"
+            ],
+            "label": "epsilonDebug: debugEGX",
+            "isBackground": true
         }
     ]
 }

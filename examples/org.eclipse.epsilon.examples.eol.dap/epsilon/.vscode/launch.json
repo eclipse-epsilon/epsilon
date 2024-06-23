@@ -17,6 +17,13 @@
             "name": "Debug 04-inspectObject",
             "port": 4040,
             "preLaunchTask": "epsilonDebug: inspectObject"
+        },
+        {
+            "type": "epsilon",
+            "request": "attach",
+            "name": "Debug 07-orchestration",
+            "port": 4040,
+            "preLaunchTask": "epsilonDebug: debugEGX"
         }
     ]
 }
