@@ -14,6 +14,7 @@ import org.eclipse.epsilon.eol.dap.test.egl.EglDebugTest;
 import org.eclipse.epsilon.eol.dap.test.egl.ImportingEglTest;
 import org.eclipse.epsilon.eol.dap.test.egx.ClasspathEgxTest;
 import org.eclipse.epsilon.eol.dap.test.egx.EgxDebugTest;
+import org.eclipse.epsilon.eol.dap.test.emg.EmgDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eml.EmlDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ClasspathEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.HttpEolTest;
@@ -53,7 +54,8 @@ import junit.framework.Test;
     EtlDebugTest.class,
     EclDebugTest.class,
     EmlDebugTest.class,
-    EplDebugTest.class
+    EplDebugTest.class,
+    EmgDebugTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {
