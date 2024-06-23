@@ -445,25 +445,20 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				responseFrame.setId(mfReference.getId());
 				responseFrame.setName(getStackFrameName(i, moduleFrame));
 
-				ModuleElement frameStatement = moduleFrame.getCurrentStatement();
-				if (frameStatement == null) {
-					/*
-					 * Fall back to frame entrypoint if we don't have a statement yet (e.g. we are
-					 * running a target expression within an EGX script).
-					 *
-					 * NOTE: ideally we'd want to combine the execution information from the
-					 * StackTraceManager (which is more fine-grained) with the variable information
-					 * from the FrameStack.
-					 */
-					frameStatement = moduleFrame.getEntryPoint();
-				}
+				// Always try with the current statement first
+				setStackFrameLocationFrom(responseFrame, moduleFrame.getCurrentStatement());
 
-				if (frameStatement != null) {
-					setStackFrameLocation(responseFrame, frameStatement);
-				} else {
-					responseFrame.setLine(0);
-					responseFrame.setColumn(0);
-				}
+				/*
+				 * Fall back to frame entrypoint if we don't have a statement yet (e.g. we are
+				 * running a target expression within an EGX script).
+				 */
+				setStackFrameLocationFrom(responseFrame, moduleFrame.getEntryPoint());
+
+				/*
+				 * If we still don't know (e.g. it's one of the frames used for global
+				 * variables), fall back to the module we're running.
+				 */
+				setStackFrameLocationFrom(responseFrame, thread.module);
 			}
 
 			resp.setStackFrames(responseFrames.toArray(new StackFrame[responseFrames.size()]));
@@ -521,11 +516,14 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		});
 	}
 
-	protected void setStackFrameLocation(StackFrame responseFrame, ModuleElement frameEntrypoint) {
-		Position frameStart = frameEntrypoint.getRegion().getStart();
-		responseFrame.setLine(lineConverter.fromLocalToRemote(frameStart.getLine()));
-		responseFrame.setColumn(columnConverter.fromLocalToRemote(frameStart.getColumn()));
-		responseFrame.setSource(createSource(frameEntrypoint));
+	protected void setStackFrameLocationFrom(StackFrame responseFrame, ModuleElement frameEntrypoint) {
+		// We only set a location if we don't have a full location yet (including the path to the source)
+		if (frameEntrypoint != null && (responseFrame.getSource() == null || responseFrame.getSource().getPath() == null)) {
+			Position frameStart = frameEntrypoint.getRegion().getStart();
+			responseFrame.setLine(lineConverter.fromLocalToRemote(frameStart.getLine()));
+			responseFrame.setColumn(columnConverter.fromLocalToRemote(frameStart.getColumn()));
+			responseFrame.setSource(createSource(frameEntrypoint));
+		}
 	}
 
 	@Override
@@ -730,6 +728,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				bpSource.setPath(rawPath);
 			}
 		}
+
 		return bpSource;
 	}
 

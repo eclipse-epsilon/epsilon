@@ -178,6 +178,10 @@ public class EgxDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertEquals("There should be two stack frames: local, template-specific-global, and global",
 			3, stackTrace.getStackFrames().length);
 
+		for (StackFrame frame : stackTrace.getStackFrames()) {
+			assertNotNull("Frame " + frame.getName() + " should have a path", frame.getSource().getPath());
+		}
+
 		ScopesResponse localScopes = getScopes(stackTrace.getStackFrames()[0]);
 		VariablesResponse localVariables = getVariables(localScopes.getScopes()[0]);
 		Map<String, Variable> localVariablesByName = getVariablesByName(localVariables);
