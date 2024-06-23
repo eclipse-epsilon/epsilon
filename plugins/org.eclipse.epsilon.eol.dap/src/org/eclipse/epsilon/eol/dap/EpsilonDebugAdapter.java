@@ -707,7 +707,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 		// First, try to use the URI-to-path mappings
 		final URI moduleURI = resolvedModule.getUri();
-		if (moduleURI.getPath() != null) {
+		if (moduleURI != null && moduleURI.getPath() != null) {
 			Path path;
 			
 			// URI#getPath() does not correctly convert `file:/` URIs to valid paths on Windows, so use Paths#get(URI) instead
@@ -848,8 +848,10 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			} else {
 				builder.append(entryPoint.toString());
 			}
-			builder.append(" at ");
-			builder.append(entryPoint.getUri().toString());
+			if (entryPoint.getUri() != null) {
+				builder.append(" at ");
+				builder.append(entryPoint.getUri().toString());
+			}
 			return builder.toString();
 		}
 		else {
