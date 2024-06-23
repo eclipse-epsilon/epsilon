@@ -11,6 +11,8 @@ Require-Bundle: org.eclipse.epsilon.eol.dap;bundle-version="2.6.0",
  org.eclipse.epsilon.eol.engine;bundle-version="2.6.0",
  org.eclipse.epsilon.evl.engine;bundle-version="2.6.0",
  org.eclipse.epsilon.etl.engine;bundle-version="2.6.0",
+ org.eclipse.epsilon.egl.engine;bundle-version="2.6.0",
+ org.eclipse.epsilon.ecl.engine;bundle-version="2.6.0",
  org.junit;bundle-version="4.0.0",
  org.eclipse.lsp4j.debug,
  org.eclipse.lsp4j.jsonrpc.debug,
@@ -19,7 +21,7 @@ Require-Bundle: org.eclipse.epsilon.eol.dap;bundle-version="2.6.0",
  org.eclipse.jetty.io;bundle-version="12.0.0",
  org.eclipse.jetty.server;bundle-version="12.0.0",
  org.eclipse.jetty.util;bundle-version="12.0.0",
- org.eclipse.epsilon.egl.engine
+ org.eclipse.epsilon.emc.emf
 Bundle-Vendor: Eclipse.org
 Automatic-Module-Name: org.eclipse.epsilon.eol.dap.test
 Bundle-RequiredExecutionEnvironment: JavaSE-11

@@ -83,6 +83,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	}
 
 	protected static final File BASE_RESOURCE_FOLDER = new File("../org.eclipse.epsilon.eol.dap.test/epsilon/");
+	protected static final File BASE_MODELS_FOLDER = new File("../org.eclipse.epsilon.eol.dap.test/models/");
 
 	protected IEolModule module;
 	protected EpsilonDebugAdapter adapter;
