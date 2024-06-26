@@ -8,7 +8,9 @@
             delegate="org.eclipse.epsilon.eol.dt.launching.EolLaunchConfigurationDelegate"
             id="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate"
             modes="run, debug"
-            name="EOL Program">
+            name="EOL Program"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer">
       </launchConfigurationType>
    </extension>
    <extension

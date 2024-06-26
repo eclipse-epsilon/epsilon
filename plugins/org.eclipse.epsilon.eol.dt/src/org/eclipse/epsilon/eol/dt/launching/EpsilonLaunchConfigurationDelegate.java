@@ -11,8 +11,11 @@ package org.eclipse.epsilon.eol.dt.launching;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -37,10 +40,13 @@ import org.eclipse.epsilon.common.dt.util.LogUtil;
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.eol.IEolModule;
+import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dt.debug.EolDebugTarget;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
+import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate;
+import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate.DSPLaunchDelegateLaunchBuilder;
 
 public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigurationDelegate implements EpsilonLaunchConfigurationDelegateListener {
 	
@@ -116,11 +122,30 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 					launch.setAttribute(entry.getKey() + "", entry.getValue() + "");
 				}
 
-				final String name = launch.getAttribute(lauchConfigurationSourceAttribute);
-				target = new EolDebugTarget(launch, module, debugger, name);
-				debugger.setTarget(target);
-				launch.addDebugTarget(target);
-				result = target.debug();
+				/*
+				 * Schedule the debug client to start in a second to give the debug server
+				 * enough time to start running.
+				 */
+				new Timer().schedule(new TimerTask() {
+					@Override
+					public void run() {
+						final DSPLaunchDelegateLaunchBuilder builder = new DSPLaunchDelegateLaunchBuilder(configuration, mode, launch, progressMonitor);
+						builder.setAttachDebugAdapter("127.0.0.1", 4040);
+						HashMap<String, Object> parameters = new HashMap<String, Object>();
+						parameters.put("request", "attach");
+						builder.setDspParameters(parameters);
+						DSPLaunchDelegate delegate = new DSPLaunchDelegate();
+						try {
+							delegate.launch(builder);
+						} catch (CoreException e) {
+							LogUtil.log(e);
+						}
+					}
+				}, 1000);
+
+				// Start a debug server for the module
+				EpsilonDebugServer debugServer = new EpsilonDebugServer(module, 4040);
+				debugServer.run();
 			}
 			
 			executed(configuration, mode, launch, progressMonitor, module, result);
