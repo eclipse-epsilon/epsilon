@@ -60,6 +60,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 
 		// Wait for the client to be stopped at the breakpoint
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		assertThreadStarted(EpsilonDebugAdapter.FIRST_THREAD_ID);
 		assertEquals("The debugger should mention the stopped thread",
 			(Integer) EpsilonDebugAdapter.FIRST_THREAD_ID, client.getStoppedArgs().getThreadId());
 
@@ -98,6 +99,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 
 		// Execution should complete successfully
 		assertProgramCompletedSuccessfully();
+		assertThreadExited(EpsilonDebugAdapter.FIRST_THREAD_ID);
 
 		final String expected = "Hello Bob Someone"
 			+ System.lineSeparator()

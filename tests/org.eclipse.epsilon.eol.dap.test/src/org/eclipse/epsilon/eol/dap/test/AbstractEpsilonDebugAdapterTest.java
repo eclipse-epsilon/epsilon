@@ -11,6 +11,7 @@ package org.eclipse.epsilon.eol.dap.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +41,8 @@ import org.eclipse.lsp4j.debug.StackFrame;
 import org.eclipse.lsp4j.debug.StackTraceArguments;
 import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArguments;
+import org.eclipse.lsp4j.debug.ThreadEventArguments;
+import org.eclipse.lsp4j.debug.ThreadEventArgumentsReason;
 import org.eclipse.lsp4j.debug.ThreadsResponse;
 import org.eclipse.lsp4j.debug.Variable;
 import org.eclipse.lsp4j.debug.VariablesArguments;
@@ -63,6 +66,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		private ExitedEventArguments exitedArgs;
 
 		private List<OutputEventArguments> outputs = new ArrayList<>();
+		private List<ThreadEventArguments> threadEvents = new ArrayList<>();
 
 		@Override
 		public void stopped(StoppedEventArguments args) {
@@ -81,6 +85,11 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 			this.outputs.add(args);
 		}
 
+		@Override
+		public void thread(ThreadEventArguments args) {
+			this.threadEvents.add(args);
+		}
+
 		public StoppedEventArguments getStoppedArgs() {
 			return stoppedArgs;
 		}
@@ -92,7 +101,10 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		public List<OutputEventArguments> getOutputs() {
 			return outputs;
 		}
-		
+
+		public List<ThreadEventArguments> getThreadEvents() {
+			return threadEvents;
+		}
 	}
 
 	protected static final File BASE_RESOURCE_FOLDER = new File("../org.eclipse.epsilon.eol.dap.test/epsilon/");
@@ -260,6 +272,24 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		VariablesResponse variables = getVariables(scopes.getScopes()[0]);
 		Map<String, Variable> variablesByName = getVariablesByName(variables);
 		return variablesByName;
+	}
+
+	protected void assertThreadStarted(int threadId) {
+		assertThreadEventWithReasonExists(threadId, ThreadEventArgumentsReason.STARTED);
+	}
+
+	protected void assertThreadExited(int threadId) {
+		assertThreadEventWithReasonExists(threadId, ThreadEventArgumentsReason.EXITED);
+	}
+
+	protected void assertThreadEventWithReasonExists(int threadId, final String reason) {
+		for (ThreadEventArguments ev : client.getThreadEvents()) {
+			if (ev.getThreadId() == threadId && reason.equals(ev.getReason())) {
+				return;
+			}
+		}
+
+		fail(String.format("Expected thread %d to have a %s event", threadId, reason));
 	}
 
 }

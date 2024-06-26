@@ -81,6 +81,8 @@ import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.TerminateArguments;
 import org.eclipse.lsp4j.debug.TerminatedEventArguments;
 import org.eclipse.lsp4j.debug.Thread;
+import org.eclipse.lsp4j.debug.ThreadEventArguments;
+import org.eclipse.lsp4j.debug.ThreadEventArgumentsReason;
 import org.eclipse.lsp4j.debug.ThreadsResponse;
 import org.eclipse.lsp4j.debug.Variable;
 import org.eclipse.lsp4j.debug.VariablesArguments;
@@ -136,8 +138,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				}
 
 				if (ast instanceof IEolModule) {
-					// Set up thread in our list if we don't have it yet
-					attachTo((IEolModule) ast);
+					ThreadState threadState = attachTo((IEolModule) ast);
+					sendThreadEvent(threadState.getThreadId(), ThreadEventArgumentsReason.STARTED);
 				}
 			}
 		}
@@ -171,7 +173,9 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		protected void removeThreadFor(IEolModule module) {
 			synchronized (threads) {
 				for (Iterator<ThreadState> itThread = threads.values().iterator(); itThread.hasNext();) {
-					if (itThread.next().module == module) {
+					final ThreadState thread = itThread.next();
+					if (thread.module == module) {
+						sendThreadEvent(thread.getThreadId(), ThreadEventArgumentsReason.EXITED);
 						itThread.remove();
 					}
 				}
@@ -247,6 +251,10 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			}
 		}
 
+		public int getThreadId() {
+			return threadId;
+		}
+
 		@Override
 		public boolean isTerminated() {
 			return isTerminated;
@@ -286,19 +294,21 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		}
 	}
 
-	protected void attachTo(IEolModule module) {
+	protected ThreadState attachTo(IEolModule module) {
+		ThreadState thread;
 		synchronized (threads) {
-			for (ThreadState thread : threads.values()) {
-				if (thread.module == module) {
+			for (ThreadState t : threads.values()) {
+				if (t.module == module) {
 					// We already have attached to this module
-					return;
+					return t;
 				}
 			}
 
 			// Add a thread for this module
 			final int threadId = nextThread.getAndIncrement();
-			final ThreadState thread = new ThreadState(threadId, module);
+			thread = new ThreadState(threadId, module);
 			threads.put(threadId, thread);
+			sendThreadEvent(threadId, ThreadEventArgumentsReason.STARTED);
 			module.getContext().getExecutorFactory().setExecutionController(thread.debugger);
 		}
 
@@ -319,6 +329,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		module.getContext().setOutputStream(outStream);
 		final PrintStream errStream = createStream(module.getContext(), OutputEventArgumentsCategory.STDERR);
 		module.getContext().setErrorStream(errStream);
+
+		return thread;
 	}
 
 	public static final int FIRST_THREAD_ID = 1;
@@ -845,6 +857,16 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			client.stopped(stoppedArgs);
 		}
 	}
+
+	protected void sendThreadEvent(int threadId, String reason) {
+		if (client != null) {
+			ThreadEventArguments args = new ThreadEventArguments();
+			args.setReason(reason);
+			args.setThreadId(threadId);
+			client.thread(args);
+		}
+	}
+
 
 	public IEolModule getModule() {
 		return mainModule;
