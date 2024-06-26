@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -122,29 +120,23 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 					launch.setAttribute(entry.getKey() + "", entry.getValue() + "");
 				}
 
-				/*
-				 * Schedule the debug client to start in a second to give the debug server
-				 * enough time to start running.
-				 */
-				new Timer().schedule(new TimerTask() {
-					@Override
-					public void run() {
-						final DSPLaunchDelegateLaunchBuilder builder = new DSPLaunchDelegateLaunchBuilder(configuration, mode, launch, progressMonitor);
-						builder.setAttachDebugAdapter("127.0.0.1", 4040);
-						HashMap<String, Object> parameters = new HashMap<String, Object>();
-						parameters.put("request", "attach");
-						builder.setDspParameters(parameters);
-						DSPLaunchDelegate delegate = new DSPLaunchDelegate();
-						try {
-							delegate.launch(builder);
-						} catch (CoreException e) {
-							LogUtil.log(e);
-						}
-					}
-				}, 1000);
-
 				// Start a debug server for the module
-				EpsilonDebugServer debugServer = new EpsilonDebugServer(module, 4040);
+				EpsilonDebugServer debugServer = new EpsilonDebugServer(module, 0);
+				debugServer.setOnStart(() -> {
+					// When the server starts, attach LSP4E to it
+					final DSPLaunchDelegateLaunchBuilder builder =
+							new DSPLaunchDelegateLaunchBuilder(configuration, mode, launch, progressMonitor);
+					builder.setAttachDebugAdapter("127.0.0.1", debugServer.getPort());
+					HashMap<String, Object> parameters = new HashMap<String, Object>();
+					parameters.put("request", "attach");
+					builder.setDspParameters(parameters);
+					DSPLaunchDelegate delegate = new DSPLaunchDelegate();
+					try {
+						delegate.launch(builder);
+					} catch (CoreException e) {
+						LogUtil.log(e);
+					}
+				});
 				debugServer.run();
 			}
 			
