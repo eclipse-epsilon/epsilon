@@ -17,6 +17,7 @@ import org.eclipse.epsilon.eol.dap.test.egx.EgxDebugTest;
 import org.eclipse.epsilon.eol.dap.test.emg.EmgDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eml.EmlDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ClasspathEolTest;
+import org.eclipse.epsilon.eol.dap.test.eol.ForLoopEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.HttpEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ImportingEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.LargeCollectionTest;
@@ -42,6 +43,7 @@ import junit.framework.Test;
     EpsilonDebugServerTest.class,
     ImportingEolTest.class,
     StandaloneEolTest.class,
+    ForLoopEolTest.class,
     ClasspathEolTest.class,
     HttpEolTest.class,
     ModelElementPropertiesTest.class,

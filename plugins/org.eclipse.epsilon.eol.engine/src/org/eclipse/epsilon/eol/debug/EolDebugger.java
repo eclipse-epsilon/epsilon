@@ -304,8 +304,10 @@ public class EolDebugger implements IEolDebugger {
 	 * on an empty line or an import statement.
 	 */
 	protected int findFirstLineGreaterThanOrEqualTo(ModuleElement root, int localLine) {
-		if (controls(root) && root.getRegion().getEnd().getLine() >= localLine) {
-			return root.getRegion().getStart().getLine();
+		// The current root element starts where we need it: we're done
+		final int rootStartLine = root.getRegion().getStart().getLine();
+		if (controls(root) && rootStartLine >= localLine) {
+			return rootStartLine;
 		}
 
 		/*
@@ -323,6 +325,14 @@ public class EolDebugger implements IEolDebugger {
 			if (childLine != -1 && childLine < earliestLine) {
 				earliestLine = childLine;
 			}
+		}
+		if (earliestLine != Integer.MAX_VALUE) {
+			return earliestLine;
+		}
+
+		// Otherwise, see if at least the region for the root spans the line in question.
+		if (controls(root) && root.getRegion().getEnd().getLine() >= localLine) {
+			return rootStartLine;
 		}
 
 		return earliestLine == Integer.MAX_VALUE ? -1 : earliestLine;
