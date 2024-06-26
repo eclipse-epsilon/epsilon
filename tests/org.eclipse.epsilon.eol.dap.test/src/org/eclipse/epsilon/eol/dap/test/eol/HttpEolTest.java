@@ -92,7 +92,7 @@ public class HttpEolTest extends AbstractEpsilonDebugAdapterTest {
 				SCRIPT_FILE.getCanonicalPath(),
 				stackTrace.getStackFrames()[0].getSource().getPath());
 
-		adapter.continue_(new ContinueArguments());
+		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
 

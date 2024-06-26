@@ -60,6 +60,8 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 
 		// Wait for the client to be stopped at the breakpoint
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		assertEquals("The debugger should mention the stopped thread",
+			(Integer) EpsilonDebugAdapter.FIRST_THREAD_ID, client.getStoppedArgs().getThreadId());
 
 		// Stack trace
 		final StackTraceResponse stackTrace = getStackTrace();

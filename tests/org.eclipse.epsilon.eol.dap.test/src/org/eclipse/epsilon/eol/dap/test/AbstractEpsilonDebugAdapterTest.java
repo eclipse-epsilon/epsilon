@@ -56,13 +56,13 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	public Timeout globalTimeout = Timeout.seconds(10);
 
 	protected class TestClient implements IDebugProtocolClient {
-		Semaphore isStopped = new Semaphore(0);
-		StoppedEventArguments stoppedArgs;
+		private Semaphore isStopped = new Semaphore(0);
+		private StoppedEventArguments stoppedArgs;
 
-		Semaphore isExited = new Semaphore(0);
-		ExitedEventArguments exitedArgs;
+		private Semaphore isExited = new Semaphore(0);
+		private ExitedEventArguments exitedArgs;
 
-		List<OutputEventArguments> outputs = new ArrayList<>();
+		private List<OutputEventArguments> outputs = new ArrayList<>();
 
 		@Override
 		public void stopped(StoppedEventArguments args) {
@@ -80,6 +80,19 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		public void output(OutputEventArguments args) {
 			this.outputs.add(args);
 		}
+
+		public StoppedEventArguments getStoppedArgs() {
+			return stoppedArgs;
+		}
+
+		public ExitedEventArguments getExitedArgs() {
+			return exitedArgs;
+		}
+
+		public List<OutputEventArguments> getOutputs() {
+			return outputs;
+		}
+		
 	}
 
 	protected static final File BASE_RESOURCE_FOLDER = new File("../org.eclipse.epsilon.eol.dap.test/epsilon/");
@@ -127,21 +140,18 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		client.isStopped.tryAcquire(5, TimeUnit.SECONDS);
 		assertNotNull("The script should have stopped within 5s", client.stoppedArgs);
 		assertEquals("The debugger should say it stopped because of " + reason, reason, client.stoppedArgs.getReason());
-		client.stoppedArgs = null;
 	}
 
 	protected void assertProgramCompletedSuccessfully() throws InterruptedException {
 		client.isExited.tryAcquire(5, TimeUnit.SECONDS);
 		assertNotNull("The script should have exited within 5s", client.exitedArgs);
 		assertEquals("The script should have completed its execution successfully", 0, client.exitedArgs.getExitCode());
-		client.exitedArgs = null;
 	}
 
 	protected void assertProgramFailed() throws InterruptedException {
 		client.isExited.tryAcquire(5, TimeUnit.SECONDS);
 		assertNotNull("The script should have exited within 5s", client.exitedArgs);
 		assertEquals("The script should have completed its execution with an error", 1, client.exitedArgs.getExitCode());
-		client.exitedArgs = null;
 	}
 
 	protected StackTraceResponse getStackTrace() throws Exception {
