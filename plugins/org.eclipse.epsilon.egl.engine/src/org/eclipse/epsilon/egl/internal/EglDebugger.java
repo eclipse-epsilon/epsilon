@@ -30,14 +30,15 @@ class EglDebugger extends EolDebugger {
 
 			// Step 2. Try to resolve (while considering some EGL internals)
 			if (resolvedModule != null) {
-				int actualLine = findFirstLineGreaterThanOrEqualTo(resolvedModule, request.getLine());
-				if (actualLine < 1) {
-					/*
-					 * For EGL, we'll need to fall back to the main() block, as getChildren() does
-					 * not list anything.
-					 */
+				int actualLine = -1;
+				if (resolvedModule instanceof IEolModule) {
+					// Try first on the main() rule - EGL modules don't list their body in their children
 					final IEolModule eolModule = (IEolModule) resolvedModule;
 					actualLine = findFirstLineGreaterThanOrEqualTo(eolModule.getMain(), request.getLine());
+				}
+				if (actualLine < 1) {
+					// Fall back on the old behaviour if we can't find a match
+					actualLine = findFirstLineGreaterThanOrEqualTo(resolvedModule, request.getLine());
 				}
 				if (actualLine >= 1) {
 					return BreakpointResult.verified(request, resolvedModule, actualLine);

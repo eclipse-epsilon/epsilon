@@ -36,7 +36,6 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertTrue("The breakpoint should have been verified", breakResult.getBreakpoints()[0].isVerified());
 		assertEquals(2, (int) breakResult.getBreakpoints()[0].getLine());
 
-		// We're done with set up - we can let the module start execution now
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 		
@@ -50,17 +49,16 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 	}
 
 	@Test
-	public void breakAtForExpression() throws Exception {
+	public void breakAtForStatement() throws Exception {
 		SetBreakpointsResponse breakResult = adapter.setBreakpoints(createBreakpoints(createBreakpoint(1))).get();
 		assertEquals(1, breakResult.getBreakpoints().length);
 		assertTrue("The breakpoint should have been verified", breakResult.getBreakpoints()[0].isVerified());
 		assertEquals(1, (int) breakResult.getBreakpoints()[0].getLine());
 
-		// We're done with set up - we can let the module start execution now
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
-		// Continue execution (should run to completion - list expression should only be run once)
+		// Continue execution (should run to completion - should only stop at the for statement once)
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}

@@ -11,6 +11,7 @@ package org.eclipse.epsilon.eol.dap.test;
 
 import org.eclipse.epsilon.eol.dap.test.ecl.EclDebugTest;
 import org.eclipse.epsilon.eol.dap.test.egl.EglDebugTest;
+import org.eclipse.epsilon.eol.dap.test.egl.ForCallEglTest;
 import org.eclipse.epsilon.eol.dap.test.egl.ImportingEglTest;
 import org.eclipse.epsilon.eol.dap.test.egx.ClasspathEgxTest;
 import org.eclipse.epsilon.eol.dap.test.egx.EgxDebugTest;
@@ -52,6 +53,7 @@ import junit.framework.Test;
     TupleTest.class,
     ClientLacksVariableTypeSupportTest.class,
     EglDebugTest.class,
+    ForCallEglTest.class,
     ImportingEglTest.class,
     EgxDebugTest.class,
     ClasspathEgxTest.class,
