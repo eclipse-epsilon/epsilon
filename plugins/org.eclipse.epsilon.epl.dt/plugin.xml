@@ -25,7 +25,9 @@
             delegate="org.eclipse.epsilon.epl.dt.launching.EplLaunchConfigurationDelegate"
             id="org.epsilon.epl.eclipse.dt.launching.EplLaunchConfigurationDelegate"
             modes="run, debug"
-            name="EPL Program"/>
+            name="EPL Program"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">

@@ -35,7 +35,9 @@
             delegate="org.eclipse.epsilon.examples.testlang.dt.launching.TestLangLaunchConfigurationDelegate"
             id="org.eclipse.epsilon.examples.testlang.dt.launchConfigurationType"
             modes="run,debug"
-            name="TestLang Launch Configuration">
+            name="TestLang Launch Configuration"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer">
       </launchConfigurationType>
    </extension>
    <extension

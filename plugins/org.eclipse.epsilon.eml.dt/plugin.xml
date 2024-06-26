@@ -29,7 +29,9 @@
             delegate="org.eclipse.epsilon.eml.dt.launching.EmlLaunchConfigurationDelegate"
             id="org.epsilon.eml.eclipse.dt.launcing.EmlLaunchConfigurationDelegate"
             modes="run,debug"
-            name="EML Merging"/>
+            name="EML Merging"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">

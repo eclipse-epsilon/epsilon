@@ -25,7 +25,9 @@
             delegate="org.eclipse.epsilon.evl.dt.launching.EvlLaunchConfigurationDelegate"
             id="org.epsilon.evl.eclipse.dt.launching.EvlLaunchConfigurationDelegate"
             modes="run, debug"
-            name="EVL Validation"/>
+            name="EVL Validation"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
