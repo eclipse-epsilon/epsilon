@@ -112,7 +112,20 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 			progressMonitor.beginTask(subtask, 100);
 			
 			if ("run".equalsIgnoreCase(mode)) {
-				result = module.execute();
+				try {
+					result = module.execute();
+				} catch (Exception e) {
+					/*
+					 * Debug server already prints out the exception by itself, so we only need to
+					 * print it from the "run" mode. The rest of the logic around crashed modules
+					 * can stay the same.
+					 */
+					e = EolRuntimeException.wrap(e);
+					e.printStackTrace();
+					module.getContext().getErrorStream().println(e.toString());
+
+					throw e;
+				}
 			}
 			else if ("debug".equalsIgnoreCase(mode)) {
 				// Copy launch configuration attributes to launch
@@ -138,14 +151,13 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 					}
 				});
 				debugServer.run();
+
+				result = debugServer.getResult().get();
 			}
-			
+
 			executed(configuration, mode, launch, progressMonitor, module, result);
-			
+
 		} catch (Exception e) {
-			e = EolRuntimeException.wrap(e);
-			e.printStackTrace();
-			module.getContext().getErrorStream().println(e.toString());
 			progressMonitor.setCanceled(true);
 			return false;
 		}
