@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.epsilon.eol.dap.test.eol;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -35,7 +36,11 @@ public class ErrorReportingEolTest extends AbstractEpsilonDebugAdapterTest {
 		// We're done with set up - we can let the module start execution now
 		attach();
 		assertProgramFailed();
+
+		final String stderr = getStderr();
 		assertTrue("Standard error stream should contain error",
-			getStderr().contains("Undefined variable"));
+			stderr.contains("Undefined variable"));
+		assertFalse("Standard error stream should not contain Java stack frames",
+			stderr.contains(".java"));
 	}
 }

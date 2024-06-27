@@ -164,7 +164,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				final IEolModule eolModule = (IEolModule) ast;
 
 				// Report the exception that was propagated to the top level of the module
-				exception.printStackTrace(eolModule.getContext().getErrorStream());
+				eolModule.getContext().getErrorStream().println(exception.toString());
 
 				removeThreadFor(eolModule);
 			}
