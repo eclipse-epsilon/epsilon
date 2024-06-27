@@ -161,7 +161,12 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		@Override
 		public void finishedExecutingWithException(ModuleElement ast, EolRuntimeException exception, IEolContext context) {
 			if (ast.getParent() == null && ast instanceof IEolModule) {
-				removeThreadFor((IEolModule) ast);
+				final IEolModule eolModule = (IEolModule) ast;
+
+				// Report the exception that was propagated to the top level of the module
+				exception.printStackTrace(eolModule.getContext().getErrorStream());
+
+				removeThreadFor(eolModule);
 			}
 			if (ast == topElement) {
 				sendTerminated();

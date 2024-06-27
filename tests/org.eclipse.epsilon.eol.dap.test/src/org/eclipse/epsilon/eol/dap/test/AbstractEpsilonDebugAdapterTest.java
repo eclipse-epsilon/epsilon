@@ -255,11 +255,19 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	}
 
 	protected String getStdout() {
+		return getOutputByCategory(OutputEventArgumentsCategory.STDOUT);
+	}
+
+	protected String getOutputByCategory(final String category) {
 		String allOutput = client.outputs.stream()
-			.filter(o -> OutputEventArgumentsCategory.STDOUT.equals(o.getCategory()))
+			.filter(o -> category.equals(o.getCategory()))
 			.map(o -> o.getOutput())
 			.reduce("", (a, b) -> a + b);
 		return allOutput;
+	}
+
+	protected String getStderr() {
+		return getOutputByCategory(OutputEventArgumentsCategory.STDERR);
 	}
 
 	protected void attach() throws InterruptedException, ExecutionException {
