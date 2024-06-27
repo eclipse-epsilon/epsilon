@@ -38,13 +38,15 @@ import org.eclipse.lsp4j.jsonrpc.Launcher;
  *
  * <p>
  * The module should be fully configured the first time that someone connects to
- * this server. The server will automatically call {@link IEolModule#execute()} the
- * first time that anyone connects to it.
+ * this server. The server will automatically call {@link IEolModule#execute()}
+ * the first time that anyone connects to it.
  * </p>
  *
  * <p>
  * An instance of this class can only be {@link #run()} once. If you need to
- * restart the server, you will need to create another instance.
+ * restart the server, you will need to create another instance. After
+ * {@link #run()} completes, the result of executing the module will be
+ * available via {@link #getResult()}.
  * </p>
  */
 public class EpsilonDebugServer implements Runnable {
@@ -60,6 +62,13 @@ public class EpsilonDebugServer implements Runnable {
 	private final AtomicBoolean moduleStarted = new AtomicBoolean(false);
 	private final List<Future<Void>> listeningLaunchers = new ArrayList<>();
 
+	/*
+	 * The module can complete its execution in two ways: successfully with a
+	 * result, or unsuccessfully with an exception.
+	 */
+	private final CompletableFuture<Object> result = new CompletableFuture<>();
+
+	private Runnable onStart;
 	private ServerSocket serverSocket;
 	private ExecutorService executorService;
 	private final EpsilonDebugAdapter debugAdapter = new EpsilonDebugAdapter();
@@ -113,15 +122,19 @@ public class EpsilonDebugServer implements Runnable {
 		}
 
 		try {
+			if (executorService == null) {
+				executorService = Executors.newCachedThreadPool();
+			}
+			if (onStart != null) {
+				executorService.execute(onStart);
+			}
+
 			while (running.get()) {
 				Socket conn = serverSocket.accept();
 
 				debugAdapter.setModule(module);
 				debugAdapter.setOnAttach(this::onAttach);
 
-				if (executorService == null) {
-					executorService = Executors.newCachedThreadPool();
-				}
 				Launcher<IDebugProtocolClient> launcher = DSPLauncher.createServerLauncher(
 					debugAdapter,
 					conn.getInputStream(),
@@ -152,9 +165,7 @@ public class EpsilonDebugServer implements Runnable {
 	 */
 	protected void onAttach() {
 		if (moduleStarted.compareAndSet(false, true)) {
-			Thread epsilonThread = new Thread(this::runModule);
-			epsilonThread.setName("EpsilonDebuggee");
-			epsilonThread.start();
+			executorService.execute(this::runModule);
 		}
 	}
 
@@ -164,9 +175,9 @@ public class EpsilonDebugServer implements Runnable {
 	 */
 	protected void runModule() {
 		try {
-			module.execute();
+			result.complete(module.execute());
 		} catch (Throwable e) {
-			LOGGER.log(Level.SEVERE, "Error while running script", e);
+			result.completeExceptionally(e);
 		} finally {
 			shutdown();
 		}
@@ -248,5 +259,30 @@ public class EpsilonDebugServer implements Runnable {
 		} else {
 			return port;
 		}
+	}
+
+	/**
+	 * Returns the {@code Runnable} to be executed in its own thread once
+	 * the server is started.
+	 */
+	public Runnable getOnStart() {
+		return onStart;
+	}
+
+	/**
+	 * Sets the {@code Runnable} to be executed in its own thread once the server is
+	 * started.
+	 */
+	public void setOnStart(Runnable onStart) {
+		this.onStart = onStart;
+	}
+
+	/**
+	 * Returns a Future which will contain the result of running the Epsilon script.
+	 * This result may be a regular object (equivalent to the value returned by
+	 * {@link IEolModule#execute()}), or an exception thrown by it.
+	 */
+	public Future<Object> getResult() {
+		return result;
 	}
 }

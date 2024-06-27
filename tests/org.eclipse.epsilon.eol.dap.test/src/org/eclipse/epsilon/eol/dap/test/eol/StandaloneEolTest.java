@@ -145,7 +145,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.STEP);
 		StackTraceResponse stackTrace = getStackTrace();
 		assertEquals("After the next() call, the program should be stopped at the first line of the operation",
-			5, stackTrace.getStackFrames()[0].getLine());
+			6, stackTrace.getStackFrames()[0].getLine());
 
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
@@ -164,7 +164,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 	@Test
 	public void breakThenStepOut() throws Exception {
 		// Break at the first line of the operation 
-		adapter.setBreakpoints(createBreakpoints(createBreakpoint(5))).get();
+		adapter.setBreakpoints(createBreakpoints(createBreakpoint(6))).get();
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
@@ -182,15 +182,19 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		adapter.continue_(new ContinueArguments());
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
-		// Second step out should just have the problem complete successfully
-		adapter.stepOut(args);
+		// Second step out should reach the 'return' statement
+		adapter.stepOut(args).get();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.STEP);
+
+		// Third step out should just have the problem complete successfully
+		adapter.stepOut(args).get();
 		assertProgramCompletedSuccessfully();
 	}
 
 	@Test
 	public void breakAtEmptyLine() throws Exception {
 		// Break at empty line in the middle of the operation should be mapped to its final line 
-		SetBreakpointsResponse breakpoints = adapter.setBreakpoints(createBreakpoints(createBreakpoint(6))).get();
+		SetBreakpointsResponse breakpoints = adapter.setBreakpoints(createBreakpoints(createBreakpoint(7))).get();
 
 		// Let the program finish while we do the assertions
 		adapter.setBreakpoints(createBreakpoints()).get();
@@ -198,6 +202,6 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertProgramCompletedSuccessfully();
 
 		assertEquals("The breakpoint on the empty line should have been remapped to the first non-empty line after it",
-			7, (int) breakpoints.getBreakpoints()[0].getLine());
+			8, (int) breakpoints.getBreakpoints()[0].getLine());
 	}
 }

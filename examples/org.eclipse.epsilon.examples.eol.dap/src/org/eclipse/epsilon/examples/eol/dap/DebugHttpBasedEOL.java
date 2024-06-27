@@ -51,6 +51,12 @@ public class DebugHttpBasedEOL {
 			EpsilonDebugServer server = new EpsilonDebugServer(module, 4040);
 			server.getDebugAdapter().getUriToPathMappings().put(new URI(serverUri), Paths.get("epsilon"));
 			server.run();
+
+			/*
+			 * Retrieves the result from running the Epsilon script - may rethrow any
+			 * exception produced by execute().
+			 */
+			server.getResult().get();
 		} finally {
 			httpServer.stop();
 			httpServer.join();

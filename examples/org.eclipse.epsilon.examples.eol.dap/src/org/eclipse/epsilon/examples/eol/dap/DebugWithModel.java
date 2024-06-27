@@ -31,5 +31,11 @@ public class DebugWithModel {
 
 		EpsilonDebugServer server = new EpsilonDebugServer(module, 4040);
 		server.run();
+
+		/*
+		 * Retrieves the result from running the Epsilon script - may rethrow any
+		 * exception produced by execute().
+		 */
+		server.getResult().get();
 	}
 }

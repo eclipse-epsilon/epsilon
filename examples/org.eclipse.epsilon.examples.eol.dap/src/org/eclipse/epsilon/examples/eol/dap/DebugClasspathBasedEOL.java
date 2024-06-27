@@ -41,5 +41,11 @@ public class DebugClasspathBasedEOL {
 			Paths.get("src/org/eclipse/epsilon/examples/eol/dap/03-helloFromClasspath.eol"));
 
 		server.run();
+
+		/*
+		 * Retrieves the result from running the Epsilon script - may rethrow any
+		 * exception produced by execute().
+		 */
+		server.getResult().get();
 	}
 }

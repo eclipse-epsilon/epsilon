@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.epsilon.eol.dap.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -112,6 +113,8 @@ public class EpsilonDebugServerTest {
 			assertTrue(
 				String.format("terminated index (%d) should be less than exited index (%d)", terminatedIndex, exitedIndex),
 				terminatedIndex < exitedIndex);
+
+			assertEquals("The module should report its produced result", 123, server.getResult().get());
 		} finally {
 			if (launcherTask != null) {
 				launcherTask.cancel(true);
