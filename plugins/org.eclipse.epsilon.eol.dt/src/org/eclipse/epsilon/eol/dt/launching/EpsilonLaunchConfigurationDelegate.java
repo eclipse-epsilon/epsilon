@@ -158,17 +158,15 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 			executed(configuration, mode, launch, progressMonitor, module, result);
 
 		} catch (Exception e) {
-			progressMonitor.setCanceled(true);
 			return false;
 		}
 		finally {
+			progressMonitor.done();
 			if (target != null) {
 				if (!disposeModelRepository) launch.removeDebugTarget(target);
 			}
 			teardown(module.getContext(), disposeModelRepository);
 		}
-		
-		progressMonitor.done();
 		
 		return true;
 	}
