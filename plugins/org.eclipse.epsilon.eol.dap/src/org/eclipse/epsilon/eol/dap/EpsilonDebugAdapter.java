@@ -32,6 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.Region;
@@ -89,6 +90,8 @@ import org.eclipse.lsp4j.debug.VariablesArguments;
 import org.eclipse.lsp4j.debug.VariablesResponse;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolClient;
 import org.eclipse.lsp4j.debug.services.IDebugProtocolServer;
+import org.eclipse.lsp4j.jsonrpc.messages.Tuple;
+import org.eclipse.lsp4j.jsonrpc.messages.Tuple.Two;
 
 /**
  * <p>
@@ -482,25 +485,40 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				responseFrame.setId(mfReference.getId());
 				responseFrame.setName(getStackFrameName(i, moduleFrame));
 
-				// Always try with the current statement first
-				setStackFrameLocationFrom(responseFrame, moduleFrame.getCurrentStatement());
-
-				/*
-				 * Fall back to frame entrypoint if we don't have a statement yet (e.g. we are
-				 * running a target expression within an EGX script).
-				 */
-				setStackFrameLocationFrom(responseFrame, moduleFrame.getEntryPoint());
-
-				/*
-				 * If we still don't know (e.g. it's one of the frames used for global
-				 * variables), fall back to the module we're running.
-				 */
-				setStackFrameLocationFrom(responseFrame, thread.module);
+				final Two<ModuleElement, Source> location = resolveStackFrameLocation(thread.module, moduleFrame);
+				final Position frameStart = location.getFirst().getRegion().getStart();
+				final Position frameEnd = location.getFirst().getRegion().getEnd();
+			
+				responseFrame.setLine(lineConverter.fromLocalToRemote(frameStart.getLine()));
+				responseFrame.setEndLine(lineConverter.fromLocalToRemote(frameEnd.getLine()));
+				responseFrame.setColumn(columnConverter.fromLocalToRemote(frameStart.getColumn()));
+				responseFrame.setEndColumn(columnConverter.fromLocalToRemote(frameEnd.getColumn()));
+				responseFrame.setSource(location.getSecond());
 			}
 
 			resp.setStackFrames(responseFrames.toArray(new StackFrame[responseFrames.size()]));
 			return resp;
 		});
+	}
+
+	protected Tuple.Two<ModuleElement, Source> resolveStackFrameLocation(IModule module, Frame sf) {
+		if (sf.getCurrentStatement() != null) {
+			// Always try with the current statement first
+			Source source = createSource(sf.getCurrentStatement());
+			if (source != null && source.getPath() != null) {
+				return Tuple.two(sf.getCurrentStatement(), source);
+			}
+		}
+		if (sf.getEntryPoint() != null) {
+			// If that doesn't work, fall back on the entrypoint
+			Source source = createSource(sf.getEntryPoint());
+			if (source != null && source.getPath() != null) {
+				return Tuple.two(sf.getEntryPoint(), source);
+			}
+		}
+
+		// If we can't find a current statement or an entrypoint, fall back on the module
+		return Tuple.two(module, createSource(module));
 	}
 
 	public CompletableFuture<ScopesResponse> scopes(ScopesArguments args) {
@@ -551,21 +569,6 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 			return resp;
 		});
-	}
-
-	protected void setStackFrameLocationFrom(StackFrame responseFrame, ModuleElement frameEntrypoint) {
-		// We only set a location if we don't have a full location yet (including the path to the source)
-		if (frameEntrypoint != null && (responseFrame.getSource() == null || responseFrame.getSource().getPath() == null)) {
-			final Position frameStart = frameEntrypoint.getRegion().getStart();
-			final Position frameEnd = frameEntrypoint.getRegion().getEnd();
-
-			responseFrame.setLine(lineConverter.fromLocalToRemote(frameStart.getLine()));
-			responseFrame.setEndLine(lineConverter.fromLocalToRemote(frameEnd.getLine()));
-			responseFrame.setColumn(columnConverter.fromLocalToRemote(frameStart.getColumn()));
-			responseFrame.setEndColumn(columnConverter.fromLocalToRemote(frameEnd.getColumn()));
-
-			responseFrame.setSource(createSource(frameEntrypoint));
-		}
 	}
 
 	@Override
@@ -834,7 +837,10 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			outputArguments.setCategory(category);
 			outputArguments.setOutput(output);
 
-			ModuleElement currentStatement = context.getFrameStack().getTopFrame().getCurrentStatement();
+			Two<ModuleElement, Source> location = resolveStackFrameLocation(
+				context.getModule(), context.getFrameStack().getTopFrame());
+
+			ModuleElement currentStatement = location.getFirst();
 			Region region = currentStatement.getRegion();
 			if (region != null) {
 				Position regionStart = region.getStart();
@@ -843,10 +849,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 					outputArguments.setColumn(columnConverter.fromLocalToRemote(regionStart.getColumn()));
 				}
 			}
-
-			if (currentStatement.getFile() != null) {
-				outputArguments.setSource(createSource(currentStatement));
-			}
+			outputArguments.setSource(location.getSecond());
 
 			client.output(outputArguments);
 			LOGGER.fine(() -> "Sent output: " + outputArguments);
