@@ -150,11 +150,12 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		@Override
 		public void finishedExecuting(ModuleElement ast, Object result, IEolContext context) {
 			if (ast.getParent() == null && ast instanceof IEolModule) {
+				final IEolModule eolModule = (IEolModule) ast;
+				eolModule.getContext().getOutputStream().flush();
+				eolModule.getContext().getErrorStream().flush();
 				removeThreadFor((IEolModule) ast);
 			}
 			if (ast == topElement) {
-				mainModule.getContext().getOutputStream().flush();
-				mainModule.getContext().getErrorStream().flush();
 				sendTerminated();
 				sendExited(0);
 				topElement = null;
@@ -168,7 +169,9 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 				// Report the exception that was propagated to the top level of the module
 				eolModule.getContext().getErrorStream().println(exception.toString());
-
+				
+				eolModule.getContext().getOutputStream().flush();
+				eolModule.getContext().getErrorStream().flush();
 				removeThreadFor(eolModule);
 			}
 			if (ast == topElement) {
