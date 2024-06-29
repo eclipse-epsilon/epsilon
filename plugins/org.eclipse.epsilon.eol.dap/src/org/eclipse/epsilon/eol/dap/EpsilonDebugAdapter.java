@@ -316,7 +316,6 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			final int threadId = nextThread.getAndIncrement();
 			thread = new ThreadState(threadId, module);
 			threads.put(threadId, thread);
-			sendThreadEvent(threadId, ThreadEventArgumentsReason.STARTED);
 			module.getContext().getExecutorFactory().setExecutionController(thread.debugger);
 		}
 
