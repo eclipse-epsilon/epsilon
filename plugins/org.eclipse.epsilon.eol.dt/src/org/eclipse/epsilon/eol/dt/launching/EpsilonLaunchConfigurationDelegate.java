@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2008 The University of York.
+ * Copyright (c) 2008-2024 The University of York.
+ *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
- * Contributors:
- *     Dimitrios Kolovos - initial API and implementation
- ******************************************************************************/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
 package org.eclipse.epsilon.eol.dt.launching;
 
 import java.io.File;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -40,7 +41,6 @@ import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
-import org.eclipse.epsilon.eol.dt.debug.EolDebugTarget;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate;
@@ -98,77 +98,98 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 			}
 		}
 		
-		aboutToParse(configuration, mode, launch, progressMonitor, module);
-		
-		if (!parse(module, lauchConfigurationSourceAttribute, configuration, mode, launch, progressMonitor)) return false;
-		
-		EolDebugTarget target = null;
+		if (!parseModule(configuration, mode, launch, progressMonitor, module, lauchConfigurationSourceAttribute)) {
+			return false;
+		}
 		
 		try { 
-			EclipseContextManager.setup(module.getContext(),configuration, progressMonitor, launch, setup);
+			setupModule(configuration, launch, progressMonitor, module, setup);
+
 			aboutToExecute(configuration, mode, launch, progressMonitor, module);
-			String subtask = "Executing";
+			final String subtask = "Executing";
 			progressMonitor.subTask(subtask);
 			progressMonitor.beginTask(subtask, 100);
-			
-			if ("run".equalsIgnoreCase(mode)) {
-				try {
-					result = module.execute();
-				} catch (Exception e) {
-					/*
-					 * Debug server already prints out the exception by itself, so we only need to
-					 * print it from the "run" mode. The rest of the logic around crashed modules
-					 * can stay the same.
-					 */
-					e = EolRuntimeException.wrap(e);
-					e.printStackTrace();
-					module.getContext().getErrorStream().println(e.toString());
 
-					throw e;
-				}
+			if ("run".equalsIgnoreCase(mode)) {
+				runModule(module);
 			}
 			else if ("debug".equalsIgnoreCase(mode)) {
-				// Copy launch configuration attributes to launch
-				for (Map.Entry<?, ?> entry : configuration.getAttributes().entrySet()) {
-					launch.setAttribute(entry.getKey() + "", entry.getValue() + "");
-				}
-
-				// Start a debug server for the module
-				EpsilonDebugServer debugServer = new EpsilonDebugServer(module, 0);
-				debugServer.setOnStart(() -> {
-					// When the server starts, attach LSP4E to it
-					final DSPLaunchDelegateLaunchBuilder builder =
-							new DSPLaunchDelegateLaunchBuilder(configuration, mode, launch, progressMonitor);
-					builder.setAttachDebugAdapter("127.0.0.1", debugServer.getPort());
-					HashMap<String, Object> parameters = new HashMap<String, Object>();
-					parameters.put("request", "attach");
-					builder.setDspParameters(parameters);
-					DSPLaunchDelegate delegate = new DSPLaunchDelegate();
-					try {
-						delegate.launch(builder);
-					} catch (CoreException e) {
-						LogUtil.log(e);
-					}
-				});
-				debugServer.run();
-
-				result = debugServer.getResult().get();
+				debugModule(configuration, mode, launch, progressMonitor, module);
 			}
 
 			executed(configuration, mode, launch, progressMonitor, module, result);
-
 		} catch (Exception e) {
 			return false;
 		}
 		finally {
 			progressMonitor.done();
-			if (target != null) {
-				if (!disposeModelRepository) launch.removeDebugTarget(target);
-			}
 			teardown(module.getContext(), disposeModelRepository);
 		}
 		
 		return true;
+	}
+
+	protected void setupModule(ILaunchConfiguration configuration, ILaunch launch, IProgressMonitor progressMonitor,
+			IEolModule module, boolean loadModels) throws Exception {
+		EclipseContextManager.setup(module.getContext(), configuration, progressMonitor, launch, loadModels);
+	}
+
+	protected boolean parseModule(ILaunchConfiguration configuration, String mode, ILaunch launch,
+			IProgressMonitor progressMonitor, IEolModule module, String lauchConfigurationSourceAttribute)
+			throws CoreException {
+		aboutToParse(configuration, mode, launch, progressMonitor, module);
+		if (!parse(module, lauchConfigurationSourceAttribute, configuration, mode, launch, progressMonitor)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	protected void debugModule(ILaunchConfiguration configuration, String mode, ILaunch launch,
+			IProgressMonitor progressMonitor, IEolModule module)
+			throws CoreException, InterruptedException, ExecutionException {
+		// Copy launch configuration attributes to launch
+		for (Map.Entry<?, ?> entry : configuration.getAttributes().entrySet()) {
+			launch.setAttribute(entry.getKey() + "", entry.getValue() + "");
+		}
+
+		// Start a debug server for the module
+		EpsilonDebugServer debugServer = new EpsilonDebugServer(module, 0);
+		debugServer.setOnStart(() -> {
+			// When the server starts, attach LSP4E to it
+			final DSPLaunchDelegateLaunchBuilder builder =
+					new DSPLaunchDelegateLaunchBuilder(configuration, mode, launch, progressMonitor);
+			builder.setAttachDebugAdapter("127.0.0.1", debugServer.getPort());
+			HashMap<String, Object> parameters = new HashMap<String, Object>();
+			parameters.put("request", "attach");
+			builder.setDspParameters(parameters);
+			DSPLaunchDelegate delegate = new DSPLaunchDelegate();
+			try {
+				delegate.launch(builder);
+			} catch (CoreException e) {
+				LogUtil.log(e);
+			}
+		});
+		debugServer.run();
+
+		result = debugServer.getResult().get();
+	}
+
+	protected void runModule(IEolModule module) throws Exception {
+		try {
+			result = module.execute();
+		} catch (Exception e) {
+			/*
+			 * Debug server already prints out the exception by itself, so we only need to
+			 * print it from the "run" mode. The rest of the logic around crashed modules
+			 * can stay the same.
+			 */
+			e = EolRuntimeException.wrap(e);
+			e.printStackTrace();
+			module.getContext().getErrorStream().println(e.toString());
+
+			throw e;
+		}
 	}
 	
 	/**
