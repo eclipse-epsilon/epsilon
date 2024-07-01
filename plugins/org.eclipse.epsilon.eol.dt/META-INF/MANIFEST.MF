@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.jface.text,
  org.eclipse.ui.ide,
  org.eclipse.epsilon.common.dt,
  org.eclipse.epsilon.eol.dap,
- org.eclipse.lsp4e.debug
+ org.eclipse.lsp4e.debug,
+ org.eclipse.lsp4j.debug
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.epsilon.eol.dt,
  org.eclipse.epsilon.eol.dt.debug,
