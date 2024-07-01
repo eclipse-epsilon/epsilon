@@ -16,6 +16,7 @@ import org.eclipse.epsilon.eol.dap.test.egl.ForCallEglTest;
 import org.eclipse.epsilon.eol.dap.test.egl.ImportingEglTest;
 import org.eclipse.epsilon.eol.dap.test.egx.ClasspathEgxTest;
 import org.eclipse.epsilon.eol.dap.test.egx.EgxDebugTest;
+import org.eclipse.epsilon.eol.dap.test.egx.EgxErrorInEglTest;
 import org.eclipse.epsilon.eol.dap.test.emg.EmgDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eml.EmlDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ClasspathEolTest;
@@ -61,6 +62,7 @@ import junit.framework.Test;
     ImportingEglTest.class,
     EgxDebugTest.class,
     ClasspathEgxTest.class,
+    EgxErrorInEglTest.class,
     EvlDebugTest.class,
     EtlDebugTest.class,
     EclDebugTest.class,

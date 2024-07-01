@@ -1,0 +1,4 @@
+rule Person2Text transform p: Person {
+  template: '24-personError.egl'
+  target: 'dummy.txt'
+}
