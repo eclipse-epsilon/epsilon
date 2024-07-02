@@ -410,18 +410,6 @@ public class FlexmiResource extends ResourceImpl implements Handler {
 			
 			if (ePackage == null) addParseWarning("Failed to locate EPackage for nsURI " + value + " ");
 		}
-		else if ("nsuris".equalsIgnoreCase(key)) {
-			boolean matchFound = false;
-			for (String nsuri : EPackage.Registry.INSTANCE.keySet()) {
-				if (nsuri.matches(value)) {
-					getResourceSet().getPackageRegistry().put(nsuri, EPackage.Registry.INSTANCE.getEPackage(nsuri));
-					matchFound = true;
-				}
-			}
-			if (!matchFound) {
-				addParseWarning("Failed to locate EPackages for nsURI pattern " + value + " ");
-			}
-		}
 		else if ("eol".equalsIgnoreCase(key)) { 
 			// Parse the module and cache its operations 
 			// to be used later in feature computations
