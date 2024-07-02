@@ -36,6 +36,7 @@ import org.eclipse.epsilon.eol.dt.userinput.JFaceUserInput;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eunit.EUnitTestListener;
 import org.eclipse.lsp4e.debug.DSPPlugin;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IOConsole;
@@ -45,6 +46,55 @@ public class EclipseHost implements Host {
 
 	private static final String ANT_DEBUG_LSP4E = "org.eclipse.epsilon.workflow.debug.ant";
 	private static final String LSP4E_LAUNCH_TYPE = "org.eclipse.lsp4e.debug.launchType";
+
+	protected static class RemoteDebugOnStart implements Runnable {
+		private ILaunchManager manager;
+		private ILaunchConfigurationType type;
+		private EpsilonDebugServer server;
+		private ILaunchConfiguration config;
+
+		public RemoteDebugOnStart(ILaunchManager manager, ILaunchConfigurationType type, EpsilonDebugServer server) {
+			this.manager = manager;
+			this.type = type;
+			this.server = server;
+		}
+
+		@Override
+		public void run() {
+			try {
+				ILaunchConfiguration[] configs = manager.getLaunchConfigurations(type);
+				for (ILaunchConfiguration config : configs) {
+					if (ANT_DEBUG_LSP4E.equals(config.getName())) {
+						config.delete();
+						break;
+					}
+				}
+				ILaunchConfigurationWorkingCopy workingCopy = type.newInstance(null, ANT_DEBUG_LSP4E);
+
+				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_SERVER_HOST, "localhost");
+				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_SERVER_PORT, server.getPort());
+				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_MODE, DSPPlugin.DSP_MODE_CONNECT);
+				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_PARAM, "{\"request\": \"attach\"}");
+
+				config = workingCopy.doSave();
+				Display.getDefault().asyncExec(() -> {
+					// DebugUITools.launch must be called in the UI thread
+					DebugUITools.launch(config, ILaunchManager.DEBUG_MODE);
+				});
+			} catch (CoreException e) {
+				e.printStackTrace();
+				LogUtil.log(e);
+			}
+		}
+
+		public void deleteLaunchConfiguration() throws CoreException {
+			if (config != null) {
+				config.delete();
+				config = null;
+			}
+		}
+	}
+
 	private Integer debugPort;
 
 	@Override
@@ -95,32 +145,24 @@ public class EclipseHost implements Host {
 
 		final int port = debugPort == null ? 0 : debugPort;
 		final EpsilonDebugServer server = new EpsilonDebugServer(module, port);
-		server.setOnStart(() -> {
-			try {
-				ILaunchConfiguration[] configs = manager.getLaunchConfigurations(type);
-				for (ILaunchConfiguration config : configs) {
-					if (ANT_DEBUG_LSP4E.equals(config.getName())) {
-						config.delete();
-						break;
-					}
-				}
-				ILaunchConfigurationWorkingCopy workingCopy = type.newInstance(null, ANT_DEBUG_LSP4E);
+		final RemoteDebugOnStart onStart = new RemoteDebugOnStart(manager, type, server);
+		server.setOnStart(onStart);
 
-				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_SERVER_HOST, "localhost");
-				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_SERVER_PORT, server.getPort());
-				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_MODE, DSPPlugin.DSP_MODE_CONNECT);
-				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_PARAM, "{\"request\": \"attach\"}");
+		Thread serverThread = new Thread(server);
+		Object result = null;
+		try {
+			serverThread.start();
 
-				ILaunchConfiguration config = workingCopy.doSave();
-				DebugUITools.launch(config, ILaunchManager.DEBUG_MODE);
-			} catch (CoreException e) {
-				e.printStackTrace();
-				LogUtil.log(e);
-			}
-		});
-		server.run();
+			// Wait for the program to execute
+			result = server.getResult().get();
+		} finally {
+			// Delete the launch configuration as soon as execution is completed
+			onStart.deleteLaunchConfiguration();
+		}
 
-		return server.getResult().get();
+		// Wait for the server to shutdown
+		serverThread.join();
+		return result;
 	}
 
 	@Override
@@ -164,5 +206,5 @@ public class EclipseHost implements Host {
 	public void setDebugPort(int port) {
 		this.debugPort = port;
 	}
-	
+
 }
