@@ -15,9 +15,13 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.epsilon.ecl.EclModule;
 import org.eclipse.epsilon.ecl.trace.MatchTrace;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 import org.eclipse.epsilon.eml.EmlModule;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.lsp4j.debug.ContinueArguments;
@@ -79,13 +83,14 @@ public class EmlDebugTest extends AbstractEpsilonDebugAdapterTest {
 		rightModel.getAliases().add("Source");
 		module.getContext().getModelRepository().addModel(rightModel);
 
-		EmfModel targetModel = new EmfModel();
-		targetModel.setModelFile("dummy.xmi");
-		targetModel.setMetamodelFile(METAMODEL_FILE.getCanonicalPath());
-		targetModel.setReadOnLoad(false);
-		targetModel.setStoredOnDisposal(false);
-		targetModel.setName("Target");
-		targetModel.load();
+		/*
+		 * Reuse the package registry from the left/right models, to avoid test failures
+		 * from the build-and-test.sh script.
+		 */
+		final ResourceSetImpl rsTarget = new ResourceSetImpl();
+		final Resource rTarget = rsTarget.createResource(URI.createURI("file://dummy"));
+		rsTarget.setPackageRegistry(leftModel.getResource().getResourceSet().getPackageRegistry());
+		InMemoryEmfModel targetModel = new InMemoryEmfModel("Target", rTarget);
 		module.getContext().getModelRepository().addModel(targetModel);
 
 		emlModule.getContext().setMatchTrace(reducedMatchTrace);

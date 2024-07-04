@@ -1,18 +1,18 @@
 import "14-mergeGraphs.etl";
 
 rule MergeGraphs
-    merge l : Left!Graph
-    with r : Right!Graph
-    into t : Target!Graph
+    merge l : Left!Graph::Graph
+    with r : Right!Graph::Graph
+    into t : Target!Graph::Graph
 {
   t.nodes ::= l.nodes;
   t.nodes.addAll(r.nodes.equivalent());
 }
 
 rule MergeNodes
-    merge l : Left!Node
-    with r : Right!Node
-    into t : Target!Node 
+    merge l : Left!Graph::Node
+    with r : Right!Graph::Node
+    into t : Target!Graph::Node
     extends GraphElements {
     t.name = l.name;
 
@@ -21,9 +21,9 @@ rule MergeNodes
 }
 
 rule MergeEdges
-    merge l : Left!Edge
-    with r : Right!Edge
-    into t : Target!Edge
+    merge l : Left!Graph::Edge
+    with r : Right!Graph::Edge
+    into t : Target!Graph::Edge
 {
     t.source ::= l.source;
     t.target ::= l.target;
