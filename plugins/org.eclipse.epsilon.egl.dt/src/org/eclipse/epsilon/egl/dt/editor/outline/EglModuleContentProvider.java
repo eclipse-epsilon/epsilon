@@ -10,7 +10,10 @@
 package org.eclipse.epsilon.egl.dt.editor.outline;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.egl.IEglModule;
 import org.eclipse.epsilon.eol.dt.editor.outline.EolModuleContentProvider;
@@ -24,15 +27,22 @@ public class EglModuleContentProvider extends EolModuleContentProvider {
 		if (moduleElement instanceof IEglModule) {
 			IEglModule module = (IEglModule) moduleElement;
 			List<ModuleElement> visible = new ArrayList<>();
-			visible.addAll(module.getImports());
-			visible.addAll(module.getDeclaredModelDeclarations());
-			visible.addAll(module.getCurrentTemplate().getModule().getMarkers());
-			visible.addAll(module.getDeclaredOperations());
+			visible.addAll(emptyListIfNull(module.getImports()));
+			visible.addAll(emptyListIfNull(module.getDeclaredModelDeclarations()));
+			visible.addAll(emptyListIfNull(module.getCurrentTemplate().getModule().getMarkers()));
+			visible.addAll(emptyListIfNull(module.getDeclaredOperations()));
 			return visible;
 		}
 		else {
 			return super.getVisibleChildren(moduleElement);
 		}
+	}
+	
+	// Some of EglModule's collection-returning operations return null 
+	// instead of an empty collection if there's a parse error. 
+	// This method protects getVisibleChildren from NPEs in such cases.
+	protected Collection<? extends ModuleElement> emptyListIfNull(Collection<? extends ModuleElement> elements) {
+		return elements == null ? Collections.emptyList() : elements;
 	}
 	
 }
