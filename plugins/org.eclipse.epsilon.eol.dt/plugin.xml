@@ -12,6 +12,14 @@
             sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
             sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer">
       </launchConfigurationType>
+      <launchConfigurationType
+            delegate="org.eclipse.epsilon.eol.dt.debug.RemoteEpsilonLaunchConfigurationDelegate"
+            id="org.eclipse.epsilon.eol.dt.debug.RemoteEpsilonLaunchConfigurationDelegate"
+            modes="debug"
+            name="Remote Epsilon Program"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer">
+      </launchConfigurationType>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
@@ -19,6 +27,11 @@
             configTypeID="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate"
             icon="icons/eol.gif"
             id="EolProgram"/>
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.epsilon.eol.dt.debug.RemoteEpsilonLaunchConfigurationDelegate"
+            icon="icons/remote.gif"
+            id="org.eclipse.epsilon.eol.dt.debug.RemoteEpsilonLaunchConfigurationImage">
+      </launchConfigurationTypeImage>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -27,6 +40,12 @@
             description="Create a configuration to launch an EOL program."
             id="org.eclipse.epsilon.eol.dt.launching.EolLaunchConfigurationTabGroup"
             type="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate"/>
+      <launchConfigurationTabGroup
+            class="org.eclipse.epsilon.eol.dt.debug.tabs.RemoteEpsilonLaunchConfigurationTabGroup"
+            description="Create a configuration to debug a remote Epsilon program"
+            id="org.eclipse.epsilon.eol.dt.launching.RemoteEpsilonConfigurationTabGroup"
+            type="org.eclipse.epsilon.eol.dt.debug.RemoteEpsilonLaunchConfigurationDelegate">
+      </launchConfigurationTabGroup>
    </extension>
    <extension
          point="org.eclipse.ui.editors">

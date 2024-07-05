@@ -45,7 +45,7 @@ import org.eclipse.ui.console.IOConsole;
 public class EclipseHost implements Host {
 
 	private static final String ANT_DEBUG_LSP4E = "org.eclipse.epsilon.workflow.debug.ant";
-	private static final String LSP4E_LAUNCH_TYPE = "org.eclipse.lsp4e.debug.launchType";
+	private static final String LSP4E_LAUNCH_TYPE = "org.eclipse.epsilon.eol.dt.debug.RemoteEpsilonLaunchConfigurationDelegate";
 
 	protected static class RemoteDebugOnStart implements Runnable {
 		private ILaunchManager manager;

@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -29,10 +28,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.epsilon.common.dt.console.EpsilonConsole;
@@ -44,52 +41,18 @@ import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
+import org.eclipse.epsilon.eol.dt.debug.RemoteEpsilonLaunchConfigurationDelegate;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
-import org.eclipse.lsp4e.debug.debugmodel.DSPDebugTarget;
-import org.eclipse.lsp4e.debug.debugmodel.TransportStreams;
 import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate;
 import org.eclipse.lsp4e.debug.launcher.DSPLaunchDelegate.DSPLaunchDelegateLaunchBuilder;
-import org.eclipse.lsp4j.debug.OutputEventArguments;
-import org.eclipse.lsp4j.debug.OutputEventArgumentsCategory;
 
-@SuppressWarnings("restriction")
 public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigurationDelegate implements EpsilonLaunchConfigurationDelegateListener {
 	
-	protected static class EpsilonDSPLaunchDelegate extends DSPLaunchDelegate {
-		@Override
-		protected IDebugTarget createDebugTarget(SubMonitor subMonitor,
-				Supplier<TransportStreams> streamsSupplier, ILaunch launch,
-				Map<String, Object> dspParameters)
-				throws CoreException {
-			final EpsilonConsoleDebugTarget target = new EpsilonConsoleDebugTarget(launch, streamsSupplier, dspParameters);
-			target.initialize(subMonitor.split(80));
-			return target;
-		}
-	}
-
-	protected static class EpsilonConsoleDebugTarget extends DSPDebugTarget {
-		protected EpsilonConsoleDebugTarget(ILaunch launch, Supplier<TransportStreams> streamsSupplier, Map<String, Object> dspParameters) {
-			super(launch, streamsSupplier, dspParameters);
-		}
-
-		@Override
-		public void output(OutputEventArguments args) {
-			String output = args.getOutput();
-			if (args.getCategory() == null || OutputEventArgumentsCategory.CONSOLE.equals(args.getCategory())
-					|| OutputEventArgumentsCategory.STDOUT.equals(args.getCategory())) {
-				EpsilonConsole.getInstance().getInfoStream().append(output);
-			} else if (OutputEventArgumentsCategory.STDERR.equals(args.getCategory())) {
-				EpsilonConsole.getInstance().getErrorStream().append(output);
-			}
-		}
-	}
-
 	protected Object result = null;
 	protected ILaunchConfiguration configuration = null;
 	protected ArrayList<EpsilonLaunchConfigurationDelegateListener> listeners = null;
-	
-	
+
 	/**
 	 * Get the module default module implementation.
 	 * @since 1.6
@@ -200,7 +163,7 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 			HashMap<String, Object> parameters = new HashMap<String, Object>();
 			parameters.put("request", "attach");
 			builder.setDspParameters(parameters);
-			DSPLaunchDelegate delegate = new EpsilonDSPLaunchDelegate();
+			DSPLaunchDelegate delegate = new RemoteEpsilonLaunchConfigurationDelegate();
 			try {
 				delegate.launch(builder);
 			} catch (CoreException e) {
