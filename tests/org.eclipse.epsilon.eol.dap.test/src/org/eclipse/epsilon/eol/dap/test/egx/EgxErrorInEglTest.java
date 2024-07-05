@@ -28,7 +28,6 @@ import org.junit.rules.TemporaryFolder;
 public class EgxErrorInEglTest extends AbstractEpsilonDebugAdapterTest {
 
 	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "24-orchestrationError.egx");
-	private static final File EGL_FILE = new File(BASE_RESOURCE_FOLDER, "24-personError.egl");
 
 	@Rule
 	public TemporaryFolder tempFolder = new TemporaryFolder();
