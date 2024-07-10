@@ -18,6 +18,12 @@ import org.eclipse.epsilon.eol.types.EolAnyType;
 import org.eclipse.epsilon.eol.types.EolPrimitiveType;
 import org.eclipse.epsilon.eol.types.EolType;
 
+/**
+ * References a given target from the debugger. The target should
+ * implement equals and hashCode appropriately, as the suspended
+ * state will reuse the same variable reference for each distinct
+ * target.
+ */
 public abstract class IdentifiableReference<T> implements IVariableReference {
 
 	private static final EolType[] PREDEFINED_TYPES = {

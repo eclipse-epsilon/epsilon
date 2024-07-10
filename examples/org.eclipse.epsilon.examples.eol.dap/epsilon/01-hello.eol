@@ -7,6 +7,12 @@ smallCollection.println('Small collection: ');
 var largeCollection = 1.to(1000).asSet();
 largeCollection.size.println('Large collection size: ');
 
+var smallMap = Map {"x" = 3, "y" = 10};
+smallMap.println('Small map: ');
+
+var largeMap = 1.to(250).aggregate(x | x, x * 10);
+largeMap.println('Large map: ');
+
 operation produceGreeting(firstName: String, lastName: String) {
   var fullName = firstName + ' ' + lastName;
 

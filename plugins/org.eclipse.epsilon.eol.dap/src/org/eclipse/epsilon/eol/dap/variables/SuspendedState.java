@@ -10,6 +10,7 @@
 package org.eclipse.epsilon.eol.dap.variables;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
@@ -83,6 +84,17 @@ public class SuspendedState {
 			return putOrGetReference(new TupleReference(context, name, (EolTuple) value));
 		}
 
+		if (value instanceof Map) {
+			IdentifiableReference<?> ref;
+			Map<Object, Object> m = (Map<Object, Object>) value;
+			if (m.size() >= LARGE_COLLECTION_THRESHOLD) {
+				ref = new SlicedMapReference(context, name, m, SLICE_SIZE);
+			} else {
+				ref = new PerKeyMapReference(context, name, m);
+			}
+			return putOrGetReference(ref);
+		}
+		
 		return new OpaqueValueReference(context, name, value);
 	}
 

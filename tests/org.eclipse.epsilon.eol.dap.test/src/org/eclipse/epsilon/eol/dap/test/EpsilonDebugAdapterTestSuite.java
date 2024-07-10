@@ -25,8 +25,10 @@ import org.eclipse.epsilon.eol.dap.test.eol.ForLoopEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.HttpEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ImportingEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.LargeCollectionTest;
+import org.eclipse.epsilon.eol.dap.test.eol.LargeMapTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ModelElementPropertiesTest;
 import org.eclipse.epsilon.eol.dap.test.eol.SmallCollectionTest;
+import org.eclipse.epsilon.eol.dap.test.eol.SmallMapTest;
 import org.eclipse.epsilon.eol.dap.test.eol.StandaloneEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.TupleTest;
 import org.eclipse.epsilon.eol.dap.test.epl.EplDebugTest;
@@ -54,6 +56,8 @@ import junit.framework.Test;
     SmallCollectionTest.class,
     LargeCollectionTest.class,
     TupleTest.class,
+    SmallMapTest.class,
+    LargeMapTest.class,
     ClientLacksVariableTypeSupportTest.class,
     ErrorReportingEolTest.class,
     EglDebugTest.class,
