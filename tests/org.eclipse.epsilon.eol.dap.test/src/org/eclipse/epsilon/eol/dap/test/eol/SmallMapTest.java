@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
-import org.eclipse.epsilon.eol.dap.variables.MapEntryReference;
+import org.eclipse.epsilon.eol.dap.variables.maps.MapEntryReference;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Variable;

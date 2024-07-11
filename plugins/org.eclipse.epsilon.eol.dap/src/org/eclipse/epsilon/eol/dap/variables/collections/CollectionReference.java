@@ -7,10 +7,11 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package org.eclipse.epsilon.eol.dap.variables;
+package org.eclipse.epsilon.eol.dap.variables.collections;
 
 import java.util.Collection;
 
+import org.eclipse.epsilon.eol.dap.variables.IdentifiableReference;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.types.EolCollectionType;
 

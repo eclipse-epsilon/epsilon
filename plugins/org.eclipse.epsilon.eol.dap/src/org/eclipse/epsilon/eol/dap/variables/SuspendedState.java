@@ -13,6 +13,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.eclipse.epsilon.eol.dap.variables.collections.PerElementCollectionReference;
+import org.eclipse.epsilon.eol.dap.variables.collections.SlicedCollectionReference;
+import org.eclipse.epsilon.eol.dap.variables.maps.PerKeyMapReference;
+import org.eclipse.epsilon.eol.dap.variables.maps.SlicedMapReference;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
 import org.eclipse.epsilon.eol.models.IModel;
@@ -62,7 +66,7 @@ public class SuspendedState {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected IVariableReference getValueReference(IEolContext context, String name, Object value) {
+	public IVariableReference getValueReference(IEolContext context, String name, Object value) {
 		if (value == null) {
 			return new OpaqueValueReference(context, name, value);
 		}
@@ -109,7 +113,7 @@ public class SuspendedState {
 		return putOrGetReference(new JavaObjectReference(context, name, value));
 	}
 
-	protected IVariableReference putOrGetReference(IdentifiableReference<?> ref) {
+	public IVariableReference putOrGetReference(IdentifiableReference<?> ref) {
 		synchronized (references) {
 			/*
 			 * If we do not have an ID for this reference, generate one.

@@ -1,4 +1,4 @@
-package org.eclipse.epsilon.eol.dap.variables;
+package org.eclipse.epsilon.eol.dap.variables.maps;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.epsilon.eol.dap.variables.IVariableReference;
+import org.eclipse.epsilon.eol.dap.variables.IdentifiableReference;
+import org.eclipse.epsilon.eol.dap.variables.SuspendedState;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 
 public class MapSliceReference extends IdentifiableReference<Map<Object, Object>> {

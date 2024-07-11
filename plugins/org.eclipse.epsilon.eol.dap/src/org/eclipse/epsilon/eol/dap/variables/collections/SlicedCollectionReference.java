@@ -7,13 +7,15 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package org.eclipse.epsilon.eol.dap.variables;
+package org.eclipse.epsilon.eol.dap.variables.collections;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.epsilon.eol.dap.variables.IVariableReference;
+import org.eclipse.epsilon.eol.dap.variables.SuspendedState;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 
 public class SlicedCollectionReference extends CollectionReference {

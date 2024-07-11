@@ -7,22 +7,31 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package org.eclipse.epsilon.eol.dap.variables;
+package org.eclipse.epsilon.eol.dap.variables.maps;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.epsilon.eol.dap.variables.IVariableReference;
+import org.eclipse.epsilon.eol.dap.variables.IdentifiableReference;
+import org.eclipse.epsilon.eol.dap.variables.SuspendedState;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
+import org.eclipse.epsilon.eol.types.EolMapType;
 
-public class PerElementCollectionReference extends CollectionReference {
+public class PerKeyMapReference extends IdentifiableReference<Map<Object, Object>> {
 
 	private final String name;
 
-	public PerElementCollectionReference(IEolContext context, String name, Collection<Object> collection) {
-		super(context, collection);
+	public PerKeyMapReference(IEolContext context, String name, Map<Object, Object> m) {
+		super(context, m);
 		this.name = name;
+	}
+
+	@Override
+	public String getTypeName() {
+		return new EolMapType().getName();
 	}
 
 	@Override
@@ -35,8 +44,9 @@ public class PerElementCollectionReference extends CollectionReference {
 		final List<IVariableReference> refs = new ArrayList<>(target.size());
 
 		int i = 0;
-		for (Object e : target) {
-			refs.add(state.getValueReference(context, String.format("%s[%d]", name, i++), e));
+		for (Object key : target.keySet()) {
+			final String entryName = String.format("%s[%d]", name, i++);
+			refs.add(state.putOrGetReference(new MapEntryReference(context, entryName, target, key)));
 		}
 
 		return refs;
@@ -58,7 +68,7 @@ public class PerElementCollectionReference extends CollectionReference {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PerElementCollectionReference other = (PerElementCollectionReference) obj;
+		PerKeyMapReference other = (PerKeyMapReference) obj;
 		return Objects.equals(name, other.name);
 	}
 

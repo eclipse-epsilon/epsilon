@@ -7,12 +7,15 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package org.eclipse.epsilon.eol.dap.variables;
+package org.eclipse.epsilon.eol.dap.variables.maps;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.epsilon.eol.dap.variables.IVariableReference;
+import org.eclipse.epsilon.eol.dap.variables.IdentifiableReference;
+import org.eclipse.epsilon.eol.dap.variables.SuspendedState;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.types.EolMapType;
 

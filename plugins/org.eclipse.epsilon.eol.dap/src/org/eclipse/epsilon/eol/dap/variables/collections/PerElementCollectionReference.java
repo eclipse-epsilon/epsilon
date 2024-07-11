@@ -7,28 +7,24 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package org.eclipse.epsilon.eol.dap.variables;
+package org.eclipse.epsilon.eol.dap.variables.collections;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.epsilon.eol.dap.variables.IVariableReference;
+import org.eclipse.epsilon.eol.dap.variables.SuspendedState;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
-import org.eclipse.epsilon.eol.types.EolMapType;
 
-public class PerKeyMapReference extends IdentifiableReference<Map<Object, Object>> {
+public class PerElementCollectionReference extends CollectionReference {
 
 	private final String name;
 
-	public PerKeyMapReference(IEolContext context, String name, Map<Object, Object> m) {
-		super(context, m);
+	public PerElementCollectionReference(IEolContext context, String name, Collection<Object> collection) {
+		super(context, collection);
 		this.name = name;
-	}
-
-	@Override
-	public String getTypeName() {
-		return new EolMapType().getName();
 	}
 
 	@Override
@@ -41,9 +37,8 @@ public class PerKeyMapReference extends IdentifiableReference<Map<Object, Object
 		final List<IVariableReference> refs = new ArrayList<>(target.size());
 
 		int i = 0;
-		for (Object key : target.keySet()) {
-			final String entryName = String.format("%s[%d]", name, i++);
-			refs.add(state.putOrGetReference(new MapEntryReference(context, entryName, target, key)));
+		for (Object e : target) {
+			refs.add(state.getValueReference(context, String.format("%s[%d]", name, i++), e));
 		}
 
 		return refs;
@@ -65,7 +60,7 @@ public class PerKeyMapReference extends IdentifiableReference<Map<Object, Object
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PerKeyMapReference other = (PerKeyMapReference) obj;
+		PerElementCollectionReference other = (PerElementCollectionReference) obj;
 		return Objects.equals(name, other.name);
 	}
 
