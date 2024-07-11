@@ -26,7 +26,7 @@ import org.eclipse.epsilon.eol.types.EolType;
  */
 public abstract class IdentifiableReference<T> implements IVariableReference {
 
-	private static final EolType[] PREDEFINED_TYPES = {
+	public static final EolType[] PREDEFINED_TYPES = {
 		EolPrimitiveType.Integer,
 		EolPrimitiveType.Boolean,
 		EolPrimitiveType.Real,

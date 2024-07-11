@@ -18,6 +18,7 @@ import org.eclipse.epsilon.eol.execute.context.SingleFrame;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IReflectiveModel;
 import org.eclipse.epsilon.eol.types.EolTuple;
+import org.eclipse.epsilon.eol.types.EolType;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -62,6 +63,10 @@ public class SuspendedState {
 
 	@SuppressWarnings("unchecked")
 	protected IVariableReference getValueReference(IEolContext context, String name, Object value) {
+		if (value == null) {
+			return new OpaqueValueReference(context, name, value);
+		}
+
 		IModel model = context.getModelRepository().getOwningModel(value);
 		if (model instanceof IReflectiveModel) {
 			IReflectiveModel rModel = (IReflectiveModel) model;
@@ -94,8 +99,14 @@ public class SuspendedState {
 			}
 			return putOrGetReference(ref);
 		}
-		
-		return new OpaqueValueReference(context, name, value);
+
+		for (EolType t : IdentifiableReference.PREDEFINED_TYPES) {
+			if (t.isKind(value)) {
+				return new OpaqueValueReference(context, name, value);
+			}
+		}
+
+		return putOrGetReference(new JavaObjectReference(context, name, value));
 	}
 
 	protected IVariableReference putOrGetReference(IdentifiableReference<?> ref) {
