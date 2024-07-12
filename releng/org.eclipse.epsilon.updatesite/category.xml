@@ -90,9 +90,6 @@
    <feature id="org.eclipse.epsilon.emc.jdt.feature">
       <category name="Epsilon JDT Integration"/>
    </feature>
-   <feature id="org.eclipse.epsilon.sirius.widget.feature">
-      <category name="Epsilon Sirius Integration"/>
-   </feature>
    <feature id="org.eclipse.epsilon.emc.cdo.dt.feature">
       <category name="Epsilon CDO Integration"/>
    </feature>

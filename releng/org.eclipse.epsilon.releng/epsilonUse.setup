@@ -444,8 +444,6 @@
           name="org.eclipse.epsilon.emc.csv.feature.feature.group"/>
       <requirement
           name="org.eclipse.epsilon.emc.csv.dt.feature.feature.group"/>
-      <requirement
-          name="org.eclipse.epsilon.sirius.widget.feature.feature.group"/>
       <repository
           url="http://download.eclipse.org/releases/2023-12"/>
       <repository

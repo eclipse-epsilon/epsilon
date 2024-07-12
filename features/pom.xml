@@ -44,7 +44,6 @@
     <module>org.eclipse.epsilon.picto.feature</module>
     <module>org.eclipse.epsilon.simulink.dt.feature</module>
     <module>org.eclipse.epsilon.simulink.feature</module>
-    <module>org.eclipse.epsilon.sirius.widget.feature</module>
     <module>org.eclipse.epsilon.uml.dt.feature</module>
     <module>org.eclipse.epsilon.uml.feature</module>
   </modules>

@@ -119,7 +119,6 @@
     <module>org.eclipse.epsilon.pinset.dt</module>
     <module>org.eclipse.epsilon.profiling</module>
     <module>org.eclipse.epsilon.profiling.dt</module>
-    <module>org.eclipse.epsilon.sirius.widget</module>
     <module>org.eclipse.epsilon.workflow</module>
     <module>org.eclipse.epsilon.workflow.csv</module>
     <module>org.eclipse.epsilon.workflow.emf</module>
