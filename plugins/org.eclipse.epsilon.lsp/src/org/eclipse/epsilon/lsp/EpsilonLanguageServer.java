@@ -10,6 +10,8 @@
 package org.eclipse.epsilon.lsp;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
@@ -23,6 +25,9 @@ import org.eclipse.lsp4j.services.WorkspaceService;
 public class EpsilonLanguageServer implements LanguageServer {
 
     protected final TextDocumentService textDocumentService = new EpsilonTextDocumentService(this);
+
+    protected AtomicBoolean shutdown = new AtomicBoolean(false);
+    protected Consumer<Integer> exitFunction = System::exit;
     protected LanguageClient client;
 
     public void connect(LanguageClient remoteProxy) {
@@ -33,7 +38,25 @@ public class EpsilonLanguageServer implements LanguageServer {
         return client;
     }
 
-    @Override
+    /**
+     * Returns the function called to process {@link #exit()} requests.
+     * The default is {@code System#exit(int)}, as indicated by the LSP
+     * specification.
+     */
+    public Consumer<Integer> getExitFunction() {
+		return exitFunction;
+	}
+
+    /**
+     * Changes the function called to process {@link #exit()} requests.
+     *
+     * @see #getExitFunction()
+     */
+	public void setExitFunction(Consumer<Integer> exitFunction) {
+		this.exitFunction = exitFunction;
+	}
+
+	@Override
     public CompletableFuture<InitializeResult> initialize(InitializeParams params) {
         final InitializeResult res = new InitializeResult(new ServerCapabilities());
         res.getCapabilities().setTextDocumentSync(TextDocumentSyncKind.Full);
@@ -42,12 +65,15 @@ public class EpsilonLanguageServer implements LanguageServer {
 
     @Override
     public CompletableFuture<Object> shutdown() {
+    	// TODO throw InvalidRequest if already shutdown
+    	// TODO take this into account for exit code
+    	
         return CompletableFuture.completedFuture(null);
     }
 
     @Override
     public void exit() {
-        // nothing to do
+    	exitFunction.accept(null);
     }
 
     @Override
