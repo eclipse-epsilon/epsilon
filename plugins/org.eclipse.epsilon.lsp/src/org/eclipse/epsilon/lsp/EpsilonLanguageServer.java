@@ -42,7 +42,7 @@ public class EpsilonLanguageServer implements LanguageServer {
 
     @Override
     public CompletableFuture<Object> shutdown() {
-        return CompletableFuture.completedFuture(Boolean.TRUE);
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

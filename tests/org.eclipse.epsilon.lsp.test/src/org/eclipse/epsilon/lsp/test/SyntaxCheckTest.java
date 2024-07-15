@@ -2,6 +2,7 @@ package org.eclipse.epsilon.lsp.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,16 +10,21 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.epsilon.lsp.EpsilonLanguageServer;
 import org.eclipse.lsp4j.DidOpenTextDocumentParams;
+import org.eclipse.lsp4j.InitializeParams;
+import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.MessageActionItem;
 import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.ShowMessageRequestParams;
 import org.eclipse.lsp4j.TextDocumentItem;
+import org.eclipse.lsp4j.TextDocumentSyncKind;
 import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.services.TextDocumentService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -61,15 +67,32 @@ public class SyntaxCheckTest {
 		}
 	}
 
+	protected EpsilonLanguageServer server;
 	protected TextDocumentService docService;
 	protected TestClient testClient;
 
 	@Before
-	public void setUp() {
-		final EpsilonLanguageServer server = new EpsilonLanguageServer();
+	public void setUp() throws Exception {
+		server = new EpsilonLanguageServer();
 		testClient = new TestClient();
 		server.connect(testClient);
+
+		InitializeResult initResults = server.initialize(new InitializeParams()).get(5, TimeUnit.SECONDS);
+		assertNotNull("Initialisation should have completed in 5s", initResults);
+		assertEquals("Should be using full-text synchronisation",
+			TextDocumentSyncKind.Full, initResults.getCapabilities().getTextDocumentSync().getLeft());
+
 		docService = server.getTextDocumentService();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		Object shutdownResult = server.shutdown().get();
+		assertNull("LSP 3.17 spec: result of shutdown() should be null", shutdownResult);
+
+		/*
+		 * No .exit() as that implies exiting the process (which would impact the test.
+		 */
 	}
 
 	@Test
