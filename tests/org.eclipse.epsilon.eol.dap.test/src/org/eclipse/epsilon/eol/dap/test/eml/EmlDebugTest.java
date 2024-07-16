@@ -28,7 +28,7 @@ import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Variable;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 public class EmlDebugTest extends AbstractEpsilonDebugAdapterTest {
@@ -38,12 +38,13 @@ public class EmlDebugTest extends AbstractEpsilonDebugAdapterTest {
 	private static final File ETL_FILE = new File(BASE_RESOURCE_FOLDER, "14-mergeGraphs.etl");
 	private static final File METAMODEL_FILE = new File(BASE_MODELS_FOLDER, "Graph.ecore");
 
-	private static EmfModel leftModel;
-	private static EmfModel rightModel;
-	private static MatchTrace reducedMatchTrace;
+	private EmfModel leftModel;
+	private EmfModel rightModel;
+	private MatchTrace reducedMatchTrace;
 
-	@BeforeClass
-	public static void compareGraphs() throws Exception {
+	@Override
+	public void setupModule() throws Exception {
+		// Set up models
 		EclModule eclModule = new EclModule();
 		eclModule.parse(COMPARE_FILE);
 
@@ -67,10 +68,8 @@ public class EmlDebugTest extends AbstractEpsilonDebugAdapterTest {
 
 		eclModule.execute();
 		reducedMatchTrace = eclModule.getContext().getMatchTrace().getReduced();
-	}
 
-	@Override
-	protected void setupModule() throws Exception {
+		// Set up module
 		final EmlModule emlModule = new EmlModule();
 		this.module = emlModule;
 		module.parse(EML_FILE);
