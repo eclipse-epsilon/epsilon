@@ -17,10 +17,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+
 import org.eclipse.epsilon.common.util.FileUtil;
+import org.eclipse.epsilon.common.util.Multimap;
 import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.egl.IEgxModule;
-import org.eclipse.epsilon.egl.concurrent.*;
+import org.eclipse.epsilon.egl.concurrent.EgxModuleParallelAnnotation;
+import org.eclipse.epsilon.egl.concurrent.EgxModuleParallelGenerationRuleAtoms;
 import org.eclipse.epsilon.egl.execute.context.concurrent.EgxContextParallel;
 import org.eclipse.epsilon.egl.launch.EgxRunConfiguration;
 import org.eclipse.epsilon.eol.engine.test.acceptance.util.EolAcceptanceTestUtil;
@@ -69,13 +72,13 @@ public class EgxAcceptanceTestUtil extends EolAcceptanceTestUtil {
 			p -> new EgxModuleParallelGenerationRuleAtoms(new EgxContextParallel(p))
 		);
 	}
-	
-	public static Collection<EgxRunConfiguration> getScenarios(
-		List<String[]> testInputs,
-		Collection<Supplier<? extends IEgxModule>> moduleGetters) throws Exception {
-			return getScenarios(EgxRunConfiguration.class, testInputs, moduleGetters, null, EgxAcceptanceTestUtil.class);
+
+	public static Multimap<String, Supplier<EgxRunConfiguration>> getScenarioSuppliers(
+			List<String[]> testInputs,
+			Collection<Supplier<? extends IEgxModule>> moduleGetters) throws Exception {
+				return getScenarioSuppliers(EgxRunConfiguration.class, testInputs, moduleGetters, null, EgxAcceptanceTestUtil.class);
 	}
-	
+
 	public static void deleteOutputDirectories() throws IOException {
 		try {
 			FileUtil.deleteDirectory(ecoreBase+"output");

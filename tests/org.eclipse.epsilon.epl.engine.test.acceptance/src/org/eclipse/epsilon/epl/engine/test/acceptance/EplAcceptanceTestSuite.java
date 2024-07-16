@@ -13,13 +13,14 @@
  */
 package org.eclipse.epsilon.epl.engine.test.acceptance;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.Test;
-import org.eclipse.epsilon.epl.engine.test.acceptance.equivalence.EplModuleEquivalenceTests;
 import org.eclipse.epsilon.epl.engine.test.acceptance.equivalence.EplModuleStackTraceEquivalenceTests;
+import org.eclipse.epsilon.epl.engine.test.acceptance.equivalence.EplModuleEquivalenceTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+import junit.framework.JUnit4TestAdapter;
+import junit.framework.Test;
 
 @RunWith(Suite.class)
 @SuiteClasses({

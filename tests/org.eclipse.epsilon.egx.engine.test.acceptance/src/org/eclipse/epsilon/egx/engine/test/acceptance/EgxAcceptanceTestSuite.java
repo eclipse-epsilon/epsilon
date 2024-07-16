@@ -14,11 +14,13 @@ import org.eclipse.epsilon.egx.engine.test.acceptance.equivalence.EgxModuleEquiv
 import org.eclipse.epsilon.egx.engine.test.acceptance.extendedproperties.ExtendedPropertiesTests;
 import org.eclipse.epsilon.egx.engine.test.acceptance.formatter.FormatterTests;
 import org.eclipse.epsilon.egx.engine.test.acceptance.hutn.EgxHutnTestSuite;
-import org.eclipse.epsilon.egx.engine.test.acceptance.operations.*;
+import org.eclipse.epsilon.egx.engine.test.acceptance.operations.IncludeTests;
+import org.eclipse.epsilon.egx.engine.test.acceptance.operations.PrintTests;
 import org.eclipse.epsilon.egx.engine.test.acceptance.parse.GenerationRuleConstructsTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 

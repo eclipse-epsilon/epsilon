@@ -18,25 +18,29 @@ import static org.eclipse.epsilon.eol.models.Model.PROPERTY_READONLOAD;
 import static org.eclipse.epsilon.eol.models.Model.PROPERTY_STOREONDISPOSAL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
 import org.eclipse.epsilon.common.concurrent.ConcurrencyUtils;
 import org.eclipse.epsilon.common.util.FileUtil;
+import org.eclipse.epsilon.common.util.Multimap;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.concurrent.EolModuleParallel;
+import org.eclipse.epsilon.eol.engine.test.acceptance.util.AbstractEolEquivalenceTests.EquivalenceTestParameters;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.launch.EolRunConfiguration;
-import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.test.util.EpsilonTestUtil;
 
 /**
@@ -103,39 +107,55 @@ public class EolAcceptanceTestUtil extends EpsilonTestUtil {
 		properties.put(PROPERTY_FILE_BASED_METAMODEL_URI, metamodelFile.toUri().toString());
 		return properties;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static <M extends IEolModule, C extends EolRunConfiguration> Collection<C> getScenarios(
+	public static <M extends IEolModule, C extends EolRunConfiguration> Multimap<String, Supplier<C>> getScenarioSuppliers(
 			Class<C> clazz,
 			List<String[]> testInputs,
 			Collection<Supplier<? extends M>> moduleGetters,
 			Function<String[], Integer> idCalculator,
 			Class<?> inputResourceOwner) throws Exception {
 
-		if (idCalculator == null) idCalculator = EolAcceptanceTestUtil::getScenarioID;
+		final Function<String[], Integer> effectiveIdCalculator =
+			idCalculator == null ? EolAcceptanceTestUtil::getScenarioID : idCalculator; 
 		
-		List<C> scenarios = new ArrayList<>(moduleGetters.size()*(testInputs.size()+2));
-		
+		Multimap<String, Supplier<C>> scenarios = new Multimap<>();
+
 		for (String[] testInput : testInputs) {
 			Path eolScript = Paths.get(FileUtil.getFileStandalone(testInput[0], inputResourceOwner).toURI());
 			Path modelFile = Paths.get(FileUtil.getFileStandalone(testInput[1], inputResourceOwner).toURI());
 			Path metamodelFile = Paths.get(FileUtil.getFileStandalone(testInput[2], inputResourceOwner).toURI());
-			String modelExt = FileUtil.getExtension(modelFile.toString());
-			// TODO use modelExt to determine correct model type
-			IModel modelObj = new EmfModel();
-			
+
 			for (Supplier<? extends M> moduleGetter : moduleGetters) {
-				scenarios.add(((EolRunConfiguration.Builder<C, ?>) EolRunConfiguration.Builder(clazz))
+				Integer id = effectiveIdCalculator.apply(testInput);
+
+				scenarios.put(id + "", () -> ((EolRunConfiguration.Builder<C, ?>) EolRunConfiguration.Builder(clazz))
 					.withScript(eolScript)
-					.withModel(modelObj, createModelProperties(modelFile, metamodelFile))
+					.withModel(new EmfModel(), createModelProperties(modelFile, metamodelFile))
 					.withModule(moduleGetter.get())
-					.withId(idCalculator.apply(testInput))
-					.build()
-				);
+					.withId(id)
+					.build());
 			}
 		}
 		
 		return scenarios;
+	}
+
+	public static <C extends EolRunConfiguration> Collection<EquivalenceTestParameters<C>> getPairedConfigurations(
+			Multimap<String, Supplier<C>> expectedSuppliers,
+			Multimap<String, Supplier<C>> testedSuppliers) {
+		List<EquivalenceTestParameters<C>> configs = new ArrayList<>();
+		for (Entry<String, Collection<Supplier<C>>> entryExpected : expectedSuppliers.entrySet()) {
+			Supplier<C> expectedSupplier = entryExpected.getValue().iterator().next();
+			for (Supplier<C> testedSupplier : testedSuppliers.get(entryExpected.getKey())) {
+				configs.add(new EquivalenceTestParameters<C>(
+					entryExpected.getKey(),
+					expectedSupplier,
+					testedSupplier));
+			}
+		}
+
+		return configs;
 	}
 	
 	public static <M extends IEolModule> Collection<? extends M> unwrapModules(Collection<Supplier<? extends M>> moduleGetters) {
