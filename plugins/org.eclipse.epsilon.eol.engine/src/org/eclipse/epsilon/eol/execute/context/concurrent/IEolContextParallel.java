@@ -99,11 +99,11 @@ public interface IEolContextParallel extends IEolContext {
 	 * 
 	 * @param entryPoint The AST to associate with this task. May be null, in which
 	 * case a default value (e.g. {@linkplain #getModule()}) should be used.
-	 * @param shortCircuiting Whether the task may be terminated abruptly.
+	 * @param canTerminate Whether the task may be terminated abruptly.
 	 * @return {@link #getExecutorService()}
 	 * @throws EolNestedParallelismException If there was already a parallel task in progress.
 	 */
-	default ExecutorService beginParallelTask(ModuleElement entryPoint, boolean shortCircuiting) throws EolNestedParallelismException {
+	default ExecutorService beginParallelTask(ModuleElement entryPoint, boolean canTerminate) throws EolNestedParallelismException {
 		ensureNotNested(entryPoint != null ? entryPoint : getModule());
 		ExecutorService executor = getExecutorService();
 		assert executor != null && !executor.isShutdown();
@@ -149,12 +149,12 @@ public interface IEolContextParallel extends IEolContext {
 			for (Future<? extends T> future : executor.invokeAll(jobs)) {
 				results.add(future.get());
 			}
-		}
-		catch (InterruptedException | ExecutionException ex) {
+		} catch (InterruptedException | ExecutionException ex) {
 			EolRuntimeException.propagateDetailed(ex);
 			assert false : "This should never be reached";
+		} finally {
+			endParallelTask();
 		}
-		endParallelTask();
 		return results;
 	}
 	
