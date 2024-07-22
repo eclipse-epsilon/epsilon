@@ -1,13 +1,22 @@
 package org.eclipse.epsilon.examples.evl.crossrefs;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.emfatic.core.EmfaticResourceFactory;
+import org.eclipse.epsilon.common.module.ModuleElement;
+import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.emc.emf.EmfUtil;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelNotFoundException;
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.evl.EvlModule;
+import org.eclipse.epsilon.evl.dom.ConstraintContext;
 import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
 import org.eclipse.epsilon.flexmi.FlexmiResourceFactory;
 
@@ -21,19 +30,35 @@ public class Example {
         
         EmfUtil.register(new File("ccl.emf"), EPackage.Registry.INSTANCE);
 
-        // Parse the EVL constraints
-        EvlModule module = new EvlModule();
-        module.parse(new File("ccl.evl"));
-        
         // Load the model a model.flexmi using ccl.emf as its metamodel
-        EmfModel model = new EmfModel();
+        final EmfModel model = new EmfModel();
         model.setName("M");
         model.setModelFile(new File("a.flexmi").getAbsolutePath());
         model.setMetamodelUri("ccl");
         model.setReadOnLoad(true);
-        model.setExpand(false);
+        model.setExpand(true);
         model.setStoredOnDisposal(false);
         model.load();
+        
+        // Parse the EVL constraints
+        EvlModule module = new EvlModule() {
+            @Override
+            public ModuleElement adapt(AST cst, ModuleElement parentAst) {
+                ModuleElement moduleElement = super.adapt(cst, parentAst);
+                if (moduleElement instanceof ConstraintContext) {
+                    // Create a custom ConstraintContext implementation that only validates
+                    // elements in the (first) resource of the model
+                    return new ConstraintContext() {
+                        public Collection<?> getAllOfSourceKind(IEolContext context) throws EolModelElementTypeNotFoundException ,EolModelNotFoundException {
+                            // Return only the model elements that are contained in the (first) resource of the model
+                            return super.getAllOfSourceKind(context).stream().filter(me -> ((EObject) me).eResource() == model.getResource()).collect(Collectors.toList());
+                        };
+                    };
+                }
+                else return moduleElement;
+            }
+        };
+        module.parse(new File("ccl.evl"));
         
         // Make the model available to the constraints
         module.getContext().getModelRepository().addModel(model);

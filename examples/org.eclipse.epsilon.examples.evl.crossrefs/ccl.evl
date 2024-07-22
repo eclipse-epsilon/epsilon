@@ -2,7 +2,16 @@ context Connector {
 
     /* If a connector connects two ports, their types must match */
     constraint PortTypesMatch {
+        guard: self.source.satisfies("HasValidType") and self.target.satisfies("HasValidType")
         check: self.source.type = self.target.type
         message: "The types of the source and target ports of connector " + self.name + " don't match"
+    }
+}
+
+context Port {
+    
+    /* The only valid port types are boolean, int and String */
+    constraint HasValidType {
+        check: Sequence{"boolean", "int", "String"}.contains(self.type)
     }
 }
