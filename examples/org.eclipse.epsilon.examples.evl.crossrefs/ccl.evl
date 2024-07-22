@@ -1,0 +1,8 @@
+context Connector {
+
+    /* If a connector connects two ports, their types must match */
+    constraint PortTypesMatch {
+        check: self.source.type = self.target.type
+        message: "The types of the source and target ports of connector " + self.name + " don't match"
+    }
+}

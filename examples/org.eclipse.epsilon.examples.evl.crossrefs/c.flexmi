@@ -1,0 +1,9 @@
+<?nsuri ccl?>
+<?import a.flexmi?>
+<_>
+    <component name="C">
+        <in name="in"/>
+        <out name="out" type="String"/>
+    </component>
+    <connector name="C2A" from="C.out" to="A.in"/>
+</_>

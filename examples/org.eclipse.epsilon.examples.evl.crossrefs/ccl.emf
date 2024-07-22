@@ -1,0 +1,22 @@
+package ccl;
+
+class Component {
+    attr String name;
+    val Port[*]#component ports;
+}
+
+class Connector {
+    attr String name;
+    ref OutPort source;
+    ref InPort target;
+}
+
+class InPort extends Port {}
+
+class OutPort extends Port {}
+
+abstract class Port {
+    attr String name;
+    attr String type = "boolean";
+    ref Component#ports component;
+}
