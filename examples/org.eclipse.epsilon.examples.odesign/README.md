@@ -13,4 +13,4 @@ https://github.com/eclipse/epsilon/blob/770435007e72764041d6d8d12cca006a3aedb747
 
 ## Updating the ODesign Model
 
-- If you want to save any changes made by your EOL model call `odesign.store()` after `module.execute()`.
+- If you want to save any changes made by your EOL program you can call `odesign.store()` after `module.execute()`.
