@@ -2,6 +2,8 @@
 
 This example shows how to read a Sirius ODesign graphical syntax specification model and query it with EOL.
 
+https://github.com/eclipse/epsilon/blob/770435007e72764041d6d8d12cca006a3aedb747/examples/org.eclipse.epsilon.examples.odesign/src/org/eclipse/epsilon/examples/odesign/App.java#L1-L36
+
 ## How to Run
 
 - Install Epsilon 2.5 and Sirius 7.4.0 (Specifier Environment) in your Eclipse.
