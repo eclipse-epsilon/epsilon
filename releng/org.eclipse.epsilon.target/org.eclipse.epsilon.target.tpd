@@ -83,9 +83,16 @@ location "https://download.eclipse.org/lsp4j/updates/releases/0.23.1/" {
 	org.eclipse.lsp4j.debug lazy
 }
 
-location "https://download.eclipse.org/lsp4e/releases/0.26.0/" {
+location "https://download.eclipse.org/lsp4e/releases/0.26.3/" {
 	org.eclipse.lsp4e lazy
 	org.eclipse.lsp4e.debug lazy
+}
+
+// Needed by LSP4E from 0.26.1
+location "https://download.eclipse.org/mylyn/updates/release/4.3.0/" {
+	org.eclipse.mylyn.wikitext lazy
+	org.eclipse.mylyn.wikitext.markdown lazy
+	org.eclipse.mylyn.wikitext.markdown.ui lazy
 }
 
 maven MavenDependencies scope=compile,test,runtime dependencyDepth=infinite missingManifest=generate includeSources {
