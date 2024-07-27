@@ -4,7 +4,12 @@
 
 Epsilon can be used as a [standard Java library](https://eclipse.org/epsilon/getting-started/#using-epsilon-as-a-java-library), and also provides [Apache Ant](https://eclipse.org/epsilon/doc/workflow) tasks that can be embedded in [Maven/Gradle builds](https://eclipse.org/epsilon/getting-started/#epsilon-in-mavengradle-builds). Editing support for Epsilon programs is available in [Eclipse](https://eclipse.org/epsilon/download), [VS Code](https://eclipse.org/epsilon/doc/articles/vscode) and [Sublime](https://github.com/epsilonlabs/sublime).
 
+[![Epsilon's Model-to-Text Transformation Language](https://github.com/user-attachments/assets/ba30b435-2ff9-471c-b132-7981a6e9148f)](https://eclipse.dev/epsilon/playground/?egx)
+
+## Quick Access
+
 - [Getting Started](https://eclipse.dev/epsilon/getting-started/)
-- [Online Playground](https://eclipse.dev/epsilon/playground/)
+- [Playground](https://eclipse.dev/epsilon/playground/)
 - [Download](https://eclipse.dev/epsilon/download/)
 - [Documentation](https://eclipse.dev/epsilon/doc/)
+
