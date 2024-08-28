@@ -68,12 +68,12 @@ public class EolDebugger implements IEolDebugger {
 	}
 
 	protected IEolModule getModule() {
-		return target.getModule();
+		return target != null ? target.getModule() : null;
 	}
 
 	@Override
 	public void control(ModuleElement ast, IEolContext context) {
-		if (!controls(ast)) {
+		if (target == null || !controls(ast)) {
 			return;
 		}
 		currentModuleElement = ast;
@@ -133,7 +133,8 @@ public class EolDebugger implements IEolDebugger {
 	}
 
 	private int frameStackSize() {
-		return getModule().getContext().getFrameStack().getFrames().size();
+		IEolModule module = getModule();
+		return module != null ? module.getContext().getFrameStack().getFrames().size() : 0;
 	}
 
 	private ModuleElement getGrandparent(ModuleElement ast) {
@@ -145,7 +146,7 @@ public class EolDebugger implements IEolDebugger {
 	}
 
 	private boolean hasBreakpoint(ModuleElement ast) {
-		if (target.hasBreakpointItself(ast)) {
+		if (target != null && target.hasBreakpointItself(ast)) {
 			return true;
 		}
 		
@@ -279,7 +280,10 @@ public class EolDebugger implements IEolDebugger {
 	protected synchronized Map<String, IModule> getURIToModuleMap() throws IOException {
 		if (this.uriToModule == null) {
 			this.uriToModule = new HashMap<>();
-			addAllModules(uriToModule, getModule());
+			IEolModule module = getModule();
+			if (module != null) {
+				addAllModules(uriToModule, module);
+			}
 		}
 		return uriToModule;
 	}
