@@ -49,7 +49,7 @@ public class EolDebugger implements IEolDebugger {
 
 	@Override
 	public boolean isTerminated() {
-		return target.isTerminated();
+		return target != null ? target.isTerminated() : true;
 	}
 
 	@Override
