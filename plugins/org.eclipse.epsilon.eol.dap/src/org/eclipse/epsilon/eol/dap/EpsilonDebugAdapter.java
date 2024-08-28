@@ -323,18 +323,6 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			module.getContext().getExecutorFactory().setExecutionController(thread.debugger);
 		}
 
-		// Attach the completion listener to this module, if we haven't done so yet
-		boolean hasListener = false;
-		for (IExecutionListener l : module.getContext().getExecutorFactory().getExecutionListeners()) {
-			if (l == completionListener) {
-				hasListener = true;
-				break;
-			}
-		}
-		if (!hasListener) {
-			module.getContext().getExecutorFactory().addExecutionListener(completionListener);
-		}
-
 		// Attach to the module's output and error streams
 		final PrintStream outStream = createStream(module.getContext(), OutputEventArgumentsCategory.STDOUT);
 		module.getContext().setOutputStream(outStream);
@@ -397,6 +385,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			throw new IllegalStateException("connect(): the module has not been set up yet");
 		}
 		attachTo(mainModule);
+		mainModule.getContext().getExecutorFactory().addExecutionListener(completionListener);
 
 		this.client = client;
 		client.initialized();
