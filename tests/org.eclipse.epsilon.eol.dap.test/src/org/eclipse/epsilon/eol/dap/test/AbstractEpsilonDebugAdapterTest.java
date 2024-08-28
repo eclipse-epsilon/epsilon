@@ -146,11 +146,6 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	@After
 	public void teardown() {
 		adapter.disconnect(new DisconnectArguments());
-		if (module != null) {
-			module.getContext().getModelRepository().dispose();
-			module.getContext().dispose();
-			module = null;
-		}
 	}
 
 	protected void assertStoppedBecauseOf(final String reason) throws InterruptedException {
@@ -237,6 +232,10 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 			module.execute();
 		} catch (Throwable e) {
 			e.printStackTrace();
+		} finally {
+			module.getContext().getModelRepository().dispose();
+			module.getContext().dispose();
+			module = null;
 		}
 	}
 
