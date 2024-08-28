@@ -423,20 +423,20 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		});
 	}
 
-	/*
-	 * TODO: support launch via same launch properties as used by Eclipse launch
-	 * configurations?
-	 */
-
 	@Override
 	public CompletableFuture<Void> attach(Map<String, Object> args) {
 		return CompletableFuture.runAsync(() -> {
-			// Prepare the suspended state
-			suspendedState = new SuspendedState();
+			synchronized(this) {
+				// If this is the first time we're attaching to the module...
+				if (this.suspendedState == null) {
+					// Prepare the suspended state
+					suspendedState = new SuspendedState();
 
-			// Run the onAttach hook (e.g. for starting the configured module)
-			if (this.onAttach != null) {
-				this.onAttach.run();
+					// Run the onAttach hook exactly once (e.g. for starting the configured module)
+					if (this.onAttach != null) {
+						this.onAttach.run();
+					}
+				}
 			}
 		});
 	}
