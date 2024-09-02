@@ -61,7 +61,7 @@ public class TupleTest extends AbstractEpsilonDebugAdapterTest {
 		assertEquals("1234", valueVariable.getValue());
 		assertEquals("Integer", valueVariable.getType());
 
-		adapter.continue_(new ContinueArguments());
+		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
 }
