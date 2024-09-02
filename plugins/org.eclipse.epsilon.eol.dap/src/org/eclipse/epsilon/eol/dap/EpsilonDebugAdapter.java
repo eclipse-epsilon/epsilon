@@ -910,18 +910,23 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	}
 
 	protected void suspend(int threadId, ModuleElement ast, SuspendReason reason) throws InterruptedException {
-		switch (reason) {
-		case STEP:
-			sendStopped(threadId, StoppedEventArgumentsReason.STEP);
-			break;
-		case BREAKPOINT:
-			sendStopped(threadId, StoppedEventArgumentsReason.BREAKPOINT);
-			break;
-		default:
-			throw new IllegalArgumentException("Unknown suspend reason");
-		}
-
 		synchronized (suspendedLatch) {
+			/*
+			 * Note: the synchronized region must cover the sending of stopped messages,
+			 * as otherwise there is the risk that someone reacting to the "stopped" message
+			 * may try to release the suspendedLatch before it has actually been set.
+			 */
+			switch (reason) {
+			case STEP:
+				sendStopped(threadId, StoppedEventArgumentsReason.STEP);
+				break;
+			case BREAKPOINT:
+				sendStopped(threadId, StoppedEventArgumentsReason.BREAKPOINT);
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown suspend reason");
+			}
+
 			suspendedLatch.set(true);
 			do {
 				final int timeoutMillis = 500;

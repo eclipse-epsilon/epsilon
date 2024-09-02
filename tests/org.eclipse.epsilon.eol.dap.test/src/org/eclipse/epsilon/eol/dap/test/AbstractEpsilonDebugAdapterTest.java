@@ -56,8 +56,11 @@ import org.junit.rules.Timeout;
 
 public abstract class AbstractEpsilonDebugAdapterTest {
 
+	/** Timeout used for various assertions in this base class. */
+	private static final int TIMEOUT_SECONDS = 5;
+
 	@Rule
-	public Timeout globalTimeout = Timeout.seconds(10);
+	public Timeout globalTimeout = Timeout.seconds(TIMEOUT_SECONDS * 2);
 
 	protected class TestClient implements IDebugProtocolClient {
 		private Semaphore isStopped = new Semaphore(0);
@@ -150,28 +153,28 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	}
 
 	protected void assertStoppedBecauseOf(final String expectedReason) throws InterruptedException {
-		boolean acquired = client.isStopped.tryAcquire(5, TimeUnit.SECONDS);
-		assertTrue("The script should have stopped within 5s", acquired);
+		boolean acquired = client.isStopped.tryAcquire(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+		assertTrue("The script should have stopped within " + TIMEOUT_SECONDS + " seconds", acquired);
 		assertNotNull("The script should have provided stopping arguments", client.stoppedArgs);
 		assertEquals("The script should stop for the expected reason" , expectedReason, client.stoppedArgs.getReason());
 	}
 
 	protected void assertProgramCompletedSuccessfully() throws InterruptedException {
-		boolean acquired = client.isExited.tryAcquire(5, TimeUnit.SECONDS);
-		assertTrue("The script should have exited within 5s", acquired);
+		boolean acquired = client.isExited.tryAcquire(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+		assertTrue("The script should have exited within " + TIMEOUT_SECONDS + " seconds", acquired);
 		assertNotNull("The script should have provided exiting arguments", client.exitedArgs);
 		assertEquals("The script should have completed its execution successfully", 0, client.exitedArgs.getExitCode());
 	}
 
 	protected void assertProgramFailed() throws InterruptedException {
-		client.isExited.tryAcquire(5, TimeUnit.SECONDS);
-		assertNotNull("The script should have exited within 5s", client.exitedArgs);
+		client.isExited.tryAcquire(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+		assertNotNull("The script should have exited within " + TIMEOUT_SECONDS + " seconds", client.exitedArgs);
 		assertEquals("The script should have completed its execution with an error", 1, client.exitedArgs.getExitCode());
 	}
 
 	protected StackTraceResponse getStackTrace() throws Exception {
-		ThreadsResponse threads = adapter.threads().get(5, TimeUnit.SECONDS);
-		assertEquals("The debugger should report one thread", 1, threads.getThreads().length);
+		ThreadsResponse threads = adapter.threads().get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+		assertEquals("The debugger should report one thread within " + TIMEOUT_SECONDS + " seconds", 1, threads.getThreads().length);
 
 		final int threadId = threads.getThreads()[0].getId();
 		return getStackTrace(threadId);
@@ -179,7 +182,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 
 	protected StackTraceResponse getStackTrace(final int threadId) throws Exception {
 		final StackTraceArguments stackTraceArgs = createStackTraceArgs(threadId);
-		StackTraceResponse stackTrace = adapter.stackTrace(stackTraceArgs).get(5, TimeUnit.SECONDS);
+		StackTraceResponse stackTrace = adapter.stackTrace(stackTraceArgs).get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
 		return stackTrace;
 	}
 
