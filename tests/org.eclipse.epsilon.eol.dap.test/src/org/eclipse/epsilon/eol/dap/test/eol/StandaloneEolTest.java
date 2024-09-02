@@ -171,7 +171,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		// First step out should stop the program at the line after the operation
 		final StepOutArguments args = new StepOutArguments();
 		args.setThreadId(adapter.threads().get().getThreads()[0].getId());
-		adapter.stepOut(args);
+		adapter.stepOut(args).get();
 		
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.STEP);
 		StackTraceResponse stackTrace = getStackTrace();
@@ -179,7 +179,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 			2, stackTrace.getStackFrames()[0].getLine());
 
 		// If we continue, we'll stop again at the breakpoint
-		adapter.continue_(new ContinueArguments());
+		adapter.continue_(new ContinueArguments()).get();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// Second step out should reach the 'return' statement
