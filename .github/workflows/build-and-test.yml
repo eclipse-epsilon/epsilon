@@ -16,6 +16,7 @@ jobs:
     - uses: actions/checkout@v3
     - name: Install Webkit + GTK bindings
       run: sudo apt-get install -yq libwebkit2gtk-4.0-dev
+      if: runner.os == 'Linux'
     - name: Set up Maven 3.9.5
       uses: stCarolas/setup-maven@d6af6abeda15e98926a57b5aa970a96bb37f97d1
       with:
