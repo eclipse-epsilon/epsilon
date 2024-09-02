@@ -360,7 +360,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	 * Latch used for suspending all threads. Should only be used through {@link #suspend()}
 	 * and {@link #resumeAllThreads()}.
 	 */
-	private AtomicBoolean suspendedLatch = new AtomicBoolean(false);
+	private final AtomicBoolean suspendedLatch = new AtomicBoolean(false);
 
 	/**
 	 * Abstraction over the state of the program while stopped. Used to keep track
@@ -924,11 +924,12 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		synchronized (suspendedLatch) {
 			suspendedLatch.set(true);
 			do {
-				suspendedLatch.wait();
+				final int timeoutMillis = 500;
+				suspendedLatch.wait(timeoutMillis);
 			} while (suspendedLatch.get());
 		}
 	}
-	
+
 	protected void resumeAllThreads() {
 		synchronized (suspendedLatch) {
 			suspendedLatch.set(false);
