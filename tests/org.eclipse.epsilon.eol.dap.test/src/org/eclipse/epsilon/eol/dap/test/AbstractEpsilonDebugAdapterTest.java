@@ -152,28 +152,15 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	protected void assertStoppedBecauseOf(final String expectedReason) throws InterruptedException {
 		boolean acquired = client.isStopped.tryAcquire(5, TimeUnit.SECONDS);
 		assertTrue("The script should have stopped within 5s", acquired);
-		if (client.stoppedArgs == null) {
-			fail(String.format("The script should have provided stopping arguments, but it did not. Expected stopping reason was %s. Current stack trace:\n\n%s",
-					expectedReason,
-					this.module.getContext().getExecutorFactory().getStackTraceManager().getStackTraceAsString()));
-		}
-		if (!expectedReason.equals(client.stoppedArgs.getReason())) {
-			fail(String.format("The debugger should say it stopped because of %s, but it actually stopped because of %s. Current stack trace:\n\n%s",
-					expectedReason,
-					client.stoppedArgs.getReason(),
-					this.module.getContext().getExecutorFactory().getStackTraceManager().getStackTraceAsString()));
-		}
+		assertNotNull("The script should have provided stopping arguments", client.stoppedArgs);
+		assertEquals("The script should stop for the expected reason" , expectedReason, client.stoppedArgs.getReason());
 	}
 
 	protected void assertProgramCompletedSuccessfully() throws InterruptedException {
 		boolean acquired = client.isExited.tryAcquire(5, TimeUnit.SECONDS);
-		assertTrue("The script should have existed within 5s", acquired);
-		if (client.exitedArgs == null) {
-			fail(String.format("The script should have provided exiting arguments, but it did not. Current stack trace:\n\n%s",
-					this.module.getContext().getExecutorFactory().getStackTraceManager().getStackTraceAsString()));
-		} else {
-			assertEquals("The script should have completed its execution successfully", 0, client.exitedArgs.getExitCode());
-		}
+		assertTrue("The script should have exited within 5s", acquired);
+		assertNotNull("The script should have provided exiting arguments", client.exitedArgs);
+		assertEquals("The script should have completed its execution successfully", 0, client.exitedArgs.getExitCode());
 	}
 
 	protected void assertProgramFailed() throws InterruptedException {
