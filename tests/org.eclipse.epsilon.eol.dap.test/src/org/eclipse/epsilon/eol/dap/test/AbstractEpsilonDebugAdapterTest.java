@@ -11,6 +11,7 @@ package org.eclipse.epsilon.eol.dap.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -149,21 +150,26 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	}
 
 	protected void assertStoppedBecauseOf(final String expectedReason) throws InterruptedException {
-		client.isStopped.tryAcquire(5, TimeUnit.SECONDS);
-		assertNotNull("The script should have stopped within 5s", client.stoppedArgs);
+		boolean acquired = client.isStopped.tryAcquire(5, TimeUnit.SECONDS);
+		assertTrue("The script should have stopped within 5s", acquired);
+		if (client.stoppedArgs == null) {
+			fail(String.format("The script should have provided stopping arguments, but it did not. Expected stopping reason was %s. Current stack trace:\n\n%s",
+					expectedReason,
+					this.module.getContext().getExecutorFactory().getStackTraceManager().getStackTraceAsString()));
+		}
 		if (!expectedReason.equals(client.stoppedArgs.getReason())) {
 			fail(String.format("The debugger should say it stopped because of %s, but it actually stopped because of %s. Current stack trace:\n\n%s",
 					expectedReason,
 					client.stoppedArgs.getReason(),
 					this.module.getContext().getExecutorFactory().getStackTraceManager().getStackTraceAsString()));
 		}
-		client.stoppedArgs.setReason("");
 	}
 
 	protected void assertProgramCompletedSuccessfully() throws InterruptedException {
-		client.isExited.tryAcquire(5, TimeUnit.SECONDS);
+		boolean acquired = client.isExited.tryAcquire(5, TimeUnit.SECONDS);
+		assertTrue("The script should have existed within 5s", acquired);
 		if (client.exitedArgs == null) {
-			fail(String.format("The script should have exited within 5s, but it did not exit. Current stack trace:\n\n%s",
+			fail(String.format("The script should have provided exiting arguments, but it did not. Current stack trace:\n\n%s",
 					this.module.getContext().getExecutorFactory().getStackTraceManager().getStackTraceAsString()));
 		} else {
 			assertEquals("The script should have completed its execution successfully", 0, client.exitedArgs.getExitCode());
