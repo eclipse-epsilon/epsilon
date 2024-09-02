@@ -148,16 +148,26 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		adapter.disconnect(new DisconnectArguments());
 	}
 
-	protected void assertStoppedBecauseOf(final String reason) throws InterruptedException {
+	protected void assertStoppedBecauseOf(final String expectedReason) throws InterruptedException {
 		client.isStopped.tryAcquire(5, TimeUnit.SECONDS);
 		assertNotNull("The script should have stopped within 5s", client.stoppedArgs);
-		assertEquals("The debugger should say it stopped because of " + reason, reason, client.stoppedArgs.getReason());
+		if (!expectedReason.equals(client.stoppedArgs.getReason())) {
+			fail(String.format("The debugger should say it stopped because of %s, but it actually stopped because of %s. Current stack trace:\n\n%s",
+					expectedReason,
+					client.stoppedArgs.getReason(),
+					this.module.getContext().getExecutorFactory().getStackTraceManager().getStackTraceAsString()));
+		}
+		client.stoppedArgs.setReason("");
 	}
 
 	protected void assertProgramCompletedSuccessfully() throws InterruptedException {
 		client.isExited.tryAcquire(5, TimeUnit.SECONDS);
-		assertNotNull("The script should have exited within 5s", client.exitedArgs);
-		assertEquals("The script should have completed its execution successfully", 0, client.exitedArgs.getExitCode());
+		if (client.exitedArgs == null) {
+			fail(String.format("The script should have exited within 5s, but it did not exit. Current stack trace:\n\n%s",
+					this.module.getContext().getExecutorFactory().getStackTraceManager().getStackTraceAsString()));
+		} else {
+			assertEquals("The script should have completed its execution successfully", 0, client.exitedArgs.getExitCode());
+		}
 	}
 
 	protected void assertProgramFailed() throws InterruptedException {
