@@ -33,7 +33,7 @@ jobs:
     - name: Build with Maven
       run: mvn --batch-mode -U -T 1C clean install
     - name: Run headless test
-      uses: coactions/setup-xvfb@v1.0.1
+      uses: coactions/setup-xvfb@6b00cf1889f4e1d5a48635647013c0508128ee1a
       with:
         run: mvn --batch-mode -f tests/org.eclipse.epsilon.test verify -P plugged
     - name: Full Test Suite
@@ -43,7 +43,7 @@ jobs:
     - name: Standalone Maven artifacts
       run: mvn --batch-mode -T 1C -f pom-plain.xml compile
     - name: Upload Log
-      uses: actions/upload-artifact@v3.1.3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: metadataLog
