@@ -13,7 +13,7 @@ jobs:
         os: [ubuntu-22.04, macos-14, windows-2022]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Install Webkit + GTK bindings
       run: sudo apt-get install -yq libwebkit2gtk-4.0-dev
       if: runner.os == 'Linux'
@@ -22,7 +22,7 @@ jobs:
       with:
         maven-version: 3.9.5
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
