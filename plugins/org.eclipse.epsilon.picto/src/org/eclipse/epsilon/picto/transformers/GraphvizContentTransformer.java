@@ -9,8 +9,10 @@
 **********************************************************************/
 package org.eclipse.epsilon.picto.transformers;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+
 import org.eclipse.epsilon.common.util.OperatingSystem;
 import org.eclipse.epsilon.picto.PictoView;
 import org.eclipse.epsilon.picto.ViewContent;
@@ -58,7 +60,17 @@ public class GraphvizContentTransformer implements ViewContentTransformer {
 			image = ExternalContentTransformation.createTempFile(imageType, null);
 		
 		if (OperatingSystem.isMac()) {
-			program = "/usr/local/bin/" + program;
+			
+			// For Mac users on Apple Silicon, Homebrew installs to /opt/homebrew/bin
+			String[] installationFolders = new String[] { "/usr/local/bin/", "/opt/homebrew/bin/" };
+			
+			for (String installationFolder : installationFolders) {
+				File programFile = new File(installationFolder + program);
+				if (programFile.exists() && programFile.canRead() && programFile.canExecute()) {
+					program = programFile.getAbsolutePath();
+					break;
+				}
+			}
 		}
 		else if (OperatingSystem.isUnix()) {
 			program = "/usr/bin/" + program;
