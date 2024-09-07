@@ -59,3 +59,21 @@ operation warningListsAllCandidatesWithinSameModel() {
 
     assertWarning("The type 'EClass' is ambiguous and could refer to any of the following: 'Model!ecoreLite::EClass' 'Model!ecore::EClass'. The type 'Model!ecoreLite::EClass' has been assumed.");
 }
+
+@test
+operation warningMultiplePathsToType() {
+    modelManager.createInMemoryEmfModel("Model", "exampleSuper", "exampleSubpackage");
+
+    var x = NestedType;
+
+    /*
+     * We can get to the NestedType through multiple paths:
+     *
+     *   - superpkg -> subpkg -> NestedType
+     *   - subpkg -> NestedType
+     *
+     * However, there is no ambiguity as we would get the same type,
+     * so no warnings should be issued.
+     */
+    assertNoWarnings();
+}

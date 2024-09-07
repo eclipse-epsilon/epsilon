@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -284,7 +285,8 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 		return registry.values()
 				.stream()
 				.filter(pkg -> pkg instanceof EPackage)
-				.map(pkg -> classForName(name, absolute, (EPackage) pkg)).filter(eClass -> eClass != null);
+				.map(pkg -> classForName(name, absolute, (EPackage) pkg))
+				.filter(eClass -> eClass != null);
 	}
 
 	protected EClass classForName(String name, boolean absolute, EPackage pkg) {
@@ -577,8 +579,16 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 
 	@Override
 	public AmbiguityCheckResult checkAmbiguity(String type) {
+		/*
+		 * Remove repeated EClasses before mapping to fully-qualified names (the same
+		 * type may be accessible from multiple EPackages, due to subpackage
+		 * relationships).
+		 */
 		List<String> options = classesForName(type, getPackageRegistry())
-			.map(ec -> getFullyQualifiedName(ec)).collect(Collectors.toList());
+				.collect(Collectors.toCollection(LinkedHashSet::new))
+				.stream()
+				.map(ec -> getFullyQualifiedName(ec))
+				.collect(Collectors.toList());
 
 		return new AmbiguityCheckResult(this, options);
 	}

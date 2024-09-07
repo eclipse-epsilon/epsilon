@@ -1,0 +1,8 @@
+@namespace(uri="exampleSuper", prefix="esup")
+package Superpackage;
+
+@namespace(uri="exampleSubpackage", prefix="esub")
+package Subpackage {
+	class NestedType {}
+}
+
