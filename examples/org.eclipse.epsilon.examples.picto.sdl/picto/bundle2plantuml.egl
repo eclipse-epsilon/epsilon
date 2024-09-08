@@ -14,7 +14,7 @@ skinparam object {
 
 [*For every component generate a PlantUML object*]
 [%for (c in components){%]
-!define hyperlink javascript:top.showView(['Components','[%=c.name.replace(" ","%20")%]'])
+!define hyperlink javascript:top.showView(Array.of('Components','[%=c.name.replace(" ","%20")%]'))
 object "[[hyperlink [%=c.name%]]]" as [%=c.getId()%] {
 	[%if (isLayerActive("jars")){%]
 	[%for (j in c.jars){%]

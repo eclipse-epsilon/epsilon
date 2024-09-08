@@ -1,6 +1,7 @@
 pre {
 	// Needed for JavaScript links to work in PlantUML
 	Native("java.lang.System").setProperty("PLANTUML_JAVASCRIPT_UNSECURE", "true");
+	Native("java.lang.System").setProperty("PLANTUML_ALLOW_JAVASCRIPT_IN_LINK", "true");
 }
 
 // For every bundle, generate a PlantUML object diagram
