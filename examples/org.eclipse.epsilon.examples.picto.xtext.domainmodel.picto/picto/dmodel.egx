@@ -59,6 +59,19 @@ rule Entity2PlantUML
 	}
 }
 
+rule Entity2Graphviz
+    transform e : Entity {
+
+    template : "entity2graphviz.egl"
+
+    parameters : Map{
+        "path" = Sequence{"Entities-Graphviz", e.name},
+        "icon" = "diagram-ffffff",
+        "format" = "graphviz-dot"
+    }
+
+}
+
 @lazy
 rule Entities2PlantUML {
 
