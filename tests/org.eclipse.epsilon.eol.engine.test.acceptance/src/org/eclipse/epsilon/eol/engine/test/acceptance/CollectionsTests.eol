@@ -525,3 +525,23 @@ operation testParseConcurrentMap() {
 	assertEquals(4, cm.size());
 	assertEquals(4, cm.get("d"));
 }
+
+@test
+operation emptySequenceToString() {
+	assertEquals("Sequence {}", Sequence {}.asString());
+}
+
+@test
+operation emptyStringSequenceToString() {
+	assertEquals("Sequence {\"\"}", Sequence {""}.asString());
+}
+
+@test
+operation emptyMapKeyToString(){
+	assertEquals("Map {\"\"->1}", Map{""=1}.asString());
+}
+
+@test
+operation emptyMapValueToString(){
+	assertEquals("Map {1->\"\"}", Map{1=""}.asString());
+}
