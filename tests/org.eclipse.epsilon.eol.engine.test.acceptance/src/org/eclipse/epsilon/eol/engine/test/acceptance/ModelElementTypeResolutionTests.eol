@@ -66,14 +66,12 @@ operation warningMultiplePathsToType() {
 
     var x = NestedType;
 
-    /*
-     * We can get to the NestedType through multiple paths:
-     *
-     *   - superpkg -> subpkg -> NestedType
-     *   - subpkg -> NestedType
-     *
-     * However, there is no ambiguity as we would get the same type,
-     * so no warnings should be issued.
-     */
+    // We can get to the NestedType through multiple paths:
+    //
+    //   - superpkg -> subpkg -> NestedType
+    //   - subpkg -> NestedType
+    //
+    // However, there is no ambiguity as we would get the same type,
+    // so no warnings should be issued.
     assertNoWarnings();
 }
