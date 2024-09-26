@@ -186,6 +186,18 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		return stackTrace;
 	}
 
+	protected int getCurrentLine(StackTraceResponse resp) {
+		return resp.getStackFrames()[0].getLine();
+	}
+
+	protected int getCurrentStartColumn(StackTraceResponse resp) {
+		return resp.getStackFrames()[0].getColumn();
+	}
+
+	protected int getCurrentEndColumn(StackTraceResponse resp) {
+		return resp.getStackFrames()[0].getEndColumn();
+	}
+
 	protected Map<String, Variable> getVariablesByName(VariablesResponse variables) {
 		Map<String, Variable> variablesByName = new HashMap<>();
 		for (Variable v : variables.getVariables()) {
