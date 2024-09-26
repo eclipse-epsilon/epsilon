@@ -8,6 +8,10 @@
 		<epsilon.eol src="epsilon/02-imports-main.eol" debug="true" debugPort="4040"/>
     </target>
 
+	<target name="05-hello">
+		<epsilon.egl src="epsilon/05-hello.egl" debug="true" debugPort="4040" />
+	</target>
+
 	<target name="04-inspectObject">
 		<epsilon.emf.loadModel name="M"
 			metamodelfile="epsilon/models/person.ecore"
