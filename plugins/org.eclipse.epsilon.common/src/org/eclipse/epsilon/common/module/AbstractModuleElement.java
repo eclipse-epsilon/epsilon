@@ -134,7 +134,7 @@ public abstract class AbstractModuleElement implements ModuleElement {
 	 */
 	@Override
 	public int hashCode() {
-		return Objects.hash(uri, region);
+		return Objects.hash(uri, region, getParent());
 	}
 
 	/**

@@ -382,7 +382,7 @@ public class TestPreprocessor {
 		//                      0        1         2         3
 		
 		preprocess(program);
-//		System.err.println(preprocess(program));
+		System.err.println(preprocess(program));
 //		System.err.println(preprocessor.getTrace());
 		
 		assertEquals(1, preprocessor.getTrace().getEglLineNumberFor(1));
@@ -396,7 +396,7 @@ public class TestPreprocessor {
 		assertEquals(6,  preprocessor.getTrace().getEglColumnNumberFor(2, 2));
 		assertEquals(1,  preprocessor.getTrace().getEglColumnNumberFor(3, 12));
 		assertEquals(6,  preprocessor.getTrace().getEglColumnNumberFor(4, "out.printdyn('".length()));
-		assertEquals(11, preprocessor.getTrace().getEglColumnNumberFor(5, "out.print('".length()));
+		assertEquals(8, preprocessor.getTrace().getEglColumnNumberFor(5, "out.print('".length()));
 		assertEquals(3,  preprocessor.getTrace().getEglColumnNumberFor(6, 1));
 	}
 	

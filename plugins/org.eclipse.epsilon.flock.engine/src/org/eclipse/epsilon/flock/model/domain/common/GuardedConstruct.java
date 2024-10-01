@@ -49,9 +49,4 @@ public abstract class GuardedConstruct extends FlockConstruct {
 		return super.equals(other) &&
 				guard != null && guard.equals(other.guard);
 	}
-	
-	@Override
-	public int hashCode() {
-		return guard == null ? 0 : guard.hashCode();
-	}
 }

@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.antlr.runtime.Token;
 import org.eclipse.epsilon.common.parse.AST;
+import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.Region;
 import org.eclipse.epsilon.egl.parse.EglToken.TokenType;
 import org.eclipse.epsilon.egl.util.FileUtil;
@@ -125,11 +126,9 @@ public class Preprocessor {
 					if (!isWhitespacePrecedingTagged) {
 						appendToEolOnANewLine("out.prinx('" + escape(text) + "');", child.getLine());
 						
-						if (TokenType.typeOf(child.getType()) == TokenType.PLAIN_TEXT) {
-							String printCall = "out.prinx('";
-							// Update trace to account for length of printCall
-							trace.incrementColumnCorrectionNumber(getOffset(child.getLine()) + -printCall.length());
-						}
+						String printCall = "out.prinx('";
+						// Update trace to account for length of printCall
+						trace.incrementColumnCorrectionNumber(getOffset(child.getLine()) + -printCall.length());
 					}
 					
 					addToOffset(child.getLine(), text.length());
@@ -288,9 +287,7 @@ public class Preprocessor {
 							adjustedRegion = region;
 						}
 						
-						// Turn out.print("\n") and out.print("\r\n") to imaginary
-						if ("\\n".equals(firstParameterAst.getText()) || "\\r\\n".equals(firstParameterAst.getText())) firstParameterAst.setImaginary(true);
-						
+										
 						// Make all involved ASTs imaginary and assign them the region of the first parameter
 						for (AST imaginary : Arrays.asList(ast, outAst, printAst, parametersAst)) {
 							imaginary.setColumn(getTrace().getEglColumnNumberFor(imaginary.getLine(), imaginary.getColumn()));
@@ -298,6 +295,14 @@ public class Preprocessor {
 							imaginary.setImaginary(true);
 							imaginary.setRegion(adjustedRegion);
 						}
+
+						// Turn out.print("\n") and out.print("\r\n") to imaginary
+						if ("prinx".equals(printAst.getText()) && ("\\n".equals(firstParameterAst.getText()) || "\\r\\n".equals(firstParameterAst.getText()))) {
+							firstParameterAst.setImaginary(true);
+							Position adjustedEnd = new Position(firstParameterAst.getRegion().getStart().getLine(), firstParameterAst.getRegion().getStart().getColumn());
+							firstParameterAst.getRegion().setEnd(adjustedEnd);
+						}
+						
 						return true;
 					}
 				}
