@@ -88,7 +88,8 @@ import junit.framework.Test;
 	BreakAndContinueTests.class,
 	EnumResolutionTests.class,
 	CircularImportTests.class,
-	ImportCachingTests.class
+	ImportCachingTests.class,
+	ItemSelectorTests.class
 })
 public class EolAcceptanceTestSuite {
 

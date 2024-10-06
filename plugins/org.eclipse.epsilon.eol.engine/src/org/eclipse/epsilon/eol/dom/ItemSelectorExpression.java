@@ -10,6 +10,7 @@
 package org.eclipse.epsilon.eol.dom;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.parse.AST;
@@ -40,9 +41,9 @@ public class ItemSelectorExpression extends Expression {
 				throw new EolRuntimeException("Collection index must be an integer but " + index + " was provided instead.", indexExpression);
 			else return CollectionUtil.asList(expression).get((Integer)index);
 		}
-		//else if (expression instanceof EolMap){
-		//	return ((EolMap) expression).get(index);
-		//}
+		else if (expression instanceof Map){
+			return ((Map) expression).get(index);
+		}
 		
 		throw new EolRuntimeException(expression + " is not a collection or a map.", targetExpression);
 		

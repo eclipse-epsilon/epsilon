@@ -9,6 +9,9 @@
 **********************************************************************/
 package org.eclipse.epsilon.eol.dom;
 
+import java.util.List;
+import java.util.Map;
+
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
@@ -80,6 +83,25 @@ public class AssignmentStatement extends Statement {
 					eox.setAst(this);
 				}
 				throw eox;
+			}
+		}
+		else if (targetExpression instanceof ItemSelectorExpression) {
+			ItemSelectorExpression ise = (ItemSelectorExpression) targetExpression;
+			Object source = executorFactory.execute(ise.getTargetExpression(), context);
+			Object index = executorFactory.execute(ise.getIndexExpression(), context);
+			valueExpressionResult = executorFactory.execute(valueExpression, context);
+			Object value = getValueEquivalent(source, valueExpressionResult, context);
+			
+			if (source instanceof List) {
+				if (!(index instanceof Integer)) 
+					throw new EolRuntimeException("Collection index must be an integer but " + index + " was provided instead.", ise.getIndexExpression());
+				else ((List) source).set((Integer) index, value);
+			}
+			else if (source instanceof Map) {
+				((Map) source).put(index, value);
+			}
+			else {
+				throw new EolRuntimeException(source + " is not a list or a map.", ise.getTargetExpression());
 			}
 		}
 		else {
