@@ -26,6 +26,10 @@ public class AST extends CommonTree {
 	protected URI uri;
 	protected Integer line = null;
 	protected Integer column = null;
+
+	// Optional: only used for undoing EGL escaping
+	protected Integer length = null;
+
 	protected Region region;
 	protected AST annotations;
 	protected boolean imaginary;
@@ -282,7 +286,7 @@ public class AST extends CommonTree {
 			Position endPosition = new Position();
 			if (!isImaginary()) {
 				endPosition.setLine(this.getLine());
-				endPosition.setColumn(this.getColumn() + ((CommonToken)getToken()).getStopIndex() - ((CommonToken)getToken()).getStartIndex() + 1);
+				endPosition.setColumn(this.getColumn() + getLength());
 			}
 			else {
 				endPosition.setLine(-1);
@@ -381,6 +385,17 @@ public class AST extends CommonTree {
 		return toExtendedStringTree(0);
 	}
 	
+	public Integer getLength() {
+		if (length == null) {
+			return ((CommonToken)getToken()).getStopIndex() - ((CommonToken)getToken()).getStartIndex() + 1;
+		}
+		return length;
+	}
+
+	public void setLength(Integer length) {
+		this.length = length;
+	}
+
 	protected String toExtendedStringTree(int indent) {
 		String toString = "";
 		for (int i=0;i<indent;i++) {

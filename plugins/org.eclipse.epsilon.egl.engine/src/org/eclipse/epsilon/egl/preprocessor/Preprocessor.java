@@ -339,7 +339,10 @@ public class Preprocessor {
 	}
 	
 	public void updateASTLocations(AST ast) {
-		ast.setColumn(getTrace().getEglColumnNumberFor(ast.getLine(), ast.getColumn()));
+		final int eglStartColumn = getTrace().getEglColumnNumberFor(ast.getLine(), ast.getColumn());
+		final int eglEndColumn = getTrace().getEglColumnNumberFor(ast.getLine(), ast.getColumn() + ast.getLength());
+		ast.setColumn(eglStartColumn);
+		ast.setLength(eglEndColumn - eglStartColumn);
 		ast.setLine(getTrace().getEglLineNumberFor(ast.getLine()));
 		
 		for (Token token : ast.getExtraTokens()) {
