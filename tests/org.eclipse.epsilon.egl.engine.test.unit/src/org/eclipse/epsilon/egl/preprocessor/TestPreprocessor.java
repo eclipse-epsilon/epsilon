@@ -9,15 +9,22 @@
  ******************************************************************************/
 package org.eclipse.epsilon.egl.preprocessor;
 
-import static org.junit.Assert.*;
-import static org.eclipse.epsilon.egl.util.FileUtil.NEWLINE;
 import static org.eclipse.epsilon.egl.util.FileUtil.ESCAPED_NEWLINE;
+import static org.eclipse.epsilon.egl.util.FileUtil.NEWLINE;
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
+import java.util.List;
+
+import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.EpsilonTreeAdaptor;
+import org.eclipse.epsilon.common.parse.Region;
+import org.eclipse.epsilon.egl.internal.EglModule;
 import org.eclipse.epsilon.egl.parse.EglLexer;
 import org.eclipse.epsilon.egl.parse.EglParser;
 import org.junit.Test;
 
+@SuppressWarnings("restriction")
 public class TestPreprocessor {
 	
 	private final Preprocessor preprocessor = new Preprocessor();
@@ -490,4 +497,28 @@ public class TestPreprocessor {
 			preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('foo[x=\\'bar\\']".length()));
 	}
 
+	@Test
+	public void testSingleQuotesParse() throws Exception {
+		final String program = "foo[x='bar']";
+		EglModule module = new EglModule();
+		module.parse(program);
+
+		List<ModuleElement> mainChildren = module.getMain().getChildren();
+		Region mainRegion = mainChildren.get(0).getRegion();
+		assertEquals(0, mainRegion.getStart().getColumn());
+		assertEquals(program.length(), mainRegion.getEnd().getColumn());
+	}
+
+	@Test
+	public void testMultipleLinesParsing() throws Exception {
+		final String program = "[* comment *]\ndigraph G {";
+		EglModule module = new EglModule();
+		module.parse(program);
+
+		List<ModuleElement> mainChildren = module.getMain().getChildren();
+		Region mainRegion = mainChildren.get(0).getRegion();
+		assertEquals(2, mainRegion.getStart().getLine());
+		assertEquals(0, mainRegion.getStart().getColumn());
+		assertEquals("digraph G {".length(), mainRegion.getEnd().getColumn());
+	}
 }
