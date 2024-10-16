@@ -461,4 +461,27 @@ public class TestPreprocessor {
 
 		assertEquals(eol, preprocess(egl));
 	}
+
+	@Test
+	public void testDoubleQuotes() {
+		final String program = "foo[x=\"bar\"]";
+		String preprocessed = preprocess(program);
+		System.err.println(preprocessed);
+		System.err.println(preprocessor.getTrace());
+
+		assertEquals(1, preprocessor.getTrace().getEglColumnNumberFor(1, "out.printx('".length()));
+		assertEquals(1 + program.length(), preprocessor.getTrace().getEglColumnNumberFor(1, preprocessed.length()));
+	}
+
+	@Test
+	public void testSingleQuotes() {
+		final String program = "foo[x='bar']";
+		String preprocessed = preprocess(program);
+		System.err.println(preprocessed);
+		System.err.println(preprocessor.getTrace());
+
+		assertEquals(1, preprocessor.getTrace().getEglColumnNumberFor(1, "out.printx('".length()));
+		assertEquals(1 + program.length(), preprocessor.getTrace().getEglColumnNumberFor(1, preprocessed.length()));
+	}
+
 }
