@@ -20,6 +20,10 @@
       <artifactId>org.eclipse.epsilon.erl.engine</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

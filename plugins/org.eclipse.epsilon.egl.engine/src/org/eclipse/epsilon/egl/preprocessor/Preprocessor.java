@@ -50,7 +50,7 @@ public class Preprocessor {
 
 	private void updateOffset(int eglLineNumber, int correction, int textLength) {	
 		// Update trace
-		trace.incrementColumnCorrectionNumber(getOffset(eglLineNumber) + correction);
+		trace.incrementColumnCorrectionNumber(0, getOffset(eglLineNumber) + correction);
 		
 		// Store new column number as current position + text length + length of %]
 		addToOffset(eglLineNumber, correction + textLength + 2);
@@ -114,7 +114,7 @@ public class Preprocessor {
 					if (!isWhitespacePrecedingTagged) {
 						final String printCall = "out.prinx('";
 						appendNewLineToEol(child.getLine());
-						trace.incrementColumnCorrectionNumber(getOffset(child.getLine()) + -printCall.length());
+						trace.incrementColumnCorrectionNumber(0, getOffset(child.getLine()) + -printCall.length());
 
 						final StringBuilder escapedLine = new StringBuilder(printCall);
 						final Matcher escapingMatcher = PATTERN_TO_ESCAPE.matcher(text);
@@ -146,7 +146,8 @@ public class Preprocessor {
 								replacement = toBeEscaped; break;
 							}
 							escapedLine.append(replacement);
-							trace.incrementColumnCorrectionNumber(toBeEscaped.length() - replacement.length());
+							trace.incrementColumnCorrectionNumber(
+								escapedLine.toString().length(), toBeEscaped.length() - replacement.length());
 
 							previousEnd = escapingMatcher.end();
 						}
@@ -209,7 +210,7 @@ public class Preprocessor {
 						String printCall = "out.printdyn(";
 						
 						// Update trace to account for length of printCall
-						trace.incrementColumnCorrectionNumber(-printCall.length());
+						trace.incrementColumnCorrectionNumber(0, -printCall.length());
 						
 						eol.append(printCall + child.getFirstChild().getText() + ");");
 					}

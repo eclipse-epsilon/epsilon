@@ -465,23 +465,29 @@ public class TestPreprocessor {
 	@Test
 	public void testDoubleQuotes() {
 		final String program = "foo[x=\"bar\"]";
-		String preprocessed = preprocess(program);
-		System.err.println(preprocessed);
-		System.err.println(preprocessor.getTrace());
+		preprocess(program);
+		//System.err.println(preprocess(program));
+		//System.err.println(preprocessor.getTrace());
 
-		assertEquals(1, preprocessor.getTrace().getEglColumnNumberFor(1, "out.printx('".length()));
-		assertEquals(1 + program.length(), preprocessor.getTrace().getEglColumnNumberFor(1, preprocessed.length()));
+		assertEquals(0, preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('".length()));
+		assertEquals("foo[x=\"".length(),
+				preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('foo[x=\\\"".length()));
+		assertEquals(program.length(),
+				preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('foo[x=\\\"bar\\\"]".length()));
 	}
 
 	@Test
 	public void testSingleQuotes() {
 		final String program = "foo[x='bar']";
-		String preprocessed = preprocess(program);
-		System.err.println(preprocessed);
-		System.err.println(preprocessor.getTrace());
+		preprocess(program);
+		//System.err.println(preprocess(program));
+		//System.err.println(preprocessor.getTrace());
 
-		assertEquals(1, preprocessor.getTrace().getEglColumnNumberFor(1, "out.printx('".length()));
-		assertEquals(1 + program.length(), preprocessor.getTrace().getEglColumnNumberFor(1, preprocessed.length()));
+		assertEquals(0, preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('".length()));
+		assertEquals("foo[x=\'".length(),
+				preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('foo[x=\\\'".length()));
+		assertEquals(program.length(),
+			preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('foo[x=\\'bar\\']".length()));
 	}
 
 }

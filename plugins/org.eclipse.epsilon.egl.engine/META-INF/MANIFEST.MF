@@ -5,7 +5,8 @@ Bundle-SymbolicName: org.eclipse.epsilon.egl.engine
 Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.eol.engine,
- org.eclipse.epsilon.erl.engine;visibility:=reexport
+ org.eclipse.epsilon.erl.engine;visibility:=reexport,
+ com.google.guava
 Export-Package: org.eclipse.epsilon.egl,
  org.eclipse.epsilon.egl.concurrent,
  org.eclipse.epsilon.egl.config,
