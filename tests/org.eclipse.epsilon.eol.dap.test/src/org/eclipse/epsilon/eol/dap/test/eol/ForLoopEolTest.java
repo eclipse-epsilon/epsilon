@@ -18,6 +18,8 @@ import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
+import org.eclipse.lsp4j.debug.SourceBreakpoint;
+import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.junit.Test;
 
@@ -38,7 +40,9 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
-		
+		final StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("The stack frame should be on line 2", 2, stackTrace.getStackFrames()[0].getLine());
+
 		// Continue execution (should stop again)
 		adapter.continue_(new ContinueArguments()).get();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
@@ -59,6 +63,23 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// Continue execution (should run to completion - should only stop at the for statement once)
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
+
+	@Test
+	public void conditionalBreakInsideForLoop() throws Exception {
+		SourceBreakpoint breakpoint = createBreakpoint(2);
+		breakpoint.setCondition("i > 1");
+		SetBreakpointsResponse breakResult = adapter.setBreakpoints(createBreakpoints(breakpoint)).get();
+		assertTrue("The breakpoint should have been verified", breakResult.getBreakpoints()[0].isVerified());
+
+		// Execution should only stop once (when i == 2)
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		final StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("The stack frame should be on line 2", 2, stackTrace.getStackFrames()[0].getLine());
+
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}

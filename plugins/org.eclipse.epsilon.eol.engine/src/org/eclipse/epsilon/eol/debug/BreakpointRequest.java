@@ -22,6 +22,7 @@ public class BreakpointRequest {
 	private final Map<URI, Path> uriToPathMappings;
 	private final String path;
 	private final int line;
+	private final String condition;
 
 	/**
 	 * Constructs a new request.
@@ -32,11 +33,15 @@ public class BreakpointRequest {
 	 * @param path              Absolute path of the IDE file with the breakpoint.
 	 * @param line              1-based index of the line of the file where the
 	 *                          breakpoint has been set.
+	 * @param condition         EOL-based condition that must hold in order to stop
+	 *                          at the line. Can be <code>null</code> if no
+	 *                          condition is to be used.
 	 */
-	public BreakpointRequest(Map<URI, Path> uriToPathMappings, String path, int line) {
+	public BreakpointRequest(Map<URI, Path> uriToPathMappings, String path, int line, String condition) {
 		this.uriToPathMappings = uriToPathMappings;
 		this.path = path;
 		this.line = line;
+		this.condition = condition;
 	}
 
 	public String getPath() {
@@ -49,6 +54,10 @@ public class BreakpointRequest {
 
 	public Map<URI, Path> getUriToPathMappings() {
 		return uriToPathMappings;
+	}
+
+	public String getCondition() {
+		return condition;
 	}
 
 	@Override

@@ -12,7 +12,6 @@ package org.eclipse.epsilon.eol.debug;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.logging.Logger;
 
 import org.eclipse.epsilon.common.module.IModule;
 
@@ -26,7 +25,6 @@ import org.eclipse.epsilon.common.module.IModule;
  */
 public class BreakpointResult {
 
-	private static final Logger LOGGER = Logger.getLogger(BreakpointResult.class.getName());
 	public static final int NOT_FOUND = -1;
 
 	private final BreakpointRequest request;
@@ -34,28 +32,30 @@ public class BreakpointResult {
 	private final IModule module;
 	private final URI moduleURI;
 	private final int line;
+	private final String condition;
 	private final BreakpointState state;
 
-	private BreakpointResult(BreakpointRequest request, IModule module, URI moduleURI, int line, BreakpointState state) {
+	private BreakpointResult(BreakpointRequest request, IModule module, URI moduleURI, int line, String condition, BreakpointState state) {
 		this.request = request;
 		this.module = module;
 		this.moduleURI = moduleURI;
 		this.line = line;
+		this.condition = condition;
 		this.state = state;
 	}
 
 	public static BreakpointResult failed(BreakpointRequest request) {
-		return new BreakpointResult(request, null, null, NOT_FOUND, BreakpointState.FAILED);
+		return new BreakpointResult(request, null, null, NOT_FOUND, request.getCondition(), BreakpointState.FAILED);
 	}
 
 	public static BreakpointResult verified(BreakpointRequest request, IModule module, int actualLine) {
-		return new BreakpointResult(request, module, module.getSourceUri(), actualLine, BreakpointState.VERIFIED);
+		return new BreakpointResult(request, module, module.getSourceUri(), actualLine, request.getCondition(), BreakpointState.VERIFIED);
 	}
 
 	public static BreakpointResult pending(BreakpointRequest request) {
 		final Path requestPath = Paths.get(request.getPath());
 		final URI requestURI = requestPath.toUri();
-		return new BreakpointResult(request, null, requestURI, request.getLine(), BreakpointState.PENDING);
+		return new BreakpointResult(request, null, requestURI, request.getLine(), request.getCondition(), BreakpointState.PENDING);
 	}
 
 	public BreakpointRequest getRequest() {
@@ -76,6 +76,10 @@ public class BreakpointResult {
 
 	public BreakpointState getState() {
 		return state;
+	}
+
+	public String getCondition() {
+		return condition;
 	}
 
 }

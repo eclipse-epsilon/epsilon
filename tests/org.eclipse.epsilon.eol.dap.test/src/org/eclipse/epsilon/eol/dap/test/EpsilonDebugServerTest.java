@@ -99,6 +99,7 @@ public class EpsilonDebugServerTest {
 			Capabilities initResponse = remoteProxy.initialize(args).get(5, TimeUnit.SECONDS);
 			assertNotNull("The adapter should have replied with its capabilities", initResponse);
 			assertTrue("The adapter should say terminate is supported", initResponse.getSupportsTerminateRequest());
+			assertTrue("The adapter should say conditional breakpoints are supported", initResponse.getSupportsConditionalBreakpoints());
 
 			CompletableFuture<Void> waitForAttach = remoteProxy.attach(Collections.emptyMap());
 			waitForAttach.get(5, TimeUnit.SECONDS);

@@ -289,10 +289,15 @@ public class EolDebugger implements IEolDebugger {
 	}
 
 	protected void addAllModules(Map<String, IModule> pathToModule, IModule module) throws IOException {
-		String moduleURI = module.getFile() != null
-			? module.getFile().getCanonicalFile().toURI().toString() : module.getUri().toString();
+		// Note: mini-modules set up to run breakpoint conditions won't have a URI
+		String moduleURI = null;
+		if (module.getFile() != null) {
+			moduleURI = module.getFile().getCanonicalFile().toURI().toString();
+		} else if (module.getUri() != null) {
+			moduleURI = module.getUri().toString();
+		}
 
-		if (!pathToModule.containsKey(moduleURI)) {
+		if (moduleURI != null && !pathToModule.containsKey(moduleURI)) {
 			pathToModule.put(moduleURI, module);
 			if (module instanceof IEolModule) {
 				for (Import imp : ((IEolModule) module).getImports()) {
