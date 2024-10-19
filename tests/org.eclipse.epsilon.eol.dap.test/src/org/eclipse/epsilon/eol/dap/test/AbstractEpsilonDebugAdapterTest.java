@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugAdapter;
+import org.eclipse.lsp4j.debug.BreakpointEventArguments;
 import org.eclipse.lsp4j.debug.DisconnectArguments;
 import org.eclipse.lsp4j.debug.ExitedEventArguments;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
@@ -71,6 +72,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 
 		private List<OutputEventArguments> outputs = new ArrayList<>();
 		private List<ThreadEventArguments> threadEvents = new ArrayList<>();
+		private List<BreakpointEventArguments> breakpointEvents = new ArrayList<>();
 
 		@Override
 		public void stopped(StoppedEventArguments args) {
@@ -94,6 +96,11 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 			this.threadEvents.add(args);
 		}
 
+		@Override
+		public void breakpoint(BreakpointEventArguments args) {
+			breakpointEvents.add(args);
+		}
+
 		public StoppedEventArguments getStoppedArgs() {
 			return stoppedArgs;
 		}
@@ -108,6 +115,10 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 
 		public List<ThreadEventArguments> getThreadEvents() {
 			return threadEvents;
+		}
+
+		public List<BreakpointEventArguments> getBreakpointEvents() {
+			return breakpointEvents;
 		}
 	}
 

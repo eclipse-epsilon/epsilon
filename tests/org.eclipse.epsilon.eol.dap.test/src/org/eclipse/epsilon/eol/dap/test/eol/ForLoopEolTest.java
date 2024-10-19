@@ -10,12 +10,15 @@
 package org.eclipse.epsilon.eol.dap.test.eol;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
+import org.eclipse.lsp4j.debug.BreakpointEventArguments;
+import org.eclipse.lsp4j.debug.BreakpointEventArgumentsReason;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SourceBreakpoint;
@@ -82,6 +85,29 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
+	}
+
+	@Test
+	public void badConditionsUnverifyBreakpoint() throws Exception {
+		SourceBreakpoint breakpoint = createBreakpoint(2);
+		breakpoint.setCondition("not valid EOL code");
+		SetBreakpointsResponse breakResult = adapter.setBreakpoints(createBreakpoints(breakpoint)).get();
+		assertTrue("The breakpoint should have been verified", breakResult.getBreakpoints()[0].isVerified());
+
+		// Execution should only stop once (when i == 2)
+		attach();
+		assertProgramCompletedSuccessfully();
+
+		assertEquals(1, client.getBreakpointEvents().size());
+		BreakpointEventArguments ev = client.getBreakpointEvents().get(0);
+		assertEquals("The breakpoint should have changed",
+			BreakpointEventArgumentsReason.CHANGED, ev.getReason());
+		assertEquals("The event should mention the line",
+			2, ev.getBreakpoint().getLine().intValue());
+		assertTrue("The event should mention the path",
+			ev.getBreakpoint().getSource().getPath().endsWith("20-for.eol"));
+		assertFalse("The breakpoint should no longer be verified",
+			ev.getBreakpoint().isVerified());
 	}
 
 	@Test

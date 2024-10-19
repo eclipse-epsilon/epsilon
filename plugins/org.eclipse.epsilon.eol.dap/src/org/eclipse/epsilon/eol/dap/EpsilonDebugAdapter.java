@@ -57,6 +57,8 @@ import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
 import org.eclipse.epsilon.eol.execute.control.IExecutionListener;
 import org.eclipse.lsp4j.debug.Breakpoint;
+import org.eclipse.lsp4j.debug.BreakpointEventArguments;
+import org.eclipse.lsp4j.debug.BreakpointEventArgumentsReason;
 import org.eclipse.lsp4j.debug.BreakpointNotVerifiedReason;
 import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.ContinueArguments;
@@ -305,7 +307,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			} catch (Exception e) {
 				LOGGER.log(Level.WARNING,
 						String.format("Exception while parsing condition '%s': disabling breakpoint", eolCondition), e);
-				disableBreakpoint(breakpointAst.getUri(), startLine);
+				unverifyBreakpoint(breakpointAst, startLine);
 				return false;
 			}
 
@@ -317,7 +319,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 						miniEol.getParseProblems()
 							.stream().map(e -> e.toString())
 							.collect(Collectors.toList()))));
-				disableBreakpoint(breakpointAst.getUri(), startLine);
+				unverifyBreakpoint(breakpointAst, startLine);
 				return false;
 			}
 
@@ -330,13 +332,13 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				} else {
 					LOGGER.log(Level.WARNING, String
 							.format("Condition '%s' did not produce a boolean: disabling breakpoint", eolCondition));
-					disableBreakpoint(breakpointAst.getUri(), startLine);
+					unverifyBreakpoint(breakpointAst, startLine);
 				}
 			} catch (Exception e) {
 				LOGGER.log(Level.WARNING,
 					String.format("Exception while evaluating condition '%s': disabling breakpoint", eolCondition),
 					e);
-				disableBreakpoint(breakpointAst.getUri(), startLine);
+				unverifyBreakpoint(breakpointAst, startLine);
 			} finally {
 				module.getContext().getFrameStack().leaveLocal(miniEol.getMain());
 			}
@@ -344,10 +346,18 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			return false;
 		}
 
-		public void disableBreakpoint(URI uri, int startLine) {
-			Map<Integer, String> lineBreakpoints = lineBreakpointsByURI.get(uri);
+		protected void unverifyBreakpoint(ModuleElement breakpointAst, int startLine) {
+			Map<Integer, String> lineBreakpoints = lineBreakpointsByURI.get(breakpointAst.getUri());
 			lineBreakpoints.remove(startLine);
-			// TODO should inform debugger about it (and have test for it)
+
+			BreakpointEventArguments args = new BreakpointEventArguments();
+			Breakpoint bp = new Breakpoint();
+			bp.setSource(createSource(breakpointAst));
+			bp.setLine(startLine);
+			bp.setVerified(false);
+			args.setBreakpoint(bp);
+			args.setReason(BreakpointEventArgumentsReason.CHANGED);
+			client.breakpoint(args);
 		}
 
 		@Override
