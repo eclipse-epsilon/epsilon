@@ -84,4 +84,21 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertProgramCompletedSuccessfully();
 	}
 
+	@Test
+	public void userDefinedOperationsCanBeCalled() throws Exception {
+		SourceBreakpoint breakpoint = createBreakpoint(2);
+		breakpoint.setCondition("i.multiply(3) > 3");
+		SetBreakpointsResponse breakResult = adapter.setBreakpoints(createBreakpoints(breakpoint)).get();
+		assertTrue("The breakpoint should have been verified", breakResult.getBreakpoints()[0].isVerified());
+
+		// Execution should only stop once (when i == 2)
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		final StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("The stack frame should be on line 2", 2, stackTrace.getStackFrames()[0].getLine());
+
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
+
 }
