@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
@@ -49,8 +50,9 @@ import org.eclipse.epsilon.eol.debug.SuspendReason;
 import org.eclipse.epsilon.eol.dom.Operation;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.ExecutorFactory;
-import org.eclipse.epsilon.eol.execute.context.EolContext;
+import org.eclipse.epsilon.eol.execute.Return;
 import org.eclipse.epsilon.eol.execute.context.Frame;
+import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
 import org.eclipse.epsilon.eol.execute.control.IExecutionListener;
@@ -285,48 +287,67 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			final int startLine = ast.getRegion().getStart().getLine();
 			if (lineBreakpoints != null && lineBreakpoints.containsKey(startLine)) {
 				String eolCondition = lineBreakpoints.get(startLine);
-				if (eolCondition == null) {
-					// No condition to check
-					return true;
-				} else {
-					try {
-						/*
-						 * Copy context, but use a new instance of its executor factory (without
-						 * listeners or debugging-oriented execution controller). This should be less
-						 * problematic from a concurrency standpoint than changing the listeners and
-						 * execution controller temporarily.
-						 */
-						final EolModule miniEol = new EolModule();
-						miniEol.setContext(new EolContext(module.getContext()));
-						final ExecutorFactory debuggingExecutorFactory = miniEol.getContext().getExecutorFactory();
-						final ExecutorFactory conditionExecutorFactory = debuggingExecutorFactory.getClass().newInstance();
-						miniEol.getContext().setExecutorFactory(conditionExecutorFactory);
-
-						/*
-						 * Need to clone frame stack as well (otherwise, this would change the location
-						 * that the module believes it is in).
-						 */
-						miniEol.getContext().setFrameStack(module.getContext().getFrameStack().clone());
-
-						final String eol = "return (" + eolCondition + ").asBoolean();";
-						miniEol.parse(eol);
-
-						Boolean result = (Boolean) miniEol.execute();
-						if (result != null) {
-							return result;
-						} else {
-							LOGGER.log(Level.WARNING, String.format(
-								"Condition '%s' did not produce a boolean: disabling breakpoint", eolCondition));
-							lineBreakpoints.put(startLine, "false");
-						}
-					} catch (Exception e) {
-						LOGGER.log(Level.WARNING, String.format(
-							"Exception while evaluating condition '%s': disabling breakpoint", eolCondition), e);
-						lineBreakpoints.put(startLine, "false");
-					}
-				}
+				return eolCondition == null ? true : evaluateBreakpointCondition(ast, startLine, eolCondition);
 			}
 			return false;
+		}
+
+		protected boolean evaluateBreakpointCondition(ModuleElement breakpointAst, final int startLine, String eolCondition) {
+			/*
+			 * We parse a bit of EOL, but we don't run the new module as such: instead, we
+			 * run the expression from inside the debugged module so we have access to user
+			 * defined operations, imports, and so on.
+			 */
+			final EolModule miniEol = new EolModule();
+			final String eol = "return (" + eolCondition + ").asBoolean();";
+			try {
+				miniEol.parse(eol);
+			} catch (Exception e) {
+				LOGGER.log(Level.WARNING,
+						String.format("Exception while parsing condition '%s': disabling breakpoint", eolCondition), e);
+				disableBreakpoint(breakpointAst.getUri(), startLine);
+				return false;
+			}
+
+			if (!miniEol.getParseProblems().isEmpty()) {
+				LOGGER.log(Level.WARNING, String.format(
+					"Condition '%s' produced parse errors: disabling breakpoint\n%s",
+					eolCondition,
+					String.join("\n",
+						miniEol.getParseProblems()
+							.stream().map(e -> e.toString())
+							.collect(Collectors.toList()))));
+				disableBreakpoint(breakpointAst.getUri(), startLine);
+				return false;
+			}
+
+			try {
+				module.getContext().getFrameStack().enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
+				ExecutorFactory moduleExecutor = module.getContext().getExecutorFactory();
+				Return returned = (Return) moduleExecutor.execute(miniEol.getMain(), module.getContext());
+				if (returned != null && returned.getValue() instanceof Boolean) {
+					return (Boolean) returned.getValue();
+				} else {
+					LOGGER.log(Level.WARNING, String
+							.format("Condition '%s' did not produce a boolean: disabling breakpoint", eolCondition));
+					disableBreakpoint(breakpointAst.getUri(), startLine);
+				}
+			} catch (Exception e) {
+				LOGGER.log(Level.WARNING,
+					String.format("Exception while evaluating condition '%s': disabling breakpoint", eolCondition),
+					e);
+				disableBreakpoint(breakpointAst.getUri(), startLine);
+			} finally {
+				module.getContext().getFrameStack().leaveLocal(miniEol.getMain());
+			}
+
+			return false;
+		}
+
+		public void disableBreakpoint(URI uri, int startLine) {
+			Map<Integer, String> lineBreakpoints = lineBreakpointsByURI.get(uri);
+			lineBreakpoints.remove(startLine);
+			// TODO should inform debugger about it (and have test for it)
 		}
 
 		@Override
