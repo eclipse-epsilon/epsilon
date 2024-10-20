@@ -71,31 +71,8 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertEquals("String", numbersVariable.getType());
 		assertEquals("Joe", numbersVariable.getValue());
 
-		// Continue: it should stop in the dynamic region
-		adapter.continue_(new ContinueArguments()).get();
-		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
-		stackTrace = getStackTrace();
-		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
-		assertEquals("Should be stopped from column 10", 10, getCurrentStartColumn(stackTrace));
-		assertEquals("Should be stopped until column 14", 14, getCurrentEndColumn(stackTrace));
-
-		// Continue: it should stop in the trailing static region
-		adapter.continue_(new ContinueArguments()).get();
-		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
-		stackTrace = getStackTrace();
-		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
-		assertEquals("Should be stopped from column 16", 16, getCurrentStartColumn(stackTrace));
-		assertEquals("Should be stopped until column 17", 17, getCurrentEndColumn(stackTrace));
-
-		// Continue: it should stop in the newline part
-		adapter.continue_(new ContinueArguments()).get();
-		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
-		stackTrace = getStackTrace();
-		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
-		assertEquals("Should be stopped at column 17", 17, getCurrentStartColumn(stackTrace));
-		assertEquals("Should be stopped until column 17", 17, getCurrentEndColumn(stackTrace));
-
-		// Continue: it should complete
+		// Continue: it should finish running - if we don't use an inline breakpoint,
+		// we will only break at the first location in the line.
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}

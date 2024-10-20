@@ -289,11 +289,9 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			final int startLine = ast.getRegion().getStart().getLine();
 			if (lineBreakpoints != null && lineBreakpoints.containsKey(startLine)) {
 				BreakpointInfo bpInfo = lineBreakpoints.get(startLine);
-				if (bpInfo.column != null) {
-					if (ast.getRegion().getStart().getColumn() > bpInfo.column
-						|| ast.getRegion().getEnd().getColumn() < bpInfo.column) {
-						return false;
-					}
+				if (ast.getRegion().getStart().getColumn() > bpInfo.column
+					|| ast.getRegion().getEnd().getColumn() < bpInfo.column) {
+					return false;
 				}
 
 				if (bpInfo.condition != null) {
@@ -390,6 +388,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			BreakpointResult result = debugger.verifyBreakpoint(request);
 
 			if (result.getState() != BreakpointState.FAILED) {
+				info.column = result.getColumn();
+
 				Map<Integer, BreakpointInfo> uriBreakpoints = lineBreakpointsByURI.get(result.getModuleURI());
 				if (uriBreakpoints == null) {
 					uriBreakpoints = new TreeMap<>();
@@ -431,7 +431,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	/** Additional options that we keep for a breakpoint. */
 	protected class BreakpointInfo {
 		public String condition;
-		public Integer column;
+		public int column;
 	}
 
 	public static final int FIRST_THREAD_ID = 1;
@@ -765,7 +765,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		 * This is just a request to clear all breakpoints: ask the debuggers
 		 * for a module URI, using line 1 as a placeholder.
 		 */
-		BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, 1, null, null);
+		BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, 1, 0, null);
 
 		// We propagate requests across all debuggers
 		synchronized (this.threads) {

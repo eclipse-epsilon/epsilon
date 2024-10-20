@@ -32,11 +32,11 @@ public class BreakpointResult {
 	private final IModule module;
 	private final URI moduleURI;
 	private final int line;
-	private final Integer column;
+	private final int column;
 	private final String condition;
 	private final BreakpointState state;
 
-	private BreakpointResult(BreakpointRequest request, IModule module, URI moduleURI, int line, Integer column, String condition, BreakpointState state) {
+	private BreakpointResult(BreakpointRequest request, IModule module, URI moduleURI, int line, int column, String condition, BreakpointState state) {
 		this.request = request;
 		this.module = module;
 		this.moduleURI = moduleURI;
@@ -47,7 +47,7 @@ public class BreakpointResult {
 	}
 
 	public static BreakpointResult failed(BreakpointRequest request) {
-		return new BreakpointResult(request, null, null, NOT_FOUND, null, request.getCondition(), BreakpointState.FAILED);
+		return new BreakpointResult(request, null, null, NOT_FOUND, NOT_FOUND, request.getCondition(), BreakpointState.FAILED);
 	}
 
 	public static BreakpointResult verified(BreakpointRequest request, IModule module, int actualLine, Integer actualColumn) {
@@ -74,6 +74,10 @@ public class BreakpointResult {
 
 	public int getLine() {
 		return line;
+	}
+
+	public Integer getColumn() {
+		return column;
 	}
 
 	public BreakpointState getState() {
