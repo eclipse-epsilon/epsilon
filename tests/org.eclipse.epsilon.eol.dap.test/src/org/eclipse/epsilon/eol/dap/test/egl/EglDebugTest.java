@@ -78,7 +78,7 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 	}
 
 	@Test
-	public void inlineBreakpoint() throws Exception {
+	public void oneInlineBreakpoint() throws Exception {
 		// Set an inline breakpoint inside the [%=name%] dynamic region
 		SourceBreakpoint bp = createBreakpoint(2);
 		bp.setColumn(10);
@@ -90,7 +90,39 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 
 		// It should only stop in the dynamic region
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
-		StackTraceResponse  stackTrace = getStackTrace();
+		StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
+		assertEquals("Should be stopped from column 10", 10, getCurrentStartColumn(stackTrace));
+
+		// Continue: it should complete
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
+
+	@Test
+	public void defaultAndInlineBreakpoints() throws Exception {
+		// Set an inline breakpoint inside the [%=name%] dynamic region
+		SourceBreakpoint inlineBP = createBreakpoint(2);
+		inlineBP.setColumn(10);
+		SetBreakpointsResponse stopResult = adapter.setBreakpoints(
+			createBreakpoints(createBreakpoint(2), inlineBP)).get();
+		assertTrue("The start-of-line breakpoint at line 2 was verified",
+			stopResult.getBreakpoints()[0].isVerified());
+		assertTrue("The inline breakpoint at line 2 was verified",
+				stopResult.getBreakpoints()[1].isVerified());
+		attach();
+
+		// Break on the first static segment of line 2
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
+		assertEquals("Should be stopped from the first column", 1, getCurrentStartColumn(stackTrace));
+		assertEquals("Should be stopped until column 7", 7, getCurrentEndColumn(stackTrace));
+
+		// It should then stop in the dynamic region
+		adapter.continue_(new ContinueArguments()).get();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		stackTrace = getStackTrace();
 		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
 		assertEquals("Should be stopped from column 10", 10, getCurrentStartColumn(stackTrace));
 

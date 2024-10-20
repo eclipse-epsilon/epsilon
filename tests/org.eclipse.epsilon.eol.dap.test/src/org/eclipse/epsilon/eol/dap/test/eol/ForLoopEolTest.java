@@ -104,6 +104,8 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 			BreakpointEventArgumentsReason.CHANGED, ev.getReason());
 		assertEquals("The event should mention the line",
 			2, ev.getBreakpoint().getLine().intValue());
+		assertEquals("The event should mention the column",
+			2, ev.getBreakpoint().getColumn().intValue());
 		assertTrue("The event should mention the path",
 			ev.getBreakpoint().getSource().getPath().endsWith("20-for.eol"));
 		assertFalse("The breakpoint should no longer be verified",
