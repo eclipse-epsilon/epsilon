@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.epsilon.common.module.IModule;
+import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.debug.BreakpointRequest;
 import org.eclipse.epsilon.eol.debug.BreakpointResult;
@@ -30,18 +31,19 @@ class EglDebugger extends EolDebugger {
 
 			// Step 2. Try to resolve (while considering some EGL internals)
 			if (resolvedModule != null) {
-				int actualLine = -1;
+				Position actualPosition = null;
+				Position requestedPosition = new Position(request.getLine(), request.getColumn() == null ? 0 : request.getColumn());
 				if (resolvedModule instanceof IEolModule) {
 					// Try first on the main() rule - EGL modules don't list their body in their children
 					final IEolModule eolModule = (IEolModule) resolvedModule;
-					actualLine = findFirstLineGreaterThanOrEqualTo(eolModule.getMain(), request.getLine());
+					actualPosition = findFirstLineGreaterThanOrEqualTo(eolModule.getMain(), requestedPosition);
 				}
-				if (actualLine < 1) {
+				if (actualPosition == null) {
 					// Fall back on the old behaviour if we can't find a match
-					actualLine = findFirstLineGreaterThanOrEqualTo(resolvedModule, request.getLine());
+					actualPosition = findFirstLineGreaterThanOrEqualTo(resolvedModule, requestedPosition);
 				}
-				if (actualLine >= 1) {
-					return BreakpointResult.verified(request, resolvedModule, actualLine);
+				if (actualPosition != null) {
+					return BreakpointResult.verified(request, resolvedModule, actualPosition.getLine(), actualPosition.getColumn());
 				}
 			}
 		} catch (IOException e) {

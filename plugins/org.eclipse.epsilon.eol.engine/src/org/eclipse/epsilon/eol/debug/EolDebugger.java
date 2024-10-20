@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
+import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
 import org.eclipse.epsilon.eol.dom.Import;
@@ -218,10 +219,10 @@ public class EolDebugger implements IEolDebugger {
 			IModule resolvedModule = resolveModule(request.getUriToPathMappings(), request.getPath());
 
 			if (resolvedModule != null) {
-				// Step 2. Find the first line with actual code from the requested line
-				final int actualLine = findFirstLineGreaterThanOrEqualTo(resolvedModule, request.getLine());
-				if (actualLine >= 1) {
-					return BreakpointResult.verified(request, resolvedModule, actualLine);
+				// Step 2. Find the first location with actual code from the requested location
+				final Position actual = findFirstLineGreaterThanOrEqualTo(resolvedModule, new Position(request.getLine(), request.getColumn() == null ? 0 : request.getColumn()));
+				if (actual != null) {
+					return BreakpointResult.verified(request, resolvedModule, actual.getLine(), actual.getColumn());
 				}
 			}
 		} catch (IOException e) {
@@ -308,14 +309,14 @@ public class EolDebugger implements IEolDebugger {
 	}
 
 	/**
-	 * Finds the first line greater than or equal to the given line that has a
-	 * module element that we control. This handles cases where we set a breakpoint
-	 * on an empty line or an import statement.
+	 * Finds the first position that has module element that we control, at a
+	 * certain position or after it. This handles cases where we set a breakpoint on
+	 * an empty line or an import statement.
 	 */
-	protected int findFirstLineGreaterThanOrEqualTo(ModuleElement root, int localLine) {
+	protected Position findFirstLineGreaterThanOrEqualTo(ModuleElement root, Position position) {
 		// The current root element starts where we need it: we're done
-		final int rootStartLine = root.getRegion().getStart().getLine();
-		if (controls(root) && rootStartLine >= localLine) {
+		final Position rootStartLine = root.getRegion().getStart();
+		if (controls(root) && !rootStartLine.isBefore(position)) {
 			return rootStartLine;
 		}
 
@@ -328,23 +329,23 @@ public class EolDebugger implements IEolDebugger {
 		 * top-level code, which will appear before that top-level code in the list of
 		 * children.
 		 */
-		int earliestLine = Integer.MAX_VALUE;
+		Position earliestLine = null;
 		for (ModuleElement child : root.getChildren()) {
-			int childLine = findFirstLineGreaterThanOrEqualTo(child, localLine);
-			if (childLine != -1 && childLine < earliestLine) {
+			Position childLine = findFirstLineGreaterThanOrEqualTo(child, position);
+			if (childLine != null && (earliestLine == null || childLine.isBefore(earliestLine))) {
 				earliestLine = childLine;
 			}
 		}
-		if (earliestLine != Integer.MAX_VALUE) {
+		if (earliestLine != null) {
 			return earliestLine;
 		}
 
 		// Otherwise, see if at least the region for the root spans the line in question.
-		if (controls(root) && root.getRegion().getEnd().getLine() >= localLine) {
+		if (controls(root) && root.getRegion().getEnd().isAfter(position)) {
 			return rootStartLine;
 		}
 
-		return earliestLine == Integer.MAX_VALUE ? -1 : earliestLine;
+		return earliestLine;
 	}
 	
 }

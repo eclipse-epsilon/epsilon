@@ -32,30 +32,32 @@ public class BreakpointResult {
 	private final IModule module;
 	private final URI moduleURI;
 	private final int line;
+	private final Integer column;
 	private final String condition;
 	private final BreakpointState state;
 
-	private BreakpointResult(BreakpointRequest request, IModule module, URI moduleURI, int line, String condition, BreakpointState state) {
+	private BreakpointResult(BreakpointRequest request, IModule module, URI moduleURI, int line, Integer column, String condition, BreakpointState state) {
 		this.request = request;
 		this.module = module;
 		this.moduleURI = moduleURI;
 		this.line = line;
+		this.column = column;
 		this.condition = condition;
 		this.state = state;
 	}
 
 	public static BreakpointResult failed(BreakpointRequest request) {
-		return new BreakpointResult(request, null, null, NOT_FOUND, request.getCondition(), BreakpointState.FAILED);
+		return new BreakpointResult(request, null, null, NOT_FOUND, null, request.getCondition(), BreakpointState.FAILED);
 	}
 
-	public static BreakpointResult verified(BreakpointRequest request, IModule module, int actualLine) {
-		return new BreakpointResult(request, module, module.getSourceUri(), actualLine, request.getCondition(), BreakpointState.VERIFIED);
+	public static BreakpointResult verified(BreakpointRequest request, IModule module, int actualLine, Integer actualColumn) {
+		return new BreakpointResult(request, module, module.getSourceUri(), actualLine, actualColumn, request.getCondition(), BreakpointState.VERIFIED);
 	}
 
 	public static BreakpointResult pending(BreakpointRequest request) {
 		final Path requestPath = Paths.get(request.getPath());
 		final URI requestURI = requestPath.toUri();
-		return new BreakpointResult(request, null, requestURI, request.getLine(), request.getCondition(), BreakpointState.PENDING);
+		return new BreakpointResult(request, null, requestURI, request.getLine(), request.getColumn(), request.getCondition(), BreakpointState.PENDING);
 	}
 
 	public BreakpointRequest getRequest() {

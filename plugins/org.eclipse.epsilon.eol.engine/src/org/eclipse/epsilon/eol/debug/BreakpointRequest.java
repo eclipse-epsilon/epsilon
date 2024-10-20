@@ -22,6 +22,7 @@ public class BreakpointRequest {
 	private final Map<URI, Path> uriToPathMappings;
 	private final String path;
 	private final int line;
+	private final Integer column;
 	private final String condition;
 
 	/**
@@ -33,14 +34,19 @@ public class BreakpointRequest {
 	 * @param path              Absolute path of the IDE file with the breakpoint.
 	 * @param line              1-based index of the line of the file where the
 	 *                          breakpoint has been set.
+	 * @param column            1-based index of the column within the line where
+	 *                          the breakpoint has been set. Optional: if not set,
+	 *                          it means we want to stop any time the line is
+	 *                          executed.
 	 * @param condition         EOL-based condition that must hold in order to stop
 	 *                          at the line. Can be <code>null</code> if no
 	 *                          condition is to be used.
 	 */
-	public BreakpointRequest(Map<URI, Path> uriToPathMappings, String path, int line, String condition) {
+	public BreakpointRequest(Map<URI, Path> uriToPathMappings, String path, int line, Integer column, String condition) {
 		this.uriToPathMappings = uriToPathMappings;
 		this.path = path;
 		this.line = line;
+		this.column = column;
 		this.condition = condition;
 	}
 
@@ -60,9 +66,13 @@ public class BreakpointRequest {
 		return condition;
 	}
 
+	public Integer getColumn() {
+		return column;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(line, path, uriToPathMappings);
+		return Objects.hash(column, line, path, uriToPathMappings);
 	}
 
 	@Override
@@ -74,7 +84,7 @@ public class BreakpointRequest {
 		if (getClass() != obj.getClass())
 			return false;
 		BreakpointRequest other = (BreakpointRequest) obj;
-		return line == other.line && Objects.equals(path, other.path)
+		return Objects.equals(column, other.column) && line == other.line && Objects.equals(path, other.path)
 				&& Objects.equals(uriToPathMappings, other.uriToPathMappings);
 	}
 

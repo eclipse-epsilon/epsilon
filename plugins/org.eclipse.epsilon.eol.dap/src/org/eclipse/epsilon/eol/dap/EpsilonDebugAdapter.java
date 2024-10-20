@@ -253,7 +253,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		protected final IEolDebugger debugger;
 
 		/** Breakpoints by URI: these are the ones resolved to specific module URIs. */
-		private Map<URI, Map<Integer, String>> lineBreakpointsByURI = new ConcurrentHashMap<>();
+		private Map<URI, Map<Integer, BreakpointInfo>> lineBreakpointsByURI = new ConcurrentHashMap<>();
 
 		public ThreadState(int threadId, IEolModule module) {
 			this.threadId = threadId;
@@ -262,8 +262,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			this.debugger.setTarget(this);
 
 			// When creating a new ThreadState, populate breakpoints from path-based map
-			for (Entry<String, Map<Integer, String>> e : lineBreakpointsByPath.entrySet()) {
-				for (Entry<Integer, String> localLine : e.getValue().entrySet()) {
+			for (Entry<String, Map<Integer, BreakpointInfo>> e : lineBreakpointsByPath.entrySet()) {
+				for (Entry<Integer, BreakpointInfo> localLine : e.getValue().entrySet()) {
 					setBreakpoint(e.getKey(), localLine.getKey(), localLine.getValue());
 				}
 			}
@@ -285,11 +285,25 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				return false;
 			}
 
-			Map<Integer, String> lineBreakpoints = lineBreakpointsByURI.get(ast.getUri());
+			Map<Integer, BreakpointInfo> lineBreakpoints = lineBreakpointsByURI.get(ast.getUri());
 			final int startLine = ast.getRegion().getStart().getLine();
 			if (lineBreakpoints != null && lineBreakpoints.containsKey(startLine)) {
-				String eolCondition = lineBreakpoints.get(startLine);
-				return eolCondition == null ? true : evaluateBreakpointCondition(ast, startLine, eolCondition);
+				BreakpointInfo bpInfo = lineBreakpoints.get(startLine);
+				if (bpInfo.column != null) {
+					if (ast.getRegion().getStart().getColumn() > bpInfo.column
+						|| ast.getRegion().getEnd().getColumn() < bpInfo.column) {
+						return false;
+					}
+				}
+
+				if (bpInfo.condition != null) {
+					String eolCondition = bpInfo.condition;
+					if (!evaluateBreakpointCondition(ast, startLine, eolCondition)) {
+						return false;
+					}
+				}
+
+				return true;
 			}
 			return false;
 		}
@@ -347,7 +361,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		}
 
 		protected void unverifyBreakpoint(ModuleElement breakpointAst, int startLine) {
-			Map<Integer, String> lineBreakpoints = lineBreakpointsByURI.get(breakpointAst.getUri());
+			Map<Integer, BreakpointInfo> lineBreakpoints = lineBreakpointsByURI.get(breakpointAst.getUri());
 			lineBreakpoints.remove(startLine);
 
 			BreakpointEventArguments args = new BreakpointEventArguments();
@@ -371,17 +385,17 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			return module;
 		}
 
-		protected BreakpointResult setBreakpoint(final String sourcePath, Integer localLine, String condition) {
-			BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, localLine, condition);
+		protected BreakpointResult setBreakpoint(final String sourcePath, Integer localLine, BreakpointInfo info) {
+			BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, localLine, info.column, info.condition);
 			BreakpointResult result = debugger.verifyBreakpoint(request);
 
 			if (result.getState() != BreakpointState.FAILED) {
-				Map<Integer, String> uriBreakpoints = lineBreakpointsByURI.get(result.getModuleURI());
+				Map<Integer, BreakpointInfo> uriBreakpoints = lineBreakpointsByURI.get(result.getModuleURI());
 				if (uriBreakpoints == null) {
 					uriBreakpoints = new TreeMap<>();
 					lineBreakpointsByURI.put(result.getModuleURI(), uriBreakpoints);
 				}
-				uriBreakpoints.put(result.getLine(), condition);
+				uriBreakpoints.put(result.getLine(), info);
 			}
 
 			return result;
@@ -414,6 +428,12 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		return thread;
 	}
 
+	/** Additional options that we keep for a breakpoint. */
+	protected class BreakpointInfo {
+		public String condition;
+		public Integer column;
+	}
+
 	public static final int FIRST_THREAD_ID = 1;
 	private final AtomicInteger nextThread = new AtomicInteger(FIRST_THREAD_ID);
 	private final Map<Integer, ThreadState> threads = new HashMap<>();
@@ -430,7 +450,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	 * Breakpoints by path: these are prior to resolution (needed to resolve
 	 * breakpoints on dynamically loaded modules over classpath resources).
 	 */
-	private Map<String, Map<Integer, String>> lineBreakpointsByPath = new ConcurrentHashMap<>();
+	private Map<String, Map<Integer, BreakpointInfo>> lineBreakpointsByPath = new ConcurrentHashMap<>();
 
 	/**
 	 * Mappings from module URIs to filesystem paths. Useful when debugging
@@ -681,9 +701,14 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 			synchronized (this.threads) {
 				final String sourcePath = args.getSource().getPath();
-				final Map<Integer, String> localLines = new TreeMap<>();
+				final Map<Integer, BreakpointInfo> localLines = new TreeMap<>();
 				for (SourceBreakpoint sbp : args.getBreakpoints()) {
-					localLines.put(lineConverter.fromRemoteToLocal(sbp.getLine()), sbp.getCondition());
+					BreakpointInfo bpInfo = new BreakpointInfo();
+					bpInfo.condition = sbp.getCondition();
+					if (sbp.getColumn() != null) {
+						bpInfo.column = columnConverter.fromRemoteToLocal(sbp.getColumn());
+					}
+					localLines.put(lineConverter.fromRemoteToLocal(sbp.getLine()), bpInfo);
 				}
 
 				// First, clear all existing breakpoints
@@ -691,7 +716,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				if (!localLines.isEmpty()) {
 					lineBreakpointsByPath.put(sourcePath, localLines);
 
-					for (Entry<Integer, String> localLine : localLines.entrySet()) {
+					for (Entry<Integer, BreakpointInfo> localLine : localLines.entrySet()) {
 						Breakpoint bp = new Breakpoint();
 						responseBreakpoints.add(bp);
 						bp.setVerified(false);
@@ -740,7 +765,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		 * This is just a request to clear all breakpoints: ask the debuggers
 		 * for a module URI, using line 1 as a placeholder.
 		 */
-		BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, 1, null);
+		BreakpointRequest request = new BreakpointRequest(uriToPathMappings, sourcePath, 1, null, null);
 
 		// We propagate requests across all debuggers
 		synchronized (this.threads) {

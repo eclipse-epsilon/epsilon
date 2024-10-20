@@ -20,6 +20,7 @@ import org.eclipse.epsilon.egl.EglModule;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
+import org.eclipse.lsp4j.debug.SourceBreakpoint;
 import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Variable;
@@ -93,6 +94,28 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
 		assertEquals("Should be stopped at column 17", 17, getCurrentStartColumn(stackTrace));
 		assertEquals("Should be stopped until column 17", 17, getCurrentEndColumn(stackTrace));
+
+		// Continue: it should complete
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
+
+	@Test
+	public void inlineBreakpoint() throws Exception {
+		// Set an inline breakpoint inside the [%=name%] dynamic region
+		SourceBreakpoint bp = createBreakpoint(2);
+		bp.setColumn(10);
+		SetBreakpointsResponse stopResult = adapter.setBreakpoints(
+				createBreakpoints(bp)).get();
+		assertTrue("The breakpoint at line 2 was verified",
+			stopResult.getBreakpoints()[0].isVerified());
+		attach();
+
+		// It should only stop in the dynamic region
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		StackTraceResponse  stackTrace = getStackTrace();
+		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
+		assertEquals("Should be stopped from column 10", 10, getCurrentStartColumn(stackTrace));
 
 		// Continue: it should complete
 		adapter.continue_(new ContinueArguments()).get();
