@@ -14,9 +14,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.Map;
 
 import org.eclipse.epsilon.egl.EglModule;
+import org.eclipse.epsilon.eol.dap.EpsilonDebugAdapter;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
@@ -112,7 +114,7 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 				stopResult.getBreakpoints()[1].isVerified());
 		attach();
 
-		// Break on the first static segment of line 2
+		// Break on the first static region of line 2
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 		StackTraceResponse stackTrace = getStackTrace();
 		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
@@ -125,6 +127,43 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 		stackTrace = getStackTrace();
 		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
 		assertEquals("Should be stopped from column 10", 10, getCurrentStartColumn(stackTrace));
+
+		// Continue: it should complete
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
+
+	@Test
+	public void stopAtAllStatements() throws Exception {
+		SetBreakpointsResponse stopResult = adapter.setBreakpoints(createBreakpoints(createBreakpoint(2))).get();
+		assertTrue("The breakpoint at line 2 was verified", stopResult.getBreakpoints()[0].isVerified());
+
+		// Attach with the "stop at every statement" option turned on
+		attach(Collections.singletonMap(EpsilonDebugAdapter.STOP_AT_EVERY_STATEMENT, "true"));
+
+		// Break on the first static region of line 2
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("Should be stopped at the second line", 2, getCurrentLine(stackTrace));
+		assertEquals("Should be stopped from the first column", 1, getCurrentStartColumn(stackTrace));
+
+		// Continue to the dynamic region
+		adapter.continue_(new ContinueArguments()).get();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		stackTrace = getStackTrace();
+		assertEquals("Should be stopped at the dynamic region", 10, getCurrentStartColumn(stackTrace));
+
+		// Continue to the second static region
+		adapter.continue_(new ContinueArguments()).get();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		stackTrace = getStackTrace();
+		assertEquals("Should be stopped at the dynamic region", 16, getCurrentStartColumn(stackTrace));
+
+		// Continue to the newline
+		adapter.continue_(new ContinueArguments()).get();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		stackTrace = getStackTrace();
+		assertEquals("Should be stopped at the dynamic region", 17, getCurrentStartColumn(stackTrace));
 
 		// Continue: it should complete
 		adapter.continue_(new ContinueArguments()).get();

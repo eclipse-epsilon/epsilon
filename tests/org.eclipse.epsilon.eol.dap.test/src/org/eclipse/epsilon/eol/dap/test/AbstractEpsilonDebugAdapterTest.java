@@ -304,7 +304,11 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	}
 
 	protected void attach() throws InterruptedException, ExecutionException {
-		adapter.attach(Collections.emptyMap()).get();
+		attach(Collections.emptyMap());
+	}
+
+	protected void attach(Map<String, Object> args) throws InterruptedException, ExecutionException {
+		adapter.attach(args).get();
 	}
 
 	protected Map<String, Variable> getVariablesFromTopStackFrame() throws Exception {

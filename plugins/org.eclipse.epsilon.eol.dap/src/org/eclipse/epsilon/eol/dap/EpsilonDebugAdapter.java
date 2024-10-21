@@ -227,6 +227,13 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		}
 	}
 
+	/**
+	 * If this key is set to "true" upon attaching, line breakpoints (without an
+	 * explicit column) will stop at each statement instead of just the first one.
+	 */
+	public static final String STOP_AT_EVERY_STATEMENT = "stop-at-every-statement";
+	private boolean stopAtEveryStatement;
+
 	private static final Logger LOGGER = Logger.getLogger(EpsilonDebugAdapter.class.getCanonicalName());
 
 	/** Runnable to be executed upon attachment. */
@@ -293,8 +300,10 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			if (lineBreakpoints != null && lineBreakpoints.containsKey(startLine)) {
 				Collection<BreakpointInfo> bpInfos = lineBreakpoints.get(startLine);
 				for (BreakpointInfo bpInfo : bpInfos) {
-					if (ast.getRegion().getStart().getColumn() > bpInfo.column
-							|| ast.getRegion().getEnd().getColumn() < bpInfo.column) {
+					if (!stopAtEveryStatement && (
+							ast.getRegion().getStart().getColumn() > bpInfo.column
+							|| ast.getRegion().getEnd().getColumn() < bpInfo.column
+						)) {
 						continue;
 					}
 
@@ -530,6 +539,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			synchronized(this) {
 				// If this is the first time we're attaching to the module...
 				if (this.suspendedState == null) {
+					this.stopAtEveryStatement = "true".equals(args.get(STOP_AT_EVERY_STATEMENT));
+
 					// Prepare the suspended state
 					suspendedState = new SuspendedState();
 
