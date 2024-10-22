@@ -539,7 +539,9 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			synchronized(this) {
 				// If this is the first time we're attaching to the module...
 				if (this.suspendedState == null) {
-					this.stopAtEveryStatement = "true".equals(args.get(STOP_AT_EVERY_STATEMENT));
+					// We accept both the "true" string and a Boolean true value
+					Object argStop = args.get(STOP_AT_EVERY_STATEMENT);
+					this.stopAtEveryStatement = "true".equals(argStop) || Boolean.TRUE.equals(argStop);
 
 					// Prepare the suspended state
 					suspendedState = new SuspendedState();

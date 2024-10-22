@@ -134,12 +134,21 @@ public class EglDebugTest extends AbstractEpsilonDebugAdapterTest {
 	}
 
 	@Test
-	public void stopAtAllStatements() throws Exception {
+	public void stopAtAllStatementsString() throws Exception {
+		testStopAtEveryStatement("true");
+	}
+
+	@Test
+	public void stopAtAllStatementsBoolean() throws Exception {
+		testStopAtEveryStatement(true);
+	}
+
+	private void testStopAtEveryStatement(final Object argStop) throws Exception {
 		SetBreakpointsResponse stopResult = adapter.setBreakpoints(createBreakpoints(createBreakpoint(2))).get();
 		assertTrue("The breakpoint at line 2 was verified", stopResult.getBreakpoints()[0].isVerified());
 
 		// Attach with the "stop at every statement" option turned on
-		attach(Collections.singletonMap(EpsilonDebugAdapter.STOP_AT_EVERY_STATEMENT, "true"));
+		attach(Collections.singletonMap(EpsilonDebugAdapter.STOP_AT_EVERY_STATEMENT, argStop));
 
 		// Break on the first static region of line 2
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
