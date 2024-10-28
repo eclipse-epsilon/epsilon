@@ -16,6 +16,7 @@ import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.util.AstUtil;
 import org.eclipse.epsilon.common.util.CollectionUtil;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
+import org.eclipse.epsilon.eol.dom.IExecutableModuleElementParameter;
 import org.eclipse.epsilon.eol.dom.Parameter;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
@@ -26,7 +27,7 @@ import org.eclipse.epsilon.erl.dom.ExtensibleNamedRule;
 import org.eclipse.epsilon.etl.execute.context.IEtlContext;
 import org.eclipse.epsilon.etl.parse.EtlParser;
 
-public class TransformationRule extends ExtensibleNamedRule {
+public class TransformationRule extends ExtensibleNamedRule implements IExecutableModuleElementParameter {
 	
 	protected Parameter sourceParameter;
 	protected List<Parameter> targetParameters = new ArrayList<>(2);
@@ -211,7 +212,6 @@ public class TransformationRule extends ExtensibleNamedRule {
 	}
 	
 	protected void executeSuperRulesAndBody(Object source, Collection<Object> targets_, IEtlContext context) throws EolRuntimeException {
-		
 		List<Object> targets = CollectionUtil.asList(targets_);
 		// Execute super-rules
 		for (ExtensibleNamedRule rule : superRules) {
@@ -228,8 +228,8 @@ public class TransformationRule extends ExtensibleNamedRule {
 			Parameter tp = targetParameters.get(offset);
 			variables[i] = Variable.createReadOnlyVariable(tp.getName(), targets.get(offset));
 		}
-		
-		body.execute(context, variables);
+
+		context.getExecutorFactory().execute(this, context, variables);
 	}
 	
 	@Override
@@ -268,5 +268,14 @@ public class TransformationRule extends ExtensibleNamedRule {
 	public void dispose() {
 		rejected = null;
 		transformedElements = null;
+	}
+
+	
+	/**
+	 * TEMPORARY: get Rules tab working again (think about better fix?)
+	 */
+	@Override
+	public Object execute(IEolContext context, Object variables) throws EolRuntimeException {
+		return body.execute(context, (Variable[]) variables);
 	}
 }
