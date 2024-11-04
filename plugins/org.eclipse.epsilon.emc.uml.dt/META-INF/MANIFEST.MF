@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Epsilon UML driver Development Tools
+Bundle-Name: Epsilon UML Model Support Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.emc.uml.dt;singleton:=true
 Bundle-Version: 2.6.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.emc.uml.dt.Activator

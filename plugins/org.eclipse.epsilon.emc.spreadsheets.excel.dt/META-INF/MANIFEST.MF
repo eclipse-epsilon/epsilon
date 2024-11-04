@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Epsilon Microsoft Excel Spreadsheets driver Development Tools
+Bundle-Name: Epsilon Excel Spreadsheets Model Support Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.emc.spreadsheets.excel.dt;singleton:=true
 Bundle-Version: 2.6.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.emc.spreadsheets.excel.dt.Activator

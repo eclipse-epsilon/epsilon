@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Development Tools for JSON EMC Driver
+Bundle-Name: Epsilon JSON Model Support Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.emc.json.dt;singleton:=true
 Bundle-Version: 2.6.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

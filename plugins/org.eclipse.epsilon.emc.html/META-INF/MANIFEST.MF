@@ -1,7 +1,8 @@
 Manifest-Version: 2.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Html
+Bundle-Name: Epsilon HTML Model Support
 Bundle-SymbolicName: org.eclipse.epsilon.emc.html
+Bundle-Vendor: Eclipse Modeling Project
 Bundle-Version: 2.6.0.qualifier
 Require-Bundle: org.eclipse.epsilon.eol.engine,
  org.eclipse.epsilon.emc.plainxml,

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: YAML Driver for EMC
+Bundle-Name: Epsilon YAML Model Support
 Bundle-SymbolicName: org.eclipse.epsilon.emc.yaml
 Bundle-Version: 2.6.0.qualifier
 Require-Bundle: org.eclipse.epsilon.eol.engine,

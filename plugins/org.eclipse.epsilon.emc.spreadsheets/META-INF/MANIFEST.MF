@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Epsilon Spreadsheets Driver
+Bundle-Name: Epsilon Spreadsheets Model Support
 Bundle-SymbolicName: org.eclipse.epsilon.emc.spreadsheets
 Bundle-Version: 2.6.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project

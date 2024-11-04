@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Epsilon Simulink Requirements driver
+Bundle-Name: Epsilon Simulink Requirements Model Support
 Bundle-SymbolicName: org.eclipse.epsilon.emc.simulink.requirement
 Bundle-Version: 2.6.0.qualifier
 Require-Bundle: org.eclipse.epsilon.emc.simulink,

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Epsilon EMC JDT Driver Development Tools
+Bundle-Name: Epsilon JDT Model Support Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.emc.jdt.dt;singleton:=true
 Bundle-Version: 2.6.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.emc.jdt.dt.Activator
@@ -11,5 +11,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.epsilon.emc.jdt.dt
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: Eclipse Modeling Project
 Automatic-Module-Name: org.eclipse.epsilon.emc.jdt.dt
