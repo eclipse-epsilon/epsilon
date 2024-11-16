@@ -4,8 +4,8 @@
         <conf name="binaries" />
     </configurations>
     <dependencies>
-        <dependency org="org.eclipse.epsilon" name="org.eclipse.epsilon.workflow" rev="2.4.0" conf="binaries->default"/>
-        <dependency org="org.eclipse.epsilon" name="org.eclipse.epsilon.workflow.emf" rev="2.4.0" conf="binaries->default"/>
+        <dependency org="org.eclipse.epsilon" name="org.eclipse.epsilon.workflow" rev="2.5.0" conf="binaries->default"/>
+        <dependency org="org.eclipse.epsilon" name="org.eclipse.epsilon.workflow.emf" rev="2.5.0" conf="binaries->default"/>
         <exclude artifact="org.eclipse.equinox.registry"/>
         <exclude artifact="org.eclipse.core.runtime"/>
     </dependencies>
