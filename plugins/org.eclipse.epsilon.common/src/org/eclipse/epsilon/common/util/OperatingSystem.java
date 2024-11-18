@@ -34,6 +34,10 @@ public enum OperatingSystem {
 		}
 	}
 	
+	public static boolean isARM64() {
+		return "aarch64".equals(System.getProperty("os.arch"));
+	}
+	
 	/**
 	 * 
 	 * @since 1.6

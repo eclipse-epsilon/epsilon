@@ -15,13 +15,15 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.epsilon.emc.simulink.util.MatlabEngineUtil;
+
 public enum MatlabEngineSetupEnum {
 
 	ENGINE_JAR("C:/Program Files/MATLAB/%s/extern/engines/java/jar/engine.jar",
 			"/Applications/MATLAB_%s.app/extern/engines/java/jar/engine.jar", ""), // TODO
 	MATLAB("C:/Program Files/MATLAB/%s",
 			"/Applications/MATLAB_%s.app", ""),
-	LIBRARY_PATH("C:/Program Files/MATLAB/%s/bin/win64", "/Applications/MATLAB_%s.app/bin/maci64", ""); // TODO
+	LIBRARY_PATH("C:/Program Files/MATLAB/%s/bin/win64", MatlabEngineUtil.getLibraryPathFromRoot("/Applications/MATLAB_%s.app"), ""); // TODO
 
 	private static final String OS_PROPERTY = "os.name";
 	private static final String WINDOWS = "windows";

@@ -48,10 +48,15 @@ public class MatlabEnginePool {
 			if ((!OperatingSystem.isWindows() || (ClassLoader.getSystemClassLoader() instanceof URLClassLoader))) {
 				final String SEP = System.getProperty("path.separator");
 				System.setProperty(JAVA_LIBRARY_PATH, libraryPath + SEP + System.getProperty(JAVA_LIBRARY_PATH));
-				final Field sysPathsField = ClassLoader.class.getDeclaredField(SYS_PATHS);
-
-				sysPathsField.setAccessible(true);
-				sysPathsField.set(null, null);
+				try {
+					final Field sysPathsField = ClassLoader.class.getDeclaredField(SYS_PATHS);
+	
+					sysPathsField.setAccessible(true);
+					sysPathsField.set(null, null);
+				}
+				catch (Exception ex) {
+					// SYS_PATHS fields is not available; ignore
+				}
 			}
 
 			matlabEngineClass = matlabClassLoader.loadMatlabClass(MATLAB_ENGINE_CLASS);
