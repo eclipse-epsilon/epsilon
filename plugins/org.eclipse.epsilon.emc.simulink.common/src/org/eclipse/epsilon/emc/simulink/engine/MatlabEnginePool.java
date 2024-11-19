@@ -10,55 +10,32 @@
 package org.eclipse.epsilon.emc.simulink.engine;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.epsilon.common.util.OperatingSystem;
 import org.eclipse.epsilon.emc.simulink.exception.MatlabException;
 import org.eclipse.epsilon.emc.simulink.exception.MatlabRuntimeException;
 import org.eclipse.epsilon.emc.simulink.util.MatlabEngineUtil;
 
 public class MatlabEnginePool {
-
-	private static final String JAVA_LIBRARY_PATH = "java.library.path";
+	
 	private static final String MATLAB_ENGINE_CLASS = "com.mathworks.engine.MatlabEngine";
-	private static final String SYS_PATHS = "sys_paths";
 
 	protected static MatlabEnginePool instance;
 	protected static MatlabClassLoader matlabClassLoader;
 	
-	protected static String libraryPath;
 	protected static String engineJarPath;
 
 	protected Set<MatlabEngine> pool = new LinkedHashSet<>();
 	protected Class<?> matlabEngineClass;
 	
-	private MatlabEnginePool(String libraryPath, String engineJarPath) throws MatlabRuntimeException {
-		MatlabEnginePool.libraryPath = libraryPath;
+	private MatlabEnginePool(String engineJarPath) throws MatlabRuntimeException {
 		MatlabEnginePool.engineJarPath = engineJarPath;
 		
 		try {
-			// Updating the library path in Java 11 onwards on Windows causes an exception. 
-			// Only do this for older Java versions or when not on Windows.
-			if ((!OperatingSystem.isWindows() || (ClassLoader.getSystemClassLoader() instanceof URLClassLoader))) {
-				final String SEP = System.getProperty("path.separator");
-				System.setProperty(JAVA_LIBRARY_PATH, libraryPath + SEP + System.getProperty(JAVA_LIBRARY_PATH));
-				try {
-					final Field sysPathsField = ClassLoader.class.getDeclaredField(SYS_PATHS);
-	
-					sysPathsField.setAccessible(true);
-					sysPathsField.set(null, null);
-				}
-				catch (Exception ex) {
-					// SYS_PATHS fields is not available; ignore
-				}
-			}
-
 			matlabEngineClass = matlabClassLoader.loadMatlabClass(MATLAB_ENGINE_CLASS);
 			MatlabEngine.setEngineClass(matlabEngineClass);
 		}
@@ -67,16 +44,25 @@ public class MatlabEnginePool {
 		}
 	}
 	
-	private MatlabEnginePool() throws MatlabRuntimeException {
-		this(libraryPath, engineJarPath);
+	protected int getJavaVersion() {
+	    String version = System.getProperty("java.version");
+	    if(version.startsWith("1.")) {
+	        version = version.substring(2, 3);
+	    } else {
+	        int dot = version.indexOf(".");
+	        if(dot != -1) { version = version.substring(0, dot); }
+	    } return Integer.parseInt(version);
 	}
 	
-	public static MatlabEnginePool getInstance(String libraryPath, String engineJarPath) throws MatlabRuntimeException {
-		if (instance == null || (instance != null && (!libraryPath.equalsIgnoreCase(instance.getLibraryPath())
-				|| !engineJarPath.equalsIgnoreCase(instance.getEngineJarPath())))) {
+	private MatlabEnginePool() throws MatlabRuntimeException {
+		this(engineJarPath);
+	}
+	
+	public static MatlabEnginePool getInstance(String engineJarPath) throws MatlabRuntimeException {
+		if (instance == null || (instance != null && !engineJarPath.equalsIgnoreCase(instance.getEngineJarPath()))) {
 			
 			matlabClassLoader = MatlabClassLoader.init(engineJarPath);
-			instance = new MatlabEnginePool(libraryPath, engineJarPath);
+			instance = new MatlabEnginePool(engineJarPath);
 		}
 		return instance;
 	}
@@ -138,10 +124,6 @@ public class MatlabEnginePool {
 	public String getEngineJarPath() {
 		return engineJarPath;
 	}
-
-	public String getLibraryPath() {
-		return libraryPath;
-	}
 	
 	public static void main(String[] args) throws Exception {
 		resolveFromEnv();
@@ -178,7 +160,7 @@ public class MatlabEnginePool {
 	 * @return <code>true</code> iff the paths exist.
 	 */
 	public static boolean resolve(String library, String engineJar) {
-		if ((libraryPath = library) == null || (engineJarPath = engineJar) == null)
+		if ((engineJarPath = engineJar) == null)
 			return false;
 		return new File(library).exists() && new File(engineJar).exists();
 	}

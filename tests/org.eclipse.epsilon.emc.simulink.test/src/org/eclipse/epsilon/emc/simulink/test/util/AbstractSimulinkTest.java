@@ -39,11 +39,7 @@ public class AbstractSimulinkTest extends AbstractCommonSimulinkTest {
 		model.setCloseOnDispose(true);
 		model.setCachingEnabled(activeCaching);
 		String version = installation.getVersion();
-		String path;
 		try {
-			path = MatlabEngineSetupEnum.LIBRARY_PATH.path(version);
-			System.out.println(path);
-			model.setLibraryPath(path);
 			String engine = MatlabEngineSetupEnum.ENGINE_JAR.path(version);
 			System.out.println(engine);
 			model.setEngineJarPath(engine);

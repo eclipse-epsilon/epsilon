@@ -27,7 +27,7 @@ public class MatlabEngineTests {
 	public static void setup() {
 		try {
 			engine = MatlabEnginePool
-					.getInstance(MatlabEngineSetupEnum.LIBRARY_PATH.path(), MatlabEngineSetupEnum.ENGINE_JAR.path())
+					.getInstance(MatlabEngineSetupEnum.ENGINE_JAR.path())
 					.getMatlabEngine();
 		} catch (Exception e) {
 			throw new RuntimeException("could not setup the test class");

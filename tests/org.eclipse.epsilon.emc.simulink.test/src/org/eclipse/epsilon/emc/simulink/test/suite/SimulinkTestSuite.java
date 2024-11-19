@@ -13,10 +13,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * NOTE: This doesn't work unless you use the JRE that came
- * with MATLAB as your JAVA_HOME (and the one that you start Eclipse with),
- * and have your PATH env pointing to MATLAB's bin directory.
- * 
+ * See https://uk.mathworks.com/help/matlab/matlab_external/setup-environment.html
+ * for instructions on configuring the MATLAB environment
  */
 @RunWith(ConditionalMatlabSuite.class)
 @SuiteClasses({ 
