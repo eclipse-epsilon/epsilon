@@ -9,6 +9,6 @@ This example demonstrates using Epsilon's Simulink EMC driver from a standalone 
 - Download and install [Java 17](https://adoptium.net/)
 - Download and install [Maven](https://maven.apache.org/)
 - Check out the [official MATLAB documentation]() for OS-specific instructions on setting up your environment
-- Edit `.mvn/jvm.config` to specify MATLAB's library path
+- Edit `.mvn/jvm.config` to specify MATLAB's library path (or delete `.mvn/jvm.config` altogether if you are on Windows and you wish the driver to use the default MATLAB installation)
 - Run `mvn compile exec:java` from the command line
 - Open the generated Simulink model (`model.slx`) to inspect/simulate it
