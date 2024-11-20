@@ -39,6 +39,7 @@ import org.eclipse.epsilon.egl.model.EglMarkerSection;
 import org.eclipse.epsilon.egl.output.IOutputBuffer;
 import org.eclipse.epsilon.egl.parse.EglLexer;
 import org.eclipse.epsilon.egl.parse.EglParser;
+import org.eclipse.epsilon.egl.parse.EglTagConfiguration;
 import org.eclipse.epsilon.egl.parse.EglToken.TokenType;
 import org.eclipse.epsilon.egl.parse.problem.EglParseProblem;
 import org.eclipse.epsilon.egl.preprocessor.Preprocessor;
@@ -67,7 +68,8 @@ public class EglModule extends EolModule implements IEglModule {
 	private final Preprocessor preprocessor = new Preprocessor();
 	private final List<EglMarkerSection> markers = new LinkedList<>();
 	private URI templateRoot;
-
+	protected EglTagConfiguration tagConfiguration = new EglTagConfiguration();
+	
 	public EglModule() {
 		this(null);
 	}
@@ -112,6 +114,7 @@ public class EglModule extends EolModule implements IEglModule {
 	
 	private boolean parseAndPreprocess(EglLexer lexer) throws Exception {
 		EpsilonTreeAdaptor astFactory = new EpsilonTreeAdaptor(sourceFile, this);
+		lexer.setTagConfiguration(tagConfiguration);
 		(eglParser = new EglParser(lexer, astFactory)).parse();
 		AST ast = eglParser.getAST();
 
@@ -265,5 +268,12 @@ public class EglModule extends EolModule implements IEglModule {
 	public EolDebugger createDebugger() {
 		return new EglDebugger();
 	}
-
+	
+	public EglTagConfiguration getTagConfiguration() {
+		return tagConfiguration;
+	}
+	
+	public void setTagConfiguration(EglTagConfiguration tagConfiguration) {
+		this.tagConfiguration = tagConfiguration;
+	}
 }

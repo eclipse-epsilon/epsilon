@@ -27,6 +27,7 @@ import org.eclipse.epsilon.egl.formatter.CompositeFormatter;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.egl.formatter.NullFormatter;
 import org.eclipse.epsilon.egl.incremental.IncrementalitySettings;
+import org.eclipse.epsilon.egl.parse.EglTagConfiguration;
 import org.eclipse.epsilon.egl.spec.EglTemplateSpecification;
 import org.eclipse.epsilon.egl.spec.EglTemplateSpecificationFactory;
 import org.eclipse.epsilon.egl.util.FileUtil;
@@ -45,6 +46,7 @@ public class EglTemplateFactory {
 	private IncrementalitySettings defaultIncrementalitySettings = new IncrementalitySettings();
 	private final Collection<ITemplateExecutionListener> listeners = new LinkedList<>();
 	private IImportManager importManager = new ImportManager();
+	protected EglTagConfiguration tagConfiguration = new EglTagConfiguration();
 
 	public EglTemplateFactory() {
 		this(null);
@@ -252,7 +254,9 @@ public class EglTemplateFactory {
 	 * Subclasses may override to create different types of template.
 	 */
 	protected EglTemplate createTemplate(EglTemplateSpecification spec) throws Exception {
-		return new EglTemplate(spec, getContextForNewTemplate());
+		EglTemplate template = new EglTemplate(spec, getContextForNewTemplate());
+		template.getModule().setTagConfiguration(tagConfiguration);
+		return template;
 	}
 	
 	public void copyState(IEolContext delegate) {
@@ -290,5 +294,13 @@ public class EglTemplateFactory {
 	public String toString() {
 		final String root = templateRoot == null ? "" : templateRoot.toString();
 		return getClass().getSimpleName()+": root='" + root + "'";
+	}
+	
+	public EglTagConfiguration getTagConfiguration() {
+		return tagConfiguration;
+	}
+	
+	public void setTagConfiguration(EglTagConfiguration tagConfiguration) {
+		this.tagConfiguration = tagConfiguration;
 	}
 }

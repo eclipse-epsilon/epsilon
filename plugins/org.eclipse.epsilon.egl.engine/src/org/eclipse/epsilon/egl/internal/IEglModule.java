@@ -16,6 +16,7 @@ import org.eclipse.epsilon.egl.exceptions.EglRuntimeException;
 import org.eclipse.epsilon.egl.execute.context.IEglContext;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.egl.model.EglMarkerSection;
+import org.eclipse.epsilon.egl.parse.EglTagConfiguration;
 import org.eclipse.epsilon.eol.IEolModule;
 
 public interface IEglModule extends IEolModule {
@@ -26,5 +27,9 @@ public interface IEglModule extends IEolModule {
 	IEglContext getContext();
 	
 	public Object execute(EglTemplate template, Formatter postprocessor) throws EglRuntimeException;
-
+	
+	public EglTagConfiguration getTagConfiguration();
+	
+	public void setTagConfiguration(EglTagConfiguration tagConfiguration);
+	
 }

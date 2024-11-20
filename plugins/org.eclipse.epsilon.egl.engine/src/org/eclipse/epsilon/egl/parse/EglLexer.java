@@ -21,6 +21,7 @@ public class EglLexer {
 	private int col = 1;
 	private int line = 1;	
 	private int index = 0;
+	protected EglTagConfiguration tagConfiguration = new EglTagConfiguration();
 	
 	public EglLexer(InputStream is) throws IOException {
 		final StringBuilder program = new StringBuilder();
@@ -62,33 +63,34 @@ public class EglLexer {
 		else if (program.startsWith("\n")) {
 			return tokenise(TokenType.NEW_LINE, "\n");
 		}
-		else if (program.startsWith("[*-")) {
-			return tokenise(TokenType.START_MARKER_TAG, "[*-");
+		else if (program.startsWith(tagConfiguration.getStartMarkerTag())) {
+			return tokenise(TokenType.START_MARKER_TAG, tagConfiguration.getStartMarkerTag());
 		}
-		else if (program.startsWith("[*")) {
-			return tokenise(TokenType.START_COMMENT_TAG, "[*");
+		else if (program.startsWith(tagConfiguration.getStartCommentTag())) {
+			return tokenise(TokenType.START_COMMENT_TAG, tagConfiguration.getStartCommentTag());
 		}
-		else if (program.startsWith("*]")) {
-			return tokenise(TokenType.END_COMMENT_TAG, "*]");
+		else if (program.startsWith(tagConfiguration.getEndCommentTag())) {
+			return tokenise(TokenType.END_COMMENT_TAG, tagConfiguration.getEndCommentTag());
 		}
-		else if (program.startsWith("[%=")) {
-			return tokenise(TokenType.START_OUTPUT_TAG, "[%=");
+		else if (program.startsWith(tagConfiguration.getStartOutputTag())) {
+			return tokenise(TokenType.START_OUTPUT_TAG, tagConfiguration.getStartOutputTag());
 		}
-		else if (program.startsWith("[%")) {
-			return tokenise(TokenType.START_TAG, "[%");
+		else if (program.startsWith(tagConfiguration.getStartTag())) {
+			return tokenise(TokenType.START_TAG, tagConfiguration.getStartTag());
 		}
-		else if (program.startsWith("-%]")) {
-			return tokenise(TokenType.END_OUTDENT_TAG, "-%]");
+		else if (program.startsWith(tagConfiguration.getEndOutdentTag())) {
+			return tokenise(TokenType.END_OUTDENT_TAG, tagConfiguration.getEndOutdentTag());
 		}
-		else if (program.startsWith("%]")) {
-			return tokenise(TokenType.END_TAG, "%]");
+		else if (program.startsWith(tagConfiguration.getEndTag())) {
+			return tokenise(TokenType.END_TAG, tagConfiguration.getEndTag());
 		}
 		else {
 			for (index = 0; index < program.length(); index++) {
 				// Check if any other token is next
 				if (programMatches("\n") || programMatches("\r\n") ||
-					programMatches("[%") || programMatches("%]") || programMatches("-%]")   ||
-					programMatches("[*") || programMatches("*]")) {
+					programMatches(tagConfiguration.getStartTag()) || programMatches(tagConfiguration.getEndTag()) || programMatches(tagConfiguration.getEndOutdentTag()) ||
+					programMatches(tagConfiguration.getStartCommentTag()) || programMatches(tagConfiguration.getEndCommentTag()) || 
+					programMatches(tagConfiguration.getStartMarkerTag()) || programMatches(tagConfiguration.getStartOutputTag())) {
 					
 					return tokenise(TokenType.PLAIN_TEXT, program.substring(0, index));
 				}
@@ -96,22 +98,6 @@ public class EglLexer {
 			
 			return tokenise(TokenType.PLAIN_TEXT, program);
 		}
-	}
-	
-	private static String unescape(String text) {
-		String result = new String(text);
-		
-		result = result.replaceAll("\\\\\\[%", "\\[%");
-		result = result.replaceAll("\\\\%\\]", "%\\]");
-		
-		// Replace all double slashes with single slashes
-		// Java's Pattern class makes this messy as it uses
-		// backslash as an escape character. Coupling this
-		// with Java already using backslash as an escape
-		// sequence, results in 4 slashes equating to 1 slash!
-		//result = result.replaceAll("\\\\\\\\", "\\\\");
-		
-		return result;
 	}
 	
 	private void newLine() {
@@ -123,7 +109,7 @@ public class EglLexer {
 		EglToken t;
 		
 		if (type == TokenType.PLAIN_TEXT)
-			t = new EglToken(type, unescape(text), line, col);
+			t = new EglToken(type, text, line, col);
 		else
 			t = new EglToken(type, text, line, col);
 		
@@ -134,7 +120,6 @@ public class EglLexer {
 		
 		return t;
 	}
-	
 	
 	private boolean programMatches(String toMatch) {
 		// Use the field called index by default
@@ -150,4 +135,13 @@ public class EglLexer {
 		
 		return program.substring(index, index + toMatch.length()).equals(toMatch);
 	}
+	
+	public EglTagConfiguration getTagConfiguration() {
+		return tagConfiguration;
+	}
+	
+	public void setTagConfiguration(EglTagConfiguration tagConfiguration) {
+		this.tagConfiguration = tagConfiguration;
+	}
+	
 }
