@@ -11,10 +11,7 @@ cd ../../..
 mvn -f pom-plain.xml install
 ```
 
-Next, run VS Code with a version of the `vscode-epsilon` extension which supports remote debugging.
-The current WIP branch for remote debugging is available from:
-
-https://github.com/agarciadom/vscode-epsilon/tree/remote-debug
+Next, run VS Code with the [`vscode-epsilon` extension](https://marketplace.visualstudio.com/items?itemName=SamHarris.eclipse-epsilon-languages) installed, which supports remote debugging since its v2.2.0 release.
 
 Try setting a breakpoint, and then debug the program by going to the `Run and Debug` section of VS Code, and launching the "Debug 01-hello" or "Debug 04-inspectObject" configurations.
 
