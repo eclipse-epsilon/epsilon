@@ -440,6 +440,10 @@ public class PackageRegistryExplorerView extends ViewPart implements ISelectionP
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public TreeViewer getFeatureViewer() {
+		return featureViewer;
+	}
 
 }
  
