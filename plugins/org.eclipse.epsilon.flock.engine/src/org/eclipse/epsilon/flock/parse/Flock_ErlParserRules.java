@@ -1,6 +1,6 @@
 package org.eclipse.epsilon.flock.parse;
 
-// $ANTLR 3.1b1 ErlParserRules.g 2023-07-03 20:54:50
+// $ANTLR 3.1b1 ErlParserRules.g 2024-12-09 10:43:37
 
 import org.antlr.runtime.*;
 import java.util.Stack;

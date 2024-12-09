@@ -1,4 +1,4 @@
-// $ANTLR 3.1b1 Flock__.g 2023-07-03 20:54:50
+// $ANTLR 3.1b1 Flock__.g 2024-12-09 10:43:37
 
 /*******************************************************************************
  * Copyright (c) 2009 The University of York.
@@ -38,6 +38,8 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 package org.eclipse.epsilon.flock.parse;
+
+import org.eclipse.epsilon.common.parse.Lexer;
 
 
 import org.antlr.runtime.*;
@@ -235,8 +237,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__93;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:44:7: ( 'model' )
-            // Flock__.g:44:9: 'model'
+            // Flock__.g:46:7: ( 'model' )
+            // Flock__.g:46:9: 'model'
             {
             match("model"); 
 
@@ -256,8 +258,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__94;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:45:7: ( ';' )
-            // Flock__.g:45:9: ';'
+            // Flock__.g:47:7: ( ';' )
+            // Flock__.g:47:9: ';'
             {
             match(';'); 
 
@@ -276,8 +278,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__95;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:46:7: ( 'alias' )
-            // Flock__.g:46:9: 'alias'
+            // Flock__.g:48:7: ( 'alias' )
+            // Flock__.g:48:9: 'alias'
             {
             match("alias"); 
 
@@ -297,8 +299,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__96;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:47:7: ( ',' )
-            // Flock__.g:47:9: ','
+            // Flock__.g:49:7: ( ',' )
+            // Flock__.g:49:9: ','
             {
             match(','); 
 
@@ -317,8 +319,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__97;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:48:7: ( 'driver' )
-            // Flock__.g:48:9: 'driver'
+            // Flock__.g:50:7: ( 'driver' )
+            // Flock__.g:50:9: 'driver'
             {
             match("driver"); 
 
@@ -338,8 +340,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__98;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:49:7: ( '{' )
-            // Flock__.g:49:9: '{'
+            // Flock__.g:51:7: ( '{' )
+            // Flock__.g:51:9: '{'
             {
             match('{'); 
 
@@ -358,8 +360,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__99;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:50:7: ( '}' )
-            // Flock__.g:50:9: '}'
+            // Flock__.g:52:7: ( '}' )
+            // Flock__.g:52:9: '}'
             {
             match('}'); 
 
@@ -378,8 +380,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__100;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:51:8: ( '=' )
-            // Flock__.g:51:10: '='
+            // Flock__.g:53:8: ( '=' )
+            // Flock__.g:53:10: '='
             {
             match('='); 
 
@@ -398,8 +400,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__101;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:52:8: ( 'operation' )
-            // Flock__.g:52:10: 'operation'
+            // Flock__.g:54:8: ( 'operation' )
+            // Flock__.g:54:10: 'operation'
             {
             match("operation"); 
 
@@ -419,8 +421,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__102;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:53:8: ( 'function' )
-            // Flock__.g:53:10: 'function'
+            // Flock__.g:55:8: ( 'function' )
+            // Flock__.g:55:10: 'function'
             {
             match("function"); 
 
@@ -440,8 +442,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__103;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:54:8: ( '(' )
-            // Flock__.g:54:10: '('
+            // Flock__.g:56:8: ( '(' )
+            // Flock__.g:56:10: '('
             {
             match('('); 
 
@@ -460,8 +462,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__104;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:55:8: ( ')' )
-            // Flock__.g:55:10: ')'
+            // Flock__.g:57:8: ( ')' )
+            // Flock__.g:57:10: ')'
             {
             match(')'); 
 
@@ -480,8 +482,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__105;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:56:8: ( ':' )
-            // Flock__.g:56:10: ':'
+            // Flock__.g:58:8: ( ':' )
+            // Flock__.g:58:10: ':'
             {
             match(':'); 
 
@@ -500,8 +502,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__106;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:57:8: ( 'import' )
-            // Flock__.g:57:10: 'import'
+            // Flock__.g:59:8: ( 'import' )
+            // Flock__.g:59:10: 'import'
             {
             match("import"); 
 
@@ -521,8 +523,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__107;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:58:8: ( '$' )
-            // Flock__.g:58:10: '$'
+            // Flock__.g:60:8: ( '$' )
+            // Flock__.g:60:10: '$'
             {
             match('$'); 
 
@@ -541,8 +543,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__108;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:59:8: ( '!' )
-            // Flock__.g:59:10: '!'
+            // Flock__.g:61:8: ( '!' )
+            // Flock__.g:61:10: '!'
             {
             match('!'); 
 
@@ -561,8 +563,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__109;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:60:8: ( '::' )
-            // Flock__.g:60:10: '::'
+            // Flock__.g:62:8: ( '::' )
+            // Flock__.g:62:10: '::'
             {
             match("::"); 
 
@@ -582,8 +584,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__110;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:61:8: ( '<' )
-            // Flock__.g:61:10: '<'
+            // Flock__.g:63:8: ( '<' )
+            // Flock__.g:63:10: '<'
             {
             match('<'); 
 
@@ -602,8 +604,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__111;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:62:8: ( '>' )
-            // Flock__.g:62:10: '>'
+            // Flock__.g:64:8: ( '>' )
+            // Flock__.g:64:10: '>'
             {
             match('>'); 
 
@@ -622,8 +624,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__112;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:63:8: ( 'if' )
-            // Flock__.g:63:10: 'if'
+            // Flock__.g:65:8: ( 'if' )
+            // Flock__.g:65:10: 'if'
             {
             match("if"); 
 
@@ -643,8 +645,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__113;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:64:8: ( 'else' )
-            // Flock__.g:64:10: 'else'
+            // Flock__.g:66:8: ( 'else' )
+            // Flock__.g:66:10: 'else'
             {
             match("else"); 
 
@@ -664,8 +666,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__114;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:65:8: ( 'switch' )
-            // Flock__.g:65:10: 'switch'
+            // Flock__.g:67:8: ( 'switch' )
+            // Flock__.g:67:10: 'switch'
             {
             match("switch"); 
 
@@ -685,8 +687,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__115;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:66:8: ( 'case' )
-            // Flock__.g:66:10: 'case'
+            // Flock__.g:68:8: ( 'case' )
+            // Flock__.g:68:10: 'case'
             {
             match("case"); 
 
@@ -706,8 +708,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__116;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:67:8: ( 'default' )
-            // Flock__.g:67:10: 'default'
+            // Flock__.g:69:8: ( 'default' )
+            // Flock__.g:69:10: 'default'
             {
             match("default"); 
 
@@ -727,8 +729,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__117;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:68:8: ( 'for' )
-            // Flock__.g:68:10: 'for'
+            // Flock__.g:70:8: ( 'for' )
+            // Flock__.g:70:10: 'for'
             {
             match("for"); 
 
@@ -748,8 +750,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__118;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:69:8: ( 'in' )
-            // Flock__.g:69:10: 'in'
+            // Flock__.g:71:8: ( 'in' )
+            // Flock__.g:71:10: 'in'
             {
             match("in"); 
 
@@ -769,8 +771,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__119;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:70:8: ( 'while' )
-            // Flock__.g:70:10: 'while'
+            // Flock__.g:72:8: ( 'while' )
+            // Flock__.g:72:10: 'while'
             {
             match("while"); 
 
@@ -790,8 +792,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__120;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:71:8: ( 'return' )
-            // Flock__.g:71:10: 'return'
+            // Flock__.g:73:8: ( 'return' )
+            // Flock__.g:73:10: 'return'
             {
             match("return"); 
 
@@ -811,8 +813,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__121;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:72:8: ( 'throw' )
-            // Flock__.g:72:10: 'throw'
+            // Flock__.g:74:8: ( 'throw' )
+            // Flock__.g:74:10: 'throw'
             {
             match("throw"); 
 
@@ -832,8 +834,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__122;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:73:8: ( 'delete' )
-            // Flock__.g:73:10: 'delete'
+            // Flock__.g:75:8: ( 'delete' )
+            // Flock__.g:75:10: 'delete'
             {
             match("delete"); 
 
@@ -853,8 +855,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__123;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:74:8: ( 'break' )
-            // Flock__.g:74:10: 'break'
+            // Flock__.g:76:8: ( 'break' )
+            // Flock__.g:76:10: 'break'
             {
             match("break"); 
 
@@ -874,8 +876,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__124;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:75:8: ( 'breakAll' )
-            // Flock__.g:75:10: 'breakAll'
+            // Flock__.g:77:8: ( 'breakAll' )
+            // Flock__.g:77:10: 'breakAll'
             {
             match("breakAll"); 
 
@@ -895,8 +897,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__125;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:76:8: ( 'continue' )
-            // Flock__.g:76:10: 'continue'
+            // Flock__.g:78:8: ( 'continue' )
+            // Flock__.g:78:10: 'continue'
             {
             match("continue"); 
 
@@ -916,8 +918,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__126;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:77:8: ( 'abort' )
-            // Flock__.g:77:10: 'abort'
+            // Flock__.g:79:8: ( 'abort' )
+            // Flock__.g:79:10: 'abort'
             {
             match("abort"); 
 
@@ -937,8 +939,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__127;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:78:8: ( 'transaction' )
-            // Flock__.g:78:10: 'transaction'
+            // Flock__.g:80:8: ( 'transaction' )
+            // Flock__.g:80:10: 'transaction'
             {
             match("transaction"); 
 
@@ -958,8 +960,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__128;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:79:8: ( ':=' )
-            // Flock__.g:79:10: ':='
+            // Flock__.g:81:8: ( ':=' )
+            // Flock__.g:81:10: ':='
             {
             match(":="); 
 
@@ -979,8 +981,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__129;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:80:8: ( '+=' )
-            // Flock__.g:80:10: '+='
+            // Flock__.g:82:8: ( '+=' )
+            // Flock__.g:82:10: '+='
             {
             match("+="); 
 
@@ -1000,8 +1002,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__130;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:81:8: ( '-=' )
-            // Flock__.g:81:10: '-='
+            // Flock__.g:83:8: ( '-=' )
+            // Flock__.g:83:10: '-='
             {
             match("-="); 
 
@@ -1021,8 +1023,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__131;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:82:8: ( '*=' )
-            // Flock__.g:82:10: '*='
+            // Flock__.g:84:8: ( '*=' )
+            // Flock__.g:84:10: '*='
             {
             match("*="); 
 
@@ -1042,8 +1044,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__132;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:83:8: ( '/=' )
-            // Flock__.g:83:10: '/='
+            // Flock__.g:85:8: ( '/=' )
+            // Flock__.g:85:10: '/='
             {
             match("/="); 
 
@@ -1063,8 +1065,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__133;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:84:8: ( '?=' )
-            // Flock__.g:84:10: '?='
+            // Flock__.g:86:8: ( '?=' )
+            // Flock__.g:86:10: '?='
             {
             match("?="); 
 
@@ -1084,8 +1086,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__134;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:85:8: ( '::=' )
-            // Flock__.g:85:10: '::='
+            // Flock__.g:87:8: ( '::=' )
+            // Flock__.g:87:10: '::='
             {
             match("::="); 
 
@@ -1105,8 +1107,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__135;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:86:8: ( 'or' )
-            // Flock__.g:86:10: 'or'
+            // Flock__.g:88:8: ( 'or' )
+            // Flock__.g:88:10: 'or'
             {
             match("or"); 
 
@@ -1126,8 +1128,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__136;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:87:8: ( 'and' )
-            // Flock__.g:87:10: 'and'
+            // Flock__.g:89:8: ( 'and' )
+            // Flock__.g:89:10: 'and'
             {
             match("and"); 
 
@@ -1147,8 +1149,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__137;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:88:8: ( 'xor' )
-            // Flock__.g:88:10: 'xor'
+            // Flock__.g:90:8: ( 'xor' )
+            // Flock__.g:90:10: 'xor'
             {
             match("xor"); 
 
@@ -1168,8 +1170,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__138;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:89:8: ( 'implies' )
-            // Flock__.g:89:10: 'implies'
+            // Flock__.g:91:8: ( 'implies' )
+            // Flock__.g:91:10: 'implies'
             {
             match("implies"); 
 
@@ -1189,8 +1191,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__139;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:90:8: ( '?' )
-            // Flock__.g:90:10: '?'
+            // Flock__.g:92:8: ( '?' )
+            // Flock__.g:92:10: '?'
             {
             match('?'); 
 
@@ -1209,8 +1211,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__140;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:91:8: ( '==' )
-            // Flock__.g:91:10: '=='
+            // Flock__.g:93:8: ( '==' )
+            // Flock__.g:93:10: '=='
             {
             match("=="); 
 
@@ -1230,8 +1232,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__141;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:92:8: ( '!=' )
-            // Flock__.g:92:10: '!='
+            // Flock__.g:94:8: ( '!=' )
+            // Flock__.g:94:10: '!='
             {
             match("!="); 
 
@@ -1251,8 +1253,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__142;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:93:8: ( '?:' )
-            // Flock__.g:93:10: '?:'
+            // Flock__.g:95:8: ( '?:' )
+            // Flock__.g:95:10: '?:'
             {
             match("?:"); 
 
@@ -1272,8 +1274,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__143;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:94:8: ( '>=' )
-            // Flock__.g:94:10: '>='
+            // Flock__.g:96:8: ( '>=' )
+            // Flock__.g:96:10: '>='
             {
             match(">="); 
 
@@ -1293,8 +1295,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__144;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:95:8: ( '<=' )
-            // Flock__.g:95:10: '<='
+            // Flock__.g:97:8: ( '<=' )
+            // Flock__.g:97:10: '<='
             {
             match("<="); 
 
@@ -1314,8 +1316,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__145;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:96:8: ( '<>' )
-            // Flock__.g:96:10: '<>'
+            // Flock__.g:98:8: ( '<>' )
+            // Flock__.g:98:10: '<>'
             {
             match("<>"); 
 
@@ -1335,8 +1337,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__146;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:97:8: ( '+' )
-            // Flock__.g:97:10: '+'
+            // Flock__.g:99:8: ( '+' )
+            // Flock__.g:99:10: '+'
             {
             match('+'); 
 
@@ -1355,8 +1357,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__147;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:98:8: ( '-' )
-            // Flock__.g:98:10: '-'
+            // Flock__.g:100:8: ( '-' )
+            // Flock__.g:100:10: '-'
             {
             match('-'); 
 
@@ -1375,8 +1377,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__148;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:99:8: ( '*' )
-            // Flock__.g:99:10: '*'
+            // Flock__.g:101:8: ( '*' )
+            // Flock__.g:101:10: '*'
             {
             match('*'); 
 
@@ -1395,8 +1397,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__149;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:100:8: ( '/' )
-            // Flock__.g:100:10: '/'
+            // Flock__.g:102:8: ( '/' )
+            // Flock__.g:102:10: '/'
             {
             match('/'); 
 
@@ -1415,8 +1417,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__150;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:101:8: ( 'not' )
-            // Flock__.g:101:10: 'not'
+            // Flock__.g:103:8: ( 'not' )
+            // Flock__.g:103:10: 'not'
             {
             match("not"); 
 
@@ -1436,8 +1438,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__151;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:102:8: ( '++' )
-            // Flock__.g:102:10: '++'
+            // Flock__.g:104:8: ( '++' )
+            // Flock__.g:104:10: '++'
             {
             match("++"); 
 
@@ -1457,8 +1459,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__152;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:103:8: ( '--' )
-            // Flock__.g:103:10: '--'
+            // Flock__.g:105:8: ( '--' )
+            // Flock__.g:105:10: '--'
             {
             match("--"); 
 
@@ -1478,8 +1480,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__153;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:104:8: ( '[' )
-            // Flock__.g:104:10: '['
+            // Flock__.g:106:8: ( '[' )
+            // Flock__.g:106:10: '['
             {
             match('['); 
 
@@ -1498,8 +1500,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__154;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:105:8: ( ']' )
-            // Flock__.g:105:10: ']'
+            // Flock__.g:107:8: ( ']' )
+            // Flock__.g:107:10: ']'
             {
             match(']'); 
 
@@ -1518,8 +1520,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__155;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:106:8: ( '|' )
-            // Flock__.g:106:10: '|'
+            // Flock__.g:108:8: ( '|' )
+            // Flock__.g:108:10: '|'
             {
             match('|'); 
 
@@ -1538,8 +1540,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__156;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:107:8: ( '=>' )
-            // Flock__.g:107:10: '=>'
+            // Flock__.g:109:8: ( '=>' )
+            // Flock__.g:109:10: '=>'
             {
             match("=>"); 
 
@@ -1559,8 +1561,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__157;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:108:8: ( 'new' )
-            // Flock__.g:108:10: 'new'
+            // Flock__.g:110:8: ( 'new' )
+            // Flock__.g:110:10: 'new'
             {
             match("new"); 
 
@@ -1580,8 +1582,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__158;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:109:8: ( 'var' )
-            // Flock__.g:109:10: 'var'
+            // Flock__.g:111:8: ( 'var' )
+            // Flock__.g:111:10: 'var'
             {
             match("var"); 
 
@@ -1601,8 +1603,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__159;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:110:8: ( 'ext' )
-            // Flock__.g:110:10: 'ext'
+            // Flock__.g:112:8: ( 'ext' )
+            // Flock__.g:112:10: 'ext'
             {
             match("ext"); 
 
@@ -1622,8 +1624,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__160;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:111:8: ( '#' )
-            // Flock__.g:111:10: '#'
+            // Flock__.g:113:8: ( '#' )
+            // Flock__.g:113:10: '#'
             {
             match('#'); 
 
@@ -1642,8 +1644,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__161;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:112:8: ( 'pre' )
-            // Flock__.g:112:10: 'pre'
+            // Flock__.g:114:8: ( 'pre' )
+            // Flock__.g:114:10: 'pre'
             {
             match("pre"); 
 
@@ -1663,8 +1665,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__162;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:113:8: ( 'post' )
-            // Flock__.g:113:10: 'post'
+            // Flock__.g:115:8: ( 'post' )
+            // Flock__.g:115:10: 'post'
             {
             match("post"); 
 
@@ -1684,8 +1686,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__163;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:114:8: ( 'guard' )
-            // Flock__.g:114:10: 'guard'
+            // Flock__.g:116:8: ( 'guard' )
+            // Flock__.g:116:10: 'guard'
             {
             match("guard"); 
 
@@ -1705,8 +1707,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__164;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:115:8: ( 'extends' )
-            // Flock__.g:115:10: 'extends'
+            // Flock__.g:117:8: ( 'extends' )
+            // Flock__.g:117:10: 'extends'
             {
             match("extends"); 
 
@@ -1726,8 +1728,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__165;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:116:8: ( 'retype' )
-            // Flock__.g:116:10: 'retype'
+            // Flock__.g:118:8: ( 'retype' )
+            // Flock__.g:118:10: 'retype'
             {
             match("retype"); 
 
@@ -1747,8 +1749,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__166;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:117:8: ( 'package' )
-            // Flock__.g:117:10: 'package'
+            // Flock__.g:119:8: ( 'package' )
+            // Flock__.g:119:10: 'package'
             {
             match("package"); 
 
@@ -1768,8 +1770,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__167;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:118:8: ( 'to' )
-            // Flock__.g:118:10: 'to'
+            // Flock__.g:120:8: ( 'to' )
+            // Flock__.g:120:10: 'to'
             {
             match("to"); 
 
@@ -1789,8 +1791,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__168;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:119:8: ( 'migrate' )
-            // Flock__.g:119:10: 'migrate'
+            // Flock__.g:121:8: ( 'migrate' )
+            // Flock__.g:121:10: 'migrate'
             {
             match("migrate"); 
 
@@ -1810,8 +1812,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__169;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:120:8: ( 'ignoring' )
-            // Flock__.g:120:10: 'ignoring'
+            // Flock__.g:122:8: ( 'ignoring' )
+            // Flock__.g:122:10: 'ignoring'
             {
             match("ignoring"); 
 
@@ -1831,8 +1833,8 @@ public class FlockLexer extends Lexer {
         try {
             int _type = T__170;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Flock__.g:121:8: ( 'when' )
-            // Flock__.g:121:10: 'when'
+            // Flock__.g:123:8: ( 'when' )
+            // Flock__.g:123:10: 'when'
             {
             match("when"); 
 
