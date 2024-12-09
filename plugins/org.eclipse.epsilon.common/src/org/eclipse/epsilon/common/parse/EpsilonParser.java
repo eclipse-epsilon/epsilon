@@ -10,17 +10,21 @@
 package org.eclipse.epsilon.common.parse;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.antlr.runtime.Parser;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.RecognizerSharedState;
 import org.antlr.runtime.TokenStream;
 import org.antlr.runtime.tree.TreeAdaptor;
+import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.ReflectionUtil;
 
 public abstract class EpsilonParser extends Parser {
 	
 	private boolean printErrors = false;
+	protected List<ParseProblem> parseProblems = new ArrayList<>();
 	
 	public EpsilonParser(TokenStream tokenstream) {
 		super(tokenstream);
@@ -71,12 +75,22 @@ public abstract class EpsilonParser extends Parser {
 	
 	@Override
 	public void displayRecognitionError(String[] tokenNames, RecognitionException re) {
-		EpsilonParseProblemManager.INSTANCE.reportException(
-				re.line, re.charPositionInLine, getErrorMessage(re, getTokenNames())
-		);
+		reportException(re.line, re.charPositionInLine, getErrorMessage(re, getTokenNames()));
 		
 		if (printErrors) {
 			super.displayRecognitionError(tokenNames, re);
 		}
+	}
+	
+	public void reportException(int line, int column, String reason) {
+		ParseProblem problem = new ParseProblem();
+		problem.setLine(line);
+		problem.setColumn(column);
+		problem.setReason(reason);
+		parseProblems.add(problem);
+	}
+	
+	public List<ParseProblem> getParseProblems() {
+		return parseProblems;
 	}
 }

@@ -1,4 +1,4 @@
-// $ANTLR 3.1b1 Hutn.g 2020-06-06 01:10:57
+// $ANTLR 3.1b1 Hutn.g 2024-12-09 11:02:50
 
 /*******************************************************************************
  * Copyright (c) 2008 The University of York.
@@ -37,7 +37,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
-package org.eclipse.epsilon.hutn.parse;	
+package org.eclipse.epsilon.hutn.parse;
+
+import org.eclipse.epsilon.common.parse.Lexer;	
 
 
 import org.antlr.runtime.*;
@@ -91,8 +93,8 @@ public class HutnLexer extends Lexer {
         try {
             int _type = TRUE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:44:6: ( 'true' )
-            // Hutn.g:44:8: 'true'
+            // Hutn.g:46:6: ( 'true' )
+            // Hutn.g:46:8: 'true'
             {
             match("true"); 
 
@@ -112,8 +114,8 @@ public class HutnLexer extends Lexer {
         try {
             int _type = FALSE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:45:7: ( 'false' )
-            // Hutn.g:45:9: 'false'
+            // Hutn.g:47:7: ( 'false' )
+            // Hutn.g:47:9: 'false'
             {
             match("false"); 
 
@@ -133,8 +135,8 @@ public class HutnLexer extends Lexer {
         try {
             int _type = NULL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:46:6: ( 'null' )
-            // Hutn.g:46:8: 'null'
+            // Hutn.g:48:6: ( 'null' )
+            // Hutn.g:48:8: 'null'
             {
             match("null"); 
 
@@ -154,8 +156,8 @@ public class HutnLexer extends Lexer {
         try {
             int _type = T__27;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:47:7: ( ';' )
-            // Hutn.g:47:9: ';'
+            // Hutn.g:49:7: ( ';' )
+            // Hutn.g:49:9: ';'
             {
             match(';'); 
 
@@ -174,8 +176,8 @@ public class HutnLexer extends Lexer {
         try {
             int _type = T__28;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:48:7: ( '.' )
-            // Hutn.g:48:9: '.'
+            // Hutn.g:50:7: ( '.' )
+            // Hutn.g:50:9: '.'
             {
             match('.'); 
 
@@ -194,8 +196,8 @@ public class HutnLexer extends Lexer {
         try {
             int _type = COMMA;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:154:14: ( ',' )
-            // Hutn.g:154:16: ','
+            // Hutn.g:156:14: ( ',' )
+            // Hutn.g:156:16: ','
             {
             match(','); 
 
@@ -214,8 +216,8 @@ public class HutnLexer extends Lexer {
         try {
             int _type = LBRACKET;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:155:14: ( '{' )
-            // Hutn.g:155:16: '{'
+            // Hutn.g:157:14: ( '{' )
+            // Hutn.g:157:16: '{'
             {
             match('{'); 
 
@@ -234,8 +236,8 @@ public class HutnLexer extends Lexer {
         try {
             int _type = RBRACKET;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:156:14: ( '}' )
-            // Hutn.g:156:16: '}'
+            // Hutn.g:158:14: ( '}' )
+            // Hutn.g:158:16: '}'
             {
             match('}'); 
 
@@ -254,7 +256,7 @@ public class HutnLexer extends Lexer {
         try {
             int _type = ASSIGNMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:157:13: ( ':' | '=' )
+            // Hutn.g:159:13: ( ':' | '=' )
             // Hutn.g:
             {
             if ( input.LA(1)==':'||input.LA(1)=='=' ) {
@@ -282,11 +284,11 @@ public class HutnLexer extends Lexer {
         try {
             int _type = NAME;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:158:14: ( ID_START_LETTER ( ID_LETTER )* )
-            // Hutn.g:158:16: ID_START_LETTER ( ID_LETTER )*
+            // Hutn.g:160:14: ( ID_START_LETTER ( ID_LETTER )* )
+            // Hutn.g:160:16: ID_START_LETTER ( ID_LETTER )*
             {
             mID_START_LETTER(); 
-            // Hutn.g:158:32: ( ID_LETTER )*
+            // Hutn.g:160:32: ( ID_LETTER )*
             loop1:
             do {
                 int alt1=2;
@@ -299,7 +301,7 @@ public class HutnLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // Hutn.g:158:32: ID_LETTER
+            	    // Hutn.g:160:32: ID_LETTER
             	    {
             	    mID_LETTER(); 
 
@@ -331,11 +333,11 @@ public class HutnLexer extends Lexer {
             Token normal=null;
 
             StringBuilder lBuf = new StringBuilder();
-            // Hutn.g:163:5: ( '\"' (escaped= ESC | normal= TEXT_LETTER )* '\"' )
-            // Hutn.g:164:12: '\"' (escaped= ESC | normal= TEXT_LETTER )* '\"'
+            // Hutn.g:165:5: ( '\"' (escaped= ESC | normal= TEXT_LETTER )* '\"' )
+            // Hutn.g:166:12: '\"' (escaped= ESC | normal= TEXT_LETTER )* '\"'
             {
             match('\"'); 
-            // Hutn.g:165:12: (escaped= ESC | normal= TEXT_LETTER )*
+            // Hutn.g:167:12: (escaped= ESC | normal= TEXT_LETTER )*
             loop2:
             do {
                 int alt2=3;
@@ -351,7 +353,7 @@ public class HutnLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // Hutn.g:166:14: escaped= ESC
+            	    // Hutn.g:168:14: escaped= ESC
             	    {
             	    int escapedStart196 = getCharIndex();
             	    mESC(); 
@@ -361,7 +363,7 @@ public class HutnLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // Hutn.g:168:14: normal= TEXT_LETTER
+            	    // Hutn.g:170:14: normal= TEXT_LETTER
             	    {
             	    int normalStart239 = getCharIndex();
             	    mTEXT_LETTER(); 
@@ -394,10 +396,10 @@ public class HutnLexer extends Lexer {
         try {
             int _type = NUMERIC_VALUE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:175:14: ( ( '-' | '+' )? ( DIGIT )+ ( '.' ( DIGIT )+ )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ )? )
-            // Hutn.g:175:16: ( '-' | '+' )? ( DIGIT )+ ( '.' ( DIGIT )+ )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ )?
+            // Hutn.g:177:14: ( ( '-' | '+' )? ( DIGIT )+ ( '.' ( DIGIT )+ )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ )? )
+            // Hutn.g:177:16: ( '-' | '+' )? ( DIGIT )+ ( '.' ( DIGIT )+ )? ( ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ )?
             {
-            // Hutn.g:175:16: ( '-' | '+' )?
+            // Hutn.g:177:16: ( '-' | '+' )?
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -423,7 +425,7 @@ public class HutnLexer extends Lexer {
 
             }
 
-            // Hutn.g:175:27: ( DIGIT )+
+            // Hutn.g:177:27: ( DIGIT )+
             int cnt4=0;
             loop4:
             do {
@@ -437,7 +439,7 @@ public class HutnLexer extends Lexer {
 
                 switch (alt4) {
             	case 1 :
-            	    // Hutn.g:175:27: DIGIT
+            	    // Hutn.g:177:27: DIGIT
             	    {
             	    mDIGIT(); 
 
@@ -453,7 +455,7 @@ public class HutnLexer extends Lexer {
                 cnt4++;
             } while (true);
 
-            // Hutn.g:175:34: ( '.' ( DIGIT )+ )?
+            // Hutn.g:177:34: ( '.' ( DIGIT )+ )?
             int alt6=2;
             int LA6_0 = input.LA(1);
 
@@ -462,10 +464,10 @@ public class HutnLexer extends Lexer {
             }
             switch (alt6) {
                 case 1 :
-                    // Hutn.g:175:35: '.' ( DIGIT )+
+                    // Hutn.g:177:35: '.' ( DIGIT )+
                     {
                     match('.'); 
-                    // Hutn.g:175:39: ( DIGIT )+
+                    // Hutn.g:177:39: ( DIGIT )+
                     int cnt5=0;
                     loop5:
                     do {
@@ -479,7 +481,7 @@ public class HutnLexer extends Lexer {
 
                         switch (alt5) {
                     	case 1 :
-                    	    // Hutn.g:175:39: DIGIT
+                    	    // Hutn.g:177:39: DIGIT
                     	    {
                     	    mDIGIT(); 
 
@@ -501,7 +503,7 @@ public class HutnLexer extends Lexer {
 
             }
 
-            // Hutn.g:175:48: ( ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ )?
+            // Hutn.g:177:48: ( ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+ )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -510,7 +512,7 @@ public class HutnLexer extends Lexer {
             }
             switch (alt9) {
                 case 1 :
-                    // Hutn.g:175:49: ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+
+                    // Hutn.g:177:49: ( 'e' | 'E' ) ( '+' | '-' )? ( DIGIT )+
                     {
                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                         input.consume();
@@ -521,7 +523,7 @@ public class HutnLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // Hutn.g:175:59: ( '+' | '-' )?
+                    // Hutn.g:177:59: ( '+' | '-' )?
                     int alt7=2;
                     int LA7_0 = input.LA(1);
 
@@ -547,7 +549,7 @@ public class HutnLexer extends Lexer {
 
                     }
 
-                    // Hutn.g:175:70: ( DIGIT )+
+                    // Hutn.g:177:70: ( DIGIT )+
                     int cnt8=0;
                     loop8:
                     do {
@@ -561,7 +563,7 @@ public class HutnLexer extends Lexer {
 
                         switch (alt8) {
                     	case 1 :
-                    	    // Hutn.g:175:70: DIGIT
+                    	    // Hutn.g:177:70: DIGIT
                     	    {
                     	    mDIGIT(); 
 
@@ -599,7 +601,7 @@ public class HutnLexer extends Lexer {
         try {
             int _type = ADJECTIVE_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:176:17: ( '~' | '#' )
+            // Hutn.g:178:17: ( '~' | '#' )
             // Hutn.g:
             {
             if ( input.LA(1)=='#'||input.LA(1)=='~' ) {
@@ -627,10 +629,10 @@ public class HutnLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:178:5: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' ) )
-            // Hutn.g:178:8: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )
+            // Hutn.g:180:5: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' ) )
+            // Hutn.g:180:8: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )
             {
-            // Hutn.g:178:8: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )
+            // Hutn.g:180:8: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )
             int alt10=5;
             switch ( input.LA(1) ) {
             case ' ':
@@ -667,21 +669,21 @@ public class HutnLexer extends Lexer {
 
             switch (alt10) {
                 case 1 :
-                    // Hutn.g:179:2: ' '
+                    // Hutn.g:181:2: ' '
                     {
                     match(' '); 
 
                     }
                     break;
                 case 2 :
-                    // Hutn.g:180:2: '\\r'
+                    // Hutn.g:182:2: '\\r'
                     {
                     match('\r'); 
 
                     }
                     break;
                 case 3 :
-                    // Hutn.g:181:2: '\\t'
+                    // Hutn.g:183:2: '\\t'
                     {
                     match('\t'); 
                     input.setCharPositionInLine(input.getCharPositionInLine() + 3);
@@ -689,14 +691,14 @@ public class HutnLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // Hutn.g:182:3: '\\u000C'
+                    // Hutn.g:184:3: '\\u000C'
                     {
                     match('\f'); 
 
                     }
                     break;
                 case 5 :
-                    // Hutn.g:183:3: '\\n'
+                    // Hutn.g:185:3: '\\n'
                     {
                     match('\n'); 
 
@@ -722,12 +724,12 @@ public class HutnLexer extends Lexer {
         try {
             int _type = ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:188:5: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // Hutn.g:188:9: '/*' ( options {greedy=false; } : . )* '*/'
+            // Hutn.g:190:5: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // Hutn.g:190:9: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // Hutn.g:188:14: ( options {greedy=false; } : . )*
+            // Hutn.g:190:14: ( options {greedy=false; } : . )*
             loop11:
             do {
                 int alt11=2;
@@ -752,7 +754,7 @@ public class HutnLexer extends Lexer {
 
                 switch (alt11) {
             	case 1 :
-            	    // Hutn.g:188:42: .
+            	    // Hutn.g:190:42: .
             	    {
             	    matchAny(); 
 
@@ -783,12 +785,12 @@ public class HutnLexer extends Lexer {
         try {
             int _type = SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Hutn.g:192:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
-            // Hutn.g:192:7: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
+            // Hutn.g:194:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n' )
+            // Hutn.g:194:7: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r' )? '\\n'
             {
             match("//"); 
 
-            // Hutn.g:192:12: (~ ( '\\n' | '\\r' ) )*
+            // Hutn.g:194:12: (~ ( '\\n' | '\\r' ) )*
             loop12:
             do {
                 int alt12=2;
@@ -801,7 +803,7 @@ public class HutnLexer extends Lexer {
 
                 switch (alt12) {
             	case 1 :
-            	    // Hutn.g:192:12: ~ ( '\\n' | '\\r' )
+            	    // Hutn.g:194:12: ~ ( '\\n' | '\\r' )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFE') ) {
             	        input.consume();
@@ -821,7 +823,7 @@ public class HutnLexer extends Lexer {
                 }
             } while (true);
 
-            // Hutn.g:192:26: ( '\\r' )?
+            // Hutn.g:194:26: ( '\\r' )?
             int alt13=2;
             int LA13_0 = input.LA(1);
 
@@ -830,7 +832,7 @@ public class HutnLexer extends Lexer {
             }
             switch (alt13) {
                 case 1 :
-                    // Hutn.g:192:26: '\\r'
+                    // Hutn.g:194:26: '\\r'
                     {
                     match('\r'); 
 
@@ -855,7 +857,7 @@ public class HutnLexer extends Lexer {
     // $ANTLR start ID_START_LETTER
     public final void mID_START_LETTER() throws RecognitionException {
         try {
-            // Hutn.g:197:2: ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '@' )
+            // Hutn.g:199:2: ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '@' )
             // Hutn.g:
             {
             if ( (input.LA(1)>='@' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
@@ -879,7 +881,7 @@ public class HutnLexer extends Lexer {
     // $ANTLR start ID_LETTER
     public final void mID_LETTER() throws RecognitionException {
         try {
-            // Hutn.g:205:5: ( ID_START_LETTER | '0' .. '9' | '-' | '#' )
+            // Hutn.g:207:5: ( ID_START_LETTER | '0' .. '9' | '-' | '#' )
             // Hutn.g:
             {
             if ( input.LA(1)=='#'||input.LA(1)=='-'||(input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='@' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
@@ -903,11 +905,11 @@ public class HutnLexer extends Lexer {
     // $ANTLR start ESC
     public final void mESC() throws RecognitionException {
         try {
-            // Hutn.g:213:5: ( '\\\\' ( '\"' | '\\\\' ) )
-            // Hutn.g:213:9: '\\\\' ( '\"' | '\\\\' )
+            // Hutn.g:215:5: ( '\\\\' ( '\"' | '\\\\' ) )
+            // Hutn.g:215:9: '\\\\' ( '\"' | '\\\\' )
             {
             match('\\'); 
-            // Hutn.g:214:9: ( '\"' | '\\\\' )
+            // Hutn.g:216:9: ( '\"' | '\\\\' )
             int alt14=2;
             int LA14_0 = input.LA(1);
 
@@ -925,7 +927,7 @@ public class HutnLexer extends Lexer {
             }
             switch (alt14) {
                 case 1 :
-                    // Hutn.g:215:12: '\"'
+                    // Hutn.g:217:12: '\"'
                     {
                     match('\"'); 
                     setText("\"");
@@ -933,7 +935,7 @@ public class HutnLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // Hutn.g:216:12: '\\\\'
+                    // Hutn.g:218:12: '\\\\'
                     {
                     match('\\'); 
                     setText("\\");
@@ -955,8 +957,8 @@ public class HutnLexer extends Lexer {
     // $ANTLR start TEXT_LETTER
     public final void mTEXT_LETTER() throws RecognitionException {
         try {
-            // Hutn.g:222:5: (~ ( '\\\"' | '\\\\' ) )
-            // Hutn.g:222:10: ~ ( '\\\"' | '\\\\' )
+            // Hutn.g:224:5: (~ ( '\\\"' | '\\\\' ) )
+            // Hutn.g:224:10: ~ ( '\\\"' | '\\\\' )
             {
             if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFE') ) {
                 input.consume();
@@ -979,8 +981,8 @@ public class HutnLexer extends Lexer {
     // $ANTLR start DIGIT
     public final void mDIGIT() throws RecognitionException {
         try {
-            // Hutn.g:226:7: ( '0' .. '9' )
-            // Hutn.g:226:9: '0' .. '9'
+            // Hutn.g:228:7: ( '0' .. '9' )
+            // Hutn.g:228:9: '0' .. '9'
             {
             matchRange('0','9'); 
 
@@ -1133,10 +1135,10 @@ public class HutnLexer extends Lexer {
     static final String DFA15_specialS =
         "\37\uffff}>";
     static final String[] DFA15_transitionS = {
-            "\2\16\1\uffff\2\16\22\uffff\1\16\1\uffff\1\13\1\15\7\uffff"+
-            "\1\14\1\6\1\14\1\5\1\17\12\14\1\11\1\4\1\uffff\1\11\2\uffff"+
-            "\33\12\4\uffff\1\12\1\uffff\5\12\1\2\7\12\1\3\5\12\1\1\6\12"+
-            "\1\7\1\uffff\1\10\1\15",
+            "\2\16\1\uffff\2\16\22\uffff\1\16\1\uffff\1\13\1\15\7\uffff\1"+
+            "\14\1\6\1\14\1\5\1\17\12\14\1\11\1\4\1\uffff\1\11\2\uffff\33"+
+            "\12\4\uffff\1\12\1\uffff\5\12\1\2\7\12\1\3\5\12\1\1\6\12\1\7"+
+            "\1\uffff\1\10\1\15",
             "\1\20",
             "\1\21",
             "\1\22",
@@ -1160,14 +1162,14 @@ public class HutnLexer extends Lexer {
             "\1\30",
             "\1\31",
             "\1\32",
-            "\1\12\11\uffff\1\12\2\uffff\12\12\6\uffff\33\12\4\uffff\1"+
-            "\12\1\uffff\32\12",
+            "\1\12\11\uffff\1\12\2\uffff\12\12\6\uffff\33\12\4\uffff\1\12"+
+            "\1\uffff\32\12",
             "\1\34",
-            "\1\12\11\uffff\1\12\2\uffff\12\12\6\uffff\33\12\4\uffff\1"+
-            "\12\1\uffff\32\12",
+            "\1\12\11\uffff\1\12\2\uffff\12\12\6\uffff\33\12\4\uffff\1\12"+
+            "\1\uffff\32\12",
             "",
-            "\1\12\11\uffff\1\12\2\uffff\12\12\6\uffff\33\12\4\uffff\1"+
-            "\12\1\uffff\32\12",
+            "\1\12\11\uffff\1\12\2\uffff\12\12\6\uffff\33\12\4\uffff\1\12"+
+            "\1\uffff\32\12",
             "",
             ""
     };

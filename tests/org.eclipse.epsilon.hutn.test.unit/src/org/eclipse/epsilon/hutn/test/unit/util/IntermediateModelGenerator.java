@@ -38,13 +38,14 @@ public class IntermediateModelGenerator {
 			final HutnLexer  lexer  = new HutnLexer(new ANTLRReaderStream(new StringReader(spec)));
 			final HutnParser parser = new HutnParser(new CommonTokenStream(lexer));
 			
+			parser.getParseProblems().addAll(lexer.getParseProblems());
 			final AST ast = new AST((CommonTree)parser.document().getTree());
 
-			if (EpsilonParseProblemManager.INSTANCE.getParseProblems().isEmpty()) {
+			if (parser.getParseProblems().isEmpty()) {
 				return new InMemoryEmfModel(new HutnTranslator().createIntermediateModel(new HutnPostProcessor().process(ast), null).eResource());
 			
 			} else {
-				for (ParseProblem p : EpsilonParseProblemManager.INSTANCE.getParseProblems()) {
+				for (ParseProblem p : parser.getParseProblems()) {
 					System.err.println(p);
 				}
 			}

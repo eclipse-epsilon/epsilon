@@ -100,6 +100,8 @@ public abstract class EpsilonDelegateContext<M extends IEolModule, R> implements
 		EpsilonTreeAdaptor adaptor = new EpsilonTreeAdaptor((File) null, this.module);
 		EpsilonParser parser = createParser(stream);
 		parser.setDeepTreeAdaptor(adaptor);
+		parser.getParseProblems().addAll(((org.eclipse.epsilon.common.parse.Lexer) lexer).getParseProblems());
+		
 		return invokeMainParserRule(parser, comments);
 	}
 
@@ -117,7 +119,7 @@ public abstract class EpsilonDelegateContext<M extends IEolModule, R> implements
 	private final String mainParserRule;
 
 	private Program<R> invokeMainParserRule(EpsilonParser parser, List<CommonToken> comments) {
-		EpsilonParseProblemManager.INSTANCE.reset();
+		
 		AST cst = null;
 		try {
 			cst = (AST) ((ParserRuleReturnScope) ReflectionUtil
@@ -128,8 +130,7 @@ public abstract class EpsilonDelegateContext<M extends IEolModule, R> implements
 		} catch (Throwable ex) {
 			return this.error(ex, parser.input.LT(1));
 		}
-		ArrayList<ParseProblem> parseProblems = new ArrayList<>(EpsilonParseProblemManager.INSTANCE.getParseProblems());
-		EpsilonParseProblemManager.INSTANCE.reset();
+		ArrayList<ParseProblem> parseProblems = new ArrayList<>(parser.getParseProblems());
 		assignAnnotations(cst);
 		assignComments(cst, comments);
 		createAst(cst);
