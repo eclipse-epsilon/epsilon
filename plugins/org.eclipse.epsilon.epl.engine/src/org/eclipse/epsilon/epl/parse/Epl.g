@@ -89,6 +89,8 @@ package org.eclipse.epsilon.epl.parse;
  ******************************************************************************/
 
 package org.eclipse.epsilon.epl.parse;
+
+import org.eclipse.epsilon.common.parse.Lexer;
 }
 
 eplModule

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import org.antlr.runtime.*;
+import org.antlr.runtime.Lexer;
 import org.eclipse.epsilon.common.module.AbstractModuleElement;
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
@@ -79,7 +80,7 @@ public abstract class AbstractModule extends AbstractModuleElement implements IM
 	}
 
 	protected boolean invokeMainRule(List<CommonToken> comments) throws Exception {
-		EpsilonParseProblemManager.INSTANCE.reset();
+		
 		AST cst = null;
 		
 		try {
@@ -162,6 +163,7 @@ public abstract class AbstractModule extends AbstractModuleElement implements IM
 		    String contents = s.hasNext() ? s.next() : "";
 		    ByteArrayInputStream noTabsStream = new ByteArrayInputStream(contents.replaceAll("\t", " ").getBytes());
 		    
+		    EpsilonParseProblemManager.INSTANCE.reset();
 		    final Lexer lexer = createLexer(new ANTLRInputStream(noTabsStream));
 			final CommonTokenStream stream = new CommonTokenStream(lexer);
 			List<CommonToken> comments = extractComments(stream);

@@ -92,6 +92,8 @@ import org.eclipse.epsilon.common.parse.AST;
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 package org.eclipse.epsilon.flock.parse;
+
+import org.eclipse.epsilon.common.parse.Lexer;
 }
 
 @parser::members {

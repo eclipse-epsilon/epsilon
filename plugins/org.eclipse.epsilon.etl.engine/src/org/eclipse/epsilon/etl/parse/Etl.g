@@ -88,6 +88,8 @@ package org.eclipse.epsilon.etl.parse;
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 package org.eclipse.epsilon.etl.parse;
+
+import org.eclipse.epsilon.common.parse.Lexer;
 }
 
 etlModule
