@@ -212,9 +212,6 @@
             <groupId>org.eclipse.cbi.maven.plugins</groupId>
             <artifactId>eclipse-jarsigner-plugin</artifactId>
             <version>1.3.2</version>
-            <!--configuration>
-              <signerUrl>http://build.eclipse.org:31338/sign</signerUrl>
-            </configuration-->
             <executions>
               <execution>
                 <id>sign</id>
@@ -222,6 +219,12 @@
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <configuration>
+                  <gpgArguments>
+                    <arg>--pinentry-mode</arg>
+                    <arg>loopback</arg>
+                  </gpgArguments>
+                </configuration>
               </execution>
             </executions>
           </plugin>
