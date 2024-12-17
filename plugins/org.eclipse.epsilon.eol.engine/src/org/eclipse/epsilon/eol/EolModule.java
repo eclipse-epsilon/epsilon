@@ -414,7 +414,7 @@ public class EolModule extends AbstractModule implements IEolModule {
 					ParseProblem problem = new ParseProblem();
 					problem.setLine(import_.getRegion().getStart().getLine());
 
-					String reason = import_.isFound()
+					String reason = !import_.isFound()
 							? String.format("File %s not found", import_.getPath())
 							: String.format("File %s contains errors: %s", import_.getPath(),
 									import_.getModule().getParseProblems());
