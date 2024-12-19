@@ -10,21 +10,34 @@
  ******************************************************************************/
 package org.eclipse.epsilon.eol.execute.control;
 
+import static org.eclipse.epsilon.common.util.profiling.BenchmarkUtils.formatDuration;
+
 import java.time.Duration;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.eclipse.epsilon.common.module.ModuleElement;
-import static org.eclipse.epsilon.common.util.profiling.BenchmarkUtils.formatDuration;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 
 public class ExecutionProfiler implements ExecutionController, IExecutionListener {
 	
 	protected final Map<ModuleElement, Duration> executionTimes = new HashMap<>();
-	private ModuleElement currentAst;
-	private long currentStart;
-	
+
+	private class StackEntry {
+		final ModuleElement element;
+		final long startNanos;
+
+		StackEntry(ModuleElement element, long start) {
+			this.element = element;
+			this.startNanos = start;
+		}
+	}
+	private Deque<StackEntry> astStack = new ArrayDeque<>();
+
 	/**
 	 * Determines whether the ModuleElement should be profiled.
 	 * 
@@ -40,31 +53,26 @@ public class ExecutionProfiler implements ExecutionController, IExecutionListene
 	@Override
 	public void control(ModuleElement ast, IEolContext context) {
 		if (ast != null && screenAST(ast, context)) {
-			currentAst = ast;
-			currentStart = System.nanoTime();
+			astStack.push(new StackEntry(ast, System.nanoTime()));
 		}
 	}
 	
 	@Override
 	public void done(ModuleElement ast, IEolContext context) {
-		if (ast == null || ast != currentAst) return;
+		if (ast == null || astStack.isEmpty() || ast != astStack.peek().element) return;
 		
-		long execTime = System.nanoTime() - currentStart;
-		Duration currentDuration = executionTimes.get(ast);
-		
-		executionTimes.put(
-			currentAst, 
-			currentDuration != null ? currentDuration.plusNanos(execTime) : Duration.ofNanos(execTime)
-		);
-		
-		currentAst = null;
+		StackEntry top = astStack.pop();
+		long execTime = System.nanoTime() - top.startNanos;
+
+		executionTimes.merge(top.element,
+			Duration.ofNanos(execTime),
+			(d1, d2) -> d1.plus(d2));
 	}
 
 	@Override
 	public void dispose() {
 		executionTimes.clear();
-		currentAst = null;
-		currentStart = 0;
+		astStack.clear();
 	}
 
 	@Override
