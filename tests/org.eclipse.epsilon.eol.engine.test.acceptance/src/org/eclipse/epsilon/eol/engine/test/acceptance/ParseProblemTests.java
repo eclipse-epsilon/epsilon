@@ -55,7 +55,7 @@ public class ParseProblemTests {
 		Files.write(fParseProblems.toPath(), BAD_EOL.getBytes());
 
 		EolModule module = new EolModule();
-		module.parse(String.format("import \"%s\";", fParseProblems.getPath()));
+		module.parse(String.format("import \"%s\";", fParseProblems.toURI()));
 		assertEquals(1, module.getParseProblems().size());
 		assertThat("Expected parse problem is raised",
 			module.getParseProblems().get(0).getReason(),
