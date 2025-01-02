@@ -9,10 +9,8 @@
  **********************************************************************/
 package org.eclipse.epsilon.eol.engine.test.acceptance;
 
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -34,12 +32,10 @@ public class ParseProblemTests {
 		EolModule module = new EolModule();
 		module.parse("import \"missing.eol\";");
 		assertEquals(1, module.getParseProblems().size());
-		assertThat("Expected parse problem is raised",
-			module.getParseProblems().get(0).getReason(),
-			allOf(
-				containsString("not found"),
-				containsString("missing.eol")
-			));
+
+		String sReason = module.getParseProblems().get(0).getReason();
+		assertTrue("Expected parse problem is raised", sReason.contains("not found"));
+		assertTrue("Expected problem file is mentioned", sReason.contains("missing.eol"));
 	}
 
 	@Test
@@ -57,12 +53,10 @@ public class ParseProblemTests {
 		EolModule module = new EolModule();
 		module.parse(String.format("import \"%s\";", fParseProblems.toURI()));
 		assertEquals(1, module.getParseProblems().size());
-		assertThat("Expected parse problem is raised",
-			module.getParseProblems().get(0).getReason(),
-			allOf(
-				containsString("contains errors"),
-				containsString("parseProblems.eol")
-			));
+
+		String sReason = module.getParseProblems().get(0).getReason();
+		assertTrue("Expected parse problem is raised", sReason.contains("contains errors"));
+		assertTrue("Expected problem file is mentioned", sReason.contains("parseProblems.eol"));
 	}
 
 }
