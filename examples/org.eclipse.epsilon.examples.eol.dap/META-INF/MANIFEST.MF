@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Examples for the Eclipse Epsilon Debug Adapter
 Bundle-SymbolicName: org.eclipse.epsilon.examples.eol.dap
-Bundle-Version: 2.6.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.epsilon.eol.engine,
  org.eclipse.epsilon.eol.dap,
  org.eclipse.epsilon.emc.emf,
