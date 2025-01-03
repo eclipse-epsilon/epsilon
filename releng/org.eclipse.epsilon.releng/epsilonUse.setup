@@ -284,6 +284,9 @@
           name="org.eclipse.epsilon.emc.csv.feature.feature.group"/>
       <requirement
           name="org.eclipse.epsilon.emc.csv.dt.feature.feature.group"/>
+      <requirement
+          name="org.apache.commons.logging"
+          versionRange="[1.2.0,1.2.0.v2018)"/>
       <repository
           url="http://download.eclipse.org/releases/2024-12"/>
       <repository
@@ -292,8 +295,6 @@
           url="https://download.eclipse.org/epsilon/updates/2.6"/>
       <repository
           url="http://download.eclipse.org/emfatic/update"/>
-      <repository
-          url="http://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository"/>
       <repository
           url="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-12"/>
       <repository
