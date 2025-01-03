@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Epsilon Target Platform" sequenceNumber="1735815198">
+<target name="Epsilon Target Platform" sequenceNumber="1735925700">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -29,6 +29,7 @@
       <unit id="org.eclipse.xtext.runtime.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.m2m.qvt.oml.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.emf.cdo.sdk.feature.group" version="0.0.0"/>
+      <unit id="org.apache.commons.logging" version="1.2.0"/>
       <repository location="https://download.eclipse.org/releases/2024-12"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
@@ -57,7 +58,6 @@
       <unit id="org.apache.commons.csv" version="1.8.0.v20200804-1438"/>
       <unit id="org.apache.commons.io" version="2.8.0.v20210415-0900"/>
       <unit id="org.apache.commons.lang3" version="3.1.0.v201403281430"/>
-      <unit id="org.apache.commons.logging" version="1.2.0.v20180409-1502"/>
       <unit id="org.apache.commons.math3" version="3.6.1.v20200817-1830"/>
       <unit id="org.apache.santuario.xmlsec" version="2.2.0.v20200818-1422"/>
       <unit id="org.apache.xmlbeans" version="3.1.0.v20200922-1359"/>
