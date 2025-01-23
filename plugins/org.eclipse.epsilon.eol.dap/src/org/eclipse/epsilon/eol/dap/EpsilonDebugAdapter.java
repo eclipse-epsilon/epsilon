@@ -64,6 +64,8 @@ import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.ContinueResponse;
 import org.eclipse.lsp4j.debug.DisconnectArguments;
+import org.eclipse.lsp4j.debug.EvaluateArguments;
+import org.eclipse.lsp4j.debug.EvaluateResponse;
 import org.eclipse.lsp4j.debug.ExitedEventArguments;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
 import org.eclipse.lsp4j.debug.NextArguments;
@@ -573,6 +575,68 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 			ThreadsResponse r = new ThreadsResponse();
 			r.setThreads(threads.toArray(new Thread[threads.size()]));
+			return r;
+		});
+	}
+
+	@Override
+	public CompletableFuture<EvaluateResponse> evaluate(EvaluateArguments args) {
+		return CompletableFuture.supplyAsync(() -> {
+			EvaluateResponse r = new EvaluateResponse();
+
+			IVariableReference ref = suspendedState.getReference(args.getFrameId());
+			SingleFrameReference sfRef = null;
+			if (ref instanceof SingleFrameReference) {
+				sfRef = (SingleFrameReference) ref;
+			} else {
+				r.setResult("(failed to evaluate: cannot find frame #" + args.getFrameId());
+				return r;
+			}
+			IEolModule module = (IEolModule) sfRef.getContext().getModule();
+
+			EolModule miniEol = new EolModule();
+			try {
+				miniEol.parse(String.format("var returned = (%s);", args.getExpression()));
+				if (!miniEol.getParseProblems().isEmpty()) {
+					LOGGER.log(Level.WARNING, String.format(
+						"Expression '%s' produced parse errors\n%s",
+						args.getExpression(),
+						String.join("\n",
+							miniEol.getParseProblems()
+								.stream().map(e -> e.toString())
+								.collect(Collectors.toList()))));
+
+					r.setResult("(failed to parse)");
+				} else {
+					try {
+						SingleFrame sf = (SingleFrame) module.getContext().getFrameStack().enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
+						ExecutorFactory moduleExecutor = module.getContext().getExecutorFactory();
+						moduleExecutor.execute(miniEol.getMain(), module.getContext());
+
+						IVariableReference frameReference = suspendedState.getReference(module.getContext(), sf);
+						IVariableReference returnedRef = frameReference.getVariables(suspendedState).get(0);
+						r.setResult(returnedRef.getValue());
+
+						List<IVariableReference> subvariables = returnedRef.getVariables(suspendedState);
+						if (subvariables.size() > 1) {
+							r.setNamedVariables(subvariables.size());
+							r.setVariablesReference(returnedRef.getId());
+						}
+						if (initializeArguments.getSupportsVariableType()) {
+							// The IDE supports variable types: provide it as well
+							r.setType(returnedRef.getTypeName());
+						}
+					} finally {
+						module.getContext().getFrameStack().leaveLocal(miniEol.getMain());
+					}
+				}
+			} catch (Exception ex) {
+				LOGGER.log(Level.WARNING,
+					String.format("Failed to evaluate expression '%s'", args.getExpression()), ex);
+				r.setResult(String.format("(failed to evaluate with exception: %s)",
+					ex.getClass().getCanonicalName()));
+			}
+
 			return r;
 		});
 	}
