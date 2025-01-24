@@ -20,6 +20,7 @@ import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugAdapter;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.lsp4j.debug.ContinueArguments;
+import org.eclipse.lsp4j.debug.EvaluateResponse;
 import org.eclipse.lsp4j.debug.NextArguments;
 import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
@@ -203,5 +204,22 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 
 		assertEquals("The breakpoint on the empty line should have been remapped to the first non-empty line after it",
 			8, (int) breakpoints.getBreakpoints()[0].getLine());
+	}
+
+	@Test
+	public void noBreaksWhileEvaluating() throws Exception {
+		// Break at the return, and the first line of the operation
+		adapter.setBreakpoints(createBreakpoints(createBreakpoint(1), createBreakpoint(6))).get();
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		// First step out should stop the program at the line after the operation
+		EvaluateResponse result = evaluate("produceGreeting('John', 'Doe')", getStackTrace().getStackFrames()[0]);
+		assertEquals("Hello John Doe", result.getResult());
+
+		// Remove the breakpoints and let the program finish
+		adapter.setBreakpoints(createBreakpoints()).get();
+		adapter.continue_(new ContinueArguments());
+		assertProgramCompletedSuccessfully();
 	}
 }

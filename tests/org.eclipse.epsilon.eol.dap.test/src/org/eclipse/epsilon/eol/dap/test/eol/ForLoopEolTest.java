@@ -209,4 +209,23 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertProgramCompletedSuccessfully();
 	}
 
+	@Test
+	public void breakpointDisabledDuringConditionalEvaluation() throws Exception {
+		SourceBreakpoint breakpoint = createBreakpoint(2);
+		breakpoint.setCondition("i.multiply(3) > 3");
+		adapter.setBreakpoints(createBreakpoints(breakpoint, createBreakpoint(6))).get();
+
+		/*
+		 * Execution should only stop once (when i == 2): the breakpoint in the operation won't be triggered
+		 * as it is not part of normal execution.
+		 */
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		final StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("The stack frame should be on line 2", 2, stackTrace.getStackFrames()[0].getLine());
+
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
+
 }

@@ -264,6 +264,13 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		protected final IEolModule module;
 		protected final IEolDebugger debugger;
 
+		/**
+		 * If and only if it is set to {@code true}, we won't stop at breakpoints. Used
+		 * during the evaluation of an expression or the condition in a conditional
+		 * breakpoint.
+		 */
+		protected boolean isEvaluating;
+
 		/** Breakpoints by URI: these are the ones resolved to specific module URIs. */
 		private Map<URI, Multimap<Integer, BreakpointInfo>> lineBreakpointsByURI = new ConcurrentHashMap<>();
 
@@ -294,6 +301,10 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		public boolean hasBreakpointItself(ModuleElement ast) {
 			if (ast.getUri() == null) {
 				// An AST may not have a URI (e.g. a breakpoint condition)
+				return false;
+			}
+			if (isEvaluating) {
+				// We don't stop at breakpoints while evaluating an expression
 				return false;
 			}
 
@@ -352,7 +363,15 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			try {
 				module.getContext().getFrameStack().enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
 				ExecutorFactory moduleExecutor = module.getContext().getExecutorFactory();
-				Return returned = (Return) moduleExecutor.execute(miniEol.getMain(), module.getContext());
+
+				Return returned;
+				try {
+					isEvaluating = true;
+					returned = (Return) moduleExecutor.execute(miniEol.getMain(), module.getContext());
+				} finally {
+					isEvaluating = false;
+				}
+
 				if (returned != null && returned.getValue() instanceof Boolean) {
 					return (Boolean) returned.getValue();
 				} else {
@@ -370,6 +389,63 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			}
 
 			return false;
+		}
+
+		public EvaluateResponse evaluateExpression(String expression) {
+			EvaluateResponse r = new EvaluateResponse();
+
+			EolModule miniEol = new EolModule();
+			try {
+				miniEol.parse(String.format("var returned = (%s);", expression));
+				if (!miniEol.getParseProblems().isEmpty()) {
+					LOGGER.log(Level.WARNING, String.format(
+						"Expression '%s' produced parse errors\n%s",
+						expression,
+						String.join("\n",
+							miniEol.getParseProblems()
+								.stream().map(e -> e.toString())
+								.collect(Collectors.toList()))));
+
+					r.setResult("(failed to parse)");
+				} else {
+					try {
+						SingleFrame sf = (SingleFrame) module.getContext().getFrameStack().enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
+						ExecutorFactory moduleExecutor = module.getContext().getExecutorFactory();
+
+						try {
+							isEvaluating = true;
+							moduleExecutor.execute(miniEol.getMain(), module.getContext());
+						} finally {
+							isEvaluating = false;
+						}
+
+						IVariableReference frameReference = suspendedState.getReference(module.getContext(), sf);
+						IVariableReference returnedRef = frameReference.getVariables(suspendedState)
+							.stream().filter(v -> "returned".equals(v.getName()))
+							.findFirst().get();
+						r.setResult(returnedRef.getValue());
+
+						List<IVariableReference> subvariables = returnedRef.getVariables(suspendedState);
+						if (subvariables.size() > 1) {
+							r.setNamedVariables(subvariables.size());
+							r.setVariablesReference(returnedRef.getId());
+						}
+						if (initializeArguments.getSupportsVariableType()) {
+							// The IDE supports variable types: provide it as well
+							r.setType(returnedRef.getTypeName());
+						}
+					} finally {
+						module.getContext().getFrameStack().leaveLocal(miniEol.getMain());
+					}
+				}
+			} catch (Exception ex) {
+				LOGGER.log(Level.WARNING,
+					String.format("Failed to evaluate expression '%s'", expression), ex);
+				r.setResult(String.format("(failed to evaluate with exception: %s)",
+					ex.getClass().getCanonicalName()));
+			}
+
+			return r;
 		}
 
 		protected void unverifyBreakpoint(ModuleElement breakpointAst, int startLine, BreakpointInfo bpInfo) {
@@ -582,64 +658,19 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	@Override
 	public CompletableFuture<EvaluateResponse> evaluate(EvaluateArguments args) {
 		return CompletableFuture.supplyAsync(() -> {
-			EvaluateResponse r = new EvaluateResponse();
-
 			IVariableReference ref = suspendedState.getReference(args.getFrameId());
 			SingleFrameReference sfRef = null;
 			if (ref instanceof SingleFrameReference) {
 				sfRef = (SingleFrameReference) ref;
 			} else {
+				EvaluateResponse r = new EvaluateResponse();
 				r.setResult("(failed to evaluate: cannot find frame #" + args.getFrameId());
 				return r;
 			}
+
 			IEolModule module = (IEolModule) sfRef.getContext().getModule();
-
-			EolModule miniEol = new EolModule();
-			try {
-				miniEol.parse(String.format("var returned = (%s);", args.getExpression()));
-				if (!miniEol.getParseProblems().isEmpty()) {
-					LOGGER.log(Level.WARNING, String.format(
-						"Expression '%s' produced parse errors\n%s",
-						args.getExpression(),
-						String.join("\n",
-							miniEol.getParseProblems()
-								.stream().map(e -> e.toString())
-								.collect(Collectors.toList()))));
-
-					r.setResult("(failed to parse)");
-				} else {
-					try {
-						SingleFrame sf = (SingleFrame) module.getContext().getFrameStack().enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
-						ExecutorFactory moduleExecutor = module.getContext().getExecutorFactory();
-						moduleExecutor.execute(miniEol.getMain(), module.getContext());
-
-						IVariableReference frameReference = suspendedState.getReference(module.getContext(), sf);
-						IVariableReference returnedRef = frameReference.getVariables(suspendedState)
-							.stream().filter(v -> "returned".equals(v.getName()))
-							.findFirst().get();
-						r.setResult(returnedRef.getValue());
-
-						List<IVariableReference> subvariables = returnedRef.getVariables(suspendedState);
-						if (subvariables.size() > 1) {
-							r.setNamedVariables(subvariables.size());
-							r.setVariablesReference(returnedRef.getId());
-						}
-						if (initializeArguments.getSupportsVariableType()) {
-							// The IDE supports variable types: provide it as well
-							r.setType(returnedRef.getTypeName());
-						}
-					} finally {
-						module.getContext().getFrameStack().leaveLocal(miniEol.getMain());
-					}
-				}
-			} catch (Exception ex) {
-				LOGGER.log(Level.WARNING,
-					String.format("Failed to evaluate expression '%s'", args.getExpression()), ex);
-				r.setResult(String.format("(failed to evaluate with exception: %s)",
-					ex.getClass().getCanonicalName()));
-			}
-
-			return r;
+			ThreadState threadState = attachTo(module);
+			return threadState.evaluateExpression(args.getExpression());
 		});
 	}
 
