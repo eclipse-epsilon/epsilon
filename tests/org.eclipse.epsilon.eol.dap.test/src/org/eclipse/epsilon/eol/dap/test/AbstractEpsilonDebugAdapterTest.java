@@ -29,6 +29,8 @@ import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugAdapter;
 import org.eclipse.lsp4j.debug.BreakpointEventArguments;
 import org.eclipse.lsp4j.debug.DisconnectArguments;
+import org.eclipse.lsp4j.debug.EvaluateArguments;
+import org.eclipse.lsp4j.debug.EvaluateResponse;
 import org.eclipse.lsp4j.debug.ExitedEventArguments;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
 import org.eclipse.lsp4j.debug.OutputEventArguments;
@@ -337,4 +339,16 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		fail(String.format("Expected thread %d to have a %s event", threadId, reason));
 	}
 
+	protected void assertEvaluateEquals(String expression, String expected, StackFrame stackFrame) throws Exception {
+		EvaluateResponse evalResponse = evaluate(expression, stackFrame);
+		assertEquals(String.format("Expression '%s' should evaluate to '%s'", expression, expected), expected, evalResponse.getResult());
+	}
+
+	protected EvaluateResponse evaluate(String expression, StackFrame stackFrame) throws Exception {
+		EvaluateArguments evalArguments = new EvaluateArguments();
+		evalArguments.setExpression(expression);
+		evalArguments.setFrameId(stackFrame.getId());
+		EvaluateResponse evalResponse = adapter.evaluate(evalArguments).get();
+		return evalResponse;
+	}
 }

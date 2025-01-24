@@ -614,7 +614,9 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 						moduleExecutor.execute(miniEol.getMain(), module.getContext());
 
 						IVariableReference frameReference = suspendedState.getReference(module.getContext(), sf);
-						IVariableReference returnedRef = frameReference.getVariables(suspendedState).get(0);
+						IVariableReference returnedRef = frameReference.getVariables(suspendedState)
+							.stream().filter(v -> "returned".equals(v.getName()))
+							.findFirst().get();
 						r.setResult(returnedRef.getValue());
 
 						List<IVariableReference> subvariables = returnedRef.getVariables(suspendedState);

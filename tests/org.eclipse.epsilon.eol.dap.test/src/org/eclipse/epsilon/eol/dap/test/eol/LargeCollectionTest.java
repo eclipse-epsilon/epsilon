@@ -20,6 +20,7 @@ import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.epsilon.eol.dap.variables.SuspendedState;
 import org.eclipse.lsp4j.debug.ContinueArguments;
+import org.eclipse.lsp4j.debug.EvaluateResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Variable;
 import org.eclipse.lsp4j.debug.VariablesResponse;
@@ -131,4 +132,25 @@ public class LargeCollectionTest extends AbstractEpsilonDebugAdapterTest {
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}
+
+	@Test
+	public void canShowSlicesFromExpression() throws Exception {
+		adapter.setBreakpoints(createBreakpoints(createBreakpoint(2))).get();
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		final int nExpected = 950;
+		EvaluateResponse evalResult = evaluate("numbers", getStackTrace().getStackFrames()[0]);
+		assertEquals(String.format("<sliced EolSequence of %d elements>", nExpected), evalResult.getResult());
+
+		VariablesResponse numbersVars = getVariables(evalResult.getVariablesReference());
+		Map<String, Variable> numbersVarsByName = getVariablesByName(numbersVars);
+		assertEquals("The 'numbers' variable should list one subvariable per slice",
+			(int) Math.ceil(nExpected / (double) SuspendedState.SLICE_SIZE),
+			numbersVarsByName.size());
+
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
+
 }

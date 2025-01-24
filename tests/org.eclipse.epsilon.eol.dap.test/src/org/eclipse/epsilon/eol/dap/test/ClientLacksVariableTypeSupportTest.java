@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.lsp4j.debug.ContinueArguments;
+import org.eclipse.lsp4j.debug.EvaluateResponse;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Variable;
@@ -51,5 +52,18 @@ public class ClientLacksVariableTypeSupportTest extends AbstractEpsilonDebugAdap
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}
-	
+
+	@Test
+	public void doesNotShowExpressionType() throws Exception {
+		adapter.setBreakpoints(createBreakpoints(createBreakpoint(5))).get();
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		EvaluateResponse evalResult = evaluate("t", getStackTrace().getStackFrames()[0]);
+		assertNull(evalResult.getType());
+
+		adapter.continue_(new ContinueArguments());
+		assertProgramCompletedSuccessfully();
+	}
+
 }
