@@ -9,11 +9,17 @@
 **********************************************************************/
 package org.eclipse.epsilon.flexmi.test;
 
-import org.eclipse.epsilon.flexmi.FlexmiResource;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.epsilon.flexmi.FlexmiResource;
+import org.eclipse.epsilon.flexmi.FlexmiResourceFactory;
 import org.junit.Test;
 
 public class TemplateTests extends FlexmiTests {
@@ -158,5 +164,13 @@ public class TemplateTests extends FlexmiTests {
 	public void testModelWithEolTemplateImportingEOL() throws Exception {
 		assertEval("EPackage.all.first().eClassifiers.at(0).name", "C1", "templates/model-with-eol-template-importing-eol.flexmi");
 		assertEval("EPackage.all.second().eClassifiers.at(0).name", "C2", "templates/model-with-eol-template-importing-eol.flexmi");
+	}
+	
+	@Test
+	public void testStringModelWithEGLTemplate() throws Exception {
+		ResourceSet resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("flexmi", new FlexmiResourceFactory());
+		FlexmiResource resource = (FlexmiResource) resourceSet.createResource(URI.createURI("flexmi.flexmi"));
+		resource.load(new ByteArrayInputStream("<_><foo/><:template name=\"foo\"><content language=\"EGL\"></content></:template></_>".getBytes()), null);
 	}
 }
