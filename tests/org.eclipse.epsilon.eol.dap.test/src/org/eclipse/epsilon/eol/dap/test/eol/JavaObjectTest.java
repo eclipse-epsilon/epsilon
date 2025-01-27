@@ -66,6 +66,10 @@ public class JavaObjectTest extends AbstractEpsilonDebugAdapterTest {
 			// should not be exposed as a property (no suffix)
 		}
 
+		public void getNothing() {
+			// should not be exposed as a property (return type is void)
+		}
+
 		public String getURI() {
 			return TASK_URI;
 		}

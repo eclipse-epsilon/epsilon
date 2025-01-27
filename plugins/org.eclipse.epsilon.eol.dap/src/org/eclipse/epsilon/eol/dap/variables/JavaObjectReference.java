@@ -81,7 +81,7 @@ public class JavaObjectReference extends IdentifiableReference<Object> {
 			}
 
 			Method method = ReflectionUtil.getMethodFor(target, methodName, new Object[0], true, false);
-			if (method != null && !method.isVarArgs()) {
+			if (method != null && !method.isVarArgs() && method.getReturnType() != void.class) {
 				try {
 					Object value = method.invoke(target);
 					refs.add(state.getValueReference(context, propertyName, value));
