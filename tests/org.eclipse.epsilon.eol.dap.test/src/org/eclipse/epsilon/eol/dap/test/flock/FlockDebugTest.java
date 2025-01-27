@@ -20,6 +20,7 @@ import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.epsilon.flock.FlockModule;
 import org.eclipse.lsp4j.debug.ContinueArguments;
+import org.eclipse.lsp4j.debug.EvaluateArguments;
 import org.eclipse.lsp4j.debug.EvaluateResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
@@ -99,4 +100,11 @@ public class FlockDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertProgramCompletedSuccessfully();
 	}
 
+	@Test
+	public void allEvaluateRequestsArePendingWhenNotStopped() throws Exception {
+		// If you're not stopped at a breakpoint, we won't evaluate any expressions
+		// (as it may interfere with the regular execution of the program).
+		EvaluateResponse evalResult = adapter.evaluate(new EvaluateArguments()).get();
+		assertEquals("(pending)", evalResult.getResult());
+	}
 }

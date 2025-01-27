@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -52,6 +53,7 @@ import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.ExecutorFactory;
 import org.eclipse.epsilon.eol.execute.Return;
 import org.eclipse.epsilon.eol.execute.context.Frame;
+import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
@@ -408,34 +410,42 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 					r.setResult("(failed to parse)");
 				} else {
-					try {
-						SingleFrame sf = (SingleFrame) module.getContext().getFrameStack().enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
-						ExecutorFactory moduleExecutor = module.getContext().getExecutorFactory();
-
+					FrameStack frameStack = module.getContext().getFrameStack();
+					synchronized (frameStack) {
 						try {
-							isEvaluating = true;
-							moduleExecutor.execute(miniEol.getMain(), module.getContext());
+							SingleFrame sf = (SingleFrame) frameStack.enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
+							ExecutorFactory moduleExecutor = module.getContext().getExecutorFactory();
+
+							try {
+								isEvaluating = true;
+								moduleExecutor.execute(miniEol.getMain(), module.getContext());
+							} finally {
+								isEvaluating = false;
+							}
+
+							IVariableReference frameReference = suspendedState.getReference(module.getContext(), sf);
+							Optional<IVariableReference> oReturnedRef = frameReference.getVariables(suspendedState)
+								.stream().filter(v -> "returned".equals(v.getName())).findFirst();
+
+							if (oReturnedRef.isPresent()) {
+								IVariableReference returnedRef = oReturnedRef.get();
+								r.setResult(returnedRef.getValue());
+
+								List<IVariableReference> subvariables = returnedRef.getVariables(suspendedState);
+								if (subvariables.size() > 1) {
+									r.setNamedVariables(subvariables.size());
+									r.setVariablesReference(returnedRef.getId());
+								}
+								if (initializeArguments.getSupportsVariableType()) {
+									// The IDE supports variable types: provide it as well
+									r.setType(returnedRef.getTypeName());
+								}
+							} else {
+								r.setResult("(failed to evaluate)");
+							}
 						} finally {
-							isEvaluating = false;
+							frameStack.leaveLocal(miniEol.getMain());
 						}
-
-						IVariableReference frameReference = suspendedState.getReference(module.getContext(), sf);
-						IVariableReference returnedRef = frameReference.getVariables(suspendedState)
-							.stream().filter(v -> "returned".equals(v.getName()))
-							.findFirst().get();
-						r.setResult(returnedRef.getValue());
-
-						List<IVariableReference> subvariables = returnedRef.getVariables(suspendedState);
-						if (subvariables.size() > 1) {
-							r.setNamedVariables(subvariables.size());
-							r.setVariablesReference(returnedRef.getId());
-						}
-						if (initializeArguments.getSupportsVariableType()) {
-							// The IDE supports variable types: provide it as well
-							r.setType(returnedRef.getTypeName());
-						}
-					} finally {
-						module.getContext().getFrameStack().leaveLocal(miniEol.getMain());
 					}
 				}
 			} catch (Exception ex) {
@@ -658,19 +668,30 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	@Override
 	public CompletableFuture<EvaluateResponse> evaluate(EvaluateArguments args) {
 		return CompletableFuture.supplyAsync(() -> {
-			IVariableReference ref = suspendedState.getReference(args.getFrameId());
-			SingleFrameReference sfRef = null;
-			if (ref instanceof SingleFrameReference) {
-				sfRef = (SingleFrameReference) ref;
-			} else {
-				EvaluateResponse r = new EvaluateResponse();
-				r.setResult("(failed to evaluate: cannot find frame #" + args.getFrameId());
-				return r;
-			}
+			synchronized (suspendedLatch) {
+				if (!suspendedLatch.get()) {
+					// Not stopped at a breakpoint yet - can't evaluate until then
+					EvaluateResponse r = new EvaluateResponse();
+					r.setResult("(pending)");
+					return r;
+				}
 
-			IEolModule module = (IEolModule) sfRef.getContext().getModule();
-			ThreadState threadState = attachTo(module);
-			return threadState.evaluateExpression(args.getExpression());
+				// Try to find the frame mentioned in the evaluate() request
+				IVariableReference ref = suspendedState.getReference(args.getFrameId());
+				SingleFrameReference sfRef = null;
+				if (ref instanceof SingleFrameReference) {
+					sfRef = (SingleFrameReference) ref;
+				} else {
+					EvaluateResponse r = new EvaluateResponse();
+					r.setResult("(failed to evaluate: cannot find frame #" + args.getFrameId());
+					return r;
+				}
+
+				// Frame is found: try to evaluate the expression
+				IEolModule module = (IEolModule) sfRef.getContext().getModule();
+				ThreadState threadState = attachTo(module);
+				return threadState.evaluateExpression(args.getExpression());
+			}
 		});
 	}
 
