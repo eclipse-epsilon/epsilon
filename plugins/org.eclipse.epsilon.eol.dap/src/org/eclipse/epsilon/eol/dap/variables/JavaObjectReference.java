@@ -59,8 +59,16 @@ public class JavaObjectReference extends IdentifiableReference<Object> {
 			String propertyName = null;
 			for (String prefix : METHOD_PREFIXES) {
 				if (methodName.startsWith(prefix)) {
-					final String firstLetter = methodName.substring(prefix.length(), prefix.length() + 1);
-					propertyName = firstLetter.toLowerCase() + methodName.substring(prefix.length() + 1);
+					final String suffix = methodName.substring(prefix.length());
+
+					if (suffix.length() >= 2 && Character.isUpperCase(suffix.charAt(0)) && Character.isUpperCase(suffix.charAt(1))) {
+						// getURI should be mapped to a 'URI' sub-variable, not 'uRI'
+						propertyName = suffix;
+					} else {
+						// Otherwise, we assume it's something like getFooBar and turn the first character of the suffix to lowercase
+						propertyName = suffix.substring(0, 1).toLowerCase() + suffix.substring(1);
+					}
+
 					break;
 				}
 			}

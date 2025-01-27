@@ -31,6 +31,7 @@ import org.junit.Test;
 public class JavaObjectTest extends AbstractEpsilonDebugAdapterTest {
 
 	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "27-javaObject.eol");
+	private static final String TASK_URI = "/task/1";
 
 	public static class Task {
 		private int effortDays;
@@ -59,6 +60,10 @@ public class JavaObjectTest extends AbstractEpsilonDebugAdapterTest {
 
 		public void setResponsible(String responsible) {
 			this.responsible = responsible;
+		}
+
+		public String getURI() {
+			return TASK_URI;
 		}
 
 		@Override
@@ -98,10 +103,15 @@ public class JavaObjectTest extends AbstractEpsilonDebugAdapterTest {
 
 			VariablesResponse personVars = getVariables(personVariable.getVariablesReference());
 			Map<String, Variable> personVarsByName = getVariablesByName(personVars);
-			assertEquals("The 'p' variable should list three elements", 3, personVarsByName.size());
+			assertEquals("The 'p' variable should list four elements", 4, personVarsByName.size());
+			assertEquals("Evaluating p.URI should produce the expected result",
+				TASK_URI, evaluate("p.URI", getStackTrace().getStackFrames()[0]).getResult());
+			assertEquals("Evaluating p.uri should produce the expected result",
+				TASK_URI, evaluate("p.uri", getStackTrace().getStackFrames()[0]).getResult());
 
 			assertEquals("John Doe", personVarsByName.get("responsible").getValue());
 			assertEquals("5", personVarsByName.get("effortDays").getValue());
+			assertEquals(TASK_URI, personVarsByName.get("URI").getValue());
 			assertNotNull(personVarsByName.get("class").getValue());
 
 			adapter.continue_(new ContinueArguments());
