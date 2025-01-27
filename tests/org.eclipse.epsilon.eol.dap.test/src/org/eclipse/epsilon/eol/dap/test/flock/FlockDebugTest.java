@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.epsilon.eol.dap.test.flock;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -19,6 +20,7 @@ import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.epsilon.flock.FlockModule;
 import org.eclipse.lsp4j.debug.ContinueArguments;
+import org.eclipse.lsp4j.debug.EvaluateResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Variable;
@@ -28,6 +30,7 @@ public class FlockDebugTest extends AbstractEpsilonDebugAdapterTest {
 
 	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "18-migrate.mig");
 	private static final File OLD_MM_FILE = new File(BASE_MODELS_FOLDER, "Graph.ecore");
+	private static final File OLD_MODEL_FILE = new File(BASE_MODELS_FOLDER, "leftGraph.model");
 	private static final File NEW_MM_FILE = new File(BASE_MODELS_FOLDER, "Graph_v2.ecore");
 
 	@Override
@@ -37,7 +40,7 @@ public class FlockDebugTest extends AbstractEpsilonDebugAdapterTest {
 		module.parse(SCRIPT_FILE);
 
 		final EmfModel originalModel = new EmfModel();
-		originalModel.setModelFile(new File(BASE_MODELS_FOLDER, "leftGraph.model").getCanonicalPath());
+		originalModel.setModelFile(OLD_MODEL_FILE.getCanonicalPath());
 		originalModel.setMetamodelFile(OLD_MM_FILE.getCanonicalPath());
 		originalModel.setReadOnLoad(true);
 		originalModel.setStoredOnDisposal(false);
@@ -66,6 +69,10 @@ public class FlockDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertNotNull("The top scope should have a 'migrated' variable", topVariables.get("migrated"));
 		assertNotNull("The top scope should have an 'original' variable", topVariables.get("original"));
 
+		// Test evaluation from within a Flock 'migrate' block
+		EvaluateResponse evalResult = evaluate("original.eResource().uri", getStackTrace().getStackFrames()[0]);
+		assertEquals(OLD_MODEL_FILE.getCanonicalFile().toURI().toString(), evalResult.getResult());
+
 		// We will stop once more for the second Node object
 		adapter.continue_(new ContinueArguments()).get();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
@@ -73,5 +80,5 @@ public class FlockDebugTest extends AbstractEpsilonDebugAdapterTest {
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
-	
+
 }
