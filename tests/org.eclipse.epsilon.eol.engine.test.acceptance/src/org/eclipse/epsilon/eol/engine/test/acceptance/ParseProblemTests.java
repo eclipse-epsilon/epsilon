@@ -26,7 +26,14 @@ public class ParseProblemTests {
 	public TemporaryFolder tempFolder = new TemporaryFolder();
 
 	private static final String BAD_EOL = "'incomplete string";
-
+	
+	@Test
+	public void incompleteVariableDeclaration() throws Exception {
+		EolModule module = new EolModule();
+		module.parse("var x");
+		assertEquals(2, module.getParseProblems().size());
+	}
+	
 	@Test
 	public void missingImport() throws Exception {
 		EolModule module = new EolModule();

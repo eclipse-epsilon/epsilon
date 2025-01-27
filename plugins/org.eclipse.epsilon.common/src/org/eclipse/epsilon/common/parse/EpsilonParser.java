@@ -12,6 +12,7 @@ package org.eclipse.epsilon.common.parse;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import org.antlr.runtime.Parser;
 import org.antlr.runtime.RecognitionException;
@@ -24,14 +25,31 @@ import org.eclipse.epsilon.common.util.ReflectionUtil;
 public abstract class EpsilonParser extends Parser {
 	
 	private boolean printErrors = false;
-	protected List<ParseProblem> parseProblems = new ArrayList<>();
+	protected List<ParseProblem> parseProblems = new ArrayList<ParseProblem>();
+	protected static WeakHashMap<TokenStream, EpsilonParser> tokenStreamParsers = new WeakHashMap<TokenStream, EpsilonParser>();
+	protected EpsilonParser delegator = null;
 	
 	public EpsilonParser(TokenStream tokenstream) {
 		super(tokenstream);
+		configureDelegator(tokenstream);
 	}
 
 	public EpsilonParser(TokenStream tokenstream, RecognizerSharedState recognizersharedstate) {
 		super(tokenstream, recognizersharedstate);
+		configureDelegator(tokenstream);
+	}
+	
+	protected void configureDelegator(TokenStream tokenstream) {
+		// A parser can spawn several delegates on the same token stream
+		// The first parser to process a token stream is recorded in tokenStreamParsers 
+		// so that all delegates can report parse problems to it (their delegator)
+		if (!tokenStreamParsers.containsKey(tokenstream)) {
+			tokenStreamParsers.put(tokenstream, this);
+			delegator = this;
+		}
+		else {
+			delegator = tokenStreamParsers.get(tokenstream);			
+		}
 	}
 	
 	public abstract TreeAdaptor getTreeAdaptor();
@@ -83,11 +101,18 @@ public abstract class EpsilonParser extends Parser {
 	}
 	
 	public void reportException(int line, int column, String reason) {
-		ParseProblem problem = new ParseProblem();
-		problem.setLine(line);
-		problem.setColumn(column);
-		problem.setReason(reason);
-		parseProblems.add(problem);
+		// Filter out duplicate problems
+		if (!delegator.getParseProblems().stream().anyMatch(
+				problem -> problem.getColumn() == column && 
+				problem.getLine() == line && 
+				problem.getReason().equals(reason))) {
+			
+			ParseProblem problem = new ParseProblem();
+			problem.setLine(line);
+			problem.setColumn(column);
+			problem.setReason(reason);
+			delegator.getParseProblems().add(problem);
+		}
 	}
 	
 	public List<ParseProblem> getParseProblems() {
