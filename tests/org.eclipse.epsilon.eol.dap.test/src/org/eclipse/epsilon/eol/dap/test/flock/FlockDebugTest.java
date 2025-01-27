@@ -60,7 +60,7 @@ public class FlockDebugTest extends AbstractEpsilonDebugAdapterTest {
 
 	@Test
 	public void canStopInsideMigrateRule() throws Exception {
-		SetBreakpointsResponse result = adapter.setBreakpoints(createBreakpoints(createBreakpoint(2))).get();
+		SetBreakpointsResponse result = adapter.setBreakpoints(createBreakpoints(createBreakpoint(7))).get();
 		assertTrue("The breakpoint on the check expression should be verified", result.getBreakpoints()[0].isVerified());
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
@@ -76,6 +76,24 @@ public class FlockDebugTest extends AbstractEpsilonDebugAdapterTest {
 		// We will stop once more for the second Node object
 		adapter.continue_(new ContinueArguments()).get();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
+
+	@Test
+	public void canStopInsidePreBlock() throws Exception {
+		SetBreakpointsResponse result = adapter.setBreakpoints(createBreakpoints(createBreakpoint(3))).get();
+		assertTrue("The breakpoint on the check expression should be verified", result.getBreakpoints()[0].isVerified());
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		EvaluateResponse evalResult = evaluate("y.x", getStackTrace().getStackFrames()[0]);
+		assertTrue(evalResult.getResult().contains("failed to evaluate"));
+
+		// Test evaluation from within a Flock 'migrate' block
+		evalResult = evaluate("x", getStackTrace().getStackFrames()[0]);
+		assertEquals("23", evalResult.getResult());
 
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();

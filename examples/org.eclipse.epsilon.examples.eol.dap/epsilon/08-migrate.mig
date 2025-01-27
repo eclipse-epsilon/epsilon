@@ -1,5 +1,5 @@
 pre {
-  var x = 23;
+  var x = 2;
   x.println();
 }
 
