@@ -11,10 +11,12 @@
 package org.eclipse.epsilon.emc.emf;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.epsilon.common.util.FileUtil;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
@@ -80,6 +82,31 @@ public class EmfModelLoadTests {
 		assertEquals(8, countWithoutResolving(model));
 
 		model.dispose();
+	}
+	
+	@Test
+	public void loadNonExistingModel() throws Exception {
+		
+		CachedResourceSet.getCache().clear();
+		
+		EmfModel model = new EmfModel();
+		model.setName("M");
+		model.setMetamodelUri(EcorePackage.eNS_URI);
+		model.setModelFile("/non-existent.xmi");
+		model.setReadOnLoad(true);
+		
+		try {
+			model.load();
+			assertFalse("Loading should have failed", true);
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		finally {
+			model.dispose();
+		}
+		
+		assertEquals(0, CachedResourceSet.getCache().size());
 	}
 
 	protected int countWithoutResolving(EmfModel model) {
