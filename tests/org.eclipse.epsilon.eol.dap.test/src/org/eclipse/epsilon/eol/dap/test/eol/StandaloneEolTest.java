@@ -12,6 +12,7 @@ package org.eclipse.epsilon.eol.dap.test.eol;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
 import java.util.Map;
@@ -39,10 +40,12 @@ import org.junit.Test;
  */
 public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 
+	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "01-hello.eol");
+
 	@Override
 	protected void setupModule() throws Exception {
 		this.module = new EolModule();
-		module.parse(new File(BASE_RESOURCE_FOLDER, "01-hello.eol"));
+		module.parse(SCRIPT_FILE);
 	}
 
 	@Test
@@ -217,4 +220,23 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		adapter.continue_(new ContinueArguments());
 		assertProgramCompletedSuccessfully();
 	}
+
+	@Test
+	public void breakThenContinueCaseInsensitive() throws Exception {
+		File uppercaseScriptFile = new File(SCRIPT_FILE.getParentFile(), SCRIPT_FILE.getName().toUpperCase());
+		assumeTrue("Filesystem is case-insensitive", SCRIPT_FILE.equals(uppercaseScriptFile));
+
+		SetBreakpointsResponse breakResult = adapter.setBreakpoints(
+			createBreakpoints(uppercaseScriptFile.getPath(), createBreakpoint(1))).get();
+		assertEquals(1, breakResult.getBreakpoints().length);
+		assertTrue("The breakpoint should have been verified", breakResult.getBreakpoints()[0].isVerified());
+		assertEquals(SCRIPT_FILE.getCanonicalPath(), breakResult.getBreakpoints()[0].getSource().getPath());
+		assertEquals(1, (int) breakResult.getBreakpoints()[0].getLine());
+
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		adapter.continue_(new ContinueArguments());
+		assertProgramCompletedSuccessfully();
+	}
+
 }

@@ -248,6 +248,10 @@ public class EolDebugger implements IEolDebugger {
 		File argsSourceFile = new File(argsSourcePath);
 		if (!argsSourceFile.exists()) {
 			return null;
+		} else {
+			// Canonicalize the path to avoid issues due to various ways of representing the same path
+			// (e.g. case insensitivity in some filesystems).
+			argsSourceFile = argsSourceFile.getCanonicalFile();
 		}
 
 		// Collect all the imports
