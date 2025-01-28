@@ -21,7 +21,6 @@ import org.eclipse.epsilon.eol.dap.EpsilonDebugAdapter;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.EvaluateResponse;
-import org.eclipse.lsp4j.debug.NextArguments;
 import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExceptionBreakpointsArguments;
@@ -118,11 +117,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// Step over should stop the program at line 2
-		final NextArguments args = new NextArguments();
-		args.setThreadId(adapter.threads().get().getThreads()[0].getId());
-		adapter.next(args);
-		assertStoppedBecauseOf(StoppedEventArgumentsReason.STEP);
-
+		stepOver();
 		StackTraceResponse stackTrace = getStackTrace();
 		assertEquals("After the next() call, the program should be stopped at line 2",
 			2, stackTrace.getStackFrames()[0].getLine());

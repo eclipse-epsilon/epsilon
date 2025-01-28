@@ -266,13 +266,6 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		protected final IEolModule module;
 		protected final IEolDebugger debugger;
 
-		/**
-		 * If and only if it is set to {@code true}, we won't stop at breakpoints. Used
-		 * during the evaluation of an expression or the condition in a conditional
-		 * breakpoint.
-		 */
-		protected boolean isEvaluating;
-
 		/** Breakpoints by URI: these are the ones resolved to specific module URIs. */
 		private Map<URI, Multimap<Integer, BreakpointInfo>> lineBreakpointsByURI = new ConcurrentHashMap<>();
 
@@ -303,10 +296,6 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		public boolean hasBreakpointItself(ModuleElement ast) {
 			if (ast.getUri() == null) {
 				// An AST may not have a URI (e.g. a breakpoint condition)
-				return false;
-			}
-			if (isEvaluating) {
-				// We don't stop at breakpoints while evaluating an expression
 				return false;
 			}
 
@@ -363,16 +352,9 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			}
 
 			try {
-				module.getContext().getFrameStack().enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
-				ExecutorFactory moduleExecutor = module.getContext().getExecutorFactory();
-
-				Return returned;
-				try {
-					isEvaluating = true;
-					returned = (Return) moduleExecutor.execute(miniEol.getMain(), module.getContext());
-				} finally {
-					isEvaluating = false;
-				}
+				miniEol.setContext(new EvaluatorContext(module.getContext()));
+				ExecutorFactory moduleExecutor = miniEol.getContext().getExecutorFactory();
+				Return returned = (Return) moduleExecutor.execute(miniEol.getMain(), miniEol.getContext());
 
 				if (returned != null && returned.getValue() instanceof Boolean) {
 					return (Boolean) returned.getValue();
@@ -386,8 +368,6 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 					String.format("Exception while evaluating condition '%s': disabling breakpoint", eolCondition),
 					e);
 				unverifyBreakpoint(breakpointAst, startLine, bpInfo);
-			} finally {
-				module.getContext().getFrameStack().leaveLocal(miniEol.getMain());
 			}
 
 			return false;
@@ -410,42 +390,32 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 					r.setResult("(failed to parse)");
 				} else {
-					FrameStack frameStack = module.getContext().getFrameStack();
-					synchronized (frameStack) {
-						try {
-							SingleFrame sf = (SingleFrame) frameStack.enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
-							ExecutorFactory moduleExecutor = module.getContext().getExecutorFactory();
+					miniEol.setContext(new EvaluatorContext(module.getContext()));
 
-							try {
-								isEvaluating = true;
-								moduleExecutor.execute(miniEol.getMain(), module.getContext());
-							} finally {
-								isEvaluating = false;
-							}
+					FrameStack frameStack = miniEol.getContext().getFrameStack();
+					SingleFrame sf = (SingleFrame) frameStack.enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
+					ExecutorFactory moduleExecutor = miniEol.getContext().getExecutorFactory();
+					moduleExecutor.execute(miniEol.getMain(), miniEol.getContext());
 
-							IVariableReference frameReference = suspendedState.getReference(module.getContext(), sf);
-							Optional<IVariableReference> oReturnedRef = frameReference.getVariables(suspendedState)
-								.stream().filter(v -> "returned".equals(v.getName())).findFirst();
+					IVariableReference frameReference = suspendedState.getReference(miniEol.getContext(), sf);
+					Optional<IVariableReference> oReturnedRef = frameReference.getVariables(suspendedState).stream()
+							.filter(v -> "returned".equals(v.getName())).findFirst();
 
-							if (oReturnedRef.isPresent()) {
-								IVariableReference returnedRef = oReturnedRef.get();
-								r.setResult(returnedRef.getValue());
+					if (oReturnedRef.isPresent()) {
+						IVariableReference returnedRef = oReturnedRef.get();
+						r.setResult(returnedRef.getValue());
 
-								List<IVariableReference> subvariables = returnedRef.getVariables(suspendedState);
-								if (subvariables.size() > 1) {
-									r.setNamedVariables(subvariables.size());
-									r.setVariablesReference(returnedRef.getId());
-								}
-								if (initializeArguments.getSupportsVariableType()) {
-									// The IDE supports variable types: provide it as well
-									r.setType(returnedRef.getTypeName());
-								}
-							} else {
-								r.setResult("(failed to evaluate)");
-							}
-						} finally {
-							frameStack.leaveLocal(miniEol.getMain());
+						List<IVariableReference> subvariables = returnedRef.getVariables(suspendedState);
+						if (subvariables.size() > 1) {
+							r.setNamedVariables(subvariables.size());
+							r.setVariablesReference(returnedRef.getId());
 						}
+						if (initializeArguments.getSupportsVariableType()) {
+							// The IDE supports variable types: provide it as well
+							r.setType(returnedRef.getTypeName());
+						}
+					} else {
+						r.setResult("(failed to evaluate)");
 					}
 				}
 			} catch (Exception ex) {

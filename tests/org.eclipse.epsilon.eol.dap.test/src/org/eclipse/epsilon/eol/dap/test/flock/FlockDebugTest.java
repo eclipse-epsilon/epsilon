@@ -107,4 +107,20 @@ public class FlockDebugTest extends AbstractEpsilonDebugAdapterTest {
 		EvaluateResponse evalResult = adapter.evaluate(new EvaluateArguments()).get();
 		assertEquals("(pending)", evalResult.getResult());
 	}
+
+	@Test
+	public void canStepOverAfterEvaluating() throws Exception {
+		adapter.setBreakpoints(createBreakpoints(createBreakpoint(7))).get();
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		evaluate("x", getStackTrace().getStackFrames()[0]);
+
+		stepOver();
+		assertEquals(8, getStackTrace().getStackFrames()[0].getLine());
+
+		// Remove all breakpoints and let the program finish
+		adapter.setBreakpoints(createBreakpoints()).get();
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
 }

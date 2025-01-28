@@ -33,6 +33,7 @@ import org.eclipse.lsp4j.debug.EvaluateArguments;
 import org.eclipse.lsp4j.debug.EvaluateResponse;
 import org.eclipse.lsp4j.debug.ExitedEventArguments;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
+import org.eclipse.lsp4j.debug.NextArguments;
 import org.eclipse.lsp4j.debug.OutputEventArguments;
 import org.eclipse.lsp4j.debug.OutputEventArgumentsCategory;
 import org.eclipse.lsp4j.debug.Scope;
@@ -45,6 +46,7 @@ import org.eclipse.lsp4j.debug.StackFrame;
 import org.eclipse.lsp4j.debug.StackTraceArguments;
 import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArguments;
+import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.ThreadEventArguments;
 import org.eclipse.lsp4j.debug.ThreadEventArgumentsReason;
 import org.eclipse.lsp4j.debug.ThreadsResponse;
@@ -60,7 +62,7 @@ import org.junit.rules.Timeout;
 public abstract class AbstractEpsilonDebugAdapterTest {
 
 	/** Timeout used for various assertions in this base class. */
-	private static final int TIMEOUT_SECONDS = 5;
+	protected static final int TIMEOUT_SECONDS = 5;
 
 	@Rule
 	public Timeout globalTimeout = Timeout.seconds(TIMEOUT_SECONDS * 2);
@@ -350,5 +352,12 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 		evalArguments.setFrameId(stackFrame.getId());
 		EvaluateResponse evalResponse = adapter.evaluate(evalArguments).get();
 		return evalResponse;
+	}
+
+	protected void stepOver() throws InterruptedException, ExecutionException {
+		final NextArguments args = new NextArguments();
+		args.setThreadId(adapter.threads().get().getThreads()[0].getId());
+		adapter.next(args).get();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.STEP);
 	}
 }
