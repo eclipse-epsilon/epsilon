@@ -379,8 +379,9 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			EolModule miniEol = new EolModule();
 			try {
 				miniEol.parse(String.format("var returned = (%s);", expression));
+
 				if (!miniEol.getParseProblems().isEmpty()) {
-					LOGGER.log(Level.WARNING, String.format(
+					LOGGER.log(Level.FINE, String.format(
 						"Expression '%s' produced parse errors\n%s",
 						expression,
 						String.join("\n",
@@ -419,7 +420,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 					}
 				}
 			} catch (Exception ex) {
-				LOGGER.log(Level.WARNING,
+				LOGGER.log(Level.FINE,
 					String.format("Failed to evaluate expression '%s'", expression), ex);
 				r.setResult(String.format("(failed to evaluate with exception: %s)",
 					ex.getClass().getCanonicalName()));
