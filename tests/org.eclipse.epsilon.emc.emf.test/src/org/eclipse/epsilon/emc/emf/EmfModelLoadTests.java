@@ -100,7 +100,6 @@ public class EmfModelLoadTests {
 			assertFalse("Loading should have failed", true);
 		}
 		catch (Exception ex) {
-			ex.printStackTrace();
 			assertEquals(0, CachedResourceSet.getCache().size());
 		}
 		
