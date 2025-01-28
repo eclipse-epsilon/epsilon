@@ -101,12 +101,9 @@ public class EmfModelLoadTests {
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
-		}
-		finally {
-			model.dispose();
+			assertEquals(0, CachedResourceSet.getCache().size());
 		}
 		
-		assertEquals(0, CachedResourceSet.getCache().size());
 	}
 
 	protected int countWithoutResolving(EmfModel model) {

@@ -373,6 +373,7 @@ public class EmfModel extends AbstractReflectiveEmfModel {
 					EcoreUtil.resolveAll(modelImpl);
 				}
 			} catch (IOException e) {
+				disposeModel();
 				throw new EolModelLoadingException(e, this);
 			}
 		}
