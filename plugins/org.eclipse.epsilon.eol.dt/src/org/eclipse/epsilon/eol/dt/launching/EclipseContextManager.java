@@ -171,17 +171,24 @@ public class EclipseContextManager {
 			IModel model = null;
 			
 			model = ModelTypeExtension.forType(properties.getProperty("type")).createModel();
-			model.load(properties, relativePath -> {
-				try {
-					IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(relativePath));
-					if (file != null) { 
-						return file.getLocation().toOSString(); 
+			
+			try {
+				model.load(properties, relativePath -> {
+					try {
+						IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(relativePath));
+						if (file != null) { 
+							return file.getLocation().toOSString(); 
+						}
 					}
-				}
-				catch (Exception ex) { LogUtil.log("Error while resolving absolute path for " + relativePath, ex); }
-				
-				return EclipseUtil.getWorkspacePath() + relativePath;
-			});
+					catch (Exception ex) { LogUtil.log("Error while resolving absolute path for " + relativePath, ex); }
+					
+					return EclipseUtil.getWorkspacePath() + relativePath;
+				});
+			}
+			catch (Exception ex) {
+				model.dispose();
+				throw ex;
+			}
 			
 			context.getModelRepository().addModel(model);
 			
