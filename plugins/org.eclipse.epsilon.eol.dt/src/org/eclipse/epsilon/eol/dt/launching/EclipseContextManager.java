@@ -171,6 +171,7 @@ public class EclipseContextManager {
 			IModel model = null;
 			
 			model = ModelTypeExtension.forType(properties.getProperty("type")).createModel();
+			context.getModelRepository().addModel(model);
 			
 			model.load(properties, relativePath -> {
 				try {
@@ -183,10 +184,6 @@ public class EclipseContextManager {
 				
 				return EclipseUtil.getWorkspacePath() + relativePath;
 			});
-			
-			
-			context.getModelRepository().addModel(model);
-			
 		}
 		
 		progressMonitor.done();		

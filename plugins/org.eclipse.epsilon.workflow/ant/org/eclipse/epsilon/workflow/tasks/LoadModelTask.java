@@ -50,6 +50,18 @@ public class LoadModelTask extends AbstractLoadModelTask {
 			return model;
 		}
 		catch (Exception e) {
+			/*
+			 * We should release the model that did not load properly, as the user may want
+			 * to fix the model and try again. Otherwise, this model may be cached
+			 * indefinitely in the CachedResourceSet (see bug #445967).
+			 * 
+			 * TODO: We should refactor this code so that models are first added
+			 * to the repository and then loaded to avoid duplication with the
+			 * disposal logic in ShutdownProjectRepositoryListener.buildFinished()
+			 */
+			model.setStoredOnDisposal(false);
+			model.dispose();
+
 			throw new BuildException(e);
 		}
 	}

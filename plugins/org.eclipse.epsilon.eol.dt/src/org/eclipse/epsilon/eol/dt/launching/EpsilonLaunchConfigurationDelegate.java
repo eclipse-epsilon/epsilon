@@ -130,6 +130,9 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 			executed(configuration, mode, launch, progressMonitor, module, result);
 		} catch (Exception e) {
 			e = EolRuntimeException.wrap(e);
+			if (disposeModelRepository) {
+				module.getContext().getModelRepository().getModels().forEach(model -> { model.setStoredOnDisposal(false); });
+			}
 			module.getContext().getErrorStream().println(e.toString());
 			return false;
 		}
