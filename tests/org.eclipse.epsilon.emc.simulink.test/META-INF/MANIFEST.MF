@@ -10,7 +10,8 @@ Require-Bundle: org.junit,
  org.eclipse.epsilon.emc.simulink.common,
  org.eclipse.epsilon.eol.engine,
  org.apache.commons.io,
- org.apache.commons.csv
+ org.apache.commons.csv,
+ org.eclipse.epsilon.emc.simulink.dictionary.test
 Export-Package: org.eclipse.epsilon.emc.simulink.test.perform,
  org.eclipse.epsilon.emc.simulink.test.suite,
  org.eclipse.epsilon.emc.simulink.test.unit,

@@ -11,6 +11,8 @@ package org.eclipse.epsilon.emc.simulink.test.suite;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
+import org.eclipse.epsilon.emc.simulink.dictionary.test.SimulinkDictionaryModelTests;
+import org.eclipse.epsilon.emc.simulink.test.unit.AllTests;
 
 /**
  * See https://uk.mathworks.com/help/matlab/matlab_external/setup-environment.html
@@ -18,7 +20,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(ConditionalMatlabSuite.class)
 @SuiteClasses({ 
-	org.eclipse.epsilon.emc.simulink.test.unit.AllTests.class,
+	AllTests.class,
+	SimulinkDictionaryModelTests.class
 	//org.eclipse.epsilon.emc.simulink.test.unit.type.AllTests.class
 })
 public class SimulinkTestSuite {
