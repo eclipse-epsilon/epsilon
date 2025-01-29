@@ -15,6 +15,7 @@ public class SimulinkDictionaryModelTests {
 	public void newDictionary() throws Exception {
 		File file = Files.createTempFile("non_existent", ".sldd").toFile();
 		file.delete();
+		
 		SimulinkDictionaryModel model = new SimulinkDictionaryModel();
 		model.setName("M");
 		model.setFile(file);
@@ -45,6 +46,15 @@ public class SimulinkDictionaryModelTests {
 				assert(oe.Value = "v2");
 				
 				assert(Section.all.exists(s|s.Name = "Design Data"));
+				
+				// Change the value of an existing Design Data entry
+				de = DesignDataEntry.all.selectOne(e|e.Name = "e1");
+				de.Value = "v3";
+				assert(de.Value = "v3");
+				
+				// Delete all entries
+				delete Entry.all;
+				assert(Entry.all.size = 0);
 				
 				// TODO: Figure out how to create a new entry in the Configurations section
 				""");
