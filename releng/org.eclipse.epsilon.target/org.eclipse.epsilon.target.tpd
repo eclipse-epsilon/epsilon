@@ -70,11 +70,11 @@ location "https://download.eclipse.org/acceleo/updates/releases/3.7/" {
 	org.eclipse.acceleo.ui.interpreter.feature.group lazy
 }
 
-location "https://download.eclipse.org/lsp4j/updates/releases/0.23.1/" {
+location "https://download.eclipse.org/lsp4j/updates/releases/0.24.0/" {
 	org.eclipse.lsp4j.debug lazy
 }
 
-location "https://download.eclipse.org/lsp4e/releases/0.27.0/" {
+location "https://download.eclipse.org/lsp4e/releases/0.27.1/" {
 	org.eclipse.lsp4e lazy
 	org.eclipse.lsp4e.debug lazy
 }
