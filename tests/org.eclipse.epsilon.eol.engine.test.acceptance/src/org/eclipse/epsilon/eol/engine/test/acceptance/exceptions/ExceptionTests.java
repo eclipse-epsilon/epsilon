@@ -9,14 +9,21 @@
 **********************************************************************/
 package org.eclipse.epsilon.eol.engine.test.acceptance.exceptions;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.File;
+
 import org.eclipse.epsilon.common.util.FileUtil;
-import org.eclipse.epsilon.eol.*;
+import org.eclipse.epsilon.eol.EolModule;
+import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.exceptions.EolNullPointerException;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.EolUndefinedVariableException;
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests for exceptions, which can't be handled by EUnit.
@@ -125,6 +132,20 @@ public class ExceptionTests {
 		catch (EolUndefinedVariableException eox) {
 			assertEquals("bar", eox.getVariableName());
 			assertEquals(9, countLinesInEOLStackTrace(eox));
+		}
+	}
+	
+	@Test
+	public void regionsInStackTrace() throws Exception {
+		try {
+			EolModule module = new EolModule();
+			module.parse("var x = bar();", new File("/demo.eol"));
+			module.execute();
+			assertTrue("execute() should have thrown an exception", false);
+		}
+		catch (EolRuntimeException ex) {
+			String[] lines = ex.getMessage().split(System.lineSeparator());
+			assertEquals("\tat (/demo.eol@1:8-1:13)", lines[1]);
 		}
 	}
 }

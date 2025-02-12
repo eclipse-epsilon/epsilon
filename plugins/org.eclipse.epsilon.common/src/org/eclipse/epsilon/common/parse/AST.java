@@ -33,6 +33,7 @@ public class AST extends CommonTree {
 	protected Region region;
 	protected AST annotations;
 	protected boolean imaginary;
+	protected boolean extraTokensHidden = false;
 	protected List<Token> extraTokens = new ArrayList<>();
 	protected List<Token> commentTokens = new ArrayList<>();
 	protected List<AST> descendants = null;
@@ -304,7 +305,7 @@ public class AST extends CommonTree {
 				}
 			}
 			
-			if (!isImaginary()) {
+			if (!areExtraTokensHidden()) {
 				for (Token token : getExtraTokens()) {
 					if (token == null) continue;
 					Position tokenStartPosition = new Position();
@@ -325,7 +326,6 @@ public class AST extends CommonTree {
 			}
 			
 		}
-		
 		
 		return region;
 	}
@@ -359,6 +359,14 @@ public class AST extends CommonTree {
 	
 	public boolean isImaginary() {
 		return imaginary || getToken() == null;
+	}
+	
+	public boolean areExtraTokensHidden() {
+		return extraTokensHidden;
+	}
+	
+	public void setExtraTokensHidden(boolean extraTokensHidden) {
+		this.extraTokensHidden = extraTokensHidden;
 	}
 	
 	public List<Token> getExtraTokens() {
