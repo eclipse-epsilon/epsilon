@@ -45,15 +45,23 @@ public abstract class EpsilonParser extends Parser {
 		// so that all delegates can report parse problems to it (their delegator)
 		// We use an string id in the cache instead of the token stream
 		// object itself as the parser holds a strong reference to it
+		String tokenStreamId = getTokenStreamId(tokenstream);
+
+		if (!tokenStreamParsers.containsKey(tokenStreamId)) {
+			tokenStreamParsers.put(tokenStreamId, this);
+			delegator = this;
+		}
+		else {
+			delegator = tokenStreamParsers.get(tokenStreamId);			
+		}
+	}
+	
+	protected String getTokenStreamId(TokenStream tokenstream) {
 		if (tokenstream instanceof IdentifiableCommonTokenStream) {
-			String tokenStreamId = ((IdentifiableCommonTokenStream) tokenstream).getId();
-			if (!tokenStreamParsers.containsKey(tokenStreamId)) {
-				tokenStreamParsers.put(tokenStreamId, this);
-				delegator = this;
-			}
-			else {
-				delegator = tokenStreamParsers.get(tokenStreamId);			
-			}
+			return ((IdentifiableCommonTokenStream) tokenstream).getId();
+		}
+		else {
+			return tokenstream.hashCode() + "";
 		}
 	}
 	
