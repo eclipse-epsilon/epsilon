@@ -14,6 +14,7 @@ import java.io.*;
 import java.lang.reflect.*;
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
+import org.eclipse.epsilon.common.parse.IdentifiableCommonTokenStream;
 
 public class TestHutn extends TestCase {
 	String stdout;
@@ -518,7 +519,7 @@ public class TestHutn extends TestCase {
 		}
 		try {
 			HutnLexer lexer = new HutnLexer(input);
-			CommonTokenStream tokens = new CommonTokenStream(lexer);
+			CommonTokenStream tokens = new IdentifiableCommonTokenStream(lexer);
 			HutnParser parser = new HutnParser(tokens);
 
 			parser.prepareForGUnit();

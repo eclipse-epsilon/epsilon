@@ -22,6 +22,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
+import org.eclipse.epsilon.common.parse.IdentifiableCommonTokenStream;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.hutn.model.hutn.HutnFactory;
 import org.eclipse.epsilon.hutn.model.hutn.Spec;
@@ -50,7 +51,7 @@ public class HutnPreamble {
 
 	private CommonTree parse(String hutn) throws IOException, RecognitionException {
 		final HutnSpecLexer  lexer  = new HutnSpecLexer(new ANTLRReaderStream(new StringReader(hutn)));
-		final HutnSpecParser parser = new HutnSpecParser(new CommonTokenStream(lexer));
+		final HutnSpecParser parser = new HutnSpecParser(new IdentifiableCommonTokenStream(lexer));
 		
 		next = parser.input.LT(1);
 		

@@ -26,7 +26,7 @@ public abstract class EpsilonParser extends Parser {
 	
 	private boolean printErrors = false;
 	protected List<ParseProblem> parseProblems = new ArrayList<ParseProblem>();
-	protected static WeakHashMap<TokenStream, EpsilonParser> tokenStreamParsers = new WeakHashMap<TokenStream, EpsilonParser>();
+	protected static WeakHashMap<String, EpsilonParser> tokenStreamParsers = new WeakHashMap<String, EpsilonParser>();
 	protected EpsilonParser delegator = null;
 	
 	public EpsilonParser(TokenStream tokenstream) {
@@ -43,12 +43,17 @@ public abstract class EpsilonParser extends Parser {
 		// A parser can spawn several delegates on the same token stream
 		// The first parser to process a token stream is recorded in tokenStreamParsers 
 		// so that all delegates can report parse problems to it (their delegator)
-		if (!tokenStreamParsers.containsKey(tokenstream)) {
-			tokenStreamParsers.put(tokenstream, this);
-			delegator = this;
-		}
-		else {
-			delegator = tokenStreamParsers.get(tokenstream);			
+		// We use an string id in the cache instead of the token stream
+		// object itself as the parser holds a strong reference to it
+		if (tokenstream instanceof IdentifiableCommonTokenStream) {
+			String tokenStreamId = ((IdentifiableCommonTokenStream) tokenstream).getId();
+			if (!tokenStreamParsers.containsKey(tokenStreamId)) {
+				tokenStreamParsers.put(tokenStreamId, this);
+				delegator = this;
+			}
+			else {
+				delegator = tokenStreamParsers.get(tokenStreamId);			
+			}
 		}
 	}
 	
