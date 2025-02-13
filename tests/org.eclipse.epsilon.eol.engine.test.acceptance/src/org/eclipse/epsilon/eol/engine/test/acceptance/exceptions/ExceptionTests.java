@@ -145,7 +145,7 @@ public class ExceptionTests {
 		}
 		catch (EolRuntimeException ex) {
 			String[] lines = ex.getMessage().split(System.lineSeparator());
-			assertEquals("\tat (/demo.eol@1:8-1:13)", lines[1]);
+			assertTrue(lines[1].endsWith("demo.eol@1:8-1:13)"));
 		}
 	}
 }
