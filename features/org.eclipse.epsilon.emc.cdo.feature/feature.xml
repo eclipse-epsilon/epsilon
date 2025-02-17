@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.emc.cdo.feature"
       label="Epsilon CDO Model Support Feature"
-      version="2.7.0.qualifier"
+      version="2.8.0.qualifier"
       provider-name="Eclipse Modeling Project"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">

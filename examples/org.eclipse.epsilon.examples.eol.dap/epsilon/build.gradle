@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-  epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.7.0-SNAPSHOT'
-  epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow.emf:2.7.0-SNAPSHOT'
+  epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.7.0'
+  epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow.emf:2.7.0'
 }
 
 task setupEpsilonTasks {

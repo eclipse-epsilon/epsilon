@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Spreadsheets Model Support
 Bundle-SymbolicName: org.eclipse.epsilon.emc.spreadsheets
-Bundle-Version: 2.7.0.qualifier
+Bundle-Version: 2.8.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Export-Package: org.eclipse.epsilon.emc.spreadsheets
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
