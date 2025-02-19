@@ -14,12 +14,12 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
+
 import org.antlr.runtime.ANTLRFileStream;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.tree.CommonTree;
-import org.eclipse.epsilon.common.parse.IdentifiableCommonTokenStream;
 
 import junit.framework.TestCase;
 
@@ -346,7 +346,7 @@ public class TestFlock extends TestCase {
 		}
 		try {
 			FlockLexer lexer = new FlockLexer(input);
-			CommonTokenStream tokens = new IdentifiableCommonTokenStream(lexer);
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			FlockParser parser = new FlockParser(tokens);
 
 			parser.prepareForGUnit();

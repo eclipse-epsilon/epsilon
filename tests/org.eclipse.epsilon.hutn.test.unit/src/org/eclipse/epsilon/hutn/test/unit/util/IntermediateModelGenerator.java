@@ -17,10 +17,10 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import org.antlr.runtime.ANTLRReaderStream;
+import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.eclipse.epsilon.common.parse.AST;
-import org.eclipse.epsilon.common.parse.IdentifiableCommonTokenStream;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 import org.eclipse.epsilon.eol.models.IModel;
@@ -35,7 +35,7 @@ public class IntermediateModelGenerator {
 	public static IModel generate(String spec) throws Exception {
 		try {
 			final HutnLexer  lexer  = new HutnLexer(new ANTLRReaderStream(new StringReader(spec)));
-			final HutnParser parser = new HutnParser(new IdentifiableCommonTokenStream(lexer));
+			final HutnParser parser = new HutnParser(new CommonTokenStream(lexer));
 			
 			parser.getParseProblems().addAll(lexer.getParseProblems());
 			final AST ast = new AST((CommonTree)parser.document().getTree());

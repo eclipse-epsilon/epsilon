@@ -27,10 +27,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.epsilon.common.parse.AST;
-import org.eclipse.epsilon.common.parse.EpsilonParseProblemManager;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.parse.EpsilonTreeAdaptor;
-import org.eclipse.epsilon.common.parse.IdentifiableCommonTokenStream;
 import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.AstUtil;
@@ -96,7 +94,7 @@ public abstract class EpsilonDelegateContext<M extends IEolModule, R> implements
 			return this.error(e);
 		}
 		
-		final CommonTokenStream stream = new IdentifiableCommonTokenStream(lexer);
+		final CommonTokenStream stream = new CommonTokenStream(lexer);
 		List<CommonToken> comments = extractComments(stream);
 		EpsilonTreeAdaptor adaptor = new EpsilonTreeAdaptor((File) null, this.module);
 		EpsilonParser parser = createParser(stream);

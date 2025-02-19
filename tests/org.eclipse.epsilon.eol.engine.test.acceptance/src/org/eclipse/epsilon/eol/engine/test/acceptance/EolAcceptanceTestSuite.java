@@ -12,6 +12,7 @@
  */
 package org.eclipse.epsilon.eol.engine.test.acceptance;
 
+import org.eclipse.epsilon.common.parse.TokenStreamParsersTests;
 import org.eclipse.epsilon.eol.engine.test.acceptance.circularImports.CircularImportTests;
 import org.eclipse.epsilon.eol.engine.test.acceptance.dom.DomTests;
 import org.eclipse.epsilon.eol.engine.test.acceptance.dom.VariableTests;
@@ -90,7 +91,8 @@ import junit.framework.Test;
 	CircularImportTests.class,
 	ImportCachingTests.class,
 	ItemSelectorTests.class,
-	ParseProblemTests.class
+	ParseProblemTests.class,
+	TokenStreamParsersTests.class
 })
 public class EolAcceptanceTestSuite {
 

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.epsilon.common.parse;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public abstract class EpsilonParser extends Parser {
 	
 	private boolean printErrors = false;
 	protected List<ParseProblem> parseProblems = new ArrayList<ParseProblem>();
-	protected static WeakHashMap<String, EpsilonParser> tokenStreamParsers = new WeakHashMap<String, EpsilonParser>();
+	protected static WeakHashMap<TokenStream, WeakReference<EpsilonParser>> tokenStreamParsers = new WeakHashMap<TokenStream, WeakReference<EpsilonParser>>();
 	protected EpsilonParser delegator = null;
 	
 	public EpsilonParser(TokenStream tokenstream) {
@@ -39,29 +40,24 @@ public abstract class EpsilonParser extends Parser {
 		configureDelegator(tokenstream);
 	}
 	
-	protected void configureDelegator(TokenStream tokenstream) {
+	protected void configureDelegator(TokenStream tokenStream) {
 		// A parser can spawn several delegates on the same token stream
 		// The first parser to process a token stream is recorded in tokenStreamParsers 
 		// so that all delegates can report parse problems to it (their delegator)
-		// We use an string id in the cache instead of the token stream
-		// object itself as the parser holds a strong reference to it
-		String tokenStreamId = getTokenStreamId(tokenstream);
-
-		if (!tokenStreamParsers.containsKey(tokenStreamId)) {
-			tokenStreamParsers.put(tokenStreamId, this);
+		
+		if (!tokenStreamParsers.containsKey(tokenStream)) {
+			tokenStreamParsers.put(tokenStream, new WeakReference<EpsilonParser>(this));
 			delegator = this;
 		}
 		else {
-			delegator = tokenStreamParsers.get(tokenStreamId);			
-		}
-	}
-	
-	protected String getTokenStreamId(TokenStream tokenstream) {
-		if (tokenstream instanceof IdentifiableCommonTokenStream) {
-			return ((IdentifiableCommonTokenStream) tokenstream).getId();
-		}
-		else {
-			return tokenstream.hashCode() + "";
+			WeakReference<EpsilonParser> ref = tokenStreamParsers.get(tokenStream);
+			EpsilonParser parser = ref.get();
+			if (parser != null) {
+				delegator = parser;
+			}
+			else {
+				delegator = this;
+			}
 		}
 	}
 	

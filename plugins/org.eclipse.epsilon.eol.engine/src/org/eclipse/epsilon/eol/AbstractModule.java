@@ -32,7 +32,6 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.parse.EpsilonTreeAdaptor;
-import org.eclipse.epsilon.common.parse.IdentifiableCommonTokenStream;
 import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.AstUtil;
@@ -174,7 +173,7 @@ public abstract class AbstractModule extends AbstractModuleElement implements IM
 		    ByteArrayInputStream noTabsStream = new ByteArrayInputStream(contents.replaceAll("\t", " ").getBytes());
 		    
 		    final Lexer lexer = createLexer(new ANTLRInputStream(noTabsStream));
-			final CommonTokenStream stream = new IdentifiableCommonTokenStream(lexer);
+			final CommonTokenStream stream = new CommonTokenStream(lexer);
 			List<CommonToken> comments = extractComments(stream);
 			final EpsilonTreeAdaptor adaptor = new EpsilonTreeAdaptor(uri, this);
 

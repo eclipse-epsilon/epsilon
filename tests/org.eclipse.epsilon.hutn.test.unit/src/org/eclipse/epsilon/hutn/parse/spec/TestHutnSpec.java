@@ -9,12 +9,19 @@
 **********************************************************************/
 package org.eclipse.epsilon.hutn.parse.spec;
 
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Method;
+
+import org.antlr.runtime.ANTLRFileStream;
+import org.antlr.runtime.ANTLRStringStream;
+import org.antlr.runtime.CharStream;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.tree.CommonTree;
+
 import junit.framework.TestCase;
-import java.io.*;
-import java.lang.reflect.*;
-import org.antlr.runtime.*;
-import org.antlr.runtime.tree.*;
-import org.eclipse.epsilon.common.parse.IdentifiableCommonTokenStream;
 
 public class TestHutnSpec extends TestCase {
 	String stdout;
@@ -86,7 +93,7 @@ public class TestHutnSpec extends TestCase {
 		}
 		try {
 			HutnSpecLexer lexer = new HutnSpecLexer(input);
-			CommonTokenStream tokens = new IdentifiableCommonTokenStream(lexer);
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			HutnSpecParser parser = new HutnSpecParser(tokens);
 
 			parser.prepareForGUnit();
