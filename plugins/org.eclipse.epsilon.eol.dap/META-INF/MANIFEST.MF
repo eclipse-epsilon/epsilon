@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Debug Adapter
 Bundle-SymbolicName: org.eclipse.epsilon.eol.dap
-Bundle-Version: 2.8.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Export-Package: org.eclipse.epsilon.eol.dap,
  org.eclipse.epsilon.eol.dap.variables,
  org.eclipse.epsilon.eol.dap.variables.collections,
