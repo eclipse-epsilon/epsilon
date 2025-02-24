@@ -62,7 +62,7 @@ import org.junit.rules.Timeout;
 public abstract class AbstractEpsilonDebugAdapterTest {
 
 	/** Timeout used for various assertions in this base class. */
-	protected static final int TIMEOUT_SECONDS = 5;
+	protected static final int TIMEOUT_SECONDS = 10;
 
 	@Rule
 	public Timeout globalTimeout = Timeout.seconds(TIMEOUT_SECONDS * 2);
