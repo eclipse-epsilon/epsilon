@@ -249,4 +249,22 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertProgramCompletedSuccessfully();
 	}
 
+	@Test
+	public void stepOverFirstLineGoesIntoBody() throws Exception {
+		SourceBreakpoint breakpoint = createBreakpoint(1);
+		SetBreakpointsResponse breakResult = adapter.setBreakpoints(createBreakpoints(breakpoint)).get();
+		assertTrue("The breakpoint should have been verified", breakResult.getBreakpoints()[0].isVerified());
+
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		// If we remove the breakpoint and step over, we should be in line 2 again
+		stepOver();
+		final StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("The stack frame should be on line 2", 2, stackTrace.getStackFrames()[0].getLine());
+
+		adapter.setBreakpoints(createBreakpoints()).get();
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
 }
