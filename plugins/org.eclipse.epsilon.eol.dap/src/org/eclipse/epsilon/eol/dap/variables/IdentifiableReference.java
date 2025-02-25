@@ -19,10 +19,9 @@ import org.eclipse.epsilon.eol.types.EolPrimitiveType;
 import org.eclipse.epsilon.eol.types.EolType;
 
 /**
- * References a given target from the debugger. The target should
- * implement equals and hashCode appropriately, as the suspended
- * state will reuse the same variable reference for each distinct
- * target.
+ * References a given target from the debugger. We use identity
+ * hashcodes as there are cases where a regular hashcode may fail
+ * (e.g. when we have cycles).
  */
 public abstract class IdentifiableReference<T> implements IVariableReference {
 
@@ -87,7 +86,7 @@ public abstract class IdentifiableReference<T> implements IVariableReference {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(target);
+		return System.identityHashCode(target);
 	}
 
 	@Override

@@ -762,7 +762,11 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				for (IVariableReference vRef : ref.getVariables(suspendedState)) {
 					Variable respVariable = new Variable();
 					respVariable.setName(vRef.getName());
-					respVariable.setValue(vRef.getValue());
+					try {
+						respVariable.setValue(vRef.getValue());
+					} catch (Throwable t) {
+						respVariable.setValue(String.format("(failed to get value: %s)", t));
+					}
 					if (initializeArguments.getSupportsVariableType()) {
 						respVariable.setType(vRef.getTypeName());
 					}
