@@ -361,7 +361,7 @@ operation testConcatWithGlue() {
 @test
 operation testClosure() {
 	var s = Sequence{Sequence{1, 2}, 3, Sequence{4, 5}};
-	var expected = Sequence{Sequence{1, 2}, Sequence{4, 5}};
+	var expected = OrderedSet{Sequence{1, 2}, Sequence{4, 5}};
 	var flattened = expected.flatten;
 
 	// The result of the body of the closure is traversed as
@@ -371,7 +371,7 @@ operation testClosure() {
 
 	// If we do not do that, the elements in the subsequences
 	// will be collected into a "flattened" list
-	assertEquals(flattened, s.closure(e : Sequence|e));
+	assertEquals(flattened, s.closure(e : Sequence|e).asSequence());
 }
 
 @test
