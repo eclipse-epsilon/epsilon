@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.antlr.runtime.ANTLRInputStream;
+import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Lexer;
 import org.antlr.runtime.TokenStream;
 import org.eclipse.epsilon.common.module.IModule;
@@ -128,11 +129,12 @@ public class EolModule extends AbstractModule implements IEolModule {
 	@Override
 	public void build(AST cst, IModule module) {
 		super.build(cst, module);
-		checkImports(cst);
 		
-		for (Map.Entry<String, Class<?  extends IModule>> entry : getImportConfiguration().entrySet()) {
-			imports.addAll(getImportsByExtension(cst, entry.getKey(), entry.getValue()));
+		for (AST importAst : AstUtil.getChildren(cst, EolParser.IMPORT)) {
+			imports.add((Import) createAst(importAst, this));
 		}
+		
+		loadImports();
 		
 		for (AST operationAst : AstUtil.getChildren(cst, EolParser.HELPERMETHOD)) {
 			declaredOperations.add((Operation) createAst(operationAst, this));
@@ -389,69 +391,56 @@ public class EolModule extends AbstractModule implements IEolModule {
 		return operations;
 	}
 	
-	protected Collection<Import> getImportsByExtension(AST cst, String extension, Class<? extends IModule> moduleImplClass) {
-		List<AST> importAsts = AstUtil.getChildren(cst, EolParser.IMPORT);
-		List<Import> imports = new ArrayList<>(importAsts.size());
+	protected void loadImports() {
 		
-		
-		for (AST importAst : importAsts) {
-			Import import_ = (Import) createAst(importAst, this);
-			if (!import_.getPath().endsWith("." + extension)) continue;
-			
-			import_.setParentModule(this);
-			
-			URI uri = null;
-			if (sourceUri != null) {
-				uri = sourceUri;
-			} else if (sourceFile != null) {
-				uri = sourceFile.toURI();
-			}
-
-			try {
-				getImportManager().loadModuleForImport(import_, moduleImplClass, uri);
-
-				if (!import_.isLoaded()) {
-					ParseProblem problem = new ParseProblem();
-					problem.setLine(import_.getRegion().getStart().getLine());
-
-					String reason = !import_.isFound()
-							? String.format("File %s not found", import_.getPath())
-							: String.format("File %s contains errors: %s", import_.getPath(),
-									import_.getModule().getParseProblems());
-
-					problem.setReason(reason);
-					getParseProblems().add(problem);
-				}
-			} catch (URISyntaxException ex) {
-				ParseProblem problem = new ParseProblem();
-				problem.setLine(import_.getRegion().getStart().getLine());
-				problem.setReason("Imported URI is invalid: " + uri);
-				getParseProblems().add(problem);
-			}
-
-			imports.add(import_);
-		}
-
-		return imports;
-	}
-	
-	protected void checkImports(AST cst) {
-		for (AST importAst : AstUtil.getChildren(cst, EolParser.IMPORT)) {
-			String importedFile = importAst.getFirstChild().getText();
+		for (Import import_ : imports) {
+			String importedFile = import_.getPath();
 			boolean validExtension = false;
 			for (String extension : getImportConfiguration().keySet()) {
 				if (importedFile.endsWith("." + extension)) {
+					Class<? extends IModule> moduleImplClass = getImportConfiguration().get(extension);
 					validExtension = true;
+					import_.setParentModule(this);
+					
+					URI uri = null;
+					if (sourceUri != null) {
+						uri = sourceUri;
+					} else if (sourceFile != null) {
+						uri = sourceFile.toURI();
+					}
+		
+					try {
+						getImportManager().loadModuleForImport(import_, moduleImplClass, uri);
+		
+						if (!import_.isLoaded()) {
+							ParseProblem problem = new ParseProblem();
+							problem.setLine(import_.getRegion().getStart().getLine());
+		
+							String reason = !import_.isFound()
+									? String.format("File %s not found", import_.getPath())
+									: String.format("File %s contains errors: %s", import_.getPath(),
+											import_.getModule().getParseProblems());
+		
+							problem.setReason(reason);
+							getParseProblems().add(problem);
+						}
+					} catch (URISyntaxException ex) {
+						ParseProblem problem = new ParseProblem();
+						problem.setLine(import_.getRegion().getStart().getLine());
+						problem.setReason("Imported URI is invalid: " + uri);
+						getParseProblems().add(problem);
+					}
 				}
 			}
+			
 			if (!validExtension) {
 				ParseProblem problem = new ParseProblem();
-				problem.setLine(importAst.getLine());
-				problem.setReason("Importing " + importAst.getFirstChild().getText() + " is not supported in this language");
+				problem.setLine(import_.getRegion().getStart().getLine());
+				problem.setReason("Importing " + import_.getPath() + " is not supported in this language");
 				problem.setSeverity(ParseProblem.WARNING);
 				getParseProblems().add(problem);
 			}
-		}		
+		}
 	}
 
 	@Override
