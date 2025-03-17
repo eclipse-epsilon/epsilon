@@ -254,7 +254,6 @@ public class EglModule extends EolModule implements IEglModule {
 			return super.parse(eol, sourceFile);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
 			// Ignore - clients are expected to call
 			// getParseProblems in order to check for problems
 			return false;
