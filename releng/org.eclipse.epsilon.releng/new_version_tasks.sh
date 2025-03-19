@@ -6,8 +6,8 @@ UpdatesName=updates
 JavadocsName=javadoc
 StableName=stable
 InterimVersion=interim
-NewVersion=2.7
-OldVersion=2.6
+NewVersion=2.8
+OldVersion=2.7
 InterimJavadocs=$InterimVersion-$JavadocsName
 StableJavadocs=$StableName-$JavadocsName
 
@@ -27,7 +27,7 @@ fi &&
 echo "Copying $JavadocsName..." &&
 mkdir -p $StableJavadocs &&
 cp -r $InterimJavadocs/* $StableJavadocs &&
-rm -rf $StableJavadocs/$InterimJavadocs &&
+rm -rf $StableJavadocs/$InterimJavadocs
 echo "Adding $NewVersion to composite..." &&
 cd $Downloads/$UpdatesName &&
 export JAVA_HOME=/shared/common/jdk1.8.0_x64-latest
