@@ -24,6 +24,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -155,8 +156,8 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 	@Override
 	public Object getEnumerationValue(String enumeration, String label) throws EolEnumerationValueNotFoundException {
 		Object value = enumCache.computeIfAbsent(enumeration + '#' + label, (k) -> {
-			List<EEnumLiteral> optionLiterals = new ArrayList<>();
-			List<Enumerator> optionValues = new ArrayList<>();
+			Set<EEnumLiteral> optionLiterals = new LinkedHashSet<>();
+			Set<Enumerator> optionValues = new LinkedHashSet<>();
 
 			/*
 			 * We make a defensive copy to avoid a ConcurrentModificationException if
@@ -186,7 +187,7 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 			}
 
 			if (optionValues.size() == 1) {
-				return optionValues.get(0);
+				return optionValues.iterator().next();
 			} else if (optionValues.isEmpty()) {
 				return null;
 			} else {
@@ -195,7 +196,7 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 				return new AmbiguousEnumerationValue(
 					optionNames,
 					optionNames.get(0),
-					optionValues.get(0)
+					optionValues.iterator().next()
 				);
 			}
 		});

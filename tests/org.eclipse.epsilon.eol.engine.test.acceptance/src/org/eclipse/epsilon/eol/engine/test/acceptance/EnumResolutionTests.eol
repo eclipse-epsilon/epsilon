@@ -100,3 +100,11 @@ operation noWarningsWhenUsingTypedEnumLiteralWithinSameModel() {
 
   assertNoWarnings();
 }
+
+@test
+operation noWarningsWhenUsingEnumInNestedPackage() {
+  modelManager.createInMemoryEmfModel("First", "nestedTestMain", "nestedTestChild");
+
+  var x = #RED;
+  assertNoWarnings();
+}
