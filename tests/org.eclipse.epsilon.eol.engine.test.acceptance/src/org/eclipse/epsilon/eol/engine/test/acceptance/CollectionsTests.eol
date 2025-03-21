@@ -545,22 +545,3 @@ operation emptyMapKeyToString(){
 operation emptyMapValueToString(){
 	assertEquals("Map {1->\"\"}", Map{1=""}.asString());
 }
-
-@test
-operation trailingCommaInSequence() {
-	assertEquals(Sequence{1, 2}, Sequence{1, 2 ,});
-}
-
-@test
-operation trailingCommaInMap() {
-	assertEquals(Map{1 = 2, 2 = 3}, Map{1 = 2, 2 = 3,});
-}
-
-@test
-operation trailingCommaInOperationCall() {
-	assertEquals(join("a", "b"), join("a", "b",));
-}
-
-operation join(p1, p2) {
-	return p1+p2;
-}

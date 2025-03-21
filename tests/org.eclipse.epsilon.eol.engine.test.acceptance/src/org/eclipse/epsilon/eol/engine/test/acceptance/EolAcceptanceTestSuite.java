@@ -92,7 +92,8 @@ import junit.framework.Test;
 	ImportCachingTests.class,
 	ItemSelectorTests.class,
 	ParseProblemTests.class,
-	TokenStreamParsersTests.class
+	TokenStreamParsersTests.class,
+	TrailingCommaTests.class
 })
 public class EolAcceptanceTestSuite {
 
