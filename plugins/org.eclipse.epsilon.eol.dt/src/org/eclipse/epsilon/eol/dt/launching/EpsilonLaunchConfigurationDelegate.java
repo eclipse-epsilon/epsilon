@@ -111,14 +111,29 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 			progressMonitor.beginTask(subtask, 100);
 
 			if ("run".equalsIgnoreCase(mode)) {
-				runModule(module);
+				result = module.execute();
 			}
 			else if ("debug".equalsIgnoreCase(mode)) {
-				debugModule(configuration, mode, launch, progressMonitor, module);
+				try {
+					debugModule(configuration, mode, launch, progressMonitor, module);
+				}
+				catch (Exception de) {
+					/*
+					 * Debug server already prints out the exception by itself, so we only need to
+					 * print it from the "run" mode. The rest of the logic around crashed modules
+					 * can stay the same.
+					 */
+					return false;
+				}
 			}
 
 			executed(configuration, mode, launch, progressMonitor, module, result);
 		} catch (Exception e) {
+			e = EolRuntimeException.wrap(e);
+			if (disposeModelRepository) {
+				module.getContext().getModelRepository().getModels().forEach(model -> { model.setStoredOnDisposal(false); });
+			}
+			module.getContext().getErrorStream().println(e.toString());
 			return false;
 		}
 		finally {
@@ -173,23 +188,6 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 		debugServer.run();
 
 		result = debugServer.getResult().get();
-	}
-
-	protected void runModule(IEolModule module) throws Exception {
-		try {
-			result = module.execute();
-		} catch (Exception e) {
-			/*
-			 * Debug server already prints out the exception by itself, so we only need to
-			 * print it from the "run" mode. The rest of the logic around crashed modules
-			 * can stay the same.
-			 */
-			e = EolRuntimeException.wrap(e);
-			e.printStackTrace();
-			module.getContext().getErrorStream().println(e.toString());
-
-			throw e;
-		}
 	}
 	
 	/**

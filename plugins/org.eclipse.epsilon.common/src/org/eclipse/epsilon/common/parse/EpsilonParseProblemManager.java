@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 
+@Deprecated
 public class EpsilonParseProblemManager {
 	
 	public static EpsilonParseProblemManager INSTANCE = new EpsilonParseProblemManager();

@@ -92,7 +92,6 @@ public class MatlabException extends Exception {
 	public EolRuntimeException toEolRuntimeException(){
 		EolRuntimeException eol = new EolRuntimeException(this);
 		eol.setReason(getMessage());
-		eol.setMessage(getMessage());
 		return eol;
 	}
 	

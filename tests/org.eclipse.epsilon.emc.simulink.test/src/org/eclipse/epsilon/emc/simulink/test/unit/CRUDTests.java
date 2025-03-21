@@ -9,7 +9,14 @@
 **********************************************************************/
 package org.eclipse.epsilon.emc.simulink.test.unit;
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+
+import org.eclipse.epsilon.emc.simulink.model.SimulinkModel;
 import org.eclipse.epsilon.emc.simulink.test.util.AbstractSimulinkTest;
+import org.eclipse.epsilon.eol.EolModule;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.junit.Test;
 
 
@@ -121,6 +128,32 @@ public class CRUDTests extends AbstractSimulinkTest {
 				+ "assert(`Stateflow.State`.all.size() = 1);"
 				+ "delete state; "
 				+ "assert(`Stateflow.State`.all.size() = 0);";
+	}
+	
+	
+	@Test
+	public void testLinkUnlinkable() throws Exception {
+		
+		SimulinkModel model = new SimulinkModel();
+		model.setFile(new File("testLinkUnlinkable.slx"));
+		model.setReadOnLoad(false);
+		model.setStoredOnDisposal(false);
+		model.load();
+		
+		EolModule module = new EolModule();
+		module.parse("var portIn = new `simulink/Ports & Subsystems/In1`;"
+				+ "var portOut = new `simulink/Ports & Subsystems/Out1`;"
+				+ "portOut.link(portIn);");
+		module.getContext().getModelRepository().addModel(model);
+		
+		try {
+			module.execute();
+			throw new RuntimeException("Expected an exception but none was thrown");
+		}
+		catch (EolRuntimeException ex) {
+			ex.printStackTrace();
+			assertTrue(ex.getMessage().startsWith("Cannot link inport 1 to outport 1"));
+		}
 	}
 	
 }

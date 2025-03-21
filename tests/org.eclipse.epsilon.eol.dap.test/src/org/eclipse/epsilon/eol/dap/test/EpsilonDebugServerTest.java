@@ -124,7 +124,8 @@ public class EpsilonDebugServerTest {
 		}
 	}
 
-    protected Socket connect(String host, int port, Duration maxWait) throws IOException {
+    @SuppressWarnings("resource")
+	protected Socket connect(String host, int port, Duration maxWait) throws IOException {
     	final Instant deadline = Instant.now().plus(maxWait);
 
 		Socket socket = null;

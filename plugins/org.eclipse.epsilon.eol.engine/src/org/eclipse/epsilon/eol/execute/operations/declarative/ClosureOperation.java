@@ -23,6 +23,7 @@ import org.eclipse.epsilon.eol.execute.ExecutorFactory;
 import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
+import org.eclipse.epsilon.eol.types.EolOrderedSet;
 import org.eclipse.epsilon.eol.types.EolSequence;
 import org.eclipse.epsilon.eol.types.EolType;
 
@@ -55,13 +56,11 @@ public class ClosureOperation extends FirstOrderOperation {
 	public Object execute(Object target, NameExpression operationNameExpression, List<Parameter> iterators, List<Expression> expressions, IEolContext context) throws EolRuntimeException {
 		Collection<?> source = resolveSource(target, iterators, context);
 		if (source.isEmpty()) return new EolSequence<>();
-		Collection<Object> accumulator = CollectionUtil.createDefaultSet();
+		EolOrderedSet<Object> accumulator = new EolOrderedSet<Object>();
 		
 		closure(accumulator, source, iterators.get(0), expressions.get(0), context);
 		
-		List<Object> results = CollectionUtil.createDefaultList();
-		results.addAll(accumulator);
-		return results;
+		return accumulator;
 	}
 	
 }

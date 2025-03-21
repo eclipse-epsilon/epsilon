@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EMC Simulink Tests
 Bundle-SymbolicName: org.eclipse.epsilon.emc.simulink.test
-Bundle-Version: 2.6.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit,
  org.eclipse.epsilon.emc.simulink,
@@ -10,7 +10,8 @@ Require-Bundle: org.junit,
  org.eclipse.epsilon.emc.simulink.common,
  org.eclipse.epsilon.eol.engine,
  org.apache.commons.io,
- org.apache.commons.csv
+ org.apache.commons.csv,
+ org.eclipse.epsilon.emc.simulink.dictionary.test
 Export-Package: org.eclipse.epsilon.emc.simulink.test.perform,
  org.eclipse.epsilon.emc.simulink.test.suite,
  org.eclipse.epsilon.emc.simulink.test.unit,

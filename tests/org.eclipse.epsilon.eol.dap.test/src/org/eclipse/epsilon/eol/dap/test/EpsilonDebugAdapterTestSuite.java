@@ -23,6 +23,7 @@ import org.eclipse.epsilon.eol.dap.test.eol.ClasspathEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ErrorReportingEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ForLoopEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.HttpEolTest;
+import org.eclipse.epsilon.eol.dap.test.eol.IfElseStepOverTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ImportingEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.JavaObjectTest;
 import org.eclipse.epsilon.eol.dap.test.eol.LargeCollectionTest;
@@ -32,6 +33,7 @@ import org.eclipse.epsilon.eol.dap.test.eol.SmallCollectionTest;
 import org.eclipse.epsilon.eol.dap.test.eol.SmallMapTest;
 import org.eclipse.epsilon.eol.dap.test.eol.StandaloneEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.TupleTest;
+import org.eclipse.epsilon.eol.dap.test.eol.TupleWithCycleTest;
 import org.eclipse.epsilon.eol.dap.test.epl.EplDebugTest;
 import org.eclipse.epsilon.eol.dap.test.etl.EtlDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eunit.EUnitDebugTest;
@@ -77,7 +79,9 @@ import junit.framework.Test;
     EmgDebugTest.class,
     PinsetDebugTest.class,
     FlockDebugTest.class,
-    EUnitDebugTest.class
+    EUnitDebugTest.class,
+    TupleWithCycleTest.class,
+    IfElseStepOverTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {

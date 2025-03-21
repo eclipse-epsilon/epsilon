@@ -79,7 +79,9 @@ import EolLexerRules, EolParserRules;
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
-package org.eclipse.epsilon.eol.parse;	
+package org.eclipse.epsilon.eol.parse;
+
+import org.eclipse.epsilon.common.parse.Lexer;	
 }
 
 @parser::header {

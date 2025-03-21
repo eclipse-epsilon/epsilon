@@ -184,7 +184,15 @@ public class SimulinkBlock extends SimulinkElement {
 					inPort);
 			engine.flush();
 		} catch (MatlabException ex) {
-			throw ex.toEolRuntimeException();
+			EolRuntimeException rex = ex.toEolRuntimeException();
+			if (rex.getReason().isEmpty()) {
+				// When attempting to link unlinkable elements, the Simulink API
+				// throws an exception with an empty message and prints the message 
+				// (e.g. "Index exceeds the number of array elements. Index must not exceed 0.")
+				// to System.err instead. When this happens we need to set the reason explicitly.
+				rex.setReason("Cannot " + (create ? "link" : "unlink") + " inport " + inPort + " to outport " + outPort);
+			}
+			throw rex;
 		}
 	}
 	

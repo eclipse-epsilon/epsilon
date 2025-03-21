@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon JDT Model Support
 Bundle-SymbolicName: org.eclipse.epsilon.emc.jdt;singleton:=true
 Bundle-Vendor: Eclipse Modeling Project
-Bundle-Version: 2.6.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.emc.jdt.Activator
 Require-Bundle: org.eclipse.epsilon.common.dt,
  org.eclipse.jdt.core;visibility:=reexport,

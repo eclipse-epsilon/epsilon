@@ -48,8 +48,8 @@ public class ImportingEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertEquals("Bob Someone", variablesByName.get("fullName").getValue());
 
 		// Remove breakpoints from the file and continue
-		adapter.setBreakpoints(createBreakpoints(importedFile.getCanonicalPath()));
-		adapter.continue_(new ContinueArguments());
+		adapter.setBreakpoints(createBreakpoints(importedFile.getCanonicalPath())).get();
+		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
 
@@ -68,8 +68,8 @@ public class ImportingEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertEquals(3, getStackTrace().getStackFrames()[0].getLine());
 
 		// Remove breakpoints from the file and continue
-		adapter.setBreakpoints(createBreakpoints());
-		adapter.continue_(new ContinueArguments());
+		adapter.setBreakpoints(createBreakpoints()).get();
+		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
 	

@@ -50,7 +50,7 @@ mvn -f pom-plain.xml org.eclipse.dash:license-tool-plugin:license-check \
 # To produce that list of excluded artifact IDs, we can use a command like
 # this one:
 #
-# grep restricted DEPENDENCIES | cut --delim=/ -f4 | grep org.eclipse | paste -sd ,
+# grep restricted DEPENDENCIES | awk -F/ '{print $4}' | grep org.eclipse | paste -sd ,
 
 mvn org.eclipse.dash:license-tool-plugin:license-check \
     -Dtycho.target.eager=true $DASH_OPTIONS_TYCHO \
@@ -68,7 +68,7 @@ mvn org.eclipse.dash:license-tool-plugin:license-check \
 #   https://gitlab.eclipse.org/eclipsefdn/emo-team/iplab/-/issues/10595
 
 find_wrapped_restricted() {
-    grep 'wrapped.*restricted' DEPENDENCIES | cut --delim=/ -f4 | sed 's#wrapped.##'
+    grep 'wrapped.*restricted' DEPENDENCIES | awk -F/ '{print $4}' | sed 's#wrapped.##'
 }
 
 classify_wrapped_restricted() {

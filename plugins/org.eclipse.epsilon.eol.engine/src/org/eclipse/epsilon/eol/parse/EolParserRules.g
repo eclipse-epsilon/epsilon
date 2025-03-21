@@ -447,7 +447,7 @@ parameterList
 		$tree.getExtraTokens().add($op);
 		$tree.getExtraTokens().add($cp);
 	}
-	:	op='(' (logicalExpression (',' logicalExpression)*)? cp=')'
+	:	op='(' (logicalExpression (',' logicalExpression)*)? ','? cp=')'
 		-> ^(PARAMETERS logicalExpression*)
 	;
 
@@ -510,7 +510,7 @@ expressionList
 	@after {
 		$tree.setImaginary(true);
 	}
-	: logicalExpression (',' logicalExpression)*
+	: logicalExpression (',' logicalExpression)* ','?
 	-> ^(EXPRLIST logicalExpression+)
 	; 
 
@@ -531,7 +531,7 @@ keyvalExpressionList
 	@after {
 		$tree.setImaginary(true);
 	}
-	:	keyvalExpression (',' keyvalExpression)*
+	:	keyvalExpression (',' keyvalExpression)* ','?
 	-> ^(KEYVALLIST keyvalExpression+)
 	;
 

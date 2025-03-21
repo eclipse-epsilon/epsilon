@@ -24,6 +24,7 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
+import org.eclipse.epsilon.eol.dom.ForStatement;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.Operation;
 import org.eclipse.epsilon.eol.dom.Statement;
@@ -80,6 +81,18 @@ public class EolDebugger implements IEolDebugger {
 		currentModuleElement = ast;
 
 		try {
+			if (stopAfterModuleElement != null) {
+				ModuleElement grandparent = getGrandparent(currentModuleElement);
+				if (grandparent == stopAfterModuleElement) {
+					ModuleElement firstSibling = getParent(currentModuleElement).getChildren().get(0);
+					if (currentModuleElement == firstSibling) {
+						// If we're stepping over the start of a block, stop at its first statement
+						stepping = true;
+						stopAfterModuleElement = null;
+					}
+				}
+			}
+
 			if (stepping) {
 				stepping = false;
 				target.suspend(ast, SuspendReason.STEP);
@@ -248,6 +261,10 @@ public class EolDebugger implements IEolDebugger {
 		File argsSourceFile = new File(argsSourcePath);
 		if (!argsSourceFile.exists()) {
 			return null;
+		} else {
+			// Canonicalize the path to avoid issues due to various ways of representing the same path
+			// (e.g. case insensitivity in some filesystems).
+			argsSourceFile = argsSourceFile.getCanonicalFile();
 		}
 
 		// Collect all the imports

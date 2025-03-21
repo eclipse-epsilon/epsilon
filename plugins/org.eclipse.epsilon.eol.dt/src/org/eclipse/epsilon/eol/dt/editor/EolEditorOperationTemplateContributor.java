@@ -46,6 +46,7 @@ public class EolEditorOperationTemplateContributor implements IAbstractModuleEdi
 	protected Template createTemplate(Operation op) {	
 		String call = op.getName() + "("
 			+ op.getFormalParameters().stream()
+			.filter(fp -> fp != null)
 			.map(fp -> "${" + fp.getName() + "}")
 			.collect(Collectors.joining(", "))
 			+ ")";	

@@ -71,10 +71,6 @@ public class SimulinkEntry extends SimulinkModelElement implements ISimulinkDict
 			if ("Value".equals(property)) {
 				try {
 					return engine.fevalWithResult("getValue", entry.getHandle());
-					//engine.feval("getValue", entry.getHandle());
-					/*engine.putVariable("handle", entry.getHandle());
-					return engine.evalWithResult("getValue(handle)");*/
-					//return MatlabEngineUtil.parse
 				} catch (MatlabException e) {
 					if (e.isUnsupportedTypeException()) {
 						return null;
@@ -108,9 +104,8 @@ public class SimulinkEntry extends SimulinkModelElement implements ISimulinkDict
 					}
 				}
 				try {
-					engine.feval("setValue", entry.getHandle(), value);
+					engine.feval(0, "setValue", entry.getHandle(), value);
 				} catch (MatlabException e) {
-					e.printStackTrace();
 					throw new EolIllegalPropertyException(this, property, null, null);
 				} 
 			} else {
@@ -133,7 +128,6 @@ public class SimulinkEntry extends SimulinkModelElement implements ISimulinkDict
 					}
 					properties = null;
 				} catch (MatlabException e) {
-					e.printStackTrace();
 					throw new EolIllegalPropertyException(this, property, null, null);
 				}
 			}
@@ -146,7 +140,6 @@ public class SimulinkEntry extends SimulinkModelElement implements ISimulinkDict
 			try {
 				engine.fevalWithResult(0,"deleteEntry", entry.getHandle());
 			} catch (MatlabException e) {
-				e.printStackTrace();
 				throw new EolRuntimeException(e.getMessage());
 			}
 		}

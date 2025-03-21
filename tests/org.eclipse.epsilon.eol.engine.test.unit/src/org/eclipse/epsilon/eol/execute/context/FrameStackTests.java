@@ -138,8 +138,14 @@ public class FrameStackTests {
 		
 		assertEquals(global, frameStack.get(global.name));
 	}
-	
-	
+
+	@Test
+	public void cloneIsSeparate() throws Exception {
+		assertEquals("Size before cloning is 1", 1, frameStack.size());
+		frameStack.clone();
+		assertEquals("Size after cloning is still 1", 1, frameStack.size());
+	}
+
 	private static Variable createStringVariable(String name, String value) {
 		return new Variable(name, value, EolPrimitiveType.String);
 	}

@@ -43,7 +43,7 @@ public class EglTemplate extends DynamicTemplate {
 		try {
 			if (module == null) {
 				module = new EglModule(new EglTemplateFactory());
-				module.parse(getScript(), uri);
+				parse(module, getScript(), uri);
 				if (!module.getParseProblems().isEmpty())
 					throw new RuntimeException(module.getParseProblems().get(0).toString());
 			}
@@ -76,6 +76,7 @@ public class EglTemplate extends DynamicTemplate {
 			return Xml.getChildren(document.getDocumentElement());
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException(new FlexmiParseException(e, 
 					((Location) content.getUserData(Location.ID)).getStartLine()));
 		}

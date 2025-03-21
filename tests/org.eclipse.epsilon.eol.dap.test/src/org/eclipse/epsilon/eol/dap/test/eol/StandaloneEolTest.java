@@ -12,6 +12,7 @@ package org.eclipse.epsilon.eol.dap.test.eol;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
 import java.util.Map;
@@ -20,7 +21,7 @@ import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugAdapter;
 import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
 import org.eclipse.lsp4j.debug.ContinueArguments;
-import org.eclipse.lsp4j.debug.NextArguments;
+import org.eclipse.lsp4j.debug.EvaluateResponse;
 import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.SetExceptionBreakpointsArguments;
@@ -39,10 +40,12 @@ import org.junit.Test;
  */
 public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 
+	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "01-hello.eol");
+
 	@Override
 	protected void setupModule() throws Exception {
 		this.module = new EolModule();
-		module.parse(new File(BASE_RESOURCE_FOLDER, "01-hello.eol"));
+		module.parse(SCRIPT_FILE);
 	}
 
 	@Test
@@ -117,11 +120,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
 		// Step over should stop the program at line 2
-		final NextArguments args = new NextArguments();
-		args.setThreadId(adapter.threads().get().getThreads()[0].getId());
-		adapter.next(args);
-		assertStoppedBecauseOf(StoppedEventArgumentsReason.STEP);
-
+		stepOver();
 		StackTraceResponse stackTrace = getStackTrace();
 		assertEquals("After the next() call, the program should be stopped at line 2",
 			2, stackTrace.getStackFrames()[0].getLine());
@@ -204,4 +203,40 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertEquals("The breakpoint on the empty line should have been remapped to the first non-empty line after it",
 			8, (int) breakpoints.getBreakpoints()[0].getLine());
 	}
+
+	@Test
+	public void noBreaksWhileEvaluating() throws Exception {
+		// Break at the return, and the first line of the operation
+		adapter.setBreakpoints(createBreakpoints(createBreakpoint(1), createBreakpoint(6))).get();
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		// First step out should stop the program at the line after the operation
+		EvaluateResponse result = evaluate("produceGreeting('John', 'Doe')", getStackTrace().getStackFrames()[0]);
+		assertEquals("Hello John Doe", result.getResult());
+
+		// Remove the breakpoints and let the program finish
+		adapter.setBreakpoints(createBreakpoints()).get();
+		adapter.continue_(new ContinueArguments());
+		assertProgramCompletedSuccessfully();
+	}
+
+	@Test
+	public void breakThenContinueCaseInsensitive() throws Exception {
+		File uppercaseScriptFile = new File(SCRIPT_FILE.getParentFile(), SCRIPT_FILE.getName().toUpperCase());
+		assumeTrue("Filesystem is case-insensitive", SCRIPT_FILE.equals(uppercaseScriptFile));
+
+		SetBreakpointsResponse breakResult = adapter.setBreakpoints(
+			createBreakpoints(uppercaseScriptFile.getPath(), createBreakpoint(1))).get();
+		assertEquals(1, breakResult.getBreakpoints().length);
+		assertTrue("The breakpoint should have been verified", breakResult.getBreakpoints()[0].isVerified());
+		assertEquals(SCRIPT_FILE.getCanonicalPath(), breakResult.getBreakpoints()[0].getSource().getPath());
+		assertEquals(1, (int) breakResult.getBreakpoints()[0].getLine());
+
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		adapter.continue_(new ContinueArguments());
+		assertProgramCompletedSuccessfully();
+	}
+
 }

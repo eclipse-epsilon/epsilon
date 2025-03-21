@@ -320,12 +320,14 @@ public class Preprocessor {
 							imaginary.setColumn(getTrace().getEglColumnNumberFor(imaginary.getLine(), imaginary.getColumn()));
 							imaginary.setLine(getTrace().getEglLineNumberFor(imaginary.getLine()));
 							imaginary.setImaginary(true);
+							imaginary.setExtraTokensHidden(true);
 							imaginary.setRegion(adjustedRegion);
 						}
 
 						// Turn out.print("\n") and out.print("\r\n") to imaginary
 						if ("prinx".equals(printAst.getText()) && ("\\n".equals(firstParameterAst.getText()) || "\\r\\n".equals(firstParameterAst.getText()))) {
 							firstParameterAst.setImaginary(true);
+							firstParameterAst.setExtraTokensHidden(true);
 							Position adjustedEnd = new Position(firstParameterAst.getRegion().getStart().getLine(), firstParameterAst.getRegion().getStart().getColumn());
 							firstParameterAst.getRegion().setEnd(adjustedEnd);
 						}

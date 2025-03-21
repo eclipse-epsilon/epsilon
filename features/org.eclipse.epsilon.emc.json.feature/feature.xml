@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.emc.json.feature"
       label="Epsilon JSON Driver"
-      version="2.6.0.qualifier"
+      version="2.9.0.qualifier"
       provider-name="Eclipse Modeling Project"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
@@ -20,20 +20,18 @@ which is available at https://www.eclipse.org/legal/epl-2.0
 
    <includes
          id="org.eclipse.epsilon.core.feature"
-         version="2.6.0.qualifier"/>
+         version="2.9.0.qualifier"/>
+
+   <requires>
+      <import plugin="org.apache.commons.logging" version="1.2.0" match="perfect"/>
+   </requires>
 
    <plugin
          id="org.eclipse.epsilon.emc.json"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="com.googlecode.json-simple"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>

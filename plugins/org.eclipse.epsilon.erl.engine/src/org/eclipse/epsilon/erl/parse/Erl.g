@@ -89,6 +89,8 @@ package org.eclipse.epsilon.erl.parse;
  ******************************************************************************/
 
 package org.eclipse.epsilon.erl.parse;
+
+import org.eclipse.epsilon.common.parse.Lexer;
 }
 
 erlModule

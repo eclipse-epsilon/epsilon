@@ -58,6 +58,7 @@ public class EolRuntimeException extends Exception {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+		this.message = null; // Message needs recomputing
 	}
 	
 	public void setMessage(String message) {

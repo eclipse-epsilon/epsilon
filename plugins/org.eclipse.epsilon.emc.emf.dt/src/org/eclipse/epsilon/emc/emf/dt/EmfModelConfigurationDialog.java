@@ -353,7 +353,9 @@ public class EmfModelConfigurationDialog extends AbstractCachedModelConfiguratio
 				metamodelList.refresh();
 			}
 		});
-
+		
+		metamodelListLayout.heightHint = metamodelButtons.computeSize(SWT.DEFAULT, SWT.DEFAULT).y; // Do not let the list grow too tall
+		
 		groupContent.layout();
 		groupContent.pack();
 		return groupContent;

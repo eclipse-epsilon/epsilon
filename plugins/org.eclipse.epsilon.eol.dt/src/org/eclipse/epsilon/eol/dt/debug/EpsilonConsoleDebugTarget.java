@@ -30,7 +30,7 @@ class EpsilonConsoleDebugTarget extends DSPDebugTarget {
 		String output = args.getOutput();
 		if (args.getCategory() == null || OutputEventArgumentsCategory.CONSOLE.equals(args.getCategory())
 				|| OutputEventArgumentsCategory.STDOUT.equals(args.getCategory())) {
-			EpsilonConsole.getInstance().getInfoStream().append(output);
+			EpsilonConsole.getInstance().getDebugStream().append(output);
 		} else if (OutputEventArgumentsCategory.STDERR.equals(args.getCategory())) {
 			EpsilonConsole.getInstance().getErrorStream().append(output);
 		}

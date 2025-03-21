@@ -1,3 +1,8 @@
+pre {
+  var x = 23;
+  x.println();
+}
+
 migrate Node {
   migrated.label = original.name;
   migrated.outgoing ::= original.outgoing;

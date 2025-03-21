@@ -1,4 +1,4 @@
-// $ANTLR 3.1b1 Eol__.g 2023-07-03 20:54:35
+// $ANTLR 3.1b1 Eol__.g 2025-03-21 07:18:57
 
 /*******************************************************************************
  * Copyright (c) 2008 The University of York.
@@ -37,7 +37,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
-package org.eclipse.epsilon.eol.parse;	
+package org.eclipse.epsilon.eol.parse;
+
+import org.eclipse.epsilon.common.parse.Lexer;	
 
 
 import org.antlr.runtime.*;
@@ -215,8 +217,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__83;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:44:7: ( 'model' )
-            // Eol__.g:44:9: 'model'
+            // Eol__.g:46:7: ( 'model' )
+            // Eol__.g:46:9: 'model'
             {
             match("model"); 
 
@@ -236,8 +238,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__84;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:45:7: ( ';' )
-            // Eol__.g:45:9: ';'
+            // Eol__.g:47:7: ( ';' )
+            // Eol__.g:47:9: ';'
             {
             match(';'); 
 
@@ -256,8 +258,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__85;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:46:7: ( 'alias' )
-            // Eol__.g:46:9: 'alias'
+            // Eol__.g:48:7: ( 'alias' )
+            // Eol__.g:48:9: 'alias'
             {
             match("alias"); 
 
@@ -277,8 +279,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__86;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:47:7: ( ',' )
-            // Eol__.g:47:9: ','
+            // Eol__.g:49:7: ( ',' )
+            // Eol__.g:49:9: ','
             {
             match(','); 
 
@@ -297,8 +299,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__87;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:48:7: ( 'driver' )
-            // Eol__.g:48:9: 'driver'
+            // Eol__.g:50:7: ( 'driver' )
+            // Eol__.g:50:9: 'driver'
             {
             match("driver"); 
 
@@ -318,8 +320,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__88;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:49:7: ( '{' )
-            // Eol__.g:49:9: '{'
+            // Eol__.g:51:7: ( '{' )
+            // Eol__.g:51:9: '{'
             {
             match('{'); 
 
@@ -338,8 +340,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__89;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:50:7: ( '}' )
-            // Eol__.g:50:9: '}'
+            // Eol__.g:52:7: ( '}' )
+            // Eol__.g:52:9: '}'
             {
             match('}'); 
 
@@ -358,8 +360,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__90;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:51:7: ( '=' )
-            // Eol__.g:51:9: '='
+            // Eol__.g:53:7: ( '=' )
+            // Eol__.g:53:9: '='
             {
             match('='); 
 
@@ -378,8 +380,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__91;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:52:7: ( 'operation' )
-            // Eol__.g:52:9: 'operation'
+            // Eol__.g:54:7: ( 'operation' )
+            // Eol__.g:54:9: 'operation'
             {
             match("operation"); 
 
@@ -399,8 +401,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__92;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:53:7: ( 'function' )
-            // Eol__.g:53:9: 'function'
+            // Eol__.g:55:7: ( 'function' )
+            // Eol__.g:55:9: 'function'
             {
             match("function"); 
 
@@ -420,8 +422,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__93;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:54:7: ( '(' )
-            // Eol__.g:54:9: '('
+            // Eol__.g:56:7: ( '(' )
+            // Eol__.g:56:9: '('
             {
             match('('); 
 
@@ -440,8 +442,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__94;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:55:7: ( ')' )
-            // Eol__.g:55:9: ')'
+            // Eol__.g:57:7: ( ')' )
+            // Eol__.g:57:9: ')'
             {
             match(')'); 
 
@@ -460,8 +462,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__95;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:56:7: ( ':' )
-            // Eol__.g:56:9: ':'
+            // Eol__.g:58:7: ( ':' )
+            // Eol__.g:58:9: ':'
             {
             match(':'); 
 
@@ -480,8 +482,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__96;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:57:7: ( 'import' )
-            // Eol__.g:57:9: 'import'
+            // Eol__.g:59:7: ( 'import' )
+            // Eol__.g:59:9: 'import'
             {
             match("import"); 
 
@@ -501,8 +503,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__97;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:58:7: ( '$' )
-            // Eol__.g:58:9: '$'
+            // Eol__.g:60:7: ( '$' )
+            // Eol__.g:60:9: '$'
             {
             match('$'); 
 
@@ -521,8 +523,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__98;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:59:7: ( '!' )
-            // Eol__.g:59:9: '!'
+            // Eol__.g:61:7: ( '!' )
+            // Eol__.g:61:9: '!'
             {
             match('!'); 
 
@@ -541,8 +543,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__99;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:60:7: ( '::' )
-            // Eol__.g:60:9: '::'
+            // Eol__.g:62:7: ( '::' )
+            // Eol__.g:62:9: '::'
             {
             match("::"); 
 
@@ -562,8 +564,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__100;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:61:8: ( '<' )
-            // Eol__.g:61:10: '<'
+            // Eol__.g:63:8: ( '<' )
+            // Eol__.g:63:10: '<'
             {
             match('<'); 
 
@@ -582,8 +584,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__101;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:62:8: ( '>' )
-            // Eol__.g:62:10: '>'
+            // Eol__.g:64:8: ( '>' )
+            // Eol__.g:64:10: '>'
             {
             match('>'); 
 
@@ -602,8 +604,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__102;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:63:8: ( 'if' )
-            // Eol__.g:63:10: 'if'
+            // Eol__.g:65:8: ( 'if' )
+            // Eol__.g:65:10: 'if'
             {
             match("if"); 
 
@@ -623,8 +625,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__103;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:64:8: ( 'else' )
-            // Eol__.g:64:10: 'else'
+            // Eol__.g:66:8: ( 'else' )
+            // Eol__.g:66:10: 'else'
             {
             match("else"); 
 
@@ -644,8 +646,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__104;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:65:8: ( 'switch' )
-            // Eol__.g:65:10: 'switch'
+            // Eol__.g:67:8: ( 'switch' )
+            // Eol__.g:67:10: 'switch'
             {
             match("switch"); 
 
@@ -665,8 +667,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__105;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:66:8: ( 'case' )
-            // Eol__.g:66:10: 'case'
+            // Eol__.g:68:8: ( 'case' )
+            // Eol__.g:68:10: 'case'
             {
             match("case"); 
 
@@ -686,8 +688,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__106;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:67:8: ( 'default' )
-            // Eol__.g:67:10: 'default'
+            // Eol__.g:69:8: ( 'default' )
+            // Eol__.g:69:10: 'default'
             {
             match("default"); 
 
@@ -707,8 +709,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__107;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:68:8: ( 'for' )
-            // Eol__.g:68:10: 'for'
+            // Eol__.g:70:8: ( 'for' )
+            // Eol__.g:70:10: 'for'
             {
             match("for"); 
 
@@ -728,8 +730,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__108;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:69:8: ( 'in' )
-            // Eol__.g:69:10: 'in'
+            // Eol__.g:71:8: ( 'in' )
+            // Eol__.g:71:10: 'in'
             {
             match("in"); 
 
@@ -749,8 +751,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__109;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:70:8: ( 'while' )
-            // Eol__.g:70:10: 'while'
+            // Eol__.g:72:8: ( 'while' )
+            // Eol__.g:72:10: 'while'
             {
             match("while"); 
 
@@ -770,8 +772,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__110;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:71:8: ( 'return' )
-            // Eol__.g:71:10: 'return'
+            // Eol__.g:73:8: ( 'return' )
+            // Eol__.g:73:10: 'return'
             {
             match("return"); 
 
@@ -791,8 +793,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__111;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:72:8: ( 'throw' )
-            // Eol__.g:72:10: 'throw'
+            // Eol__.g:74:8: ( 'throw' )
+            // Eol__.g:74:10: 'throw'
             {
             match("throw"); 
 
@@ -812,8 +814,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__112;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:73:8: ( 'delete' )
-            // Eol__.g:73:10: 'delete'
+            // Eol__.g:75:8: ( 'delete' )
+            // Eol__.g:75:10: 'delete'
             {
             match("delete"); 
 
@@ -833,8 +835,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__113;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:74:8: ( 'break' )
-            // Eol__.g:74:10: 'break'
+            // Eol__.g:76:8: ( 'break' )
+            // Eol__.g:76:10: 'break'
             {
             match("break"); 
 
@@ -854,8 +856,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__114;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:75:8: ( 'breakAll' )
-            // Eol__.g:75:10: 'breakAll'
+            // Eol__.g:77:8: ( 'breakAll' )
+            // Eol__.g:77:10: 'breakAll'
             {
             match("breakAll"); 
 
@@ -875,8 +877,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__115;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:76:8: ( 'continue' )
-            // Eol__.g:76:10: 'continue'
+            // Eol__.g:78:8: ( 'continue' )
+            // Eol__.g:78:10: 'continue'
             {
             match("continue"); 
 
@@ -896,8 +898,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__116;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:77:8: ( 'abort' )
-            // Eol__.g:77:10: 'abort'
+            // Eol__.g:79:8: ( 'abort' )
+            // Eol__.g:79:10: 'abort'
             {
             match("abort"); 
 
@@ -917,8 +919,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__117;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:78:8: ( 'transaction' )
-            // Eol__.g:78:10: 'transaction'
+            // Eol__.g:80:8: ( 'transaction' )
+            // Eol__.g:80:10: 'transaction'
             {
             match("transaction"); 
 
@@ -938,8 +940,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__118;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:79:8: ( ':=' )
-            // Eol__.g:79:10: ':='
+            // Eol__.g:81:8: ( ':=' )
+            // Eol__.g:81:10: ':='
             {
             match(":="); 
 
@@ -959,8 +961,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__119;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:80:8: ( '+=' )
-            // Eol__.g:80:10: '+='
+            // Eol__.g:82:8: ( '+=' )
+            // Eol__.g:82:10: '+='
             {
             match("+="); 
 
@@ -980,8 +982,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__120;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:81:8: ( '-=' )
-            // Eol__.g:81:10: '-='
+            // Eol__.g:83:8: ( '-=' )
+            // Eol__.g:83:10: '-='
             {
             match("-="); 
 
@@ -1001,8 +1003,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__121;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:82:8: ( '*=' )
-            // Eol__.g:82:10: '*='
+            // Eol__.g:84:8: ( '*=' )
+            // Eol__.g:84:10: '*='
             {
             match("*="); 
 
@@ -1022,8 +1024,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__122;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:83:8: ( '/=' )
-            // Eol__.g:83:10: '/='
+            // Eol__.g:85:8: ( '/=' )
+            // Eol__.g:85:10: '/='
             {
             match("/="); 
 
@@ -1043,8 +1045,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__123;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:84:8: ( '?=' )
-            // Eol__.g:84:10: '?='
+            // Eol__.g:86:8: ( '?=' )
+            // Eol__.g:86:10: '?='
             {
             match("?="); 
 
@@ -1064,8 +1066,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__124;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:85:8: ( '::=' )
-            // Eol__.g:85:10: '::='
+            // Eol__.g:87:8: ( '::=' )
+            // Eol__.g:87:10: '::='
             {
             match("::="); 
 
@@ -1085,8 +1087,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__125;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:86:8: ( 'or' )
-            // Eol__.g:86:10: 'or'
+            // Eol__.g:88:8: ( 'or' )
+            // Eol__.g:88:10: 'or'
             {
             match("or"); 
 
@@ -1106,8 +1108,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__126;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:87:8: ( 'and' )
-            // Eol__.g:87:10: 'and'
+            // Eol__.g:89:8: ( 'and' )
+            // Eol__.g:89:10: 'and'
             {
             match("and"); 
 
@@ -1127,8 +1129,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__127;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:88:8: ( 'xor' )
-            // Eol__.g:88:10: 'xor'
+            // Eol__.g:90:8: ( 'xor' )
+            // Eol__.g:90:10: 'xor'
             {
             match("xor"); 
 
@@ -1148,8 +1150,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__128;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:89:8: ( 'implies' )
-            // Eol__.g:89:10: 'implies'
+            // Eol__.g:91:8: ( 'implies' )
+            // Eol__.g:91:10: 'implies'
             {
             match("implies"); 
 
@@ -1169,8 +1171,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__129;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:90:8: ( '?' )
-            // Eol__.g:90:10: '?'
+            // Eol__.g:92:8: ( '?' )
+            // Eol__.g:92:10: '?'
             {
             match('?'); 
 
@@ -1189,8 +1191,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__130;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:91:8: ( '==' )
-            // Eol__.g:91:10: '=='
+            // Eol__.g:93:8: ( '==' )
+            // Eol__.g:93:10: '=='
             {
             match("=="); 
 
@@ -1210,8 +1212,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__131;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:92:8: ( '!=' )
-            // Eol__.g:92:10: '!='
+            // Eol__.g:94:8: ( '!=' )
+            // Eol__.g:94:10: '!='
             {
             match("!="); 
 
@@ -1231,8 +1233,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__132;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:93:8: ( '?:' )
-            // Eol__.g:93:10: '?:'
+            // Eol__.g:95:8: ( '?:' )
+            // Eol__.g:95:10: '?:'
             {
             match("?:"); 
 
@@ -1252,8 +1254,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__133;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:94:8: ( '>=' )
-            // Eol__.g:94:10: '>='
+            // Eol__.g:96:8: ( '>=' )
+            // Eol__.g:96:10: '>='
             {
             match(">="); 
 
@@ -1273,8 +1275,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__134;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:95:8: ( '<=' )
-            // Eol__.g:95:10: '<='
+            // Eol__.g:97:8: ( '<=' )
+            // Eol__.g:97:10: '<='
             {
             match("<="); 
 
@@ -1294,8 +1296,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__135;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:96:8: ( '<>' )
-            // Eol__.g:96:10: '<>'
+            // Eol__.g:98:8: ( '<>' )
+            // Eol__.g:98:10: '<>'
             {
             match("<>"); 
 
@@ -1315,8 +1317,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__136;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:97:8: ( '+' )
-            // Eol__.g:97:10: '+'
+            // Eol__.g:99:8: ( '+' )
+            // Eol__.g:99:10: '+'
             {
             match('+'); 
 
@@ -1335,8 +1337,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__137;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:98:8: ( '-' )
-            // Eol__.g:98:10: '-'
+            // Eol__.g:100:8: ( '-' )
+            // Eol__.g:100:10: '-'
             {
             match('-'); 
 
@@ -1355,8 +1357,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__138;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:99:8: ( '*' )
-            // Eol__.g:99:10: '*'
+            // Eol__.g:101:8: ( '*' )
+            // Eol__.g:101:10: '*'
             {
             match('*'); 
 
@@ -1375,8 +1377,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__139;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:100:8: ( '/' )
-            // Eol__.g:100:10: '/'
+            // Eol__.g:102:8: ( '/' )
+            // Eol__.g:102:10: '/'
             {
             match('/'); 
 
@@ -1395,8 +1397,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__140;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:101:8: ( 'not' )
-            // Eol__.g:101:10: 'not'
+            // Eol__.g:103:8: ( 'not' )
+            // Eol__.g:103:10: 'not'
             {
             match("not"); 
 
@@ -1416,8 +1418,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__141;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:102:8: ( '++' )
-            // Eol__.g:102:10: '++'
+            // Eol__.g:104:8: ( '++' )
+            // Eol__.g:104:10: '++'
             {
             match("++"); 
 
@@ -1437,8 +1439,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__142;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:103:8: ( '--' )
-            // Eol__.g:103:10: '--'
+            // Eol__.g:105:8: ( '--' )
+            // Eol__.g:105:10: '--'
             {
             match("--"); 
 
@@ -1458,8 +1460,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__143;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:104:8: ( '[' )
-            // Eol__.g:104:10: '['
+            // Eol__.g:106:8: ( '[' )
+            // Eol__.g:106:10: '['
             {
             match('['); 
 
@@ -1478,8 +1480,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__144;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:105:8: ( ']' )
-            // Eol__.g:105:10: ']'
+            // Eol__.g:107:8: ( ']' )
+            // Eol__.g:107:10: ']'
             {
             match(']'); 
 
@@ -1498,8 +1500,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__145;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:106:8: ( '|' )
-            // Eol__.g:106:10: '|'
+            // Eol__.g:108:8: ( '|' )
+            // Eol__.g:108:10: '|'
             {
             match('|'); 
 
@@ -1518,8 +1520,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__146;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:107:8: ( '=>' )
-            // Eol__.g:107:10: '=>'
+            // Eol__.g:109:8: ( '=>' )
+            // Eol__.g:109:10: '=>'
             {
             match("=>"); 
 
@@ -1539,8 +1541,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__147;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:108:8: ( 'new' )
-            // Eol__.g:108:10: 'new'
+            // Eol__.g:110:8: ( 'new' )
+            // Eol__.g:110:10: 'new'
             {
             match("new"); 
 
@@ -1560,8 +1562,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__148;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:109:8: ( 'var' )
-            // Eol__.g:109:10: 'var'
+            // Eol__.g:111:8: ( 'var' )
+            // Eol__.g:111:10: 'var'
             {
             match("var"); 
 
@@ -1581,8 +1583,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__149;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:110:8: ( 'ext' )
-            // Eol__.g:110:10: 'ext'
+            // Eol__.g:112:8: ( 'ext' )
+            // Eol__.g:112:10: 'ext'
             {
             match("ext"); 
 
@@ -1602,8 +1604,8 @@ public class EolLexer extends Lexer {
         try {
             int _type = T__150;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Eol__.g:111:8: ( '#' )
-            // Eol__.g:111:10: '#'
+            // Eol__.g:113:8: ( '#' )
+            // Eol__.g:113:10: '#'
             {
             match('#'); 
 

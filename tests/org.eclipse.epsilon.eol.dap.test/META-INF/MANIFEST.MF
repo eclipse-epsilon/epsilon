@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests for Eclipse Epsilon DAP Server
 Bundle-SymbolicName: org.eclipse.epsilon.eol.dap.test
-Bundle-Version: 2.6.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Export-Package: org.eclipse.epsilon.eol.dap.test
 Import-Package: javax.servlet,
  javax.servlet.http,
@@ -30,4 +30,4 @@ Require-Bundle: org.eclipse.epsilon.eol.dap;bundle-version="2.6.0",
  org.eclipse.epsilon.emc.emf
 Bundle-Vendor: Eclipse.org
 Automatic-Module-Name: org.eclipse.epsilon.eol.dap.test
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17

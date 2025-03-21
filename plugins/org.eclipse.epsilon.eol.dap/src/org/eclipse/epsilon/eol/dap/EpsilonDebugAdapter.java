@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -52,6 +53,7 @@ import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.ExecutorFactory;
 import org.eclipse.epsilon.eol.execute.Return;
 import org.eclipse.epsilon.eol.execute.context.Frame;
+import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
@@ -64,6 +66,8 @@ import org.eclipse.lsp4j.debug.Capabilities;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.ContinueResponse;
 import org.eclipse.lsp4j.debug.DisconnectArguments;
+import org.eclipse.lsp4j.debug.EvaluateArguments;
+import org.eclipse.lsp4j.debug.EvaluateResponse;
 import org.eclipse.lsp4j.debug.ExitedEventArguments;
 import org.eclipse.lsp4j.debug.InitializeRequestArguments;
 import org.eclipse.lsp4j.debug.NextArguments;
@@ -348,9 +352,10 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			}
 
 			try {
-				module.getContext().getFrameStack().enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
-				ExecutorFactory moduleExecutor = module.getContext().getExecutorFactory();
-				Return returned = (Return) moduleExecutor.execute(miniEol.getMain(), module.getContext());
+				miniEol.setContext(new EvaluatorContext(module.getContext()));
+				ExecutorFactory moduleExecutor = miniEol.getContext().getExecutorFactory();
+				Return returned = (Return) moduleExecutor.execute(miniEol.getMain(), miniEol.getContext());
+
 				if (returned != null && returned.getValue() instanceof Boolean) {
 					return (Boolean) returned.getValue();
 				} else {
@@ -363,11 +368,65 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 					String.format("Exception while evaluating condition '%s': disabling breakpoint", eolCondition),
 					e);
 				unverifyBreakpoint(breakpointAst, startLine, bpInfo);
-			} finally {
-				module.getContext().getFrameStack().leaveLocal(miniEol.getMain());
 			}
 
 			return false;
+		}
+
+		public EvaluateResponse evaluateExpression(String expression) {
+			EvaluateResponse r = new EvaluateResponse();
+
+			EolModule miniEol = new EolModule();
+			try {
+				miniEol.parse(String.format("var returned = (%s);", expression));
+
+				if (!miniEol.getParseProblems().isEmpty()) {
+					LOGGER.log(Level.FINE, String.format(
+						"Expression '%s' produced parse errors\n%s",
+						expression,
+						String.join("\n",
+							miniEol.getParseProblems()
+								.stream().map(e -> e.toString())
+								.collect(Collectors.toList()))));
+
+					r.setResult("(failed to parse)");
+				} else {
+					miniEol.setContext(new EvaluatorContext(module.getContext()));
+
+					FrameStack frameStack = miniEol.getContext().getFrameStack();
+					SingleFrame sf = (SingleFrame) frameStack.enterLocal(FrameType.UNPROTECTED, miniEol.getMain());
+					ExecutorFactory moduleExecutor = miniEol.getContext().getExecutorFactory();
+					moduleExecutor.execute(miniEol.getMain(), miniEol.getContext());
+
+					IVariableReference frameReference = suspendedState.getReference(miniEol.getContext(), sf);
+					Optional<IVariableReference> oReturnedRef = frameReference.getVariables(suspendedState).stream()
+							.filter(v -> "returned".equals(v.getName())).findFirst();
+
+					if (oReturnedRef.isPresent()) {
+						IVariableReference returnedRef = oReturnedRef.get();
+						r.setResult(returnedRef.getValue());
+
+						List<IVariableReference> subvariables = returnedRef.getVariables(suspendedState);
+						if (subvariables.size() > 1) {
+							r.setNamedVariables(subvariables.size());
+							r.setVariablesReference(returnedRef.getId());
+						}
+						if (initializeArguments.getSupportsVariableType()) {
+							// The IDE supports variable types: provide it as well
+							r.setType(returnedRef.getTypeName());
+						}
+					} else {
+						r.setResult("(failed to evaluate)");
+					}
+				}
+			} catch (Exception ex) {
+				LOGGER.log(Level.FINE,
+					String.format("Failed to evaluate expression '%s'", expression), ex);
+				r.setResult(String.format("(failed to evaluate with exception: %s)",
+					ex.getClass().getCanonicalName()));
+			}
+
+			return r;
 		}
 
 		protected void unverifyBreakpoint(ModuleElement breakpointAst, int startLine, BreakpointInfo bpInfo) {
@@ -578,6 +637,36 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	}
 
 	@Override
+	public CompletableFuture<EvaluateResponse> evaluate(EvaluateArguments args) {
+		return CompletableFuture.supplyAsync(() -> {
+			synchronized (suspendedLatch) {
+				if (!suspendedLatch.get()) {
+					// Not stopped at a breakpoint yet - can't evaluate until then
+					EvaluateResponse r = new EvaluateResponse();
+					r.setResult("(pending)");
+					return r;
+				}
+
+				// Try to find the frame mentioned in the evaluate() request
+				IVariableReference ref = suspendedState.getReference(args.getFrameId());
+				SingleFrameReference sfRef = null;
+				if (ref instanceof SingleFrameReference) {
+					sfRef = (SingleFrameReference) ref;
+				} else {
+					EvaluateResponse r = new EvaluateResponse();
+					r.setResult("(failed to evaluate: cannot find frame #" + args.getFrameId());
+					return r;
+				}
+
+				// Frame is found: try to evaluate the expression
+				IEolModule module = (IEolModule) sfRef.getContext().getModule();
+				ThreadState threadState = attachTo(module);
+				return threadState.evaluateExpression(args.getExpression());
+			}
+		});
+	}
+
+	@Override
 	public CompletableFuture<StackTraceResponse> stackTrace(StackTraceArguments args) {
 		return CompletableFuture.supplyAsync(() -> {
 			StackTraceResponse resp = new StackTraceResponse();
@@ -673,7 +762,11 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				for (IVariableReference vRef : ref.getVariables(suspendedState)) {
 					Variable respVariable = new Variable();
 					respVariable.setName(vRef.getName());
-					respVariable.setValue(vRef.getValue());
+					try {
+						respVariable.setValue(vRef.getValue());
+					} catch (Throwable t) {
+						respVariable.setValue(String.format("(failed to get value: %s)", t));
+					}
 					if (initializeArguments.getSupportsVariableType()) {
 						respVariable.setType(vRef.getTypeName());
 					}

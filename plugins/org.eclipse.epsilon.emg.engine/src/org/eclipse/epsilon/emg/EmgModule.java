@@ -158,11 +158,7 @@ public class EmgModule extends EplModule implements IEmgModule {
 	@Override
 	public Object processRules() throws EolRuntimeException {
 		executeCreateOperations();
-		super.processRules();
-		IModel model = context.getModelRepository().getModels().get(0);
-		model.store();
-		// TODO Is the total size more important than the matches?
-		return model.allContents().size();
+		return super.processRules();
 	}
 
 	/**

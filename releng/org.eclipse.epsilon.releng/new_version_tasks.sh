@@ -6,8 +6,8 @@ UpdatesName=updates
 JavadocsName=javadoc
 StableName=stable
 InterimVersion=interim
-NewVersion=2.6
-OldVersion=2.5
+NewVersion=2.8
+OldVersion=2.7
 InterimJavadocs=$InterimVersion-$JavadocsName
 StableJavadocs=$StableName-$JavadocsName
 
@@ -27,11 +27,11 @@ fi &&
 echo "Copying $JavadocsName..." &&
 mkdir -p $StableJavadocs &&
 cp -r $InterimJavadocs/* $StableJavadocs &&
-rm -rf $StableJavadocs/$InterimJavadocs &&
+rm -rf $StableJavadocs/$InterimJavadocs
 echo "Adding $NewVersion to composite..." &&
 cd $Downloads/$UpdatesName &&
 export JAVA_HOME=/shared/common/jdk1.8.0_x64-latest
-/shared/common/apache-ant-latest/bin/ant -f /shared/modeling/tools/promotion/manage-composite.xml add -Dchild.repository=$NewVersion
+/shared/common/apache-ant-latest/bin/ant -f /shared/modeling.deletemeafter013025/tools/promotion/manage-composite.xml add -Dchild.repository=$NewVersion
 
 #cd /home/data/httpd/download.eclipse.org/epsilon/temp
 #curl -o epsilon-${NewVersion}-signed.zip -F file=@epsilon-${NewVersion}-unsigned.zip http://build.eclipse.org:31338/macsign.php

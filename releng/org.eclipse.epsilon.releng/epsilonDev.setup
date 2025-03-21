@@ -104,7 +104,7 @@
   <setupTask
       xsi:type="git:GitCloneTask"
       id="epsilon.github.clone"
-      remoteURI="eclipse/epsilon">
+      remoteURI="eclipse-epsilon/epsilon">
     <annotation
         source="http://www.eclipse.org/oomph/setup/InducedChoices">
       <detail
@@ -125,7 +125,7 @@
   <setupTask
       xsi:type="git:GitCloneTask"
       id="www.epsilon.github.clone"
-      remoteURI="eclipse/epsilon-website"
+      remoteURI="eclipse-epsilon/epsilon-website"
       checkoutBranch="main">
     <annotation
         source="http://www.eclipse.org/oomph/setup/InducedChoices">
@@ -262,7 +262,7 @@
     <setupTask
         xsi:type="setup:EclipseIniTask"
         option="-Doomph.redirection.epsilon.git"
-        value="=https://raw.githubusercontent.com/eclipse/epsilon/main/releng/org.eclipse.epsilon.releng/epsilonDev.setup->${epsilon.github.clone.location|uri}/releng/org.eclipse.epsilon.releng/epsilonDev.setup"
+        value="=https://raw.githubusercontent.com/eclipse-epsilon/epsilon/main/releng/org.eclipse.epsilon.releng/epsilonDev.setup->${epsilon.github.clone.location|uri}/releng/org.eclipse.epsilon.releng/epsilonDev.setup"
         vm="true">
       <description>Set an Oomph redirection system property to redirect the logical location of this setup to its physical location in the Git clone.</description>
     </setupTask>
