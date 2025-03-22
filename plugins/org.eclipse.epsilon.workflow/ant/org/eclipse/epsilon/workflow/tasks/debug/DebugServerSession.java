@@ -43,9 +43,7 @@ public class DebugServerSession {
 
 	public void start() throws InterruptedException {
 		CountDownLatch latch = new CountDownLatch(1);
-		server.setOnStart(() -> {
-			latch.countDown();
-		});
+		server.setOnStart(latch::countDown);
 		serverThread.start();
 
 		// Wait for the server to start before moving on

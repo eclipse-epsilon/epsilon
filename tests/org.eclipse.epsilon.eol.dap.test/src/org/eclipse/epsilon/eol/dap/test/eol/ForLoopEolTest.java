@@ -74,7 +74,7 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertTrue(evalResult.getResult().contains("UndefinedVariable"));
 
 		// Remove breakpoints and finish
-		adapter.setBreakpoints(createBreakpoints());
+		adapter.setBreakpoints(createBreakpoints()).get();
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
@@ -92,7 +92,7 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertTrue(evalResult.getResult().contains("failed to parse"));
 
 		// Remove breakpoints and finish
-		adapter.setBreakpoints(createBreakpoints());
+		adapter.setBreakpoints(createBreakpoints()).get();
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
@@ -110,7 +110,7 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertTrue(evalResult.getResult().contains("failed to evaluate"));
 
 		// Remove breakpoints and finish
-		adapter.setBreakpoints(createBreakpoints());
+		adapter.setBreakpoints(createBreakpoints()).get();
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
@@ -130,7 +130,7 @@ public class ForLoopEolTest extends AbstractEpsilonDebugAdapterTest {
 		assertTrue(evalResult.getResult().contains("cannot find frame"));
 
 		// Remove breakpoints and finish
-		adapter.setBreakpoints(createBreakpoints());
+		adapter.setBreakpoints(createBreakpoints()).get();
 		adapter.continue_(new ContinueArguments()).get();
 		assertProgramCompletedSuccessfully();
 	}
