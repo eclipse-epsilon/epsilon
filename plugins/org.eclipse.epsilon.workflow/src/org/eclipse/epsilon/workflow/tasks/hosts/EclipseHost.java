@@ -12,6 +12,7 @@ package org.eclipse.epsilon.workflow.tasks.hosts;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -19,6 +20,7 @@ import org.eclipse.ant.core.AntCorePlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -35,6 +37,7 @@ import org.eclipse.epsilon.eol.dt.ExtensionPointToolNativeTypeDelegate;
 import org.eclipse.epsilon.eol.dt.userinput.JFaceUserInput;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eunit.EUnitTestListener;
+import org.eclipse.epsilon.workflow.tasks.debug.DebugServerSession;
 import org.eclipse.lsp4e.debug.DSPPlugin;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -135,7 +138,7 @@ public class EclipseHost implements Host {
 	}
 	
 	@Override
-	public Object debug(IEolModule module, File file) throws Exception {
+	public Object debug(IEolModule module, File file, DebugServerSession debugSession) throws Exception {
 		// Set up and launch an LSP4E launch configuration to connect to the server
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType type = manager.getLaunchConfigurationType(LSP4E_LAUNCH_TYPE);
@@ -143,26 +146,44 @@ public class EclipseHost implements Host {
 			throw new RuntimeException("Could not find the LSP4E launch configuration type: " + LSP4E_LAUNCH_TYPE);
 		}
 
-		final int port = debugPort == null ? 0 : debugPort;
-		final EpsilonDebugServer server = new EpsilonDebugServer(module, port);
-		final RemoteDebugOnStart onStart = new RemoteDebugOnStart(manager, type, server);
-		server.setOnStart(onStart);
+		if (debugSession == null) {
+			final int port = debugPort == null ? 0 : debugPort;
+			final EpsilonDebugServer server = new EpsilonDebugServer(module, port);
+			final RemoteDebugOnStart onStart = new RemoteDebugOnStart(manager, type, server);
+			server.setOnStart(onStart);
 
-		Thread serverThread = new Thread(server);
-		Object result = null;
-		try {
-			serverThread.start();
+			Thread serverThread = new Thread(server);
+			Object result = null;
+			try {
+				serverThread.start();
 
-			// Wait for the program to execute
-			result = server.getResult().get();
-		} finally {
-			// Delete the launch configuration as soon as execution is completed
-			onStart.deleteLaunchConfiguration();
+				// Wait for the program to execute
+				result = server.getResult().get();
+			} finally {
+				// Delete the launch configuration as soon as execution is completed
+				onStart.deleteLaunchConfiguration();
+			}
+
+			// Wait for the server to shutdown
+			serverThread.join();
+			return result;
+		} else {
+			Future<Object> futureResult = debugSession.getQueueModule().enqueue(module);
+
+			ILaunch existingLaunch = null;
+			for (ILaunch launch : manager.getLaunches()) {
+				if (launch.getLaunchConfiguration().getType() == type) {
+					existingLaunch = launch;
+					break;
+				}
+			}
+			if (existingLaunch == null) {
+				// If we don't have an LSP4E launch, start it now
+				new RemoteDebugOnStart(manager, type, debugSession.getServer()).run();
+			}
+
+			return futureResult.get();
 		}
-
-		// Wait for the server to shutdown
-		serverThread.join();
-		return result;
 	}
 
 	@Override

@@ -621,12 +621,20 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 			synchronized (this.threads) {
 				for (Entry<Integer, ThreadState> entry : this.threads.entrySet()) {
-					Thread lspThread = new Thread();
-					lspThread.setId(entry.getKey());
+					IEolModule module = entry.getValue().module;
 
-					lspThread.setName(
-							String.format("%s#%d", entry.getValue().module.getClass().getSimpleName(), entry.getKey()));
-					threads.add(lspThread);
+					/*
+					 * Only show threads for which we have a file: for example, the
+					 * ExecutionQueueModule does not have a file associated with it.
+					 */
+					if (module.getUri() != null) {
+						Thread lspThread = new Thread();
+						lspThread.setId(entry.getKey());
+
+						lspThread.setName(String.format("%s#%d",
+							module.getClass().getSimpleName(), entry.getKey()));
+						threads.add(lspThread);
+					}
 				}
 			}
 

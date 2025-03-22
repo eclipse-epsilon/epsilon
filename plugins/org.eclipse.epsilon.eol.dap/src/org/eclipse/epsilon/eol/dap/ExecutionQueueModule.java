@@ -38,8 +38,9 @@ public class ExecutionQueueModule extends EolModule {
 	}
 
 	@Override
-	public Object execute() throws EolRuntimeException {
+	public Object executeImpl() throws EolRuntimeException {
 		ExecutionController executionController = getContext().getExecutorFactory().getExecutionController();
+
 		while (!executionController.isTerminated()) {
 			try {
 				taskQueue.take().run();

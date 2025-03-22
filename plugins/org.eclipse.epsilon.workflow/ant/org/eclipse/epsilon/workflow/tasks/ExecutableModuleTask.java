@@ -268,7 +268,7 @@ public abstract class ExecutableModuleTask extends EpsilonTask {
 				if (debugPort != null) {
 					HostManager.getHost().setDebugPort(debugPort);
 				}
-				HostManager.getHost().debug(module, getSrc());
+				HostManager.getHost().debug(module, getSrc(), getDebugSession());
 			}
 
 			useResults();

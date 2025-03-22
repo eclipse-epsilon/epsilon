@@ -24,5 +24,16 @@
 
 		<epsilon.disposeModel model="M" />
     </target>
+
+	<target name="start-server">
+		<epsilon.startDebugServer />
+	</target>
+
+	<target name="stop-server">
+		<epsilon.stopDebugServer />
+	</target>
+
+	<target name="multiple-server-debug"
+		depends="start-server,01-hello-debug,02-imports-debug,04-inspectObject,05-hello,stop-server" />
 	
 </project>

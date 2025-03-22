@@ -21,6 +21,7 @@ import org.eclipse.epsilon.eol.dap.test.emg.EmgDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eml.EmlDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ClasspathEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ErrorReportingEolTest;
+import org.eclipse.epsilon.eol.dap.test.eol.ExecutionQueueModuleTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ForLoopEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.HttpEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.IfElseStepOverTest;
@@ -81,7 +82,8 @@ import junit.framework.Test;
     FlockDebugTest.class,
     EUnitDebugTest.class,
     TupleWithCycleTest.class,
-    IfElseStepOverTest.class
+    IfElseStepOverTest.class,
+    ExecutionQueueModuleTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {

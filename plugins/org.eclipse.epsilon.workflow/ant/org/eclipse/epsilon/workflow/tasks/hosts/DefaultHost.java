@@ -12,12 +12,14 @@ package org.eclipse.epsilon.workflow.tasks.hosts;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.epsilon.workflow.tasks.debug.DebugServerSession;
 
 public class DefaultHost implements Host {
 
@@ -44,10 +46,15 @@ public class DefaultHost implements Host {
 	}
 
 	@Override
-	public Object debug(IEolModule module, File file) throws Exception {
-		EpsilonDebugServer server = new EpsilonDebugServer(module, debugPort);
-		server.run();
-		return server;
+	public Object debug(IEolModule module, File file, DebugServerSession session) throws Exception {
+		if (session == null) {
+			EpsilonDebugServer server = new EpsilonDebugServer(module, debugPort);
+			server.run();
+			return server.getResult().get();
+		} else {
+			Future<Object> futureResult = session.getQueueModule().enqueue(module);
+			return futureResult.get();
+		}
 	}
 
 	@Override

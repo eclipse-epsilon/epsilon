@@ -16,6 +16,7 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.epsilon.workflow.tasks.debug.DebugServerSession;
 
 public interface Host {
 	
@@ -29,7 +30,7 @@ public interface Host {
 
 	public boolean supportsDebugging();
 	
-	public Object debug(IEolModule module, File file) throws Exception;
+	public Object debug(IEolModule module, File file, DebugServerSession debugSession) throws Exception;
 	
 	public void configureUserInput(IEolModule module, boolean isGui);
 
