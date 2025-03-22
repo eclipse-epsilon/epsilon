@@ -132,6 +132,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	protected IEolModule module;
 	protected EpsilonDebugAdapter adapter;
 	protected TestClient client;
+	protected Thread epsilonThread;
 
 	protected abstract void setupModule() throws Exception;
 
@@ -255,7 +256,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	}
 
 	protected void onAttach() {
-		Thread epsilonThread = new Thread(this::runModule);
+		epsilonThread = new Thread(this::runModule);
 		epsilonThread.setName("EpsilonDebuggee");
 		epsilonThread.start();
 	}
