@@ -17,6 +17,7 @@ import java.util.Collection;
 import org.eclipse.epsilon.egl.execute.control.ITemplateExecutionListener;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.egl.incremental.IncrementalitySettings;
+import org.eclipse.epsilon.egl.parse.EglTagConfiguration;
 import org.eclipse.epsilon.eol.IImportManager;
 
 public class EglTemplateSpecificationFactory {
@@ -25,23 +26,29 @@ public class EglTemplateSpecificationFactory {
 	private final IncrementalitySettings incrementalitySettings;
 	private final Collection<ITemplateExecutionListener> listeners;
 	private final IImportManager importManager;
+	protected final EglTagConfiguration tagConfiguration;
 	
 	public EglTemplateSpecificationFactory(Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, ITemplateExecutionListener... listeners) {
+		this(defaultFormatter, incrementalitySettings, importManager, new EglTagConfiguration(), listeners);
+	}
+	
+	public EglTemplateSpecificationFactory(Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, EglTagConfiguration tagConfiguration, ITemplateExecutionListener... listeners) {
 		this.defaultFormatter = defaultFormatter;
 		this.incrementalitySettings = incrementalitySettings;
 		this.listeners = Arrays.asList(listeners);
 		this.importManager = importManager;
+		this.tagConfiguration = tagConfiguration;
 	}
 	
 	public EglTemplateSpecification fromCode(String code) {
-		return new CodeBackedTemplateSpecification(code, defaultFormatter, incrementalitySettings, importManager, listeners);
+		return new CodeBackedTemplateSpecification(code, defaultFormatter, incrementalitySettings, importManager, tagConfiguration, listeners);
 	}
 
 	public EglTemplateSpecification fromResource(String name, URI resource) {
-		return new ResourceBackedTemplateSpecification(name, resource, defaultFormatter, incrementalitySettings, importManager, listeners);
+		return new ResourceBackedTemplateSpecification(name, resource, defaultFormatter, incrementalitySettings, importManager, tagConfiguration, listeners);
 	}
 
 	public EglTemplateSpecification fromDirtyResource(String name, String latestCode, URI resource) {
-		return new DirtyResourceBackedTemplateSpecification(name, latestCode, resource, defaultFormatter, incrementalitySettings, importManager, listeners);
+		return new DirtyResourceBackedTemplateSpecification(name, latestCode, resource, defaultFormatter, incrementalitySettings, importManager, tagConfiguration, listeners);
 	}
 }

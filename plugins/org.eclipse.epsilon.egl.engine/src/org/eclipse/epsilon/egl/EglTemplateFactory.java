@@ -254,9 +254,7 @@ public class EglTemplateFactory {
 	 * Subclasses may override to create different types of template.
 	 */
 	protected EglTemplate createTemplate(EglTemplateSpecification spec) throws Exception {
-		EglTemplate template = new EglTemplate(spec, getContextForNewTemplate());
-		template.getModule().setTagConfiguration(tagConfiguration);
-		return template;
+		return new EglTemplate(spec, getContextForNewTemplate());
 	}
 	
 	public void copyState(IEolContext delegate) {
@@ -285,7 +283,7 @@ public class EglTemplateFactory {
 	
 	private EglTemplateSpecificationFactory createTemplateSpecificationFactory() {
 		return new EglTemplateSpecificationFactory(
-			defaultFormatter, defaultIncrementalitySettings, importManager,
+			defaultFormatter, defaultIncrementalitySettings, importManager, tagConfiguration,
 			listeners.toArray(new ITemplateExecutionListener[listeners.size()])
 		);
 	}

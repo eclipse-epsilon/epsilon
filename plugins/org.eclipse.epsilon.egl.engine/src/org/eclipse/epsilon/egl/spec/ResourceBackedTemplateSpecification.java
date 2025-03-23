@@ -15,6 +15,7 @@ import org.eclipse.epsilon.egl.execute.control.ITemplateExecutionListener;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.egl.incremental.IncrementalitySettings;
 import org.eclipse.epsilon.egl.internal.IEglModule;
+import org.eclipse.epsilon.egl.parse.EglTagConfiguration;
 import org.eclipse.epsilon.egl.traceability.Template;
 import org.eclipse.epsilon.eol.IImportManager;
 
@@ -23,7 +24,11 @@ class ResourceBackedTemplateSpecification extends EglTemplateSpecification {
 	private final URI resource;
 	
 	protected ResourceBackedTemplateSpecification(String name, URI resource, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, Collection<ITemplateExecutionListener> listeners) {
-		super(name, defaultFormatter, incrementalitySettings, importManager, listeners);
+		this(name, resource, defaultFormatter, incrementalitySettings, importManager, new EglTagConfiguration(), listeners);
+	}
+	
+	protected ResourceBackedTemplateSpecification(String name, URI resource, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, EglTagConfiguration tagConfiguration, Collection<ITemplateExecutionListener> listeners) {
+		super(name, defaultFormatter, incrementalitySettings, importManager, tagConfiguration, listeners);
 		
 		this.resource = resource;
 	}

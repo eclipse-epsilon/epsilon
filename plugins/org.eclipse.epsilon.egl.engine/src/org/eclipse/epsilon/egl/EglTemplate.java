@@ -28,6 +28,7 @@ import org.eclipse.epsilon.egl.incremental.IncrementalitySettings;
 import org.eclipse.epsilon.egl.internal.EglModule;
 import org.eclipse.epsilon.egl.internal.IEglModule;
 import org.eclipse.epsilon.egl.merge.Merger;
+import org.eclipse.epsilon.egl.parse.EglTagConfiguration;
 import org.eclipse.epsilon.egl.spec.EglTemplateSpecification;
 import org.eclipse.epsilon.egl.spec.EglTemplateSpecificationFactory;
 import org.eclipse.epsilon.egl.status.ProtectedRegionWarning;
@@ -57,12 +58,13 @@ public class EglTemplate {
 	}
 
 	public EglTemplate(EglTemplateSpecification spec, IEglContext context) throws Exception {
-		this(spec.getName(), context, spec.createTemplate(), spec.getDefaultFormatter(), spec.getIncrementalitySettings(), spec.getTemplateExecutionListeners(), spec.getImportManager());
+		this(spec.getName(), context, spec.createTemplate(), spec.getDefaultFormatter(), spec.getIncrementalitySettings(), spec.getImportManager(), spec.getTagConfiguration(), spec.getTemplateExecutionListeners());
 		spec.parseInto(module);
 	}
 	
-	private EglTemplate(String name, IEglContext context, Template template, Formatter formatter, IncrementalitySettings incrementalitySettings, Collection<ITemplateExecutionListener> listeners, IImportManager importManager) {
+	private EglTemplate(String name, IEglContext context, Template template, Formatter formatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, EglTagConfiguration tagConfiguration, Collection<ITemplateExecutionListener> listeners) {
 		this.module = new EglModule(context);
+		this.module.setTagConfiguration(tagConfiguration);
 		this.module.setImportManager(importManager);
 		this.name     = name;
 		this.template = template;

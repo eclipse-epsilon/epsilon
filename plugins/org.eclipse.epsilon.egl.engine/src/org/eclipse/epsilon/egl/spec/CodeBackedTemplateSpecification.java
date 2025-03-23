@@ -16,6 +16,7 @@ import org.eclipse.epsilon.egl.execute.control.ITemplateExecutionListener;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.egl.incremental.IncrementalitySettings;
 import org.eclipse.epsilon.egl.internal.IEglModule;
+import org.eclipse.epsilon.egl.parse.EglTagConfiguration;
 import org.eclipse.epsilon.egl.traceability.Template;
 import org.eclipse.epsilon.eol.IImportManager;
 
@@ -24,7 +25,11 @@ class CodeBackedTemplateSpecification extends EglTemplateSpecification {
 	private final String code;
 	
 	protected CodeBackedTemplateSpecification(String code, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, Collection<ITemplateExecutionListener> listeners) {
-		super("Anonymous", defaultFormatter, incrementalitySettings, importManager, listeners);
+		this(code, defaultFormatter, incrementalitySettings, importManager, new EglTagConfiguration(), listeners);
+	}
+	
+	protected CodeBackedTemplateSpecification(String code, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, EglTagConfiguration tagConfiguration, Collection<ITemplateExecutionListener> listeners) {
+		super("Anonymous", defaultFormatter, incrementalitySettings, importManager, tagConfiguration, listeners);
 		
 		this.code = code;
 	}

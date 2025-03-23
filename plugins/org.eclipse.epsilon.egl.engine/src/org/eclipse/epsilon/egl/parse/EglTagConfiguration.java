@@ -15,18 +15,6 @@ public class EglTagConfiguration {
 
 	public EglTagConfiguration() {}
 	
-	public static void main(String[] args) throws Exception {
-		
-		EglModule module = new EglModule();
-		module.getTemplateFactory().setTagConfiguration(new EglTagConfiguration("{{", "}}", "{*", "*}"));
-		
-		//((org.eclipse.epsilon.egl.internal.EglModule) module.getModule()).
-		//	setTagConfiguration(new EglTagConfiguration("{{", "}}", "{*", "*}"));
-		module.parse("{{ for (i in 1.to(2)){ }} {{=i}} {{ } }}");
-		module.getContext().getFrameStack().put(Variable.createReadOnlyVariable("i", 2));
-		System.out.println(module.execute());
-	}
-	
 	public EglTagConfiguration(String startTag, String endTag, String startCommentTag, String endCommentTag) {
 		this.startTag = startTag;
 		this.startOutputTag = startTag + "=";

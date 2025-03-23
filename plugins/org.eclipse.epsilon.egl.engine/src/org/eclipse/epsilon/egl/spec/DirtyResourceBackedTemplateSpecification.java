@@ -17,6 +17,7 @@ import org.eclipse.epsilon.egl.execute.control.ITemplateExecutionListener;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.egl.incremental.IncrementalitySettings;
 import org.eclipse.epsilon.egl.internal.IEglModule;
+import org.eclipse.epsilon.egl.parse.EglTagConfiguration;
 import org.eclipse.epsilon.egl.traceability.Template;
 import org.eclipse.epsilon.eol.IImportManager;
 
@@ -26,7 +27,11 @@ class DirtyResourceBackedTemplateSpecification extends EglTemplateSpecification 
 	private final URI resource;
 	
 	protected DirtyResourceBackedTemplateSpecification(String name, String latestCode, URI resource, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, Collection<ITemplateExecutionListener> listeners) {
-		super(name, defaultFormatter, incrementalitySettings, importManager, listeners);
+		this(name, latestCode, resource, defaultFormatter, incrementalitySettings, importManager, new EglTagConfiguration(), listeners);
+	}
+	
+	protected DirtyResourceBackedTemplateSpecification(String name, String latestCode, URI resource, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, EglTagConfiguration tagConfiguration, Collection<ITemplateExecutionListener> listeners) {
+		super(name, defaultFormatter, incrementalitySettings, importManager, tagConfiguration, listeners);
 		
 		this.latestCode = latestCode;
 		this.resource = resource;

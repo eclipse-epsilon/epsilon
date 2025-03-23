@@ -18,6 +18,7 @@ import org.eclipse.epsilon.egl.execute.control.ITemplateExecutionListener;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.egl.incremental.IncrementalitySettings;
 import org.eclipse.epsilon.egl.internal.IEglModule;
+import org.eclipse.epsilon.egl.parse.EglTagConfiguration;
 import org.eclipse.epsilon.egl.traceability.Template;
 import org.eclipse.epsilon.eol.IImportManager;
 import org.eclipse.epsilon.eol.ImportManager;
@@ -29,6 +30,7 @@ public abstract class EglTemplateSpecification {
 	private final IncrementalitySettings incrementalitySettings;
 	private final Collection<ITemplateExecutionListener> listeners;
 	private final IImportManager importManager;
+	protected final EglTagConfiguration tagConfiguration;
 	
 	/**
 	 * @deprecated From 2.5.0, switch to
@@ -39,13 +41,18 @@ public abstract class EglTemplateSpecification {
 	protected EglTemplateSpecification(String name, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, Collection<ITemplateExecutionListener> listeners) {
 		this(name, defaultFormatter, incrementalitySettings, new ImportManager(), listeners);
 	}
-
+	
 	protected EglTemplateSpecification(String name, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, Collection<ITemplateExecutionListener> listeners) {
+		this(name, defaultFormatter, incrementalitySettings, importManager, new EglTagConfiguration(), listeners);
+	}
+	
+	protected EglTemplateSpecification(String name, Formatter defaultFormatter, IncrementalitySettings incrementalitySettings, IImportManager importManager, EglTagConfiguration tagConfiguration, Collection<ITemplateExecutionListener> listeners) {
 		this.name = name;
 		this.defaultFormatter = defaultFormatter;
 		this.incrementalitySettings = incrementalitySettings;
 		this.listeners = listeners;
 		this.importManager = importManager;
+		this.tagConfiguration = tagConfiguration;
 	}
 	
 	public String getName() {
@@ -69,7 +76,11 @@ public abstract class EglTemplateSpecification {
 		// Return a defensive copy, which can be safely modified for only this template
 		return new LinkedList<>(listeners);
 	}
-
+	
+	public EglTagConfiguration getTagConfiguration() {
+		return tagConfiguration;
+	}
+	
 	public abstract Template createTemplate();
 	public abstract void parseInto(IEglModule module) throws Exception;
 	public abstract URI getURI();

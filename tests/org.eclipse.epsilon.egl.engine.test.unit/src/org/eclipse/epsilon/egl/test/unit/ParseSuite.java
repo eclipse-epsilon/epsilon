@@ -12,6 +12,7 @@ package org.eclipse.epsilon.egl.test.unit;
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 
+import org.eclipse.epsilon.egl.parse.TagConfigurationTests;
 import org.eclipse.epsilon.egl.parse.TestEglLexer;
 import org.eclipse.epsilon.egl.parse.TestEglParser;
 import org.junit.runner.RunWith;
@@ -19,7 +20,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({TestEglLexer.class, TestEglParser.class})
+@SuiteClasses({TestEglLexer.class, TestEglParser.class, TagConfigurationTests.class})
 public class ParseSuite {
 
 	public static Test suite() {
