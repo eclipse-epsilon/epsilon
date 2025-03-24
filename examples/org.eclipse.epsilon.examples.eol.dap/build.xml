@@ -25,6 +25,19 @@
 		<epsilon.disposeModel model="M" />
     </target>
 
+	<target name="07-orchestration">
+		<epsilon.emf.loadModel name="M"
+			metamodelfile="epsilon/models/person.ecore"
+			modelfile="epsilon/models/person.model"
+			read="true" store="false" />
+
+		<epsilon.egl src="epsilon/07-orchestration.egx" debug="true" debugPort="4040">
+			<model ref="M"/>
+		</epsilon.egl>
+
+		<epsilon.disposeModel model="M" />
+	</target>
+
 	<target name="start-server">
 		<epsilon.startDebugServer />
 	</target>
@@ -34,6 +47,6 @@
 	</target>
 
 	<target name="multiple-server-debug"
-		depends="start-server,01-hello-debug,02-imports-debug,04-inspectObject,05-hello,stop-server" />
+		depends="start-server,01-hello-debug,02-imports-debug,04-inspectObject,05-hello,07-orchestration,stop-server" />
 	
 </project>
