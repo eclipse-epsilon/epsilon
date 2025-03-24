@@ -106,12 +106,7 @@ public class EglLexer {
 	}
 	
 	private EglToken tokenise(TokenType type, String text) {
-		EglToken t;
-		
-		if (type == TokenType.PLAIN_TEXT)
-			t = new EglToken(type, text, line, col);
-		else
-			t = new EglToken(type, text, line, col);
+		EglToken t = new EglToken(type, text, line, col);
 		
 		program = program.substring(text.length());
 		col += text.length();
