@@ -75,10 +75,14 @@ public class ExecutionQueueModule extends EolModule {
 					moduleExecFactory.addExecutionListener(l);
 				}
 
-				// Attach the module to the debug adapter, then execute it
 				if (debugAdapter != null) {
+					/*
+					 * We need to attach the module *before* it is run, so we can be sure any
+					 * module-level pre-execute checks are done by the xxxDebugger class.
+					 */
 					debugAdapter.attachTo(module);
 				}
+
 				Object result = module.execute();
 				futureResult.complete(result);
 			} catch (EolRuntimeException e) {

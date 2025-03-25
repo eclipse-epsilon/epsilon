@@ -12,6 +12,7 @@ package org.eclipse.epsilon.eol.dap.test;
 import org.eclipse.epsilon.eol.dap.test.ecl.EclDebugTest;
 import org.eclipse.epsilon.eol.dap.test.ecl.EclErrorTest;
 import org.eclipse.epsilon.eol.dap.test.egl.EglDebugTest;
+import org.eclipse.epsilon.eol.dap.test.egl.EglExecutionQueueTest;
 import org.eclipse.epsilon.eol.dap.test.egl.ForCallEglTest;
 import org.eclipse.epsilon.eol.dap.test.egl.ImportingEglTest;
 import org.eclipse.epsilon.eol.dap.test.egx.ClasspathEgxTest;
@@ -85,6 +86,7 @@ import junit.framework.Test;
     TupleWithCycleTest.class,
     IfElseStepOverTest.class,
     EolExecutionQueueTest.class,
+    EglExecutionQueueTest.class,
     EgxExecutionQueueTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
