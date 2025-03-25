@@ -34,6 +34,11 @@ public class ExecutionQueueModuleTest extends AbstractEpsilonDebugAdapterTest {
 		this.module = new ExecutionQueueModule();
 	}
 
+	@Override
+	protected void setupAdapter() throws Exception {
+		((ExecutionQueueModule) this.module).setDebugAdapter(adapter);
+	}
+
 	private ExecutionQueueModule getModule() {
 		return (ExecutionQueueModule) this.module;
 	}
@@ -87,10 +92,7 @@ public class ExecutionQueueModuleTest extends AbstractEpsilonDebugAdapterTest {
 
 	protected void shutdown() throws Exception {
 		// Shut down the adapter (which terminates the module)
-		adapter.terminate(new TerminateArguments());
-
-		// We enqueue a module to get the queue module to re-check the terminate flag
-		getModule().enqueue(new EolModule()).get();
+		adapter.terminate(new TerminateArguments()).get();
 
 		// Ensures the program has finished running, and that the script thread has died
 		assertProgramCompletedSuccessfully();

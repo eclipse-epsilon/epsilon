@@ -56,12 +56,12 @@ public class EgxDebugger extends EolDebugger {
 
 	@Override
 	public void control(ModuleElement ast, IEolContext context) {
-		if (ast instanceof IEgxModule || ast instanceof GenerationRule) {
+		if (ast instanceof IEgxModule) {
 			/*
 			 * We are about to run an EGX script: ensure we copy the execution listeners of
 			 * the EGX script into the EGL module (for debugging purposes).
 			 */
-			IEgxModule egxModule = (IEgxModule) ast.getModule();
+			IEgxModule egxModule = (IEgxModule) ast;
 
 			final Collection<ITemplateExecutionListener> templateListeners = egxModule
 				.getTemplateFactory().getTemplateExecutionListeners();

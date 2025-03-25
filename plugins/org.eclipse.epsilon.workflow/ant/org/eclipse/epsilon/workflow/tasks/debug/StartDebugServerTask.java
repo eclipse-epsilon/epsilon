@@ -15,6 +15,7 @@ import org.eclipse.epsilon.workflow.tasks.EpsilonTask;
 
 public class StartDebugServerTask extends EpsilonTask {
 
+	private String host = null;
 	private int port = 0;
 
 	@Override
@@ -23,12 +24,24 @@ public class StartDebugServerTask extends EpsilonTask {
 		if (session != null && session.getServer() != null) {
 			log("Debug server has already been started", Project.MSG_WARN);
 		} else {
-			session = new DebugServerSession(port);
+			session = new DebugServerSession(host, port);
 			setDebugSession(session);
 
 			try {
 				session.start();
-				log("Debug server listening on port " + session.getServer().getPort(), Project.MSG_INFO);
+
+				if (host == null) {
+					log(String.format(
+						"Debug server listening on port %d",
+						session.getServer().getPort()
+					), Project.MSG_INFO);
+				} else {
+					log(String.format(
+						"Debug server listening on %s:%d",
+						session.getServer().getHost(),
+						session.getServer().getPort()
+					), Project.MSG_INFO);
+				}
 			} catch (InterruptedException e) {
 				throw new BuildException(e);
 			}
@@ -43,5 +56,12 @@ public class StartDebugServerTask extends EpsilonTask {
 		this.port = port;
 	}
 
-	
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
 }

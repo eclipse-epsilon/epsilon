@@ -55,7 +55,7 @@ public class EpsilonDebugServer implements Runnable {
 
 	private final String host;
 	private final int port;
-	private final IEolModule module;
+	protected final IEolModule module;
 
 	private final CompletableFuture<Boolean> started = new CompletableFuture<>();
 	private final AtomicBoolean running = new AtomicBoolean(false);
@@ -259,6 +259,10 @@ public class EpsilonDebugServer implements Runnable {
 		} else {
 			return port;
 		}
+	}
+
+	public IEolModule getModule() {
+		return module;
 	}
 
 	/**

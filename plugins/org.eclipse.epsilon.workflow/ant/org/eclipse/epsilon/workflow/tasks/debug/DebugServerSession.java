@@ -10,22 +10,19 @@
 package org.eclipse.epsilon.workflow.tasks.debug;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Future;
 
-import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 import org.eclipse.epsilon.eol.dap.ExecutionQueueModule;
+import org.eclipse.epsilon.eol.dap.ReusableEpsilonDebugServer;
 import org.eclipse.lsp4j.debug.TerminateArguments;
 
 public class DebugServerSession {
 
-	private EpsilonDebugServer server;
+	private ReusableEpsilonDebugServer server;
 	private Thread serverThread;
-	private ExecutionQueueModule queueModule;
 
-	public DebugServerSession(int port) {
-		queueModule = new ExecutionQueueModule();
-		server = new EpsilonDebugServer(queueModule, port);
+	public DebugServerSession(String host, int port) {
+		server = new ReusableEpsilonDebugServer(host, port);
 		serverThread = new Thread(server::run, "Epsilon Debug Server Thread");
 	}
 
@@ -38,7 +35,7 @@ public class DebugServerSession {
 	}
 
 	public ExecutionQueueModule getQueueModule() {
-		return queueModule;
+		return server.getModule();
 	}
 
 	public void start() throws InterruptedException {
@@ -53,10 +50,7 @@ public class DebugServerSession {
 	public void shutdown() {
 		server.getDebugAdapter().terminate(new TerminateArguments());
 
-		Future<Object> lastModule = queueModule.enqueue(new EolModule());
 		try {
-			// Wait for the final module to finish running
-			lastModule.get();
 			// Wait for the server to fully shut down
 			serverThread.join();
 		} catch (Exception e) {
@@ -65,6 +59,5 @@ public class DebugServerSession {
 
 		server = null;
 		serverThread = null;
-		queueModule = null;
 	}
 }
