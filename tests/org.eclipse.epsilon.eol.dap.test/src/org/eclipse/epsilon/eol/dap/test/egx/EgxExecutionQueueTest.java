@@ -15,39 +15,22 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 import org.eclipse.epsilon.egl.EgxModule;
-import org.eclipse.epsilon.eol.EolModule;
-import org.eclipse.epsilon.eol.dap.ExecutionQueueModule;
-import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
+import org.eclipse.epsilon.eol.dap.test.AbstractExecutionQueueTest;
 import org.eclipse.epsilon.eol.dap.test.metamodel.Person;
 import org.eclipse.epsilon.eol.models.java.JavaModel;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
-import org.eclipse.lsp4j.debug.TerminateArguments;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-public class ExecutionQueueTemplateTest extends AbstractEpsilonDebugAdapterTest {
+public class EgxExecutionQueueTest extends AbstractExecutionQueueTest {
 
 	private static final File SCRIPT_FILE = new File(BASE_RESOURCE_FOLDER, "10-orchestration.egx");
 	private static final File EGL_FILE = new File(BASE_RESOURCE_FOLDER, "10-person.egl");
 
 	@Rule
 	public TemporaryFolder tempFolder = new TemporaryFolder();
-
-	@Override
-	protected void setupModule() throws Exception {
-		this.module = new ExecutionQueueModule();
-	}
-
-	@Override
-	protected void setupAdapter() throws Exception {
-		((ExecutionQueueModule) this.module).setDebugAdapter(adapter);
-	}
-
-	private ExecutionQueueModule getModule() {
-		return (ExecutionQueueModule) this.module;
-	}
 
 	@Test
 	public void canStopWithinTemplate() throws Exception {
@@ -77,22 +60,8 @@ public class ExecutionQueueTemplateTest extends AbstractEpsilonDebugAdapterTest 
 		)).get();
 		adapter.continue_(new ContinueArguments()).get();
 		egxResult.get();
+
 		shutdown();
-	}
-
-	protected void shutdown() throws Exception {
-		// Shut down the adapter (which terminates the module)
-		adapter.terminate(new TerminateArguments());
-
-		// Ensures the program has finished running, and that the script thread has died
-		assertProgramCompletedSuccessfully();
-		epsilonThread.join();
-	}
-
-	protected Future<Object> enqueueScript(File eolFile) throws Exception {
-		EolModule eolA = new EolModule();
-		eolA.parse(eolFile);
-		return getModule().enqueue(eolA);
 	}
 
 }

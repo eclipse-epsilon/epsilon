@@ -15,33 +15,17 @@ import java.io.File;
 import java.util.concurrent.Future;
 
 import org.eclipse.epsilon.eol.EolModule;
-import org.eclipse.epsilon.eol.dap.ExecutionQueueModule;
-import org.eclipse.epsilon.eol.dap.test.AbstractEpsilonDebugAdapterTest;
+import org.eclipse.epsilon.eol.dap.test.AbstractExecutionQueueTest;
 import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.StackFrame;
 import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
-import org.eclipse.lsp4j.debug.TerminateArguments;
 import org.junit.Test;
 
-public class ExecutionQueueModuleTest extends AbstractEpsilonDebugAdapterTest {
+public class EolExecutionQueueTest extends AbstractExecutionQueueTest {
 
 	private static final File SCRIPT_A_FILE = new File(BASE_RESOURCE_FOLDER, "05-smallCollection.eol");
 	private static final File SCRIPT_B_FILE = new File(BASE_RESOURCE_FOLDER, "06-largeCollection.eol");
-
-	@Override
-	protected void setupModule() throws Exception {
-		this.module = new ExecutionQueueModule();
-	}
-
-	@Override
-	protected void setupAdapter() throws Exception {
-		((ExecutionQueueModule) this.module).setDebugAdapter(adapter);
-	}
-
-	private ExecutionQueueModule getModule() {
-		return (ExecutionQueueModule) this.module;
-	}
 
 	@Test
 	public void canRunSingleModule() throws Exception {
@@ -88,15 +72,6 @@ public class ExecutionQueueModuleTest extends AbstractEpsilonDebugAdapterTest {
 		eolBResult.get();
 
 		shutdown();
-	}
-
-	protected void shutdown() throws Exception {
-		// Shut down the adapter (which terminates the module)
-		adapter.terminate(new TerminateArguments()).get();
-
-		// Ensures the program has finished running, and that the script thread has died
-		assertProgramCompletedSuccessfully();
-		epsilonThread.join();
 	}
 
 	protected Future<Object> enqueueScript(File eolFile) throws Exception {

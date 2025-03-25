@@ -17,12 +17,12 @@ import org.eclipse.epsilon.eol.dap.test.egl.ImportingEglTest;
 import org.eclipse.epsilon.eol.dap.test.egx.ClasspathEgxTest;
 import org.eclipse.epsilon.eol.dap.test.egx.EgxDebugTest;
 import org.eclipse.epsilon.eol.dap.test.egx.EgxErrorInEglTest;
-import org.eclipse.epsilon.eol.dap.test.egx.ExecutionQueueTemplateTest;
+import org.eclipse.epsilon.eol.dap.test.egx.EgxExecutionQueueTest;
 import org.eclipse.epsilon.eol.dap.test.emg.EmgDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eml.EmlDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ClasspathEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ErrorReportingEolTest;
-import org.eclipse.epsilon.eol.dap.test.eol.ExecutionQueueModuleTest;
+import org.eclipse.epsilon.eol.dap.test.eol.EolExecutionQueueTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ForLoopEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.HttpEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.IfElseStepOverTest;
@@ -84,8 +84,8 @@ import junit.framework.Test;
     EUnitDebugTest.class,
     TupleWithCycleTest.class,
     IfElseStepOverTest.class,
-    ExecutionQueueModuleTest.class,
-    ExecutionQueueTemplateTest.class
+    EolExecutionQueueTest.class,
+    EgxExecutionQueueTest.class
 })
 public class EpsilonDebugAdapterTestSuite {
 	public static Test suite() {
