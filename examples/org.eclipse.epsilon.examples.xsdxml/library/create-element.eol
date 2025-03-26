@@ -1,0 +1,16 @@
+// Get all the books contained in this library
+var library = LibraryType.all().first();
+var allBooks = library.book;
+
+// Print the current number of books
+allBooks.size().println();
+
+// Create a new book
+var newBook: new BookType;
+newBook.title = "MDE in Practice";
+
+// Add the book to the library
+library.book.add(newBook);
+
+// Get all books and print the new size
+BookType.all().size().println();

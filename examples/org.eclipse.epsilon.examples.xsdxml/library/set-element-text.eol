@@ -1,0 +1,10 @@
+// Get the first book contained in the library
+var emfBook = BookType.all().first();
+
+// Set the title to a new one
+emfBook.title = "EMF Book";
+
+// Print the changed title (NB.: You need to have selected the "Store on disposal" 
+// option in the run configuration to save changes to the XML file.)
+var changedEmfBook =  BookType.all().first();
+changedEmfBook.title.println();
