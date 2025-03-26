@@ -33,6 +33,8 @@ public class EpsilonJob extends Job {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
+		// It's best to map the entire bundle rather than an individual script, in case there are imports
+		URL bundleUrl = FileLocator.find(Activator.getDefault().getBundle(), new Path("/"));
 		URL scriptUrl = FileLocator.find(Activator.getDefault().getBundle(), new Path("epsilon/main.eol"));
 
 		EolModule module = new EolModule();
@@ -44,19 +46,19 @@ public class EpsilonJob extends Job {
 				EpsilonDebugServer server = new EpsilonDebugServer(module, 0);
 
 				// Note: this mapping may only work when running the bundle from source
-				java.nio.file.Path mappedPath = Paths.get(FileLocator.toFileURL(scriptUrl).toURI());
+				java.nio.file.Path mappedPath = Paths.get(FileLocator.toFileURL(bundleUrl).toURI());
 				server.getDebugAdapter().getUriToPathMappings().put(
-					scriptUrl.toURI(),
+					bundleUrl.toURI(),
 					mappedPath);
 
 				server.setOnStart(() -> {
 					Display.getDefault().asyncExec(() -> {
 						MessageDialog.openInformation(Display.getDefault().getActiveShell(), "Debug server running", String.format(
 							"Debug server running on port %d and waiting for a connection.\n"
-								+ "Script URL is: %s\n"
+								+ "Bundle URL is: %s\n"
 								+ "Mapped path is: %s",
 							server.getPort(),
-							scriptUrl,
+							bundleUrl,
 							mappedPath
 						));
 					});
