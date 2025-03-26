@@ -1,8 +1,7 @@
 <project default="main">
 	<target name="main">
 		
-		<epsilon.emf.loadXmlModel name="X"
-			modelfile="note.xml" xsdfile="note.xsd"/>
+		<epsilon.emf.loadXmlModel name="X" modelfile="note.xml" xsdfile="note.xsd"/>
 		
 		<epsilon.eol src="note.eol">
 			<model ref="X"/>
