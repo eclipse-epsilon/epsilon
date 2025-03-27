@@ -32,7 +32,9 @@ import org.junit.Test;
  */
 public class ClasspathPrefixEolTest extends AbstractEpsilonDebugAdapterTest {
 
-	private static final Path RESOURCE_PATH = Paths.get("subpkg", "30-fromClasspathNested.eol");
+	private static final String SUBPKG_FOLDER = "subpkg";
+	private static final String SCRIPT_BASENAME = "30-fromClasspathNested.eol";
+	private static final Path RESOURCE_PATH = Paths.get(SUBPKG_FOLDER, SCRIPT_BASENAME);
 
 	private static final Path SCRIPT_PREFIX =
 		Paths.get("..", "org.eclipse.epsilon.eol.dap.test", "src")
@@ -43,7 +45,10 @@ public class ClasspathPrefixEolTest extends AbstractEpsilonDebugAdapterTest {
 	@Override
 	protected void setupModule() throws Exception {
 		this.module = new EolModule();
-		module.parse(ClasspathPrefixEolTest.class.getResource(RESOURCE_PATH.toString()).toURI());
+		module.parse(ClasspathPrefixEolTest
+			.class.getResource(String.format(
+				"%s/%s", SUBPKG_FOLDER, SCRIPT_BASENAME
+			)).toURI());
 	}
 
 	@Override
