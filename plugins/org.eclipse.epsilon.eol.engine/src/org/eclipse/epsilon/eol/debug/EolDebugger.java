@@ -279,17 +279,33 @@ public class EolDebugger implements IEolDebugger {
 		// Try to use the URI-to-path mappings in reverse
 		final String fullPathUri = argsSourceFile.toURI().toString();
 		for (Entry<URI, Path> e : uriToPathMappings.entrySet()) {
-			final String baseUri = e.getKey().toString();
+			String baseUri = e.getKey().toString();
 
 			final File canonicalFile = e.getValue().toFile().getCanonicalFile();
-			final String basePathUri = canonicalFile.toURI().toString();
-
-			if (fullPathUri.startsWith(basePathUri)) {
-				String uriSuffix = fullPathUri.substring(basePathUri.length());
-				String mappedUri = baseUri + uriSuffix;
-				resolvedModule = uriToModule.get(mappedUri);
-				if (resolvedModule != null) {
-					return resolvedModule;
+			if (canonicalFile.isFile()) {
+				// For files, we just check if they are the same file
+				if (argsSourceFile.equals(canonicalFile)) {
+					resolvedModule = uriToModule.get(baseUri);
+					if (resolvedModule != null) {
+						return resolvedModule;
+					}
+				}
+			} else if (canonicalFile.isDirectory()) {
+				/*
+				 * For directories, we ensure the base URI ends in a slash,
+				 * so concatenation of the suffix ensures baseUri/restOfPath
+				 */
+				if (!baseUri.endsWith("/")) {
+					baseUri = baseUri + "/";
+				}
+				final String basePathUri = canonicalFile.toURI().toString();
+				if (fullPathUri.startsWith(basePathUri)) {
+					String uriSuffix = fullPathUri.substring(basePathUri.length());
+					String mappedUri = baseUri + uriSuffix;
+					resolvedModule = uriToModule.get(mappedUri);
+					if (resolvedModule != null) {
+						return resolvedModule;
+					}
 				}
 			}
 		}

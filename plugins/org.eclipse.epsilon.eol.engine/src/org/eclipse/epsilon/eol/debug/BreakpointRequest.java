@@ -30,7 +30,7 @@ public class BreakpointRequest {
 	 * 
 	 * @param uriToPathMappings Mappings from module URIs to filesystem paths.
 	 *                          Useful when debugging code that is loaded from a
-	 *                          non-file URI. The URIs must have a trailing slash.
+	 *                          non-file URI.
 	 * @param path              Absolute path of the IDE file with the breakpoint.
 	 * @param line              1-based index of the line of the file where the
 	 *                          breakpoint has been set.

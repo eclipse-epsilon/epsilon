@@ -540,7 +540,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 	/**
 	 * Mappings from module URIs to filesystem paths. Useful when debugging
-	 * code that is loaded from a non-file URI. The URIs must have a trailing slash.
+	 * code that is loaded from a non-file URI.
 	 */
 	private final Map<URI, Path> uriToPathMappings = new HashMap<>();
 
@@ -1025,27 +1025,42 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 	protected void mapUriToSourcePath(String uri, Source bpSource) {
 		for (Entry<URI, Path> mapping : this.uriToPathMappings.entrySet()) {
-			final String uriPrefix = mapping.getKey().toString();
-			final Path pathPrefix = mapping.getValue();
-
-			if (uri.startsWith(uriPrefix)) {
-				Path mappedPath = pathPrefix.resolve(uri.substring(uriPrefix.length()));
-				final File mappedFile = mappedPath.toFile();
-				if (mappedFile.exists()) {
-					try {
-						bpSource.setPath(mappedFile.getCanonicalPath());
-					} catch (IOException e) {
-						bpSource.setPath(mappedFile.getPath());
-						LOGGER.log(Level.WARNING,
-							String.format(
-								"Cannot produce canonical path for '%s':"
-								+ " falling back to regular path",
-								mappedFile.getPath()),
-							e);
-					}
+			File mappingFile = mapping.getValue().toFile();
+			if (mappingFile.isFile()) {
+				if (uri.equals(mapping.getKey().toString())) {
+					setSourceFile(bpSource, mappingFile);
 					break;
 				}
+			} else if (mappingFile.isDirectory()) {
+				String uriPrefix = mapping.getKey().toString();
+				if (!uriPrefix.endsWith("/")) {
+					uriPrefix = uriPrefix + "/";
+				}
+				final Path pathPrefix = mapping.getValue();
+
+				if (uri.startsWith(uriPrefix)) {
+					String uriSuffix = uri.substring(uriPrefix.length());
+					File resolvedFile = pathPrefix.resolve(uriSuffix).toFile();
+					if (resolvedFile.exists()) {
+						setSourceFile(bpSource, resolvedFile);
+						break;
+					}
+				}
 			}
+		}
+	}
+
+	protected void setSourceFile(Source bpSource, final File mappedFile) {
+		try {
+			bpSource.setPath(mappedFile.getCanonicalPath());
+		} catch (IOException e) {
+			bpSource.setPath(mappedFile.getPath());
+			LOGGER.log(Level.WARNING,
+				String.format(
+					"Cannot produce canonical path for '%s':"
+					+ " falling back to regular path",
+					mappedFile.getPath()),
+				e);
 		}
 	}
 
@@ -1122,8 +1137,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 	/**
 	 * Mappings from module URIs to filesystem paths. Useful when debugging
-	 * code that is loaded from a non-file URI. When populating it, users
-	 * must ensure that URIs referring to a folder have a trailing slash.
+	 * code that is loaded from a non-file URI.
 	 */
 	public Map<URI, Path> getUriToPathMappings() {
 		return uriToPathMappings;
