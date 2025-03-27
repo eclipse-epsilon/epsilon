@@ -36,7 +36,7 @@ import org.junit.Test;
 
 /**
  * Tests for debugging an EOL script loaded from an non-file URL. This test is
- * needed in order to reliably test this scenario, as {@link ClasspathEolTest}
+ * needed in order to reliably test this scenario, as {@link ClasspathFullPathEolTest}
  * works differently when run from Eclipse and when run from Tycho.
  */
 public class HttpEolTest extends AbstractEpsilonDebugAdapterTest {
