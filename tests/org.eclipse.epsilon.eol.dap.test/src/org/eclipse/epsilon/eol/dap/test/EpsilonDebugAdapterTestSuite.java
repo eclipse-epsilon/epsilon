@@ -21,7 +21,8 @@ import org.eclipse.epsilon.eol.dap.test.egx.EgxErrorInEglTest;
 import org.eclipse.epsilon.eol.dap.test.egx.EgxExecutionQueueTest;
 import org.eclipse.epsilon.eol.dap.test.emg.EmgDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eml.EmlDebugTest;
-import org.eclipse.epsilon.eol.dap.test.eol.ClasspathEolTest;
+import org.eclipse.epsilon.eol.dap.test.eol.ClasspathFullPathEolTest;
+import org.eclipse.epsilon.eol.dap.test.eol.ClasspathPrefixEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ErrorReportingEolTest;
 import org.eclipse.epsilon.eol.dap.test.eol.EolExecutionQueueTest;
 import org.eclipse.epsilon.eol.dap.test.eol.ForLoopEolTest;
@@ -56,7 +57,8 @@ import junit.framework.Test;
     ImportingEolTest.class,
     StandaloneEolTest.class,
     ForLoopEolTest.class,
-    ClasspathEolTest.class,
+    ClasspathFullPathEolTest.class,
+    ClasspathPrefixEolTest.class,
     HttpEolTest.class,
     ModelElementPropertiesTest.class,
     SmallCollectionTest.class,

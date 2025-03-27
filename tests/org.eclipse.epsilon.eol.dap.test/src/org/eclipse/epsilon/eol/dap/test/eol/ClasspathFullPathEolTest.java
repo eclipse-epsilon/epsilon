@@ -36,24 +36,24 @@ import org.junit.Test;
  * which produces errors).</li>
  * </ul>
  */
-public class ClasspathEolTest extends AbstractEpsilonDebugAdapterTest {
+public class ClasspathFullPathEolTest extends AbstractEpsilonDebugAdapterTest {
 
 	private static final String RESOURCE_NAME = "03-fromClasspath.eol";
 	private static final File SCRIPT_FILE = new File(
 		"../org.eclipse.epsilon.eol.dap.test/src/"
-		+ ClasspathEolTest.class.getPackageName().replaceAll("[.]", "/")
+		+ ClasspathFullPathEolTest.class.getPackageName().replaceAll("[.]", "/")
 		+ "/" + RESOURCE_NAME);
 
 	@Override
 	protected void setupModule() throws Exception {
 		this.module = new EolModule();
-		module.parse(ClasspathEolTest.class.getResource(RESOURCE_NAME).toURI());
+		module.parse(ClasspathFullPathEolTest.class.getResource(RESOURCE_NAME).toURI());
 	}
 
 	@Override
 	protected void setupAdapter() throws Exception {
 		adapter.getUriToPathMappings().put(
-			ClasspathEolTest.class.getResource(RESOURCE_NAME).toURI(),
+			ClasspathFullPathEolTest.class.getResource(RESOURCE_NAME).toURI(),
 			SCRIPT_FILE.toPath());
 	}
 

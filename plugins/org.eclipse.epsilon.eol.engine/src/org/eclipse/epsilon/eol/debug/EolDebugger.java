@@ -24,7 +24,6 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
-import org.eclipse.epsilon.eol.dom.ForStatement;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.Operation;
 import org.eclipse.epsilon.eol.dom.Statement;
