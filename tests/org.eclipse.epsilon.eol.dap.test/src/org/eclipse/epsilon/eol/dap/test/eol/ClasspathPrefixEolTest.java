@@ -12,6 +12,7 @@ package org.eclipse.epsilon.eol.dap.test.eol;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -47,9 +48,10 @@ public class ClasspathPrefixEolTest extends AbstractEpsilonDebugAdapterTest {
 
 	@Override
 	protected void setupAdapter() throws Exception {
-		adapter.getUriToPathMappings().put(
-			ClasspathPrefixEolTest.class.getResource(".").toURI(),
-			SCRIPT_PREFIX);
+		final String baseFolderFile = "03-fromClasspath.eol";
+		String sBaseFileURL = ClasspathPrefixEolTest.class.getResource(baseFolderFile).toString();
+		URL folderURL = new URL(sBaseFileURL.substring(0, sBaseFileURL.length() - baseFolderFile.length()));
+		adapter.getUriToPathMappings().put(folderURL.toURI(), SCRIPT_PREFIX);
 	}
 
 	@Test
