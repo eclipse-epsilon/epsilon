@@ -250,14 +250,14 @@ public class EolDebugger implements IEolDebugger {
 	 * the URI of the module being executed (e.g. if the module is being loaded from
 	 * the classpath and not from the filesystem).
 	 */
-	protected IModule resolveModule(final Map<URI, Path> uriToPathMappings, final String argsSourcePath) throws IOException {
+	protected IModule resolveModule(final Map<URI, Path> uriToPathMappings, final String sArgsSourcePath) throws IOException {
 		// Stop if we don't actually have a path
-		if (argsSourcePath == null) {
+		if (sArgsSourcePath == null) {
 			return null;
 		}
 
 		// Stop if the DAP path does not resolve to a file in our filesystem
-		File argsSourceFile = new File(argsSourcePath);
+		File argsSourceFile = new File(sArgsSourcePath);
 		if (!argsSourceFile.exists()) {
 			return null;
 		} else {
@@ -277,13 +277,16 @@ public class EolDebugger implements IEolDebugger {
 		}
 
 		// Try to use the URI-to-path mappings in reverse
+		final String fullPathUri = argsSourceFile.toURI().toString();
 		for (Entry<URI, Path> e : uriToPathMappings.entrySet()) {
 			final String baseUri = e.getKey().toString();
-			final File canonicalFile = e.getValue().toFile().getCanonicalFile();
-			final String basePath = canonicalFile.getPath() + (canonicalFile.isDirectory() ? File.separator : "");
 
-			if (argsSourcePath.startsWith(basePath)) {
-				String mappedUri = baseUri + argsSourcePath.substring(basePath.length());
+			final File canonicalFile = e.getValue().toFile().getCanonicalFile();
+			final String basePathUri = canonicalFile.toURI().toString();
+
+			if (fullPathUri.startsWith(basePathUri)) {
+				String uriSuffix = fullPathUri.substring(basePathUri.length());
+				String mappedUri = baseUri + uriSuffix;
 				resolvedModule = uriToModule.get(mappedUri);
 				if (resolvedModule != null) {
 					return resolvedModule;
