@@ -22,6 +22,9 @@ import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * <p>
@@ -30,6 +33,7 @@ import org.junit.Test;
  * instead of a full path.
  * </p>
  */
+@RunWith(Parameterized.class)
 public class ClasspathPrefixEolTest extends AbstractEpsilonDebugAdapterTest {
 
 	private static final String SUBPKG_FOLDER = "subpkg";
@@ -41,6 +45,17 @@ public class ClasspathPrefixEolTest extends AbstractEpsilonDebugAdapterTest {
 			.resolve(Paths.get("", ClasspathPrefixEolTest.class.getPackageName().split("[.]")));
 
 	private static final File SCRIPT_FILE = SCRIPT_PREFIX.resolve(RESOURCE_PATH).toFile();
+
+	private boolean useTrailingSlash;
+
+	@Parameters(name = "useTrailingSlash={0}")
+	public static Object[] data() {
+		return new Object[]{ false, true };
+	}
+
+	public ClasspathPrefixEolTest(boolean useTrailingSlash) {
+		this.useTrailingSlash = useTrailingSlash;
+	}
 
 	@Override
 	protected void setupModule() throws Exception {
@@ -55,7 +70,12 @@ public class ClasspathPrefixEolTest extends AbstractEpsilonDebugAdapterTest {
 	protected void setupAdapter() throws Exception {
 		final String baseFolderFile = "03-fromClasspath.eol";
 		String sBaseFileURL = ClasspathPrefixEolTest.class.getResource(baseFolderFile).toString();
-		URL folderURL = new URL(sBaseFileURL.substring(0, sBaseFileURL.length() - baseFolderFile.length()));
+		String sFolderURL = sBaseFileURL.substring(0, sBaseFileURL.length() - baseFolderFile.length());
+		if (!useTrailingSlash) {
+			sFolderURL = sFolderURL.substring(0, sFolderURL.length() - 1);
+		}
+		URL folderURL = new URL(sFolderURL);
+
 		adapter.getUriToPathMappings().put(folderURL.toURI(), SCRIPT_PREFIX);
 	}
 
