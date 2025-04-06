@@ -392,9 +392,11 @@ public class FlexmiResource extends ResourceImpl implements Handler {
 		processingInstructions.add(processingInstruction);
 		
 		if ("nsuri".equalsIgnoreCase(key)) {
-			
 			EPackage ePackage = null;
-			
+
+			// URIs cannot have spaces, so trim any leading and trailing whitespace
+			value = value.trim();
+
 			// If the package is already in the resource set's package registry
 			// do nothing and do not raise a warning
 			// We are copying the package registry's keyset to a new collection

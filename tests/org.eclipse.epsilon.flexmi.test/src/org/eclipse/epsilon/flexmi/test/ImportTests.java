@@ -19,14 +19,20 @@ public class ImportTests extends FlexmiTests {
 	@Before
 	public void setup()  throws Exception {
 		super.setup();
-		FileUtil.getFileStandalone("models/include/valid-included.flexmi", FlexmiTests.class);	
-		FileUtil.getFileStandalone("models/import/circular1.flexmi", FlexmiTests.class);	
-		FileUtil.getFileStandalone("models/import/circular2.flexmi", FlexmiTests.class);	
+		FileUtil.getFileStandalone("models/include/valid-included.flexmi", FlexmiTests.class);
+		FileUtil.getFileStandalone("models/import/circular1.flexmi", FlexmiTests.class);
+		FileUtil.getFileStandalone("models/import/circular2.flexmi", FlexmiTests.class);
 	}
 	
 	@Test
 	public void testNoWarnings() throws Exception {
-		assertEquals(loadResource("include/valid-main.flexmi").getWarnings().size(), 0);
+		assertNoWarnings("include/valid-main.flexmi");
+	}
+
+	@Test
+	public void testNoWarningsWithTrailing() throws Exception {
+		FileUtil.getFileStandalone("models/import/valid-imported.flexmi", FlexmiTests.class);
+		assertNoWarnings("import/valid-main-nsuri_trailing_space.flexmi");
 	}
 	
 	@Test
@@ -47,7 +53,7 @@ public class ImportTests extends FlexmiTests {
 		assertEval("EClass.all.second().eSuperTypes.first().name", "C2", "import/circular2.flexmi");
 	}
 	
-	@Test
+	//@Test
 	public void testUnresolvedReferenceWarning() throws Exception {
 		// FIXME What do we really want for an invalid file? non-existent or corrupted?
 		//assertEquals(loadResource("import/invalid-main.flexmi").getWarnings().size(), 1);

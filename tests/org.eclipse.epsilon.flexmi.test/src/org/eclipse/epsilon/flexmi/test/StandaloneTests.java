@@ -17,7 +17,7 @@ public class StandaloneTests extends FlexmiTests {
 	
 	@Test
 	public void testNoWarnings() throws Exception {
-		assertEquals(loadResource("standalone/valid-model.flexmi").getWarnings().size(), 0);
+		assertNoWarnings("standalone/valid-model.flexmi");
 	}
 	
 	@Test

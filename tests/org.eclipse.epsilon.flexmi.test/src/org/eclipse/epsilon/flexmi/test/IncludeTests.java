@@ -9,7 +9,6 @@
 **********************************************************************/
 package org.eclipse.epsilon.flexmi.test;
 
-import static org.junit.Assert.assertEquals;
 import org.eclipse.epsilon.common.util.FileUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +24,7 @@ public class IncludeTests extends FlexmiTests {
 	
 	@Test
 	public void testNoWarnings() throws Exception {
-		assertEquals(loadResource("include/valid-main.flexmi").getWarnings().size(), 0);
+		assertNoWarnings("include/valid-main.flexmi");
 	}
 	
 	@Test
