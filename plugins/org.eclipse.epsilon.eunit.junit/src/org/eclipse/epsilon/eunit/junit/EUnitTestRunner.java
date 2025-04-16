@@ -68,7 +68,7 @@ public class EUnitTestRunner extends ParentRunner<EUnitTest> {
 	protected class JUnitEUnitTestListener implements EUnitTestListener {
 		private final RunNotifier notifier;
 
-		private JUnitEUnitTestListener(RunNotifier notifier) {
+		protected JUnitEUnitTestListener(RunNotifier notifier) {
 			this.notifier = notifier;
 		}
 
