@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
-  <ecore:EClass name="m2"/>
-  <ecore:EClass name="B">
-    <eSuperTypes href="m1.ecore#/1"/>
-  </ecore:EClass>
-</xmi:XMI>

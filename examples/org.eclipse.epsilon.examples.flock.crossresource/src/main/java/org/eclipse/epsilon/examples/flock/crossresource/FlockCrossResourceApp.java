@@ -23,7 +23,6 @@ import org.eclipse.epsilon.flock.execute.context.FlockContext;
 
 public class FlockCrossResourceApp {
 	
-	
 	public static void main(String[] args) throws Exception {
 		new FlockCrossResourceApp().run();
 	}
@@ -31,8 +30,7 @@ public class FlockCrossResourceApp {
 	public void run() throws Exception {
 		
 		CrossResourceFlockModule module = new CrossResourceFlockModule();
-		//module.parse("migrate EClass {migrated.name = original.name + 'X';}");
-		module.parse("retype EPackage to EClass");
+		module.parse("migrate EClass { migrated.name = 'C' + original.name; } ");
 		
 		EmfModel m1Original = getModel("original/m1.ecore", true, false);
 		EmfModel m2Original = getModel("original/m2.ecore", true, false);
@@ -201,10 +199,7 @@ public class FlockCrossResourceApp {
 		modelRepository.dispose();
 		
 	}
-	
-	
-	
-	
+
 	protected EmfModel getModel(String path, boolean readOnLoad, boolean storedOnDisposal) throws Exception {
 		EmfModel model = new EmfModel();
 		model.setMetamodelUri(EcorePackage.eINSTANCE.getNsURI());

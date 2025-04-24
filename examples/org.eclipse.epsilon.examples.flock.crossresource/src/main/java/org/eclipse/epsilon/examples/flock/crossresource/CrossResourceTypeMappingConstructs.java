@@ -14,6 +14,4 @@ public class CrossResourceTypeMappingConstructs extends TypeMappingConstructs {
 		this.typeMappingConstructs.addAll(Arrays.asList(typeMappings));
 	}
 	
-	
-	
 }
