@@ -12,9 +12,10 @@ package org.eclipse.epsilon.examples.standalone.egl;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import org.eclipse.epsilon.common.util.StringProperties;
+import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.emc.emf.EmfModel;
-import org.eclipse.epsilon.egl.launch.EgxRunConfiguration;
 
 /**
  * This example demonstrates using the Epsilon Generation Language, the M2T language of Epsilon, in a stand-alone manner 
@@ -22,10 +23,10 @@ import org.eclipse.epsilon.egl.launch.EgxRunConfiguration;
  * @author Sina Madani
  * @author Dimitrios Kolovos
  */
-public class EgxStandaloneExample {
+public class EgxModuleExample {
 	
 	public static void main(String[] args) throws Exception {
-		Path root = Paths.get(EgxStandaloneExample.class.getResource("/").toURI());
+		Path root = Paths.get(EgxModuleExample.class.getResource("/").toURI());
 		
 		StringProperties modelProperties = new StringProperties();
 		modelProperties.setProperty(EmfModel.PROPERTY_NAME, "Model");
@@ -37,16 +38,22 @@ public class EgxStandaloneExample {
 		);
 		modelProperties.setProperty(EmfModel.PROPERTY_CACHED, "true");
 		modelProperties.setProperty(EmfModel.PROPERTY_CONCURRENT, "true");
-		
-		EgxRunConfiguration runConfig = EgxRunConfiguration.Builder()
-			.withScript(root.resolve("egx/demo.egx"))
-			.withModel(new EmfModel(), modelProperties)
-			.withParameter("eglTemplateFileName", "tree.egl")
-			.withOutputRoot(new File("egx-gen").getAbsolutePath())
-			.withProfiling()
-			.build();
-		
-		runConfig.run();
+
+		EmfModel model = new EmfModel();
+		model.load(modelProperties);
+
+		EgxModule module = new EgxModule(new File("egx-gen").getAbsolutePath());
+		module.parse(root.resolve("egx/demo.egx"));
+		module.getContext().getFrameStack().put("eglTemplateFileName", "tree.egl");
+		module.getContext().setProfilingEnabled(true);
+		module.getContext().getModelRepository().addModel(model);
+
+		try {
+			module.execute();
+		} finally {
+			module.getContext().getModelRepository().dispose();
+			module.getContext().dispose();
+		}
 	}
 
 }
