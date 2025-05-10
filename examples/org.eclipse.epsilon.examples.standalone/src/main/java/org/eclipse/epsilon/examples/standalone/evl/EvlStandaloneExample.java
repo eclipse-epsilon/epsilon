@@ -11,8 +11,11 @@ package org.eclipse.epsilon.examples.standalone.evl;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
+
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
 import org.eclipse.epsilon.evl.launch.EvlRunConfiguration;
 
 /**
@@ -48,7 +51,28 @@ public class EvlStandaloneExample {
 			.withResults()
 			.withParallelism()
 			.build();
-		
-		runConfig.run();
+
+		try {
+			runConfig.run();
+
+			/*
+			 * EvlRunConfiguration#run() will print output, but we could
+			 * alternatively loop through the unsatisfied constraints.
+			 *
+			 * We'd have to do this if using an EvlModule instead of an
+			 * EvlRunConfiguration.
+			 */
+			Collection<UnsatisfiedConstraint> unsatisfied = runConfig.getResult();
+			for (UnsatisfiedConstraint c : unsatisfied) {
+				System.out.println(String.format("%s '%s' unsatisfied for %s: %s",
+					c.getConstraint().isCritique() ? "Critique" : "Constraint",
+					c.getConstraint().getName(),
+					c.getInstance(),
+					c.getMessage()
+				));
+			}
+		} finally {
+			runConfig.dispose();
+		}
 	}
 }

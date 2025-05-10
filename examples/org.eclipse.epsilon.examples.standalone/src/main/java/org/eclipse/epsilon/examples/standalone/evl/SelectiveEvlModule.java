@@ -57,8 +57,7 @@ public class SelectiveEvlModule extends EvlModule {
 		@Override
 		public Collection<?> getAllOfSourceKind(IEolContext context)
 				throws EolModelElementTypeNotFoundException, EolModelNotFoundException {
-			// Only return a subset containing elements which are
-			// descendants of one of the root objects
+			// Only return a subset that matches the condition in shouldCheck()
 			return super.getAllOfSourceKind(context).stream().
 					filter(e -> shouldCheck(e)).collect(Collectors.toList());
 		}
@@ -74,7 +73,7 @@ public class SelectiveEvlModule extends EvlModule {
 	}
 	
 	protected boolean shouldCheck(Object object) {
-		// Only check elements which are decendants of one of the
+		// Only check elements which are descendants of one of the
 		// root objects
 		return EcoreUtil.isAncestor(rootEObjects, (EObject) object);
 	}
