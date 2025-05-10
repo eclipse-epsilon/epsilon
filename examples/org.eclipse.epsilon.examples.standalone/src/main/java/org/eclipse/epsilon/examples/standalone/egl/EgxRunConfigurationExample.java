@@ -46,7 +46,11 @@ public class EgxRunConfigurationExample {
 			.withProfiling()
 			.build();
 		
-		runConfig.run();
+		try {
+			runConfig.run();
+		} finally {
+			runConfig.dispose();
+		}
 	}
 
 }
