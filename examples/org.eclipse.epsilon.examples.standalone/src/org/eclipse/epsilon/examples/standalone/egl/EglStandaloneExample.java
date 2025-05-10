@@ -9,14 +9,19 @@
  ******************************************************************************/
 package org.eclipse.epsilon.examples.standalone.egl;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.epsilon.egl.EglModule;
 import org.eclipse.epsilon.egl.EglTemplateFactory;
 import org.eclipse.epsilon.egl.EglTemplateFactoryModuleAdapter;
+import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.emc.emf.m0.EmfM0Model;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.examples.standalone.EpsilonStandaloneExample;
+import org.eclipse.epsilon.examples.standalone.egl.flexmiemfatic.EglFlexmiEmfaticStandaloneExample;
 
 /**
  * This example demonstrates using the 
@@ -27,6 +32,20 @@ import org.eclipse.epsilon.examples.standalone.EpsilonStandaloneExample;
 public class EglStandaloneExample extends EpsilonStandaloneExample {
 	
 	public static void main(String[] args) throws Exception {
+		EglModule module = new EglModule();
+		module.parse(EglStandaloneExample.class.getResource("Demo.egl"));
+		if (!module.getParseProblems().isEmpty()) {
+			System.out.println("Parsing problems: " + module.getParseProblems());
+			System.exit(1);
+		}
+
+		EmfModel model = new EmfModel();
+		model.setName("Model");
+		model.setModelFile(null);
+		model.setModelFile(Paths.get(EglFlexmiEmfaticStandaloneExample.class.getResource("psl.flexmi").toURI()).toFile().getAbsolutePath());
+		model.setMetamodelFile(Paths.get(EglFlexmiEmfaticStandaloneExample.class.getResource("psl.emf").toURI()).toFile().getAbsolutePath());
+
+
 		new EglStandaloneExample().execute();
 	}
 	

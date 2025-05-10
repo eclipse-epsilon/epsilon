@@ -1,9 +1,0 @@
-package TreeDsl;
-
-class Tree {
-	
-	val Tree[*]#parent children;
-	ref Tree#children parent;
-	attr String label;
-	
-}

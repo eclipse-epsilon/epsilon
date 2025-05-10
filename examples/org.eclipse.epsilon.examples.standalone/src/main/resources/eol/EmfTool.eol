@@ -1,0 +1,2 @@
+var emfTool = new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
+emfTool.println();

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Tree xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="TreeDsl" xsi:schemaLocation="TreeDsl file:/Volumes/Sources/epsilon/examples/org.eclipse.epsilon.examples.standalone/target/classes/metamodels/Tree.ecore" label="CopyOfa">
+  <children label="CopyOfb">
+    <children label="CopyOfc"/>
+  </children>
+</Tree>
