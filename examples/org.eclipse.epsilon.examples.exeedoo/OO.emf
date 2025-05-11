@@ -1,7 +1,7 @@
 @namespace(uri="OO", prefix="")
 package OO;
 
-@exeed(classIcon="platform:/resource/org.eclipse.epsilon.examples.exeedoo/icons/model")
+@exeed(classIcon="model")
 class Model extends Package {
 }
 
