@@ -23,6 +23,7 @@ import org.eclipse.epsilon.egl.test.acceptance.outdentation.OutdentationTests;
 import org.eclipse.epsilon.egl.test.acceptance.output.Output;
 import org.eclipse.epsilon.egl.test.acceptance.output.lineNumbers.CurrentLineNumber;
 import org.eclipse.epsilon.egl.test.acceptance.output.newlines.OutputNewlines;
+import org.eclipse.epsilon.egl.test.acceptance.parse.ParseProblemTests;
 import org.eclipse.epsilon.egl.test.acceptance.patch.PatchTestSuite;
 import org.eclipse.epsilon.egl.test.acceptance.stop.Stop;
 import org.eclipse.epsilon.egl.test.acceptance.traceability.Traceability;
@@ -49,7 +50,8 @@ import junit.framework.Test;
                Formatters.class,
                PatchTestSuite.class,
                OutdentationTests.class,
-               ImportCachingTests.class})
+               ImportCachingTests.class,
+               ParseProblemTests.class})
 public class EglAcceptanceTestSuite {
 
 	public static Test suite() {

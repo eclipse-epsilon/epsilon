@@ -64,6 +64,10 @@ public class AcceptanceTestUtil {
 		return run(factory, program, models);
 	}
 	
+	public static void parse(Object program) throws Exception {
+		setup(new EglFileGeneratingTemplateFactory(), program);
+	}
+	
 	@SuppressWarnings("restriction")
 	private static void setup(EglTemplateFactory factory, Object program, IModel... models) throws Exception {
 		factory.getContext().getModelRepository().addModels(models);

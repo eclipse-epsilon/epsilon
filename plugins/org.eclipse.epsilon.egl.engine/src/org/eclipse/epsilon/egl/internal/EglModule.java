@@ -206,8 +206,11 @@ public class EglModule extends EolModule implements IEglModule {
 
 	@Override
 	public List<ParseProblem> getParseProblems() {
-		parseProblems.addAll(eglParser.getParseProblems());
+		if (!eglParser.getParseProblems().isEmpty()) {
+			return eglParser.getParseProblems();
+		}
 		
+		// If preprocessor has run then replace the problems with ones that are trace aware
 		for (int index = 0; index < parseProblems.size(); index++) {
 			final ParseProblem problem = parseProblems.get(index);
 			
