@@ -307,9 +307,12 @@ public abstract class CachedModel<ModelElementType> extends Model {
 
 	@Override
 	public void dispose() {
-		super.dispose();
-		clearCache();
-		disposeModel();
+		try {
+			super.dispose();
+		} finally {
+			clearCache();
+			disposeModel();
+		}
 	}
 
 	public void clearCache() {
