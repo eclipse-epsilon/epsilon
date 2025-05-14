@@ -10,7 +10,9 @@
 package org.eclipse.epsilon.etl.parse;
 
 import java.util.Iterator;
+import java.util.Optional;
 
+import org.eclipse.epsilon.eol.dom.Expression;
 import org.eclipse.epsilon.eol.dom.Parameter;
 import org.eclipse.epsilon.erl.parse.ErlUnparser;
 import org.eclipse.epsilon.etl.EtlModule;
@@ -36,12 +38,23 @@ public class EtlUnparser extends ErlUnparser implements IEtlVisitor {
 		transformationRule.getSourceParameter().accept(this);
 		newline();
 		buffer.append("to ");
-		Iterator<Parameter> li = transformationRule.getTargetParameters().iterator();
-		while (li.hasNext()) {
-			li.next().accept(this);
-			if (li.hasNext())
+
+		final int nParameters = transformationRule.getTargetParameters().size();
+		for (int i = 0; i < nParameters; i++) {
+			Parameter p = transformationRule.getTargetParameters().get(i);
+			p.accept(this);
+
+			Optional<Expression> init = transformationRule.getTargetParameterInitializers().get(i);
+			if (init.isPresent()) {
+				buffer.append(" = ");
+				init.get().accept(this);
+			}
+
+			if (i + 1 < nParameters) {
 				comma();
+			}
 		}
+
 		printGuard(transformationRule.getGuard());
 		newline();
 		transformationRule.getBody().accept(this);

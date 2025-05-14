@@ -9,15 +9,24 @@
  ******************************************************************************/
 package org.eclipse.epsilon.etl.dom;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.util.AstUtil;
 import org.eclipse.epsilon.common.util.CollectionUtil;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
+import org.eclipse.epsilon.eol.dom.Expression;
 import org.eclipse.epsilon.eol.dom.Parameter;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.types.EolModelElementType;
@@ -29,7 +38,10 @@ import org.eclipse.epsilon.etl.parse.EtlParser;
 public class TransformationRule extends ExtensibleNamedRule {
 	
 	protected Parameter sourceParameter;
+
 	protected List<Parameter> targetParameters = new ArrayList<>(2);
+	protected List<Optional<Expression>> targetParameterInitializers = new ArrayList<>(2);
+
 	protected ExecutableBlock<Boolean> guard;
 	protected ExecutableBlock<Void> body;
 	protected IEtlContext context;
@@ -67,11 +79,14 @@ public class TransformationRule extends ExtensibleNamedRule {
 	public List<Parameter> getTargetParameters() {
 		return targetParameters;
 	}
-	
+
+	public List<Optional<Expression>> getTargetParameterInitializers() {
+		return targetParameterInitializers;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void build(AST cst, IModule module) {
-		
 		super.build(cst, module);
 		
 		this.guard = (ExecutableBlock<Boolean>) module.createAst(AstUtil.getChild(cst, EtlParser.GUARD), this);
@@ -88,9 +103,18 @@ public class TransformationRule extends ExtensibleNamedRule {
 			targetParameterAst != null;
 			targetParameterAst = targetParameterAst.getNextSibling()
 		) {
-			targetParameters.add((Parameter) module.createAst(targetParameterAst, this));
+			// The actual formal parameter
+			AST formalParameterAst = targetParameterAst.getFirstChild();
+			targetParameters.add((Parameter) module.createAst(formalParameterAst, this));
+
+			// The optional expression
+			Expression expr = null;
+			if (targetParameterAst.getChildCount() > 1) {
+				AST initializerExpression = formalParameterAst.getNextSibling();
+				expr = (Expression) module.createAst(initializerExpression, this);
+			}
+			targetParameterInitializers.add(Optional.ofNullable(expr));
 		}
-		
 	}
 	
 	@Override
@@ -200,9 +224,23 @@ public class TransformationRule extends ExtensibleNamedRule {
 		}
 		
 		Collection<Object> targets = CollectionUtil.createDefaultList();
-		for (Parameter targetParameter : targetParameters) {
-			EolType targetParameterType = targetParameter.getType(context);
-			targets.add(targetParameterType.createInstance());
+		for (int i = 0; i < targetParameters.size(); i++) {
+			Parameter p = targetParameters.get(i);
+
+			Optional<Expression> init = targetParameterInitializers.get(i);
+			if (init.isPresent()) {
+				context.getFrameStack().enterLocal(
+					FrameType.UNPROTECTED, init.get(),
+					Collections.singletonMap(sourceParameter.getName(), source));
+				try {
+					targets.add(init.get().execute(context));
+				} finally {
+					context.getFrameStack().leaveLocal(init.get());
+				}
+			} else {
+				EolType targetParameterType = p.getType(context);
+				targets.add(targetParameterType.createInstance());
+			}
 		}
 			
 		context.getTransformationTrace().add(source, targets, this);
