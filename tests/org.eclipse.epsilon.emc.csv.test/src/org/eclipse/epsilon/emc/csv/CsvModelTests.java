@@ -11,9 +11,11 @@ package org.eclipse.epsilon.emc.csv;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -25,8 +27,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
-import org.eclipse.epsilon.eol.exceptions.models.EolNotInstantiableModelElementTypeException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -373,13 +375,27 @@ public class CsvModelTests {
 		}
 
 		@Test
-		public void testCreateInstanceInModelString() throws Exception, EolNotInstantiableModelElementTypeException {
+		public void testCreateInstanceInModelString() throws Exception {
 			Map<String, Object> newRow = model.createInstanceInModel("Row");
 			for (String key : headers) {
 				assertTrue(String.format("Field %s should be empty", key), ((String) newRow.get(key)).isEmpty());
 			}
 			thrown.expect(EolModelElementTypeNotFoundException.class);
 			newRow = model.createInstanceInModel("TypeA");
+		}
+
+		@Test
+		public void testDifferentRowsHaveDifferentHashcodes() throws Exception {
+			Map<String, Object> newRow1 = model.createInstanceInModel("Row");
+			Map<String, Object> newRow2 = model.createInstanceInModel("Row");
+
+			/*
+			 * Different rows should have different hashcodes and be considered not to be
+			 * equal to each other. Otherwise, this may cause issues in some Epsilon
+			 * languages, such as ETL.
+			 */
+			assertNotEquals(newRow1.hashCode(), newRow2.hashCode());
+			assertNotEquals(newRow1, newRow2);
 		}
 
 		@Test
