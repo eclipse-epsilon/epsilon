@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Game xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="coins" xmi:id="_K_zPYDDzEfC7q62N_Bbrzg">
+  <coins xsi:type="GoldCoin" xmi:id="_L2JokDDzEfC7q62N_Bbrzg"/>
+  <coins xsi:type="SilverCoin" xmi:id="_MQuEsDDzEfC7q62N_Bbrzg"/>
+</Game>
