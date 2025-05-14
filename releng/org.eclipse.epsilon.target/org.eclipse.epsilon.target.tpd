@@ -96,7 +96,7 @@ location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024
 	org.commonmark-image-attributes lazy
 }
 
-maven MavenDependencies scope=compile,test,runtime dependencyDepth=infinite missingManifest=generate includeSources {
+maven MavenDependencies scope=compile dependencyDepth=infinite missingManifest=generate includeSources {
 	dependency {
 		groupId="net.sourceforge.plantuml"
 		artifactId="plantuml-epl"
