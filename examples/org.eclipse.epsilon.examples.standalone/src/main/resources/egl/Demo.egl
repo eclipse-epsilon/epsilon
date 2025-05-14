@@ -1,0 +1,3 @@
+[%for (t in Tree.all){%]
+Tree [%=t.label%]
+[%}%]
