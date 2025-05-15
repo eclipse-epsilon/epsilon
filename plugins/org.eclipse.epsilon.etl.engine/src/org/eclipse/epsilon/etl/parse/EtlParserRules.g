@@ -39,7 +39,7 @@ parser grammar EtlParserRules;
 options {backtrack=true; output=AST;}
 
 tokens {
-	TRANSFORM;
+	TRANSFORM; TRANSFORM_TO; TRANSFORM_TO_LIST;
 }
 
 etlModuleContent
@@ -50,9 +50,22 @@ transformationRule
 	@after {
 		$tree.getExtraTokens().add($ob);
 		$tree.getExtraTokens().add($cb);
-	} 
-	:	r='rule'^ rule=NAME 'transform'! formalParameter 'to'! formalParameterList
-	extendz? ob='{'! guard? block cb='}'!
-	{$r.setType(TRANSFORM);}
+	}
+	:	r='rule'^ rule=NAME 
+			'transform'! formalParameter 'to'! transformToList
+			extendz? ob='{'! guard? block cb='}'!
+		{$r.setType(TRANSFORM);}
 	;
 
+transformTo
+	: fp=formalParameter ('=' initializer=logicalExpression)?
+	-> ^(TRANSFORM_TO formalParameter logicalExpression?)
+	;
+
+transformToList
+	@after {
+		$tree.setImaginary(true);
+ 	}
+	: transformTo (',' transformTo)*
+	-> ^(TRANSFORM_TO_LIST transformTo*)
+	;

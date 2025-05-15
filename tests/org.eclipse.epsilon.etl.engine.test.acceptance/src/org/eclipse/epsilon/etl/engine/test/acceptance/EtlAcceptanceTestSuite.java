@@ -15,6 +15,7 @@ package org.eclipse.epsilon.etl.engine.test.acceptance;
 import org.eclipse.epsilon.etl.engine.test.acceptance.builtins.EtlCanAccessBuiltinsTests;
 import org.eclipse.epsilon.etl.engine.test.acceptance.importCaching.ImportCachingTests;
 import org.eclipse.epsilon.etl.engine.test.acceptance.oo2db.OO2DBTest;
+import org.eclipse.epsilon.etl.engine.test.acceptance.points2coins.Points2CoinsTest;
 import org.eclipse.epsilon.etl.engine.test.acceptance.tree2graph.Tree2GraphTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -29,7 +30,8 @@ import junit.framework.Test;
 	TransformationRuleTests.class,
 	OO2DBTest.class,
 	Tree2GraphTest.class,
-	ImportCachingTests.class
+	ImportCachingTests.class,
+	Points2CoinsTest.class
 })
 public class EtlAcceptanceTestSuite {
 

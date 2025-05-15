@@ -1,0 +1,13 @@
+rule Game2Game
+  transform s: Points!points::Game
+  to t: Coins!coins::Game
+{
+  t.coins ::= s.scores;
+}
+
+rule Score2Coin
+  transform s: Points!PointScore
+  to c: Coins!Coin = s.score > 5000 ? new Coins!GoldCoin : new Coins!SilverCoin
+{
+  // nothing to do
+}

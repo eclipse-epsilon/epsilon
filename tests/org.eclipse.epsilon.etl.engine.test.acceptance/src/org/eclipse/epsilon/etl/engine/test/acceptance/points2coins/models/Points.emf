@@ -1,0 +1,10 @@
+@namespace(uri="points")
+package points;
+
+class Game {
+	val PointScore[*] scores;
+}
+
+class PointScore {
+	attr int score;
+}
