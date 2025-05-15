@@ -16,14 +16,26 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.eclipse.epsilon.common.util.FileUtil;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
-import org.eclipse.epsilon.eol.exceptions.models.*;
+import org.eclipse.epsilon.eol.exceptions.models.EolEnumerationValueNotFoundException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.epsilon.eol.exceptions.models.EolNotInstantiableModelElementTypeException;
 import org.eclipse.epsilon.eol.models.CachedModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
 
@@ -57,6 +69,26 @@ import org.eclipse.epsilon.eol.models.IRelativePathResolver;
  * 
  */
 public class CsvModel extends CachedModel<Map<String, Object>> {
+
+	/**
+	 * Various Epsilon languages assume that different model
+	 * elements will have different hashcodes (e.g. ETL). This
+	 * subclass of LinkedHashMap reverts to system identity-based
+	 * hashcodes, to ensure that.
+	 */
+	protected static class Row extends LinkedHashMap<String, Object> {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public int hashCode() {
+			return System.identityHashCode(this);
+		}
+
+		@Override
+		public boolean equals(Object other) {
+			return this == other;
+		}
+	}
 
 	public static final String HEADERLESS_FIELD_NAME = "field";
 
@@ -357,7 +389,7 @@ public class CsvModel extends CachedModel<Map<String, Object>> {
 		StringBuilder output = new StringBuilder();
 		if (this.knownHeaders) {
 			// First line is the headers
-			Iterator<String> keyIt = ((LinkedList<Map<String, Object>>) rows).getFirst().keySet().iterator();
+			Iterator<String> keyIt = rows.get(0).keySet().iterator();
 			output.append(keyIt.next());
 			while (keyIt.hasNext()) {
 				output.append(this.fieldSeparator);
@@ -412,12 +444,13 @@ public class CsvModel extends CachedModel<Map<String, Object>> {
 	 * @see org.eclipse.epsilon.eol.models.CachedModel#createInstanceInModel(java.lang.String)
 	 */
 	@Override
-	protected Map<String, Object> createInstanceInModel(String type) throws EolModelElementTypeNotFoundException, EolNotInstantiableModelElementTypeException {
+	protected Row createInstanceInModel(String type) throws EolModelElementTypeNotFoundException, EolNotInstantiableModelElementTypeException {
 		if (!"Row".equals(type)) {
 			throw new EolModelElementTypeNotFoundException(this.name, type);
 		}
-		Map<String, Object> returnVal = new LinkedHashMap<>();
-		for (String key : ((LinkedList<Map<String, Object>>) rows).getFirst().keySet()) {
+
+		Row returnVal = new Row();
+		for (String key : rows.get(0).keySet()) {
 			returnVal.put(key, "");
 		}
 		rows.add(returnVal);
@@ -440,7 +473,7 @@ public class CsvModel extends CachedModel<Map<String, Object>> {
 		if (!this.knownHeaders) {
 			return property.equals(HEADERLESS_FIELD_NAME);
 		} else {
-			return ((LinkedHashMap<String, Object>) ((LinkedList<Map<String, Object>>) rows).getFirst()).keySet().contains(property);
+			return rows.get(0).keySet().contains(property);
 		}
 	}
 
@@ -471,7 +504,7 @@ public class CsvModel extends CachedModel<Map<String, Object>> {
 		try (CSVParser records = csvFormat.parse(reader)) {
 			if (knownHeaders) {
 				for (CSVRecord record : records) {
-					LinkedHashMap<String, Object> row = new LinkedHashMap<>();
+					Row row = new Row();
 					if (!varargsHeaders) {
 						for (Map.Entry<String, String> entry : record.toMap().entrySet()) {
 							row.put(entry.getKey(), entry.getValue());
@@ -502,7 +535,7 @@ public class CsvModel extends CachedModel<Map<String, Object>> {
 				for (CSVRecord record : records) {
 					List<String> values = new ArrayList<>();
 					record.iterator().forEachRemaining(values::add);
-					LinkedHashMap<String, Object> row = new LinkedHashMap<>();
+					Row row = new Row();
 					row.put("field", values);
 					rows.add(row);
 				}
