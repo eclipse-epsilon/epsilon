@@ -375,6 +375,13 @@ operation testClosure() {
 }
 
 @test
+operation testEmptyClosure() {
+	var result = Sequence {}.closure(e | e);
+	assertTrue(result.isEmpty());
+	assertEquals("OrderedSet", result.type.name);
+}
+
+@test
 operation testAggregate() {
 	var s = Sequence{1, 2, 3};
 
