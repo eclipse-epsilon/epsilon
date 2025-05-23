@@ -88,7 +88,7 @@ pipeline {
               }
             }
             steps {
-              sh 'mvn -f releng install -P updatesite'
+              sh 'mvn -B -U -f releng install -P updatesite'
               lock('download-area') {
                 sshagent (['projects-storage.eclipse.org-bot-ssh']) {
                   sh '''
