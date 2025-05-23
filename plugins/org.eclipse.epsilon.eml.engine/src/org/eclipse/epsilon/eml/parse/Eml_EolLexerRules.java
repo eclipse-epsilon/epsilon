@@ -1,6 +1,6 @@
 package org.eclipse.epsilon.eml.parse;
 
-// $ANTLR 3.1b1 EolLexerRules.g 2025-03-21 07:19:03
+// $ANTLR 3.1b1 EolLexerRules.g 2025-05-15 09:05:50
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -72,7 +72,7 @@ public class Eml_EolLexerRules extends Lexer {
     public static final int TYPE=70;
     public static final int T__139=139;
     public static final int T__138=138;
-    public static final int Tokens=168;
+    public static final int Tokens=170;
     public static final int T__133=133;
     public static final int T__132=132;
     public static final int T__135=135;
@@ -80,10 +80,12 @@ public class Eml_EolLexerRules extends Lexer {
     public static final int T__131=131;
     public static final int NewExpression=52;
     public static final int T__130=130;
+    public static final int TRANSFORM_TO_LIST=89;
     public static final int CASE=40;
     public static final int Letter=20;
     public static final int LINE_COMMENT=26;
     public static final int T__129=129;
+    public static final int TRANSFORM_TO=88;
     public static final int T__126=126;
     public static final int JavaIDDigit=22;
     public static final int T__125=125;
@@ -93,10 +95,11 @@ public class Eml_EolLexerRules extends Lexer {
     public static final int T__127=127;
     public static final int T__166=166;
     public static final int T__165=165;
+    public static final int T__168=168;
     public static final int T__167=167;
     public static final int T__162=162;
     public static final int T__161=161;
-    public static final int MERGE=88;
+    public static final int MERGE=90;
     public static final int T__164=164;
     public static final int MODELDECLARATION=73;
     public static final int T__163=163;
@@ -127,13 +130,12 @@ public class Eml_EolLexerRules extends Lexer {
     public static final int CONTINUE=45;
     public static final int ENUMERATION_VALUE=71;
     public static final int OPERATOR=63;
-    public static final int EMLMODULE=89;
+    public static final int EMLMODULE=91;
     public static final int EXPONENT=6;
     public static final int STRING=15;
     public static final int T__148=148;
     public static final int T__147=147;
     public static final int T__149=149;
-    public static final int T__91=91;
     public static final int T__100=100;
     public static final int NAMESPACE=74;
     public static final int T__92=92;
@@ -146,7 +148,6 @@ public class Eml_EolLexerRules extends Lexer {
     public static final int T__94=94;
     public static final int T__101=101;
     public static final int POST=84;
-    public static final int T__90=90;
     public static final int ALIAS=75;
     public static final int DRIVER=76;
     public static final int KEYVAL=81;
@@ -169,6 +170,7 @@ public class Eml_EolLexerRules extends Lexer {
     public static final int BOOLEAN=13;
     public static final int NAME=23;
     public static final int SWITCH=39;
+    public static final int T__169=169;
     public static final int FeatureCall=65;
     public static final int T__122=122;
     public static final int T__121=121;
