@@ -139,8 +139,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				if (topModule == null && ast.getModule() instanceof IEolModule) {
 					/*
 					 * The very first module we will run is assumed to be the "main" module of our
-					 * program. When this is considered terminated, the whole program will be considered
-					 * terminated.
+					 * program. When this is considered "done", the debugging session will be considered
+					 * completed.
 					 */
 					topModule = (IEolModule) ast.getModule();
 				}
@@ -169,42 +169,27 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 		@Override
 		public void finishedExecuting(ModuleElement ast, Object result, IEolContext context) {
-			if (runningRoots.remove(ast)) {
-				if (ast.getModule() instanceof IEolModule) {
-					final IEolModule eolModule = (IEolModule) ast.getModule();
-					eolModule.getContext().getOutputStream().flush();
-					eolModule.getContext().getErrorStream().flush();
-					removeThreadFor(eolModule);
-
-					if (topModule != null && ast.getModule() == topModule) {
-						ExecutionController execController = topModule.getContext().getExecutorFactory().getExecutionController();
-						if (execController instanceof IEolDebugger && ((IEolDebugger) execController).isDoneAfterModuleElement(ast)) {
-							sendTerminated();
-							sendExited(0);
-							topModule = null;
-						}
-					}
-				}
-			}
+			finishedExecutingWithException(ast, null, context);
 		}
 
 		@Override
 		public void finishedExecutingWithException(ModuleElement ast, EolRuntimeException exception, IEolContext context) {
-			if (ast.getParent() == null && ast instanceof IEolModule) {
-				final IEolModule eolModule = (IEolModule) ast;
-
+			if (runningRoots.remove(ast) && ast.getModule() instanceof IEolModule) {
+				final IEolModule eolModule = (IEolModule) ast.getModule();
 				eolModule.getContext().getOutputStream().flush();
 				eolModule.getContext().getErrorStream().flush();
 				removeThreadFor(eolModule);
 
 				if (topModule != null && ast == topModule) {
-					// Report the exception that was propagated to the top module
-					topModule.getContext().getErrorStream().println(exception.toString());
+					if (exception != null) {
+						// Report the exception that was propagated to the top module
+						topModule.getContext().getErrorStream().println(exception.toString());
+					}
 
 					ExecutionController execController = topModule.getContext().getExecutorFactory().getExecutionController();
 					if (execController instanceof IEolDebugger && ((IEolDebugger) execController).isDoneAfterModuleElement(ast)) {
 						sendTerminated();
-						sendExited(1);
+						sendExited(exception == null ? 0 : 1);
 						topModule = null;
 					}
 				}
