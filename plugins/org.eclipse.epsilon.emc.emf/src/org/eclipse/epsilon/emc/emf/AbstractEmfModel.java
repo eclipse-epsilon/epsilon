@@ -363,7 +363,7 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 
 	@Override
 	public boolean owns(Object instance) {	
-		if (instance instanceof EObject) {
+		if (instance instanceof EObject && modelImpl != null) {
 			EObject eObject = (EObject) instance;
 			Resource eObjectResource = eObject.eResource();
 			

@@ -156,7 +156,7 @@ public class StandaloneEolTest extends AbstractEpsilonDebugAdapterTest {
 		attach();
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 
-		adapter.terminate(new TerminateArguments());
+		adapter.terminate(new TerminateArguments()).get();
 		assertProgramFailed();
 	}
 
