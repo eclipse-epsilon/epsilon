@@ -143,6 +143,9 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 					 * completed.
 					 */
 					topModule = (IEolModule) ast.getModule();
+					while (topModule.getParentModule() != null) {
+						topModule = topModule.getParentModule();
+					}
 				}
 
 				/*
