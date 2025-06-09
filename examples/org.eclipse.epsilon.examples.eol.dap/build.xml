@@ -38,6 +38,19 @@
 		<epsilon.disposeModel model="M" />
 	</target>
 
+	<target name="09-validate">
+		<epsilon.emf.loadModel name="M"
+			metamodelfile="epsilon/models/person.ecore"
+			modelfile="epsilon/models/invalidPerson.model"
+			read="true" store="false" />
+
+		<epsilon.evl src="epsilon/09-validate.evl" debug="true" debugPort="4040" failOnErrors="false">
+			<model ref="M"/>
+		</epsilon.evl>
+
+		<epsilon.disposeModel model="M" />
+	</target>
+
 	<target name="start-server">
 		<epsilon.startDebugServer />
 	</target>

@@ -197,16 +197,24 @@ public class ValidationView extends ViewPart {
 		
 		@Override
 		public void run() {
-			//PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
-				try {
-					fixInstance.perform();
-					unsatisfiedConstraint.setFixed(true);
-					setDone(!existUnsatisfiedConstraintsToFix());
-					viewer.refresh();
-				} catch (Exception e) {
-					module.getContext().getErrorStream().println(e.toString());
+			// Need to run fix from a non-UI background job (in case it is debugged)
+			new Job("Run fix") {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try {
+						fixInstance.perform();
+						unsatisfiedConstraint.setFixed(true);
+						PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+							setDone(!existUnsatisfiedConstraintsToFix());
+							viewer.refresh();
+						});
+					} catch (Exception e) {
+						module.getContext().getErrorStream().println(e.toString());
+						return Status.error(e.getMessage());
+					}
+					return Status.OK_STATUS;
 				}
-			//});
+			}.schedule();
 		}
 	}
 	

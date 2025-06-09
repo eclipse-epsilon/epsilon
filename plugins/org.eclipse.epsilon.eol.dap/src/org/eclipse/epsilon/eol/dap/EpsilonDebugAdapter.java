@@ -136,13 +136,14 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			if (ast.getParent() == null || runningRoots.isEmpty()) {
 				runningRoots.add(ast);
 
-				if (topModule == null && ast.getModule() instanceof IEolModule) {
+				IEolModule module = getModule(ast);
+				if (topModule == null && module != null) {
 					/*
 					 * The very first module we will run is assumed to be the "main" module of our
 					 * program. When this is considered "done", the debugging session will be considered
 					 * completed.
 					 */
-					topModule = (IEolModule) ast.getModule();
+					topModule = module;
 					while (topModule.getParentModule() != null) {
 						topModule = topModule.getParentModule();
 					}
@@ -164,10 +165,19 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				}
 
 				if (ast.getModule() instanceof IEolModule) {
-					ThreadState threadState = attachTo((IEolModule) ast.getModule());
+					ThreadState threadState = attachTo(module);
 					sendThreadEvent(threadState.getThreadId(), ThreadEventArgumentsReason.STARTED);
 				}
 			}
+		}
+
+		protected IEolModule getModule(ModuleElement ast) {
+			if (ast instanceof IEolModule) {
+				return (IEolModule) ast;
+			} else if (ast.getModule() instanceof IEolModule) {
+				return (IEolModule) ast.getModule();
+			}
+			return null;
 		}
 
 		@Override
@@ -177,11 +187,11 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 		@Override
 		public void finishedExecutingWithException(ModuleElement ast, EolRuntimeException exception, IEolContext context) {
-			if (runningRoots.remove(ast) && ast.getModule() instanceof IEolModule) {
-				final IEolModule eolModule = (IEolModule) ast.getModule();
-				eolModule.getContext().getOutputStream().flush();
-				eolModule.getContext().getErrorStream().flush();
-				removeThreadFor(eolModule);
+			IEolModule module = getModule(ast);
+			if (runningRoots.remove(ast) && module != null) {
+				module.getContext().getOutputStream().flush();
+				module.getContext().getErrorStream().flush();
+				removeThreadFor(module);
 
 				if (topModule != null && ast == topModule) {
 					if (exception != null) {
@@ -592,6 +602,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			Capabilities caps = new Capabilities();
 			caps.setSupportsTerminateRequest(true);
 			caps.setSupportsConditionalBreakpoints(true);
+			caps.setSupportTerminateDebuggee(true);
+			caps.setSupportSuspendDebuggee(true);
 			return caps;
 		});
 	}
@@ -806,9 +818,21 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	@Override
 	public CompletableFuture<Void> disconnect(DisconnectArguments args) {
 		return CompletableFuture.runAsync(() -> {
-			this.isTerminated = true;
+			if (args.getTerminateDebuggee() == Boolean.TRUE) {
+				this.isTerminated = true;
+				resumeAllThreads();
+				sendTerminated();
+				sendExited(2);
+			} else if (args.getSuspendDebuggee() != Boolean.TRUE) {
+				lineBreakpointsByPath.clear();
+				synchronized (threads) {
+					for (ThreadState thread : threads.values()) {
+						thread.lineBreakpointsByURI.clear();
+					}
+				}
+				resumeAllThreads();
+			}
 			this.client = null;
-			resumeAllThreads();
 		});
 	}
 

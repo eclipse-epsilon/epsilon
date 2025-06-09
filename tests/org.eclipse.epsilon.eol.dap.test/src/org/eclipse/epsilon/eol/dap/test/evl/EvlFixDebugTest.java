@@ -54,11 +54,11 @@ public class EvlFixDebugTest extends AbstractEpsilonDebugAdapterTest {
 	@Test
 	public void canStopInsideFixTitleExpression() throws Exception {
 		SetBreakpointsResponse breakpoints = adapter.setBreakpoints(
-			createBreakpoints(createBreakpoint(13))).get();
+			createBreakpoints(createBreakpoint(16))).get();
 		assertTrue("The breakpoint on the file should be recognised",
 			breakpoints.getBreakpoints()[0].isVerified());
-		assertEquals("The breakpoint should be verified on the fix expression",
-			(Integer) 13, breakpoints.getBreakpoints()[0].getLine());
+		assertEquals("The breakpoint should be verified on the fix block",
+			(Integer) 16, breakpoints.getBreakpoints()[0].getLine());
 		attach();
 
 		// Wait for the EVL script to run
@@ -75,14 +75,14 @@ public class EvlFixDebugTest extends AbstractEpsilonDebugAdapterTest {
 		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
 		assertFalse("Computing the title should not be done yet", futureTitle.isDone());
 		StackTraceResponse stackTrace = getStackTrace();
-		assertEquals("Shold be stopped at the fix title expression line",
-			13, stackTrace.getStackFrames()[0].getLine());
+		assertEquals("Shold be stopped at the second line of the fix block",
+			16, stackTrace.getStackFrames()[0].getLine());
 
-		ScopesResponse scopes = getScopes(stackTrace.getStackFrames()[1]);
+		ScopesResponse scopes = getScopes(stackTrace.getStackFrames()[0]);
 		VariablesResponse variables = getVariables(scopes.getScopes()[0]);
 		Map<String, Variable> varsByName = getVariablesByName(variables);
-		Variable personVariable = varsByName.get("self");
-		assertNotNull("The second stack frame should have a 'self' variable", personVariable);
+		Variable personVariable = varsByName.get("newLastName");
+		assertNotNull("The top stack frame should have a 'newLastName' variable", personVariable);
 
 		adapter.continue_(new ContinueArguments()).get();
 		assertNotNull(futureTitle.get());
@@ -93,4 +93,91 @@ public class EvlFixDebugTest extends AbstractEpsilonDebugAdapterTest {
 		// Terminated programs exit with a non-zero status
 		assertProgramFailed();
 	}
+
+	@Test
+	public void canStopInsideFixGuardExpression() throws Exception {
+		SetBreakpointsResponse breakpoints = adapter.setBreakpoints(
+			createBreakpoints(createBreakpoint(13))).get();
+		assertTrue("The breakpoint on the file should be recognised",
+			breakpoints.getBreakpoints()[0].isVerified());
+		assertEquals("The breakpoint should be verified on the guard expression",
+			(Integer) 13, breakpoints.getBreakpoints()[0].getLine());
+		attach();
+
+		// Fix guards are immediately evaluated
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("Shold be stopped at the guard expression line",
+			13, stackTrace.getStackFrames()[0].getLine());
+
+		// Let execution continue past the guard
+		adapter.continue_(new ContinueArguments()).get();
+
+		// Wait for the EVL script to run
+		runModuleResult.get();
+
+		// Try to get the title of the first fix
+		Future<String> futureTitle = executor.submit(() -> {
+			Collection<UnsatisfiedConstraint> allUnsatisfied = 
+				((EvlModule) module).getContext().getUnsatisfiedConstraints();
+			UnsatisfiedConstraint unsatisfied = allUnsatisfied.iterator().next();
+			return unsatisfied.getFixes().get(0).getTitle();
+		});
+
+		assertFalse("Computing the title should not be done yet", futureTitle.isDone());
+		assertNotNull(futureTitle.get());
+
+		// We need to explicitly terminate as there is a lingering fix that could be applied
+		adapter.terminate(new TerminateArguments()).get();
+
+		// Terminated programs exit with a non-zero status
+		assertProgramFailed();
+	}
+
+	@Test
+	public void canStopInsideFixDoBlock() throws Exception {
+		SetBreakpointsResponse breakpoints = adapter.setBreakpoints(
+			createBreakpoints(createBreakpoint(20))).get();
+		assertTrue("The breakpoint on the file should be recognised",
+			breakpoints.getBreakpoints()[0].isVerified());
+		assertEquals("The breakpoint should be verified on the guard expression",
+			(Integer) 20, breakpoints.getBreakpoints()[0].getLine());
+		attach();
+
+		// Wait for the EVL script to run
+		runModuleResult.get();
+
+		// Try to perform the first fix
+		Future<String> futureFix = executor.submit(() -> {
+			Collection<UnsatisfiedConstraint> allUnsatisfied =
+				((EvlModule) module).getContext().getUnsatisfiedConstraints();
+			UnsatisfiedConstraint unsatisfied = allUnsatisfied.iterator().next();
+			unsatisfied.getFixes().get(0).perform();
+			return "done";
+		});
+
+		// Check we are stopped in the middle of the do block
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+		StackTraceResponse stackTrace = getStackTrace();
+		assertEquals("Shold be stopped at the second line of the do block",
+			20, stackTrace.getStackFrames()[0].getLine());
+		assertFalse("Performing the fix should not be done yet", futureFix.isDone());
+
+		ScopesResponse scopes = getScopes(stackTrace.getStackFrames()[0]);
+		VariablesResponse variables = getVariables(scopes.getScopes()[0]);
+		Map<String, Variable> varsByName = getVariablesByName(variables);
+		Variable personVariable = varsByName.get("fixedLastName");
+		assertNotNull("The top stack frame should have a 'fixedLastName' variable", personVariable);
+
+		// Allow the fix to be performed
+		adapter.continue_(new ContinueArguments()).get();
+		assertNotNull(futureFix.get());
+
+		// We need to explicitly terminate as fixes were identified
+		adapter.terminate(new TerminateArguments()).get();
+
+		// Terminated programs exit with a non-zero status
+		assertProgramFailed();
+	}
+
 }

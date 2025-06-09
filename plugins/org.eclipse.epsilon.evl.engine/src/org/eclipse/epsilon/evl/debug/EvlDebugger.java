@@ -28,8 +28,8 @@ public class EvlDebugger extends EolDebugger {
 	public boolean isDoneAfterModuleElement(ModuleElement ast) {
 		if (super.isDoneAfterModuleElement(ast)) {
 			for (UnsatisfiedConstraint unsatisfied : getModule().getContext().getUnsatisfiedConstraints()) {
-				if (!unsatisfied.getFixes().isEmpty()) {
-					// There is at least one unsatisfied constraint with fixes: leave it running
+				if (!unsatisfied.isFixed() && !unsatisfied.getFixes().isEmpty()) {
+					// There is at least one unfixed unsatisfied constraint with fixes: leave it running
 					return false;
 				}
 			}
