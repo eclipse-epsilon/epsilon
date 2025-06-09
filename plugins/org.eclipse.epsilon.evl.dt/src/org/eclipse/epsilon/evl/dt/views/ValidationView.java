@@ -12,6 +12,10 @@ package org.eclipse.epsilon.evl.dt.views;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -30,21 +34,21 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.part.ViewPart;
 
 public class ValidationView extends ViewPart {
@@ -167,54 +171,101 @@ public class ValidationView extends ViewPart {
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		UnsatisfiedConstraint unsatisfiedConstraint = (UnsatisfiedConstraint)((StructuredSelection) viewer.getSelection()).getFirstElement();
-		if (unsatisfiedConstraint == null) return;
-		
-		for (FixInstance fixInstance : unsatisfiedConstraint.getFixes()) {
-			manager.add(new PerformFixAction(unsatisfiedConstraint, fixInstance));
+		StructuredSelection selection = (StructuredSelection) viewer.getSelection();
+		UnsatisfiedConstraint unsatisfiedConstraint = (UnsatisfiedConstraint) selection.getFirstElement();
+
+		if (unsatisfiedConstraint != null && !unsatisfiedConstraint.getFixes().isEmpty()) {
+			manager.add(new QuickFixAction(unsatisfiedConstraint));
 		}
-		
-		// Other plug-ins can contribute there actions here
-		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
-	
-	class PerformFixAction extends Action {
-		UnsatisfiedConstraint unsatisfiedConstraint = null;
-		FixInstance fixInstance = null;
-		
-		public PerformFixAction(UnsatisfiedConstraint unsatisfiedConstraint, FixInstance fixInstance) {
-			this.unsatisfiedConstraint = unsatisfiedConstraint;
-			this.fixInstance = fixInstance;
-			this.setImageDescriptor(EvlPlugin.getDefault().getImageDescriptor("icons/fix.gif"));
-			try {
-				this.setText(fixInstance.getTitle());
+
+	protected class QuickFixAction extends Action {
+		protected class ComputeFixTitlesJob extends Job {
+			protected ComputeFixTitlesJob(String name) {
+				super(name);
 			}
-			catch (EolRuntimeException e) {
-				module.getContext().getErrorStream().println(e.toString());
-				this.setText("An exception occured while evaluating the title of the fix");
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				final Map<String, FixInstance> fixesByTitle = new TreeMap<>();
+				for (FixInstance fixInstance : unsatisfiedConstraint.getFixes()) {
+					try {
+						fixesByTitle.put(fixInstance.getTitle(), fixInstance);
+					} catch (EolRuntimeException e) {
+						return Status.error(e.getMessage(), e);
+					}
+				}
+				PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+					showQuickFixDialog(unsatisfiedConstraint, fixesByTitle);
+				});
+				return Status.OK_STATUS;
+			}
+
+			@SuppressWarnings("unchecked")
+			protected void showQuickFixDialog(UnsatisfiedConstraint unsatisfiedConstraint, final Map<String, FixInstance> fixesByTitle) {
+				ElementListSelectionDialog dialog = new ElementListSelectionDialog(
+					getViewSite().getShell(), new MapEntryLabelProvider());
+
+				dialog.setElements(fixesByTitle.entrySet().toArray());
+				dialog.setTitle("Select a quick fix");
+				dialog.setMultipleSelection(false);
+				if (dialog.open() == Window.OK) {
+					Entry<String, FixInstance> selected = (Map.Entry<String, FixInstance>) dialog.getFirstResult();
+					if (selected != null) {
+						// Need to run fix from a non-UI background job (in case it is debugged)
+						new RunFixJob("Run fix", selected).schedule();
+					}
+				}
 			}
 		}
-		
+
+		protected class RunFixJob extends Job {
+			private final Entry<String, FixInstance> selected;
+
+			protected RunFixJob(String name, Entry<String, FixInstance> selected) {
+				super(name);
+				this.selected = selected;
+			}
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				try {
+					selected.getValue().perform();
+					unsatisfiedConstraint.setFixed(true);
+					PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+						setDone(!existUnsatisfiedConstraintsToFix());
+						viewer.refresh();
+					});
+				} catch (Exception e) {
+					module.getContext().getErrorStream().println(e.toString());
+					return Status.error(e.getMessage());
+				}
+				return Status.OK_STATUS;
+			}
+		}
+
+		protected class MapEntryLabelProvider extends LabelProvider {
+			@SuppressWarnings("unchecked")
+			@Override
+			public String getText(Object element) {
+				if (element instanceof Map.Entry) {
+					return ((Map.Entry<String, Object>) element).getKey();
+				}
+				return super.getText(element);
+			}
+		}
+
+		private final UnsatisfiedConstraint unsatisfiedConstraint;
+
+		public QuickFixAction(UnsatisfiedConstraint unsatisfiedConstraint) {
+			super("Quick Fix...");
+			this.unsatisfiedConstraint = unsatisfiedConstraint;
+		}
+
 		@Override
 		public void run() {
-			// Need to run fix from a non-UI background job (in case it is debugged)
-			new Job("Run fix") {
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					try {
-						fixInstance.perform();
-						unsatisfiedConstraint.setFixed(true);
-						PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
-							setDone(!existUnsatisfiedConstraintsToFix());
-							viewer.refresh();
-						});
-					} catch (Exception e) {
-						module.getContext().getErrorStream().println(e.toString());
-						return Status.error(e.getMessage());
-					}
-					return Status.OK_STATUS;
-				}
-			}.schedule();
+			// Need to compute fix titles from a background job (could have a breakpoint)
+			new ComputeFixTitlesJob("Compute fix titles").schedule();
 		}
 	}
 	
