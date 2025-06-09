@@ -132,7 +132,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 		@Override
 		public void aboutToExecute(ModuleElement ast, IEolContext context) {
-			if (ast.getParent() == null) {
+			if (ast.getParent() == null || runningRoots.isEmpty()) {
 				runningRoots.add(ast);
 
 				if (topElement == null) {
@@ -159,8 +159,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 					}
 				}
 
-				if (ast instanceof IEolModule) {
-					ThreadState threadState = attachTo((IEolModule) ast);
+				if (ast.getModule() instanceof IEolModule) {
+					ThreadState threadState = attachTo((IEolModule) ast.getModule());
 					sendThreadEvent(threadState.getThreadId(), ThreadEventArgumentsReason.STARTED);
 				}
 			}
@@ -168,8 +168,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 
 		@Override
 		public void finishedExecuting(ModuleElement ast, Object result, IEolContext context) {
-			if (ast.getParent() == null) {
-				runningRoots.remove(ast);
+			if (runningRoots.remove(ast)) {
 				if (ast instanceof IEolModule) {
 					final IEolModule eolModule = (IEolModule) ast;
 					eolModule.getContext().getOutputStream().flush();

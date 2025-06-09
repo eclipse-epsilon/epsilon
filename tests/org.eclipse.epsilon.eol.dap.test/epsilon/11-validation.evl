@@ -9,5 +9,11 @@ context Person {
       var l = self.lastName;
       return l.isDefined() and l.trim().length() > 0;
     }
+    fix {
+      title: 'Add "NoLastName" as placeholder'
+      do {
+        self.lastName = 'NoLastName';
+      }
+    }
   }
 }

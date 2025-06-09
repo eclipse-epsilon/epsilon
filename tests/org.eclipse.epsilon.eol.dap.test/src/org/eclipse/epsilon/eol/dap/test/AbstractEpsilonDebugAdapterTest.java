@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -63,6 +66,8 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 
 	/** Timeout used for various assertions in this base class. */
 	protected static final int TIMEOUT_SECONDS = 10;
+
+	protected ExecutorService executor;
 
 	@Rule
 	public Timeout globalTimeout = Timeout.seconds(TIMEOUT_SECONDS * 2);
@@ -132,7 +137,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	protected IEolModule module;
 	protected EpsilonDebugAdapter adapter;
 	protected TestClient client;
-	protected Thread epsilonThread;
+	protected Future<Object> runModuleResult;
 
 	protected abstract void setupModule() throws Exception;
 
@@ -145,6 +150,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 
 	@Before
 	public void setup() throws Exception {
+		executor = Executors.newCachedThreadPool();
 		setupModule();
 
 		this.adapter = new EpsilonDebugAdapter();
@@ -165,7 +171,12 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 
 	@After
 	public void teardown() {
+		if (module != null) {
+			module.getContext().getModelRepository().dispose();
+			module.getContext().dispose();
+		}
 		adapter.disconnect(new DisconnectArguments());
+		executor.shutdownNow();
 	}
 
 	protected void assertStoppedBecauseOf(final String expectedReason) throws InterruptedException {
@@ -256,20 +267,15 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	}
 
 	protected void onAttach() {
-		epsilonThread = new Thread(this::runModule);
-		epsilonThread.setName("EpsilonDebuggee");
-		epsilonThread.start();
+		runModuleResult = executor.submit(this::runModule);
 	}
 
-	protected void runModule() {
+	protected Object runModule() {
 		try {
-			module.execute();
+			return module.execute();
 		} catch (Throwable e) {
 			e.printStackTrace();
-		} finally {
-			module.getContext().getModelRepository().dispose();
-			module.getContext().dispose();
-			module = null;
+			return null;
 		}
 	}
 

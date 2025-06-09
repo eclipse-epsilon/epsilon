@@ -42,6 +42,7 @@ import org.eclipse.epsilon.eol.dap.test.epl.EplDebugTest;
 import org.eclipse.epsilon.eol.dap.test.etl.EtlDebugTest;
 import org.eclipse.epsilon.eol.dap.test.eunit.EUnitDebugTest;
 import org.eclipse.epsilon.eol.dap.test.evl.EvlDebugTest;
+import org.eclipse.epsilon.eol.dap.test.evl.EvlFixDebugTest;
 import org.eclipse.epsilon.eol.dap.test.flock.FlockDebugTest;
 import org.eclipse.epsilon.eol.dap.test.pinset.PinsetDebugTest;
 import org.junit.runner.RunWith;
@@ -77,6 +78,7 @@ import junit.framework.Test;
     ClasspathEgxTest.class,
     EgxErrorInEglTest.class,
     EvlDebugTest.class,
+    EvlFixDebugTest.class,
     EtlDebugTest.class,
     EclDebugTest.class,
     EmlDebugTest.class,
