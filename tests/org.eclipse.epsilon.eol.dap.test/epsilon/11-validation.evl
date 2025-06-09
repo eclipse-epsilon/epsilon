@@ -10,9 +10,14 @@ context Person {
       return l.isDefined() and l.trim().length() > 0;
     }
     fix {
-      title: 'Add "NoLastName" as placeholder'
+      guard: true // just to have a place for a breakpoint
+      title {
+        var newLastName = 'NoLastName';
+        return 'Add "' + newLastName + '" as placeholder';
+      }
       do {
-        self.lastName = 'NoLastName';
+        var fixedLastName = 'NoLastName';
+        self.lastName = fixedLastName;
       }
     }
   }
