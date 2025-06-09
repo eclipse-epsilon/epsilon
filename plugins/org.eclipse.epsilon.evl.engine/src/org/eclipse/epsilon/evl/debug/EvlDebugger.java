@@ -11,15 +11,38 @@ package org.eclipse.epsilon.evl.debug;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
+import org.eclipse.epsilon.evl.EvlModule;
 import org.eclipse.epsilon.evl.dom.Constraint;
 import org.eclipse.epsilon.evl.dom.ConstraintContext;
 import org.eclipse.epsilon.evl.dom.Fix;
+import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
 
 public class EvlDebugger extends EolDebugger {
 	
 	@Override
 	protected boolean isStructuralBlock(ModuleElement ast) {
 		return super.isStructuralBlock(ast) || ast instanceof ConstraintContext || ast instanceof Constraint || ast instanceof Fix;
+	}
+
+	@Override
+	public boolean isDoneAfterModuleElement(ModuleElement ast) {
+		if (super.isDoneAfterModuleElement(ast)) {
+			for (UnsatisfiedConstraint unsatisfied : getModule().getContext().getUnsatisfiedConstraints()) {
+				if (!unsatisfied.getFixes().isEmpty()) {
+					// There is at least one unsatisfied constraint with fixes: leave it running
+					return false;
+				}
+			}
+
+			// no unsatisfied constraints with fixes: EVL script will end as usual
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public EvlModule getModule() {
+		return (EvlModule) super.getModule();
 	}
 	
 }

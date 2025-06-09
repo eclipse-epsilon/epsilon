@@ -101,8 +101,6 @@ public class EolDebugger implements IEolDebugger {
 		} catch (InterruptedException ex) {
 			ex.printStackTrace();
 		}
-	
-		if (isTerminated()) return;
 	}
 
 	@Override
@@ -135,6 +133,12 @@ public class EolDebugger implements IEolDebugger {
 	@Override
 	public void stepReturn() {
 		stopAfterFrameStackSizeDropsBelow = frameStackSize();
+	}
+
+	@Override
+	public boolean isDoneAfterModuleElement(ModuleElement ast) {
+		// Default behaviour: execution is done after running the module
+		return ast == getModule();
 	}
 
 	private boolean controls(ModuleElement ast) {

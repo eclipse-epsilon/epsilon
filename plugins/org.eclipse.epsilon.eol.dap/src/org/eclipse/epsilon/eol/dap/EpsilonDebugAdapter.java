@@ -59,6 +59,7 @@ import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
+import org.eclipse.epsilon.eol.execute.control.ExecutionController;
 import org.eclipse.epsilon.eol.execute.control.IExecutionListener;
 import org.eclipse.lsp4j.debug.Breakpoint;
 import org.eclipse.lsp4j.debug.BreakpointEventArguments;
@@ -127,7 +128,7 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 	 * be propagated across all scripts being launched (e.g. from EGX to EGL scripts).
 	 */
 	protected class ModuleCompletionListener implements IExecutionListener {
-		private ModuleElement topElement;
+		private IEolModule topModule;
 		private final Set<ModuleElement> runningRoots = new HashSet<>();
 
 		@Override
@@ -135,13 +136,13 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 			if (ast.getParent() == null || runningRoots.isEmpty()) {
 				runningRoots.add(ast);
 
-				if (topElement == null) {
+				if (topModule == null && ast.getModule() instanceof IEolModule) {
 					/*
-					 * The very first node we will run is assumed to be the "top" element of our
-					 * program. When this completes, the program will be assumed to have completed
-					 * its execution.
+					 * The very first module we will run is assumed to be the "main" module of our
+					 * program. When this is considered terminated, the whole program will be considered
+					 * terminated.
 					 */
-					topElement = ast;
+					topModule = (IEolModule) ast.getModule();
 				}
 
 				/*
@@ -174,12 +175,16 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 					eolModule.getContext().getOutputStream().flush();
 					eolModule.getContext().getErrorStream().flush();
 					removeThreadFor(eolModule);
+
+					if (topModule != null && ast.getModule() == topModule) {
+						ExecutionController execController = topModule.getContext().getExecutorFactory().getExecutionController();
+						if (execController instanceof IEolDebugger && ((IEolDebugger) execController).isDoneAfterModuleElement(ast)) {
+							sendTerminated();
+							sendExited(0);
+							topModule = null;
+						}
+					}
 				}
-			}
-			if (ast == topElement) {
-				sendTerminated();
-				sendExited(0);
-				topElement = null;
 			}
 		}
 
@@ -191,15 +196,18 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 				eolModule.getContext().getOutputStream().flush();
 				eolModule.getContext().getErrorStream().flush();
 				removeThreadFor(eolModule);
-			}
-			if (ast == topElement) {
-				if (ast instanceof IEolModule) {
+
+				if (topModule != null && ast == topModule) {
 					// Report the exception that was propagated to the top module
-					((IEolModule) ast).getContext().getErrorStream().println(exception.toString());
+					topModule.getContext().getErrorStream().println(exception.toString());
+
+					ExecutionController execController = topModule.getContext().getExecutorFactory().getExecutionController();
+					if (execController instanceof IEolDebugger && ((IEolDebugger) execController).isDoneAfterModuleElement(ast)) {
+						sendTerminated();
+						sendExited(1);
+						topModule = null;
+					}
 				}
-				sendTerminated();
-				sendExited(1);
-				topElement = null;
 			}
 		}
 
@@ -802,6 +810,8 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		return CompletableFuture.runAsync(() -> {
 			this.isTerminated = true;
 			resumeAllThreads();
+			sendTerminated();
+			sendExited(2);
 		});
 	}
 

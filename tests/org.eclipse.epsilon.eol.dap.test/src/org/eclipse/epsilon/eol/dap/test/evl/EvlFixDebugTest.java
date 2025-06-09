@@ -31,6 +31,7 @@ import org.eclipse.lsp4j.debug.ScopesResponse;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.StackTraceResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
+import org.eclipse.lsp4j.debug.TerminateArguments;
 import org.eclipse.lsp4j.debug.Variable;
 import org.eclipse.lsp4j.debug.VariablesResponse;
 import org.junit.Test;
@@ -85,6 +86,11 @@ public class EvlFixDebugTest extends AbstractEpsilonDebugAdapterTest {
 
 		adapter.continue_(new ContinueArguments()).get();
 		assertNotNull(futureTitle.get());
-		assertProgramCompletedSuccessfully();
+
+		// We need to explicitly terminate as there is a lingering fix that could be applied
+		adapter.terminate(new TerminateArguments()).get();
+
+		// Terminated programs exit with a non-zero status
+		assertProgramFailed();
 	}
 }
