@@ -170,13 +170,15 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	}
 
 	@After
-	public void teardown() {
+	public void teardown() throws InterruptedException {
+		adapter.disconnect(new DisconnectArguments());
+		executor.shutdown();
+		executor.awaitTermination(TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
 		if (module != null) {
 			module.getContext().getModelRepository().dispose();
 			module.getContext().dispose();
 		}
-		adapter.disconnect(new DisconnectArguments());
-		executor.shutdownNow();
 	}
 
 	protected void assertStoppedBecauseOf(final String expectedReason) throws InterruptedException {

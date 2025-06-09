@@ -169,11 +169,11 @@ public class EpsilonDebugAdapter implements IDebugProtocolServer {
 		@Override
 		public void finishedExecuting(ModuleElement ast, Object result, IEolContext context) {
 			if (runningRoots.remove(ast)) {
-				if (ast instanceof IEolModule) {
-					final IEolModule eolModule = (IEolModule) ast;
+				if (ast.getModule() instanceof IEolModule) {
+					final IEolModule eolModule = (IEolModule) ast.getModule();
 					eolModule.getContext().getOutputStream().flush();
 					eolModule.getContext().getErrorStream().flush();
-					removeThreadFor((IEolModule) ast);
+					removeThreadFor(eolModule);
 				}
 			}
 			if (ast == topElement) {
