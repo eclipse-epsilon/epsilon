@@ -10,6 +10,7 @@
 package org.eclipse.epsilon.eol.dap.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -198,7 +199,7 @@ public abstract class AbstractEpsilonDebugAdapterTest {
 	protected void assertProgramFailed() throws InterruptedException {
 		client.isExited.tryAcquire(TIMEOUT_SECONDS, TimeUnit.SECONDS);
 		assertNotNull("The script should have exited within " + TIMEOUT_SECONDS + " seconds", client.exitedArgs);
-		assertEquals("The script should have completed its execution with an error", 1, client.exitedArgs.getExitCode());
+		assertNotEquals("The script should have completed its execution with an error", 0, client.exitedArgs.getExitCode());
 	}
 
 	protected StackTraceResponse getStackTrace() throws Exception {

@@ -32,4 +32,10 @@ public interface IEolDebugger extends ExecutionController {
 
 	Integer getStopAfterFrameStackSizeDropsBelow();
 
+	/**
+	 * Returns true iff the execution will complete after the
+	 * given module element completes (i.e. no further elements
+	 * will be run from this execution).
+	 */
+	boolean isDoneAfterModuleElement(ModuleElement ast);
 }

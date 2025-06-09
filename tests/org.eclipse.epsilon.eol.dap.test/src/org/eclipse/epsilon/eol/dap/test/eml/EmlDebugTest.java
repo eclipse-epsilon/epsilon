@@ -28,7 +28,6 @@ import org.eclipse.lsp4j.debug.ContinueArguments;
 import org.eclipse.lsp4j.debug.SetBreakpointsResponse;
 import org.eclipse.lsp4j.debug.StoppedEventArgumentsReason;
 import org.eclipse.lsp4j.debug.Variable;
-import org.junit.Before;
 import org.junit.Test;
 
 public class EmlDebugTest extends AbstractEpsilonDebugAdapterTest {
