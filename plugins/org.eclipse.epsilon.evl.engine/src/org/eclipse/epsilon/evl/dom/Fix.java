@@ -17,6 +17,7 @@ import org.eclipse.epsilon.eol.dom.ExecutableBlock;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.Variable;
+import org.eclipse.epsilon.evl.IEvlModule;
 import org.eclipse.epsilon.evl.execute.context.IEvlContext;
 import org.eclipse.epsilon.evl.parse.EvlParser;
 
@@ -35,18 +36,30 @@ public class Fix extends AbstractModuleElement {
 	}
 	
 	public String getTitle(Object self, IEvlContext context) throws EolRuntimeException{
-		return titleBlock.execute(context, true, FrameType.UNPROTECTED);
+		// Using the executor factory is needed to allow debugging the fix expression
+		return (String) getModule().getContext().getExecutorFactory().execute(titleBlock, context);
 	}
 	
 	public void execute(Object self, IEvlContext context) throws EolRuntimeException {
-		bodyBlock.execute(context, true, FrameType.UNPROTECTED);
+		getModule().getContext().getExecutorFactory().execute(bodyBlock, context);
 	}
 
 	public boolean appliesTo(Object self, IEvlContext context) throws EolRuntimeException {
 		if (guardBlock != null) {
-			return guardBlock.execute(context, Variable.createReadOnlyVariable("self", self));
+			// Using the executor factory is needed to allow debugging the guard expression
+			try {
+				context.getFrameStack().enterLocal(FrameType.UNPROTECTED, bodyBlock, Variable.createReadOnlyVariable("self", self));
+				return (Boolean) getModule().getContext().getExecutorFactory().execute(guardBlock, context);
+			} finally {
+				context.getFrameStack().leaveLocal(bodyBlock);
+			}
 		}
 		else return true;
+	}
+
+	@Override
+	public IEvlModule getModule() {
+		return (IEvlModule) super.getModule();
 	}
 	
 	public void accept(IEvlVisitor visitor) {

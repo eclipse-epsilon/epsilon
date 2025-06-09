@@ -34,7 +34,7 @@ public abstract class AbstractExecutionQueueTest extends AbstractEpsilonDebugAda
 	
 		// Ensures the program has finished running, and that the script thread has died
 		assertProgramCompletedSuccessfully();
-		epsilonThread.join();
+		runModuleResult.get();
 	}
 
 }
