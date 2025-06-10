@@ -10,12 +10,23 @@
  ******************************************************************************/
 package org.eclipse.epsilon.eol.models;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.List;
+import java.util.Map;
+import java.util.NavigableSet;
+import java.util.Set;
+import java.util.SortedSet;
+
 import org.eclipse.epsilon.common.concurrent.ConcurrencyUtils;
 import org.eclipse.epsilon.common.util.Multimap;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
-import org.eclipse.epsilon.eol.exceptions.models.*;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.epsilon.eol.exceptions.models.EolNotInstantiableModelElementTypeException;
 
 /**
  * A model that performs memoization of allContents, getAllOfType
@@ -155,7 +166,22 @@ public abstract class CachedModel<ModelElementType> extends Model {
 		}
 		return result;
 	}
-	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected <T> Collection<T> wrapUnmodifiable(Collection<T> original) {
+		if (original instanceof List) {
+			return Collections.unmodifiableList((List) original);
+		} else if (original instanceof NavigableSet) {
+			return Collections.unmodifiableNavigableSet((NavigableSet) original);
+		} else if (original instanceof SortedSet) {
+			return Collections.unmodifiableSortedSet((SortedSet) original);
+		} else if (original instanceof Set) {
+			return Collections.unmodifiableSet((Set) original);
+		} else {
+			return Collections.unmodifiableCollection(original);
+		}
+	}
+
 	protected void addToCache(String type, ModelElementType instance) throws EolModelElementTypeNotFoundException {
 		assert cachingEnabled;
 		
@@ -214,11 +240,11 @@ public abstract class CachedModel<ModelElementType> extends Model {
 				if (allContentsCache == null) {
 					allContentsCache = wrap(allContentsFromModel());
 					if (allContentsCache == null) {
-						return wrap(new ArrayList<>(0));
+						return wrapUnmodifiable(wrap(new ArrayList<>(0)));
 					}
 				}
 			}
-			return allContentsCache;
+			return wrapUnmodifiable(allContentsCache);
 		}
 		else return wrap(allContentsFromModel());
 	}
@@ -262,7 +288,7 @@ public abstract class CachedModel<ModelElementType> extends Model {
 			);
 		}
 		
-		return values;
+		return wrapUnmodifiable(values);
 	}
 	
 	@Override

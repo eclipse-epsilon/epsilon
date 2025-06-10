@@ -9,17 +9,20 @@
  ******************************************************************************/
 package org.eclipse.epsilon.eol.models;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolEnumerationValueNotFoundException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
@@ -57,6 +60,14 @@ public class CachedModelTests {
 			model.allContents();
 			
 			verify(model, times(1)).allContentsFromModel();
+		}
+
+		@SuppressWarnings("resource")
+		@Test
+		public void shouldNotAllowChanges() throws Exception {
+			final SimpleCachedModel model = new SimpleCachedModel();
+			assertThrows(UnsupportedOperationException.class,
+				() -> model.allContents().add("x"));
 		}
 	}
 
@@ -113,6 +124,14 @@ public class CachedModelTests {
 			
 			verify(model, never()).getAllOfTypeFromModel("org.example.Widget");
 		}
+
+		@SuppressWarnings("resource")
+		@Test
+		public void shouldNotAllowChanges() throws Exception {
+			final SimpleCachedModel model = new SimpleCachedModel();
+			assertThrows(UnsupportedOperationException.class,
+				() -> model.getAllOfType("Widget").add("x"));
+		}
 	}
 
 	public static class AllOfKindCachingTests {
@@ -167,6 +186,14 @@ public class CachedModelTests {
 			model.getAllOfKind("org.example.Widget");
 			
 			verify(model, never()).getAllOfKindFromModel("org.example.Widget");
+		}
+
+		@SuppressWarnings("resource")
+		@Test
+		public void shouldNotAllowChanges() throws Exception {
+			final SimpleCachedModel model = new SimpleCachedModel();
+			assertThrows(UnsupportedOperationException.class,
+				() -> model.getAllOfKind("Widget").add("x"));
 		}
 	}
 	
