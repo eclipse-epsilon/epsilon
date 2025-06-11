@@ -27,6 +27,11 @@ public class EvlDebugger extends EolDebugger {
 	@Override
 	public boolean isDoneAfterModuleElement(ModuleElement ast) {
 		if (super.isDoneAfterModuleElement(ast)) {
+			if (getModule().getUnsatisfiedConstraintFixer() == null) {
+				// There is no fixer to apply the fixes
+				return true;
+			}
+
 			for (UnsatisfiedConstraint unsatisfied : getModule().getContext().getUnsatisfiedConstraints()) {
 				if (!unsatisfied.isFixed() && !unsatisfied.getFixes().isEmpty()) {
 					// There is at least one unfixed unsatisfied constraint with fixes: leave it running
