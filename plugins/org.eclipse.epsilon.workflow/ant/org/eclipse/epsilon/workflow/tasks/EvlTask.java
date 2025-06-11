@@ -21,6 +21,7 @@ import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
 public class EvlTask extends ExportableModuleTask {
 	
 	protected String exportConstraintTrace;
+	protected boolean fix = false;
 	
 	public String getExportConstraintTrace() {
 		return exportConstraintTrace;
@@ -32,6 +33,14 @@ public class EvlTask extends ExportableModuleTask {
 		}
 	}
 
+	public boolean isFix() {
+		return fix;
+	}
+
+	public void setFix(boolean fix) {
+		this.fix = fix;
+	}
+
 	@Override
 	protected IEvlModule createDefaultModule() {
 		return new EvlModuleParallelAnnotation();
@@ -40,9 +49,10 @@ public class EvlTask extends ExportableModuleTask {
 	@Override
 	protected void initialize() throws Exception {
 		IEvlModule evlModule = (IEvlModule) module;
-		CommandLineFixer clf = new CommandLineFixer();
-		clf.setFix(false);
-		evlModule.setUnsatisfiedConstraintFixer(clf);
+		if (isFix()) {
+			CommandLineFixer clf = new CommandLineFixer();
+			evlModule.setUnsatisfiedConstraintFixer(clf);
+		}
 	}
 
 	@Override

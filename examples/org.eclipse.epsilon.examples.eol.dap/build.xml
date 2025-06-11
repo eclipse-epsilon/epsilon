@@ -42,9 +42,9 @@
 		<epsilon.emf.loadModel name="M"
 			metamodelfile="epsilon/models/person.ecore"
 			modelfile="epsilon/models/invalidPerson.model"
-			read="true" store="false" />
+			read="true" store="true" />
 
-		<epsilon.evl src="epsilon/09-validate.evl" debug="true" debugPort="4040" failOnErrors="false">
+		<epsilon.evl src="epsilon/09-validate.evl" debug="true" debugPort="4040" failOnErrors="false" fix="true">
 			<model ref="M"/>
 		</epsilon.evl>
 
