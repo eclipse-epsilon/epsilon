@@ -137,7 +137,7 @@ pipeline {
               sh 'mvn -B -T 1C -f pom-plain.xml compile'
             }
           }
-          stage('Deploy to OSSRH') {
+          stage('Deploy to Central') {
             when {
               anyOf {
                 allOf {
@@ -162,8 +162,8 @@ pipeline {
                   echo -e "5\ny\n" |  gpg --batch --command-fd 0 --expert --edit-key $fpr trust;
                 done
               '''
-              lock('ossrh') {
-                sh 'mvn -B -f pom-plain.xml -P ossrh,eclipse-sign deploy'
+              lock('central-deploy') {
+                sh 'mvn -B -f pom-plain.xml -P central-deploy,eclipse-sign deploy'
               }
             }
           }

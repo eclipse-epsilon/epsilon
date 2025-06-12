@@ -812,21 +812,6 @@ same version of EMF / other bits always.
     </pluginRepository>
   </pluginRepositories>
 
-  <distributionManagement>
-    <repository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>ossrh</id>
-      <name>OSSRH Release Staging Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-    </repository>
-    <snapshotRepository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>ossrh</id>
-      <name>OSSRH Snapshots Repository</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
-
   <profiles>
     <!-- NOTE: these two profiles have to be in this exact order, so we first
          sign the JAR with a certificate, and then we GPG sign the resulting
@@ -858,22 +843,22 @@ same version of EMF / other bits always.
     </profile>
 
     <profile>
-      <id>ossrh</id>
+      <id>central-deploy</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.13</version>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.7.0</version>
             <extensions>true</extensions>
             <configuration>
-              <serverId>ossrh</serverId>
-              <nexusUrl>https://oss.sonatype.org</nexusUrl>
-              <!-- We want to check staged releases manually on
-                   Sonatype OSSRH before we propagate to Central. -->
-              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>true</autoPublish>
+              <waitUntil>published</waitUntil>
+              <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
             </configuration>
           </plugin>
+
           <!-- Anything that goes to Central must be GPG signed -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
