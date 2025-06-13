@@ -1,3 +1,11 @@
+pre {
+  'Before'.println();
+}
+
+post {
+  'After'.println();
+}
+
 context Person {
   constraint HasFirstName {
     check: self.firstName.isDefined()

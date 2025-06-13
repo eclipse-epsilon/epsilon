@@ -101,6 +101,17 @@ public class FlockDebugTest extends AbstractEpsilonDebugAdapterTest {
 	}
 
 	@Test
+	public void canStopInsidePostBlock() throws Exception {
+		SetBreakpointsResponse result = adapter.setBreakpoints(createBreakpoints(createBreakpoint(12))).get();
+		assertTrue("The breakpoint on the check expression should be verified", result.getBreakpoints()[0].isVerified());
+		attach();
+		assertStoppedBecauseOf(StoppedEventArgumentsReason.BREAKPOINT);
+
+		adapter.continue_(new ContinueArguments()).get();
+		assertProgramCompletedSuccessfully();
+	}
+
+	@Test
 	public void allEvaluateRequestsArePendingWhenNotStopped() throws Exception {
 		// If you're not stopped at a breakpoint, we won't evaluate any expressions
 		// (as it may interfere with the regular execution of the program).
