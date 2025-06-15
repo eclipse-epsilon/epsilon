@@ -163,7 +163,7 @@ pipeline {
                 done
               '''
               lock('central-deploy') {
-                sh 'mvn -B -f pom-plain.xml -P central-deploy,eclipse-sign deploy'
+                sh 'mvn -B -T 1C -f pom-plain.xml -P central-deploy,eclipse-sign deploy'
               }
             }
           }
