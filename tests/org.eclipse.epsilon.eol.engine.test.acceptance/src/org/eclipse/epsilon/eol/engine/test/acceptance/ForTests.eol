@@ -1,0 +1,29 @@
+@test
+operation hasMore() {
+  var col : Sequence = Sequence{ "a", 1, 2, 2.5, "b" };
+  var text = '';
+  for (r in col) {
+    text = text + r.asString();
+    if (hasMore){ text = text + ", ";}
+  }
+  assertEquals('a, 1, 2, 2.5, b', text);
+}
+
+@test
+operation hasMoreConsidersType() {
+  var col : Sequence = Sequence{ "a", 1, 2, 2.5, "b" };
+  var text = '';
+  for (r : Real in col) {
+    text = text + r.asString();
+    if (hasMore){ text = text + ", ";}
+  }
+  assertEquals('1, 2, 2.5', text);
+}
+
+@test
+operation loopCountIsUpdated() {
+  for (i in 0.to(2)) {
+    // loopCount is 1-based
+    assertEquals(i + 1, loopCount);
+  }
+}
