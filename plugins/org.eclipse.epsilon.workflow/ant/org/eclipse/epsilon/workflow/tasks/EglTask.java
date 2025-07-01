@@ -50,7 +50,7 @@ public class EglTask extends ExportableModuleTask {
 	@Override
 	protected IEolModule createDefaultModule() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		final IEolModule module; 
-		final EglTemplateFactory templateFactory = templateFactoryType.getDeclaredConstructor().newInstance();
+		final EglTemplateFactory templateFactory = createDefaultTemplateFactory();
 		
 		if (templateFactory instanceof EglFileGeneratingTemplateFactory && outputRoot != null) {
 			try {
@@ -76,6 +76,10 @@ public class EglTask extends ExportableModuleTask {
 		}
 		
 		return module;
+	}
+	
+	protected EglTemplateFactory createDefaultTemplateFactory() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		return templateFactoryType.getDeclaredConstructor().newInstance();
 	}
 	
 	@Override
