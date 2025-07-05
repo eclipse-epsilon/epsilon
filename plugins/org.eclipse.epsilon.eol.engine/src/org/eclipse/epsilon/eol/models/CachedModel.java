@@ -12,14 +12,15 @@ package org.eclipse.epsilon.eol.models;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Deque;
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedSet;
 
+import org.apache.commons.collections.collection.UnmodifiableCollection;
+import org.apache.commons.collections.list.UnmodifiableList;
+import org.apache.commons.collections.set.UnmodifiableSet;
+import org.apache.commons.collections.set.UnmodifiableSortedSet;
 import org.eclipse.epsilon.common.concurrent.ConcurrencyUtils;
 import org.eclipse.epsilon.common.util.Multimap;
 import org.eclipse.epsilon.common.util.StringProperties;
@@ -170,15 +171,13 @@ public abstract class CachedModel<ModelElementType> extends Model {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected <T> Collection<T> wrapUnmodifiable(Collection<T> original) {
 		if (original instanceof List) {
-			return Collections.unmodifiableList((List) original);
-		} else if (original instanceof NavigableSet) {
-			return Collections.unmodifiableNavigableSet((NavigableSet) original);
+			return UnmodifiableList.decorate((List) original);
 		} else if (original instanceof SortedSet) {
-			return Collections.unmodifiableSortedSet((SortedSet) original);
+			return UnmodifiableSortedSet.decorate((SortedSet) original);
 		} else if (original instanceof Set) {
-			return Collections.unmodifiableSet((Set) original);
+			return UnmodifiableSet.decorate((Set) original);
 		} else {
-			return Collections.unmodifiableCollection(original);
+			return UnmodifiableCollection.decorate(original);
 		}
 	}
 
