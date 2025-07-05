@@ -28,6 +28,7 @@ import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelNotFoundException;
 import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
+import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.ModelRepository;
@@ -71,7 +72,12 @@ public class EUnitModule extends EolModule implements IEUnitModule {
 	}
 
 	public EUnitModule() {
-		this.getContext().getOperationContributorRegistry().add(new ExtraEUnitOperationContributor());
+		this(null);
+	}
+
+	public EUnitModule(IEolContext context) {
+		super(context);
+		getContext().getOperationContributorRegistry().add(new ExtraEUnitOperationContributor());
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*********************************************************************
- * Copyright (c) 2019 The University of York.
+ * Copyright (c) 2019-2025 The University of York.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -26,8 +26,6 @@ public class EUnitRunnerParallel extends EUnitRunner {
 	
 	@Override
 	protected EUnitModule newModule() {
-		EUnitModule module = super.newModule();
-		module.setContext(new EolContextParallel());
-		return module;
+		return new EUnitModule(new EolContextParallel());
 	}
 }
