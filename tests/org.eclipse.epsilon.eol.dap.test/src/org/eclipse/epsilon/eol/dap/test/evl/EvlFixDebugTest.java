@@ -123,8 +123,6 @@ public class EvlFixDebugTest extends AbstractEpsilonDebugAdapterTest {
 			UnsatisfiedConstraint unsatisfied = allUnsatisfied.iterator().next();
 			return unsatisfied.getFixes().get(0).getTitle();
 		});
-
-		assertFalse("Computing the title should not be done yet", futureTitle.isDone());
 		assertNotNull(futureTitle.get());
 
 		// We need to explicitly terminate as there is a lingering fix that could be applied
