@@ -552,3 +552,23 @@ operation emptyMapKeyToString(){
 operation emptyMapValueToString(){
 	assertEquals("Map {1->\"\"}", Map{1=""}.asString());
 }
+
+@test
+operation setPreservesInsertionOrder() {
+	var s : new Set;
+	var items = Sequence{5, 3, 2, 7};
+	for (item in items) {
+		s.add(item);
+	}
+	assertEquals(items, s.asSequence());
+}
+
+@test
+operation mapPreservesInsertionOrder() {
+	var m : new Map;
+	var keys = Sequence{5, 3, 2, 7};
+	for (k in keys) {
+		m.put(k, k+1);
+	}
+	assertEquals(keys, m.keySet().asSequence());
+}
