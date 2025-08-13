@@ -12,9 +12,10 @@ package org.eclipse.epsilon.workflow.tasks;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
 import org.eclipse.epsilon.common.util.StringUtil;
+import org.eclipse.epsilon.evl.EvlModule;
 import org.eclipse.epsilon.evl.IEvlModule;
-import org.eclipse.epsilon.evl.concurrent.EvlModuleParallelAnnotation;
 import org.eclipse.epsilon.evl.execute.CommandLineFixer;
 import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
 
@@ -43,7 +44,7 @@ public class EvlTask extends ExportableModuleTask {
 
 	@Override
 	protected IEvlModule createDefaultModule() {
-		return new EvlModuleParallelAnnotation();
+		return new EvlModule();
 	}
 
 	@Override

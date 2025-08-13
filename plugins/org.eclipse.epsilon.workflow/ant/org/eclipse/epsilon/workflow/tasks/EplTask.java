@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.epsilon.workflow.tasks;
 
+import org.eclipse.epsilon.epl.EplModule;
 import org.eclipse.epsilon.epl.IEplModule;
-import org.eclipse.epsilon.epl.concurrent.EplModuleParallelPatterns;
 import org.eclipse.epsilon.epl.execute.model.PatternMatchModel;
 
 public class EplTask extends ExecutableModuleTask {
@@ -28,7 +28,7 @@ public class EplTask extends ExecutableModuleTask {
 
 	@Override
 	protected IEplModule createDefaultModule() {
-		return new EplModuleParallelPatterns();
+		return new EplModule();
 	}
 
 	@Override

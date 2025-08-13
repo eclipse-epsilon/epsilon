@@ -59,14 +59,14 @@
          point="org.eclipse.epsilon.common.dt.moduleImplementation">
       <implementation
             class="org.eclipse.epsilon.etl.EtlModule"
-            default="false"
+            default="true"
             dialog="org.eclipse.epsilon.etl.dt.launching.EtlModuleConfiguration"
             language="ETL"
             name="Sequential">
       </implementation>
       <implementation
             class="org.eclipse.epsilon.etl.concurrent.EtlModuleParallel"
-            default="true"
+            default="false"
             dialog="org.eclipse.epsilon.etl.dt.launching.EtlModuleParallelConfiguration"
             language="ETL"
             name="Parallel (Declarative operations)">

@@ -50,14 +50,14 @@
          point="org.eclipse.epsilon.common.dt.moduleImplementation">
       <implementation
             class="org.eclipse.epsilon.epl.EplModule"
-            default="false"
+            default="true"
             dialog="org.eclipse.epsilon.epl.dt.launching.EplModuleConfiguration"
             language="EPL"
             name="Sequential">
       </implementation>
       <implementation
             class="org.eclipse.epsilon.epl.concurrent.EplModuleParallel"
-            default="true"
+            default="false"
             dialog="org.eclipse.epsilon.epl.dt.launching.EplModuleParallelConfiguration"
             language="EPL"
             name="Parallel (Declarative operations)">
