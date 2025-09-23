@@ -7,7 +7,7 @@
  * Contributors:
  *     Antonio García-Domínguez - initial API and implementation
 ******************************************************************************/
-package org.eclipse.epsilon.egl.test.acceptance.importCaching;
+package org.eclipse.epsilon.egl.test.acceptance.imports;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;

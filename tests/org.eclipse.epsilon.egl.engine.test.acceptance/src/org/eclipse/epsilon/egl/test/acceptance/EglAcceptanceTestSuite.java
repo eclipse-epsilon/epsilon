@@ -16,7 +16,7 @@ import org.eclipse.epsilon.egl.test.acceptance.eol.ConsistencyWithEolSuite;
 import org.eclipse.epsilon.egl.test.acceptance.exceptions.Exceptions;
 import org.eclipse.epsilon.egl.test.acceptance.extensibility.Extensibility;
 import org.eclipse.epsilon.egl.test.acceptance.formatters.Formatters;
-import org.eclipse.epsilon.egl.test.acceptance.importCaching.ImportCachingTests;
+import org.eclipse.epsilon.egl.test.acceptance.imports.ImportCachingTests;
 import org.eclipse.epsilon.egl.test.acceptance.merge.Merge;
 import org.eclipse.epsilon.egl.test.acceptance.operations.template.TemplateOperations;
 import org.eclipse.epsilon.egl.test.acceptance.outdentation.OutdentationTests;
