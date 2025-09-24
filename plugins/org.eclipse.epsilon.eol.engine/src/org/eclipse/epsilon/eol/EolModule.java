@@ -174,7 +174,6 @@ public class EolModule extends AbstractModule implements IEolModule {
 		
 		operations.addAll(this.getDeclaredOperations());
 		for (Import import_ : imports) {
-			import_.setContext(context);
 			if (import_.isLoaded() && import_.getModule() instanceof IEolModule) {
 				operations.addAll(((IEolModule)import_.getModule()).getOperations());
 			}
