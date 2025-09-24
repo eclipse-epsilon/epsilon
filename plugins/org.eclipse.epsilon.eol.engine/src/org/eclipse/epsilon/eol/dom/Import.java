@@ -74,6 +74,9 @@ public class Import extends AbstractModuleElement {
 			}
 			if (!found) {
 				try {
+					if (importedModule instanceof IEolModule) {
+						((IEolModule) importedModule).setContext(parentModule.getContext());
+					}
 					importedModule.parse(uri);
 				}
 				catch (Exception e) {

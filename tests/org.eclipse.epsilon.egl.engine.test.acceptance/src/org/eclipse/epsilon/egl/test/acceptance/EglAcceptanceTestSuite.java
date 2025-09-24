@@ -16,6 +16,7 @@ import org.eclipse.epsilon.egl.test.acceptance.eol.ConsistencyWithEolSuite;
 import org.eclipse.epsilon.egl.test.acceptance.exceptions.Exceptions;
 import org.eclipse.epsilon.egl.test.acceptance.extensibility.Extensibility;
 import org.eclipse.epsilon.egl.test.acceptance.formatters.Formatters;
+import org.eclipse.epsilon.egl.test.acceptance.imports.CircularImportsTests;
 import org.eclipse.epsilon.egl.test.acceptance.imports.ImportCachingTests;
 import org.eclipse.epsilon.egl.test.acceptance.merge.Merge;
 import org.eclipse.epsilon.egl.test.acceptance.operations.template.TemplateOperations;
@@ -51,7 +52,8 @@ import junit.framework.Test;
                PatchTestSuite.class,
                OutdentationTests.class,
                ImportCachingTests.class,
-               ParseProblemTests.class})
+               ParseProblemTests.class,
+               CircularImportsTests.class})
 public class EglAcceptanceTestSuite {
 
 	public static Test suite() {
