@@ -24,8 +24,13 @@ public class ImportManager implements IImportManager {
 
 	@Override
 	public void loadModuleForImport(Import import_, Class<? extends IModule> moduleImplClass, URI baseURI) throws URISyntaxException {
-		String importPath = import_.getPath();
+		/*
+		 * The cache should contain the importing module as well,
+		 * to reuse modules in the presence of dependency cycles.
+		 */
+		cache.put(baseURI, import_.getParentModule());
 
+		final String importPath = import_.getPath();
 		final URI importUri = UriUtil.resolve(importPath, baseURI).normalize();
 		final IEolModule parentModule = import_.getParentModule();
 		
