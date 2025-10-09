@@ -9,10 +9,13 @@
  ******************************************************************************/
 package org.eclipse.epsilon.evl.emf.validation;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
@@ -92,14 +95,22 @@ public class EvlMarkerResolutionGenerator implements IMarkerResolutionGenerator 
 	}
 
 	protected EmfPrettyPrinter printer = new EmfPrettyPrinter();
-	public void removeFixesFor(EObject eObject) {
 
+	public void removeFixesFor(EObject eObject, URI evlModuleUri) {
 		String eObjectId = getEObjectId(eObject);
-		Collection<FixInstance> fixes = resolutions.remove(eObjectId);
+		Collection<FixInstance> fixes = resolutions.get(eObjectId);
 		if (fixes != null) {
-			for (FixInstance fix : fixes) {
-				messages.remove(fix);
-				modelNames.remove(fix);
+			for (Iterator<FixInstance> itFix = fixes.iterator(); itFix.hasNext(); ) {
+				FixInstance fix = itFix.next();
+				URI fixModuleUri = fix.getContext().getModule().getUri();
+				if (evlModuleUri == null || evlModuleUri.equals(fixModuleUri)) {
+					itFix.remove();
+					messages.remove(fix);
+					modelNames.remove(fix);
+				}
+			}
+			if (fixes.isEmpty()) {
+				resolutions.remove(eObjectId);
 			}
 		}
 	}

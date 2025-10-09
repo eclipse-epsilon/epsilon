@@ -150,7 +150,7 @@ public class EvlValidator implements EValidator {
 		
 		if (diagnostics != null) {
 			// A complete validation is performed, so clear old fixes
-			EvlMarkerResolutionGenerator.INSTANCE.removeFixesFor(eObject);
+			EvlMarkerResolutionGenerator.INSTANCE.removeFixesFor(eObject, source);
 		}
 		
 		if (diagnostics != this.diagnostics) {
