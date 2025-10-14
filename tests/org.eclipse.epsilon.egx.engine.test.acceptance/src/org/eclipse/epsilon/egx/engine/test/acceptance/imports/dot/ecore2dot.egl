@@ -1,0 +1,115 @@
+digraph G {
+	graph[splines=ortho]
+	node[fontname=Tahoma, fontsize=10, shape=record]
+	edge[fontname=Tahoma, fontsize=10, dir=back, arrowtail=empty]
+	 
+	[%for (c in classes) { %]
+	[%=c.name%][shape=none, margin=0, label = <[%=c.getLabel()%]>]
+	[%for (s in c.eSuperTypes.select(c|classes.includes(c))){%]
+	[%=s.name%]->[%=c.name%]
+	[%}%]
+	[%}%]
+	
+	[%for (r in EReference.all.select(r|classes.includes(r.eContainer) and classes.includes(r.eType))) {%]
+	[%=r.eContainer.name%]->[%=r.eType.name%][label=" [%=r.getLabel()%] ",arrowtail=[%=r.getArrowTail()%]];
+	[%}%]
+	
+}
+
+[%
+
+operation EClass getLabel() {
+	var fillcolor = "fffcdc";
+	var label = "<table cellspacing='0' cellborder='0' cellpadding='1' bgcolor='#" + fillcolor + "'>";
+	var features = self.eAttributes;
+	
+	label += "<tr><td sides='B' colspan='2' border='1'>" + 
+		"<table border='0' cellspacing='0' cellborder='0' cellpading='0'>" + 
+		"<tr><td align='right' valign='middle'><img src='" + self.getIcon()+ "'></img></td>" + 
+		"<td align='left' valign='middle' href=\"javascript:top.showView('/Model/Classes/" + self.name + "')\" tooltip='Go'>" + self.name + "</td></tr></table></td></tr>";
+	
+	for (f in features.sortBy(f|f.name.toLowerCase())) {
+		label += "<tr>";
+		label += "<td><img src='" + f.getIcon() + "'></img></td><td align='left'>" + f.getLabel(self) + "</td>";
+		label += "</tr>";
+	}
+	if (features.isEmpty()){
+		label += "<tr>";
+		label += "<td>&nbsp;</td><td>&nbsp;</td>";
+		label += "</tr>";
+	}
+	
+	label += "</table>";
+	return label;
+}
+
+operation EStructuralFeature getLabel(eClass : EClass) {
+	var label = self.name;
+	if (self.eType.isDefined()) label += " : " + self.eType.name;
+	if (self.isMany) label += "["+"*"+"]";
+	if (self.isTypeOf(EReference)) {
+		// add href here
+	}
+	return label; 
+}
+
+operation EOperation getLabel() {
+	var label = self.name + "(" + self.eParameters.collect(p|p.getLabel()).concat(", ") + ")";
+	if (self.eType.isDefined()) {
+		label += " : " + self.eType.name;
+		if (self.isMany) {
+			label += "["+"*"+"]";
+		}
+	}
+	return label;
+}
+
+operation EReference getArrowTail() {
+	if (self.containment) {
+		return "diamond";
+	}
+	else {
+		return "none";
+	}
+}
+
+operation Any getIcon() {
+	return new Native("java.io.File")
+		(System.context.module.file.parent, "icons/" + self.eClass.name + ".gif").absolutePath;
+}
+
+
+operation EReference getLabel() {
+	var label = self.name;
+	if (self.isMany) label += "*";
+	return label; 
+}
+/*
+operation ETypedElement getLabel() {
+	var label = self.name + " : " + self.eType.name;
+	if (self.isMany) label += "["+"*"+"]";
+	return label;  
+}
+
+operation EOperation getLabel() {
+	var label = self.name + "(" + self.eParameters.collect(p|p.getLabel()).concat(", ") + ")";
+	if (self.eType.isDefined()) {
+		label += " : " + self.eType.name;
+		if (self.isMany) {
+			label += "["+"*"+"]";
+		}
+	}
+	return label;
+}
+
+operation EReference getArrowTail() {
+	if (self.containment) {
+		return "diamond";
+	}
+	else {
+		return "none";
+	}
+}*/
+
+%]
+
