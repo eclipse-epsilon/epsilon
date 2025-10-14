@@ -178,25 +178,33 @@ public class EgxModule extends ErlModule implements IEgxModule {
 	
 	@Override
 	public boolean parse(File file) throws Exception {
-		boolean result = super.parse(file);
-		if (result) getContext().getTemplateFactory().initialiseRoot(file.getAbsoluteFile().getParentFile().toURI());
-		return result;
+		/*
+		 * Note: root must be initialised before parsing starts, so that the template
+		 * factory uses the main EGX script as its root (instead of the first EGX script
+		 * that fully parses without adding any new imports).
+		 */
+		URI rootURI = file.getAbsoluteFile().getParentFile().toURI();
+		getContext().getTemplateFactory().initialiseRoot(rootURI);
+		return super.parse(file);
 	}
 	
 	@Override
 	public boolean parse(URI uri) throws Exception {
-		boolean result = super.parse(uri);
-		if (result) getContext().getTemplateFactory().initialiseRoot(uri);
-		return result;
+		// See comment in parse(File) about root initialisation
+		getContext().getTemplateFactory().initialiseRoot(uri);
+		return super.parse(uri);
 	}
 	
 	@Override
 	public boolean parse(String code, File file) throws Exception {
-		boolean result = super.parse(code, file);
-		if (result && file != null) getContext().getTemplateFactory().initialiseRoot(file.getAbsoluteFile().getParentFile().toURI());
-		return result;
+		// See comment in parse(File) about root initialisation
+		if (file != null) {
+			URI rootURI = file.getAbsoluteFile().getParentFile().toURI();
+			getContext().getTemplateFactory().initialiseRoot(rootURI);
+		}
+		return super.parse(code, file);
 	}
-	
+
 	@Override
 	protected Object processRules() throws EolRuntimeException {
 		IEgxContext context = getContext();
