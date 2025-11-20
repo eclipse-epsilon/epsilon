@@ -10,14 +10,14 @@
 package org.eclipse.epsilon.egl.engine.traceability.fine;
 
 import org.eclipse.epsilon.egl.engine.traceability.fine.internal.EglOutputBufferPrintExecutionListener;
-import org.eclipse.epsilon.egl.engine.traceability.fine.internal.TracedPropertyAccessLedger;
+import org.eclipse.epsilon.egl.engine.traceability.fine.internal.NonRestartablePropertyAccessRecorder;
 import org.eclipse.epsilon.egl.engine.traceability.fine.internal.TraceLinkCreatingTemplateExecutionListener;
+import org.eclipse.epsilon.egl.engine.traceability.fine.internal.TracedPropertyAccessLedger;
 import org.eclipse.epsilon.egl.engine.traceability.fine.trace.Trace;
 import org.eclipse.epsilon.egl.execute.context.IEglContext;
 import org.eclipse.epsilon.eol.execute.ExecutorFactory;
 import org.eclipse.epsilon.eol.execute.introspection.recording.IPropertyAccessRecorder;
 import org.eclipse.epsilon.eol.execute.introspection.recording.PropertyAccessExecutionListener;
-import org.eclipse.epsilon.eol.execute.introspection.recording.PropertyAccessRecorder;
 
 /**
  * The entry point to the EGL fine-grained traceability functionality. This adaptor can
@@ -48,7 +48,7 @@ public class EglFineGrainedTraceContextAdaptor {
 	}
 
 	protected void selectivelyRecordPropertyAccesses(IEglContext context, TracedPropertyAccessLedger ledger) {
-		final IPropertyAccessRecorder recorder = new PropertyAccessRecorder();
+		final IPropertyAccessRecorder recorder = new NonRestartablePropertyAccessRecorder();
 		ExecutorFactory executorFactory = context.getExecutorFactory();
 		executorFactory.addExecutionListener(new PropertyAccessExecutionListener(recorder));
 		executorFactory.addExecutionListener(new EglOutputBufferPrintExecutionListener(recorder, ledger));

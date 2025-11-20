@@ -12,8 +12,8 @@ package org.eclipse.epsilon.eol.execute.introspection.recording;
 
 public class PropertyAccessRecorder implements IPropertyAccessRecorder {
 
-	private boolean recording = false;
-	private PropertyAccesses currentPropertyAccesses = new PropertyAccesses();
+	protected boolean recording = false;
+	protected PropertyAccesses currentPropertyAccesses = new PropertyAccesses();
 	
 	@Override
 	public void record(Object modelElement, String propertyName) {

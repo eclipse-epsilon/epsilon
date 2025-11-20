@@ -31,6 +31,26 @@ public class TemplateOperationsContributeToTrace extends EglFineGrainedTraceabil
 	}
 	
 	@Test
+	public void testTemplateOperationWithPropertyAccess() throws Exception {
+		
+		String staticText = "Some static text\n".replaceAll("\n", NEWLINE);
+		
+		String egl = staticText +
+				"[%=t()%]\n  " + 
+				"[%@template   \n" +
+				"operation t(){ \n" + 
+				"var name = EClass.allInstances().first().name;%]\n" +
+				"[%=name%]\n" +
+				"[%}%]".replaceAll("\n", NEWLINE);
+		
+		EClass   person = anEClass().named("Person").build();
+		EPackage model  = aMetamodel().with(person).build();
+		generateTrace(egl, model);
+		
+		trace.assertEquals(staticText.length(), "Trace.all.first.traceLinks.first().destination.region.offset");
+	}
+	
+	@Test
 	public void testTemplateOperationWithIndentation() throws Exception {
 		
 		String staticText = "Some static text\n".replaceAll("\n", NEWLINE);
