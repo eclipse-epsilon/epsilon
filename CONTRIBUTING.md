@@ -50,4 +50,4 @@ https://www.eclipse.org/projects/handbook/#resources-commit
 
 Contact the project developers via the project's forum:
 
-* https://www.eclipse.org/forums/index.php/f/22/
+* https://github.com/eclipse-epsilon/epsilon/discussions
