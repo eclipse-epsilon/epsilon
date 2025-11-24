@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.epsilon.rdf.jena.uberjar</name>
+	<name>org.eclipse.epsilon.jena.uberjar</name>
 	<comment></comment>
 	<projects>
 	</projects>

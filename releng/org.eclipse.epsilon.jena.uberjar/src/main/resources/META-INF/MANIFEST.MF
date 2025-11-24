@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Apache Jena Uber-JAR (for Epsilon EMC RDF driver)
-Bundle-SymbolicName: org.eclipse.epsilon.emc.rdf.jena
+Bundle-SymbolicName: org.eclipse.epsilon.jena.uberjar
 Bundle-Version: 5.1.0.qualifier
 Export-Package: org.apache.jena.rdflink,
  org.apache.jena.mem2,
