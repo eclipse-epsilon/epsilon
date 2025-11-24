@@ -1,0 +1,10 @@
+import "../TestOperations.eol";
+
+var value = Sequence {"alice", "bob", "jeff"};
+var position = 0;
+
+beforeChange(value, position);
+
+getNames().addAll(position, value);
+
+afterChange();

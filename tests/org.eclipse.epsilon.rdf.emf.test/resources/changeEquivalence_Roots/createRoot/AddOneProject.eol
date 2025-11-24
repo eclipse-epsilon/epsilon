@@ -1,0 +1,15 @@
+if(consoleOutput) {
+	"\n-Start-\n".println();
+}
+
+var p = new Project;
+p.title = 'My First Project';
+
+var t = new Task;
+t.title = 'My First Task';
+p.tasks.add(t);
+
+if(consoleOutput) {
+	Model.contents.println();
+	"\n-End-\n".println();
+}

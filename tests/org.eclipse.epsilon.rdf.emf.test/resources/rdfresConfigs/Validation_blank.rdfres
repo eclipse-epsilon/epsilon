@@ -1,0 +1,4 @@
+dataModels:
+  - model.ttl
+schemaModels:
+  - schema.ttl

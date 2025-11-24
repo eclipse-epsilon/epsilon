@@ -1,0 +1,16 @@
+@namespace(uri="http://york.ac.uk/emf-rdf/examples/orgchart")
+package orgchart;
+
+class Organisation {
+    attr String name;
+	val Team[*] teams;
+}
+
+class Team {
+    attr String name;
+	val Employee[*] employees;
+}
+
+class Employee {
+	attr String name;
+}

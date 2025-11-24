@@ -1,0 +1,7 @@
+@namespace(uri="http://eclipse.org/epsilon/rdf/books", prefix="")
+package books;
+
+class Book {
+	attr String title;
+	attr String publisher;
+}

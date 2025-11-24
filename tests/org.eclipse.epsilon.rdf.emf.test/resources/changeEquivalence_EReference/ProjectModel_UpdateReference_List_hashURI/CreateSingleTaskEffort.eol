@@ -1,0 +1,20 @@
+import "../TestOperations.eol";
+
+if(consoleOutput) {
+	"\n-Start-\n".println();
+}
+
+var t = Task.all.get(1);
+if(consoleOutput) {
+	showTaskEffort(t);
+	"\n++Add one effort++\n".println();
+}
+
+var newEffort = new Effort;
+t.effort.add(newEffort);
+newEffort.person = Person.all.first;
+
+if(consoleOutput) {
+	showTaskEffort(t);
+	"\n-End-\n".println();
+}
