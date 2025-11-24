@@ -125,8 +125,8 @@ public class RDFGraphResourceUpdate {
 			return (Literal) value;
 		}
 
-		if (value instanceof EObject eob) {
-			return getEObjectResource(model, eob);
+		if (value instanceof EObject) {
+			return getEObjectResource(model, (EObject) value);
 		} else {
 			return createLiteral(value);
 		}
@@ -237,7 +237,7 @@ public class RDFGraphResourceUpdate {
 		String eObjectName = EcoreUtil.generateUUID();  // This UUID is generated using Date and Time (now).
 
 		String eObjectNamespace = rdfGraphResource.getConfig().getDefaultModelNamespace();
-		if (null != eObjectNamespace && !"".equals(eObjectNamespace.strip())) {
+		if (null != eObjectNamespace && !"".equals(eObjectNamespace.trim())) {
 			// Clean the user input from the rdfres config file; must end # or /
 			eObjectNamespace = deserializer.normaliseEPackageNSURI(eObjectNamespace);
 		} else {
@@ -490,9 +490,9 @@ public class RDFGraphResourceUpdate {
 			System.out.println(String.format(" - removeOneValueFromList: %s", value));
 		}
 
-		if (value instanceof EObject eob && eStructuralFeature instanceof EReference) {
+		if (value instanceof EObject && eStructuralFeature instanceof EReference) {
 			// References
-			RDFNode valueRDFNode = rdfGraphResource.getRDFResource(eob);
+			RDFNode valueRDFNode = rdfGraphResource.getRDFResource((EObject) value);
 			RDFList newContainer = removeOneValueFromListHandleUnique(container, eStructuralFeature, valueRDFNode);
 			if (checkContainment(eStructuralFeature, value)) {
 				removeAllObjectStatements(model, value);
@@ -517,7 +517,8 @@ public class RDFGraphResourceUpdate {
 
 	private void removeFromList(Object values, RDFList container, EObject onEObject, EStructuralFeature eStructuralFeature, Model model) {
 		RDFList newContainer = container;
-		if (values instanceof List<?> valueList) {
+		if (values instanceof List) {
+			List<?> valueList = (List<?>) values;
 			if (CONSOLE_OUTPUT_ACTIVE) {
 				System.out.println(String.format("list of values to remove: %s", valueList));
 			}
@@ -578,8 +579,8 @@ public class RDFGraphResourceUpdate {
 
 	private RDFList createRDFListOnModel(Object values, Model model) {
 		List<RDFNode> rdfNodes = new ArrayList<>();
-		if (values instanceof List<?> valuesList) {
-			valuesList.forEach(v -> rdfNodes.add(createValueRDFNode(v, model)));
+		if (values instanceof List) {
+			((List<?>) values).forEach(v -> rdfNodes.add(createValueRDFNode(v, model)));
 		} else {
 			rdfNodes.add(createValueRDFNode(values, model));
 		}
@@ -596,9 +597,9 @@ public class RDFGraphResourceUpdate {
 	// Feature operations
 
 	private boolean checkContainment(EStructuralFeature eStructuralFeature, Object value) {
-		return eStructuralFeature instanceof EReference eRef
+		return eStructuralFeature instanceof EReference
 			&& value instanceof EObject
-			&& eRef.isContainment();
+			&& ((EReference) eStructuralFeature).isContainment();
 	}
 
 	private void addAllEStructuralFeatureStatements(EObject eObject, Model model) {
@@ -651,7 +652,8 @@ public class RDFGraphResourceUpdate {
 			Object value = eObject.eGet(eStructuralFeature);
 			if (null != value) {
 				if (eStructuralFeature.isMany()) {
-					if (value instanceof List l) {
+					if (value instanceof List) {
+						List<?> l = (List<?>) value;
 						if (CONSOLE_OUTPUT_ACTIVE) {
 							System.out.println(String.format(" - %s : %s : [%s]", eStructuralFeature.eClass().getName(),
 									eStructuralFeature.getName(), l.size()));

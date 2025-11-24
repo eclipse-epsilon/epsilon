@@ -161,8 +161,8 @@ public class RDFGraphResourceImpl extends ResourceImpl {
 
 	protected void setDisabledForAdapters(boolean isDisabled) {
 		this.eAdapters().forEach(a -> {
-			if (a instanceof IDisableable d) {
-				d.setDisabled(isDisabled);
+			if (a instanceof IDisableable) {
+				((IDisableable) a).setDisabled(isDisabled);
 			}
 		});
 	}
