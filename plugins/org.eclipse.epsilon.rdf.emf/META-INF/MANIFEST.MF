@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: EMF Driver for RDF Graphs
 Bundle-SymbolicName: org.eclipse.epsilon.rdf.emf;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Export-Package: org.eclipse.epsilon.rdf.emf,
  org.eclipse.epsilon.rdf.emf.config
 Require-Bundle: org.yaml.snakeyaml;bundle-version="2.0.0",

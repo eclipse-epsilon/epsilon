@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.rdf.emf.feature"
       label="Feature for RDF EMF resource"
-      version="1.0.0.qualifier"
+      version="2.9.0.qualifier"
       provider-name="University of York">
 
    <description>
