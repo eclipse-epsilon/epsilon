@@ -82,13 +82,13 @@ public class RDFGraphResourceNotificationAdapterChangeRDF extends EContentAdapte
 	}
 	
 	private void handleNonFeatureNotification(Object value, Notification notification) {
-		if (value instanceof EObject eObjectValue) {
-			handleEObjectAttachOrDetach(notification, eObjectValue);
+		if (value instanceof EObject) {
+			handleEObjectAttachOrDetach(notification, (EObject) value);
 		}
-		if (value instanceof List eObjectList) {
-			for (Object o : eObjectList) {
-				if (o instanceof EObject eob) {
-					handleEObjectAttachOrDetach(notification, eob);
+		if (value instanceof List) {
+			for (Object o : (List<?>) value) {
+				if (o instanceof EObject) {
+					handleEObjectAttachOrDetach(notification, (EObject) o);
 				}
 			}
 		}

@@ -127,6 +127,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <swt.version>3.114.0</swt.version>
+    <jena.version>5.1.0</jena.version>
   </properties>
 
   <modules>
@@ -202,6 +203,10 @@
     <!-- CLI component -->
     <module>plugins/org.eclipse.epsilon.common.cli/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.eol.cli/pom-plain.xml</module>
+
+    <!-- RDF component -->
+    <module>plugins/org.eclipse.epsilon.rdf.emf/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.rdf.validation/pom-plain.xml</module>
   </modules>
 
   <!--
@@ -724,6 +729,13 @@ same version of EMF / other bits always.
         <version>4.4.14</version>
       </dependency>
 
+      <!-- Jena (for RDF) -->
+      <dependency>
+        <groupId>org.apache.jena</groupId>
+        <artifactId>apache-jena-libs</artifactId>
+        <type>pom</type>
+        <version>${jena.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

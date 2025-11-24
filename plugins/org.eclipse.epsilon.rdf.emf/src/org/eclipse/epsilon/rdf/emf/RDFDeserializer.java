@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -155,8 +156,8 @@ public class RDFDeserializer {
 	protected void deserializeProperty(Resource node, EObject eob, EStructuralFeature sf) {
 		Object value = deserializeProperty(node, sf);	
 		
-		if (value instanceof Collection c) {
-			((EList<Object>) eob.eGet(sf)).addAll(c);
+		if (value instanceof Collection) {
+			((EList<Object>) eob.eGet(sf)).addAll((Collection<?>) value);
 		} else {
 			eob.eSet(sf, value);
 			return;
@@ -178,8 +179,8 @@ public class RDFDeserializer {
 			Statement stmt = itValue.next();
 			
 			Object deserialized = deserializeValue(stmt.getObject(), sf);
-			if (deserialized instanceof Collection c) {
-				values.addAll(c);
+			if (deserialized instanceof Collection) {
+				values.addAll((Collection<?>) deserialized);
 			} else if (deserialized != null) {
 				values.add(deserialized);
 			}
@@ -297,7 +298,8 @@ public class RDFDeserializer {
 						typeName, nsURI));
 				}
 
-				if (eClassifier instanceof EClass newEClass) {
+				if (eClassifier instanceof EClass) {
+					EClass newEClass = (EClass) eClassifier;
 					final boolean isSuperTypeOfExisting = eClasses.stream()
 						.filter(existing -> newEClass.isSuperTypeOf(existing))
 						.findFirst().isPresent();
@@ -308,7 +310,7 @@ public class RDFDeserializer {
 						 * so it should be added after removing any eClasses
 						 * that are less concrete than this one.
 						 */
-						for (var itEClass = eClasses.iterator(); itEClass.hasNext(); ) {
+						for (Iterator<EClass> itEClass = eClasses.iterator(); itEClass.hasNext(); ) {
 							EClass existingEClass = itEClass.next();
 							if (existingEClass.isSuperTypeOf(newEClass)) {
 								itEClass.remove();
