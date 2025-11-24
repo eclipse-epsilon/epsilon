@@ -1,0 +1,22 @@
+import "../TestOperations.eol";
+
+for (p in Project.all) {
+
+	"\n-Start-\n".println();
+	
+	var analysisTask = p.tasks.selectOne(i|i.title == "Analysis");
+	var analysisEfforts = analysisTask.effort;
+	
+	var implementationTask = p.tasks.selectOne(i|i.title == "Implementation");
+	var implementationEfforts = implementationTask.effort;
+	
+	var moveEffort = implementationEfforts.first();
+	implementationEfforts.remove(moveEffort);
+	analysisEfforts.add(moveEffort);
+	
+	moveEffort = implementationEfforts.first();
+	implementationEfforts.remove(moveEffort);
+	analysisEfforts.add(moveEffort);
+
+	"\n-End-\n".println();
+}

@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: XMI to RDF Converter
+Bundle-SymbolicName: org.eclipse.epsilon.rdf.emf.converter;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.ui;bundle-version="3.0.0",
+ org.eclipse.core.runtime;bundle-version="3.0.0",
+ org.eclipse.core.resources;bundle-version="3.0.0",
+ org.eclipse.epsilon.rdf.emf;bundle-version="1.0.0",
+ org.yaml.snakeyaml;bundle-version="2.0.0",
+ org.eclipse.emf.ecore.xmi;bundle-version="2.0.0",
+ org.eclipse.epsilon.emc.rdf.jena;bundle-version="5.1.0"
+Bundle-Vendor: University of York
+Automatic-Module-Name: org.eclipse.epsilon.rdf.emf.converter
+Bundle-RequiredExecutionEnvironment: JavaSE-17

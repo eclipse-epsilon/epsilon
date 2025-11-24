@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Model xmi:version="2.0" 
+  xmlns:xmi="http://www.omg.org/XMI" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns="http://eclipse.org/epsilon/rdf/containment" 
+  xsi:schemaLocation="http://eclipse.org/epsilon/rdf/containment metamodel.emf" 
+  name="theModel">
+  <entities name="firstEntity">
+    <subentities name="secondEntity"/>
+  </entities>
+</Model>

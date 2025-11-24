@@ -1,0 +1,33 @@
+import "../TestOperations.eol";
+
+if(consoleOutput) {
+	"\n-Start-\n".println();
+}
+
+var p = Project.all.first;
+var t = new Task;
+t.title = 'newTask';
+t.duration = 12;
+t.start = 3;
+
+var e1 = new Effort;
+e1.person = Person.all.first;
+e1.percentage = 43;
+t.effort.add(e1);
+
+var e2 = new Effort;
+e2.person = Person.all.second;
+e2.percentage = 57;
+t.effort.add(e2);
+
+
+if(consoleOutput) {
+	showTaskEffort(t);
+	"\n++Add one task++\n".println();
+}
+p.tasks.add(t);
+
+if(consoleOutput) {
+	showTaskEffort(t);
+	"\n-End-\n".println();
+}

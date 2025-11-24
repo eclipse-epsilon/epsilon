@@ -1,0 +1,26 @@
+@base <http://my.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix orgc: <http://york.ac.uk/emf-rdf/examples/orgchart#> .
+
+<#organisation>
+  a orgc:Organisation ;
+  orgc:name "My Organisation" ;
+  orgc:teams ( <teams#dev> <teams#marketing> ) .
+
+<teams#dev>
+  a orgc:Team ;
+  orgc:name "Development Team" ;
+  orgc:employees ( <employees#1234> <employees#2345> ) .
+
+<teams#marketing>
+  a orgc:Team ;
+  orgc:name "Marketing Team" .
+
+<employees#1234>
+  a orgc:Employee ;
+  orgc:name "John Doe" .
+
+<employees#2345>
+ a orgc:Employee ;
+ orgc:name "Jane Sue" .
