@@ -105,6 +105,12 @@
    <feature id="org.eclipse.epsilon.eol.dap.feature">
       <category name="org.eclipse.epsilon.dap"/>
    </feature>
+   <feature id="org.eclipse.epsilon.rdf.emf.dt.feature">
+      <category name="org.eclipse.epsilon.rdf"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.rdf.emf.feature">
+      <category name="org.eclipse.epsilon.rdf"/>
+   </feature>
    <category-def name="Epsilon Core" label="Epsilon Core">
       <description>
          Parsers, execution engines, development tools (editors, launch configurations, debuggers etc.) for languages of the Epsilon platform.
@@ -175,11 +181,20 @@
          Support for managing JSON-based models with languages of the Epsilon platform.
       </description>
    </category-def>
-   <category-def name="org.eclipse.epsilon.dap" label="Epsilon Debug Adapter Support"/>
+   <category-def name="org.eclipse.epsilon.dap" label="Epsilon Debug Adapter Support">
+      <description>
+         Support for debugging local and remote Epsilon programs via the Debug Adapter Protocol.
+      </description>
+   </category-def>
+   <category-def name="org.eclipse.epsilon.rdf" label="Epsilon RDF Integration">
+      <description>
+         Support for loading EMF models from RDF files (e.g. Turtle, RDF/XML, N-Triples).
+      </description>
+   </category-def>
    <repository-reference location="http://download.eclipse.org/emfatic/update" name="" enabled="true" />
    <repository-reference location="http://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" name="" enabled="true" />
    <repository-reference location="https://download.eclipse.org/lsp4e/releases/latest/" name="" enabled="true" />
    <repository-reference location="https://download.eclipse.org/mylyn/updates/release/latest/" name="" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/releases/2024-12" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-12" enabled="true" />
+   <repository-reference location="http://download.eclipse.org/releases/2024-12" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-12" name="" enabled="true" />
 </site>
