@@ -1,0 +1,9 @@
+import "../TestOperations.eol";
+
+var value = "jeff";
+
+beforeChange(value);
+
+getNames().add(value);
+
+afterChange();

@@ -1,0 +1,14 @@
+if(consoleOutput) {
+	"\n-Start-\n".println();
+}
+
+var p1 = new Project;
+p1.title = 'My First Project';
+
+var p2 = new Project;
+p2.title = 'My Second Project';
+
+if(consoleOutput) {
+	Model.contents.println();
+	"\n-End-\n".println();
+}
