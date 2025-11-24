@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.rdf.emf.dt.feature"
       label="RDF-EMF Developer Tools"
-      version="1.0.0.qualifier"
+      version="2.9.0.qualifier"
       provider-name="University of York">
 
    <description url="https://github.com/epsilonlabs/emf-rdf/">
