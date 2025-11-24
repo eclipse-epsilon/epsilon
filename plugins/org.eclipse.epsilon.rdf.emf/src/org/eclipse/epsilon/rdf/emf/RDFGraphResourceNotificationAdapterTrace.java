@@ -70,9 +70,9 @@ public class RDFGraphResourceNotificationAdapterTrace extends EContentAdapter im
 							String.format("EObject: %s#%s", ((EObject) notification.getNewValue()).eClass().getName(),
 									((EObject) notification.getNewValue()).hashCode()));
 				}
-				if (notification.getNewValue() instanceof List el && notification.getEventType() == Notification.ADD_MANY) {
+				if (notification.getNewValue() instanceof List && notification.getEventType() == Notification.ADD_MANY) {
 					processTrace.append("\nEObjects ADDED to Model:");
-					for (Object o : el) {
+					for (Object o : (List<?>) notification.getNewValue()) {
 						processTrace.append(
 							String.format("\n - EObject: %s#%s", ((EObject) o).eClass().getName(),
 									((EObject) o).hashCode()));
@@ -89,9 +89,9 @@ public class RDFGraphResourceNotificationAdapterTrace extends EContentAdapter im
 							String.format("EObject: %s#%s", ((EObject) notification.getOldValue()).eClass().getName(),
 									((EObject) notification.getOldValue()).hashCode()));
 				}
-				if (notification.getNewValue() instanceof List el && notification.getEventType() == Notification.REMOVE_MANY) {
+				if (notification.getNewValue() instanceof List && notification.getEventType() == Notification.REMOVE_MANY) {
 					processTrace.append("\nEObjects REMOVED from Model:");
-					for (Object o : el) {
+					for (Object o : (List<?>) notification.getNewValue()) {
 						processTrace.append(
 							String.format("\n - EObject: %s#%s", ((EObject) o).eClass().getName(),
 									((EObject) o).hashCode()));
