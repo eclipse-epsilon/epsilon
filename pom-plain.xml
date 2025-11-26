@@ -205,6 +205,7 @@
     <module>plugins/org.eclipse.epsilon.eol.cli/pom-plain.xml</module>
 
     <!-- RDF component -->
+    <module>releng/org.eclipse.epsilon.jena.uberjar</module>
     <module>plugins/org.eclipse.epsilon.rdf.emf/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.rdf.validation/pom-plain.xml</module>
   </modules>
