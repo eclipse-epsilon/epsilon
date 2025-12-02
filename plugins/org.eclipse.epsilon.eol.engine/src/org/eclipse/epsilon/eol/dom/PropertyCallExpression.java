@@ -17,6 +17,8 @@ import org.eclipse.epsilon.eol.exceptions.EolNullPointerException;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.introspection.IPropertyGetter;
+import org.eclipse.epsilon.eol.types.EolBag;
+import org.eclipse.epsilon.eol.types.EolCollectionType;
 import org.eclipse.epsilon.eol.types.EolSequence;
 
 public class PropertyCallExpression extends FeatureCallExpression {
@@ -50,17 +52,23 @@ public class PropertyCallExpression extends FeatureCallExpression {
 				throw new EolNullPointerException(propertyName, propertyNameExpression);
 			}
 		}
-
+		
 		IPropertyGetter getter = context.getIntrospectionManager().getPropertyGetterFor(source, propertyName, context);
 		// Added support for properties on collections
 		if (source instanceof Collection<?> && !getter.hasProperty(source, propertyName, context)) {
-			EolSequence<Object> results = new EolSequence<>();
-			results.ensureCapacity(((Collection<?>) source).size());
+	
+			Collection<Object> results = EolCollectionType.isOrdered((Collection<?>)source) ?
+					new EolSequence<>() : new EolBag<>();
+				
+			if (results instanceof EolSequence) {
+				((EolSequence<Object>) results).ensureCapacity(((Collection<?>)source).size());
+			}
+			
+			PrecomputedObjectPropertyCallExpression delegate = new PrecomputedObjectPropertyCallExpression(this);
+			
 			for (Object content : (Collection<?>) source) {
-				results.add(
-					context.getIntrospectionManager().getPropertyGetterFor(content, propertyName, context)
-						.invoke(content, propertyName, context)
-				);
+				delegate.setObject(content);
+				results.add(context.getExecutorFactory().execute(delegate, context));
 			}
 			return results;
 		}
@@ -78,5 +86,24 @@ public class PropertyCallExpression extends FeatureCallExpression {
 	
 	public void accept(IEolVisitor visitor) {
 		visitor.visit(this);
+	}
+	
+	class PrecomputedObjectPropertyCallExpression extends PropertyCallExpression {
+		protected Object object;
+		
+		public PrecomputedObjectPropertyCallExpression(PropertyCallExpression propertyCallExpression) {
+			this.nameExpression = propertyCallExpression.getNameExpression();
+			this.safe = propertyCallExpression.isNullSafe();
+			this.arrow = propertyCallExpression.isArrow();
+		}
+		
+		@Override
+		public Object execute(IEolContext context) throws EolRuntimeException {
+			return execute(object, nameExpression, context);
+		}
+		
+		public void setObject(Object object) {
+			this.object = object;
+		}
 	}
 }
