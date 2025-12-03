@@ -1,5 +1,5 @@
 /*********************************************************************
-* Copyright (c) 2008 The University of York.
+* Copyright (c) 2008-2025 The University of York.
 *
 * This program and the accompanying materials are made
 * available under the terms of the Eclipse Public License 2.0
@@ -16,6 +16,7 @@ import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.eol.exceptions.EolNullPointerException;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
+import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.execute.introspection.IPropertyGetter;
 import org.eclipse.epsilon.eol.types.EolBag;
 import org.eclipse.epsilon.eol.types.EolCollectionType;
@@ -91,10 +92,17 @@ public class PropertyCallExpression extends FeatureCallExpression {
 	class PrecomputedObjectPropertyCallExpression extends PropertyCallExpression {
 		protected Object object;
 		
+		// Set the name of the variable that will hold the 
+		// precomputed object to a reserved keyword
+		// to avoid clashes with user-defined variables
+		protected String variableName = "var";
+		
 		public PrecomputedObjectPropertyCallExpression(PropertyCallExpression propertyCallExpression) {
 			this.nameExpression = propertyCallExpression.getNameExpression();
 			this.safe = propertyCallExpression.isNullSafe();
 			this.arrow = propertyCallExpression.isArrow();
+			this.targetExpression = new NameExpression(variableName);
+			this.targetExpression.setParent(this);
 			this.setModule(propertyCallExpression.getModule());
 			this.setUri(propertyCallExpression.getUri());
 			this.setRegion(propertyCallExpression.getRegion());
@@ -102,7 +110,13 @@ public class PropertyCallExpression extends FeatureCallExpression {
 		
 		@Override
 		public Object execute(IEolContext context) throws EolRuntimeException {
-			return execute(object, nameExpression, context);
+			context.getFrameStack().put(Variable.createReadOnlyVariable(variableName, object));
+			try {
+				return super.execute(context);
+			}
+			finally {
+				context.getFrameStack().remove(variableName);
+			}
 		}
 		
 		public void setObject(Object object) {
