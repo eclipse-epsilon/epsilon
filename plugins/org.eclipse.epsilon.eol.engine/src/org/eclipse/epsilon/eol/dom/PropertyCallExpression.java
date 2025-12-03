@@ -95,6 +95,9 @@ public class PropertyCallExpression extends FeatureCallExpression {
 			this.nameExpression = propertyCallExpression.getNameExpression();
 			this.safe = propertyCallExpression.isNullSafe();
 			this.arrow = propertyCallExpression.isArrow();
+			this.setModule(propertyCallExpression.getModule());
+			this.setUri(propertyCallExpression.getUri());
+			this.setRegion(propertyCallExpression.getRegion());
 		}
 		
 		@Override
