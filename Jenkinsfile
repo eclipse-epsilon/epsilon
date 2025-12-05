@@ -46,7 +46,10 @@ pipeline {
               }
             } 
             steps {
-              sh 'mvn -B -T 1C clean install -P eclipse-sign'
+              sh '''
+                mvn -B -T 1C -pl releng/org.eclipse.epsilon.jena.uberjar -f pom-plain.xml clean install -P eclipse-sign
+                mvn -B -T 1C clean install -P eclipse-sign
+              '''
             }
           }
           stage('Test') {
