@@ -114,3 +114,6 @@ DEPENDENCIES*
 
 # Polyglot Maven files
 .polyglot.*
+
+# Temporary manifests
+.META-INF_MANIFEST.MF
