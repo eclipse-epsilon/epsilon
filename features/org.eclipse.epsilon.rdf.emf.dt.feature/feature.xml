@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.epsilon.rdf.emf.dt.feature"
-      label="RDF-EMF Developer Tools"
+      label="RDF-Based EMF Resource Developer Tools"
       version="2.9.0.qualifier"
       provider-name="Eclipse Modeling Project"
       license-feature="org.eclipse.license"
@@ -20,6 +20,10 @@ which is available at https://www.eclipse.org/legal/epl-2.0
 
    <plugin
          id="org.eclipse.epsilon.rdf.emf.converter"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.epsilon.emc.rdf.emf.dt"
          version="0.0.0"/>
 
 </feature>

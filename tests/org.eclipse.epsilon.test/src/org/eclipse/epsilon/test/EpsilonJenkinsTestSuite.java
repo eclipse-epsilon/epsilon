@@ -25,6 +25,7 @@ import org.eclipse.epsilon.emc.graphml.tests.GraphmlTestSuite;
 import org.eclipse.epsilon.emc.hutn.test.HutnEmcDriverTestSuite;
 import org.eclipse.epsilon.emc.json.tests.JSONModelTestSuite;
 import org.eclipse.epsilon.emc.plainxml.test.PlainXmlTestSuite;
+import org.eclipse.epsilon.emc.rdf.emf.test.RdfEmfModelTestSuite;
 import org.eclipse.epsilon.emc.spreadsheets.test.SpreadsheetDriverTestSuite;
 import org.eclipse.epsilon.emc.yaml.test.YamlTestSuite;
 import org.eclipse.epsilon.eml.engine.test.acceptance.EmlAcceptanceTestSuite;
@@ -93,7 +94,8 @@ import junit.framework.Test;
 	PinsetTestSuite.class,
 	EUnitJUnitTestSuite.class,
 	JSONModelTestSuite.class,
-	EpsilonDebugAdapterTestSuite.class
+	EpsilonDebugAdapterTestSuite.class,
+	RdfEmfModelTestSuite.class
 })
 public class EpsilonJenkinsTestSuite {
 	public static Test suite() {

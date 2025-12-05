@@ -14,7 +14,6 @@ package org.eclipse.epsilon.rdf.emf;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -24,6 +23,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import org.apache.commons.collections.collection.UnmodifiableCollection;
+import org.apache.commons.collections.map.UnmodifiableMap;
 import org.apache.jena.datatypes.xsd.XSDDateTime;
 import org.apache.jena.rdf.model.AnonId;
 import org.apache.jena.rdf.model.Bag;
@@ -124,8 +125,14 @@ public class RDFDeserializer {
 		return eobToResource.get(eob);
 	}
 
+	@SuppressWarnings("unchecked")
+	public Collection<EObject> getEObjects(Resource res) {
+		return UnmodifiableCollection.decorate(resourceToEob.get(res));
+	}
+
+	@SuppressWarnings("unchecked")
 	public Map<EObject, Resource> getEObjectToResourceMap() {
-		return Collections.unmodifiableMap(eobToResource);
+		return UnmodifiableMap.decorate(eobToResource);
 	}
 
 	protected EObject deserializeObjectAttributes(Resource node, EClass eClass) {
@@ -170,7 +177,6 @@ public class RDFDeserializer {
 	 * <br>- RDF namespace IRI = EPackage nsURI (including any trailing separator, such as `#` or `/`).
 	 * <br>- RDF namespace IRI = EPackage nsURI + "#".
 	 */
-	@SuppressWarnings("unchecked")
 	protected Object deserializeProperty(Resource node, EStructuralFeature sf) {
 		String sfPackageURI = normaliseEPackageNSURI(sf.getEContainingClass().getEPackage().getNsURI());
 
