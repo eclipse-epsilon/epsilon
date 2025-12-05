@@ -157,19 +157,31 @@ public abstract class AbstractModelConfigurationDialog extends TitleAreaDialog{
 	abstract protected String getModelType();
 	
 	protected class BrowseWorkspaceForModelsListener implements Listener{
-		
 		private Text text = null;
 		private String title = "";
 		private String prompt = "";
+		private String extension = null;
 		
-		public BrowseWorkspaceForModelsListener(Text text, String title, String prompt){
-			this.text = text;
+		public BrowseWorkspaceForModelsListener(Text text, String title, String prompt) {
+			this(text, title, prompt, null);
 		}
-		
+
+		public BrowseWorkspaceForModelsListener(Text text, String title, String prompt, String extension) {
+			this.text = text;
+			this.title = title;
+			this.prompt = prompt;
+			this.extension = extension;
+		}
+
 		@Override
 		public void handleEvent(Event event) {
-			String file = BrowseWorkspaceUtil.browseFilePath(getShell(), 
-					title, prompt, null);
+			String file;
+			if (extension == null) {
+				file = BrowseWorkspaceUtil.browseFilePath(getShell(), title, prompt, null);
+			} else {
+				file = BrowseWorkspaceUtil.browseFilePath(getShell(), title, prompt, extension, null);
+			}
+
 			if (file != null){
 				text.setText(file);
 			}

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.epsilon.rdf.emf.feature"
-      label="Feature for RDF EMF resource"
+      label="RDF-Based EMF Resource"
       version="2.9.0.qualifier"
       provider-name="Eclipse Modeling Project"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
 
    <description url="http://www.eclipse.org/epsilon">
-      EMF resource based on RDF formats
+      RDF-based EMF resource
    </description>
 
    <copyright>
@@ -28,6 +28,10 @@ which is available at https://www.eclipse.org/legal/epl-2.0
 
    <plugin
          id="org.eclipse.epsilon.jena.uberjar"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.epsilon.emc.rdf.emf"
          version="0.0.0"/>
 
 </feature>
