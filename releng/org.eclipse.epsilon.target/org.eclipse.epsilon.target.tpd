@@ -131,6 +131,6 @@ maven MavenDependencies scope=compile dependencyDepth=infinite missingManifest=g
     dependency {
         groupId="org.eclipse.epsilon"
         artifactId="org.eclipse.epsilon.jena.uberjar"
-        version="5.1.0-SNAPSHOT"
+        version="2.9.0-SNAPSHOT"
     }
 }

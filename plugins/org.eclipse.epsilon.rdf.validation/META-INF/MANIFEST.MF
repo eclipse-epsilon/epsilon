@@ -6,4 +6,4 @@ Bundle-Version: 2.9.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: org.eclipse.epsilon.rdf.validation
 Export-Package: org.eclipse.epsilon.rdf.validation
-Require-Bundle: org.eclipse.epsilon.jena.uberjar;bundle-version="5.1.0"
+Require-Bundle: org.eclipse.epsilon.jena.uberjar;bundle-version="2.9.0"
