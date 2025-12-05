@@ -51,6 +51,8 @@
     <module>org.eclipse.epsilon.emc.muddle</module>
     <module>org.eclipse.epsilon.emc.plainxml</module>
     <module>org.eclipse.epsilon.emc.plainxml.dt</module>
+    <module>org.eclipse.epsilon.emc.rdf.emf</module>
+    <module>org.eclipse.epsilon.emc.rdf.emf.dt</module>
     <module>org.eclipse.epsilon.emc.yaml</module>
     <module>org.eclipse.epsilon.emc.yaml.dt</module>
     <module>org.eclipse.epsilon.emc.json</module>

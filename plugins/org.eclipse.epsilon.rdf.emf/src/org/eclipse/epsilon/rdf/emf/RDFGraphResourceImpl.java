@@ -233,6 +233,10 @@ public class RDFGraphResourceImpl extends ResourceImpl {
 		return deserializer.getRDFResource(eob);
 	}
 
+	public Collection<EObject> getEObjects(Resource resource) {
+		return deserializer.getEObjects(resource);
+	}
+
 	public EObject createInstanceAt(EClass eClass, String iri) {
 		EObject eob = eClass.getEPackage().getEFactoryInstance().create(eClass);
 		ensureGraphExists();
