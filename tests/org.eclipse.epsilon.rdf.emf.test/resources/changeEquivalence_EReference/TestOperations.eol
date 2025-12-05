@@ -1,0 +1,73 @@
+operation getNames () {
+		if(consoleOutput) {"Attribute, names ".println;}
+	return (Model.all())[0].entities[0].names;
+}
+
+operation showModel (label : String) {
+	("\n" + label).println();
+	(Model.all())[0].entities[0].label.println();
+	(Model.all())[0].entities[0].names.println("names: ");
+}
+
+operation beforeChange (value) {
+	if(consoleOutput) {
+		"\n Running EOL".println();
+		showModel(" * Before change");
+		value.println("\n * Change:\nValue, ");
+	}
+}
+
+operation beforeChange(value, position) {
+	if(consoleOutput) {
+	"\n Running EOL".println();
+
+		showModel(" * Before change");
+
+		value.println("\n * Change:\nValue, ");
+		position.println("Position, ");
+	}
+}
+
+operation beforeAnotherChange (value) {
+	if(consoleOutput) {
+		showModel(" * Before change");
+		value.println("\n * Change:\nValue, ");
+	}
+}
+
+operation afterChange () {
+	if(consoleOutput) {
+		showModel(" * After change");
+	}
+}
+
+operation reportTask (t : Task) {
+	// Print the title and the total person-months of the task
+	t.id.println("   * Task - id: ");
+	t.title.println("   * Task - title: ");
+	t.start.println("   * Task - start: ");
+	t.duration.println("   * Task - dur:");
+	showTaskEffort(t);
+}
+
+operation showTaskEffort(t : Task) {
+	for (e in t.effort) {
+		showEffort(e);
+	}
+	return;
+}
+
+operation showEffort(e : Effort) {
+	e.id.println("  * Effort (id):  ");
+	e.person.id.println("    - person (id):  ");
+	e.person.name.println("    - name:  ");
+	e.percentage.println( "    - percentage % ");
+	return;
+}
+
+operation showProjectTask(p : Project) {
+	p.title.println(" Project: ");
+	for(t in p.tasks) {
+		t.title.println("  - Task: ");
+	}
+}

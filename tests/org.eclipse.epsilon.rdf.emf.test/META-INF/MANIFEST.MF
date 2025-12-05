@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests for EMF RDF resource
+Bundle-SymbolicName: org.eclipse.epsilon.rdf.emf.test
+Bundle-Version: 2.9.0.qualifier
+Require-Bundle: org.junit;bundle-version="[4.0.0,5.0.0)",
+ org.eclipse.emf.ecore.xmi;bundle-version="2.0.0",
+ org.eclipse.emf.emfatic.core;bundle-version="1.1.0",
+ org.eclipse.epsilon.rdf.emf,
+ org.eclipse.emf.compare;bundle-version="3.0.0",
+ org.eclipse.gymnast.runtime.core;bundle-version="1.1.0",
+ org.eclipse.epsilon.rdf.validation,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.jena.uberjar;bundle-version="2.9.0",
+ org.apache.commons.collections;bundle-version="3.2.2"
+Bundle-Vendor: Eclipse.org
+Automatic-Module-Name: org.eclipse.epsilon.rdf.emf.test
+Bundle-RequiredExecutionEnvironment: JavaSE-17

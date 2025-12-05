@@ -1,0 +1,12 @@
+@namespace(uri="http://eclipse.org/epsilon/rdf/containment", prefix="")
+package containment;
+
+class Model {
+  attr String name;
+  val Entity[*] entities;
+}
+
+class Entity {
+  attr String name;
+  val Entity[*] subentities;
+}

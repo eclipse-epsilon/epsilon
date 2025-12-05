@@ -1,0 +1,14 @@
+if(consoleOutput) {
+	"\n-Start-\n".println();
+	Model.contents.println();
+}
+
+var p2 = new Project;
+
+// Delete both roots in one go
+theModel.resource.contents.clear();
+
+if(consoleOutput) {
+	Model.contents.println();
+	"\n-End-\n".println();
+}

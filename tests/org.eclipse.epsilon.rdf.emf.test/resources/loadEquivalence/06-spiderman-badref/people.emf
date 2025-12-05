@@ -1,0 +1,7 @@
+@namespace(uri="http://eclipse.org/epsilon/people", prefix="")
+package people;
+
+class Person {
+	attr String name;
+	ref Person[*] enemyOf;
+}

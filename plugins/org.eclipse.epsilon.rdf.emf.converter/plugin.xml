@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            description="Conversion of XMI models to RDF"
+            id="org.eclipse.epsilon.rdf.emf.converter.cmd.category"
+            name="xmi2rdf">
+      </category>
+      <command
+            categoryId="org.eclipse.epsilon.rdf.emf.converter.cmd.category"
+            defaultHandler="org.eclipse.epsilon.rdf.emf.converter.XMI2TurtleHandler"
+            description="Convert XMI to Turtle"
+            id="org.eclipse.epsilon.rdf.emf.converter.cmd.xmi2turtle"
+            name="XMI to Turtle">
+      </command>
+      <command
+            categoryId="org.eclipse.epsilon.rdf.emf.converter.cmd.category"
+            defaultHandler="org.eclipse.epsilon.rdf.emf.converter.XMI2NTriplesHandler"
+            description="Convert XMI to N-Triples"
+            id="org.eclipse.epsilon.rdf.emf.converter.cmd.xmi2nt"
+            name="XMI to N-Triples">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?before=compareWithMenu">
+         <command
+               commandId="org.eclipse.epsilon.rdf.emf.converter.cmd.xmi2turtle"
+               label="Convert to Turtle"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenuSelection">
+                  <iterate
+                        ifEmpty="false">
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <or>
+                           <test
+                                 property="org.eclipse.core.resources.extension"
+                                 value="xmi">
+                           </test>
+                           <test
+                                 property="org.eclipse.core.resources.extension"
+                                 value="model">
+                           </test>
+                        </or>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="org.eclipse.epsilon.rdf.emf.converter.cmd.xmi2nt"
+               label="Convert to N-Triples"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenuSelection">
+                  <iterate
+                        ifEmpty="false">
+                     <adapt
+                           type="org.eclipse.core.resources.IResource">
+                        <or>
+                           <test
+                                 property="org.eclipse.core.resources.extension"
+                                 value="xmi">
+                           </test>
+                           <test
+                                 property="org.eclipse.core.resources.extension"
+                                 value="model">
+                           </test>
+                        </or>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
+</plugin>

@@ -1,0 +1,6 @@
+dataModels:
+- nodes.ttl
+defaultModelNamespace: ''
+multiValueAttributeMode: Container
+schemaModels: []
+validationMode: none

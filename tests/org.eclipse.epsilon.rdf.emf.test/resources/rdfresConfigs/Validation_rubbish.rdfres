@@ -1,0 +1,5 @@
+validationMode: rubbish
+dataModels:
+  - model.ttl
+schemaModels:
+  - schema.ttl

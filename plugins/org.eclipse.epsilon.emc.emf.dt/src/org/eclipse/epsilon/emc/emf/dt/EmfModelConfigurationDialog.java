@@ -265,7 +265,7 @@ public class EmfModelConfigurationDialog extends AbstractCachedModelConfiguratio
 		final Button browseModelFile = new Button(groupContent, SWT.NONE);
 		browseModelFile.setText("Browse Workspace...");
 		browseModelFile.addListener(SWT.Selection,
-			new BrowseWorkspaceForModelsListener(modelFileText, "EMF models in the workspace", "Select an EMF model") {
+			new BrowseWorkspaceForModelsListener(modelFileText, "EMF models in the workspace", "Select an EMF model", getModelExtension()) {
 			@Override
 			public void handleEvent(Event event) {
 				super.handleEvent(event);
@@ -359,6 +359,13 @@ public class EmfModelConfigurationDialog extends AbstractCachedModelConfiguratio
 		groupContent.layout();
 		groupContent.pack();
 		return groupContent;
+	}
+
+	/*
+	 * For use by subclasses. Override to limit file browsing to a specific extension (e.g. "rdfres").
+	 */
+	protected String getModelExtension() {
+		return null;
 	}
 
 	private String createFullyQualifiedUri(String relativePath) {

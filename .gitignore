@@ -111,3 +111,9 @@ target-plain
 
 # Metadata from Dash tool
 DEPENDENCIES*
+
+# Polyglot Maven files
+.polyglot.*
+
+# Temporary manifests
+.META-INF_MANIFEST.MF

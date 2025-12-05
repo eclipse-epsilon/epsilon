@@ -1,0 +1,4 @@
+dataModels:
+  - rdfDataModel.ttl
+schemaModels:
+  - simpleModelEntity_schema.ttl

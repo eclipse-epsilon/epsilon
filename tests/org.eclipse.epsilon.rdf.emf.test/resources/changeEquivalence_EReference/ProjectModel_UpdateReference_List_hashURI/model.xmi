@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Project xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns="http://eclipse.org/epsilon/rdf/changeEquivalence#"
+    title="ACME">
+  <tasks title="Analysis"
+      start="1"
+      duration="3">
+    <effort
+        person="//@people.0"/>
+  </tasks>
+  <tasks title="Design"
+      start="4"
+      duration="6">
+    <effort
+        person="//@people.1"/>
+  </tasks>
+  <tasks title="Implementation"
+      start="7"
+      duration="3">
+    <effort
+        person="//@people.1"
+        percentage="50"/>
+    <effort
+        person="//@people.0"
+        percentage="50"/>
+  </tasks>
+  <people name="Alice"/>
+  <people name="Bob"/>
+</Project>
