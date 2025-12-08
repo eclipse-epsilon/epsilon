@@ -7,6 +7,7 @@ set -e
 bash plugins/org.eclipse.epsilon.eunit.cmp.emf/download-emf-compare.sh
 
 # Build and install the Jena uberjar
+mvn -f pom-plain.xml -N install
 mvn -f releng/org.eclipse.epsilon.jena.uberjar install
 
 # Build

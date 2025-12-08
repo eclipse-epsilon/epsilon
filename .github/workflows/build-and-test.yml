@@ -37,6 +37,7 @@ jobs:
     - name: Build with Maven
       run: |
         bash plugins/org.eclipse.epsilon.eunit.cmp.emf/download-emf-compare.sh
+        mvn -B -f pom-plain.xml -N install
         mvn -B -f releng/org.eclipse.epsilon.jena.uberjar install
         mvn --batch-mode -U -T 1C clean install
     - name: Run headless test
