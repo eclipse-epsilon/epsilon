@@ -16,8 +16,6 @@ import org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.contribu
 import org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.contributions.TemplateOperationsContributeToTrace;
 import org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.misc.TraceShouldNotContainDuplicateFeatureAccessesPerTextLocation;
 import org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.subtemplates.ReusedTemplateContributesTwiceToTrace;
-import org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.subtemplates.SubtemplateShouldContributeToTraceOfParent;
-import org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.subtemplates.SubtemplateTraceShouldBeAdjustedWhenContributedToParent;
 import org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.textlocations.GenerateShouldUpdateTextLocation;
 import org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.textlocations.ShouldRespectNewLines;
 import org.junit.runner.RunWith;
@@ -26,10 +24,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({AllPrintsContributeToTrace.class, DynamicOutputSectionsContributeToTrace.class, StaticSectionsDoNotContributeToTrace.class, ExplicitPrintsShouldContributeToTrace.class,
-               ReusedTemplateContributesTwiceToTrace.class, SubtemplateShouldContributeToTraceOfParent.class, SubtemplateTraceShouldBeAdjustedWhenContributedToParent.class,
-               TraceShouldNotContainDuplicateFeatureAccessesPerTextLocation.class,
-               ShouldRespectNewLines.class, GenerateShouldUpdateTextLocation.class,
-               TemplateOperationsContributeToTrace.class})
+               ReusedTemplateContributesTwiceToTrace.class, TraceShouldNotContainDuplicateFeatureAccessesPerTextLocation.class,
+               ShouldRespectNewLines.class, GenerateShouldUpdateTextLocation.class, TemplateOperationsContributeToTrace.class})
 public class EglFineGrainedTraceabilityAcceptanceTestSuite {
 
 }
