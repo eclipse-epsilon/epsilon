@@ -40,6 +40,7 @@ public class TemplateOperationsContributeToTrace extends EglFineGrainedTraceabil
 				"[%@template   \n" +
 				"operation t(){ \n" + 
 				"var name = EClass.allInstances().first().name;%]\n" +
+				staticText + "\n" +
 				"[%=name%]\n" +
 				"[%}%]".replaceAll("\n", NEWLINE);
 		
@@ -48,7 +49,62 @@ public class TemplateOperationsContributeToTrace extends EglFineGrainedTraceabil
 		generateTrace(egl, model);
 		
 		trace.assertEquals(staticText.length(), "Trace.all.first.traceLinks.first().destination.region.offset");
+		trace.assertEquals(staticText.length() + 1 + "Person".length(), "Trace.all.first.traceLinks.first().destination.region.length");
 	}
+
+	@Test
+	public void testRecursiveTemplateOperation() throws Exception {
+		
+		// Generates
+		// A
+		// B
+		// C
+		// No spaces - only new lines between A, B and C
+		String egl =
+				"[%=EClass.all.last().tree()%]" + 
+				"[%@template\n" +
+				"operation EClass tree(){%]\n" + 
+				"[%for (s in self.eSuperTypes){%]\n" +
+				"[%=s.tree()%]\n" +
+				"[%}%]\n" +
+				"[%=self.name%]\n" +
+				"[%}%]".replaceAll("\n", NEWLINE);
+		
+		EClass   a = anEClass().named("A").build();
+		EClass   b = anEClass().named("B").build();
+		EClass   c = anEClass().named("C").build();
+		c.getESuperTypes().add(b);
+		b.getESuperTypes().add(a);
+		
+		EPackage model  = aMetamodel().with(a).with(b).with(c).build();
+		generateTrace(egl, model);
+
+		// traceLinks(0) = A.name
+		trace.assertEquals(0, "Trace.all.first.traceLinks.println().at(0).destination.region.offset");
+		trace.assertEquals(1, "Trace.all.first.traceLinks.at(0).destination.region.length");
+
+		// traceLinks(1) = A.eSuperTypes
+		trace.assertEquals(0, "Trace.all.first.traceLinks.println().at(1).destination.region.offset");
+		trace.assertEquals(1, "Trace.all.first.traceLinks.at(1).destination.region.length");
+
+		// traceLinks(2) = B.name
+		trace.assertEquals(2, "Trace.all.first.traceLinks.println().at(2).destination.region.offset");
+		trace.assertEquals(1, "Trace.all.first.traceLinks.at(2).destination.region.length");	
+
+		// traceLinks(3) = B.eSuperTypes
+		trace.assertEquals(0, "Trace.all.first.traceLinks.println().at(3).destination.region.offset");
+		trace.assertEquals(3, "Trace.all.first.traceLinks.at(3).destination.region.length");
+				
+		// traceLinks(4) = C.name
+		trace.assertEquals(4, "Trace.all.first.traceLinks.println().at(4).destination.region.offset");
+		trace.assertEquals(1, "Trace.all.first.traceLinks.at(4).destination.region.length");		
+	
+		// traceLinks(5) = C.eSuperTypes
+		trace.assertEquals(0, "Trace.all.first.traceLinks.println().at(5).destination.region.offset");
+		trace.assertEquals(5, "Trace.all.first.traceLinks.at(5).destination.region.length");
+	}
+	
+	
 	
 	@Test
 	public void testTemplateOperationWithIndentation() throws Exception {
