@@ -33,15 +33,14 @@ public class TemplateOperationsContributeToTrace extends EglFineGrainedTraceabil
 	@Test
 	public void testTemplateOperationWithPropertyAccess() throws Exception {
 		
-		String staticText = "Some static text\n".replaceAll("\n", NEWLINE);
+		String staticText = "Some static text";
 		
 		String egl = staticText +
 				"[%=t()%]\n  " + 
-				"[%@template   \n" +
+				"[%@template\n" +
 				"operation t(){ \n" + 
 				"var name = EClass.allInstances().first().name;%]\n" +
-				staticText + "\n" +
-				"[%=name%]\n" +
+				staticText + "[%=name%]\n" +
 				"[%}%]".replaceAll("\n", NEWLINE);
 		
 		EClass   person = anEClass().named("Person").build();
@@ -49,7 +48,7 @@ public class TemplateOperationsContributeToTrace extends EglFineGrainedTraceabil
 		generateTrace(egl, model);
 		
 		trace.assertEquals(staticText.length(), "Trace.all.first.traceLinks.first().destination.region.offset");
-		trace.assertEquals(staticText.length() + 1 + "Person".length(), "Trace.all.first.traceLinks.first().destination.region.length");
+		trace.assertEquals(staticText.length() + "Person".length(), "Trace.all.first.traceLinks.first().destination.region.length");
 	}
 
 	@Test
@@ -88,20 +87,20 @@ public class TemplateOperationsContributeToTrace extends EglFineGrainedTraceabil
 		trace.assertEquals(1, "Trace.all.first.traceLinks.at(1).destination.region.length");
 
 		// traceLinks(2) = B.name
-		trace.assertEquals(2, "Trace.all.first.traceLinks.println().at(2).destination.region.offset");
+		trace.assertEquals(1 + NEWLINE.length(), "Trace.all.first.traceLinks.println().at(2).destination.region.offset");
 		trace.assertEquals(1, "Trace.all.first.traceLinks.at(2).destination.region.length");	
 
 		// traceLinks(3) = B.eSuperTypes
 		trace.assertEquals(0, "Trace.all.first.traceLinks.println().at(3).destination.region.offset");
-		trace.assertEquals(3, "Trace.all.first.traceLinks.at(3).destination.region.length");
+		trace.assertEquals(2 + NEWLINE.length(), "Trace.all.first.traceLinks.at(3).destination.region.length");
 				
 		// traceLinks(4) = C.name
-		trace.assertEquals(4, "Trace.all.first.traceLinks.println().at(4).destination.region.offset");
+		trace.assertEquals(2 + NEWLINE.length()*2, "Trace.all.first.traceLinks.println().at(4).destination.region.offset");
 		trace.assertEquals(1, "Trace.all.first.traceLinks.at(4).destination.region.length");		
 	
 		// traceLinks(5) = C.eSuperTypes
 		trace.assertEquals(0, "Trace.all.first.traceLinks.println().at(5).destination.region.offset");
-		trace.assertEquals(5, "Trace.all.first.traceLinks.at(5).destination.region.length");
+		trace.assertEquals(3 + NEWLINE.length()*2, "Trace.all.first.traceLinks.at(5).destination.region.length");
 	}
 	
 	
