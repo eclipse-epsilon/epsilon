@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 
 import org.apache.commons.collections.collection.UnmodifiableCollection;
 import org.apache.commons.collections.map.UnmodifiableMap;
+import org.apache.commons.collections.set.UnmodifiableSet;
 import org.apache.jena.datatypes.xsd.XSDDateTime;
 import org.apache.jena.rdf.model.AnonId;
 import org.apache.jena.rdf.model.Bag;
@@ -133,6 +134,11 @@ public class RDFDeserializer {
 	@SuppressWarnings("unchecked")
 	public Map<EObject, Resource> getEObjectToResourceMap() {
 		return UnmodifiableMap.decorate(eobToResource);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Resource> getRDFResources() {
+		return UnmodifiableSet.decorate(resourceToEob.keySet());
 	}
 
 	protected EObject deserializeObjectAttributes(Resource node, EClass eClass) {

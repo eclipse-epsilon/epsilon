@@ -233,6 +233,10 @@ public class RDFGraphResourceImpl extends ResourceImpl {
 		return deserializer.getRDFResource(eob);
 	}
 
+	public Collection<Resource> getRDFResources() {
+		return deserializer.getRDFResources();
+	}
+
 	public Collection<EObject> getEObjects(Resource resource) {
 		return deserializer.getEObjects(resource);
 	}
