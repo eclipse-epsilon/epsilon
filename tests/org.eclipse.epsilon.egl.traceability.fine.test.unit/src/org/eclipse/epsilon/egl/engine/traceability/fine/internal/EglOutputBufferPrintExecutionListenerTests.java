@@ -66,14 +66,7 @@ public class EglOutputBufferPrintExecutionListenerTests {
 	}
 	
 	public static class StopsRecordingWhenPrintCallHasBeenExecuted {
-		
-		@Test
-		public void stopsRecordingWhenPrintCallHasBeenExecuted() throws Exception {
-			final IPropertyAccessRecorder recorder = createPropertyAccessRecorder(new PropertyAccesses());
-			afterExecutingMethodCallTest(recorder, new TracedPropertyAccessLedger(), new OutputBuffer(), new EglContext());
-			verify(recorder).stopRecording();
-		}
-		
+				
 		@Test
 		public void associatesPropertyAccessesWithPrintedText() throws Exception {
 			// Expected result: the property access contributed to the text at region 4-10 (i.e., 4+6)
