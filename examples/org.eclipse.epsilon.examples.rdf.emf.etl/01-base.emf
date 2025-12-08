@@ -1,0 +1,16 @@
+@namespace(uri="http://york.ac.uk/emf-rdf/examples/multi-inherit/base")
+package mhBase;
+
+class Model {
+	val Node[*] nodes;
+}
+
+class Node {}
+
+class LabeledNode extends Node {
+	attr String label;
+}
+
+class WeightedNode extends Node {
+	attr float weight;
+}

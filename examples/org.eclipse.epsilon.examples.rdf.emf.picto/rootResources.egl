@@ -1,0 +1,12 @@
+[% import "common.egl"; %]
+digraph G {
+[%
+  var uriToNodeName : Map;
+  for (rdfResource in rdfResources) {
+    uriToNodeName.put(rdfResource.uri, "rdfRes" + loopCount);
+  }
+  for (rdfResource in rdfResources) {
+    renderRDFNode(rdfResource, uriToNodeName);
+  }
+%]
+} 
