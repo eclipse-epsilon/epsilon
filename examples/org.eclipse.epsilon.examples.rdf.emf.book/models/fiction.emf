@@ -1,0 +1,7 @@
+@namespace(uri="http://eclipse.org/epsilon/rdf/fiction", prefix="")
+package fiction;
+
+class FictionWork {
+	attr String title;
+	attr String[*] genres;
+}

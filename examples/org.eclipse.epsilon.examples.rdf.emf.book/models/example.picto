@@ -1,0 +1,8 @@
+<?nsuri picto?>
+<picto format="egx" transformation="platform:/resource/org.eclipse.epsilon.examples.rdf.emf.picto/emfrdf.egx" standalone="true">
+    <model type="EMF">
+        <parameter name="name" value="Model"/>
+        <parameter name="metamodelUri" value="http://eclipse.org/epsilon/rdf/books,http://eclipse.org/epsilon/rdf/fiction"/>
+        <parameter name="modelFile" file="example.rdfres"/>
+    </model>
+</picto>

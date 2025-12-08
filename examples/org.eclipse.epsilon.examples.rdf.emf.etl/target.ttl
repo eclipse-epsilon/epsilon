@@ -1,0 +1,11 @@
+<http://custom/url#model>
+        a       <http://york.ac.uk/emf-rdf/examples/multi-inherit/base#Model>;
+        <http://york.ac.uk/emf-rdf/examples/multi-inherit/base#nodes>
+                <http://custom/url#combined-abc> .
+
+<http://custom/url#combined-abc>
+        a       <http://york.ac.uk/emf-rdf/examples/multi-inherit/extend#CombinedNode>;
+        <http://york.ac.uk/emf-rdf/examples/multi-inherit/base#label>
+                "abc";
+        <http://york.ac.uk/emf-rdf/examples/multi-inherit/base#weight>
+                "1.0"^^<http://www.w3.org/2001/XMLSchema#float> .
