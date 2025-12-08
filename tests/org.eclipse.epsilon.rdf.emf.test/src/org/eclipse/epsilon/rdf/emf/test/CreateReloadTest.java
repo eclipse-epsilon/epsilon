@@ -13,9 +13,11 @@
 package org.eclipse.epsilon.rdf.emf.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
@@ -26,6 +28,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.emfatic.core.EmfaticResourceFactory;
 import org.eclipse.epsilon.rdf.emf.RDFGraphResourceFactory;
+import org.eclipse.epsilon.rdf.emf.RDFGraphResourceImpl;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -67,10 +70,16 @@ public class CreateReloadTest {
 		// Load the saved .rdfres and check the EPackage is there
 		{
 			ResourceSet rs = new ResourceSetImpl();
-			Resource r = rs.getResource(URI.createFileURI(fRes.getAbsolutePath()), true);
+			RDFGraphResourceImpl r = (RDFGraphResourceImpl) rs.getResource(URI.createFileURI(fRes.getAbsolutePath()), true);
 			assertEquals(1, r.getContents().size());
 			EPackage ePkg = (EPackage) r.getContents().get(0);
 			assertEquals(pkgName, ePkg.getName());
+
+			// Check the bidirectional mapping between RDF resources and EObjects
+			Collection<org.apache.jena.rdf.model.Resource> rdfResources = r.getRDFResources();
+			assertEquals(1, rdfResources.size());
+			org.apache.jena.rdf.model.Resource rdfResource = rdfResources.iterator().next();
+			assertSame(ePkg, r.getEObjects(rdfResource).iterator().next());
 		}
 	}
 
