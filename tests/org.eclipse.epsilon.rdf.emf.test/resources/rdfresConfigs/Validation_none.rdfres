@@ -1,0 +1,5 @@
+validationMode: none
+dataModels:
+  - model.ttl
+schemaModels:
+  - schema.ttl

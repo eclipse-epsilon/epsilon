@@ -57,6 +57,10 @@ Apache commons-collections-3.2.jar (3.2)
 
 * License: Apache License, 2.0
 
+Apache Jena (5.1.0)
+
+* License: Apache License, 2.0
+
 Apache Log4j (1.2.17)
 
 * License: Apache License 2.0
@@ -128,7 +132,7 @@ JUnit (4.13)
 
 Mockito
 
-* License: Apache License, 2.0, New BSD license, MIT license
+* License: Apache License 2.0, New BSD license, MIT license
 * License: MIT
 
 plantUML (2018.8)
@@ -137,6 +141,10 @@ plantUML (2018.8)
    LGPL-3.0-or-later) AND (EPL-1.0 OR BSD-3-CLAUSE OR MIT OR Apache-2.0 OR
    GPL-2.0-or-later OR LGPL-3.0-or-later OR AGPL-3.0-or-later) AND BSD-3-Clause
    AND MIT AND Apache-2.0
+
+SnakeYAML (2.2.0)
+
+* License: Apache License 2.0
 
 SLF4J API (1.7.2)
 

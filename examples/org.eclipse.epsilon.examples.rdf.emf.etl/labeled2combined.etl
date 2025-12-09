@@ -1,0 +1,20 @@
+pre {
+  var eclassModel = Target.classForName('Model');
+  var eclassCombined = Target.classForName('CombinedNode');
+}
+
+// NOTE: "to" initializers are only available from Epsilon 2.9 onwards
+rule Model2Model
+  transform s : Source!Model
+  to t : Target!Model = Target.resource.createInstanceAt(eclassModel, 'http://custom/url#model')
+{
+  t.nodes ::= s.nodes;
+}
+
+rule Labeled2Combined
+  transform l : Source!LabeledNode
+  to c : Target!CombinedNode = Target.resource.createInstanceAt(eclassCombined, 'http://custom/url#combined-' + l.label)
+{
+  c.label = l.label;
+  c.weight = 1.0;
+}

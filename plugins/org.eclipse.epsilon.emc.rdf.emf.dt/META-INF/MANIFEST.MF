@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EMC Driver for RDF-based EMF resource Developer Tools
+Bundle-SymbolicName: org.eclipse.epsilon.emc.rdf.emf.dt;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Require-Bundle: org.eclipse.epsilon.common.dt,
+ org.eclipse.epsilon.emc.rdf.emf,
+ org.eclipse.epsilon.emc.emf.dt,
+ org.eclipse.ui.ide;bundle-version="3.0.0"
+Bundle-Vendor: Eclipse Modeling Project
+Automatic-Module-Name: org.eclipse.epsilon.emc.rdf.emf.dt
+Bundle-RequiredExecutionEnvironment: JavaSE-11

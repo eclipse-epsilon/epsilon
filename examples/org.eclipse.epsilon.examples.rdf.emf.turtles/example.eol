@@ -1,0 +1,34 @@
+for (p in Person.all) {
+  p.name.println('name: ');
+  p.enemyOf.println('enemies: ');
+
+  // Escaping into RDF for a non-EMF attribute
+  p.firstPredObject('characterType').println('characterType: ');
+
+  ''.println();
+}
+
+// We can also use the model to cross non-EMF edges
+var cap = Person.all.selectOne(p|p.name='Captain America');
+cap.firstPredTarget('friendOf').println('Friends of Captain America: ');
+
+
+// Finds the object of the first predicate with the given local name
+operation EObject firstPredObject(localName: String) {
+  var rdfRes = Model.resource.getRDFResource(self);
+  var itProp = rdfRes.listProperties;
+  while (itProp.hasNext()) {
+    var p = itProp.next();
+    if (p.predicate.localName = localName) {
+      return p.object;
+    }
+  }
+}
+
+// Finds the target EObjects of the first predicate with the given local name
+operation EObject firstPredTarget(localName: String) {
+  var predObject = self.firstPredObject(localName);
+  if (predObject.isDefined()) {
+    return Model.resource.getEObjects(predObject);
+  }
+}

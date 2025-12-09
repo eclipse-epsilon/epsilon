@@ -1,0 +1,20 @@
+// Book part
+
+for (book in Book.all) {
+  book.println('Found Book: ');
+
+  // We can get to the raw resource through Epsilon's support for reflection
+  Model.resource.getRDFResource(book).println('Raw RDF resource: ');
+}
+
+Book.all.println('Books: ');
+
+Book.all.title.println('Titles of the books: ');
+
+// Fiction part
+
+FictionWork.all.println('Fiction works: ');
+
+for (fw in FictionWork.all) {
+  fw.genres.println(fw.title + ' has these genres: ');
+}

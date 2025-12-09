@@ -1,0 +1,33 @@
+@base <http://eclipse.org/epsilon/rdf/books#> .
+@prefix books: <http://eclipse.org/epsilon/rdf/books#> .
+@prefix fiction: <http://eclipse.org/epsilon/rdf/fiction#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+
+<#titanic>
+  fiction:title "Titanic" ;
+  fiction:genres ( "Romance" ) .
+
+<#quijote>
+  books:publisher  "P Ublisher";
+  books:title      "El Quijote";
+  fiction:genres   ( "Narration" "Picaresque" "Chivalric romance" ) ;
+  fiction:pages [
+          a rdf:Seq;
+          rdf:_1 "page1";
+          rdf:_3 "page3";
+          rdf:_2 "page2";
+          ] ;
+  fiction:facts [
+          a rdf:Bag;
+          rdf:_1 "Author only writes on Tuesdays";
+          rdf:_3 "The editor does not like tea";
+          rdf:_2 "Ordering things can be boring";
+          ] ;
+  fiction:printColour [
+          a rdf:Alt;
+          rdf:_3 "Red";
+          rdf:_1 "Black";
+          rdf:_2 "Blue";
+          ] .

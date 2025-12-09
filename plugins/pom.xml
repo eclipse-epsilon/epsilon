@@ -51,6 +51,8 @@
     <module>org.eclipse.epsilon.emc.muddle</module>
     <module>org.eclipse.epsilon.emc.plainxml</module>
     <module>org.eclipse.epsilon.emc.plainxml.dt</module>
+    <module>org.eclipse.epsilon.emc.rdf.emf</module>
+    <module>org.eclipse.epsilon.emc.rdf.emf.dt</module>
     <module>org.eclipse.epsilon.emc.yaml</module>
     <module>org.eclipse.epsilon.emc.yaml.dt</module>
     <module>org.eclipse.epsilon.emc.json</module>
@@ -119,6 +121,9 @@
     <module>org.eclipse.epsilon.pinset.dt</module>
     <module>org.eclipse.epsilon.profiling</module>
     <module>org.eclipse.epsilon.profiling.dt</module>
+    <module>org.eclipse.epsilon.rdf.emf</module>
+    <module>org.eclipse.epsilon.rdf.emf.converter</module>
+    <module>org.eclipse.epsilon.rdf.validation</module>
     <module>org.eclipse.epsilon.workflow</module>
     <module>org.eclipse.epsilon.workflow.csv</module>
     <module>org.eclipse.epsilon.workflow.emf</module>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xml:space="preserve"
+   version="1.1"
+   overflow="visible"
+   viewBox="0 0 160.953 160.953"
+   id="svg3"
+   sodipodi:docname="sw-cube.svg"
+   width="160.953"
+   height="160.953"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   inkscape:export-filename="sw-cube.png"
+   inkscape:export-xdpi="9.5431585"
+   inkscape:export-ydpi="9.5431585"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"><defs
+   id="defs3" /><sodipodi:namedview
+   id="namedview3"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="4.1755298"
+   inkscape:cx="69.811501"
+   inkscape:cy="80.468831"
+   inkscape:window-width="2560"
+   inkscape:window-height="1387"
+   inkscape:window-x="0"
+   inkscape:window-y="25"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg3" />
+  <title
+   id="title1">Semantic Web cube</title>
+  <desc
+   id="desc1">A cube whose top part is slightly peeled off</desc>
+  <metadata
+   id="metadata1">
+	<rdf:RDF>
+		<cc:Work
+   rdf:about="">
+	        <dc:title>Semantic Web cube</dc:title>
+	        <dc:format>image/svg+xml</dc:format>
+			<rdfs:seeAlso
+   rdf:resource="http://www.w3.org/2007/10/sw-logos.html" />
+	        <dc:date>2007-11-01</dc:date>
+			<cc:license
+   rdf:resource="http://www.w3.org/Consortium/Legal/2002/copyright-documents-20021231" />
+			<cc:morePermissions
+   rdf:resource="http://www.w3.org/2007/10/sw-logos.html#LogoWithoutW3C" />
+			<cc:attributionURL
+   rdf:reource="http://www.w3.org/2001/sw/" />
+			<dc:description>A cube whose top part is slightly peeled off</dc:description>
+		</cc:Work>
+	</rdf:RDF>
+  </metadata>
+
+  <g
+   shape-rendering="geometricPrecision"
+   text-rendering="geometricPrecision"
+   image-rendering="optimizeQuality"
+   id="g3"
+   transform="translate(10.665001)">
+    <g
+   id="g2">
+      <path
+   d="M 77.088,17.833 C 123.979,38.963 134.203,0 134.203,0 c 0,0 -8.906,48.871 -50.02,68.834 -8.377,4.073 -13.579,6.256 -13.579,6.256 L 3.252,42.259 70.605,14.639 c -0.001,0 -1.626,-0.46 6.483,3.194 z"
+   fill="#86ba0c"
+   id="path1" />
+      <polygon
+   points="62.756,88.805 62.756,160.953 0,126.977 0,56.906 "
+   fill="#ef7c00"
+   id="polygon1" />
+      <polygon
+   points="76.871,88.805 76.871,160.953 139.623,126.977 139.623,56.906 "
+   fill="#bd1789"
+   id="polygon2" />
+    </g>
+  </g>
+</svg>

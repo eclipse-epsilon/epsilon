@@ -1,0 +1,8 @@
+[% import "common.egl"; %]
+digraph G {
+[%
+  renderEObject(eob, "thisObject");
+  renderRDFNode(rdfResource, Map { rdfResource.uri = "rdfRes" });
+%]
+  thisObject -> rdfRes
+}

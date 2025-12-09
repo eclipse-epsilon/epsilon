@@ -10,7 +10,7 @@ EMF_COMPARE_JAR="org.eclipse.emf.compare_${EMF_COMPARE_VERSION}.jar"
 cd "$(dirname "$(readlink -f "$0")")"
 curl -C - -o "$EMF_COMPARE_JAR" -O "$EMF_COMPARE_URL"
 
-mvn -f pom-plain.xml clean install:install-file \
+mvn -B -f pom-plain.xml clean install:install-file \
   "-Dfile=$EMF_COMPARE_JAR" \
   -DgroupId=org.eclipse.emf \
   -DartifactId=org.eclipse.emf.compare \

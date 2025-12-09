@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Model xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://york.ac.uk/emf-rdf/examples/multi-inherit/base"
+    xmlns:_1="http://york.ac.uk/emf-rdf/examples/multi-inherit/extend">
+  <nodes xsi:type="_1:CombinedNode"
+      label="abc"
+      weight="5.0"/>
+</Model>

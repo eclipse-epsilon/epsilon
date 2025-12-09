@@ -1,0 +1,6 @@
+dataModels:
+- target.ttl
+defaultModelNamespace: null
+multiValueAttributeMode: Container
+schemaModels: []
+validationMode: none

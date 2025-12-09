@@ -1,0 +1,17 @@
+import "../TestOperations.eol";
+
+for (p in Project.all) {
+	"\n- BEFORE -\n".println();
+	var sourceTask = p.tasks.selectOne(i|i.title = "Analysis");
+	var sourceEffort = sourceTask.effort.first;
+	reportTask(sourceTask).println("\n-------\n");
+	var targetTask = p.tasks.selectOne(i|i.title = "Implementation");
+	reportTask(targetTask).println("\n-------\n");
+
+	// Move Analysis effort to the middle of the Implementation efforts
+	targetTask.effort.add(1, sourceEffort);
+
+	"\n- AFTER -\n".println();
+	reportTask(sourceTask).println("\n-------\n");
+	reportTask(targetTask).println("\n-------\n");
+}

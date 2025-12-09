@@ -1,0 +1,124 @@
+[%
+
+operation Any getEObjectPath() {
+  return Sequence { 'EObjects', self.eClass.name + ' ' + rootIDs.get(self) };
+}
+
+operation Any getEObjectShowView() {
+  return 'javascript:showView([' + self.getEObjectPath().collect(p | "'" + p + "'").concat(', ') + '])';
+}
+
+operation renderEObject(ob, nodeName: String) {
+  var javascript = ob.getEObjectShowView();
+%]
+    [%=nodeName%][
+      shape=plain
+      label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+        <tr><td  href="[%=javascript%]">[%=nodeName%] : <b>[%=ob.eClass.name%]</b></td></tr>
+        <tr><td>
+          <table border="0" cellborder="0" cellspacing="0">
+            <tr><td></td></tr>
+          [% for (eAttr in ob.eClass.eAllAttributes) {
+            if (ob.eIsSet(eAttr)) {
+              var value = ob.eGet(eAttr); %]
+            <tr><td>[%=eAttr.name%] = [%= value.asString() %]</td></tr>
+          [% }} %]
+          </table>
+        </td></tr>
+      </table>>
+    ]
+[% }
+
+operation rdfNodeKey(rdfNode): String {
+  if (rdfNode.isURIResource()) {
+    return rdfNode.uri;
+  } else {
+    return rdfNode.asString();
+  }
+}
+
+operation renderRDFNode(rdfRes, uriToNodeName: Map): String {
+  renderRDFNodeInternal(rdfRes, uriToNodeName, 0);
+}
+
+operation renderRDFNodeInternal(rdfRes, uriToNodeName: Map, depth: Integer): String {
+  var nodeKey = rdfNodeKey(rdfRes);
+  var nodeName = uriToNodeName.get(nodeKey);
+  if (not nodeName.isDefined()) {
+    nodeName = "rdfNode" + uriToNodeName.size();
+    uriToNodeName.put(nodeKey, nodeName);
+  }
+
+  if (rdfRes.isURIResource() and Model.resource.getEObjects(rdfRes).isDefined()) { %]
+  [%=nodeName%] [label=<<table border="0"><tr><td href="javascript:showView(['RDF resources', '[%=rdfRes.uri%]'])">[%=nodeKey%]</td></tr></table>>]
+  [% } else { %]
+  [%=nodeName%] [label="[%=nodeKey.replace('"', '\\\\"')%]"]
+  [% }
+
+  if (rdfRes.isResource()) {
+    var stmtIterator = rdfRes.listProperties();
+    while (stmtIterator.hasNext()) {
+      var stmt = stmtIterator.nextStatement();
+      if (isLayerActive(stmt.predicate.namespace) and (depth < 1 or isLayerActive('unlimited'))) {
+        renderRDFStatement(nodeName, stmt, uriToNodeName, depth);
+      }
+    }
+  }
+  return nodeName;
+}
+
+operation renderRDFStatement(srcNodeName, stmt, uriToNodeName: Map, depth: Integer) {
+  var sob = stmt.object;
+  var sobKey = rdfNodeKey(sob);
+  var targetNodeName = uriToNodeName.get(sobKey);
+
+  if (not targetNodeName.isDefined()) {
+    targetNodeName = renderRDFNodeInternal(sob, uriToNodeName, depth + 1);
+  }
+
+  /*
+   * Note: we color the edge and not the target node, because the target node
+   * may be shared between in-metamodel and off-metamodel statements.
+   */
+  %]
+  [%=srcNodeName%] -> [%=targetNodeName%] [label="  [%=stmt.predicate.asString()%]  "[% if (isStatementFromNonTypeNS(stmt)) {%], color="red"[%}%]]
+[%
+}
+
+/*
+ * Returns true iff the statement comes from a namespace that
+ * is neither RDF/RDFS/OWL, nor a namespace of one of its RDF
+ * types. 
+ */
+operation isStatementFromNonTypeNS(stmt): Boolean {
+  var predNS = stmt.predicate.namespace;
+  if (namespacesInactiveByDefault.contains(predNS)) {
+    return false;
+  }
+
+  var types = stmt.subject.getTypes();
+  var nsURIs = types.collect(ns|ns.asString().split('#')[0] + '#').asSet();
+  return not nsURIs.contains(stmt.predicate.namespace);
+}
+
+/*
+ * Returns the URIs of the RDF types of a resource.
+ */
+@cached
+operation Any getTypes() {
+  var itStmt = self.listProperties();
+  var types = Set {};
+  while (itStmt.hasNext()) {
+    var stmt = itStmt.next();
+    if (stmt.predicate.asString() = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type') {
+      types.add(stmt.object.uri);
+    }
+  }
+  return types;
+}
+
+operation isLayerActive(id : String) {
+  return layers.selectOne(l|l.id = id)?.active ?: true;
+}
+
+%]

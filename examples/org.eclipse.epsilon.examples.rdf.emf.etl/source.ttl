@@ -1,0 +1,15 @@
+PREFIX f:   <file:/Volumes/Sources/emc-rdf/tests/org.eclipse.epsilon.rdf.emf.test/resources/loadEquivalence/08-multi-inherit/etl/source.rdfres#>
+PREFIX mm:  <http://york.ac.uk/emf-rdf/examples/multi-inherit/base#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+f:_JsRR4LoiEfCah64-7EOMjg
+        rdf:type  mm:LabeledNode;
+        mm:label  "abc" .
+
+f:_JsQq0LoiEfCah64-7EOMjg
+        rdf:type  mm:Model;
+        mm:nodes  [ rdf:type  rdf:Seq;
+                    rdf:_1    f:_JsRR4LoiEfCah64-7EOMjg;
+                    rdf:_2    f:_JsRR4LoiEfCah64-7EOMjg
+                  ] .

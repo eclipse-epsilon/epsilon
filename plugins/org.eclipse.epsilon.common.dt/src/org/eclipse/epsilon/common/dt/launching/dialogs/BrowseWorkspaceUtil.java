@@ -51,7 +51,6 @@ public class BrowseWorkspaceUtil {
 	}
 	
 	public static String browseFilePath(Shell shell, String title, String message, Image image){
-		
 		IFile file = browseFile(shell, title, message, "", image);
 		if (file != null) {
 			return file.getFullPath().toString();
@@ -62,7 +61,6 @@ public class BrowseWorkspaceUtil {
 	}
 
 	public static String browseFilePath(Shell shell, String title, String message, String extension, Image image){
-		
 		String pattern = "";
 		if (extension != null & extension.length() > 0) {
 			pattern = "*." + extension;

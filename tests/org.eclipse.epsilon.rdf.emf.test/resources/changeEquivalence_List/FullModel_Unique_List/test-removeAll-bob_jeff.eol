@@ -1,0 +1,9 @@
+import "../TestOperations.eol";
+
+var value = Bag {"bob" , "jeff"};
+
+beforeChange(value);
+
+getNames().removeAll(value);
+
+afterChange();

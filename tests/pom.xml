@@ -32,6 +32,7 @@
     <module>org.eclipse.epsilon.emc.plainxml.test</module>
     <module>org.eclipse.epsilon.emc.yaml.test</module>
     <module>org.eclipse.epsilon.emc.json.test</module>
+    <module>org.eclipse.epsilon.emc.rdf.emf.test</module>
     <module>org.eclipse.epsilon.emc.simulink.common.test</module>
     <module>org.eclipse.epsilon.emc.simulink.test</module>
     <module>org.eclipse.epsilon.emc.simulink.dictionary.test</module>
@@ -47,13 +48,11 @@
     <module>org.eclipse.epsilon.eunit.junit.test</module>
     <module>org.eclipse.epsilon.evl.engine.test.acceptance</module>
     <module>org.eclipse.epsilon.ewl.engine.test.acceptance</module>
+    <module>org.eclipse.epsilon.flexmi.test</module>
     <module>org.eclipse.epsilon.flock.engine.test.acceptance</module>
     <module>org.eclipse.epsilon.flock.engine.test.unit</module>
     <module>org.eclipse.epsilon.hutn.dt.test</module>
     <module>org.eclipse.epsilon.hutn.test</module>
-    <module>org.eclipse.epsilon.flexmi.test</module>
-    <module>org.eclipse.epsilon.picto.test</module>
-    <module>org.eclipse.epsilon.pinset.engine.test.acceptance</module>
     <module>org.eclipse.epsilon.hutn.test.acceptance</module>
     <module>org.eclipse.epsilon.hutn.test.dependencies</module>
     <module>org.eclipse.epsilon.hutn.test.dependencies.model</module>
@@ -62,6 +61,9 @@
     <module>org.eclipse.epsilon.hutn.xmi.test</module>
     <module>org.eclipse.epsilon.hutn.xmi.test.integration</module>
     <module>org.eclipse.epsilon.hutn.xmi.test.unit</module>
+    <module>org.eclipse.epsilon.picto.test</module>
+    <module>org.eclipse.epsilon.pinset.engine.test.acceptance</module>
+    <module>org.eclipse.epsilon.rdf.emf.test</module>
     <module>org.eclipse.epsilon.test</module>
     <module>org.eclipse.epsilon.test.dependencies</module>
     <module>org.eclipse.epsilon.test.fixtures.hutn</module>

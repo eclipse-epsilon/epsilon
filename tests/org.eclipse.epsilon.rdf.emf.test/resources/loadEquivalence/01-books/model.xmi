@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Book xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns="http://eclipse.org/epsilon/rdf/books"
+    title="El Quijote"
+    publisher="P Ublisher"/>
