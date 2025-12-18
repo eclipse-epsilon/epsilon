@@ -312,4 +312,4 @@ Export-Package: org.apache.jena.rdflink,
  org.apache.jena.mem
 Bundle-Vendor: University of York
 Automatic-Module-Name: org.eclipse.epsilon.emc.rdf.jena
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17

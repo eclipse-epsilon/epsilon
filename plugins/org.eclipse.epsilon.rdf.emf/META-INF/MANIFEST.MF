@@ -15,4 +15,4 @@ Require-Bundle: org.yaml.snakeyaml;bundle-version="2.0.0";visibility:=reexport,
  org.apache.commons.collections;bundle-version="3.2.2";visibility:=reexport
 Bundle-Vendor: Eclipse Modeling Project
 Automatic-Module-Name: org.eclipse.epsilon.rdf.emf
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
