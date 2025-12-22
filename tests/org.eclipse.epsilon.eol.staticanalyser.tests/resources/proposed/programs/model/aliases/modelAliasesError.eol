@@ -1,4 +1,6 @@
-//!Undefined variable or type X!EClss
 model M alias X driver EMF {nsuri='http://www.eclipse.org/emf/2002/Ecore'};
 
 var i:X!EClss;
+
+// Test Markers
+//![3:6-3:13]Undefined variable or type X!EClss

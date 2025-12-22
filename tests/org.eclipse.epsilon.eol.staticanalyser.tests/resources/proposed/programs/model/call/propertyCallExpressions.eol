@@ -1,4 +1,3 @@
-//!Property mistyped not found for type EClass
 model M driver EMF {nsuri="http://www.eclipse.org/emf/2002/Ecore"};
 
 /*Sequence<EClass>*/EClass.ALL;
@@ -8,3 +7,7 @@ model M driver EMF {nsuri="http://www.eclipse.org/emf/2002/Ecore"};
 /*EClass*/EClass.createInstance;
 /*Boolean*/EClass.isInstantiable;
 EClass.mistyped;
+
+
+// Test Markers
+//![9:7-9:15]Property mistyped not found for type EClass
