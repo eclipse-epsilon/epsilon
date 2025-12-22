@@ -34,17 +34,21 @@ public class EOLTestMarkerStringParser {
 
 	// Format for test files //![startline:startcolumn-endline:endcolumn] message
 	private ModuleMarker createTestMarker(String testMarkedProgramLine) {
+		// Empty or lenght smaller than the minimum for a comment.
 		if (testMarkedProgramLine == null 
 				|| testMarkedProgramLine.isEmpty() 
 				|| testMarkedProgramLine.length() < 3) {
             return null;
         }
-		// Just in case...
+		
+		// Not a comment line return null
 		if (!testMarkedProgramLine.substring(0, 2).equals("//")) {
 			return null;
 		}
 
+		// Parse comment into a ModuleMarker
 		ModuleMarker testMarker = new ModuleMarker();
+
 		// Extract Severity level
 		String severityString = testMarkedProgramLine.substring(0, 3);
 		switch (severityString) {
@@ -58,16 +62,18 @@ public class EOLTestMarkerStringParser {
 			return null;
 		default:
 			// Report anything else that turns up
-			System.err.println(String.format(" Check test Marker or comment on line %s : %s",
-					lineCounter, testMarkedProgramLine));
+			reportTestMarkerParsingError("SEVERITY", lineCounter, testMarkedProgramLine);
+			// TODO fail the test here for test Marker problem
 			return null;
 		}
 
 		// Region column and line information
 		Region region = extractRegion(testMarkedProgramLine);
 		if(null == region) {
+			reportTestMarkerParsingError("REGION", lineCounter, testMarkedProgramLine);
+			// TODO fail the test here for test Marker problem
+			
 			// problem with region string, assume old test style for now.
-			System.err.println("Problem with region in test marker: " + testMarkedProgramLine);
 			testMarker.setRegion(null);					
 			testMarker.setMessage(testMarkedProgramLine.substring(3));
 			return testMarker;
@@ -76,8 +82,19 @@ public class EOLTestMarkerStringParser {
 		}
 		
 		// Message
-		testMarker.setMessage(messageStringMatcher(testMarkedProgramLine));
+		String message = messageStringMatcher(testMarkedProgramLine);
+		if(null == message) {
+			reportTestMarkerParsingError("MESSAGE", lineCounter, testMarkedProgramLine);
+			// TODO fail the test here for test Marker problem
+		} 
+		testMarker.setMessage(message);	
+
 		return testMarker;
+	}
+	
+	private void reportTestMarkerParsingError(String part, int linenumber, String testMarkedProgramLine) {
+		System.err.println(String.format("Check test Marker, problem with %s on line %s > %s", part, linenumber,
+				testMarkedProgramLine));
 	}
 
 	private Region extractRegion(String testMarkedProgramLine) {
@@ -87,9 +104,21 @@ public class EOLTestMarkerStringParser {
 		}
 		
 		String[] regions = regionString.split("-");
+		if(2 != regions.length) {
+			return null;
+		}
+		
 		String[] startRegion = regions[0].split(":");
+		if(2 != startRegion.length) { 
+			return null;
+		}
+		
 		String[] endRegion = regions[1].split(":");
+		if (2 != endRegion.length) {
+			return null;
+		}
 
+		// Eclipse IDE columns report +1 over the internal column range	
 		return new Region(Integer.parseInt(startRegion[0]), Integer.parseInt(startRegion[1]),
 				Integer.parseInt(endRegion[0]), Integer.parseInt(endRegion[1]));
 	}
@@ -129,5 +158,13 @@ public class EOLTestMarkerStringParser {
 			messageStrings.add(testMarker.getMessage());
 		}
 		return messageStrings;
+	}
+
+	public String asBulletListString (List<ModuleMarker> listOfModuleMarkers) {
+		String staticAnalyserMarkersString = "";
+		for (ModuleMarker staticAnalyserMarker : listOfModuleMarkers) {
+			staticAnalyserMarkersString = staticAnalyserMarkersString.concat(" - " + staticAnalyserMarker.toString() + "\n");
+		}
+		return staticAnalyserMarkersString;
 	}
 }
