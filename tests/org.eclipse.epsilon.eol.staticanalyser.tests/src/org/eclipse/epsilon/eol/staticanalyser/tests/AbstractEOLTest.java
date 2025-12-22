@@ -94,7 +94,7 @@ public class AbstractEOLTest extends AbstractBaseTest {
 	}
 	
 	@Test
-	public void checkAbstractSyntaxTreeType() {
+	public void checkResolvedTypes() {
 		visit(module.getChildren());
 	}
 
