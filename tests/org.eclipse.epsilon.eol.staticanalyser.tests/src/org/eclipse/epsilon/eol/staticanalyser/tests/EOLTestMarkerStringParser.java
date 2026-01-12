@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.eclipse.epsilon.common.module.ModuleMarker;
@@ -15,6 +17,24 @@ public class EOLTestMarkerStringParser {
 
 	private int lineCounter = 0;
 	
+	private static final String GRP_SEVERITY = "severity",
+		GRP_START_LINE = "lineStart",
+		GRP_START_COLUMN = "columnStart",
+		GRP_END_LINE = "lineEnd",
+		GRP_END_COLUMN = "columnEnd",
+		GRP_MESSAGE = "message";
+
+	private static final String
+		RE_SEVERITY = String.format("//(?<%s>[?!])?", GRP_SEVERITY),
+		RE_LOCATION_TEMPLATE = "(?<%s>[0-9]+):(?<%s>[0-9]+)",
+		RE_START = String.format(RE_LOCATION_TEMPLATE, GRP_START_LINE, GRP_START_COLUMN),
+		RE_END = String.format(RE_LOCATION_TEMPLATE, GRP_END_LINE, GRP_END_COLUMN),
+		RE_REGION = String.format("(?:\\[%s-%s\\])?", RE_START, RE_END),
+		RE_MESSAGE = String.format("(?<%s>.+)", GRP_MESSAGE),
+		RE_LINE = String.format("%s *%s *%s", RE_SEVERITY, RE_REGION, RE_MESSAGE);
+
+	private static final Pattern PATTERN_LINE = Pattern.compile(RE_LINE);
+
 	public List<ModuleMarker> extractTestMarkers(File testProgram) throws IOException {
 		lineCounter = 0;
 		
@@ -34,15 +54,9 @@ public class EOLTestMarkerStringParser {
 
 	// Format for test files //![startline:startcolumn-endline:endcolumn] message
 	private ModuleMarker createTestMarker(String testMarkedProgramLine) {
-		// Empty or lenght smaller than the minimum for a comment.
-		if (testMarkedProgramLine == null 
-				|| testMarkedProgramLine.isEmpty() 
-				|| testMarkedProgramLine.length() < 3) {
-            return null;
-        }
-		
-		// Not a comment line return null
-		if (!testMarkedProgramLine.substring(0, 2).equals("//")) {
+		Matcher regexMarker = PATTERN_LINE.matcher(testMarkedProgramLine);
+		if(!regexMarker.matches()) {
+			// no matches
 			return null;
 		}
 
@@ -50,104 +64,71 @@ public class EOLTestMarkerStringParser {
 		ModuleMarker testMarker = new ModuleMarker();
 
 		// Extract Severity level
-		String severityString = testMarkedProgramLine.substring(0, 3);
-		switch (severityString) {
-		case "//!": // ERROR
-			testMarker.setSeverity(Severity.Error);
-			break;
-		case "//?": // WARNING
-			testMarker.setSeverity(Severity.Warning);
-			break;
-		case "// ": // Comment
-			return null;
-		default:
-			// Report anything else that turns up
+		String severityString = regexMarker.group(GRP_SEVERITY);
+		if (null == severityString) {
 			reportTestMarkerParsingError("SEVERITY", lineCounter, testMarkedProgramLine);
-			// TODO fail the test here for test Marker problem
 			return null;
-		}
-
-		// Region column and line information
-		Region region = extractRegion(testMarkedProgramLine);
-		if(null == region) {
-			reportTestMarkerParsingError("REGION", lineCounter, testMarkedProgramLine);
-			// TODO fail the test here for test Marker problem
-			
-			// problem with region string, assume old test style for now.
-			testMarker.setRegion(null);					
-			testMarker.setMessage(testMarkedProgramLine.substring(3));
-			return testMarker;
 		} else {
-			testMarker.setRegion(region);
+			switch (severityString) {
+			case "!": // ERROR
+				testMarker.setSeverity(Severity.Error);
+				break;
+			case "?": // WARNING
+				testMarker.setSeverity(Severity.Warning);
+				break;
+			default:
+				reportTestMarkerParsingError("SEVERITY", lineCounter, testMarkedProgramLine);
+				return null;
+			}
 		}
 		
 		// Message
-		String message = messageStringMatcher(testMarkedProgramLine);
+		String message = regexMarker.group(GRP_MESSAGE); 
 		if(null == message) {
 			reportTestMarkerParsingError("MESSAGE", lineCounter, testMarkedProgramLine);
-			// TODO fail the test here for test Marker problem
-		} 
-		testMarker.setMessage(message);	
+			return null;
+		} else {
+			testMarker.setMessage(message);				
+		}
+
+		// Region column and line information
+		Region region = extractRegion(regexMarker);
+		if(null == region) {
+			reportTestMarkerParsingError("REGION", lineCounter, testMarkedProgramLine);
+			//return null; // After migration this should be on uncommented to report issues with the region information
+		} else {
+			testMarker.setRegion(region);
+		}
 
 		return testMarker;
 	}
-	
+
 	private void reportTestMarkerParsingError(String part, int linenumber, String testMarkedProgramLine) {
 		System.err.println(String.format("Check test Marker, problem with %s on line %s > %s", part, linenumber,
 				testMarkedProgramLine));
 	}
 
-	private Region extractRegion(String testMarkedProgramLine) {
-		String regionString = regionStringMatcher(testMarkedProgramLine);
-		if(regionString.isEmpty()) {
+	private Region extractRegion(Matcher regexMarker) {
+		if(null == regexMarker.group(GRP_START_LINE)) {
 			return null;
 		}
-		
-		String[] regions = regionString.split("-");
-		if(2 != regions.length) {
+		if(null == regexMarker.group(GRP_START_COLUMN)) {
 			return null;
 		}
-		
-		String[] startRegion = regions[0].split(":");
-		if(2 != startRegion.length) { 
+		if (null == regexMarker.group(GRP_END_LINE)) {
 			return null;
 		}
-		
-		String[] endRegion = regions[1].split(":");
-		if (2 != endRegion.length) {
+		if (null == regexMarker.group(GRP_END_COLUMN)) {
 			return null;
 		}
 
-		// Eclipse IDE columns report +1 over the internal column range	
-		return new Region(Integer.parseInt(startRegion[0]), Integer.parseInt(startRegion[1]),
-				Integer.parseInt(endRegion[0]), Integer.parseInt(endRegion[1]));
-	}
-
-	private String regionStringMatcher(String line) {
-		java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\[(.+?)\\]");
-		java.util.regex.Matcher matcher = pattern.matcher(line);
-
-		if (matcher.find()) {
-			// Group 1 contains the content inside the parentheses (the captured group)
-			return matcher.group(1);
-		} else {
-			// No match found
-			return "";
-		}
-	}
-
-	private String messageStringMatcher(String line) {
-		java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\[.+?\\](.*)");
-        java.util.regex.Matcher matcher = pattern.matcher(line);
-
-        if (matcher.find()) {
-            // Group 1 contains the content that follows the closing bracket
-            String rawMessage = matcher.group(1);
-            return rawMessage.trim(); 
-        } else {
-            // No match found
-            return "";
-        }
+		// Eclipse IDE columns report +1 over the internal column range
+		return new Region(
+				Integer.parseInt(regexMarker.group(GRP_START_LINE)),
+				Integer.parseInt(regexMarker.group(GRP_START_COLUMN)),
+				Integer.parseInt(regexMarker.group(GRP_END_LINE)),
+				Integer.parseInt(regexMarker.group(GRP_END_COLUMN))
+		);
 	}
 
 	public List<String> getErrorMessageStrings(List<ModuleMarker> testMarkers, Severity severity) {
