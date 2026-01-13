@@ -145,25 +145,10 @@ public class AbstractEOLTest extends AbstractBaseTest {
 
 		for (ModuleMarker listMarker : listOfMarkers) {
 			assertFalse("\nTest marker " + testMarkerIndexPosition + " " + "is a duplicate of Test marker "
-					+ listOfMarkersIndex + "\n - " + aMarker, compareMarkers(aMarker, listMarker));
+					+ listOfMarkersIndex + "\n - " + aMarker, aMarker.equals(listMarker));
 			listOfMarkersIndex++;
 		}
 		return aMarker;
-	}
-	
-	private boolean compareMarkers(ModuleMarker first, ModuleMarker second) {
-		if (!first.getSeverity().equals(second.getSeverity())) {
-			return false;
-		}
-
-		if (!first.getRegion().equals(second.getRegion())) {
-			return false;
-		}
-
-		if (!first.getMessage().equals(second.getMessage())) {
-			return false;
-		}
-		return true;
 	}
 
 	private ModuleMarker matchedTestMarkerToStaticAnalysisMarker(ModuleMarker testMarker,
