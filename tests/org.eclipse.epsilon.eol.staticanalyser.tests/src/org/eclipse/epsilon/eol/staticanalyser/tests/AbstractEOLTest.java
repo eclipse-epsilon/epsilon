@@ -274,7 +274,7 @@ public class AbstractEOLTest extends AbstractBaseTest {
 			assertFalse("A warning message was matched too many times", i < 0);
 		}
 
-		visit(module.getChildren()); // Abstract syntax tree type test
+		// Abstract syntax tree type test is now a stand alone test 
 	}
 
 	// Original test method -- Checks the Abstract syntax tree types against a
