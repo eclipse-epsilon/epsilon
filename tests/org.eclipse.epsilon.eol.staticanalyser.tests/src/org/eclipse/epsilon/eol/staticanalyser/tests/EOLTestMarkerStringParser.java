@@ -67,7 +67,7 @@ public class EOLTestMarkerStringParser {
 		String severityString = regexMarker.group(GRP_SEVERITY);
 		if (null == severityString) {
 			// Comments land in here
-			reportTestMarkerParsingError("SEVERITY (null/comment)", lineCounter, testMarkedProgramLine);
+			//reportTestMarkerParsingError("SEVERITY (null/comment)", lineCounter, testMarkedProgramLine);
 			return null;
 		} else {
 			switch (severityString) {
