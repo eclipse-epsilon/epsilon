@@ -72,6 +72,21 @@ public class ModuleMarker {
 		Error
 	}
 	
+	private boolean equals(ModuleMarker moduleMarker) {
+		if (!this.getSeverity().equals(moduleMarker.getSeverity())) {
+			return false;
+		}
+
+		if (!this.getRegion().equals(moduleMarker.getRegion())) {
+			return false;
+		}
+
+		if (!this.getMessage().equals(moduleMarker.getMessage())) {
+			return false;
+		}
+		return true;
+	}
+	
 	public String toString() {
 		String moduleMarkerString = "";
 
