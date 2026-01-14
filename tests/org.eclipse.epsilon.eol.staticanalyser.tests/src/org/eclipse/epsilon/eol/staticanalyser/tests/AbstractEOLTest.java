@@ -3,6 +3,7 @@ package org.eclipse.epsilon.eol.staticanalyser.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -52,7 +53,7 @@ public class AbstractEOLTest extends AbstractBaseTest {
 	public void originalTestApproach() throws Exception {
 		List<ModuleMarker> testMarkers = testMarkerParser.extractTestMarkers(programFile);
 		int regionCount = countMarkersWithRegions(testMarkers);
-		assertEquals("This test has been migrated, it has region information expected failure ", 0, regionCount);
+		assumeTrue("Test has markers but none with regions",!testMarkers.isEmpty() && regionCount == 0);
 		parseFile(programFile);
 	}
 
@@ -64,6 +65,7 @@ public class AbstractEOLTest extends AbstractBaseTest {
 		List<ModuleMarker> testMarkers = testMarkerParser.extractTestMarkers(programFile);
 
 		int regionCount = countMarkersWithRegions(testMarkers);
+		assumeTrue("Test either has no assertions or has comments with regions", testMarkers.isEmpty() || regionCount > 0);
 
 		// No test markers in program, therefore the program should be clean with no
 		// Static Analyser Markers
