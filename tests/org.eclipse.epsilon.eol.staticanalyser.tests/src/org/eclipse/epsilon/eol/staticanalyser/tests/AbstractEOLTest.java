@@ -80,19 +80,7 @@ public class AbstractEOLTest extends AbstractBaseTest {
 			return;
 		}
 
-		if (0 == regionCount) {
-			// Migration condition
-			// Call assert Valid method from the old test to check the messages, these are
-			// old tests with no region info
-			migrationConditionTest(testMarkers);
-		} else {
-			// New test must have complete region information, but we may have some missing
-			// or errors
-			if (isConsoleOutputActive) {
-				System.out.println(" [!] Running new test (region in atleast 1 test marker)");
-			}
-			checkForExpectedStaticAnalyserMarkers(testMarkers, staticAnalyserMarkers);
-		}
+		checkForExpectedStaticAnalyserMarkers(testMarkers, staticAnalyserMarkers);
 	}
 	
 	@Test
@@ -295,20 +283,6 @@ public class AbstractEOLTest extends AbstractBaseTest {
 	// Original test method
 	protected EolType getResolvedType(ModuleElement element) {
 		return (EolType) element.getData().get("resolvedType");
-	}
-	
-	/*
-	 * Methods below are temporary for the migration of the testing
-	*/
-	
-	private void migrationConditionTest(List<ModuleMarker> testMarkers) throws Exception {
-		if (isConsoleOutputActive) {
-			System.out.println(" [!] Running old test (no regions in test markers)");
-		}
-		List<String> errorMessages = testMarkerParser.getErrorMessageStrings(testMarkers, Severity.Error);
-		List<String> warningMessages = testMarkerParser.getErrorMessageStrings(testMarkers, Severity.Warning);
-		assertValid(programFile, errorMessages, warningMessages);
-		System.err.println("Warning passed using old test -- this test needs migrating : " + testTag);
 	}
 	
 }
