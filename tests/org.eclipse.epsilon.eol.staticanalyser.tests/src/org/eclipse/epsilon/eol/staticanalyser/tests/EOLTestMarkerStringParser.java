@@ -1,5 +1,7 @@
 package org.eclipse.epsilon.eol.staticanalyser.tests;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,7 +37,7 @@ public class EOLTestMarkerStringParser {
 
 	private static final Pattern PATTERN_LINE = Pattern.compile(RE_LINE);
 
-	public List<ModuleMarker> extractTestMarkers(File testProgram) throws IOException {
+	public List<ModuleMarker> extractTestMarkers(File testProgram, boolean failOnRegionError) throws IOException {
 		lineCounter = 0;
 		
 		String content = new String(Files.readAllBytes(testProgram.toPath()));
@@ -43,7 +45,7 @@ public class EOLTestMarkerStringParser {
 		List<ModuleMarker> testMarkerList = new ArrayList<ModuleMarker>();
 		
 		for (String line : lines) {
-			ModuleMarker testLineMarker = createTestMarker(line);
+			ModuleMarker testLineMarker = createTestMarker(line, failOnRegionError);
 			if (null != testLineMarker) {
 				testMarkerList.add(testLineMarker);
 			}
@@ -53,7 +55,7 @@ public class EOLTestMarkerStringParser {
 	}
 
 	// Format for test files //![startline:startcolumn-endline:endcolumn] message
-	private ModuleMarker createTestMarker(String testMarkedProgramLine) {
+	private ModuleMarker createTestMarker(String testMarkedProgramLine, boolean failOnRegionError) {
 		Matcher regexMarker = PATTERN_LINE.matcher(testMarkedProgramLine);
 		if(!regexMarker.matches()) {
 			// no matches
@@ -67,7 +69,6 @@ public class EOLTestMarkerStringParser {
 		String severityString = regexMarker.group(GRP_SEVERITY);
 		if (null == severityString) {
 			// Comments land in here
-			//reportTestMarkerParsingError("SEVERITY (null/comment)", lineCounter, testMarkedProgramLine);
 			return null;
 		} else {
 			switch (severityString) {
@@ -78,48 +79,49 @@ public class EOLTestMarkerStringParser {
 				testMarker.setSeverity(Severity.Warning);
 				break;
 			default:
-				reportTestMarkerParsingError("SEVERITY (unknown)", lineCounter, testMarkedProgramLine);
-				return null;
+				fail(getTestMarkerParsingError("SEVERITY (unknown)", lineCounter, testMarkedProgramLine));
 			}
 		}
 		
 		// Message
 		String message = regexMarker.group(GRP_MESSAGE); 
 		if(null == message) {
-			reportTestMarkerParsingError("MESSAGE", lineCounter, testMarkedProgramLine);
-			return null;
+			fail(getTestMarkerParsingError("MESSAGE", lineCounter, testMarkedProgramLine));
 		} else {
 			testMarker.setMessage(message);				
 		}
 
-		// Region column and line information
+		// Region column and line information -- never fail on region here
 		Region region = extractRegion(regexMarker);
-		if(null == region) {
-			reportTestMarkerParsingError("REGION", lineCounter, testMarkedProgramLine);
-			//return null; // After migration this should be on uncommented to report issues with the region information
+		if(null == region && failOnRegionError) {
+			fail(getTestMarkerParsingError("REGION", lineCounter, testMarkedProgramLine));
 		} else {
 			testMarker.setRegion(region);
 		}
 
 		return testMarker;
 	}
-
-	private void reportTestMarkerParsingError(String part, int linenumber, String testMarkedProgramLine) {
-		System.err.println(String.format("Check test Marker, problem with %s on line %s > %s", part, linenumber,
-				testMarkedProgramLine));
+	
+	private String getTestMarkerParsingError(String part, int linenumber, String testMarkedProgramLine) {
+		return String.format("Check test Marker, problem with %s on line %s > %s", part, linenumber,
+				testMarkedProgramLine);
 	}
 
 	private Region extractRegion(Matcher regexMarker) {
 		if(null == regexMarker.group(GRP_START_LINE)) {
+			// If anything is wrong in the region, or there is no region we end up here...
 			return null;
 		}
 		if(null == regexMarker.group(GRP_START_COLUMN)) {
+			// This should never happen
 			return null;
 		}
 		if (null == regexMarker.group(GRP_END_LINE)) {
+			// This should never happen
 			return null;
 		}
 		if (null == regexMarker.group(GRP_END_COLUMN)) {
+			// This should never happen
 			return null;
 		}
 

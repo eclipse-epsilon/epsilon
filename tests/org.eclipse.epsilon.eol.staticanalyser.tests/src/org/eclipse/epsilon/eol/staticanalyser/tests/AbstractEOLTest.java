@@ -51,7 +51,7 @@ public class AbstractEOLTest extends AbstractBaseTest {
 
 	@Test
 	public void originalTestApproach() throws Exception {
-		List<ModuleMarker> testMarkers = testMarkerParser.extractTestMarkers(programFile);
+		List<ModuleMarker> testMarkers = testMarkerParser.extractTestMarkers(programFile, false);
 		int regionCount = countMarkersWithRegions(testMarkers);
 		assumeTrue("Test has markers but none with regions",!testMarkers.isEmpty() && regionCount == 0);
 		parseFile(programFile);
@@ -62,10 +62,16 @@ public class AbstractEOLTest extends AbstractBaseTest {
 		if (isConsoleOutputActive) {
 			System.out.println("\nTesting program: " + testTag);
 		}
-		List<ModuleMarker> testMarkers = testMarkerParser.extractTestMarkers(programFile);
+		List<ModuleMarker> testMarkers = testMarkerParser.extractTestMarkers(programFile, false);
 
 		int regionCount = countMarkersWithRegions(testMarkers);
-		assumeTrue("Test either has no assertions or has comments with regions", testMarkers.isEmpty() || regionCount > 0);
+		assumeTrue("Test either has no markers or has markers with no regions", testMarkers.isEmpty() || regionCount > 0);
+
+		// How many markers are there, and how many have regions?
+		if(testMarkers.size() != regionCount) {
+			testMarkerParser.extractTestMarkers(programFile, true);
+		}
+		
 
 		// No test markers in program, therefore the program should be clean with no
 		// Static Analyser Markers
