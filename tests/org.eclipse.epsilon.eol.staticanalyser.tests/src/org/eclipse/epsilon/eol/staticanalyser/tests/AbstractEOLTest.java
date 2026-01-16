@@ -58,21 +58,20 @@ public class AbstractEOLTest extends AbstractBaseTest {
 	}
 
 	@Test
-	public void markerMatchedTestApproach() throws Exception {
+	public void staticAnalysisModuleMarkerTest() throws Exception {
 		if (isConsoleOutputActive) {
 			System.out.println("\nTesting program: " + testTag);
 		}
 		List<ModuleMarker> testMarkers = testMarkerParser.extractTestMarkers(programFile, false);
-
 		int regionCount = countMarkersWithRegions(testMarkers);
 		assumeTrue("Test either has no markers or has markers with no regions", testMarkers.isEmpty() || regionCount > 0);
 
-		// How many markers are there, and how many have regions?
+		// Check how many markers are there, and how many have regions
 		if(testMarkers.size() != regionCount) {
+			// Rerun the marker parser and fail test on the first region error detected
 			testMarkerParser.extractTestMarkers(programFile, true);
 		}
 		
-
 		// No test markers in program, therefore the program should be clean with no
 		// Static Analyser Markers
 		if (testMarkers.isEmpty()) {
