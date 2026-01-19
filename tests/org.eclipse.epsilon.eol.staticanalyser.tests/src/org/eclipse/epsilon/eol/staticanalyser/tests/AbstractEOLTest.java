@@ -106,14 +106,14 @@ public class AbstractEOLTest extends AbstractBaseTest {
 	private void checkForExpectedStaticAnalyserMarkers(List<ModuleMarker> testMarkers,
 			List<ModuleMarker> staticAnalysisMarkers) {
 
-		List<ModuleMarker> unmatchedStaticAnalysisMarkers = new ArrayList<ModuleMarker>();
-		unmatchedStaticAnalysisMarkers.addAll(staticAnalysisMarkers);
+		List<ModuleMarker> unmatchedSAM = new ArrayList<ModuleMarker>();
+		unmatchedSAM.addAll(staticAnalysisMarkers);
 
 		List<ModuleMarker> matchedTestMarkers = new ArrayList<ModuleMarker>();
 
 		int testMarkerIndex = 0;
 		for (ModuleMarker testMarker : testMarkers) {
-			unmatchedStaticAnalysisMarkers.remove(
+			unmatchedSAM.remove(
 					matchedTestMarkerToStaticAnalysisMarker(testMarker, staticAnalysisMarkers, testMarkerIndex));
 			// If we get here then we matched a test marker to a static analysis marker
 
@@ -127,8 +127,8 @@ public class AbstractEOLTest extends AbstractBaseTest {
 		// there should be no unmatched static analysis markers.
 		assertTrue(
 				"\nStatic Analysis Markers found that are not Test Markers: \n"
-						+ testMarkerParser.asBulletListString(unmatchedStaticAnalysisMarkers),
-				unmatchedStaticAnalysisMarkers.isEmpty());
+						+ testMarkerParser.asBulletListString(unmatchedSAM),
+				unmatchedSAM.isEmpty());
 	}
 		
 	private ModuleMarker isNotDuplicateTestMarker(ModuleMarker aMarker, List<ModuleMarker> listOfMarkers,
