@@ -148,44 +148,45 @@ public class AbstractEOLTest extends AbstractBaseTest {
 
 	private ModuleMarker matchedTestMarkerToStaticAnalysisMarker(ModuleMarker testMarker,
 			List<ModuleMarker> staticAnalysisMarkers, int testMarkerIndex) {
-		List<ModuleMarker> matchingMessageStaticAnalysisMarkers = new ArrayList<ModuleMarker>();
+		
+		List<ModuleMarker> candidatesByMessage = new ArrayList<ModuleMarker>();
 		for (ModuleMarker staticAnalysisMarker : staticAnalysisMarkers) {
 			if (staticAnalysisMarker.getMessage().equals(testMarker.getMessage())) {
-				matchingMessageStaticAnalysisMarkers.add(staticAnalysisMarker);
+				candidatesByMessage.add(staticAnalysisMarker);
 			}
 		}
 		assertTrue("\nStatic Analysis Marker with MESSAGE not found for Test Marker " + testMarkerIndex + " :\n"
-				+ testMarker.toString(), matchingMessageStaticAnalysisMarkers.size() > 0);
+				+ testMarker.toString(), candidatesByMessage.size() > 0);
 
-		List<ModuleMarker> matchingRegionStaticAnalysisMarkers = new ArrayList<ModuleMarker>();
-		for (ModuleMarker staticAnalysisMarker : matchingMessageStaticAnalysisMarkers) {
+		List<ModuleMarker> candidatesByRegion = new ArrayList<ModuleMarker>();
+		for (ModuleMarker staticAnalysisMarker : candidatesByMessage) {
 			if (staticAnalysisMarker.getRegion().equals(testMarker.getRegion())) {
-				matchingRegionStaticAnalysisMarkers.add(staticAnalysisMarker);
+				candidatesByRegion.add(staticAnalysisMarker);
 			}
 		}
 		assertTrue(
 				"\nStatic Analysis Marker with REGION not found for Test Marker " + testMarkerIndex + " :\n"
 						+ testMarker.toString() + "\n found similar Markers:\n"
-						+ testMarkerParser.asBulletListString(matchingMessageStaticAnalysisMarkers),
-				matchingRegionStaticAnalysisMarkers.size() > 0);
+						+ testMarkerParser.asBulletListString(candidatesByMessage),
+				candidatesByRegion.size() > 0);
 
-		List<ModuleMarker> matchingSeverityStaticAnalysisMarkers = new ArrayList<ModuleMarker>();
-		for (ModuleMarker staticAnalysisMarker : matchingRegionStaticAnalysisMarkers) {
+		List<ModuleMarker> candidatesBySeverity = new ArrayList<ModuleMarker>();
+		for (ModuleMarker staticAnalysisMarker : candidatesByRegion) {
 			if (staticAnalysisMarker.getSeverity().equals(testMarker.getSeverity())) {
-				matchingSeverityStaticAnalysisMarkers.add(staticAnalysisMarker);
+				candidatesBySeverity.add(staticAnalysisMarker);
 			}
 		}
 		assertTrue(
 				"\nStatic Analysis Marker with SEVERITY not found for Test Marker " + testMarkerIndex + " :\n"
 						+ testMarker.toString() + "\n found similar Markers:\n"
-						+ testMarkerParser.asBulletListString(matchingRegionStaticAnalysisMarkers),
-				matchingSeverityStaticAnalysisMarkers.size() > 0);
+						+ testMarkerParser.asBulletListString(candidatesByRegion),
+				candidatesBySeverity.size() > 0);
 
 		assertEquals(
 				"\nMultiple Static Analysis Markers reporting the same information:\n"
-						+ testMarkerParser.asBulletListString(matchingSeverityStaticAnalysisMarkers),
-				1, matchingSeverityStaticAnalysisMarkers.size());
-		return matchingSeverityStaticAnalysisMarkers.get(0);
+						+ testMarkerParser.asBulletListString(candidatesBySeverity),
+				1, candidatesBySeverity.size());
+		return candidatesBySeverity.get(0);
 	}
 
 	/*
