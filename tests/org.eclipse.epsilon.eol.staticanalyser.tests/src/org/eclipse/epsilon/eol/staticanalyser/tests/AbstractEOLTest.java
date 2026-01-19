@@ -109,7 +109,7 @@ public class AbstractEOLTest extends AbstractBaseTest {
 		List<ModuleMarker> unmatchedSAM = new ArrayList<ModuleMarker>();
 		unmatchedSAM.addAll(staticAnalysisMarkers);
 
-		List<ModuleMarker> matchedTestMarkers = new ArrayList<ModuleMarker>();
+		List<ModuleMarker> matchedTM = new ArrayList<ModuleMarker>();
 
 		int testMarkerIndex = 0;
 		for (ModuleMarker testMarker : testMarkers) {
@@ -117,7 +117,7 @@ public class AbstractEOLTest extends AbstractBaseTest {
 					matchedTestMarkerToStaticAnalysisMarker(testMarker, staticAnalysisMarkers, testMarkerIndex));
 			// If we get here then we matched a test marker to a static analysis marker
 
-			matchedTestMarkers.add(isNotDuplicateTestMarker(testMarker, matchedTestMarkers, testMarkerIndex));
+			matchedTM.add(isNotDuplicateTestMarker(testMarker, matchedTM, testMarkerIndex));
 			// If we get here when we haven't tried to remove the same test marker more than
 			// once
 			testMarkerIndex++;
@@ -136,8 +136,8 @@ public class AbstractEOLTest extends AbstractBaseTest {
 		if (listOfMarkers.isEmpty()) {
 			return aMarker;
 		}
+		
 		int listOfMarkersIndex = 0;
-
 		for (ModuleMarker listMarker : listOfMarkers) {
 			assertFalse("\nTest marker " + testMarkerIndexPosition + " " + "is a duplicate of Test marker "
 					+ listOfMarkersIndex + "\n - " + aMarker, aMarker.equals(listMarker));
