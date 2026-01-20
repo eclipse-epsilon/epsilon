@@ -1,0 +1,97 @@
+BASE <http://eclipse.org/epsilon/rdf/changeEquivalence#>
+PREFIX : <http://eclipse.org/epsilon/rdf/changeEquivalence#>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX psl:    <http://eclipse.org/epsilon/rdf/changeEquivalence#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+
+# These attributes have classes
+#psl:people rdf:type owl:DatatypeProperty .
+#psl:tasks rdf:type owl:DatatypeProperty .
+#psl:effort rdf:type owl:DatatypeProperty .
+#psl:person rdf:type owl:DatatypeProperty .
+
+# These are EClasses
+#psl:Project rdf:type owl:Class.
+#psl:Task rdf:type owl:Class .
+#psl:Effort rdf:type owl:Class.
+#psl:Person rdf:type owl:Class .
+
+# <Project xmi: xmi:id="_f_n38FvXEfC1HLQSXyvKDQ" title="ACME" 
+# version="2.0" xmlns:xmi="http://www.omg.org/XMI" 
+# xmlns="http://eclipse.org/epsilon/rdf/changeEquivalence" >
+<_f_n38FvXEfC1HLQSXyvKDQ>
+        rdf:type        psl:Project ;
+        psl:title       "ACME" ;        
+        psl:people      (
+                                <_f_n3-FvXEfC1HLQSXyvKDQ>       <_f_n3-VvXEfC1HLQSXyvKDQ> 
+                        );
+        psl:tasks       (       
+                                <_f_n38VvXEfC1HLQSXyvKDQ>
+                                <_f_n381vXEfC1HLQSXyvKDQ>
+                                <_f_n39VvXEfC1HLQSXyvKDQ>
+                        ) .
+
+# <tasks xmi:id="_f_n38VvXEfC1HLQSXyvKDQ" title="Analysis" start="1" duration="3">
+<_f_n38VvXEfC1HLQSXyvKDQ>
+        rdf:type        psl:Task ;
+        psl:title       "Analysis" ;
+        psl:start       "1"^^xsd:int ;
+        psl:duration    "3"^^xsd:int ;
+        psl:effort      <_f_n38lvXEfC1HLQSXyvKDQ> .
+
+# <tasks xmi:id="_f_n381vXEfC1HLQSXyvKDQ" title="Design" start="4" duration="6">
+<_f_n381vXEfC1HLQSXyvKDQ>
+        rdf:type        psl:Task ;
+        psl:title       "Design" ;
+        psl:start       "4"^^xsd:int ;
+        psl:duration    "6"^^xsd:int ;
+        psl:effort      <_f_n39FvXEfC1HLQSXyvKDQ> .
+        
+# <tasks xmi:id="_f_n39VvXEfC1HLQSXyvKDQ" title="Implementation" start="7" duration="3">
+<_f_n39VvXEfC1HLQSXyvKDQ>
+        rdf:type        psl:Task ;
+        psl:title       "Implementation" ;
+        psl:start       "7"^^xsd:int ;
+        psl:duration    "3"^^xsd:int ;
+        psl:effort      (
+                        <_f_n39lvXEfC1HLQSXyvKDQ>
+                        <_f_n391vXEfC1HLQSXyvKDQ> 
+                        ) .
+
+# <effort xmi:id="_f_n38lvXEfC1HLQSXyvKDQ" person="_f_n3-FvXEfC1HLQSXyvKDQ"/>
+<_f_n38lvXEfC1HLQSXyvKDQ>
+        rdf:type         psl:Effort ;    
+        psl:person       <_f_n3-FvXEfC1HLQSXyvKDQ> .
+
+# <effort xmi:id="_f_n39FvXEfC1HLQSXyvKDQ" person="_f_n3-VvXEfC1HLQSXyvKDQ"/>
+<_f_n39FvXEfC1HLQSXyvKDQ>
+        rdf:type         psl:Effort ;    
+        psl:person       <_f_n3-VvXEfC1HLQSXyvKDQ> .
+
+# <effort xmi:id="_f_n391vXEfC1HLQSXyvKDQ" person="_f_n3-FvXEfC1HLQSXyvKDQ" percentage="50"/>
+<_f_n391vXEfC1HLQSXyvKDQ>
+        rdf:type         psl:Effort ;    
+        psl:person       <_f_n3-FvXEfC1HLQSXyvKDQ> ;
+        psl:percentage  "50"^^xsd:int .
+
+# <effort xmi:id="_f_n39lvXEfC1HLQSXyvKDQ" person="_f_n3-VvXEfC1HLQSXyvKDQ" percentage="50"/>
+<_f_n39lvXEfC1HLQSXyvKDQ>
+        rdf:type         psl:Effort ;    
+        psl:person       <_f_n3-VvXEfC1HLQSXyvKDQ> ;
+        psl:percentage  "50"^^xsd:int .
+
+# <people xmi:id="_f_n3-FvXEfC1HLQSXyvKDQ" name="Alice"/>
+<_f_n3-FvXEfC1HLQSXyvKDQ> 
+        rdf:type        psl:Person ;
+        psl:name        "Alice" .
+# <people xmi:id="_f_n3-VvXEfC1HLQSXyvKDQ" name="Bob"/>
+<_f_n3-VvXEfC1HLQSXyvKDQ>
+        rdf:type        psl:Person ;
+        psl:name        "Bob" .
+
+
+
+
+

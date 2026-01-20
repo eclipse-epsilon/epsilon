@@ -3,7 +3,6 @@
 	       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.eclipse.epsilon</groupId>
   <artifactId>org.eclipse.epsilon.emc.graphml</artifactId>
   <name>Eclipse Epsilon EMC for GraphML Files</name>
 

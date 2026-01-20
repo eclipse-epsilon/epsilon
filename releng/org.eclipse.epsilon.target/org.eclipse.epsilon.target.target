@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Epsilon Target Platform" sequenceNumber="1747230076">
+<target name="Epsilon Target Platform" sequenceNumber="1764955351">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -30,6 +30,7 @@
       <unit id="org.eclipse.m2m.qvt.oml.sdk.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.emf.cdo.sdk.feature.group" version="0.0.0"/>
       <unit id="org.apache.commons.logging" version="1.2.0"/>
+      <unit id="org.yaml.snakeyaml" version="2.2.0"/>
       <repository location="https://download.eclipse.org/releases/2024-12"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
@@ -66,7 +67,6 @@
       <unit id="org.mockito" version="2.23.0.v20200310-1642"/>
       <unit id="org.objenesis" version="2.6.0.v20180420-1519"/>
       <unit id="org.slf4j.api" version="1.7.2.v20121108-1250"/>
-      <unit id="org.yaml.snakeyaml" version="1.27.0.v20201111-1638"/>
       <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository"/>
     </location>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
@@ -127,6 +127,12 @@
           <groupId>org.apache.poi</groupId>
           <artifactId>poi-ooxml-schemas</artifactId>
           <version>4.1.2</version>
+          <type>jar</type>
+        </dependency>
+        <dependency>
+          <groupId>org.eclipse.epsilon</groupId>
+          <artifactId>org.eclipse.epsilon.jena.uberjar</artifactId>
+          <version>2.9.0-SNAPSHOT</version>
           <type>jar</type>
         </dependency>
       </dependencies>

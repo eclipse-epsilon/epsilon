@@ -46,7 +46,13 @@ pipeline {
               }
             } 
             steps {
-              sh 'mvn -B -T 1C clean install -P eclipse-sign'
+              /* We need the Jena uber-JAR to be locally installed (and the plain
+               * Maven parent POM) to resolve the Tycho target platform. */
+              sh '''
+                mvn -B -T 1C -N -f pom-plain.xml install -P eclipse-sign
+                mvn -B -T 1C -pl releng/org.eclipse.epsilon.jena.uberjar -f pom-plain.xml clean install -P eclipse-sign
+                mvn -B -T 1C clean install -P eclipse-sign
+              '''
             }
           }
           stage('Test') {

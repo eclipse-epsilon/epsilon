@@ -3,6 +3,13 @@
 # Exit on first failure
 set -e
 
+# Download the EMF Compare maven artifact
+bash plugins/org.eclipse.epsilon.eunit.cmp.emf/download-emf-compare.sh
+
+# Build and install the Jena uberjar
+mvn -f pom-plain.xml -N install
+mvn -f releng/org.eclipse.epsilon.jena.uberjar install
+
 # Build
 mvn -T 1C clean install
 

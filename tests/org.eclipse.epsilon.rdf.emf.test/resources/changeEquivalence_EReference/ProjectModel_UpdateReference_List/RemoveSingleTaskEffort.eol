@@ -1,0 +1,22 @@
+import "../TestOperations.eol";
+
+	if(consoleOutput) {
+		"\n-Start-\n".println();
+	}
+
+	var t = Task.all.get(1);
+	
+	if(consoleOutput) {
+		showTaskEffort(t);
+		"\n++Remove one effort++\n".println();
+	}
+	t.effort.remove(Effort.all.get(0));
+	
+	if(consoleOutput) {
+		showTaskEffort(t);
+		"\n-End-\n".println();
+	}
+
+
+
+

@@ -1,0 +1,70 @@
+@prefix : <file:///home/hmz514/git/emc-rdf/tests/org.eclipse.epsilon.rdf.emf.test/resources/equivalence/03-containment/model_data.ttl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix simple: <http://eclipse.org/epsilon/rdf/containment#> .
+
+
+@base <http://example/org/containment> .
+
+<theModel>
+    a simple:Model ;
+    simple:entities <firstEntity> ;
+    simple:name "theModel" .
+
+<firstEntity>
+    a simple:Entity ;
+    simple:name "firstEntity" ;
+    simple:names ( "firstName" "secondName" ) ;
+    
+    simple:eBoolean "true"^^xsd:boolean ;
+    simple:eBooleans ( "true"^^xsd:boolean "false"^^xsd:boolean );
+    
+    simple:eBooleanObject "false"^^xsd:boolean ;
+    simple:eBooleanObjects ( "true"^^xsd:boolean "false"^^xsd:boolean ) ;
+       
+    simple:eByte "127"^^xsd:byte ;
+    simple:eBytes ( "127"^^xsd:byte "-127"^^xsd:byte );
+    
+    simple:eByteObject "-127"^^xsd:byte ;
+    simple:eByteObjects ( "127"^^xsd:byte "-127"^^xsd:byte ) ;
+    
+    simple:eChar "A"^^xsd:String ;
+    simple:eChars ( "A"^^xsd:String "B"^^xsd:String ) ;
+    
+    simple:eCharacterObject "B"^^xsd:String ;
+    simple:eCharacterObjects ( "A"^^xsd:String "B"^^xsd:String ) ;
+    
+    simple:eDouble "1"^^xsd:double ;
+    simple:eDoubles ( "1"^^xsd:double "2"^^xsd:double );
+    
+    simple:eDoubleObject "2"^^xsd:double ;
+    simple:eDoubleObjects ( "1"^^xsd:double "2"^^xsd:double );
+    
+    simple:eFloat "1.0"^^xsd:float ;
+    simple:eFloats ( "1.1"^^xsd:float "1.2"^^xsd:float );
+    
+    simple:eFloatObject "2.0"^^xsd:float ;
+    simple:eFloatObjects ( "1.1"^^xsd:float "1.2"^^xsd:float ); ;
+    
+    simple:eInt "1"^^xsd:int ;
+    simple:eInts ( "1"^^xsd:int "2"^^xsd:int ) ;
+    
+    simple:eIntegerObject "2"^^xsd:int ;
+    simple:eIntegerObjects ( "1"^^xsd:int "2"^^xsd:int ) ;
+    
+    simple:eLong "1"^^xsd:long ;
+    simple:eLongs ( "1"^^xsd:long "2"^^xsd:long ) ;
+    
+    simple:eLongObject "2"^^xsd:long ;
+    simple:eLongObjects ( "1"^^xsd:long "2"^^xsd:long ) ;
+    
+    simple:eShort "1"^^xsd:short ;
+    simple:eShorts ( "1"^^xsd:short "2"^^xsd:short ) ;
+    
+    simple:eShortObject "2"^^xsd:short ;
+    simple:eShortObjects ( "1"^^xsd:short "2"^^xsd:short ) ;
+    
+    simple:eDate "2001-12-30T00:00:00+00:00"^^xsd:dateTime ;
+    simple:eDates ( "2001-12-30T00:00:00+00:00"^^xsd:dateTime "2001-12-29T01:00:00+00:00"^^xsd:dateTime ) .

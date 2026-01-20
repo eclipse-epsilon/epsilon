@@ -27,6 +27,7 @@ location "https://download.eclipse.org/releases/2024-12" {
 	org.eclipse.m2m.qvt.oml.sdk.feature.group lazy
 	org.eclipse.emf.cdo.sdk.feature.group lazy
 	org.apache.commons.logging 1.2.0
+	org.yaml.snakeyaml 2.2.0
 }
 
 location "https://download.eclipse.org/emfatic/update" {
@@ -63,7 +64,6 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202112131738
 	org.mockito [2.23.0,2.23.1)
 	org.objenesis [2.6.0,2.6.1)
 	org.slf4j.api [1.7.2,1.7.3)
-	org.yaml.snakeyaml [1.27.0,1.27.1)
 }
 
 location "https://download.eclipse.org/acceleo/updates/releases/3.7/" {
@@ -121,5 +121,16 @@ maven MavenDependencies scope=compile dependencyDepth=infinite missingManifest=g
         groupId="org.apache.poi"
         artifactId="poi-ooxml-schemas"
         version="4.1.2"
+    }
+
+    /*
+     * Jena Uber-JAR is needed to ensure its ServiceLoader finds all it needs.
+     * This is built and installed locally before loading the target platform
+     * (run "mvn install" in releng/org.eclipse.epsilon.jena.uberjar project).
+     */
+    dependency {
+        groupId="org.eclipse.epsilon"
+        artifactId="org.eclipse.epsilon.jena.uberjar"
+        version="2.9.0-SNAPSHOT"
     }
 }

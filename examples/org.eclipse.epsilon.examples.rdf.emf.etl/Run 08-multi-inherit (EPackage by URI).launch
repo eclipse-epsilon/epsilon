@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.etl.eclipse.dt.launching.EtlLaunchConfigurationDelegate">
+    <booleanAttribute key="fine_grained_profiling" value="false"/>
+    <stringAttribute key="implementation_name" value="Parallel (Declarative operations)"/>
+    <listAttribute key="models">
+        <listEntry value="aliases=&#10;reuseUnmodifiedFileBasedMetamodels=true&#10;modelFile=/org.eclipse.epsilon.examples.rdf.emf.etl/source.rdfres&#10;metamodelUri=http\://york.ac.uk/emf-rdf/examples/multi-inherit/base&#10;concurrent=false&#10;type=RDF-EMF&#10;readOnLoad=true&#10;storeOnDisposal=false&#10;expand=true&#10;fileBasedMetamodelUri=&#10;metamodelFile=&#10;cached=true&#10;name=Source&#10;modelUri=platform\:/resource/org.eclipse.epsilon.examples.rdf.emf.etl/source.rdfres&#10;isMetamodelFileBased=false&#10;validate=false"/>
+        <listEntry value="aliases=&#10;reuseUnmodifiedFileBasedMetamodels=true&#10;modelFile=/org.eclipse.epsilon.examples.rdf.emf.etl/target.rdfres&#10;metamodelUri=http\://york.ac.uk/emf-rdf/examples/multi-inherit/base,http\://york.ac.uk/emf-rdf/examples/multi-inherit/extend&#10;concurrent=false&#10;type=RDF-EMF&#10;readOnLoad=false&#10;storeOnDisposal=true&#10;expand=true&#10;fileBasedMetamodelUri=&#10;metamodelFile=&#10;cached=true&#10;name=Target&#10;modelUri=platform\:/resource/org.eclipse.epsilon.examples.rdf.emf.etl/target.rdfres&#10;isMetamodelFileBased=false&#10;validate=false"/>
+    </listAttribute>
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
+    <intAttribute key="parallelism" value="11"/>
+    <listAttribute key="parameters"/>
+    <booleanAttribute key="profile_model_loading" value="false"/>
+    <booleanAttribute key="profiling_enabled" value="false"/>
+    <booleanAttribute key="reset_profiler" value="false"/>
+    <stringAttribute key="source" value="/org.eclipse.epsilon.examples.rdf.emf.etl/labeled2combined.etl"/>
+</launchConfiguration>
