@@ -194,10 +194,17 @@ public class ViewTree {
 			else {
 				try {
 					File file = promise instanceof StaticContentPromise ? ((StaticContentPromise) promise).getFile() : null;
-					cachedContent = new ViewContent(format, promise.getContent(), file, getLayers(), getPatches(), getBaseUris());
+					String content = promise.getContent();
+					if (promise.getProgressMonitor() == null || !promise.getProgressMonitor().isCanceled()) {
+						// Was not cancelled halfway - we can cache the result
+						cachedContent = new ViewContent(format, content, file, getLayers(), getPatches(), getBaseUris());
+					}
 				} catch (Exception e) {
 					EpsilonConsole.getInstance().getErrorStream().print(e.getMessage());
-					cachedContent = new ViewContent("exception", e.getMessage(), null, getLayers(), getPatches(), getBaseUris());
+					if (promise.getProgressMonitor() == null || !promise.getProgressMonitor().isCanceled()) {
+						// Was not cancelled halfway - we can cache the result
+						cachedContent = new ViewContent("exception", e.getMessage(), null, getLayers(), getPatches(), getBaseUris());
+					}
 				}
 			}
 		}

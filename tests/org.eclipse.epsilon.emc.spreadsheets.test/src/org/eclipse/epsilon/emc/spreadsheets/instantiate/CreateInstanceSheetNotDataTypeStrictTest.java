@@ -10,16 +10,17 @@
 package org.eclipse.epsilon.emc.spreadsheets.instantiate;
 
 import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetModel;
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetRow;
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetWorksheet;
-import org.eclipse.epsilon.emc.spreadsheets.google.GSWorksheet;
 import org.eclipse.epsilon.emc.spreadsheets.test.SharedTestMethods;
 import org.eclipse.epsilon.emc.spreadsheets.test.TestModelFactory;
 import org.junit.Test;
@@ -137,40 +138,15 @@ public class CreateInstanceSheetNotDataTypeStrictTest {
 		String value;
 
 		value = row.getVisibleCellValue(worksheet.getColumn("c_1"));
-		if (worksheet instanceof GSWorksheet) {
-			assertTrue(value.equals(worksheet.getDefaultEmptyCellValue()));
-		}
-		else {
-			assertTrue(value.equals(""));
-		}
+		assertTrue(value.equals(""));
 		value = row.getVisibleCellValue(worksheet.getColumn("c_2"));
-		if (worksheet instanceof GSWorksheet) {
-			assertTrue(value.equals(worksheet.getDefaultEmptyCellValue()));
-		}
-		else {
-			assertTrue(value.equals(""));
-		}
+		assertTrue(value.equals(""));
 		value = row.getVisibleCellValue(worksheet.getColumn("c_3"));
-		if (worksheet instanceof GSWorksheet) {
-			assertTrue(value.equals(worksheet.getDefaultEmptyCellValue()));
-		}
-		else {
-			assertTrue(value.equals(""));
-		}
+		assertTrue(value.equals(""));
 		value = row.getVisibleCellValue(worksheet.getColumn("c_4"));
-		if (worksheet instanceof GSWorksheet) {
-			assertTrue(value.equals(worksheet.getDefaultEmptyCellValue()));
-		}
-		else {
-			assertTrue(value.equals(""));
-		}
+		assertTrue(value.equals(""));
 		value = row.getVisibleCellValue(worksheet.getColumn("c_5"));
-		if (worksheet instanceof GSWorksheet) {
-			assertTrue(value.equals(worksheet.getDefaultEmptyCellValue()));
-		}
-		else {
-			assertTrue(value.equals(""));
-		}
+		assertTrue(value.equals(""));
 	}
 
 	@Test

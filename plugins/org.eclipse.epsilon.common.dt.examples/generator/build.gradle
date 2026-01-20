@@ -1,0 +1,39 @@
+configurations {
+    epsilon
+}
+
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.4.0'
+    epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow.emf:2.4.0'
+    epsilon ('org.eclipse.emfatic:org.eclipse.emfatic.core:1.1.0-SNAPSHOT') {
+        exclude group: 'org.eclipse.platform'
+    }
+}
+
+task setupEpsilonTasks {
+    // Set up the core Epsilon tasks
+    ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/tasks.xml', 
+        classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+    // Set up the Epsilon EMF tasks
+    ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/emf/tasks.xml', 
+        classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+    // Set logging level to info so that EOL's println() is not suppressed
+    ant.lifecycleLogLevel = 'INFO'
+}
+
+task run {
+    dependsOn tasks.setupEpsilonTasks
+    
+    // Load the examples.xml XML model
+    ant.'epsilon.xml.loadModel'(name: 'M', file: 'examples.xml')
+
+    // Run main.egx against it
+    ant.'epsilon.egl'(src: 'main.egx'){ model(ref: 'M') }
+    }

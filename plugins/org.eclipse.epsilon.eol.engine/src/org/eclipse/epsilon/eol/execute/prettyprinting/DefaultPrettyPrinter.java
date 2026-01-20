@@ -46,7 +46,7 @@ public class DefaultPrettyPrinter implements PrettyPrinter {
 				
 				while (li.hasNext()) {
 					Object next = li.next();
-					result = result + manager.print(next);
+					result += quoteOrPrint(next);
 					if (li.hasNext()) {
 						result = result + ", ";
 					}
@@ -64,7 +64,7 @@ public class DefaultPrettyPrinter implements PrettyPrinter {
 			while (li.hasNext()) {
 				Object key = li.next();
 				Object value = ((EolMap<?, ?>) o).get(key);
-				result = result + manager.print(key) + "->" + manager.print(value);
+				result = result + quoteOrPrint(key) + "->" + quoteOrPrint(value);
 				if (li.hasNext()) {
 					result = result + ", ";
 				}
@@ -86,5 +86,17 @@ public class DefaultPrettyPrinter implements PrettyPrinter {
 	
 	public void setMaximumCollectionSize(int maximumCollectionSize) {
 		this.maximumCollectionSize = maximumCollectionSize;
+	}
+
+	protected String quoteOrPrint(Object o) {
+		/*
+		 * Strings in collections should be quoted (to distinguish empty collection from
+		 * collection with empty string).
+		 */
+		if (o instanceof String) {
+			return '"' + (String)o + '"';
+		} else {
+			return manager.print(o);
+		}
 	}
 }

@@ -20,7 +20,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({EmfModelLoadTests.class,
                EmfModelStoreTests.class,
                EmfModelGetPropertiesOfTests.class,
-               EmfModelPropertyMigratorTests.class})
+               EmfModelPropertyMigratorTests.class,
+               EmfMetaModelTests.class})
 public class EmfModelTestSuite {
 
 	public static Test suite() {

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.epsilon.workflow.tasks;
 
+import org.eclipse.epsilon.ecl.EclModule;
 import org.eclipse.epsilon.ecl.IEclModule;
-import org.eclipse.epsilon.ecl.concurrent.EclModuleParallelAnnotation;
 import org.eclipse.epsilon.ecl.trace.MatchTrace;
 
 public class EclTask extends ExecutableModuleTask {
@@ -35,7 +35,7 @@ public class EclTask extends ExecutableModuleTask {
 
 	@Override
 	protected IEclModule createDefaultModule() {
-		return new EclModuleParallelAnnotation();
+		return new EclModule();
 	}
 
 	@Override

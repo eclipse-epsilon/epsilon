@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.epsilon</groupId>
   <artifactId>epsilon-plain-parent</artifactId>
-  <version>2.5.0-SNAPSHOT</version>
+  <version>2.9.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Eclipse Epsilon Parent</name>
@@ -18,10 +18,10 @@
   </description>
 
   <scm>
-    <connection>scm:git:git://git.eclipse.org/gitroot/epsilon/org.eclipse.epsilon.git</connection>
-    <developerConnection>scm:git:ssh://git.eclipse.org:29418/epsilon/org.eclipse.epsilon.git</developerConnection>
-    <tag>HEAD</tag>
-    <url>https://git.eclipse.org/c/epsilon/org.eclipse.epsilon.git/</url>
+      <connection>scm:git:https://github.com/eclipse/epsilon.git</connection>
+      <developerConnection>scm:git:https://github.com/eclipse/epsilon.git</developerConnection>
+      <tag>HEAD</tag>
+      <url>https://github.com/eclipse/epsilon</url>
   </scm>
 
   <licenses>
@@ -47,7 +47,7 @@
     <developer>
       <id>agarciad</id>
       <name>Antonio Garcia Dominguez</name>
-      <url>https://cs.aston.ac.uk/~garcia-a/</url>
+      <url>https://www-users.york.ac.uk/~agd516</url>
       <roles><role>Committer</role></roles>
     </developer>
     <developer>
@@ -139,9 +139,11 @@
     <module>plugins/org.eclipse.epsilon.emc.csv/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.emc.plainxml/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.emc.yaml/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.emc.json/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.eml.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.emg.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.eol.engine/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.eol.dap/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.eol.tools/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.epl.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.erl.engine/pom-plain.xml</module>
@@ -157,7 +159,9 @@
 
     <!-- EMF component -->
     <module>plugins/org.eclipse.epsilon.emc.emf/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.emc.emf.decorator/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.flexmi/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.ecore.delegates/pom-plain.xml</module>
 
     <!-- UML component -->
     <module>plugins/org.eclipse.epsilon.emc.uml/pom-plain.xml</module>
@@ -194,7 +198,6 @@
     <!-- Spreadsheets component -->
     <module>plugins/org.eclipse.epsilon.emc.spreadsheets/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.emc.spreadsheets.excel/pom-plain.xml</module>
-    <module>plugins/org.eclipse.epsilon.emc.spreadsheets.google/pom-plain.xml</module>
 
     <!-- CLI component -->
     <module>plugins/org.eclipse.epsilon.common.cli/pom-plain.xml</module>
@@ -562,19 +565,35 @@ same version of EMF / other bits always.
       <!-- Other libraries: this is just so we are consistent across projects -->
       <!-- Note that they're in alphabetical order, to make it easier to find libraries -->
       <dependency>
-        <groupId>com.github.virtuald</groupId>
-        <artifactId>curvesapi</artifactId>
-        <version>1.06</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.gdata</groupId>
-        <artifactId>core</artifactId>
-        <version>1.47.1</version>
-      </dependency>
-      <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>27.1-jre</version>
+        <exclusions>
+            <exclusion>
+                <groupId>com.google.guava</groupId>
+                <artifactId>failureaccess</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>*</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>*</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>com.google.j2objc</groupId>
+                <artifactId>*</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>*</artifactId>
+            </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>com.google.inject</groupId>
@@ -639,17 +658,17 @@ same version of EMF / other bits always.
       <dependency>
         <groupId>org.apache.poi</groupId>
         <artifactId>poi</artifactId>
-        <version>4.1.1</version>
+        <version>4.1.2</version>
       </dependency>
       <dependency>
         <groupId>org.apache.poi</groupId>
         <artifactId>poi-ooxml</artifactId>
-        <version>4.1.1</version>
+        <version>4.1.2</version>
       </dependency>
       <dependency>
         <groupId>org.apache.poi</groupId>
         <artifactId>poi-ooxml-schemas</artifactId>
-        <version>4.1.1</version>
+        <version>4.1.2</version>
       </dependency>
       <dependency>
         <groupId>org.apache.xmlbeans</groupId>
@@ -657,9 +676,9 @@ same version of EMF / other bits always.
         <version>3.1.0</version>
       </dependency>
       <dependency>
-        <groupId>org.jopendocument</groupId>
+        <groupId>org.jdom</groupId>
         <artifactId>jdom</artifactId>
-        <version>1.1.1</version>
+        <version>1.1.3</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -686,6 +705,25 @@ same version of EMF / other bits always.
         <version>1.27</version>
       </dependency>
 
+      <!-- JSON-simple -->
+      <dependency>
+        <groupId>com.googlecode.json-simple</groupId>
+        <artifactId>json-simple</artifactId>
+        <version>1.1.1</version>
+      </dependency>
+
+      <!-- HTTP client-->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.14</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>4.4.14</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -698,7 +736,7 @@ same version of EMF / other bits always.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.13.0</version>
 
         <!-- Important: Epsilon's code (as of 2.0.0) does NOT compile under
              plain javac. ECJ is more lenient toward some type erasure
@@ -711,7 +749,7 @@ same version of EMF / other bits always.
           <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-compiler-eclipse</artifactId>
-            <version>2.8.6</version>
+            <version>2.13.0</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -719,7 +757,7 @@ same version of EMF / other bits always.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.3.1</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -733,7 +771,7 @@ same version of EMF / other bits always.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.2.0</version>
+        <version>3.6.3</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -748,8 +786,16 @@ same version of EMF / other bits always.
           </execution>
         </executions>
       </plugin>
-
     </plugins>
+    <pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.5.0</version>
+            </plugin>
+        </plugins>
+    </pluginManagement>
   </build>
 
   <pluginRepositories>
@@ -757,22 +803,14 @@ same version of EMF / other bits always.
       <id>cbi</id>
       <url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
     </pluginRepository>
+    <pluginRepository>
+        <id>dash-licenses-snapshots</id>
+        <url>https://repo.eclipse.org/content/repositories/dash-licenses-releases/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+    </pluginRepository>
   </pluginRepositories>
-
-  <distributionManagement>
-    <repository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>ossrh</id>
-      <name>OSSRH Release Staging Repository</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-    </repository>
-    <snapshotRepository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>ossrh</id>
-      <name>OSSRH Snapshots Repository</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
 
   <profiles>
     <!-- NOTE: these two profiles have to be in this exact order, so we first
@@ -805,22 +843,21 @@ same version of EMF / other bits always.
     </profile>
 
     <profile>
-      <id>ossrh</id>
+      <id>central-deploy</id>
       <build>
         <plugins>
           <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.6.8</version>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.7.0</version>
             <extensions>true</extensions>
             <configuration>
-              <serverId>ossrh</serverId>
-              <nexusUrl>https://oss.sonatype.org</nexusUrl>
-              <!-- We want to check staged releases manually on
-                   Sonatype OSSRH before we propagate to Central. -->
-              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>true</autoPublish>
+              <centralSnapshotsUrl>https://central.sonatype.com/repository/maven-snapshots/</centralSnapshotsUrl>
             </configuration>
           </plugin>
+
           <!-- Anything that goes to Central must be GPG signed -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -833,6 +870,12 @@ same version of EMF / other bits always.
                 <goals>
                   <goal>sign</goal>
                 </goals>
+                <configuration>
+                  <gpgArguments>
+                    <arg>--pinentry-mode</arg>
+                    <arg>loopback</arg>
+                  </gpgArguments>
+                </configuration>
               </execution>
             </executions>
           </plugin>

@@ -101,4 +101,12 @@ public class XmlModel extends EmfModel implements IOperationContributorProvider 
 	public OperationContributor getOperationContributor() {
 		return mixedElementOperationContributor;
 	}
+	
+	public void setXsdUri(URI xsdUri) {
+		this.xsdUri = xsdUri;
+	}
+	
+	public URI getXsdUri() {
+		return xsdUri;
+	}
 }

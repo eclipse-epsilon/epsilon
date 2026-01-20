@@ -25,7 +25,7 @@ public class ViewContentsMenuAction extends Action implements IMenuCreator {
 	protected PictoView pictoView;
 	
 	public ViewContentsMenuAction(PictoView pictoView) {
-		super("View source", AS_DROP_DOWN_MENU);
+		super("View Source", AS_DROP_DOWN_MENU);
 		setImageDescriptor(PictoPlugin.getDefault().getImageDescriptor("icons/source.png"));
 		setMenuCreator(this);
 		this.pictoView = pictoView;

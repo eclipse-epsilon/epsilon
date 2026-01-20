@@ -26,7 +26,11 @@ public class Import extends AbstractModuleElement {
 	private boolean loaded = false;
 	private boolean found = false;
 	protected StringLiteral pathLiteral;
-	
+
+	public IEolModule getParentModule() {
+		return parentModule;
+	}
+
 	public void setParentModule(IEolModule parentModule) {
 		this.parentModule = parentModule;
 	}
@@ -70,6 +74,9 @@ public class Import extends AbstractModuleElement {
 			}
 			if (!found) {
 				try {
+					if (importedModule instanceof IEolModule) {
+						((IEolModule) importedModule).setContext(parentModule.getContext());
+					}
 					importedModule.parse(uri);
 				}
 				catch (Exception e) {
@@ -102,6 +109,10 @@ public class Import extends AbstractModuleElement {
 	public boolean isLoaded() {
 		return loaded;
 	}
+
+	public void setLoaded(boolean loaded) {
+		this.loaded = loaded;
+	}
 	
 	public boolean isFound() {
 		return found;
@@ -127,9 +138,11 @@ public class Import extends AbstractModuleElement {
 	public void setContext(IEolContext context) {
 		if (importedModule instanceof IEolModule) {
 			IEolModule module = (IEolModule) importedModule;
-			module.setContext(context);
-			for (Import import_ : module.getImports()) {
-				import_.setContext(context);
+			if (module.getContext() != context) {
+				module.setContext(context);
+				for (Import import_ : module.getImports()) {
+					import_.setContext(context);
+				}
 			}
 		}
 	}

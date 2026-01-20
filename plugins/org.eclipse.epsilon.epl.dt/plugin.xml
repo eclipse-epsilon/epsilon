@@ -25,7 +25,9 @@
             delegate="org.eclipse.epsilon.epl.dt.launching.EplLaunchConfigurationDelegate"
             id="org.epsilon.epl.eclipse.dt.launching.EplLaunchConfigurationDelegate"
             modes="run, debug"
-            name="EPL Program"/>
+            name="EPL Program"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -48,14 +50,14 @@
          point="org.eclipse.epsilon.common.dt.moduleImplementation">
       <implementation
             class="org.eclipse.epsilon.epl.EplModule"
-            default="false"
+            default="true"
             dialog="org.eclipse.epsilon.epl.dt.launching.EplModuleConfiguration"
             language="EPL"
             name="Sequential">
       </implementation>
       <implementation
             class="org.eclipse.epsilon.epl.concurrent.EplModuleParallel"
-            default="true"
+            default="false"
             dialog="org.eclipse.epsilon.epl.dt.launching.EplModuleParallelConfiguration"
             language="EPL"
             name="Parallel (Declarative operations)">

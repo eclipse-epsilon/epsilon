@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -30,6 +32,7 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -43,6 +46,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
+import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.epsilon.common.concurrent.ConcurrencyUtils;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.emc.emf.CachedResourceSet.Cache;
@@ -54,6 +58,7 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.exceptions.models.EolNotInstantiableModelElementTypeException;
 import org.eclipse.epsilon.eol.models.CachedModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
+import org.eclipse.epsilon.eol.models.ModelRepository.AmbiguousEnumerationValue;
 import org.eclipse.epsilon.eol.models.transactions.IModelTransactionSupport;
 
 public abstract class AbstractEmfModel extends CachedModel<EObject> {
@@ -80,12 +85,13 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 	protected boolean expand = true;
 	protected EPackage.Registry registry;
 	Map<String, EClass> eClassCache;
+	Map<String, Object> enumCache;
 
 	// Null by default but allows the user to override this.
 	protected Map<Object, Object> resourceLoadOptions = null;
 	// Null by default but allows the user to override this.
 	protected Map<Object, Object> resourceStoreOptions = null;
-	
+
 	/**
 	 * @since 1.6
 	 */
@@ -95,18 +101,20 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 		propertyGetter = new EmfPropertyGetter();
 		propertySetter = new EmfPropertySetter();
 	}
-	
+
+	private <K, V> Map<K, V> createMap(Map<K, V> original) {
+		if (isConcurrent()) {
+			return original == null ? ConcurrencyUtils.concurrentMap() : ConcurrencyUtils.concurrentMap(original);
+		} else {
+			return original == null ? new HashMap<>() : new HashMap<>(original);
+		}
+	}
+
 	@Override
 	protected synchronized void initCaches() {
 		super.initCaches();
-		if (isConcurrent()) {
-			eClassCache = eClassCache != null ?
-				ConcurrencyUtils.concurrentMap(eClassCache) : ConcurrencyUtils.concurrentMap();
-		}
-		else {
-			eClassCache = eClassCache != null ?
-				new HashMap<>(eClassCache) : new HashMap<>();
-		}
+		eClassCache = createMap(eClassCache);
+		enumCache = createMap(enumCache);
 	}
 	
 	protected InputStream getInputStream(String file) throws IOException {
@@ -147,27 +155,56 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 	
 	@Override
 	public Object getEnumerationValue(String enumeration, String label) throws EolEnumerationValueNotFoundException {
-		
-		for (Object pkg : getPackageRegistry().values()) {
+		Object value = enumCache.computeIfAbsent(enumeration + '#' + label, (k) -> {
+			Set<EEnumLiteral> optionLiterals = new LinkedHashSet<>();
+			Set<Enumerator> optionValues = new LinkedHashSet<>();
 
-			if (EmfUtil.isEPackageOrDescriptor(pkg)) {
-				EPackage ePackage = EmfUtil.toEPackage(pkg);
-				
-				for (EClassifier classifier : EmfUtil.getAllEClassifiers(ePackage)) {
-				//for (EClassifier classifier : ePackage.getEClassifiers()) {
-					if (classifier instanceof EEnum && 
-							(((EEnum) classifier).getName().equals(enumeration) ||
-							getFullyQualifiedName(classifier).equals(enumeration))){
-						EEnum eEnum = (EEnum) classifier;
-						EEnumLiteral literal = eEnum.getEEnumLiteral(label);
-						
-						if (literal != null) return literal.getInstance();
+			/*
+			 * We make a defensive copy to avoid a ConcurrentModificationException if
+			 * iterating through the EPackages results in more EPackages being added
+			 * to the registry.
+			 */
+			List<Object> availablePackages = new ArrayList<>(getPackageRegistry().values());
+			for (Object pkg : availablePackages) {
+				if (EmfUtil.isEPackageOrDescriptor(pkg)) {
+					EPackage ePackage = EmfUtil.toEPackage(pkg);
+					
+					for (EClassifier classifier : EmfUtil.getAllEClassifiers(ePackage)) {
+						if (classifier instanceof EEnum
+							&& (((EEnum) classifier).getName().equals(enumeration)
+								|| getFullyQualifiedName(classifier).equals(enumeration)
+								|| "".equals(enumeration)))
+						{
+							EEnum eEnum = (EEnum) classifier;
+							EEnumLiteral literal = eEnum.getEEnumLiteral(label);
+							if (literal != null) {
+								optionLiterals.add(literal);
+								optionValues.add(literal.getInstance());
+							}
+						}
 					}
 				}
 			}
+
+			if (optionValues.size() == 1) {
+				return optionValues.iterator().next();
+			} else if (optionValues.isEmpty()) {
+				return null;
+			} else {
+				List<String> optionNames = optionLiterals.stream().map(
+					(l) -> String.format("%s!%s#%s", this.getName(), l.getEEnum().getName(), l.getName())).collect(Collectors.toList());
+				return new AmbiguousEnumerationValue(
+					optionNames,
+					optionNames.get(0),
+					optionValues.iterator().next()
+				);
+			}
+		});
+
+		if (value == null) {
+			throw new EolEnumerationValueNotFoundException(enumeration, label, this.getName());
 		}
-		
-		throw new EolEnumerationValueNotFoundException(enumeration, label, this.getName());
+		return value;
 	}
 	
 	@Override
@@ -249,7 +286,8 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 		return registry.values()
 				.stream()
 				.filter(pkg -> pkg instanceof EPackage)
-				.map(pkg -> classForName(name, absolute, (EPackage) pkg)).filter(eClass -> eClass != null);
+				.map(pkg -> classForName(name, absolute, (EPackage) pkg))
+				.filter(eClass -> eClass != null);
 	}
 
 	protected EClass classForName(String name, boolean absolute, EPackage pkg) {
@@ -291,6 +329,8 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 		EObject instance = eClass.getEPackage().getEFactoryInstance().create(eClass);
 		modelImpl.getContents().add(instance);
 		instance.eAdapters().add(new ContainmentChangeAdapter(instance, modelImpl));
+		// In case the element is created by its factory with existing descendants, add containment change adapters to the descendants as well
+		instance.eAllContents().forEachRemaining(descendant -> descendant.eAdapters().add(new ContainmentChangeAdapter(descendant, modelImpl)));
 		return instance;
 	}
 	
@@ -323,7 +363,7 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 
 	@Override
 	public boolean owns(Object instance) {	
-		if (instance instanceof EObject) {
+		if (instance instanceof EObject && modelImpl != null) {
 			EObject eObject = (EObject) instance;
 			Resource eObjectResource = eObject.eResource();
 			
@@ -381,6 +421,7 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 		}
 
 		eClassCache.clear();
+		enumCache.clear();
 	}
 
 	public Resource getResource() {
@@ -539,8 +580,16 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 
 	@Override
 	public AmbiguityCheckResult checkAmbiguity(String type) {
+		/*
+		 * Remove repeated EClasses before mapping to fully-qualified names (the same
+		 * type may be accessible from multiple EPackages, due to subpackage
+		 * relationships).
+		 */
 		List<String> options = classesForName(type, getPackageRegistry())
-			.map(ec -> getFullyQualifiedName(ec)).collect(Collectors.toList());
+				.collect(Collectors.toCollection(LinkedHashSet::new))
+				.stream()
+				.map(ec -> getFullyQualifiedName(ec))
+				.collect(Collectors.toList());
 
 		return new AmbiguityCheckResult(this, options);
 	}
@@ -668,9 +717,15 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 	/**
 	 * @since 2.3.0
 	 */
-	public Map<Object, Object> getResourceLoadOptions(){
+	public Map<Object, Object> getResourceLoadOptions() {
+		if (resourceLoadOptions == null && modelImpl instanceof XMLResource) {
+			resourceLoadOptions = new HashMap<Object, Object>();
+			// Setting this option significantly improves loading time
+			resourceLoadOptions.put(XMLResource.OPTION_DEFER_IDREF_RESOLUTION, Boolean.TRUE);
+		}
 		return resourceLoadOptions;
 	}
+	
 	/**
 	 * @since 2.3.0
 	 */
@@ -681,7 +736,7 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 	 * @since 2.3.0
 	 */
 	public Object putResourceLoadOption(Object key, Object value){
-		if (resourceLoadOptions == null) {
+		if (getResourceLoadOptions() == null) {
 			resourceLoadOptions = new HashMap<>();
 		}
 		return resourceLoadOptions.put(key, value);

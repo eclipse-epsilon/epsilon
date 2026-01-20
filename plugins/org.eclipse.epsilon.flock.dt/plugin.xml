@@ -26,7 +26,9 @@
             delegate="org.eclipse.epsilon.flock.dt.launching.FlockLaunchConfigurationDelegate"
             id="org.epsilon.migration.eclipse.dt.launching.MigrationLaunchConfigurationDelegate"
             modes="run,debug"
-            name="Epsilon Flock Migration Strategy"/>
+            name="Epsilon Flock Migration Strategy"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">

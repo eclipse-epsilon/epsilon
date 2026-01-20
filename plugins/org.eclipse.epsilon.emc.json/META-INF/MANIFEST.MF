@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon JSON Model Support
+Bundle-SymbolicName: org.eclipse.epsilon.emc.json
+Bundle-Version: 2.9.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.eol.engine,
+ org.apache.httpcomponents.httpclient;bundle-version="4.0.0",
+ org.apache.httpcomponents.httpcore;bundle-version="4.0.0",
+ org.apache.commons.codec,
+ com.googlecode.json-simple;bundle-version="1.1.1",
+ org.apache.commons.collections;bundle-version="3.2.2",
+ org.apache.commons.logging;bundle-version="[1.2.0,1.2.0.v2018)"
+Export-Package: org.eclipse.epsilon.emc.json
+Automatic-Module-Name: org.eclipse.epsilon.emc.json
+Bundle-Vendor: Eclipse Modeling Project

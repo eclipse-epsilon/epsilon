@@ -1,0 +1,9 @@
+for (t in Tree.all) {
+	t.label.println();
+}
+
+var single = Tree.all.forAll(t | Thread.currentThread.getName().println() == "main");
+
+Model.modelFile.println();
+
+return single ? "a result" else 0;

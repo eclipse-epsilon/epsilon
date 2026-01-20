@@ -226,21 +226,15 @@ public class EplTests {
 		module.getContext().getModelRepository().addModel(model);
 		PatternMatchModel patternMatchModel = (PatternMatchModel) module.execute();
 		
-		assertEquals(expectedLoops, counter.getCount());
+		assertEquals(expectedLoops, counter.count);
 		return patternMatchModel;
 	}
 	
 	class Counter {
-		
-		protected int count;
+		int count;
 		
 		public void increment() throws InfiniteLoopException {
-			count++;
-			if (count > 5) throw new InfiniteLoopException();
-		}
-		
-		public int getCount() {
-			return count;
+			if (count++ > 5) throw new InfiniteLoopException();
 		}
 	}
 	

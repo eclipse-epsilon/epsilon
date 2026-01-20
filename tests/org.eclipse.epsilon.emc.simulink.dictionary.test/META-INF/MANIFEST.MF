@@ -2,14 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: org.eclipse.epsilon.emc.simulink.dictionary.test
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Automatic-Module-Name: org.eclipse.epsilon.emc.simulink.dictionary.test
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.eclipse.epsilon.emc.simulink.common.test,
  org.eclipse.epsilon.eol.engine,
  org.eclipse.epsilon.emc.simulink.dictionary,
  org.eclipse.epsilon.emc.simulink,
  org.eclipse.epsilon.emc.simulink.common,
  org.junit
-Export-Package: org.eclipse.epsilon.emc.simulink.dictionary.test,
- org.eclipse.epsilon.emc.simulink.dictionary.test.unit
+Export-Package: org.eclipse.epsilon.emc.simulink.dictionary.test

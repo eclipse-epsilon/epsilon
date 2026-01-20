@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<n:note xmlns:n="xsdxml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <n:to>John</n:to>
-  <n:from>Nick</n:from>
-  <n:heading>Reminder</n:heading>
-  <n:body>Don't forget me this weekend!</n:body>
-  Some text
-</n:note>

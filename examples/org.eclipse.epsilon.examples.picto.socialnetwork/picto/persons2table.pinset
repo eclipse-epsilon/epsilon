@@ -1,13 +1,13 @@
 dataset personStats over person : Person {
-	properties[name]
+	properties[name as Name]
 	
-	column liked_by : Person.all.select(p | p.likes.includes(person)).size()
-	column liking : person.likes.size()
+	column `Liked by` : Person.all.select(p | p.likes.includes(person)).size()
+	column `Likes` : person.likes.size()
 	
-	column disliked_by : Person.all.select(p | p.dislikes.includes(person)).size()
-	column disliking : person.dislikes.size()
+	column `Disliked by` : Person.all.select(p | p.dislikes.includes(person)).size()
+	column `Dislikes` : person.dislikes.size()
 	
-	column like_meter : liked_by - disliked_by
+	column `Like Meter` : `Liked by` - `Disliked by`
 }
 
 dataset otherStats over p : Person {

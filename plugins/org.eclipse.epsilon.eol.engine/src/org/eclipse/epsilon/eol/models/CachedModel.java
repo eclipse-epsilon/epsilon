@@ -10,12 +10,24 @@
  ******************************************************************************/
 package org.eclipse.epsilon.eol.models;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+
+import org.apache.commons.collections.collection.UnmodifiableCollection;
+import org.apache.commons.collections.list.UnmodifiableList;
+import org.apache.commons.collections.set.UnmodifiableSet;
+import org.apache.commons.collections.set.UnmodifiableSortedSet;
 import org.eclipse.epsilon.common.concurrent.ConcurrencyUtils;
 import org.eclipse.epsilon.common.util.Multimap;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
-import org.eclipse.epsilon.eol.exceptions.models.*;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.epsilon.eol.exceptions.models.EolNotInstantiableModelElementTypeException;
 
 /**
  * A model that performs memoization of allContents, getAllOfType
@@ -155,7 +167,20 @@ public abstract class CachedModel<ModelElementType> extends Model {
 		}
 		return result;
 	}
-	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected <T> Collection<T> wrapUnmodifiable(Collection<T> original) {
+		if (original instanceof List) {
+			return UnmodifiableList.decorate((List) original);
+		} else if (original instanceof SortedSet) {
+			return UnmodifiableSortedSet.decorate((SortedSet) original);
+		} else if (original instanceof Set) {
+			return UnmodifiableSet.decorate((Set) original);
+		} else {
+			return UnmodifiableCollection.decorate(original);
+		}
+	}
+
 	protected void addToCache(String type, ModelElementType instance) throws EolModelElementTypeNotFoundException {
 		assert cachingEnabled;
 		
@@ -214,11 +239,11 @@ public abstract class CachedModel<ModelElementType> extends Model {
 				if (allContentsCache == null) {
 					allContentsCache = wrap(allContentsFromModel());
 					if (allContentsCache == null) {
-						return wrap(new ArrayList<>(0));
+						return wrapUnmodifiable(wrap(new ArrayList<>(0)));
 					}
 				}
 			}
-			return allContentsCache;
+			return wrapUnmodifiable(allContentsCache);
 		}
 		else return wrap(allContentsFromModel());
 	}
@@ -262,7 +287,7 @@ public abstract class CachedModel<ModelElementType> extends Model {
 			);
 		}
 		
-		return values;
+		return wrapUnmodifiable(values);
 	}
 	
 	@Override
@@ -307,9 +332,12 @@ public abstract class CachedModel<ModelElementType> extends Model {
 
 	@Override
 	public void dispose() {
-		super.dispose();
-		clearCache();
-		disposeModel();
+		try {
+			super.dispose();
+		} finally {
+			clearCache();
+			disposeModel();
+		}
 	}
 
 	public void clearCache() {

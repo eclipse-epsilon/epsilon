@@ -39,17 +39,22 @@ public class PictoPreferencePage extends PreferencePage implements IWorkbenchPre
 	public static final String KROKI_URL = "kroki.url";
 	public static final String DEFAULT_KROKI_URL = "https://kroki.io";
 	
+	public static final String INTERNAL_BROWSER_EDGE = "internalbrowser.edge";
+	public static final boolean DEFAULT_INTERNAL_BROWSER_EDGE = false;
+
 	protected final ArrayList<FieldEditor> fieldEditors = new ArrayList<>();
 	protected final IPreferenceStore preferences = EpsilonCommonsPlugin.getDefault().getPreferenceStore();
 
 	private IntegerFieldEditor timeoutEditor;
 	private BooleanFieldEditor verbatimBooleanEditor;
 	private StringFieldEditor krokiURLEditor;
+	private BooleanFieldEditor internalBrowserEdgeEditor;
 	
 	public PictoPreferencePage() {
 		preferences.setDefault(PROPERTY_RENDER_VERBATIM, DEFAULT_RENDER_VERBATIM);
 		preferences.setDefault(TIMEOUT, DEFAULT_TIMEOUT);
 		preferences.setDefault(KROKI_URL, DEFAULT_KROKI_URL);
+		preferences.setDefault(INTERNAL_BROWSER_EDGE, DEFAULT_INTERNAL_BROWSER_EDGE);
 	}
 
 	@Override
@@ -65,10 +70,19 @@ public class PictoPreferencePage extends PreferencePage implements IWorkbenchPre
 		final Label lblSeparator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 		lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 2, 1));
 		krokiURLEditor = new StringFieldEditor(KROKI_URL, "Kroki server base URL", composite);
+		
+		final Label lblSeparator2 = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
+		lblSeparator2.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false, 2, 1));
+
+		internalBrowserEdgeEditor = new BooleanFieldEditor(INTERNAL_BROWSER_EDGE,
+				"Use Edge as the embedded browser (requires reloading open Picto views, Windows only)", composite);
+		// Fills in the second column in the field editor
+		new Label(parent, SWT.NONE);
 
 		fieldEditors.add(verbatimBooleanEditor);
 		fieldEditors.add(timeoutEditor);
 		fieldEditors.add(krokiURLEditor);
+		fieldEditors.add(internalBrowserEdgeEditor);
 
 		for (FieldEditor fieldEditor : fieldEditors) {
 			fieldEditor.setPreferenceStore(preferences);
@@ -98,6 +112,7 @@ public class PictoPreferencePage extends PreferencePage implements IWorkbenchPre
 		timeoutEditor.loadDefault();
 		verbatimBooleanEditor.loadDefault();
 		krokiURLEditor.loadDefault();
+		internalBrowserEdgeEditor.loadDefault();
 
 		super.performDefaults();
 	}

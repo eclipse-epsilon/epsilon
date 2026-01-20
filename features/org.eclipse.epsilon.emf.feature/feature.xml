@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.emf.feature"
       label="Epsilon EMF Integration"
-      version="2.5.0.qualifier"
+      version="2.9.0.qualifier"
       provider-name="Eclipse Modeling Project"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
@@ -17,12 +17,14 @@
         available under the terms of the Eclipse Public License 2.0
         which is available at https://www.eclipse.org/legal/epl-2.0
    </copyright>
-   
-   <includes id="org.eclipse.epsilon.core.feature" version="2.5.0.qualifier"/>
 
    <url>
       <discovery label="EMF Releases" url="https://download.eclipse.org/modeling/emf/emf/builds/release"/>
    </url>
+
+   <includes
+         id="org.eclipse.epsilon.core.feature"
+         version="2.9.0.qualifier"/>
 
    <plugin
          id="org.eclipse.epsilon.emc.emf"
@@ -32,13 +34,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.epsilon.eol.dt.interpreter"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-         
-   <plugin
          id="org.eclipse.epsilon.emc.emf.virtual"
          download-size="0"
          install-size="0"
@@ -47,6 +42,13 @@
 
    <plugin
          id="org.eclipse.epsilon.emc.emf.decorator"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.ecore.delegates"
          download-size="0"
          install-size="0"
          version="0.0.0"

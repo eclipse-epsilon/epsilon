@@ -10,15 +10,21 @@
 package org.eclipse.epsilon.egl.preprocessor;
 
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.eclipse.epsilon.egl.util.FileUtil;
 
+import com.google.common.collect.TreeBasedTable;
+
 public class PreprocessorTrace {
 
 	private Map<Integer, Integer> lineNumberMapping = new TreeMap<>();
-	private Map<Integer, Integer> columnCorrections = new TreeMap<>();
-	
+
+	// Rows are lines. It's important that we use a tree-based table so we get row entries to be sorted by column.
+	private TreeBasedTable<Integer, Integer, Integer> columnCorrections = TreeBasedTable.create();
+
 	private int currentEolLine = 1;
 	private int maximumEglLineNumber = 1;
 
@@ -31,9 +37,14 @@ public class PreprocessorTrace {
 	}
 	
 	public int getEglColumnNumberFor(int eolLine, int eolCol) {
-		if (columnCorrections.containsKey(eolLine))
-			return eolCol + columnCorrections.get(eolLine);
-		
+		if (columnCorrections.containsRow(eolLine)) {
+			SortedMap<Integer, Integer> rowUpToColumn = columnCorrections.row(eolLine).headMap(eolCol + 1);
+			if (!rowUpToColumn.isEmpty()) {
+				int correction = rowUpToColumn.get(rowUpToColumn.lastKey());
+				return eolCol + correction;
+			}
+		}
+
 		return eolCol;
 	}
 
@@ -43,11 +54,22 @@ public class PreprocessorTrace {
 		maximumEglLineNumber = Math.max(maximumEglLineNumber, eglLineNumber);
 	}
 	
-	void incrementColumnCorrectionNumber(int correction) {
-		if (columnCorrections.containsKey(currentEolLine))
-			columnCorrections.put(currentEolLine, correction + columnCorrections.get(currentEolLine));
-		else
-			columnCorrections.put(currentEolLine, correction);
+	void incrementColumnCorrectionNumber(int currentEolColumn, int correction) {
+		if (columnCorrections.containsRow(currentEolLine)) {
+			SortedMap<Integer, Integer> row = columnCorrections.row(currentEolLine);
+
+			Integer lastColumn = row.lastKey();
+			if (currentEolColumn < lastColumn) {
+				throw new IllegalStateException(String.format(
+					"Tried to increment column correction number for EOL column %d, "
+					+ "which is before the last EOL column number %d",
+					currentEolColumn, lastColumn));
+			}
+
+			row.put(currentEolColumn, row.get(lastColumn) + correction);
+		} else {
+			columnCorrections.row(currentEolLine).put(currentEolColumn, correction);
+		}
 	}
 	
 	void reset() {
@@ -61,19 +83,24 @@ public class PreprocessorTrace {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		
+
 		for (int eolLine = 1; eolLine <= currentEolLine; eolLine++) {
 			builder.append(eolLine);
 			builder.append(" -> ");
 			builder.append(getEglLineNumberFor(eolLine));
 
+			boolean bFirst = true;
 			builder.append(" [");
-			builder.append(getEglColumnNumberFor(eolLine, 0));
+			for (Entry<Integer, Integer> lineCorrection : columnCorrections.row(eolLine).entrySet()) {
+				if (bFirst) bFirst = false; else builder.append(", ");
+				builder.append(lineCorrection.getKey());
+				builder.append(" -> ");
+				builder.append(lineCorrection.getValue());
+			}
 			builder.append("]");
-			
 			builder.append(FileUtil.NEWLINE);
 		}
-		
+
 		return builder.toString();
 	}
 }

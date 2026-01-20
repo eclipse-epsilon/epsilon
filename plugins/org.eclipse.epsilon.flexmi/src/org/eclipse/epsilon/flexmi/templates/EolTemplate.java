@@ -9,7 +9,6 @@
 **********************************************************************/
 package org.eclipse.epsilon.flexmi.templates;
 
-import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class EolTemplate extends DynamicTemplate {
 	public List<Element> getApplication(Element call) {
 		try {
 			EolModule module = new EolModule();
-			module.parse(getScript(), new File(uri));
+			parse(module, getScript(), uri);
 			prepareModule(module, call);
 			
 			PlainXmlModel model = new PlainXmlModel();

@@ -25,7 +25,9 @@
             delegate="org.eclipse.epsilon.evl.dt.launching.EvlLaunchConfigurationDelegate"
             id="org.epsilon.evl.eclipse.dt.launching.EvlLaunchConfigurationDelegate"
             modes="run, debug"
-            name="EVL Validation"/>
+            name="EVL Validation"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
@@ -57,14 +59,14 @@
          point="org.eclipse.epsilon.common.dt.moduleImplementation">
       <implementation
             class="org.eclipse.epsilon.evl.EvlModule"
-            default="false"
+            default="true"
             dialog="org.eclipse.epsilon.evl.dt.launching.tabs.EvlModuleConfiguration"
             language="EVL"
             name="Sequential">
       </implementation>
       <implementation
             class="org.eclipse.epsilon.evl.concurrent.EvlModuleParallelAnnotation"
-            default="true"
+            default="false"
             dialog="org.eclipse.epsilon.evl.dt.launching.tabs.EvlModuleParallelConfiguration"
             language="EVL"
             name="Parallel (Annotations)">

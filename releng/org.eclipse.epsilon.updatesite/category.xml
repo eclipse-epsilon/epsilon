@@ -3,76 +3,67 @@
    <description name="Epsilon" url="https://www.eclipse.org/epsilon">
       Epsilon is a platform of task-specific languages and tools for model management. Epsilon provides languages for tasks such as model transformation, validation, comparison, merging and code generation. It also includes Eclipse-based development tools for the languages and ANT tasks for executing them in the context of complex workflows. Additional features include support live validation, repairing, and scripting of models in EMF and GMF-based editors.
    </description>
-   <feature url="features/org.eclipse.epsilon.core.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.core.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.core.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.core.feature" version="2.9.0.qualifier">
       <category name="Epsilon Core"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.core.dt.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.core.dt.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.core.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.core.dt.feature" version="2.9.0.qualifier">
       <category name="Epsilon Core"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.emf.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emf.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.emf.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emf.feature" version="2.9.0.qualifier">
       <category name="Epsilon EMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.ewl.emf.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.ewl.emf.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.ewl.emf.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.ewl.emf.feature" version="2.9.0.qualifier">
       <category name="Epsilon EMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.emf.dt.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emf.dt.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.emf.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emf.dt.feature" version="2.9.0.qualifier">
       <category name="Epsilon EMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.evl.emf.validation.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.evl.emf.validation.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.evl.emf.validation.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.evl.emf.validation.feature" version="2.9.0.qualifier">
       <category name="Epsilon EMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.eunit.dt.emf.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.eunit.dt.emf.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.eunit.dt.emf.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.eunit.dt.emf.feature" version="2.9.0.qualifier">
       <category name="Epsilon EMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.uml.dt.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.uml.dt.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.uml.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.uml.dt.feature" version="2.9.0.qualifier">
       <category name="Epsilon UML Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.uml.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.uml.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.uml.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.uml.feature" version="2.9.0.qualifier">
       <category name="Epsilon UML Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.simulink.dt.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.simulink.dt.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.simulink.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.simulink.dt.feature" version="2.9.0.qualifier">
       <category name="Epsilon Simulink Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.simulink.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.simulink.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.simulink.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.simulink.feature" version="2.9.0.qualifier">
       <category name="Epsilon Simulink Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.ewl.gmf.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.ewl.gmf.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.ewl.gmf.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.ewl.gmf.feature" version="2.9.0.qualifier">
       <category name="Epsilon GMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.eugenia.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.eugenia.feature" version="2.5.0.qualifier">
-      <category name="Epsilon GMF Integration"/>
-   </feature>
-   <feature url="features/org.eclipse.epsilon.hutn.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.hutn.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.hutn.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.hutn.feature" version="2.9.0.qualifier">
       <category name="Human Usable Textual Notation (HUTN)"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.hutn.dt.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.hutn.dt.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.hutn.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.hutn.dt.feature" version="2.9.0.qualifier">
       <category name="Human Usable Textual Notation (HUTN)"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.emc.graphml.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emc.graphml.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.emc.graphml.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emc.graphml.feature" version="2.9.0.qualifier">
       <category name="Epsilon EMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.google.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.google.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.excel.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.excel.feature" version="2.9.0.qualifier">
       <category name="Epsilon Spreadsheet Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.google.dt.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.google.dt.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.excel.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.excel.dt.feature" version="2.9.0.qualifier">
       <category name="Epsilon Spreadsheet Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.excel.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.excel.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.feature" version="2.9.0.qualifier">
       <category name="Epsilon Spreadsheet Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.excel.dt.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.excel.dt.feature" version="2.5.0.qualifier">
-      <category name="Epsilon Spreadsheet Integration"/>
-   </feature>
-   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.feature" version="2.5.0.qualifier">
-      <category name="Epsilon Spreadsheet Integration"/>
-   </feature>
-   <feature url="features/org.eclipse.epsilon.flexmi.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.flexmi.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.flexmi.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.flexmi.feature" version="2.9.0.qualifier">
       <category name="Epsilon EMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.flexmi.dt.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.flexmi.dt.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.flexmi.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.flexmi.dt.feature" version="2.9.0.qualifier">
       <category name="Epsilon EMF Integration"/>
    </feature>
-   <feature url="features/org.eclipse.epsilon.picto.feature_2.5.0.qualifier.jar" id="org.eclipse.epsilon.picto.feature" version="2.5.0.qualifier">
+   <feature url="features/org.eclipse.epsilon.picto.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.picto.feature" version="2.9.0.qualifier">
       <category name="Picto"/>
    </feature>
    <feature id="org.eclipse.epsilon.emc.csv.dt.feature">
@@ -99,14 +90,20 @@
    <feature id="org.eclipse.epsilon.emc.jdt.feature">
       <category name="Epsilon JDT Integration"/>
    </feature>
-   <feature id="org.eclipse.epsilon.sirius.widget.feature">
-      <category name="Epsilon Sirius Integration"/>
-   </feature>
    <feature id="org.eclipse.epsilon.emc.cdo.dt.feature">
       <category name="Epsilon CDO Integration"/>
    </feature>
    <feature id="org.eclipse.epsilon.emc.cdo.feature">
       <category name="Epsilon CDO Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.json.dt.feature">
+      <category name="Epsilon JSON Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.json.feature">
+      <category name="Epsilon JSON Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.eol.dap.feature">
+      <category name="org.eclipse.epsilon.dap"/>
    </feature>
    <category-def name="Epsilon Core" label="Epsilon Core">
       <description>
@@ -173,8 +170,16 @@
          Support for connecting to Eclipse CDO model repositories.
       </description>
    </category-def>
-   <repository-reference location="http://download.eclipse.org/emfatic/update" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/releases/2021-12" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" enabled="true" />
+   <category-def name="Epsilon JSON Integration" label="Epsilon JSON Integration">
+      <description>
+         Support for managing JSON-based models with languages of the Epsilon platform.
+      </description>
+   </category-def>
+   <category-def name="org.eclipse.epsilon.dap" label="Epsilon Debug Adapter Support"/>
+   <repository-reference location="http://download.eclipse.org/emfatic/update" name="" enabled="true" />
+   <repository-reference location="http://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/lsp4e/releases/latest/" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/mylyn/updates/release/latest/" name="" enabled="true" />
+   <repository-reference location="http://download.eclipse.org/releases/2024-12" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-12" enabled="true" />
 </site>

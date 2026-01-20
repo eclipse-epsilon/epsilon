@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import static org.eclipse.epsilon.eol.engine.test.acceptance.util.EolAcceptanceTestUtil.*;
 import org.eclipse.epsilon.common.util.CollectionUtil;
+import org.eclipse.epsilon.common.util.Multimap;
 import org.eclipse.epsilon.eol.engine.test.acceptance.util.EolAcceptanceTestUtil;
 import org.eclipse.epsilon.epl.*;
 import org.eclipse.epsilon.epl.concurrent.*;
@@ -37,7 +38,10 @@ public class EplAcceptanceTestUtil {
 			"test001_java.xmi",
 			"emf_cdo-example.xmi",
 		},
-		javaScripts[] = {"java_findbugs"};
+		javaScripts[] = {"java_findbugs"},
+		projectMetamodel = "project.ecore",
+		projectModels[] = {"project.xmi"},
+		projectScripts[] = {"project"};
 	
 	/*Nx3 array where N is number of test inputs;
 	 *  0 is the script path,
@@ -45,16 +49,10 @@ public class EplAcceptanceTestUtil {
 	 *  2 is the metamodel path.
 	 */
 	public static final List<String[]>
-		allInputs,
-		javaInputs;
+		projectInputs = addAllInputs(projectScripts, projectModels, projectMetamodel),
+		javaInputs = addAllInputs(javaScripts, javaModels, javaMetamodel),
+		allInputs = CollectionUtil.composeArrayListFrom();	// TODO: work out why tests are failing
 	
-	static {
-		javaInputs = addAllInputs(javaScripts, javaModels, javaMetamodel);
-		
-		allInputs = CollectionUtil.composeArrayListFrom(
-			//javaInputs
-		);
-	}
 	
 	public static Collection<Supplier<? extends IEplModule>> modules(boolean includeStandard) {
 		return parallelModules(THREADS,
@@ -63,33 +61,39 @@ public class EplAcceptanceTestUtil {
 			t -> new EplModuleParallel(new EplContextParallel(t))
 		);
 	}
-	
-	public static Collection<EplRunConfiguration> getScenarios(
-		List<String[]> testInputs,
-		boolean includeTest,
-		Collection<Supplier<? extends IEplModule>> moduleGetters
-		) throws Exception {
-			Collection<EplRunConfiguration> scenarios = EolAcceptanceTestUtil
-				.getScenarios(EplRunConfiguration.class, testInputs, moduleGetters, null, EplAcceptanceTestUtil.class);
-			
-			if (includeTest) {
-				for (Supplier<? extends IEplModule> moduleGetter : moduleGetters) {
-					IEplModule eplStd = moduleGetter.get();
-					
-					scenarios.add(EplRunConfiguration.Builder()
-						.withScript(EplTests.getTestScript(eplStd))
-						.withModel(EplTests.getTestModel())
-						.skipModelLoading()
-						.withModule(eplStd)
-						.withId(testInputs.size()+1)
-						.build()
-					);
+
+	public static Multimap<String, Supplier<EplRunConfiguration>> getScenarioSuppliers(
+			List<String[]> testInputs,
+			boolean includeTest,
+			Collection<Supplier<? extends IEplModule>> moduleGetters
+			) throws Exception {
+				Multimap<String, Supplier<EplRunConfiguration>> scenarios = EolAcceptanceTestUtil.getScenarioSuppliers(
+					EplRunConfiguration.class, testInputs, moduleGetters, null, EplAcceptanceTestUtil.class);
+
+				if (includeTest) {
+					for (Supplier<? extends IEplModule> moduleGetter : moduleGetters) {
+						IEplModule eplStd = moduleGetter.get();
+
+						scenarios.put("test", () -> {
+							try {
+								return EplRunConfiguration.Builder()
+									.withScript(EplTests.getTestScript(eplStd))
+									.withModel(EplTests.getTestModel())
+									.skipModelLoading()
+									.withModule(eplStd)
+									.withId(testInputs.size() + 1)
+									.build();
+							} catch (Exception e) {
+								e.printStackTrace();
+								return null;
+							}
+						});
+					}
 				}
-			}
-			
-			return scenarios;
-	}
-	
+
+				return scenarios;
+		}
+
 	public static List<String[]> addAllInputs(String[] scripts, String[] models, String metamodel) {
 		return EolAcceptanceTestUtil.addAllInputs(scripts, models, metamodel, "epl", scriptsRoot, modelsRoot, metamodelsRoot);
 	}

@@ -28,7 +28,7 @@ operation testParallelSelectEquivalence() {
 		t.asReal() > 22/7
 	);
 	
-	assertEquals(Sequence(expected), Sequence(actual));
+	assertEquals(Sequence { expected }, Sequence { actual });
 }
 
 @test
@@ -45,7 +45,7 @@ operation testParallelRejectEquivalence() {
 		t.asReal() > 22/7
 	);
 	
-	assertEquals(Sequence(expected), Sequence(actual));
+	assertEquals(Sequence { expected }, Sequence { actual });
 }
 
 @test

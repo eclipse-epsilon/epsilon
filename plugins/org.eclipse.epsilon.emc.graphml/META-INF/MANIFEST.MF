@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Epsilon GraphML support
+Bundle-Name: Epsilon GraphML Model Support
 Bundle-SymbolicName: org.eclipse.epsilon.emc.graphml;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: Eclipse Modeling Project
 Bundle-Localization: plugin

@@ -1,0 +1,8 @@
+// Find pairs of people that work
+// on at least one common task
+pattern Collaborators
+	p1, p2 : Person1 {
+
+	match: Task.all.exists(t|t.effort.person.
+		includesAll(Sequence{p1, p2}))
+}

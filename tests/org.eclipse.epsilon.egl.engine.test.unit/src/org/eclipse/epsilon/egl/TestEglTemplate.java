@@ -139,7 +139,9 @@ public class TestEglTemplate {
 		
 		template = new EglTemplate(UriUtil.fileToUri(MERGE), context);
 		
-		assertEquals(expected, template.merge(FileUtil.read(EXISTING)));
+		final String actual = template.merge(FileUtil.read(EXISTING));
+		
+		assertEquals(expected, actual);
 	}
 
 }

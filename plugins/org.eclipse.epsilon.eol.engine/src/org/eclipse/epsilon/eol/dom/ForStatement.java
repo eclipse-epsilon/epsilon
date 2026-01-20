@@ -11,6 +11,7 @@ package org.eclipse.epsilon.eol.dom;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.parse.AST;
@@ -30,6 +31,36 @@ import org.eclipse.epsilon.eol.types.EolType;
 
 public class ForStatement extends Statement {
 	
+	protected static class TypeFilterIterator implements Iterator<Object> {
+		private final Iterator<?> rawIterator;
+		private final EolType iteratorType;
+		Object filteredNext = null;
+
+		protected TypeFilterIterator(Iterator<?> rawIterator, EolType iteratorType) {
+			this.rawIterator = rawIterator;
+			this.iteratorType = iteratorType;
+		}
+
+		@Override
+		public boolean hasNext() {
+			while (filteredNext == null && rawIterator.hasNext()) {
+				Object val = rawIterator.next();
+				if (iteratorType.isKind(val)) {
+					filteredNext = val;
+				}
+			}
+			return filteredNext != null;
+		}
+
+		@Override
+		public Object next() {
+			if (!hasNext()) throw new NoSuchElementException();
+			Object ret = filteredNext;
+			filteredNext = null;
+			return ret;
+		}
+	}
+
 	protected Parameter iteratorParameter;
 	protected Expression iteratedExpression;
 	protected StatementBlock bodyStatementBlock;
@@ -56,37 +87,36 @@ public class ForStatement extends Statement {
 		ExecutorFactory executorFactory = context.getExecutorFactory();
 		Object iteratedObject = executorFactory.execute(this.iteratedExpression, context);
 		
-		Iterator<?> iterator = null;
-		
+		Iterator<?> rawIterator = null;
 		if (iteratedObject instanceof Iterator) {
-			iterator = (Iterator<?>) iteratedObject;
+			rawIterator = (Iterator<?>) iteratedObject;
 		}
 		else if (iteratedObject instanceof Iterable) {
-			iterator = ((Iterable<?>) iteratedObject).iterator();
+			rawIterator = ((Iterable<?>) iteratedObject).iterator();
 		}
 		else if (iteratedObject instanceof EolModelElementType) {
 			Collection<Object> col = CollectionUtil.createDefaultList(); 
 			col.addAll(((EolModelElementType) iteratedObject).all());
-			iterator = col.iterator();
+			rawIterator = col.iterator();
 		}
 		else {
 			Collection<Object> col = CollectionUtil.createDefaultList();
 			col.add(iteratedObject);
-			iterator = col.iterator();
+			rawIterator = col.iterator();
 		}
 		
 		EolType iteratorType = iteratorParameter.getType(context);
-		
+		Iterator<?> filteredIterator = new TypeFilterIterator(rawIterator, iteratorType);
 		FrameStack frameStack = context.getFrameStack();
 		
-		for (int loop = 1; iterator.hasNext();) {
-			Object next = iterator.next();
+		for (int loop = 1; filteredIterator.hasNext();) {
+			Object next = filteredIterator.next();
 			
 			if (!iteratorType.isKind(next)) continue;
 			
 			frameStack.enterLocal(FrameType.UNPROTECTED, this,
 				new Variable(iteratorParameter.getName(), next, iteratorType),
-				new Variable("hasMore", iterator.hasNext(), EolPrimitiveType.Boolean, true),
+				new Variable("hasMore", filteredIterator.hasNext(), EolPrimitiveType.Boolean, true),
 				new Variable("loopCount", loop++, EolPrimitiveType.Integer, true)
 			);
 			

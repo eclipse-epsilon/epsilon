@@ -30,17 +30,10 @@
 		<include name="Person"/>
 	</diagram>
 	
-	<diagram name="Employee but not Person">
-		<include name="Employee"/>
-	</diagram>
-	
 	<diagram name="Order and Shippable">
 		<include name="Order"/>
 		<include name="Shippable"/>
 		<constraint right="Order" left="Shippable"/>
 	</diagram>
 	
-	<diagram name="Order but not Shippable">
-		<include name="Order"/>
-	</diagram>
 </_>

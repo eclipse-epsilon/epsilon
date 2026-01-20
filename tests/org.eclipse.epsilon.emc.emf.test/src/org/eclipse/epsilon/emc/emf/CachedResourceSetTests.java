@@ -18,6 +18,8 @@ import java.io.File;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,6 +76,30 @@ public class CachedResourceSetTests {
 		badModel.dispose();
 		assertEquals("Disposing a model which failed to load should result in an empty cache",
 				0, CachedResourceSet.getCache().size());		
+	}
+
+	@SuppressWarnings("resource")
+	@Test
+	public void testDisposeFailedSave() throws Exception {
+		// Register a file extension whose saves will always fail
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("brokensave", new ResourceFactoryImpl());
+		
+		EmfModel model = new EmfModel();
+		model.setModelFileUri(URI.createFileURI(new File("f.brokensave").getAbsolutePath()));
+		model.setMetamodelUri(EcorePackage.eNS_URI);
+		model.setReadOnLoad(false);
+		model.setStoredOnDisposal(true);
+		model.load();
+
+		try {
+			model.dispose();
+			fail("Saving the model should have failed");
+		} catch (Exception ex) {
+			// do nothing - this is expected
+		}
+
+		assertEquals("Disposing a model which failed to save should result in an empty cache",
+				0, CachedResourceSet.getCache().size());
 	}
 
 	@Test

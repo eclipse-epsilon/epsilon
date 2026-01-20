@@ -28,6 +28,7 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.util.AstUtil;
+import org.eclipse.epsilon.egl.debug.EgxDebugger;
 import org.eclipse.epsilon.egl.dom.GenerationRule;
 import org.eclipse.epsilon.egl.exceptions.EglRuntimeException;
 import org.eclipse.epsilon.egl.execute.context.EgxContext;
@@ -35,6 +36,7 @@ import org.eclipse.epsilon.egl.execute.context.IEgxContext;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.egl.parse.EgxLexer;
 import org.eclipse.epsilon.egl.parse.EgxParser;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
@@ -176,25 +178,33 @@ public class EgxModule extends ErlModule implements IEgxModule {
 	
 	@Override
 	public boolean parse(File file) throws Exception {
-		boolean result = super.parse(file);
-		if (result) getContext().getTemplateFactory().initialiseRoot(file.getAbsoluteFile().getParentFile().toURI());
-		return result;
+		/*
+		 * Note: root must be initialised before parsing starts, so that the template
+		 * factory uses the main EGX script as its root (instead of the first EGX script
+		 * that fully parses without adding any new imports).
+		 */
+		URI rootURI = file.getAbsoluteFile().getParentFile().toURI();
+		getContext().getTemplateFactory().initialiseRoot(rootURI);
+		return super.parse(file);
 	}
 	
 	@Override
 	public boolean parse(URI uri) throws Exception {
-		boolean result = super.parse(uri);
-		if (result) getContext().getTemplateFactory().initialiseRoot(uri);
-		return result;
+		// See comment in parse(File) about root initialisation
+		getContext().getTemplateFactory().initialiseRoot(uri);
+		return super.parse(uri);
 	}
 	
 	@Override
 	public boolean parse(String code, File file) throws Exception {
-		boolean result = super.parse(code, file);
-		if (result && file != null) getContext().getTemplateFactory().initialiseRoot(file.getAbsoluteFile().getParentFile().toURI());
-		return result;
+		// See comment in parse(File) about root initialisation
+		if (file != null) {
+			URI rootURI = file.getAbsoluteFile().getParentFile().toURI();
+			getContext().getTemplateFactory().initialiseRoot(rootURI);
+		}
+		return super.parse(code, file);
 	}
-	
+
 	@Override
 	protected Object processRules() throws EolRuntimeException {
 		IEgxContext context = getContext();
@@ -206,8 +216,8 @@ public class EgxModule extends ErlModule implements IEgxModule {
 	}
 	
 	@Override
-	public HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	public HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("egx", EgxModule.class);
 		return importConfiguration;
 	}
@@ -231,4 +241,10 @@ public class EgxModule extends ErlModule implements IEgxModule {
 	public IEgxContext getContext() {
 		return (IEgxContext) super.getContext();
 	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new EgxDebugger();
+	}
+	
 }

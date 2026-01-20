@@ -62,12 +62,34 @@ public class TypeExpression extends Expression {
 	
 	@Override
 	public EolType execute(IEolContext context) throws EolRuntimeException {
-		if (type != null) return type;
-		
-		if ("Native".equals(getName())) {
+		if (type instanceof EolCollectionType) {
+			EolCollectionType collectionType = (EolCollectionType) type;
+
+			// Compute content type if a parameter type has been provided
+			if (parameterTypeExpressions.size() >= 1 && collectionType.getContentType() == EolAnyType.Instance) {
+				collectionType.setContentType(parameterTypeExpressions.get(0).execute(context));
+			}
+		}
+		else if (type instanceof EolMapType) {
+			EolMapType mapType = (EolMapType) type;
+
+			// Compute key type if at least one parameter type has been provided
+			if (parameterTypeExpressions.size() >= 1 && mapType.getKeyType() == EolAnyType.Instance) {
+				mapType.setKeyType(parameterTypeExpressions.get(0).execute(context));
+			}
+
+			// Compute value type if at least two parameter types has been provided
+			if (parameterTypeExpressions.size() >= 2 && mapType.getValueType() == EolAnyType.Instance) {
+				mapType.setValueType(parameterTypeExpressions.get(1).execute(context));
+			}
+		}
+
+		if (type != null) {
+			return type;
+		} else if ("Native".equals(getName())) {
 			return new EolNativeType(nativeType, context);
 		}
-		
+
 		try {
 			return new EolModelElementType(name, context);
 		}
@@ -98,12 +120,18 @@ public class TypeExpression extends Expression {
 				return EolPrimitiveType.String;
 			case "Real":
 				return EolPrimitiveType.Real;
-			case "Map": case "ConcurrentMap":
+			case "Map":
+			case "ConcurrentMap":
 				return new EolMapType(name);
-			case "List": name = "Sequence";
-			case "Bag": case "Sequence": case "Collection":
-			case "Set": case "OrderedSet":
-			case "ConcurrentSet": case "ConcurrentBag":
+			case "List":
+				name = "Sequence";
+			case "Bag":
+			case "Collection":
+			case "ConcurrentBag":
+			case "ConcurrentSet":
+			case "OrderedSet":
+			case "Sequence":
+			case "Set":
 				return new EolCollectionType(name);
 			case "Nothing": case "None":
 				return EolNoType.Instance;
@@ -115,12 +143,13 @@ public class TypeExpression extends Expression {
 	}
 	
 	public void setName(String name) {
-		this.type = getType(this.name = name);
+		this.name = name;
+		this.type = getType(this.name);
 	}
 	
 	@Override
 	public String toString() {
-		return getClass().getSimpleName()+": "+getName();
+		return getClass().getSimpleName() + ": " + getName();
 	}
 
 	public List<TypeExpression> getParameterTypeExpressions() {

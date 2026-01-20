@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.ecl.EclModule;
 import org.eclipse.epsilon.ecl.execute.context.concurrent.*;
 import org.eclipse.epsilon.eol.execute.context.concurrent.IEolContextParallel;
@@ -40,8 +42,8 @@ public abstract class EclModuleParallel extends EclModule {
 	}
 	
 	@Override
-	public HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	public HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("ecl", EclModuleParallelAnnotation.class);
 		return importConfiguration;
 	}

@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -62,6 +63,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.osgi.framework.FrameworkUtil;
@@ -70,7 +72,9 @@ public class ExeedEditor extends EcoreEditor {
 	private static final String VIEWERCUSTOMIZER_CUSTOMIZERCLASS_ATTR = "customizerClass";
 	private static final String VIEWERCUSTOMIZER_RESOURCECLASS_ATTR = "resourceClass";
 	private static final String VIEWERCUSTOMIZER_EXTPOINT = "org.eclipse.epsilon.dt.exeed.customizer";
-
+	
+	protected List<DisposeListener> disposeListeners = new ArrayList<>();
+	
 	private static final class RegisteredEPackageResourceFactory implements Resource.Factory {
 		@Override
 		public Resource createResource(URI uri) {
@@ -276,10 +280,18 @@ public class ExeedEditor extends EcoreEditor {
 	    int dndOperations = DND.DROP_COPY | DND.DROP_MOVE | DND.DROP_LINK;
 	    final Transfer[] transfers = new Transfer[] { LocalTransfer.getInstance() };
 	    viewer.addDragSupport(dndOperations, transfers, new ViewerDragAdapter(viewer));
-		viewer.addDropSupport(dndOperations, transfers,
-			new ExeedEditingDomainViewerDropAdapter(editingDomain, viewer, getPlugin()));
+	    ExeedEditingDomainViewerDropAdapter dropAdapter = new ExeedEditingDomainViewerDropAdapter(editingDomain, viewer, getPlugin());
+		viewer.addDropSupport(dndOperations, transfers, dropAdapter);
+		disposeListeners.add(dropAdapter);
 	}
-
+	
+	@Override
+	public void dispose() {
+		for (DisposeListener listener : disposeListeners) {
+			listener.widgetDisposed(null);
+		}
+	}
+	
 	protected void registerCustomMetamodels() {
 		
 	}

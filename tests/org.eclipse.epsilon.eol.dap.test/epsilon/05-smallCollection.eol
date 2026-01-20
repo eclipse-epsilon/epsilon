@@ -1,0 +1,3 @@
+var numbers = 1.to(10);
+
+numbers.println('Numbers: ');

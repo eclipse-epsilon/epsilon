@@ -96,6 +96,8 @@ package org.eclipse.epsilon.pinset.parse;
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 package org.eclipse.epsilon.pinset.parse;
+
+import org.eclipse.epsilon.common.parse.Lexer;
 }
 
 pinsetModule

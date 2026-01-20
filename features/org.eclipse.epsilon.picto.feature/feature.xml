@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.picto.feature"
       label="Picto"
-      version="2.5.0.qualifier"
+      version="2.9.0.qualifier"
       provider-name="Eclipse Modeling Project"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
@@ -20,10 +20,17 @@
 
    <includes
          id="org.eclipse.epsilon.flexmi.dt.feature"
-         version="2.5.0.qualifier"/>
+         version="2.9.0.qualifier"/>
 
    <plugin
          id="org.eclipse.epsilon.picto"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="wrapped.net.sourceforge.plantuml.plantuml-epl"
          download-size="0"
          install-size="0"
          version="0.0.0"

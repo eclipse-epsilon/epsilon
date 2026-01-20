@@ -9,15 +9,22 @@
  ******************************************************************************/
 package org.eclipse.epsilon.egl.preprocessor;
 
-import static org.junit.Assert.*;
-import static org.eclipse.epsilon.egl.util.FileUtil.NEWLINE;
 import static org.eclipse.epsilon.egl.util.FileUtil.ESCAPED_NEWLINE;
+import static org.eclipse.epsilon.egl.util.FileUtil.NEWLINE;
+import static org.junit.Assert.assertEquals;
+
 import java.io.File;
+import java.util.List;
+
+import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.EpsilonTreeAdaptor;
+import org.eclipse.epsilon.common.parse.Region;
+import org.eclipse.epsilon.egl.internal.EglModule;
 import org.eclipse.epsilon.egl.parse.EglLexer;
 import org.eclipse.epsilon.egl.parse.EglParser;
 import org.junit.Test;
 
+@SuppressWarnings("restriction")
 public class TestPreprocessor {
 	
 	private final Preprocessor preprocessor = new Preprocessor();
@@ -382,7 +389,7 @@ public class TestPreprocessor {
 		//                      0        1         2         3
 		
 		preprocess(program);
-//		System.err.println(preprocess(program));
+		System.err.println(preprocess(program));
 //		System.err.println(preprocessor.getTrace());
 		
 		assertEquals(1, preprocessor.getTrace().getEglLineNumberFor(1));
@@ -396,7 +403,7 @@ public class TestPreprocessor {
 		assertEquals(6,  preprocessor.getTrace().getEglColumnNumberFor(2, 2));
 		assertEquals(1,  preprocessor.getTrace().getEglColumnNumberFor(3, 12));
 		assertEquals(6,  preprocessor.getTrace().getEglColumnNumberFor(4, "out.printdyn('".length()));
-		assertEquals(11, preprocessor.getTrace().getEglColumnNumberFor(5, "out.print('".length()));
+		assertEquals(8, preprocessor.getTrace().getEglColumnNumberFor(5, "out.print('".length()));
 		assertEquals(3,  preprocessor.getTrace().getEglColumnNumberFor(6, 1));
 	}
 	
@@ -460,5 +467,58 @@ public class TestPreprocessor {
 		final String eol = "var x : String;";
 
 		assertEquals(eol, preprocess(egl));
+	}
+
+	@Test
+	public void testDoubleQuotes() {
+		final String program = "foo[x=\"bar\"]";
+		preprocess(program);
+		//System.err.println(preprocess(program));
+		//System.err.println(preprocessor.getTrace());
+
+		assertEquals(0, preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('".length()));
+		assertEquals("foo[x=\"".length(),
+				preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('foo[x=\\\"".length()));
+		assertEquals(program.length(),
+				preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('foo[x=\\\"bar\\\"]".length()));
+	}
+
+	@Test
+	public void testSingleQuotes() {
+		final String program = "foo[x='bar']";
+		preprocess(program);
+		//System.err.println(preprocess(program));
+		//System.err.println(preprocessor.getTrace());
+
+		assertEquals(0, preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('".length()));
+		assertEquals("foo[x=\'".length(),
+				preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('foo[x=\\\'".length()));
+		assertEquals(program.length(),
+			preprocessor.getTrace().getEglColumnNumberFor(1, "out.prinx('foo[x=\\'bar\\']".length()));
+	}
+
+	@Test
+	public void testSingleQuotesParse() throws Exception {
+		final String program = "foo[x='bar']";
+		EglModule module = new EglModule();
+		module.parse(program);
+
+		List<ModuleElement> mainChildren = module.getMain().getChildren();
+		Region mainRegion = mainChildren.get(0).getRegion();
+		assertEquals(0, mainRegion.getStart().getColumn());
+		assertEquals(program.length(), mainRegion.getEnd().getColumn());
+	}
+
+	@Test
+	public void testMultipleLinesParsing() throws Exception {
+		final String program = "[* comment *]\ndigraph G {";
+		EglModule module = new EglModule();
+		module.parse(program);
+
+		List<ModuleElement> mainChildren = module.getMain().getChildren();
+		Region mainRegion = mainChildren.get(0).getRegion();
+		assertEquals(2, mainRegion.getStart().getLine());
+		assertEquals(0, mainRegion.getStart().getColumn());
+		assertEquals("digraph G {".length(), mainRegion.getEnd().getColumn());
 	}
 }

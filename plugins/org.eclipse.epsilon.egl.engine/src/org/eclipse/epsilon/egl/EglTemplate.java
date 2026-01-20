@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.egl.exceptions.EglRuntimeException;
@@ -31,8 +32,11 @@ import org.eclipse.epsilon.egl.spec.EglTemplateSpecification;
 import org.eclipse.epsilon.egl.spec.EglTemplateSpecificationFactory;
 import org.eclipse.epsilon.egl.status.ProtectedRegionWarning;
 import org.eclipse.epsilon.egl.traceability.Template;
+import org.eclipse.epsilon.eol.IImportManager;
+import org.eclipse.epsilon.eol.ImportManager;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.ModelDeclaration;
+import org.eclipse.epsilon.eol.dom.Operation;
 import org.eclipse.epsilon.eol.dom.OperationList;
 
 public class EglTemplate {
@@ -49,16 +53,17 @@ public class EglTemplate {
 	
 	// For tests
 	EglTemplate(URI path, IEglContext context) throws Exception {
-		this(new EglTemplateSpecificationFactory(new NullFormatter(), new IncrementalitySettings()).fromResource(path.toString(), path), context);
+		this(new EglTemplateSpecificationFactory(new NullFormatter(), new IncrementalitySettings(), new ImportManager()).fromResource(path.toString(), path), context);
 	}
 
 	public EglTemplate(EglTemplateSpecification spec, IEglContext context) throws Exception {
-		this(spec.getName(), context, spec.createTemplate(), spec.getDefaultFormatter(), spec.getIncrementalitySettings(), spec.getTemplateExecutionListeners());
+		this(spec.getName(), context, spec.createTemplate(), spec.getDefaultFormatter(), spec.getIncrementalitySettings(), spec.getTemplateExecutionListeners(), spec.getImportManager());
 		spec.parseInto(module);
 	}
 	
-	private EglTemplate(String name, IEglContext context, Template template, Formatter formatter, IncrementalitySettings incrementalitySettings, Collection<ITemplateExecutionListener> listeners) {
+	private EglTemplate(String name, IEglContext context, Template template, Formatter formatter, IncrementalitySettings incrementalitySettings, Collection<ITemplateExecutionListener> listeners, IImportManager importManager) {
 		this.module = new EglModule(context);
+		this.module.setImportManager(importManager);
 		this.name     = name;
 		this.template = template;
 		this.formatter = formatter;
@@ -75,6 +80,13 @@ public class EglTemplate {
 	}
 	
 	public String process() throws EglRuntimeException {
+		
+		List<ParseProblem> parseErrors = module.getParseProblems().stream().filter(p -> p.getSeverity() == ParseProblem.ERROR).collect(Collectors.toList());
+		
+		if (!parseErrors.isEmpty()) {
+			throw new EglRuntimeException("Attempted to process a template with syntax errors: " + parseErrors.iterator().next().toString(), module);
+		}
+		
 		for (ITemplateExecutionListener listener : listeners) {
 			listener.aboutToProcess(this);
 		}
@@ -179,6 +191,9 @@ public class EglTemplate {
 		processed = false;
 		template.reset();
 		contents = "";
-		((EglModule) module).clearCache();
+		// Clear the caches of any cached operations
+		for (Operation op : ((EglModule) module).getOperations()) {
+			op.clearCache();
+		}
 	}
 }

@@ -1,0 +1,40 @@
+@test
+operation negativeIntegersAreInvalid() {
+  // Make the model invalid
+  var m = M!Model.all.first;
+  m.positiveValue = -25;
+  var diagnostic = m.validate();
+  assertNotEquals(0, diagnostic.severity);
+
+  // Compute markers (note that our MarkerResolutionGenerator is also declared as an Epsilon tool, so we can call it from here)
+  var resolutionGenerator = new Native('example.metamodel.quickfix.MarkerResolutionGenerator');
+  // We use the marker helper from EMF Edit UI
+  var markerHelper = resolutionGenerator.getMarkerGenerator();
+  markerHelper.deleteMarkers(m);
+  markerHelper.createMarkers(diagnostic);
+
+  // Save the model, as we will need it to be invalid on disk for the quickfix.
+  // We will not be able to refer to M from now on.
+  M.dispose();
+
+  // Get markers via the Eclipse Resource API
+  var resPlugin = new Native('org.eclipse.core.resources.ResourcesPlugin');
+  var modelResource = resPlugin.workspace.root.getProject("org.eclipse.epsilon.eunit.examples.emfvalidator.eunit").getFile("example.model");
+  var DEPTH_INFINITE = 2;
+  var markers = modelResource.findMarkers(null, true, DEPTH_INFINITE).asSequence();
+  assertEquals(1, markers.size);
+
+  // Generate the quickfix and run it
+  var resolutions = resolutionGenerator.getResolutions(markers.get(0)).asSequence();
+  assertEquals(1, resolutions.size);
+  resolutions.get(0).run(markers.get(0));
+
+  // Check the effects of the fix (note: the fixes are done on the editor's Resource and not Epsilon's, so we cannot
+  // just test the value of m.positiveValue).
+  assertEquals(999, resolutions.get(0).target.positiveValue);
+}
+
+operation Any validate() {
+  var diagnostician = new Native('org.eclipse.emf.ecore.util.Diagnostician');
+  return diagnostician.validate(self);
+}

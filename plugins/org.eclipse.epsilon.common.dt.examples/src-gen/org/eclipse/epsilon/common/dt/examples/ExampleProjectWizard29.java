@@ -12,8 +12,8 @@ package org.eclipse.epsilon.common.dt.examples;
 public class ExampleProjectWizard29 extends WebGitProjectNewWizard {
 	
 	public ExampleProjectWizard29() {
-		super("Implement a GMF editor with end labels in connections using EuGENia", "In this example we use EuGENia to implement a GMF editor with end labels in connections.", "org.eclipse.epsilon.eugenia.examples.endlabels",
-				"https://git.eclipse.org", "/c/epsilon/org.eclipse.epsilon.git/plain/examples/org.eclipse.epsilon.eugenia.examples.endlabels/");
+		super("Reuse EUnit tests with model and data bindings", "In this example we show how the same EUnit test can be reused for several models, and how EUnit supports several levels of parametric tests.", "org.eclipse.epsilon.eunit.examples.bindings",
+				"https://git.eclipse.org", "/c/epsilon/org.eclipse.epsilon.git/plain/examples/org.eclipse.epsilon.eunit.examples.bindings/");
 		
 	}
 

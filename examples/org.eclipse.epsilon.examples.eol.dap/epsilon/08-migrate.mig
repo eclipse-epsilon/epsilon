@@ -1,0 +1,9 @@
+pre {
+  var x = 2;
+  x.println();
+}
+
+migrate Node {
+  migrated.label = original.name;
+  migrated.outgoing ::= original.outgoing;
+}

@@ -66,13 +66,11 @@ public class EolBreakpoint extends LineBreakpoint {
 	class EolBreakpointUpdater implements IBreakpointListener {
 
 		public void breakpointAdded(IBreakpoint breakpoint) {
-			// TODO Auto-generated method stub
-			
+			// nothing to do
 		}
 
 		public void breakpointRemoved(IBreakpoint breakpoint, IMarkerDelta delta) {
-			// TODO Auto-generated method stub
-			
+			// nothing to do
 		}
 
 		public void breakpointChanged(IBreakpoint breakpoint, IMarkerDelta delta) {

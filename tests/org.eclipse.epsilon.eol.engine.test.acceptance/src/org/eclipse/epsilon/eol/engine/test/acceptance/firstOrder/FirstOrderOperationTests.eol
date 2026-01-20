@@ -237,7 +237,7 @@ operation testClosure() {
 	e2.~next = e3;
 	e3.~next = e1;
 	
-	assertEquals(Sequence{e1, e2, e3}, e3.closure(c|c.~next));
+	assertEquals(OrderedSet{e1, e2, e3}, e3.closure(c|c.~next));
 	
 }
 
@@ -254,7 +254,7 @@ operation testClosureMany() {
 	e3.~next = Sequence{};
 	e4.~next = Sequence{};
 	
-	assertEquals(Sequence{e2, e3, e4}, e1.closure(c|c.~next));
+	assertEquals(OrderedSet{e2, e3, e4}, e1.closure(c|c.~next));
 	
 
 }
@@ -262,8 +262,8 @@ operation testClosureMany() {
 @test
 operation testClosureIteratorType() {
 	var seq = Sequence{"1"};
-	assertEquals(Sequence{"2", "4", 3}, seq.closure(c:String|c.getChildren()));
-	assertEquals(Sequence{"2", "4", 3, 5, 6}, seq.closure(c|c.getChildren()));
+	assertEquals(OrderedSet{"2", "4", 3}, seq.closure(c:String|c.getChildren()));
+	assertEquals(OrderedSet{"2", "4", 3, 5, 6}, seq.closure(c|c.getChildren()));
 }
 
 operation Any getChildren() {

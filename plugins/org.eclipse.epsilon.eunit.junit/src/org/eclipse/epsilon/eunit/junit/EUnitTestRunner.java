@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012-2022 Antonio Garcia-Dominguez.
+ * Copyright (c) 2012-2025 Antonio Garcia-Dominguez.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
@@ -16,7 +16,6 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.epsilon.eol.exceptions.EolParseException;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.operations.contributors.OperationContributor;
 import org.eclipse.epsilon.eol.models.IModel;
@@ -69,7 +68,7 @@ public class EUnitTestRunner extends ParentRunner<EUnitTest> {
 	protected class JUnitEUnitTestListener implements EUnitTestListener {
 		private final RunNotifier notifier;
 
-		private JUnitEUnitTestListener(RunNotifier notifier) {
+		public JUnitEUnitTestListener(RunNotifier notifier) {
 			this.notifier = notifier;
 		}
 
@@ -167,18 +166,31 @@ public class EUnitTestRunner extends ParentRunner<EUnitTest> {
 	protected void runChild(final EUnitTest child, final RunNotifier notifier) {
 		final Description thisDesc = describeChild(child);
 	
-		// We only need to launch the root EUnitTest from JUnit: EUnit will take
-		// care of the rest
+		/*
+		 * We only need to launch the root EUnitTest from JUnit: EUnit will take
+		 * care of the rest.
+		 */
 		if (child.isRootTest()) {
 			try {
 				final JUnitEUnitTestListener listener = new JUnitEUnitTestListener(notifier);
 				module.addTestListener(listener);
-				module.execute();
-				module.removeTestListener(listener);
+				try {
+					executeModule();
+				} finally {
+					module.removeTestListener(listener);
+				}
 			} catch (EolRuntimeException e) {
 				notifier.fireTestFailure(new Failure(thisDesc, e));
 			}
 		}
+	}
+
+	/**
+	 * Runs the module once test listeners have been set up. Subclasses may want to
+	 * override this method for any other instrumentation (e.g. debugging).
+	 */
+	protected void executeModule() throws EolRuntimeException {
+		module.execute();
 	}
 
 }

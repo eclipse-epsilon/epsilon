@@ -1,0 +1,4 @@
+pattern PeopleWithNamesStartingWithJ
+  p : Person {
+  match: p.name.startsWith('J')
+}

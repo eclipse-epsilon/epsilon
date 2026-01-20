@@ -9,9 +9,6 @@
 **********************************************************************/
 package org.eclipse.epsilon.emc.spreadsheets.test;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.Test;
-
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetColumnTest;
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetDataTypeTest;
 import org.eclipse.epsilon.emc.spreadsheets.SpreadsheetModelTest;
@@ -26,15 +23,11 @@ import org.eclipse.epsilon.emc.spreadsheets.common.IgnoreWorksheetTest;
 import org.eclipse.epsilon.emc.spreadsheets.delete.DeleteReferencedAndReferencingRowTest;
 import org.eclipse.epsilon.emc.spreadsheets.delete.DeleteReferencedRowTest;
 import org.eclipse.epsilon.emc.spreadsheets.delete.DeleteRowTest;
+import org.eclipse.epsilon.emc.spreadsheets.excel.ExcelEolTests;
 import org.eclipse.epsilon.emc.spreadsheets.excel.ExcelModelTest;
 import org.eclipse.epsilon.emc.spreadsheets.excel.ExcelRowTest;
-import org.eclipse.epsilon.emc.spreadsheets.excel.ExcelEolTests;
 import org.eclipse.epsilon.emc.spreadsheets.excel.ExcelWorksheetTest;
 import org.eclipse.epsilon.emc.spreadsheets.excel.NewExcelEolTests;
-import org.eclipse.epsilon.emc.spreadsheets.google.find.GSFindTest;
-import org.eclipse.epsilon.emc.spreadsheets.google.load.LoadExistingWorksheetTest;
-import org.eclipse.epsilon.emc.spreadsheets.google.load.LoadNonExistingWorksheetTest;
-import org.eclipse.epsilon.emc.spreadsheets.google.row.GSRowEqualsTest;
 import org.eclipse.epsilon.emc.spreadsheets.instantiate.CreateInstanceReferencingSheetDataTypeStrictTest;
 import org.eclipse.epsilon.emc.spreadsheets.instantiate.CreateInstanceReferencingSheetNotDataTypeStrictTest;
 import org.eclipse.epsilon.emc.spreadsheets.instantiate.CreateInstanceSheetDataTypeStrictTest;
@@ -59,14 +52,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import junit.framework.JUnit4TestAdapter;
+import junit.framework.Test;
+
 @RunWith(Suite.class)
 @SuiteClasses({ SpreadsheetColumnTest.class, SpreadsheetDataTypeTest.class, SpreadsheetModelTest.class,
 	SpreadsheetPropertyGetterTest.class, SpreadsheetPropertySetterTest.class, SpreadsheetReferenceTest.class,
 	SpreadsheetUtilsTest.class, SpreadsheetWorksheetTest.class, CellMultiplicityTest.class,
 	DataTypeStrictnessTest.class, IgnoreWorksheetTest.class, DeleteReferencedAndReferencingRowTest.class,
 	DeleteReferencedRowTest.class, DeleteRowTest.class, ExcelModelTest.class, ExcelRowTest.class,
-	ExcelWorksheetTest.class, GSFindTest.class, LoadExistingWorksheetTest.class, LoadNonExistingWorksheetTest.class,
-	GSRowEqualsTest.class, CreateInstanceReferencingSheetDataTypeStrictTest.class,
+	ExcelWorksheetTest.class, CreateInstanceReferencingSheetDataTypeStrictTest.class,
 	CreateInstanceReferencingSheetNotDataTypeStrictTest.class, CreateInstanceSheetDataTypeStrictTest.class,
 	CreateInstanceSheetNotDataTypeStrictTest.class, CreateInstanceTest.class, MetadataTest.class,
 	PrefixedVisibleValuePopertyGetterTest.class, PropertyGetterReferencingCellManyTest.class,

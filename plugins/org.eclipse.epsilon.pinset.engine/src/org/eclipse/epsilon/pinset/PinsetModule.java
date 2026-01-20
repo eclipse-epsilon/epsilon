@@ -22,6 +22,7 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.util.AstUtil;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.erl.ErlModule;
@@ -30,6 +31,7 @@ import org.eclipse.epsilon.pinset.columnGenerators.Grid;
 import org.eclipse.epsilon.pinset.columnGenerators.NestedFrom;
 import org.eclipse.epsilon.pinset.columnGenerators.Properties;
 import org.eclipse.epsilon.pinset.columnGenerators.Reference;
+import org.eclipse.epsilon.pinset.debug.PinsetDebugger;
 import org.eclipse.epsilon.pinset.parse.PinsetLexer;
 import org.eclipse.epsilon.pinset.parse.PinsetParser;
 
@@ -100,8 +102,8 @@ public class PinsetModule extends ErlModule {
 	}
 
 	@Override
-	public HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	public HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("pinset", PinsetModule.class);
 		return importConfiguration;
 	}
@@ -191,4 +193,10 @@ public class PinsetModule extends ErlModule {
 	public void persistDatasets(boolean persistDatasets) {
 		this.persistDatasets = persistDatasets;
 	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new PinsetDebugger();
+	}
+	
 }

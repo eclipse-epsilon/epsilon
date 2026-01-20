@@ -21,6 +21,7 @@
 			<runParserBuildFile lang="eml"/>
 			<runParserBuildFile lang="egl" parser="egx"/>
 			<runParserBuildFile lang="flock"/>
+			<runParserBuildFile lang="pinset"/>		
 		<!--/parallel-->
 	</target>
 	

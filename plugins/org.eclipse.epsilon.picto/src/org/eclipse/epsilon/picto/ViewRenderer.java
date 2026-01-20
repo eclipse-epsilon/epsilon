@@ -62,6 +62,8 @@ public class ViewRenderer {
 	}
 	
 	public void display(String text) {
+		if (browser.isDisposed()) return;
+		
 		browser.setText(text.replace("${picto-zoom}", zoom + ""));
 	}
 	

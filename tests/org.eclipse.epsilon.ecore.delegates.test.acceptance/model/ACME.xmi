@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emp:Company
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:emp="http://www.eclipse.org/OCL/examples/codegen/employee"
+    xsi:schemaLocation="http://www.eclipse.org/OCL/examples/codegen/employee Employee.ecore"
+    name="ACME">
+  <employees
+      directReports="9 10 12 29 30 45 -11 15 26 42"
+      empID="6"
+      name="Cam Ingham"/>
+  <employees
+      manager="6"
+      empID="9"
+      name=""/>
+  <employees
+      manager="6"
+      empID="10"
+      name="Dolly Longthorn"/>
+  <employees
+      manager="6"
+      empID="12"
+      name="Berna Arthur"/>
+  <employees
+      manager="6"
+      empID="29"
+      name="Tyson Mehaffey"/>
+  <employees
+      manager="6"
+      empID="30"
+      name="Con Medcraft"/>
+  <employees
+      manager="6"
+      empID="45"
+      name="Elbert Jeger"/>
+  <employees
+      manager="6"
+      empID="-11"
+      name="Anabal Butfield"/>
+  <employees
+      manager="6"
+      empID="15"
+      name="Leia Dillaway"/>
+  <employees
+      manager="6"
+      empID="26"
+      name="Guendolen Dimmick"/>
+  <employees
+      manager="6"
+      empID="42"
+      name="Wilie Chadband"/>
+  <employees
+      directReports="20 21 27 39 43 44 47 17 31 4 33 8 22 28 -38 50 14"
+      empID="3"
+      name="Walton Oldacre"/>
+  <employees
+      manager="3"
+      empID="20"
+      name="Hadria Molloy"/>
+  <employees
+      manager="3"
+      empID="21"
+      name="Abbie Pocke"/>
+  <employees
+      manager="3"
+      empID="27"
+      name="Wilmer Eustes"/>
+  <employees
+      manager="3"
+      empID="39"
+      name="Humberto Nerheny"/>
+  <employees
+      manager="3"
+      empID="43"
+      name=""/>
+  <employees
+      manager="3"
+      empID="44"
+      name="Addison Milksop"/>
+  <employees
+      manager="3"
+      empID="47"
+      name="Hershel Wardhaugh"/>
+  <employees
+      manager="3"
+      empID="17"
+      name="Gilemette Folshom"/>
+  <employees
+      manager="3"
+      empID="31"
+      name="Damiano Roscow"/>
+  <employees
+      manager="3"
+      empID="4"
+      name="Quinlan Fernie"/>
+  <employees
+      manager="3"
+      empID="33"
+      name="Brocky Dank"/>
+  <employees
+      manager="3"
+      empID="8"
+      name="Ellie Biddleston"/>
+  <employees
+      manager="3"
+      empID="22"
+      name="Nadya Basnett"/>
+  <employees
+      manager="3"
+      empID="28"
+      name="Tonia Mackrell"/>
+  <employees
+      manager="3"
+      empID="-38"
+      name="Ardelia Hartus"/>
+  <employees
+      manager="3"
+      empID="50"
+      name="Harri Iacomelli"/>
+  <employees
+      manager="3"
+      directReports="18 25 35 36 46 48 19 37 41 7 24 2 16 -40 1 5 13 23 32 34"
+      empID="14"
+      name="Georgine Hartness"/>
+  <employees
+      manager="14"
+      empID="18"
+      name=""/>
+  <employees
+      manager="14"
+      empID="25"
+      name="Edythe Mixter"/>
+  <employees
+      manager="14"
+      empID="35"
+      name=""/>
+  <employees
+      manager="14"
+      empID="36"
+      name="Tanitansy Jemmett"/>
+  <employees
+      manager="14"
+      empID="46"
+      name="Mella Demke"/>
+  <employees
+      manager="14"
+      empID="48"
+      name="Blinnie Cassell"/>
+  <employees
+      manager="14"
+      empID="19"
+      name="Luce Bletcher"/>
+  <employees
+      manager="14"
+      empID="37"
+      name="Tressa Shevlane"/>
+  <employees
+      manager="14"
+      empID="41"
+      name="Nerti Drummond"/>
+  <employees
+      manager="14"
+      empID="7"
+      name="Hermy Marlon"/>
+  <employees
+      manager="14"
+      empID="24"
+      name="Dorisa Lamey"/>
+  <employees
+      manager="14"
+      empID="2"
+      name="Baryram Lillee"/>
+  <employees
+      manager="14"
+      empID="16"
+      name="Tristam Molfino"/>
+  <employees
+      manager="14"
+      empID="-40"
+      name="Dodie Whenham"/>
+  <employees
+      manager="14"
+      empID="1"
+      name="Nancee Denyagin"/>
+  <employees
+      manager="14"
+      empID="5"
+      name="Aurea Harland"/>
+  <employees
+      manager="14"
+      empID="13"
+      name=""/>
+  <employees
+      manager="14"
+      empID="23"
+      name="Emelina Murch"/>
+  <employees
+      manager="14"
+      empID="32"
+      name="Sandra Deam"/>
+  <employees
+      manager="14"
+      empID="34"
+      name="Jenifer Grimshaw"/>
+  <employees
+      empID="49"
+      name="Mareah O'Kielt"/>
+  <departments
+      manager="6"
+      deptID="100"
+      name="Accounting"/>
+  <departments
+      manager="3"
+      deptID="200"
+      name="Prodcuts"/>
+  <departments
+      manager="14"
+      deptID="-300"
+      name="Research and Development"/>
+  <departments
+      manager="49"
+      deptID="400"
+      name="Business Development"/>
+  <departments
+      deptID="500"
+      name="Sales"/>
+</emp:Company>

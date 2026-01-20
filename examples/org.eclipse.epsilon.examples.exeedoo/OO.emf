@@ -33,7 +33,7 @@ abstract class NamedElement extends AnnotatedElement {
   !unique !ordered attr String[1] name;
 }
 
-@exeed(classIcon="package", label="return self.name;")
+@exeed(classIcon="platform:/resource/org.eclipse.epsilon.examples.exeedoo/icons/package.gif", label="return self.name;")
 class Package extends PackageableElement {
   !ordered val PackageableElement[*]#~package contents;
   ref Package[*] uses;

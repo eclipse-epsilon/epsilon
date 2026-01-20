@@ -19,10 +19,12 @@ import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.erl.ErlModule;
+import org.eclipse.epsilon.flock.debug.FlockDebugger;
 import org.eclipse.epsilon.flock.execute.FlockResult;
 import org.eclipse.epsilon.flock.execute.context.FlockContext;
 import org.eclipse.epsilon.flock.execute.context.IFlockContext;
@@ -142,4 +144,11 @@ public class FlockModule extends ErlModule implements IFlockModule {
 	public IFlockContext getContext() {
 		return (IFlockContext) super.getContext();
 	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new FlockDebugger();
+	}
+
+	
 }

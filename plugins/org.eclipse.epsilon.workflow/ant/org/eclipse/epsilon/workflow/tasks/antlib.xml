@@ -21,4 +21,6 @@
     <taskdef name="epl" classname="org.eclipse.epsilon.workflow.tasks.EplTask"/>
     <taskdef name="emg" classname="org.eclipse.epsilon.workflow.tasks.EmgTask"/>
     <taskdef name="java.executeStaticMethod" classname="org.eclipse.epsilon.workflow.tasks.ExecuteStaticMethodTask"/>
+    <taskdef name="startDebugServer" classname="org.eclipse.epsilon.workflow.tasks.debug.StartDebugServerTask"/>
+    <taskdef name="stopDebugServer" classname="org.eclipse.epsilon.workflow.tasks.debug.StopDebugServerTask"/>
 </antlib>

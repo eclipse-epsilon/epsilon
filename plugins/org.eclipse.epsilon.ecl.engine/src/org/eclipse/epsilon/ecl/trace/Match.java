@@ -10,11 +10,12 @@
 package org.eclipse.epsilon.ecl.trace;
 
 import java.util.Objects;
+
 import org.eclipse.epsilon.ecl.dom.MatchRule;
 import org.eclipse.epsilon.eol.types.EolMap;
 
 public class Match {
-	
+
 	/**
 	 * The left object of the match
 	 */

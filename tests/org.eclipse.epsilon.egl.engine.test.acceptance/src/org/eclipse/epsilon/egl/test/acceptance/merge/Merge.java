@@ -133,11 +133,13 @@ public class Merge {
 		assertTrue("Expected warning for protected region 'sleep'",   sleepWarningFound);
 	}
 	
-	private static void assertEquals(File expected, File actual) throws IOException {
-		assertEquals(org.eclipse.epsilon.egl.util.FileUtil.read(expected), actual);
+	private static void assertEquals(File expectedFile, File actualFile) throws IOException {
+		final String expected = org.eclipse.epsilon.egl.util.FileUtil.read(expectedFile);
+		assertEquals(expected, expectedFile);
 	}
 	
-	private static void assertEquals(String expected, File actual) throws IOException {
-		org.junit.Assert.assertEquals(expected, org.eclipse.epsilon.egl.util.FileUtil.read(actual));
+	private static void assertEquals(String expected, File actualFile) throws IOException {
+		final String actual = org.eclipse.epsilon.egl.util.FileUtil.read(actualFile);
+		org.junit.Assert.assertEquals(expected, actual);
 	}
 }

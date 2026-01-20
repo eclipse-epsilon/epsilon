@@ -2,13 +2,15 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Generation Language Engine
 Bundle-SymbolicName: org.eclipse.epsilon.egl.engine
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.eol.engine,
- org.eclipse.epsilon.erl.engine;visibility:=reexport
+ org.eclipse.epsilon.erl.engine;visibility:=reexport,
+ com.google.guava
 Export-Package: org.eclipse.epsilon.egl,
  org.eclipse.epsilon.egl.concurrent,
  org.eclipse.epsilon.egl.config,
+ org.eclipse.epsilon.egl.debug,
  org.eclipse.epsilon.egl.dom,
  org.eclipse.epsilon.egl.exceptions,
  org.eclipse.epsilon.egl.execute.atoms,

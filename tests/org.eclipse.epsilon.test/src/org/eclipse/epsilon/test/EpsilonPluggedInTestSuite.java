@@ -13,10 +13,10 @@
 package org.eclipse.epsilon.test;
 
 import org.eclipse.epsilon.common.dt.test.CommonDevelopmentToolsTestSuite;
+import org.eclipse.epsilon.ecore.delegates.test.acceptance.DelegatesSuite;
 import org.eclipse.epsilon.emc.cdo.tests.CDOPluggedInTestSuite;
 import org.eclipse.epsilon.emc.emf.test.EmfPluggedInTestSuite;
 import org.eclipse.epsilon.picto.test.PictoTestSuite;
-import org.eclipse.epsilon.workflow.tasks.eugenia.EugeniaTestSuite;
 import org.eclipse.epsilon.workflow.test.WorkflowPluggedInTestSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -34,10 +34,10 @@ import junit.framework.Test;
 @SuiteClasses({
 	CommonDevelopmentToolsTestSuite.class,
 	EmfPluggedInTestSuite.class,
-	EugeniaTestSuite.class,
 	WorkflowPluggedInTestSuite.class,
-	CDOPluggedInTestSuite.class/*,
-	PictoTestSuite.class*/
+	CDOPluggedInTestSuite.class,
+	DelegatesSuite.class,
+	PictoTestSuite.class
 })
 public class EpsilonPluggedInTestSuite {
 	public static Test suite() {

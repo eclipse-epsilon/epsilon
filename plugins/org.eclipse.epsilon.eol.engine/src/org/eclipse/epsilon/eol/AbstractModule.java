@@ -17,11 +17,22 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import org.antlr.runtime.*;
+
+import org.antlr.runtime.ANTLRInputStream;
+import org.antlr.runtime.CommonToken;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.Lexer;
+import org.antlr.runtime.ParserRuleReturnScope;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.Token;
+import org.antlr.runtime.TokenStream;
 import org.eclipse.epsilon.common.module.AbstractModuleElement;
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
-import org.eclipse.epsilon.common.parse.*;
+import org.eclipse.epsilon.common.parse.AST;
+import org.eclipse.epsilon.common.parse.EpsilonParser;
+import org.eclipse.epsilon.common.parse.EpsilonTreeAdaptor;
+import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.AstUtil;
 import org.eclipse.epsilon.eol.parse.EolLexer;
@@ -79,7 +90,7 @@ public abstract class AbstractModule extends AbstractModuleElement implements IM
 	}
 
 	protected boolean invokeMainRule(List<CommonToken> comments) throws Exception {
-		EpsilonParseProblemManager.INSTANCE.reset();
+		
 		AST cst = null;
 		
 		try {
@@ -102,8 +113,7 @@ public abstract class AbstractModule extends AbstractModuleElement implements IM
 			getParseProblems().add(problem);
 		}
 		
-		parseProblems.addAll(EpsilonParseProblemManager.INSTANCE.getParseProblems());
-		EpsilonParseProblemManager.INSTANCE.reset();
+		parseProblems.addAll(parser.getParseProblems());
 		
 		assignAnnotations(cst);
 		assignComments(cst, comments);
@@ -169,7 +179,8 @@ public abstract class AbstractModule extends AbstractModuleElement implements IM
 
 			parser = createParser(stream);
 			parser.setDeepTreeAdaptor(adaptor);
-
+			parser.getParseProblems().addAll(((org.eclipse.epsilon.common.parse.Lexer) lexer).getParseProblems());
+			
 			return invokeMainRule(comments);
 		}
 		catch (Exception ex) {

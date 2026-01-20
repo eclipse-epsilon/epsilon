@@ -9,8 +9,24 @@
 **********************************************************************/
 package org.eclipse.epsilon.picto;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+
 public interface ContentPromise {
 	
-	public String getContent() throws Exception;
+	String getContent() throws Exception;
+
+	/**
+	 * Return the monitor used by the promise to detect if the user has requested the cancellation of its computation.
+	 */
+	default IProgressMonitor getProgressMonitor() {
+		return null;
+	}
+
+	/**
+	 * Change the monitor used by the promise to detect if the user has requested the cancellation of its computation.
+	 */
+	default void setProgressMonitor(IProgressMonitor monitor) {
+		// ignore request
+	}
 	
 }

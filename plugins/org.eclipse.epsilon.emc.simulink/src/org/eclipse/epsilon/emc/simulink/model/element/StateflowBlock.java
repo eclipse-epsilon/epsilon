@@ -30,7 +30,7 @@ public class StateflowBlock extends SimulinkModelElement {
 	/** CONSTANTS */
 
 	//public static final String STATEFLOW_LIB = "sflib/";
-	private static final String SIMPLE_TYPE = "?.classhandle.get('Name');";
+	private static final String SIMPLE_TYPE = "class(?);";
 	private static final String DELETE_SF = "?.delete;";
 
 	/** FIELDS */
@@ -333,7 +333,7 @@ public class StateflowBlock extends SimulinkModelElement {
 	public Boolean isCommented() throws EolRuntimeException{
 		try {
 			String handle = StateflowUtil.getBlockHandleFromId(((SimulinkModel)model), engine, id);
-			return (Boolean) engine.evalWithResult("isCommented(?);", handle);	
+			return (Boolean) engine.evalWithResult("?.isCommented;", handle);	
 		}catch (Exception e) {
 			throw new EolRuntimeException(e.getMessage());
 		}

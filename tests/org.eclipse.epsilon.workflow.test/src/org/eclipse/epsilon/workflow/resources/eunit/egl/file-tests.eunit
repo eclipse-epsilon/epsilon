@@ -71,7 +71,7 @@ operation deleteGeneratedDir() {
 operation expectedModelGeneratesExpectedFile() {
   loadHutn("Tree", EXPECTED_MODEL);
   runTarget("tree2text");
-  assertEqualFiles(EXPECTED_PATH, GENERATED_PATH);
+  assertEqualFilesIgnoringLineEndings(EXPECTED_PATH, GENERATED_PATH);
 }
 
 @test
@@ -79,7 +79,7 @@ operation expectedModelGeneratesExpectedFileFailing() {
   loadHutn("Tree", EXPECTED_MODEL);
   runTarget("tree2text");
   // this test must fail
-  assertNotEqualFiles(EXPECTED_PATH, GENERATED_PATH);
+  assertNotEqualFilesIgnoringLineEndings(EXPECTED_PATH, GENERATED_PATH);
 }
 
 @test

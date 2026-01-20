@@ -25,21 +25,22 @@ import java.util.stream.BaseStream;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import org.eclipse.epsilon.common.function.BaseDelegate.MergeMode;
+
 import org.eclipse.epsilon.common.concurrent.ConcurrencyUtils;
 import org.eclipse.epsilon.common.concurrent.DelegatePersistentThreadLocal;
 import org.eclipse.epsilon.common.concurrent.PersistentThreadLocal;
 import org.eclipse.epsilon.common.function.BaseDelegate;
+import org.eclipse.epsilon.common.function.BaseDelegate.MergeMode;
 import org.eclipse.epsilon.common.module.ModuleElement;
+import org.eclipse.epsilon.eol.IEolModule;
+import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.exceptions.concurrent.EolNestedParallelismException;
 import org.eclipse.epsilon.eol.execute.ExecutorFactory;
+import org.eclipse.epsilon.eol.execute.concurrent.EolThreadPoolExecutor;
 import org.eclipse.epsilon.eol.execute.context.EolContext;
 import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.operations.contributors.OperationContributorRegistry;
-import org.eclipse.epsilon.eol.IEolModule;
-import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
-import org.eclipse.epsilon.eol.exceptions.concurrent.EolNestedParallelismException;
-import org.eclipse.epsilon.eol.execute.concurrent.EolThreadPoolExecutor;
 
 /**
  * Skeletal implementation of a parallel IEolContext. This class takes care of
@@ -198,7 +199,19 @@ public class EolContextParallel extends EolContext implements IEolContextParalle
 	
 	protected void clearExecutor() {
 		if (executorService != null) {
-			executorService.shutdownNow();
+			/*
+			 * Note: we need to shut down the executor service no matter what, in order to
+			 * avoid leaking threads. The only difference is whether we interrupt running
+			 * tasks or not.
+			 */
+			if (this.isInShortCircuitTask) {
+				// Interrupt tasks
+				executorService.shutdownNow();
+			} else {
+				// Don't interrupt, but stop accepting new tasks
+				executorService.shutdown();
+			}
+
 			executorService = null;
 		}
 	}
@@ -221,9 +234,7 @@ public class EolContextParallel extends EolContext implements IEolContextParalle
 	
 	@Override
 	public synchronized void endParallelTask() throws EolRuntimeException {
-		if (isInShortCircuitTask) {
-			clearExecutor();
-		}
+		clearExecutor();
 		clearThreadLocals();
 		isInParallelTask = false;
 		isInShortCircuitTask = false;
@@ -253,8 +264,8 @@ public class EolContextParallel extends EolContext implements IEolContextParalle
 	}
 	
 	@Override
-	public final EolThreadPoolExecutor getExecutorService() {
-		if (executorService == null) synchronized (this) {
+	public synchronized final EolThreadPoolExecutor getExecutorService() {
+		if (executorService == null) {
 			executorService = newExecutorService();
 		}
 		return executorService;

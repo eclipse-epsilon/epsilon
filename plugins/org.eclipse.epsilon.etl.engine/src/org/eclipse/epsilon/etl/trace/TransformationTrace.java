@@ -21,11 +21,51 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.function.Supplier;
 
 import org.eclipse.epsilon.etl.dom.TransformationRule;
 
+import com.google.common.collect.Iterators;
+import com.google.common.collect.Table;
+import com.google.common.collect.Table.Cell;
+import com.google.common.collect.Tables;
+
 public class TransformationTrace {
 	
+	private class TransformationListIterator implements Iterator<Transformation> {
+		private final Iterator<List<Transformation>> itLists;
+		private Iterator<Transformation> itTransformation;
+		private Transformation next;
+
+		private TransformationListIterator(Iterator<List<Transformation>> itLists) {
+			this.itLists = itLists;
+		}
+
+		@Override
+		public boolean hasNext() {
+			if (next == null) {
+				while (itTransformation == null || !itTransformation.hasNext()) {
+					if (itLists.hasNext()) {
+						itTransformation = itLists.next().iterator();
+					} else {
+						itTransformation = null;
+						return false;
+					}
+				}
+				next = itTransformation.next();
+			}
+			return next != null;
+		}
+
+		@Override
+		public Transformation next() {
+			if (!hasNext()) throw new NoSuchElementException();
+			Transformation ret = next;
+			next = null;
+			return ret;
+		}
+	}
+
 	/**
 	 * Unmodifiable view of the targets for a given transformation.
 	 */
@@ -75,131 +115,8 @@ public class TransformationTrace {
 		}
 	}
 
-	/**
-	 * Unmodifiable view of the transformations from a given source.
-	 */
-	private class SourceTransformationsCollection extends AbstractCollection<Transformation> {
-		private final Object source;
-		
-		public SourceTransformationsCollection(Object source) {
-			this.source = source;
-		}
-
-		@Override
-		public Iterator<Transformation> iterator() {
-			Map<TransformationRule, List<Transformation>> ruleMap = transformations.get(source);
-			if (ruleMap == null) {
-				return Collections.emptyIterator();
-			}
-
-			return new Iterator<Transformation>() {
-				final Iterator<List<Transformation>> itList = ruleMap.values().iterator();
-				Iterator<Transformation> itTransformation;
-				Transformation next;
-
-				@Override
-				public boolean hasNext() {
-					if (next == null) {
-						while (itTransformation == null || !itTransformation.hasNext()) {
-							if (itList.hasNext()) {
-								itTransformation = itList.next().iterator();
-							} else {
-								itTransformation = null;
-								return false;
-							}
-						}
-
-						next = itTransformation.next();
-					}
-					return next != null;
-				}
-
-				@Override
-				public Transformation next() {
-					if (!hasNext()) throw new NoSuchElementException();
-
-					Transformation ret = next;
-					next = null;
-					return ret;
-				}
-			};
-		}
-
-		@Override
-		public int size() {
-			Map<TransformationRule, List<Transformation>> ruleMap = transformations.get(source);
-			if (ruleMap == null) {
-				return 0;
-			}
-
-			int size = 0;
-			for (List<Transformation> l : ruleMap.values()) {
-				size += l.size();
-			}
-			return size;
-		}
-	}
-
-	/**
-	 * Unmodifiable flat view of all the transformations in this trace.
-	 */
-	private class TransformationsCollection extends AbstractCollection<Transformation> {
-		@Override
-		public Iterator<Transformation> iterator() {
-			return new Iterator<Transformation>() {
-				final Iterator<Map<TransformationRule, List<Transformation>>> itObjects = transformations.values().iterator();
-				Iterator<List<Transformation>> itTransformationLists;
-				Iterator<Transformation> itTransformation;
-				Transformation next;
-
-				@Override
-				public boolean hasNext() {
-					if (next == null) {
-						while (itTransformation == null || !itTransformation.hasNext()) {
-							while (itTransformationLists == null || !itTransformationLists.hasNext()) {
-								if (itObjects.hasNext()) {
-									itTransformationLists = itObjects.next().values().iterator();
-								} else {
-									// No more objects left - we're done
-									itTransformationLists = null;
-									itTransformation = null;
-									return false;
-								}
-							}
-
-							itTransformation = itTransformationLists.next().iterator();
-						}
-
-						next = itTransformation.next();
-					}
-
-					return next != null;
-				}
-
-				@Override
-				public Transformation next() {
-					if (!hasNext()) throw new NoSuchElementException();
-					Transformation ret = next;
-					next = null;
-					return ret;
-				}
-			};
-		}
-
-		@Override
-		public int size() {
-			int size = 0;
-			for (Map<TransformationRule, List<Transformation>> objectMap : transformations.values()) {
-				for (List<Transformation> txList : objectMap.values()) {
-					size += txList.size();
-				}
-			}
-			return size;
-		}
-	}
-
-	final Map<Object, Map<TransformationRule, List<Transformation>>> transformations;
-	final boolean isConcurrent;
+	private final Table<Object, TransformationRule, List<Transformation>> transformations;
+	private final boolean isConcurrent;
 	
 	public TransformationTrace() {
 		this(false);
@@ -207,20 +124,20 @@ public class TransformationTrace {
 	
 	public TransformationTrace(boolean concurrent) {
 		this.isConcurrent = concurrent;
-		transformations = createIdentityMap();
+		transformations = Tables.newCustomTable(createIdentityMap(), this::createIdentityMap);
 	}
 
 	private <K, V> Map<K, V> createIdentityMap() {
 		return isConcurrent ? Collections.synchronizedMap(new LinkedHashMap<>()) : new LinkedHashMap<>();
 	}
 
-	private void syncOn(Object syncTarget, Runnable r) {
+	private <T> T syncOn(Object syncTarget, Supplier<T> r) {
 		if (isConcurrent) {
 			synchronized (syncTarget) {
-				r.run();
+				return r.get();
 			}
 		} else {
-			r.run();
+			return r.get();
 		}
 	}
 
@@ -228,36 +145,63 @@ public class TransformationTrace {
 		Transformation transformation = new Transformation(source, targets);
 		transformation.setRule(rule);
 
-		List<Transformation> sourceRuleTransformations = transformations
-			.computeIfAbsent(source, (k) -> createIdentityMap())
-			.computeIfAbsent(rule, (k) -> new ArrayList<>());
+		List<Transformation> sourceRuleTransformations = syncOn(transformations, () -> {
+			List<Transformation> l = transformations.get(source, rule);
+			if (l == null) {
+				l = new ArrayList<>();
+				transformations.put(source, rule, l);
+			}
+			return l;
+		});
 
-		syncOn(sourceRuleTransformations, () -> sourceRuleTransformations.add(transformation));
+		syncOn(sourceRuleTransformations,
+			() -> sourceRuleTransformations.add(transformation));
 	}
-	
+
 	public Collection<Transformation> getTransformations() {
-		return new TransformationsCollection();
+		return new AbstractCollection<Transformation>() {
+			@Override
+			public Iterator<Transformation> iterator() {
+				final Iterator<Cell<Object, TransformationRule, List<Transformation>>> itCells = transformations.cellSet().iterator();
+				final Iterator<List<Transformation>> itLists = Iterators.transform(itCells, (cell) -> cell.getValue());
+				return new TransformationListIterator(itLists);
+			}
+
+			@Override
+			public int size() {
+				int size = 0;
+				for (Cell<Object, TransformationRule, List<Transformation>> cell : transformations.cellSet()) {
+					size += cell.getValue().size();
+				}
+				return size;
+			}
+		};
 	}
-	
+
 	public Collection<Transformation> getTransformations(Object source) {
-		return new SourceTransformationsCollection(source);
+		return new AbstractCollection<Transformation>() {
+			@Override
+			public Iterator<Transformation> iterator() {
+				return new TransformationListIterator(transformations.row(source).values().iterator());
+			}
+
+			@Override
+			public int size() {
+				int size = 0;
+				for (List<Transformation> txList : transformations.row(source).values()) {
+					size += txList.size();
+				}
+				return size;
+			}
+		};
 	}
 
 	/**
 	 * Returns an unmodifiable view of the transformation targets for a given source and rule name.
 	 */
 	public Collection<?> getTransformationTargets(Object source, TransformationRule rule) {
-		Map<TransformationRule, List<Transformation>> sourceMap = transformations.get(source);
-		if (sourceMap == null) {
-			return Collections.emptyList();
-		}
-
-		List<Transformation> txList = sourceMap.get(rule);
-		if (txList == null) {
-			return Collections.emptyList();
-		}
-
-		return new TransformationTargetsCollection(txList);
+		List<Transformation> txList = transformations.get(source, rule);
+		return txList == null ? Collections.emptyList() : new TransformationTargetsCollection(txList);
 	}
 
 	/**
@@ -269,7 +213,7 @@ public class TransformationTrace {
 	 */
 	@Deprecated
 	public Collection<?> getTransformationTargets(Object source, String rule) {
-		Map<TransformationRule, List<Transformation>> sourceMap = transformations.get(source);
+		Map<TransformationRule, List<Transformation>> sourceMap = transformations.row(source);
 		if (sourceMap == null) {
 			return Collections.emptyList();
 		}
@@ -284,11 +228,6 @@ public class TransformationTrace {
 	}
 
 	public boolean containsTransformedBy(TransformationRule rule) {
-		for (Entry<Object, Map<TransformationRule, List<Transformation>>> entry : transformations.entrySet()) {
-			if (entry.getValue().containsKey(rule)) {
-				return true;
-			}
-		};
-		return false;
+		return transformations.columnKeySet().contains(rule);
 	}
 }

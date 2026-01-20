@@ -5,7 +5,6 @@ import java.nio.file.Files;
 
 import org.eclipse.epsilon.emc.spreadsheets.test.SharedTestMethods;
 import org.eclipse.epsilon.eol.EolModule;
-import org.eclipse.epsilon.eunit.EUnitModule;
 import org.junit.Test;
 
 public class NewExcelEolTests {

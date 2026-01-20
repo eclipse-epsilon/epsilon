@@ -1,64 +1,59 @@
-/*********************************************************************
- * Copyright (c) 2018 The University of York.
+/*******************************************************************************
+ * Copyright (c) 2024 The University of York.
  *
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
-**********************************************************************/
+ *******************************************************************************/
 package org.eclipse.epsilon.ecl.engine.test.acceptance.equivalence;
 
-import static org.eclipse.epsilon.ecl.engine.test.acceptance.EclAcceptanceTestUtil.*;
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.function.Supplier;
+
 import org.eclipse.epsilon.ecl.EclModule;
+import org.eclipse.epsilon.ecl.engine.test.acceptance.EclAcceptanceTestUtil;
 import org.eclipse.epsilon.ecl.launch.EclRunConfiguration;
-import org.eclipse.epsilon.ecl.trace.MatchTrace;
-import org.eclipse.epsilon.eol.engine.test.acceptance.util.EolEquivalenceTests;
-import org.eclipse.epsilon.test.util.EpsilonTestUtil;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
+import org.eclipse.epsilon.eol.engine.test.acceptance.util.AbstractEolEquivalenceTests;
 import org.junit.runners.Parameterized.Parameters;
 
-/**
- * 
- * @author Sina Madani
- * @since 1.6
- */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class EclModuleEquivalenceTests extends EolEquivalenceTests<EclRunConfiguration> {
+public class EclModuleEquivalenceTests extends AbstractEolEquivalenceTests<EclRunConfiguration> {
 
-	public EclModuleEquivalenceTests(EclRunConfiguration configUnderTest) {
-		super(configUnderTest);
+	public EclModuleEquivalenceTests(EquivalenceTestParameters<EclRunConfiguration> params) {
+		super(params);
 	}
 
-	/**
-	 * @return A collection of pre-configured run configurations, each with their own IEclModule.
-	 * @throws Exception 
-	 */
-	@Parameters//(name = "0")	Don't use this as the Eclipse JUnit view won't show failures!
-	public static Iterable<? extends EclRunConfiguration> configurations() throws Exception {
-		return getScenarios(modules());
-	}
-	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		setUpEquivalenceTest(getScenarios(Collections.singleton(EclModule::new)));
-	}
-	
 	@Override
-	public void _0test0() throws Exception {
-		super.beforeTests();
+	protected void assertEquivalentConfigurations(EclRunConfiguration oracleConfig, EclRunConfiguration testedConfig) throws Exception {
+		super.assertEquivalentConfigurations(oracleConfig, testedConfig);
+
+		assertEquals("Match traces should be equal",
+			oracleConfig.getResult(),
+			testedConfig.getResult());
 	}
 
-	@Test
-	public void testMatchResults() throws Exception {
-		MatchTrace
-			expectedTrace = expectedConfig.getResult(),
-			actualTrace = testConfig.getResult();
-		
-		EpsilonTestUtil.testCollectionsHaveSameElements(expectedTrace, actualTrace, "MatchTrace");
+	@Parameters
+	public static Collection<EquivalenceTestParameters<EclRunConfiguration>> configurations() throws Exception {
+		Collection<Supplier<EclRunConfiguration>> oracleSuppliers = EclAcceptanceTestUtil.getScenarioSuppliers(Collections.singleton(EclModule::new));
+		Collection<Supplier<EclRunConfiguration>> testSuppliers = EclAcceptanceTestUtil.getScenarioSuppliers(EclAcceptanceTestUtil.modules(false));
+
+		int i = 1;
+		List<EquivalenceTestParameters<EclRunConfiguration>> configs = new ArrayList<>();
+		for (Supplier<EclRunConfiguration> oracleSupplier : oracleSuppliers) {
+			for (Supplier<EclRunConfiguration> testSupplier : testSuppliers) {
+				configs.add(new EquivalenceTestParameters<>(
+					"test" + i++,
+					oracleSupplier,
+					testSupplier
+				));
+			}
+		}
+		return configs;
 	}
 }

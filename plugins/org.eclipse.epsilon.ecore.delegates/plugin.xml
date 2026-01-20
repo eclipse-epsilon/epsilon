@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.emf.ecore.validation_delegate">
+      <delegate
+            class="org.eclipse.epsilon.ecore.delegates.validation.DelegateFactory"
+            uri="http://eclipse.dev/epsilon/ecore/EVL">
+      </delegate>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.invocation_delegate">
+      <factory
+            class="org.eclipse.epsilon.ecore.delegates.invocation.DelegateFactory"
+            uri="http://eclipse.dev/epsilon/ecore/EOL">
+      </factory>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.setting_delegate">
+      <factory
+            class="org.eclipse.epsilon.ecore.delegates.setting.DelegateFactory"
+            uri="http://eclipse.dev/epsilon/ecore/EOL">
+      </factory>
+   </extension>
+
+</plugin>

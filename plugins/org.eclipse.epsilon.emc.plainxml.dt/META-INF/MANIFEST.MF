@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: EMX Plain XML development tools
+Bundle-Name: Epsion Plain XML Model Support Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.emc.plainxml.dt;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.emc.plainxml.dt.Activator
 Require-Bundle: org.eclipse.epsilon.emc.plainxml,
  org.eclipse.epsilon.common.dt

@@ -53,6 +53,11 @@ public class TestJavaPartitioner extends TestCommentBlockPartitioner {
 	}
 	
 	@Test @Override
+	public void testPartitionSingleProtectedRegionWithEnd() {
+		super.testPartitionSingleProtectedRegionWithEnd();
+	}
+	
+	@Test @Override
 	public void testPartitionSingleProtectedRegionWhiteSpace() {
 		super.testPartitionSingleProtectedRegionWhiteSpace();
 	}

@@ -1,0 +1,8 @@
+// Get the first book contained in the library
+var emfBook = BookType.all().first();
+
+// Set the title to a new one
+emfBook.title = "EMF Book";
+
+// Check that the title has changed
+emfBook.title.println();

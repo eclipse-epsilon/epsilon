@@ -1,3 +1,12 @@
+/*********************************************************************
+ * Copyright (c) 2024 The University of York.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+**********************************************************************/
 package org.eclipse.epsilon.egl.execute.operations;
 
 import java.util.ArrayList;
@@ -32,7 +41,7 @@ public class OutdentOperation extends SimpleOperation {
 		
 		if (!ids.contains(id)) {
 			IOutputBuffer buffer = (IOutputBuffer) context.getFrameStack().get("out").getValue();
-			buffer.getOutdentationFormatter().outdent(buffer.getOffset());
+			buffer.getOutdentationFormatter().outdent(buffer.getLength());
 			ids.add(id);
 			final ModuleElement moduleElement = context.getFrameStack().getCurrentStatement().getParent();
 			
@@ -45,7 +54,7 @@ public class OutdentOperation extends SimpleOperation {
 				public void finishedExecuting(ModuleElement ast, Object result, IEolContext context) {
 					
 					if (ast == moduleElement && ids.contains(id)) {
-						buffer.getOutdentationFormatter().indent(buffer.getOffset());
+						buffer.getOutdentationFormatter().indent(buffer.getLength());
 						ids.remove(id);
 						// Mark the execution listener for removal
 						executionListenersForRemoval.add(this);

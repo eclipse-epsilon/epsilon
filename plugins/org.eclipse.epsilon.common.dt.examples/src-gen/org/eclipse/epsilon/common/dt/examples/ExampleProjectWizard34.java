@@ -12,8 +12,8 @@ package org.eclipse.epsilon.common.dt.examples;
 public class ExampleProjectWizard34 extends WebGitProjectNewWizard {
 	
 	public ExampleProjectWizard34() {
-		super("Test a model-to-text transformation with EUnit", "In this example we show how a model-to-text transformation written in EGL can be tested with EUnit and HUTN.", "org.eclipse.epsilon.eunit.examples.egl.files",
-				"https://git.eclipse.org", "/c/epsilon/org.eclipse.epsilon.git/plain/examples/org.eclipse.epsilon.eunit.examples.egl.files/");
+		super("Generate PetriNet models using EMG", "In this example we demonstrate how to generate PetriNet elements and how to define relations between them.", "org.eclipse.epsilon.examples.emg.petrinet",
+				"https://git.eclipse.org", "/c/epsilon/org.eclipse.epsilon.git/plain/examples/org.eclipse.epsilon.examples.emg.petrinet/");
 		
 	}
 

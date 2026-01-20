@@ -6,7 +6,7 @@ This content is produced and maintained by the Eclipse Epsilon project.
 
 ## Trademarks
 
-Eclipse Epsilon, and Epsilon are trademarks of the Eclipse Foundation.
+Eclipse Epsilon™ is a trademark of the Eclipse Foundation.
 
 ## Copyright
 
@@ -26,7 +26,8 @@ SPDX-License-Identifier: EPL-2.0
 
 The project maintains the following source code repositories:
 
-* https://git.eclipse.org/r/plugins/gitiles/epsilon/org.eclipse.epsilon
+* https://github.com/eclipse/epsilon
+* https://github.com/eclipse/epsilon-website
 
 ## Third-party Content
 
@@ -35,7 +36,6 @@ This project leverages the following third party content.
 ANTLR 3 Runtime
 
 * License: New BSD license
-
 
 Apache Commons Command Line Interface CLI (1.4)
 
@@ -112,6 +112,12 @@ JQuery (1.8.1)
 * Project: http://jquery.com
 * Source: https://github.com/jquery/jquery
 
+json-simple (1.1.1)
+
+* License: Apache License 2.0
+* Project: https://code.google.com/archive/p/json-simple/
+* Source: https://github.com/fangyidong/json-simple
+
 jsoup (1.7.2)
 
 * License: MIT license
@@ -123,9 +129,7 @@ JUnit (4.13)
 Mockito
 
 * License: Apache License, 2.0, New BSD license, MIT license
-
 * License: MIT
-
 
 plantUML (2018.8)
 
@@ -141,12 +145,6 @@ SLF4J API (1.7.2)
 slf4j log4j12 (1.7.2)
 
 * License: MIT License
-
-Twitter Bootstrap (2.1.1)
-
-* License: Apache License, 2.0
-* Project: http://twitter.github.com/bootstrap/
-* Source: https://github.com/twitter/bootstrap
 
 ## Cryptography
 

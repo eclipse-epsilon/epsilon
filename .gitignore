@@ -63,9 +63,6 @@ target-plain
 # /plugins/org.eclipse.epsilon.workflow.emf/lib/
 /plugins/org.eclipse.epsilon.workflow.emf/lib/*.jar
 
-# /plugins/org.eclipse.epsilon.workflow.eugenia/
-/plugins/org.eclipse.epsilon.workflow.eugenia/lib
-
 # /serverside/org.eclipse.epsilon.egl.servlet/
 /serverside/org.eclipse.epsilon.egl.servlet/build
 
@@ -98,12 +95,19 @@ target-plain
 /tests/org.eclipse.epsilon.workflow.test/resources/eunit/TESTS-TestSuites.xml
 /tests/org.eclipse.epsilon.workflow.test/resources/eunit/junit-noframes.html
 
+# Tests for failing to save EMF models
+*.brokensave
+
 /plugins/org.eclipse.epsilon.updatesite.interim/index.html
 
 # Backup files from Emacs
 *~
+*.swp
 
 # EUnit test files in examples
 /examples/**/TEST-*.xml
 /examples/**/DELTA-*.xmi
 /examples/**/eunit-temp/
+
+# Metadata from Dash tool
+DEPENDENCIES*

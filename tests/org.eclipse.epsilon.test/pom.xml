@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.eclipse.epsilon</groupId>
 		<artifactId>tests</artifactId>
-		<version>2.5.0-SNAPSHOT</version>
+		<version>2.9.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>org.eclipse.epsilon.test</artifactId>
 	<packaging>${packaging.type}</packaging>
@@ -41,7 +41,7 @@
 						<version>${tycho.version}</version>
 						<configuration>
 							<application>org.eclipse.ui.ide.workbench</application>
-							<argLine>-ea -Xmx2g ${osSpecificVMArgs}</argLine>
+							<argLine>-ea -Xmx2g --add-opens=java.base/java.util.stream=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED ${osSpecificVMArgs}</argLine>
 							<useUIThread>true</useUIThread>
 							<useUIHarness>true</useUIHarness>
 							<includes>
@@ -64,10 +64,10 @@
 									<version>0.0.0</version>
 								</dependency>
 								<!--
-                    This is needed to have the EUnit custom non-OSGi comparator
-                    test pass: Tycho doesn't automatically use it, even though
-                    it is a fragment of eunit.engine.
-                -->
+									This is needed to have the EUnit custom non-OSGi comparator
+									test pass: Tycho doesn't automatically use it, even though
+									it is a fragment of eunit.engine.
+								-->
 								<dependency>
 									<type>eclipse-plugin</type>
 									<artifactId>org.eclipse.epsilon.eunit.engine.test.comparators</artifactId>
@@ -113,7 +113,7 @@
 			</build>
 			<properties>
 				<packaging.type>eclipse-plugin</packaging.type>
-				<argLine>-ea -Xmx3g --add-opens=java.base/java.util.stream=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-exports=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED</argLine>
+				<argLine>-ea -Xmx3g --add-opens=java.base/java.util.stream=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED</argLine>
 			</properties>
 		</profile>
 		<profile>
@@ -152,7 +152,7 @@
 			</build>
 			<properties>
 				<packaging.type>eclipse-plugin</packaging.type>
-				<argLine>-ea -Xms2g -Xmx6g --add-opens=java.base/java.util.stream=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-exports=java.xml/com.sun.org.apache.xerces.internal.dom=ALL-UNNAMED</argLine>
+				<argLine>-ea -Xms2g -Xmx6g --add-opens=java.base/java.util.stream=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED</argLine>
 			</properties>
 		</profile>
 		<profile>

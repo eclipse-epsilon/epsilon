@@ -11,16 +11,17 @@ package org.eclipse.epsilon.emc.simulink.test.suite;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
+import org.eclipse.epsilon.emc.simulink.dictionary.test.SimulinkDictionaryModelTests;
+import org.eclipse.epsilon.emc.simulink.test.unit.AllTests;
 
 /**
- * NOTE: This doesn't work unless you use the JRE that came
- * with MATLAB as your JAVA_HOME (and the one that you start Eclipse with),
- * and have your PATH env pointing to MATLAB's bin directory.
- * 
+ * See https://uk.mathworks.com/help/matlab/matlab_external/setup-environment.html
+ * for instructions on configuring the MATLAB environment
  */
 @RunWith(ConditionalMatlabSuite.class)
 @SuiteClasses({ 
-	org.eclipse.epsilon.emc.simulink.test.unit.AllTests.class,
+	AllTests.class,
+	SimulinkDictionaryModelTests.class
 	//org.eclipse.epsilon.emc.simulink.test.unit.type.AllTests.class
 })
 public class SimulinkTestSuite {

@@ -15,3 +15,28 @@ operation collectMixedCollectionProperties() {
 	col.addAll(EPackage.all);
 	assertEquals(21, col.name.size());
 }
+
+@test
+operation collectFromNullSafe() {
+	var col = Sequence{null, EClass.all.first()};
+	assertEquals(2, col?.name.size());
+}
+
+@test
+operation collectFromNull() {
+	var col = Sequence{null};
+	assertError(col.name);
+}
+
+@test
+operation collectResultTypes() {
+	var set = EClass.all.asSet();
+	var seq = EClass.all.asSequence();
+	var bag = EClass.all.asBag();
+	var orderedSet = EClass.all.asOrderedSet();
+	
+	assertTrue(set.name.isTypeOf(Bag));
+	assertTrue(bag.name.isTypeOf(Bag));
+	assertTrue(seq.name.isTypeOf(Sequence));
+	assertTrue(orderedSet.name.isTypeOf(Sequence));
+}

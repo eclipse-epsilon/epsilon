@@ -1,6 +1,0 @@
-#Fri May 15 12:44:46 BST 2009
-eclipse.preferences.version=1
-gmf_dashboard/domainGenerationModel=platform\:/resource/org.eclipse.epsilon.eugenia.examples.filesystem/model/filesystem.genmodel
-gmf_dashboard/domainModel=platform\:/resource/org.eclipse.epsilon.eugenia.examples.filesystem/model/filesystem.ecore
-gmf_dashboard/graphicalDefinitionModel=platform\:/resource/org.eclipse.epsilon.eugenia.examples.filesystem/model/filesystem.gmfgraph
-gmf_dashboard/toolingDefinitionModel=platform\:/resource/org.eclipse.epsilon.eugenia.examples.filesystem/model/filesystem.gmftool

@@ -3,11 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Pinset
 Bundle-SymbolicName: org.eclipse.epsilon.pinset.engine
 Automatic-Module-Name: org.eclipse.epsilon.pinset.engine
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.erl.engine;visibility:=reexport,
  org.apache.commons.lang3
 Export-Package: org.eclipse.epsilon.pinset,
  org.eclipse.epsilon.pinset.columnGenerators,
+ org.eclipse.epsilon.pinset.debug,
  org.eclipse.epsilon.pinset.parse
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -18,6 +18,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.epsilon.common.dt.EpsilonPlugin;
 import org.eclipse.epsilon.common.dt.launching.dialogs.BrowseWorkspaceUtil;
+import org.eclipse.epsilon.common.dt.util.LogUtil;
 import org.eclipse.epsilon.common.util.FileUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -64,29 +65,12 @@ public abstract class AbstractSourceConfigurationTab extends AbstractLaunchConfi
 		filePath = new Text(sourceGroup, SWT.BORDER);
 		filePath.setLayoutData(filePathData);
 		filePath.addModifyListener(this);
-		
 		createBrowseWorkspaceForFileButton(sourceGroup, filePath);
-		
-		/*
-		fileLabel = new Label(control, SWT.NONE);
-		
-		GridData filePathData = new GridData(GridData.FILL_HORIZONTAL);
-		filePath = new Text(control, SWT.BORDER);
-		filePath.setLayoutData(filePathData);
-		filePath.addModifyListener(this);
-		
-		Button browse = new Button(control, SWT.NONE);
-		browse.setText("Browse Workspace...");
-		browse.addListener(SWT.Selection, new SelectSourceListener(filePath));
-		
-		fileLabel.setText(getFileLabel() + ": ");
-		*/
 		
 		extras = new Composite(control, SWT.NONE);
 		GridData extrasData = new GridData(GridData.FILL_BOTH);
 		extrasData.horizontalSpan = 3;
 		extras.setLayoutData(extrasData);
-		//extras.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
 		
 		control.setBounds(0, 0, 300, 300);
 		control.layout();
@@ -240,7 +224,7 @@ public abstract class AbstractSourceConfigurationTab extends AbstractLaunchConfi
 			canSave();
 			updateLaunchConfigurationDialog();
 		} catch (CoreException e) {
-			//Ignore
+			LogUtil.log(e);
 		}
 	}
 

@@ -1,0 +1,47 @@
+plugins {
+    id 'application'
+}
+
+application {
+    mainClass = 'org.eclipse.epsilon.examples.ExaminationResultsApp'
+}
+
+configurations {
+    epsilon
+}
+
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+    mavenCentral()
+}
+
+dependencies {
+    epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.4.0'
+    epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow.emf:2.4.0'
+    epsilon ('org.eclipse.emfatic:org.eclipse.emfatic.core:1.1.0-SNAPSHOT') {
+        exclude group: 'org.eclipse.platform'
+    }
+}
+
+task setupEpsilonTasks {
+    // Set up the core Epsilon tasks
+    ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/tasks.xml', 
+        classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+    // Set up the Epsilon EMF tasks
+    ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/emf/tasks.xml', 
+        classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+    // Set logging level to info so that EOL's println() is not suppressed
+    ant.lifecycleLogLevel = 'INFO'
+}
+
+task generate {
+    dependsOn tasks.setupEpsilonTasks
+
+    // Load the model.flexmi EMF model
+    ant.'epsilon.emf.loadModel'(name: 'M', modelfile: 'examination-results.flexmi', metamodelfile: 'tdl.emf')
+
+    // Run program.egx against it
+    ant.'epsilon.egl'(src: 'tdl2java.egx'){ model(ref: 'M') }
+}

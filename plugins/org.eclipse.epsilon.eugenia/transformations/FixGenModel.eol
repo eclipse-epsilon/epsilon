@@ -1,5 +1,0 @@
-import 'ECoreUtil.eol';
-
-// Set copyright
-var genModel := GenModel!GenModel.all.first();
-genModel.copyrightText := copyright;

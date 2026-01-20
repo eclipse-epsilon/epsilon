@@ -1,0 +1,10 @@
+rule Ecore2Barchart {
+	template : "barchart/stats.egl"
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "html",
+		"path" = List{"Model", "Stats"},
+		"icon" = "barchart"
+	}
+	target : "barchart.txt"
+}

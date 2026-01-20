@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="main" nsURI="nestedTestMain">
+  <eSubpackages name="child" nsURI="nestedTestChild">
+    <eClassifiers xsi:type="ecore:EEnum" name="Color">
+      <eLiterals name="RED" literal="RED"/>
+      <eLiterals name="GREEN" value="1" literal="GREEN"/>
+      <eLiterals name="BLUE" value="3" literal="BLUE"/>
+    </eClassifiers>
+  </eSubpackages>
+</ecore:EPackage>

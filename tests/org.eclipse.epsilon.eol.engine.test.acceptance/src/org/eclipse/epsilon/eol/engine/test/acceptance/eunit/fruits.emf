@@ -7,6 +7,9 @@ class Basket {
 }
 
 abstract class Fruit {
-   
+
 }
 
+enum FruitColour {
+	RED; GREEN; YELLOW;
+}

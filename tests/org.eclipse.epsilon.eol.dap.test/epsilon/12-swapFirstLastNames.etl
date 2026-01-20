@@ -1,0 +1,7 @@
+rule SwapNames
+  transform firstLast: Source!Person
+  to lastFirst: Target!Person
+{
+  lastFirst.name = firstLast.lastName;
+  lastFirst.lastName = firstLast.name;
+}

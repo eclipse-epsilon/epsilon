@@ -1,162 +1,111 @@
-/*********************************************************************
- * Copyright (c) 2018 The University of York.
+/*******************************************************************************
+ * Copyright (c) 2024 The University of York.
  *
- * This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License 2.0
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  *
  * SPDX-License-Identifier: EPL-2.0
-**********************************************************************/
+ *******************************************************************************/
 package org.eclipse.epsilon.evl.engine.test.acceptance.equivalence;
 
-import static org.eclipse.epsilon.test.util.EpsilonTestUtil.*;
-import static org.eclipse.epsilon.evl.engine.test.acceptance.EvlAcceptanceTestUtil.*;
-import java.util.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Function;
-import org.eclipse.epsilon.eol.engine.test.acceptance.util.EolEquivalenceTests;
-import org.eclipse.epsilon.eol.models.IModel;
-import org.eclipse.epsilon.evl.*;
-import org.eclipse.epsilon.evl.engine.test.acceptance.EvlTests;
+import java.util.function.Supplier;
+
+import org.eclipse.epsilon.common.util.Multimap;
+import org.eclipse.epsilon.eol.engine.test.acceptance.util.EolAcceptanceTestUtil;
+import org.eclipse.epsilon.eol.engine.test.acceptance.util.AbstractEolEquivalenceTests;
+import org.eclipse.epsilon.evl.EvlModule;
+import org.eclipse.epsilon.evl.dom.Constraint;
+import org.eclipse.epsilon.evl.engine.test.acceptance.EvlAcceptanceTestUtil;
+import org.eclipse.epsilon.evl.execute.UnsatisfiedConstraint;
 import org.eclipse.epsilon.evl.launch.EvlRunConfiguration;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.junit.runners.MethodSorters;
 import org.junit.runners.Parameterized.Parameters;
 
-/**
- * 
- * @author Sina Madani
- * @since 1.6
- */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class EvlModuleEquivalenceTests extends EolEquivalenceTests<EvlRunConfiguration> {
-	
-	public EvlModuleEquivalenceTests(EvlRunConfiguration configUnderTest) {
-		super(configUnderTest);
-	}
-	
-	static final Object TIMEOUT_LOCK = new Object();
-	static final long TEST_TIMEOUT = 45_000L;
-	static volatile boolean testInProgress;
-	static EvlRunConfiguration currentTestConfig;
-	
-	static {
-		Thread monitor = new Thread(() -> {
-			while (true) try {
-				if (!testInProgress) synchronized (TIMEOUT_LOCK) {
-					TIMEOUT_LOCK.wait();
-				}
-				if (testInProgress) synchronized (TIMEOUT_LOCK) {
-					long startTime = System.currentTimeMillis();
-					TIMEOUT_LOCK.wait(TEST_TIMEOUT);
-					if (System.currentTimeMillis() - startTime > TEST_TIMEOUT) {
-						assert testInProgress;
-						System.err.println(currentTestConfig + " got stuck!");
-					}
-				}
-			}
-			catch (InterruptedException ie) {
-				
-			}
-		});
-		monitor.setName(EvlParallelOperationsTests.class.getSimpleName()+"-timer");
-		monitor.setDaemon(true);
-		monitor.start();
-	}
-	
-	@Rule
-	public TestWatcher testCounter = new TestWatcher() {
+public class EvlModuleEquivalenceTests extends AbstractEolEquivalenceTests<EvlRunConfiguration> {
 
-		@Override
-		protected void starting(Description description) {
-			super.starting(description);
-			synchronized (TIMEOUT_LOCK) {
-				currentTestConfig = testConfig;
-				testInProgress = true;
-				TIMEOUT_LOCK.notify();
-			}
-		}
-		
-		@Override
-		protected void finished(Description description) {
-			super.finished(description);
-			synchronized (TIMEOUT_LOCK) {
-				testInProgress = false;
-				TIMEOUT_LOCK.notify();
-				currentTestConfig = null;
-			}
-		}
-	};
-	
-	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		setUpEquivalenceTest(getScenarios(EvlModule::new));
+	public EvlModuleEquivalenceTests(EquivalenceTestParameters<EvlRunConfiguration> params) {
+		super(params);
 	}
-	
-	/**
-	 * @return A collection of pre-configured run configurations, each with their own IEvlModule.
-	 * @throws Exception 
-	 */
-	@Parameters//(name = "0")	// Don't use this as the Eclipse JUnit view won't show failures!
-	public static Collection<EvlRunConfiguration> configurations() throws Exception {
-		// Used to specify which module configurations we'd like to test in our scenarios
-		return getScenarios(
-			allInputs,		// All scripts & models
-			true,			// Include test.evl
-			modules(false) 	// Exclude the standard EvlModule
-		);
-	}
-	
-	@Test
+
 	@Override
-	public void _0test0() throws Exception {
-		super.beforeTests();
+	protected void assertEquivalentConfigurations(EvlRunConfiguration oracleConfig, EvlRunConfiguration testedConfig) throws Exception {
+		super.assertEquivalentConfigurations(oracleConfig, testedConfig);
+
+		// Unsatisfied constraints
+		Collection<UnsatisfiedConstraint> oracleUnsatisfied = oracleConfig.getModule().getContext().getUnsatisfiedConstraints();
+		Collection<UnsatisfiedConstraint> testedUnsatisfied = testedConfig.getModule().getContext().getUnsatisfiedConstraints();
+		assertEqualElementsIgnoringOrder(String.format("%s - equals unsatisfied constraints", parameters.name),
+			oracleUnsatisfied, testedUnsatisfied);
+
+		// Constraint traces
+		if (oracleConfig.getModule().getContext().isOptimizeConstraintTrace() == testedConfig.getModule().getContext().isOptimizeConstraintTrace()) {
+			// Uses Set instead of List for performance reasons when calling containsAll.
+			Function<EvlRunConfiguration, Collection<?>> ctContents = cfg ->
+				cfg.getModule().getContext().getConstraintTrace().getItems();
+
+			assertEquals(String.format("%s - equals constraint traces", parameters.name),
+				ctContents.apply(oracleConfig),
+				ctContents.apply(testedConfig));
+		}
+
+		// Constraints depended on
+		Set<Constraint> oracleConstraintsDep = oracleConfig.getModule().getContext().getConstraintsDependedOn();
+		Set<Constraint> testedConstraintsDep = testedConfig.getModule().getContext().getConstraintsDependedOn();
+		assertEquals(String.format("%s - equals constraints depended on", parameters.name),
+				oracleConstraintsDep, testedConstraintsDep);
 	}
-	
+
 	@Override
-	public void zzz_AfterAll() throws Exception {
-		Collection<? extends IModel> ks = testConfig.modelsAndProperties.keySet();
-		
-		if (ks.isEmpty() || ks.iterator().next() != EvlTests.getTestModel(false)) {
-			super.zzz_AfterAll();
+	protected void disposeConfig(EvlRunConfiguration config) throws Exception {
+		if (parameters.name.startsWith(EvlAcceptanceTestUtil.TEST_CONFIG_ID_PREFIX)) {
+			/*
+			 * Note: the executions with test.evl all need to work on the same model instance,
+			 * and we'll also need their stack traces, so don't dispose them. We'll want to
+			 * investigate at some point why this is the case.
+			 */
+			config.reset();
+		} else {
+			super.disposeConfig(config);
 		}
 	}
-	
-	@Test
-	public void testUnsatisfiedConstraints() {
-		onFail(testCollectionsHaveSameElements(
-			expectedConfig.getModule().getContext().getUnsatisfiedConstraints(),
-			testConfig.getModule().getContext().getUnsatisfiedConstraints(),
-			"UnsatisfiedConstraint"
-		));
+
+	protected void assertEqualElementsIgnoringOrder(String msg, Collection<?> expected, Collection<?> actual) {
+		HashSet<?> onlyInExpected = new HashSet<>(expected);
+		onlyInExpected.removeAll(actual);
+
+		HashSet<?> onlyInActual = new HashSet<>(actual);
+		onlyInActual.removeAll(expected);
+
+		assertTrue(msg + ": only in actual - "  + onlyInActual, onlyInExpected.isEmpty());
+		assertTrue(msg + ": only in expected - " + onlyInExpected, onlyInExpected.isEmpty());
 	}
-	
-	@Test
-	public void testConstraintTraces() {
-		if (expectedConfig.getModule().getContext().isOptimizeConstraintTrace() != testConfig.getModule().getContext().isOptimizeConstraintTrace())
-			return;
-		// Uses Set instead of List for performance reasons when calling containsAll.
-		Function<EvlRunConfiguration, Collection<?>> ctContents = cfg ->
-			cfg.getModule().getContext().getConstraintTrace().getItems();
-		
-		onFail(testCollectionsHaveSameElements(
-			ctContents.apply(expectedConfig),
-			ctContents.apply(testConfig),
-			"ConstraintTrace"
-		));
+
+	@Parameters
+	public static Collection<EquivalenceTestParameters<EvlRunConfiguration>> configurations() throws Exception {
+		// Set up the expected suppliers - there should be one per ID
+		Multimap<String, Supplier<EvlRunConfiguration>> expectedSuppliers =
+			EvlAcceptanceTestUtil.getScenarioSuppliers(null, true, Collections.singletonList(EvlModule::new), null);
+		for (Entry<String, Collection<Supplier<EvlRunConfiguration>>> e : expectedSuppliers.entrySet()) {
+			assert e.getValue().size() == 1 : String.format("There should be only one supplier with ID %s", e.getKey());
+		}
+
+		// Get the suppliers to be tested now
+		Multimap<String, Supplier<EvlRunConfiguration>> testedSuppliers =
+			EvlAcceptanceTestUtil.getScenarioSuppliers(null, true, EvlAcceptanceTestUtil.modules(false), null);
+		assert expectedSuppliers.keySet().equals(testedSuppliers.keySet())
+			: "The keys for the expected and tested suppliers should match";
+
+		return EolAcceptanceTestUtil.getPairedConfigurations(expectedSuppliers, testedSuppliers);
 	}
+
 	
-	@Test
-	public void testConstraintsDependedOn() {
-		onFail(testCollectionsHaveSameElements(
-			expectedConfig.getModule().getContext().getConstraintsDependedOn(),
-			testConfig.getModule().getContext().getConstraintsDependedOn(),
-			"Constraints depended on"
-		));
-	}
 }

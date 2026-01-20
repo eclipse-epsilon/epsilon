@@ -46,7 +46,6 @@ foundSfChart.println("Found chart" );
 var sA = new `Stateflow.State`;
 sA.parent = `Stateflow.Chart`.all.first();
 sA.path.println;
-sA.struct.println;
 
 sA.println(">> CREATED: ");
 chart.parent = subsys;

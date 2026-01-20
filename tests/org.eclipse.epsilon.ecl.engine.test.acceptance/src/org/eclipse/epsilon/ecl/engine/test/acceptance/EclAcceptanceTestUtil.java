@@ -10,13 +10,17 @@
 package org.eclipse.epsilon.ecl.engine.test.acceptance;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
+
+import org.eclipse.epsilon.common.util.FileUtil;
 import org.eclipse.epsilon.common.util.StringProperties;
-import org.eclipse.epsilon.ecl.*;
-import org.eclipse.epsilon.ecl.concurrent.*;
+import org.eclipse.epsilon.ecl.EclModule;
+import org.eclipse.epsilon.ecl.IEclModule;
+import org.eclipse.epsilon.ecl.concurrent.EclModuleParallelAnnotation;
+import org.eclipse.epsilon.ecl.engine.test.acceptance.matches.MatchesOperationTest;
 import org.eclipse.epsilon.ecl.execute.context.concurrent.EclContextParallel;
 import org.eclipse.epsilon.ecl.launch.EclRunConfiguration;
 import org.eclipse.epsilon.emc.emf.EmfModel;
@@ -32,29 +36,39 @@ public class EclAcceptanceTestUtil extends EolAcceptanceTestUtil {
 	
 	static final String testsBase = getTestBaseDir(EclAcceptanceTestUtil.class);
 
-	public static Collection<EclRunConfiguration> getScenarios(Iterable<Supplier<? extends IEclModule>> moduleGetters) throws Exception {
-		ArrayList<EclRunConfiguration> scenarios = new ArrayList<>();
-		
-		String matchesRoot = testsBase+"/matches/";
-		Path matchesMM = Paths.get(matchesRoot+"mymetamodel.ecore");
+	public static Collection<Supplier<EclRunConfiguration>> getScenarioSuppliers(Iterable<Supplier<? extends IEclModule>> moduleGetters) throws Exception {
+		List<Supplier<EclRunConfiguration>> scenarios = new ArrayList<>();
+
+		Path matchesMM = FileUtil.getFileStandalone("mymetamodel.ecore", MatchesOperationTest.class).toPath();
+		Path leftModel = FileUtil.getFileStandalone("Left.model", MatchesOperationTest.class).toPath();
+		Path rightModel = FileUtil.getFileStandalone("Right.model", MatchesOperationTest.class).toPath();
+		Path script = FileUtil.getFileStandalone("CompareInstance.ecl", MatchesOperationTest.class).toPath();
+		// TODO - what to do with CompareInstanceParallel.ecl?
+
 		StringProperties
-			leftModelProps = createModelProperties(matchesMM, Paths.get(matchesRoot+"Left.model")),
-			rightModelProps = createModelProperties(matchesMM, Paths.get(matchesRoot+"Right.model"));
-		
+			leftModelProps = createModelProperties(leftModel, matchesMM),
+			rightModelProps = createModelProperties(rightModel, matchesMM);
+
 		for (Supplier<? extends IEclModule> moduleSup : moduleGetters) {
-			scenarios.add(EclRunConfiguration.Builder()
-				.withScript(matchesRoot+"CompareInstance")
+			scenarios.add(() -> EclRunConfiguration.Builder()
+				.withScript(script)
 				.withModel(new EmfModel(), leftModelProps)
 				.withModel(new EmfModel(), rightModelProps)
 				.withModule(moduleSup.get())
 				.build()
 			);
 		}
-		
+
 		return scenarios;
 	}
-	
+
 	public static Collection<Supplier<? extends IEclModule>> modules() {
-		return parallelModules(THREADS, EclModule::new, p -> new EclModuleParallelAnnotation(new EclContextParallel(p)));
+		return modules(true);
+	}
+
+	public static Collection<Supplier<? extends IEclModule>> modules(boolean includeStandard) {
+		return parallelModules(THREADS,
+			includeStandard ? EclModule::new : null,
+			p -> new EclModuleParallelAnnotation(new EclContextParallel(p)));
 	}
 }

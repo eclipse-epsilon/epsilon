@@ -1,6 +1,6 @@
 package org.eclipse.epsilon.etl.parse;
 
-// $ANTLR 3.1b1 EolLexerRules.g 2020-08-12 13:05:33
+// $ANTLR 3.1b1 EolLexerRules.g 2025-05-14 20:12:02
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -72,7 +72,7 @@ public class Etl_EolLexerRules extends Lexer {
     public static final int TYPE=70;
     public static final int T__139=139;
     public static final int T__138=138;
-    public static final int Tokens=164;
+    public static final int Tokens=166;
     public static final int T__133=133;
     public static final int T__132=132;
     public static final int T__135=135;
@@ -80,10 +80,12 @@ public class Etl_EolLexerRules extends Lexer {
     public static final int T__131=131;
     public static final int NewExpression=52;
     public static final int T__130=130;
+    public static final int TRANSFORM_TO_LIST=89;
     public static final int CASE=40;
     public static final int Letter=20;
     public static final int LINE_COMMENT=26;
     public static final int T__129=129;
+    public static final int TRANSFORM_TO=88;
     public static final int T__126=126;
     public static final int JavaIDDigit=22;
     public static final int T__125=125;
@@ -91,8 +93,10 @@ public class Etl_EolLexerRules extends Lexer {
     public static final int MAP=80;
     public static final int T__128=128;
     public static final int T__127=127;
+    public static final int T__165=165;
     public static final int T__162=162;
     public static final int T__161=161;
+    public static final int T__164=164;
     public static final int MODELDECLARATION=73;
     public static final int T__163=163;
     public static final int EXPRESSIONINBRACKETS=64;
@@ -140,7 +144,6 @@ public class Etl_EolLexerRules extends Lexer {
     public static final int T__94=94;
     public static final int T__101=101;
     public static final int POST=84;
-    public static final int T__90=90;
     public static final int ALIAS=75;
     public static final int DRIVER=76;
     public static final int KEYVAL=81;
@@ -156,7 +159,7 @@ public class Etl_EolLexerRules extends Lexer {
     public static final int T__98=98;
     public static final int ABORT=48;
     public static final int StrangeNameLiteral=16;
-    public static final int ETLMODULE=88;
+    public static final int ETLMODULE=90;
     public static final int FOR=34;
     public static final int BLOCK=67;
     public static final int PARAMETERS=51;
@@ -197,7 +200,6 @@ public class Etl_EolLexerRules extends Lexer {
     public static final int DIGIT=5;
     public static final int EXECUTABLEANNOTATION=56;
     public static final int T__108=108;
-    public static final int T__89=89;
     public static final int T__107=107;
     public static final int WHILE=38;
     public static final int T__109=109;
@@ -1693,11 +1695,11 @@ public class Etl_EolLexerRules extends Lexer {
     static final String DFA14_eofS =
         "\25\uffff";
     static final String DFA14_minS =
-        "\1\102\1\uffff\1\145\1\uffff\1\157\1\uffff\1\161\1\154\3\uffff"+
-        "\1\143\1\165\2\162\1\145\1\156\1\164\1\102\2\uffff";
+        "\1\102\1\uffff\1\145\1\uffff\1\157\1\uffff\1\161\1\154\3\uffff\1"+
+        "\143\1\165\2\162\1\145\1\156\1\164\1\102\2\uffff";
     static final String DFA14_maxS =
-        "\1\123\1\uffff\1\145\1\uffff\1\157\1\uffff\1\164\1\156\3\uffff"+
-        "\1\143\1\165\2\162\1\145\1\156\1\164\1\123\2\uffff";
+        "\1\123\1\uffff\1\145\1\uffff\1\157\1\uffff\1\164\1\156\3\uffff\1"+
+        "\143\1\165\2\162\1\145\1\156\1\164\1\123\2\uffff";
     static final String DFA14_acceptS =
         "\1\uffff\1\1\1\uffff\1\4\1\uffff\1\6\2\uffff\1\2\1\3\1\5\10\uffff"+
         "\1\7\1\10";
@@ -1761,9 +1763,9 @@ public class Etl_EolLexerRules extends Lexer {
         }
     }
     static final String DFA21_eotS =
-        "\2\uffff\1\26\2\uffff\2\21\2\uffff\10\21\6\uffff\12\21\2\uffff"+
-        "\2\21\1\61\1\21\1\61\4\21\1\67\2\21\1\72\1\21\1\uffff\4\21\1\61"+
-        "\1\uffff\2\21\1\uffff\1\72\4\21\1\67\5\21\1\113\4\21\1\uffff\1\61"+
+        "\2\uffff\1\26\2\uffff\2\21\2\uffff\10\21\6\uffff\12\21\2\uffff\2"+
+        "\21\1\61\1\21\1\61\4\21\1\67\2\21\1\72\1\21\1\uffff\4\21\1\61\1"+
+        "\uffff\2\21\1\uffff\1\72\4\21\1\67\5\21\1\113\4\21\1\uffff\1\61"+
         "\6\21\2\61\7\21\2\61\1\67";
     static final String DFA21_eofS =
         "\137\uffff";

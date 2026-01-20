@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.epsilon.workflow.tasks;
 
+import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.IEolModule;
-import org.eclipse.epsilon.eol.concurrent.EolModuleParallel;
 
 public class EolTask extends ExecutableModuleTask {
 	
@@ -21,7 +21,7 @@ public class EolTask extends ExecutableModuleTask {
 
 	@Override
 	protected IEolModule createDefaultModule() throws InstantiationException, IllegalAccessException {
-		return new EolModuleParallel();
+		return new EolModule();
 	}
 
 	@Override

@@ -10,6 +10,7 @@
 package org.eclipse.epsilon.emc.spreadsheets.excel;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -41,8 +42,7 @@ public class ExcelRowTest {
 	public void testBelongsToModel() throws EolRuntimeException {
 		ExcelWorksheet worksheet = (ExcelWorksheet) model.getWorksheetByType("Sheet1");
 		ExcelRow row = (ExcelRow) worksheet.getRows().get(0);
-		assertTrue(row.getModel() == model);
-		assertTrue(row.getModel() != new ExcelModel());
+		assertSame(model, row.getModel());
 	}
 
 	@Test
@@ -82,7 +82,7 @@ public class ExcelRowTest {
 	public void testReadInteger() {
 		try {
 			String value = testReadType(1);
-			assertTrue(value.equals("12345.0"));
+			assertEquals("12345", value);
 		}
 		catch (Exception e) {
 			fail(e.getMessage());
@@ -115,7 +115,7 @@ public class ExcelRowTest {
 	public void testReadEvaluatedFormula() {
 		try {
 			String value = testReadType(4);
-			assertTrue(value.equals("3.0"));
+			assertEquals("3", value);
 		}
 		catch (Exception e) {
 			fail(e.getMessage());

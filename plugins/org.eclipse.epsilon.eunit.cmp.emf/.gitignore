@@ -1,2 +1,3 @@
 /emf-compare.jar
 /dependency-reduced-pom.xml
+org.eclipse.emf.compare*.jar

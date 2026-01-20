@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ODesign Parse Demo
+Bundle-SymbolicName: org.eclipse.epsilon.examples.odesign
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.epsilon.emc.emf,
+ org.eclipse.sirius.diagram.model,
+ org.eclipse.sirius.properties,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.sirius.ext.base
+Automatic-Module-Name: org.eclipse.epsilon.examples.odesign
+Bundle-RequiredExecutionEnvironment: JavaSE-21

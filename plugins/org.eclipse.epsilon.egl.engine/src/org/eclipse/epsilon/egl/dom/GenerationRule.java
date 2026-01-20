@@ -166,7 +166,7 @@ public class GenerationRule extends ExtensibleNamedRule implements IExecutableMo
 		
 		if (templateCache == null || (eglTemplate = templateCache.get(templateUri)) == null) {
 			eglTemplate = templateFactory.load(templateUri);
-			
+
 			List<ParseProblem> problems = eglTemplate.getParseProblems();
 			if (!problems.isEmpty()) {
 				ParseProblem problem = problems.get(0);

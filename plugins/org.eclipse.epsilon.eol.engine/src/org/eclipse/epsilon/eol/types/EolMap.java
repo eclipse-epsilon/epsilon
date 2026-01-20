@@ -12,6 +12,7 @@
 package org.eclipse.epsilon.eol.types;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -33,7 +34,7 @@ public class EolMap<K, V> implements Map<K, V> {
 	}
 	
 	public EolMap() {
-		this(new java.util.HashMap<>());
+		this(new LinkedHashMap<K, V>());
 	}
 
 	@Override

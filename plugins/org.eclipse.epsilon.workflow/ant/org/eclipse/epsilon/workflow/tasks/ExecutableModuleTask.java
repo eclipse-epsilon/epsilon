@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
@@ -87,6 +88,7 @@ public abstract class ExecutableModuleTask extends EpsilonTask {
 	protected Object result;
 	private boolean isGUI = true;
 	private boolean isDebug = false;
+	protected Integer debugPort;
 	protected boolean setBeans = false;
 	protected boolean fine;
 	
@@ -263,7 +265,10 @@ public abstract class ExecutableModuleTask extends EpsilonTask {
 				result = module.execute();
 			}
 			else {
-				HostManager.getHost().debug(module, getSrc());
+				if (debugPort != null) {
+					HostManager.getHost().setDebugPort(debugPort);
+				}
+				HostManager.getHost().debug(module, getSrc(), getDebugSession());
 			}
 
 			useResults();
@@ -298,6 +303,7 @@ public abstract class ExecutableModuleTask extends EpsilonTask {
 			for (ParseProblem problem : module.getParseProblems()) {
 				log(problem.toString(), Project.MSG_ERR);
 			}
+			fail("Problems encountered during parsing.", null);
 		}
 	}
 
@@ -497,6 +503,20 @@ public abstract class ExecutableModuleTask extends EpsilonTask {
 		IEolModule module = clazz.getConstructor().newInstance();
 		module.configure(ModuleProperty.toMap(properties));
 		return module;
+	}
+
+	/**
+	 * If we're using a host that supports remote debugging, returns the port to be used.
+	 */
+	public Integer getDebugPort() {
+		return debugPort;
+	}
+
+	/**
+	 * Changes the port to listen at, if we're using a host that supports remote debugging.
+	 */
+	public void setDebugPort(Integer debugPort) {
+		this.debugPort = debugPort;
 	}
 	
 }

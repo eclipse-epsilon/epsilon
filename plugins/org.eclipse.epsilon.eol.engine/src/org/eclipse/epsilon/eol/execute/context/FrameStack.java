@@ -419,18 +419,13 @@ public class FrameStack implements Cloneable, ConcurrentBaseDelegate<FrameStack>
 	
 	@Override
 	public FrameStack clone() {
-		try {
-			FrameStack clone = (FrameStack) super.clone();
-			clone.base = this.base;
-			clone.setThreadSafe(this.isThreadSafe());
-			clone.initializeState();
-			clone.locals = locals.clone();
-			clone.globals = globals.clone();
-			return clone;
-		}
-		catch (CloneNotSupportedException cnfx) {
-			throw new RuntimeException(cnfx);
-		}
+		FrameStack clone = new FrameStack();
+		clone.base = this.base;
+		clone.isConcurrent = this.isConcurrent;
+		clone.builtInVariables = new HashMap<>(this.builtInVariables);
+		clone.locals = locals.clone();
+		clone.globals = globals.clone();
+		return clone;
 	}
 	
 	@Override

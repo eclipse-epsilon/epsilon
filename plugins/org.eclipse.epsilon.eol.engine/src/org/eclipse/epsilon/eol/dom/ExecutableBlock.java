@@ -115,10 +115,23 @@ public class ExecutableBlock<T> extends AbstractExecutableModuleElement {
 		FrameStack frameStack = context.getFrameStack();
 		
 		if (inNewFrame) frameStack.enterLocal(frameType, this);
-		
-		frameStack.put(variables);
-		
-		Object result = executeBody(context);
+
+		// We temporarily change entry point if needed, to help with debugging
+		ModuleElement oldEntryPoint = frameStack.getTopFrame().getEntryPoint();
+		if (oldEntryPoint != this) {
+			frameStack.getTopFrame().setEntryPoint(this);
+		}
+
+		Object result;
+		try {
+			frameStack.put(variables);
+			result = executeBody(context);
+		} finally {
+			// If we changed the entry point, restore it to its old value
+			if (oldEntryPoint != this) {
+				frameStack.getTopFrame().setEntryPoint(oldEntryPoint);
+			}
+		}
 		
 		if (inNewFrame) frameStack.leaveLocal(this);
 		

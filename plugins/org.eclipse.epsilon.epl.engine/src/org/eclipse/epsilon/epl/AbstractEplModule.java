@@ -93,8 +93,8 @@ public abstract class AbstractEplModule extends ErlModule implements IEplModule 
 	}
 	
 	@Override
-	public HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	public HashMap<String, Class<?  extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("epl", getClass());
 		return importConfiguration;
 	}

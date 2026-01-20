@@ -209,11 +209,11 @@ public class EmgOperationContributor extends OperationContributor
 	 * @param upper the upper
 	 * @return the double
 	 * @throws EolRuntimeException the eol runtime exception
-	 * @see org.eclipse.epsilon.emg.random.EmgRandomGenerator#nextDobule(double)
+	 * @see org.eclipse.epsilon.emg.random.EmgRandomGenerator#nextDouble(double)
 	 */
 	@Override
-	public double nextDobule(double upper) throws EolRuntimeException {
-		return delegate.nextDobule(upper);
+	public double nextDouble(double upper) throws EolRuntimeException {
+		return delegate.nextDouble(upper);
 	}
 
 	/**
@@ -222,12 +222,12 @@ public class EmgOperationContributor extends OperationContributor
 	 * @param lower the lower
 	 * @param upper the upper
 	 * @return the double
-	 * @see org.eclipse.epsilon.emg.random.EmgRandomGenerator#nextDobule(double,
+	 * @see org.eclipse.epsilon.emg.random.EmgRandomGenerator#nextDouble(double,
 	 *      double)
 	 */
 	@Override
-	public double nextDobule(double lower, double upper) {
-		return delegate.nextDobule(lower, upper);
+	public double nextDouble(double lower, double upper) {
+		return delegate.nextDouble(lower, upper);
 	}
 
 	/**

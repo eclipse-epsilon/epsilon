@@ -12,6 +12,8 @@ package org.eclipse.epsilon.workflow.tasks.hosts;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Future;
+
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.eclipse.ant.core.AntCorePlugin;
@@ -19,36 +21,84 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationType;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.epsilon.common.dt.console.EolRuntimeExceptionHyperlinkListener;
 import org.eclipse.epsilon.common.dt.extensions.ClassBasedExtension;
 import org.eclipse.epsilon.common.dt.launching.EclipseExecutionController;
 import org.eclipse.epsilon.common.dt.launching.extensions.ModelTypeExtension;
-import org.eclipse.epsilon.ecl.IEclModule;
-import org.eclipse.epsilon.ecl.dt.launching.EclDebugger;
-import org.eclipse.epsilon.egl.IEgxModule;
-import org.eclipse.epsilon.egl.dt.debug.EgxDebugger;
-import org.eclipse.epsilon.eml.IEmlModule;
-import org.eclipse.epsilon.eml.dt.launching.EmlDebugger;
+import org.eclipse.epsilon.common.dt.util.LogUtil;
 import org.eclipse.epsilon.eol.IEolModule;
+import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 import org.eclipse.epsilon.eol.dt.ExtensionPointToolNativeTypeDelegate;
-import org.eclipse.epsilon.eol.dt.debug.EolDebugTarget;
-import org.eclipse.epsilon.eol.dt.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dt.userinput.JFaceUserInput;
 import org.eclipse.epsilon.eol.models.IModel;
-import org.eclipse.epsilon.epl.IEplModule;
-import org.eclipse.epsilon.epl.dt.launching.EplDebugger;
-import org.eclipse.epsilon.etl.IEtlModule;
-import org.eclipse.epsilon.etl.dt.launching.EtlDebugger;
 import org.eclipse.epsilon.eunit.EUnitTestListener;
-import org.eclipse.epsilon.evl.IEvlModule;
-import org.eclipse.epsilon.evl.dt.launching.EvlDebugger;
-import org.eclipse.epsilon.pinset.PinsetModule;
-import org.eclipse.epsilon.pinset.dt.launching.PinsetDebugger;
+import org.eclipse.epsilon.workflow.tasks.debug.DebugServerSession;
+import org.eclipse.lsp4e.debug.DSPPlugin;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IOConsole;
 
+@SuppressWarnings("restriction")
 public class EclipseHost implements Host {
+
+	private static final String ANT_DEBUG_LSP4E = "org.eclipse.epsilon.workflow.debug.ant";
+	private static final String LSP4E_LAUNCH_TYPE = "org.eclipse.epsilon.eol.dt.debug.RemoteEpsilonLaunchConfigurationDelegate";
+
+	protected static class RemoteDebugOnStart implements Runnable {
+		private ILaunchManager manager;
+		private ILaunchConfigurationType type;
+		private EpsilonDebugServer server;
+		private ILaunchConfiguration config;
+
+		public RemoteDebugOnStart(ILaunchManager manager, ILaunchConfigurationType type, EpsilonDebugServer server) {
+			this.manager = manager;
+			this.type = type;
+			this.server = server;
+		}
+
+		@Override
+		public void run() {
+			try {
+				ILaunchConfiguration[] configs = manager.getLaunchConfigurations(type);
+				for (ILaunchConfiguration config : configs) {
+					if (ANT_DEBUG_LSP4E.equals(config.getName())) {
+						config.delete();
+						break;
+					}
+				}
+				ILaunchConfigurationWorkingCopy workingCopy = type.newInstance(null, ANT_DEBUG_LSP4E);
+
+				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_SERVER_HOST, "localhost");
+				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_SERVER_PORT, server.getPort());
+				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_MODE, DSPPlugin.DSP_MODE_CONNECT);
+				workingCopy.setAttribute(DSPPlugin.ATTR_DSP_PARAM, "{\"request\": \"attach\"}");
+
+				config = workingCopy.doSave();
+				Display.getDefault().asyncExec(() -> {
+					// DebugUITools.launch must be called in the UI thread
+					DebugUITools.launch(config, ILaunchManager.DEBUG_MODE);
+				});
+			} catch (CoreException e) {
+				e.printStackTrace();
+				LogUtil.log(e);
+			}
+		}
+
+		public void deleteLaunchConfiguration() throws CoreException {
+			if (config != null) {
+				config.delete();
+				config = null;
+			}
+		}
+	}
+
+	private Integer debugPort;
 
 	@Override
 	public boolean isRunning() {
@@ -88,50 +138,51 @@ public class EclipseHost implements Host {
 	}
 	
 	@Override
-	public Object debug(IEolModule module, File file) throws Exception {
-		final EolDebugger debugger = (EolDebugger) createDebugger(module);
+	public Object debug(IEolModule module, File file, DebugServerSession debugSession) throws Exception {
+		// Set up and launch an LSP4E launch configuration to connect to the server
+		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchConfigurationType type = manager.getLaunchConfigurationType(LSP4E_LAUNCH_TYPE);
+		if (type == null) {
+			throw new RuntimeException("Could not find the LSP4E launch configuration type: " + LSP4E_LAUNCH_TYPE);
+		}
 
-		// HACK: we assume the only running launch is the Ant launch. There's no clear way to
-		// tell apart an Ant launch from a regular Run launch, apart from using internal classes
-		// in the Eclipse Ant internal API.
-		final ILaunch currentLaunch = DebugPlugin.getDefault().getLaunchManager().getLaunches()[0];
-		// HACK: we need to remove the Ant source locator so Eclipse can find the source file
-		currentLaunch.setSourceLocator(null);
+		if (debugSession == null) {
+			final int port = debugPort == null ? 0 : debugPort;
+			final EpsilonDebugServer server = new EpsilonDebugServer(module, port);
+			final RemoteDebugOnStart onStart = new RemoteDebugOnStart(manager, type, server);
+			server.setOnStart(onStart);
 
-		final EolDebugTarget target = new EolDebugTarget(
-			currentLaunch, module, debugger, file.getAbsolutePath());
-		debugger.setTarget(target);
-		currentLaunch.addDebugTarget(target);
-		return target.debug();
-	}
-	
-	private Object createDebugger(IEolModule module) {
-		if (module instanceof IEclModule) {
-			return new EclDebugger();
-		}
-		else if (module instanceof IEplModule) {
-			return new EplDebugger();
-		}
-		else if (module instanceof IEmlModule) {
-			return new EmlDebugger();
-		}
-		else if (module instanceof IEtlModule) {
-			return new EtlDebugger();
-		}
-		else if (module instanceof IEvlModule) {
-			return new EvlDebugger();
-		}
-		else if (module instanceof IEgxModule) {
-			return new EgxDebugger();
-		}
-		else if (module instanceof PinsetModule) {
-			return new PinsetDebugger();
-		}
-		else if (module != null) {
-			return new EolDebugger();
-		}
-		else {
-			return null;
+			Thread serverThread = new Thread(server);
+			Object result = null;
+			try {
+				serverThread.start();
+
+				// Wait for the program to execute
+				result = server.getResult().get();
+			} finally {
+				// Delete the launch configuration as soon as execution is completed
+				onStart.deleteLaunchConfiguration();
+			}
+
+			// Wait for the server to shutdown
+			serverThread.join();
+			return result;
+		} else {
+			Future<Object> futureResult = debugSession.getQueueModule().enqueue(module);
+
+			ILaunch existingLaunch = null;
+			for (ILaunch launch : manager.getLaunches()) {
+				if (launch.getLaunchConfiguration().getType() == type) {
+					existingLaunch = launch;
+					break;
+				}
+			}
+			if (existingLaunch == null) {
+				// If we don't have an LSP4E launch, start it now
+				new RemoteDebugOnStart(manager, type, debugSession.getServer()).run();
+			}
+
+			return futureResult.get();
 		}
 	}
 
@@ -170,6 +221,11 @@ public class EclipseHost implements Host {
 		} else {
 			return Collections.EMPTY_LIST;
 		}
+	}
+
+	@Override
+	public void setDebugPort(int port) {
+		this.debugPort = port;
 	}
 
 }

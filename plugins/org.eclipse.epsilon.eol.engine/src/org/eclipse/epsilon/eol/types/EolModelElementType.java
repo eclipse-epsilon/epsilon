@@ -27,7 +27,7 @@ import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.m3.MetaClass;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.ModelRepository;
-import org.eclipse.epsilon.eol.models.ModelRepository.AmbiguityCheckResult;
+import org.eclipse.epsilon.eol.models.ModelRepository.TypeAmbiguityCheckResult;
 
 public class EolModelElementType extends EolType {
 	
@@ -66,14 +66,14 @@ public class EolModelElementType extends EolType {
 
 	private void checkAmbiguityOfType(IEolContext context) {
 		if (modelName.isEmpty()) {
-			final AmbiguityCheckResult result = context.getModelRepository().checkAmbiguity(typeName);
+			final TypeAmbiguityCheckResult result = context.getModelRepository().checkAmbiguity(typeName);
 			if (result.isAmbiguous) {
 				issueAmbiguousTypeWarning(context, result);
 			}
 		}
 	}
 
-	private void issueAmbiguousTypeWarning(IEolContext context, AmbiguityCheckResult result) {
+	private void issueAmbiguousTypeWarning(IEolContext context, TypeAmbiguityCheckResult result) {
 		final String potentialTypes = CollectionUtil.join(result.namesOfOwningModels, " ", element -> "'" + element + "!" + typeName+"'");
 		
 		context.getWarningStream().println(String.format(

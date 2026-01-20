@@ -26,7 +26,9 @@
             delegate="org.eclipse.epsilon.edl.dt.launching.EdlLaunchConfigurationDelegate"
             id="org.epsilon.edl.eclipse.dt.launching.EdlLaunchConfigurationDelegate"
             modes="run, debug"
-            name="EDL Demo"/>
+            name="EDL Demo"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">

@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.epsilon.core.feature"
       label="Epsilon Core"
-      version="2.5.0.qualifier"
+      version="2.9.0.qualifier"
       provider-name="Eclipse Modeling Project"
       license-feature="org.eclipse.license"
       license-feature-version="0.0.0">
@@ -144,13 +144,6 @@
 
    <plugin
          id="org.eclipse.epsilon.emc.plainxml"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-         
-   <plugin
-         id="org.eclipse.epsilon.emc.yaml"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="project" default="run-tests">
+	<target name="run-tests">
+		<epsilon.eunit src="tests.eunit">
+			<modeltasks>
+				<epsilon.emf.loadModel name="M"
+					modeluri="platform:/resource/org.eclipse.epsilon.eunit.examples.emfvalidator.eunit/example.model"
+					metamodeluri="example" read="true" store="true" cached="false" />
+			</modeltasks>
+		</epsilon.eunit>
+
+	</target>
+</project>

@@ -118,7 +118,7 @@ public class MatlabEngineUtil {
 		switch (OperatingSystem.getOSFamily()) {
 			case WINDOWS: osBin = "win64";
 				break;
-			case MAC: osBin = "maci64";
+			case MAC: osBin = OperatingSystem.isARM64() ? "maca64" : "maci64";
 				break;
 			default: osBin = "glnxa64";
 				break;

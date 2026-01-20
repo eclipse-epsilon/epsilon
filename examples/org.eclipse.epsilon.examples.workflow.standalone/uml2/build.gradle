@@ -13,11 +13,11 @@ repositories {
 }
 
 dependencies {
-	epsilon('org.eclipse.epsilon:org.eclipse.epsilon.emc.uml:2.4.0') {
+	epsilon('org.eclipse.epsilon:org.eclipse.epsilon.emc.uml:2.5.0') {
 		// UML2 is broken on Maven Central
         exclude group: 'org.eclipse.uml2'
     }
-    epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.4.0'
+    epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.5.0'
     
     // Fetch the UML2 dependencies from repo.eclipse.org instead
 	epsilon 'org.eclipse.uml2:org.eclipse.uml2.uml:5.0.1.v20140910-1354'

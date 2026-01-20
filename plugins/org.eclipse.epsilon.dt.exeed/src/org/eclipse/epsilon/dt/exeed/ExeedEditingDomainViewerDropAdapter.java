@@ -24,13 +24,15 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.TreeItem;
 
-public class ExeedEditingDomainViewerDropAdapter extends EditingDomainViewerDropAdapter {
+public class ExeedEditingDomainViewerDropAdapter extends EditingDomainViewerDropAdapter implements DisposeListener {
 
 	protected Image setReferenceValueImage = null;
 	protected Image addReferenceValueImage = null;
@@ -118,7 +120,8 @@ public class ExeedEditingDomainViewerDropAdapter extends EditingDomainViewerDrop
 		while (rit.hasNext()) {
 			final EReference ref = rit.next();
 			if (!ref.isMany() && source.size() > 1) continue;
-
+			if (ref.isContainment()) continue; // Containment references are handled by the reflective editor
+			
 			boolean areInstancesOf = true;
 			final Iterator<?> it = source.iterator();
 			final EClassifier eType = ref.getEType();
@@ -132,6 +135,12 @@ public class ExeedEditingDomainViewerDropAdapter extends EditingDomainViewerDrop
 		}
 
 		return qualifiedReferences;
+	}
+
+	@Override
+	public void widgetDisposed(DisposeEvent e) {
+		if (setReferenceValueImage != null) setReferenceValueImage.dispose();
+		if (addReferenceValueImage != null) addReferenceValueImage.dispose();
 	}
 
 }

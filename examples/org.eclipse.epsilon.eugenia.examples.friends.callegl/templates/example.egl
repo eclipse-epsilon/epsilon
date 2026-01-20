@@ -1,3 +1,0 @@
-[%for (p in Person.all){%]
-Person: [%=p.name%]
-[%}%]

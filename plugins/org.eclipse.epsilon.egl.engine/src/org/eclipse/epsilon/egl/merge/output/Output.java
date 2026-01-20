@@ -1,11 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2008 The University of York.
+ * Copyright (c) 2008-2024 The University of York.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  * 
  * Contributors:
  *     Louis Rose - initial API and implementation
+ *     Sam Harris - optimised region merging
+ *     Antonio Garcia-Dominguez - minor corrections
  ******************************************************************************/
 package org.eclipse.epsilon.egl.merge.output;
 
@@ -15,8 +17,8 @@ import java.util.stream.Collectors;
 public class Output {
 
 	private final List<Region> regions = new ArrayList<>(0);
-	private final Collection<String> locatedRegionIds = new LinkedHashSet<>();
 	private final Collection<String> duplicatedLocatedRegionIds = new LinkedHashSet<>();
+	private final Map<String, LocatedRegion> locatedRegions = new HashMap<>();
 	
 	public Output(Region... regions) {
 		this(Arrays.asList(regions));	
@@ -32,11 +34,11 @@ public class Output {
 			if (r instanceof LocatedRegion) {
 				final LocatedRegion lr = (LocatedRegion) r;
 				final String id = lr.getId();
-				if (locatedRegionIds.contains(id)) {
+				if (locatedRegions.containsKey(id)) {
 					duplicatedLocatedRegionIds.add(id);
 				}
 				else {
-					locatedRegionIds.add(id);
+					locatedRegions.put(id, lr);
 				}
 			}
 		}
@@ -54,16 +56,7 @@ public class Output {
 	}
 	
 	public LocatedRegion getLocatedRegion(String id) {
-		for (Region region : regions) {
-			if (region instanceof LocatedRegion) {
-				LocatedRegion locatedRegion = (LocatedRegion)region;
-				if (locatedRegion.getId().equals(id)) {
-					return locatedRegion;
-				}
-			}
-		}
-		
-		return null;
+		return locatedRegions.get(id);
 	}
 	
 	public List<String> getProblems() {

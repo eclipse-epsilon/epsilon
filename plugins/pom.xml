@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.eclipse.epsilon</groupId>
     <artifactId>epsilon</artifactId>
-    <version>2.5.0-SNAPSHOT</version>
+    <version>2.9.0-SNAPSHOT</version>
   </parent>
   <artifactId>plugins</artifactId>
   <packaging>pom</packaging>
@@ -22,6 +22,7 @@
     <module>org.eclipse.epsilon.dt.exeed</module>
     <module>org.eclipse.epsilon.ecl.dt</module>
     <module>org.eclipse.epsilon.ecl.engine</module>
+    <module>org.eclipse.epsilon.ecore.delegates</module>
     <module>org.eclipse.epsilon.egl.dt</module>
     <module>org.eclipse.epsilon.egl.dt.traceability.editor</module>
     <module>org.eclipse.epsilon.egl.dt.traceability.fine.emf</module>
@@ -52,11 +53,11 @@
     <module>org.eclipse.epsilon.emc.plainxml.dt</module>
     <module>org.eclipse.epsilon.emc.yaml</module>
     <module>org.eclipse.epsilon.emc.yaml.dt</module>
+    <module>org.eclipse.epsilon.emc.json</module>
+    <module>org.eclipse.epsilon.emc.json.dt</module>
     <module>org.eclipse.epsilon.emc.spreadsheets</module>
     <module>org.eclipse.epsilon.emc.spreadsheets.excel</module>
     <module>org.eclipse.epsilon.emc.spreadsheets.excel.dt</module>
-    <module>org.eclipse.epsilon.emc.spreadsheets.google</module>
-    <module>org.eclipse.epsilon.emc.spreadsheets.google.dt</module>
     <module>org.eclipse.epsilon.emc.uml</module>
     <module>org.eclipse.epsilon.emc.uml.dt</module>
     <module>org.eclipse.epsilon.emc.simulink.common</module>
@@ -75,6 +76,7 @@
     <module>org.eclipse.epsilon.eol.cli</module>
     <module>org.eclipse.epsilon.eol.dt</module>
     <module>org.eclipse.epsilon.eol.dt.interpreter</module>
+    <module>org.eclipse.epsilon.eol.dap</module>
     <module>org.eclipse.epsilon.eol.engine</module>
     <module>org.eclipse.epsilon.eol.tools</module>
     <module>org.eclipse.epsilon.epl.dt</module>
@@ -83,8 +85,6 @@
     <module>org.eclipse.epsilon.erl.engine</module>
     <module>org.eclipse.epsilon.etl.dt</module>
     <module>org.eclipse.epsilon.etl.engine</module>
-    <module>org.eclipse.epsilon.eugenia</module>
-    <module>org.eclipse.epsilon.eugenia.runtime.dependencies</module>
     <module>org.eclipse.epsilon.eunit.cmp.emf</module>
     <module>org.eclipse.epsilon.eunit.dt</module>
     <module>org.eclipse.epsilon.eunit.dt.diff.emf</module>
@@ -119,10 +119,8 @@
     <module>org.eclipse.epsilon.pinset.dt</module>
     <module>org.eclipse.epsilon.profiling</module>
     <module>org.eclipse.epsilon.profiling.dt</module>
-    <module>org.eclipse.epsilon.sirius.widget</module>
     <module>org.eclipse.epsilon.workflow</module>
     <module>org.eclipse.epsilon.workflow.csv</module>
     <module>org.eclipse.epsilon.workflow.emf</module>
-    <module>org.eclipse.epsilon.workflow.eugenia</module>
   </modules>
 </project>

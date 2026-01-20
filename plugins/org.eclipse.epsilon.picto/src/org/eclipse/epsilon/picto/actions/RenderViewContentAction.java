@@ -22,7 +22,7 @@ public class RenderViewContentAction extends Action {
 	protected List<ViewContent> viewContents;
 	
 	public RenderViewContentAction(ViewContent viewContent, List<ViewContent> viewContents, PictoView pictoView) {
-		super(viewContent.getLabel() + " source", AS_CHECK_BOX);
+		super(viewContent.getLabel() + " Source", AS_CHECK_BOX);
 		this.viewContent = viewContent;
 		this.pictoView = pictoView;
 		this.viewContents = viewContents;

@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2008 The University of York.
+ * Copyright (c) 2008-2023 The University of York.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  * 
  * Contributors:
  *     Dimitrios Kolovos - initial API and implementation
+ *     Antonio Garcia-Dominguez - add support for partial enum literals
  ******************************************************************************/
 package org.eclipse.epsilon.eol.models;
 
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.eclipse.epsilon.common.util.CollectionUtil;
 import org.eclipse.epsilon.eol.exceptions.models.EolEnumerationValueNotFoundException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelNotFoundException;
@@ -102,12 +104,12 @@ public class ModelRepository {
 	 * is ambiguous (i.e. more than one {@link IModel} in this repository
 	 * has the type), and (2) the set of models that do have this type.
 	 */
-	public AmbiguityCheckResult checkAmbiguity(String typeName) {	
+	public TypeAmbiguityCheckResult checkAmbiguity(String typeName) {	
 		final List<String> namesOfModelsThatHaveThisType = namesOfModelsThatHaveTheType(typeName);
 		final boolean      typeIsAmbiguous               = namesOfModelsThatHaveThisType.size() > 1;
 		final String       nameOfSelectedModel           = namesOfModelsThatHaveThisType.isEmpty() ? "" : namesOfModelsThatHaveThisType.get(0);
 		
-		return new AmbiguityCheckResult(typeIsAmbiguous, namesOfModelsThatHaveThisType, nameOfSelectedModel);
+		return new TypeAmbiguityCheckResult(typeIsAmbiguous, namesOfModelsThatHaveThisType, nameOfSelectedModel);
 	}
 
 	private List<String> namesOfModelsThatHaveTheType(String typeName) {
@@ -121,30 +123,84 @@ public class ModelRepository {
 		return modelNames;
 	}
 	
-	public static class AmbiguityCheckResult {
+	public static class TypeAmbiguityCheckResult {
 		public final boolean isAmbiguous;
 		public final Collection<String> namesOfOwningModels;
 		public final String nameOfSelectedModel;
 		
-		public AmbiguityCheckResult(boolean isAmbiguous, Collection<String> namesOfOwningModels, String nameOfSelectedModel) {
+		public TypeAmbiguityCheckResult(boolean isAmbiguous, Collection<String> namesOfOwningModels, String nameOfSelectedModel) {
 			this.isAmbiguous = isAmbiguous;
 			this.namesOfOwningModels = namesOfOwningModels;
 			this.nameOfSelectedModel = nameOfSelectedModel;
 		} 		
 	}
+
+	/**
+	 * Special return value that can be used by {@link ModelRepository#getEnumerationValue(String)} to signal
+	 * that a certain enumeration reference is ambiguous.
+	 */
+	public static class AmbiguousEnumerationValue {
+		public final Collection<String> namesOfAlternatives;
+		public final String nameOfSelectedAlternative;
+		public final Object selectedValue;
+
+		public AmbiguousEnumerationValue(Collection<String> namesOfAlternatives, String nameOfSelectedAlternative, Object value) {
+			this.namesOfAlternatives = namesOfAlternatives;
+			this.nameOfSelectedAlternative = nameOfSelectedAlternative;
+			this.selectedValue = value;
+		}
+	}
 	
-	//TODO : Add support for using #vk_public straight
-	// and test for MDR models
-	//FIXME : Remove method from model repository
+	// FIXME : Remove method from model repository
+	/**
+	 * Resolves the enumeration literal corresponding to a given label of the form {@code (MODEL '!')? TYPE? '#' LABEL}.
+	 *
+	 * @return The enumeration literal if unambiguous, or an {@link AmbiguousEnumerationValue} if it is ambiguous.
+	 */
 	public Object getEnumerationValue(String modelAndEnumerationAndLabel) throws EolModelNotFoundException, EolEnumerationValueNotFoundException {
-		
 		String modelName = getModelName(modelAndEnumerationAndLabel);
 		String enumerationAndLabel = getMetaClassName(modelAndEnumerationAndLabel);
 		String enumeration = getEnumeration(enumerationAndLabel);
 		String label = getLabel(enumerationAndLabel);
-		
-		IModel model = getModelByName(modelName);
-		return model.getEnumerationValue(enumeration, label);
+
+		Object enumerationValue = null;
+		if ("".equals(modelName)) {
+			// No model name was specified: loop through models for options
+			List<String> optionNames = new ArrayList<>();
+			
+			for (IModel model : models) {
+				try {
+					Object value = model.getEnumerationValue(enumeration, label);
+					if (value instanceof AmbiguousEnumerationValue) {
+						// Ambiguous within a single model itself
+						AmbiguousEnumerationValue ambi = (AmbiguousEnumerationValue) value;
+						optionNames.addAll(ambi.namesOfAlternatives);
+						if (enumerationValue == null) {
+							enumerationValue = ambi.selectedValue;
+						}
+					} else if (value != null && value != enumerationValue) {
+						optionNames.add(model.getName() + '!' + modelAndEnumerationAndLabel);
+						if (enumerationValue == null) {
+							enumerationValue = value;
+						}
+					}
+				} catch (EolEnumerationValueNotFoundException ex) {
+					// ignore
+				}
+			}
+
+			if (optionNames.size() > 1) {
+				// Ambiguous across models or within a model
+				return new AmbiguousEnumerationValue(optionNames, optionNames.get(0), enumerationValue);
+			} else if (optionNames.isEmpty()) {
+				throw new EolEnumerationValueNotFoundException(enumeration, label, modelName);
+			}
+		} else {
+			IModel model = getModelByName(modelName);
+			enumerationValue = model.getEnumerationValue(enumeration, label);
+		}
+
+		return enumerationValue;
 	}
 	
 	public IModel getOwningModel(Object instance) {

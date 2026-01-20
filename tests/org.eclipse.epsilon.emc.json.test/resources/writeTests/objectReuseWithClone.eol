@@ -1,0 +1,7 @@
+M.root = new JSONObject;
+
+M.root.x = new JSONObject;
+M.root.y = M.deepClone(M.root.x);
+
+// This new key will NOT be visible from M.root.y
+M.root.x.a = 1;

@@ -96,6 +96,16 @@
             library="lib/org.eclipse.epsilon.workflow.jar"
             name="epsilon.java.executeStaticMethod">
       </antTask>
+      <antTask
+            class="org.eclipse.epsilon.workflow.tasks.debug.StartDebugServerTask"
+            library="lib/org.eclipse.epsilon.workflow.jar"
+            name="epsilon.startDebugServer">
+      </antTask>
+      <antTask
+            class="org.eclipse.epsilon.workflow.tasks.debug.StopDebugServerTask"
+            library="lib/org.eclipse.epsilon.workflow.jar"
+            name="epsilon.stopDebugServer">
+      </antTask>
    </extension>
    <extension
          point="org.eclipse.ant.core.extraClasspathEntries">

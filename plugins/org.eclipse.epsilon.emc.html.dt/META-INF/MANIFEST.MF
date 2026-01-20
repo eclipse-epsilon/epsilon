@@ -1,13 +1,13 @@
 Manifest-Version: 2.0
 Bundle-ManifestVersion: 2
-Bundle-Name: EMC HTML development tools
+Bundle-Name: Epsilon HTML Model Support Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.emc.html.dt;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.emc.html.dt.Activator
 Require-Bundle: org.eclipse.epsilon.common.dt,
  org.eclipse.epsilon.emc.html
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.eclipse.epsilon.emc.html.dt
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: Eclipse Modeling Project
 Automatic-Module-Name: org.eclipse.epsilon.emc.html.dt

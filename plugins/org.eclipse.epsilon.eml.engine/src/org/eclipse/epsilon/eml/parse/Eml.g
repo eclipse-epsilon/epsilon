@@ -88,6 +88,8 @@ package org.eclipse.epsilon.eml.parse;
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 package org.eclipse.epsilon.eml.parse;
+
+import org.eclipse.epsilon.common.parse.Lexer;
 }
 
 emlModule

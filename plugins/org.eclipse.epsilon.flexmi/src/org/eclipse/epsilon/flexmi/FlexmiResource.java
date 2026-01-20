@@ -392,11 +392,18 @@ public class FlexmiResource extends ResourceImpl implements Handler {
 		processingInstructions.add(processingInstruction);
 		
 		if ("nsuri".equalsIgnoreCase(key)) {
-			
 			EPackage ePackage = null;
-			//if (getResourceSet() != null) {
-			//	ePackage = getResourceSet().getPackageRegistry().getEPackage(value);
-			//}
+
+			// URIs cannot have spaces, so trim any leading and trailing whitespace
+			value = value.trim();
+
+			// If the package is already in the resource set's package registry
+			// do nothing and do not raise a warning
+			// We are copying the package registry's keyset to a new collection
+			// as the existing keyset implementation delegates to the global EPackage registry
+			if (getResourceSet() != null && new HashSet<String>(getResourceSet().getPackageRegistry().keySet()).contains(value)) {
+				ePackage = getResourceSet().getPackageRegistry().getEPackage(value);
+			}
 			
 			if (ePackage == null) {
 				ePackage = EPackage.Registry.INSTANCE.getEPackage(value);
@@ -404,23 +411,6 @@ public class FlexmiResource extends ResourceImpl implements Handler {
 			}
 			
 			if (ePackage == null) addParseWarning("Failed to locate EPackage for nsURI " + value + " ");
-			/*
-			EPackage ePackage = EPackage.Registry.INSTANCE.getEPackage(value);
-			if (ePackage != null) getResourceSet().getPackageRegistry().put(ePackage.getNsURI(), ePackage);
-			else addParseWarning("Failed to locate EPackage for nsURI " + value + " ");*/
-
-		}
-		else if ("nsuris".equalsIgnoreCase(key)) {
-			boolean matchFound = false;
-			for (String nsuri : EPackage.Registry.INSTANCE.keySet()) {
-				if (nsuri.matches(value)) {
-					getResourceSet().getPackageRegistry().put(nsuri, EPackage.Registry.INSTANCE.getEPackage(nsuri));
-					matchFound = true;
-				}
-			}
-			if (!matchFound) {
-				addParseWarning("Failed to locate EPackages for nsURI pattern " + value + " ");
-			}
 		}
 		else if ("eol".equalsIgnoreCase(key)) { 
 			// Parse the module and cache its operations 

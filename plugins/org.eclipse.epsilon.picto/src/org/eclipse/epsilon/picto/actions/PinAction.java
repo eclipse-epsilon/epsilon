@@ -18,7 +18,7 @@ public class PinAction extends Action {
 	protected PictoView pictoView;
 	
 	public PinAction(PictoView pictoView) {
-		super("Pin to current editor", AS_CHECK_BOX);
+		super("Pin to Current Editor", AS_CHECK_BOX);
 		setImageDescriptor(PictoPlugin.getDefault().getImageDescriptor("icons/pin.png"));
 		this.pictoView = pictoView;
 	}

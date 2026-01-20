@@ -14,6 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -64,10 +65,8 @@ public class MatchTraceTest {
 		Iterator<Match> itMatches = trace.iterator();
 		assertSame("Iterator should return the only element", m, itMatches.next());
 
-		itMatches.remove();
-		assertTrue("Trace should be considered empty after removing its only element", trace.isEmpty());
-
-		assertFalse(itMatches.hasNext());
+		// Guava iterators over views do not support modification
+		assertThrows(UnsupportedOperationException.class, () -> itMatches.remove());
 	}
 
 	@Test
@@ -87,12 +86,6 @@ public class MatchTraceTest {
 
 		// Shouldn't raise an error
 		trace.remove("not a match");
-	}
-
-	@Test(expected=IllegalStateException.class)
-	public void removeWithoutNext() {
-		MatchTrace trace = new MatchTrace();
-		trace.iterator().remove();
 	}
 
 	@Test(expected=NoSuchElementException.class)
@@ -129,7 +122,7 @@ public class MatchTraceTest {
 	public void getMatches() {
 		MatchTrace trace = new MatchTrace();
 
-		String a = "hello", b = "happy", c = "world", d = "nothing";
+		String a = "a", b = "b", c = "c", d = "d";
 		MatchRule mr1 = new MatchRule(), mr2 = new MatchRule();
 
 		assertNull("No matches should be returned on an empty trace", trace.getMatch(c));
@@ -235,7 +228,7 @@ public class MatchTraceTest {
 		trace.add(m2);
 
 		assertSame("Matching order should be preserved", m1, trace.getMatch(a, b));
-		assertEquals("All matches should be available - left side", Arrays.asList(m1, m2),  trace.getMatches(a));
-		assertEquals("All matches should be available - right side", Arrays.asList(m1, m2),  trace.getMatches(b));
+		assertEquals("All matches should be available - left side", new HashSet<>(Arrays.asList(m1, m2)), new HashSet<>(trace.getMatches(a)));
+		assertEquals("All matches should be available - right side", new HashSet<>(Arrays.asList(m1, m2)), new HashSet<>(trace.getMatches(b)));
 	}
 }

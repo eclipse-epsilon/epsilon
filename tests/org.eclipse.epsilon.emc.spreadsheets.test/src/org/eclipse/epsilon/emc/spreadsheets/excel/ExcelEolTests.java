@@ -4,10 +4,21 @@ import static org.junit.Assert.assertEquals;
 
 import org.eclipse.epsilon.emc.spreadsheets.test.SharedTestMethods;
 import org.eclipse.epsilon.eol.EolModule;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ExcelEolTests {
-	
+
+	private static ExcelModel model;
+
+	@BeforeClass
+	public static void setup() throws Exception {
+		model = new ExcelModel();
+		model.setSpreadsheetFile(SharedTestMethods.getBasePath() + "resources/excel/Teams.xlsx");
+		model.setConfigurationFile(SharedTestMethods.getBasePath() + "resources/excel/Teams.config.xml");
+		model.load();
+	}
+
 	@Test
 	public void testNumberOfRows() throws Exception {
 		assertEval("Student.all.size()", 10);
@@ -41,17 +52,11 @@ public class ExcelEolTests {
 		assertEval("Student.all.fourth().conflicts.size()", 0);		
 	}
 	
-	protected void assertEval(String expression, Object result) throws Exception {
-		ExcelModel model = new ExcelModel();
-		model.setSpreadsheetFile(SharedTestMethods.getBasePath() + "resources/excel/Teams.xlsx");
-		model.setConfigurationFile(SharedTestMethods.getBasePath() + "resources/excel/Teams.config.xml");
-		model.load();
-		
+	protected void assertEval(String expression, Object expectedResult) throws Exception {
 		EolModule module = new EolModule();
 		module.parse("return " + expression + ";");
 		module.getContext().getModelRepository().addModel(model);
-		assertEquals(result, module.execute());
-		
+		assertEquals(expectedResult, module.execute());
 	}
 	
 }

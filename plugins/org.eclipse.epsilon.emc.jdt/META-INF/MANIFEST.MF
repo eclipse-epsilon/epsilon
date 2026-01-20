@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Jdt3
+Bundle-Name: Epsilon JDT Model Support
 Bundle-SymbolicName: org.eclipse.epsilon.emc.jdt;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-Version: 2.9.0.qualifier
 Bundle-Activator: org.eclipse.epsilon.emc.jdt.Activator
 Require-Bundle: org.eclipse.epsilon.common.dt,
  org.eclipse.jdt.core;visibility:=reexport,

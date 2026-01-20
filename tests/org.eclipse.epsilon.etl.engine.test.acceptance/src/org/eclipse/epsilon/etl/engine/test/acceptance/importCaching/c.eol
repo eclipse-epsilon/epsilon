@@ -1,0 +1,9 @@
+// no imports
+
+operation Any test() {
+  /*
+   * This should be a plain assignment when imported from EOL, and an
+   * equivalent statement when imported from ETL.
+   */
+  a ::= b;
+}

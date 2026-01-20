@@ -11,6 +11,7 @@ package org.eclipse.epsilon.etl;
 
 import java.util.HashMap;
 import java.util.List;
+
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.Lexer;
 import org.antlr.runtime.TokenStream;
@@ -19,12 +20,14 @@ import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
 import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.util.AstUtil;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.ExecutableBlock;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.erl.ErlModule;
 import org.eclipse.epsilon.erl.dom.NamedRuleList;
+import org.eclipse.epsilon.etl.debug.EtlDebugger;
 import org.eclipse.epsilon.etl.dom.EquivalentAssignmentStatement;
 import org.eclipse.epsilon.etl.dom.TransformationRule;
 import org.eclipse.epsilon.etl.execute.context.EtlContext;
@@ -142,8 +145,8 @@ public class EtlModule extends ErlModule implements IEtlModule {
 	}
 	
 	@Override
-	public HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	public HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("etl", EtlModule.class);
 		return importConfiguration;
 	}
@@ -182,4 +185,11 @@ public class EtlModule extends ErlModule implements IEtlModule {
 		}
 		return transformationRules;
 	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new EtlDebugger();
+	}
+
+	
 }

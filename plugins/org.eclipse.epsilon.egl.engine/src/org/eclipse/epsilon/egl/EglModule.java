@@ -29,6 +29,8 @@ import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.egl.execute.context.IEglContext;
 import org.eclipse.epsilon.egl.formatter.Formatter;
 import org.eclipse.epsilon.eol.IEolModule;
+import org.eclipse.epsilon.eol.IImportManager;
+import org.eclipse.epsilon.eol.debug.IEolDebugger;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.ModelDeclaration;
 import org.eclipse.epsilon.eol.dom.OperationList;
@@ -277,6 +279,21 @@ public class EglModule implements IEglModule {
 	@Override
 	public Map<String, Object> getData() {
 		return current.getModule().getData();
+	}
+
+	@Override
+	public IImportManager getImportManager() {
+		return current.module.getImportManager();
+	}
+
+	@Override
+	public void setImportManager(IImportManager importManager) {
+		current.module.setImportManager(importManager);
+	}
+
+	@Override
+	public IEolDebugger createDebugger() {
+		return current.module.createDebugger();
 	}
 
 }

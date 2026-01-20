@@ -26,7 +26,9 @@
             delegate="org.eclipse.epsilon.pinset.dt.launching.PinsetLaunchConfigurationDelegate"
             id="org.eclipse.epsilon.pinset.dt.launching.PinsetLaunchConfigurationDelegate"
             modes="run, debug"
-            name="Pinset File"/>
+            name="Pinset File"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
    </extension>
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">

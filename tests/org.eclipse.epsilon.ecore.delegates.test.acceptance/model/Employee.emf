@@ -1,0 +1,59 @@
+@Ecore(validationDelegates="http://eclipse.dev/epsilon/ecore/EVL", invocationDelegates="http://eclipse.dev/epsilon/ecore/EOL", settingDelegates="http://eclipse.dev/epsilon/ecore/EOL")
+@namespace(uri="http://www.eclipse.org/OCL/examples/codegen/employee", prefix="emp")
+package employee;
+
+class Company {
+	attr String name;
+	val Employee[*]#company employees;
+	val Department[*]#company departments;
+}
+
+@Ecore(constraints="deptHasEmployees positiveID validName")
+@"http://eclipse.dev/epsilon/ecore/EVL"(deptHasEmployees="not self.manager.isUndefined() implies self.employees.notEmpty()", positiveID="self.deptID > 0", validName="not self.name.isUndefined() and self.name.length() > 0")
+class Department {
+	ref Employee manager;
+	id attr int[1] deptID;
+	attr String name;
+
+	@"http://eclipse.dev/epsilon/ecore/EOL"(derivation="if (self.manager.isUndefined()) {
+  return Sequence{};
+} else {
+  return self.manager.directReports;
+}")
+	!ordered readonly volatile transient derived ref Employee[*]#department employees;
+	ref Company#departments company;
+}
+
+@Ecore(constraints="positiveID validName")
+@"http://eclipse.dev/epsilon/ecore/EVL"(positiveID="self.empID > 0")
+class Employee {
+
+	@"http://eclipse.dev/epsilon/ecore/EOL"(body="return self.closure(t | t.directReports);")
+	!ordered op Employee[*] allReports();
+
+	@"http://eclipse.dev/epsilon/ecore/EOL"(body="if (self.manager.isUndefined()) {
+	return Sequence{};
+} else {
+	var result = Sequence {self.manager};
+	return result.includingAll(self.manager.reportingChain());
+}")
+	op Employee[*] reportingChain();
+
+	@"http://eclipse.dev/epsilon/ecore/EOL"(body="return self.reportingChain().includes(mgr);")
+	!ordered op boolean reportsTo(Employee mgr);
+
+	@"http://eclipse.dev/epsilon/ecore/EVL"(body="not self.name.isUndefined() and self.name.length() > 0")
+	op boolean validName(ecore.EDiagnosticChain diagnostics, ecore.EMap<EJavaObject, EJavaObject> context);
+
+	@"http://eclipse.dev/epsilon/ecore/EOL"(derivation="return self.directReports.notEmpty();")
+	readonly volatile transient derived attr boolean isManager;
+
+	@"http://eclipse.dev/epsilon/ecore/EOL"(derivation="return self.company.departments.selectOne(d | d.employees.includes(self));")
+	readonly volatile transient derived ref Department#employees department;
+	ref Employee#directReports manager;
+	!ordered ref Employee[*]#manager directReports;
+	id attr int[1] empID;
+	attr String name;
+	ref Company#employees company;
+}
+

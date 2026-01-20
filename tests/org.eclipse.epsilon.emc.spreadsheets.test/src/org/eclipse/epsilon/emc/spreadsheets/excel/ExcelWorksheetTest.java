@@ -154,13 +154,4 @@ public class ExcelWorksheetTest {
 		assertTrue(worksheet.getColumn(12).getName() == null);
 	}
 
-	// @AfterClass
-	// public static void removeSheet2()
-	// {
-	// ExcelWorksheet worksheet = (ExcelWorksheet)
-	// model.getWorksheetByType("Sheet2");
-	// model.deleteWorksheet(worksheet);
-	// model.store();
-	// }
-
 }

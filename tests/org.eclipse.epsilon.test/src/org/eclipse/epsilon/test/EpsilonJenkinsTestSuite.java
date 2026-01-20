@@ -7,10 +7,7 @@
  * SPDX-License-Identifier: EPL-2.0
  * 
  * Contributors: Sina Madani
- ******************************************************************************
- *
- * $Id$
- */
+ *******************************************************************************/
 package org.eclipse.epsilon.test;
 
 import org.eclipse.epsilon.commons.test.CommonsTestSuite;
@@ -26,9 +23,12 @@ import org.eclipse.epsilon.emc.csv.test.CsvModelTestSuite;
 import org.eclipse.epsilon.emc.emf.test.EmfTestSuite;
 import org.eclipse.epsilon.emc.graphml.tests.GraphmlTestSuite;
 import org.eclipse.epsilon.emc.hutn.test.HutnEmcDriverTestSuite;
+import org.eclipse.epsilon.emc.json.tests.JSONModelTestSuite;
 import org.eclipse.epsilon.emc.plainxml.test.PlainXmlTestSuite;
 import org.eclipse.epsilon.emc.spreadsheets.test.SpreadsheetDriverTestSuite;
+import org.eclipse.epsilon.emc.yaml.test.YamlTestSuite;
 import org.eclipse.epsilon.eml.engine.test.acceptance.EmlAcceptanceTestSuite;
+import org.eclipse.epsilon.eol.dap.test.EpsilonDebugAdapterTestSuite;
 import org.eclipse.epsilon.eol.engine.test.acceptance.EolAcceptanceTestSuite;
 import org.eclipse.epsilon.eol.test.unit.EolUnitTestSuite;
 import org.eclipse.epsilon.epl.engine.test.acceptance.EplAcceptanceTestSuite;
@@ -36,7 +36,6 @@ import org.eclipse.epsilon.etl.engine.test.acceptance.EtlAcceptanceTestSuite;
 import org.eclipse.epsilon.eunit.junit.test.EUnitJUnitTestSuite;
 import org.eclipse.epsilon.evl.engine.test.acceptance.EvlAcceptanceTestSuite;
 import org.eclipse.epsilon.ewl.engine.test.acceptance.EwlAcceptanceTestSuite;
-import org.eclipse.epsilon.emc.yaml.test.YamlTestSuite;
 import org.eclipse.epsilon.flexmi.test.FlexmiTestSuite;
 import org.eclipse.epsilon.flock.engine.test.acceptance.FlockEngineAcceptanceTestSuite;
 import org.eclipse.epsilon.hutn.test.HutnTestSuite;
@@ -92,7 +91,9 @@ import junit.framework.Test;
 	CsvModelTestSuite.class,
 	FlexmiTestSuite.class,
 	PinsetTestSuite.class,
-	EUnitJUnitTestSuite.class
+	EUnitJUnitTestSuite.class,
+	JSONModelTestSuite.class,
+	EpsilonDebugAdapterTestSuite.class
 })
 public class EpsilonJenkinsTestSuite {
 	public static Test suite() {

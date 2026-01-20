@@ -2,14 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Merging Language Engine
 Bundle-SymbolicName: org.eclipse.epsilon.eml.engine
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.ecl.engine,
  org.eclipse.epsilon.etl.engine
 Export-Package: org.eclipse.epsilon.eml,
+ org.eclipse.epsilon.eml.debug,
  org.eclipse.epsilon.eml.dom,
  org.eclipse.epsilon.eml.execute.context,
  org.eclipse.epsilon.eml.execute.operations,
+ org.eclipse.epsilon.eml.launch,
  org.eclipse.epsilon.eml.parse,
  org.eclipse.epsilon.eml.strategy,
  org.eclipse.epsilon.eml.trace

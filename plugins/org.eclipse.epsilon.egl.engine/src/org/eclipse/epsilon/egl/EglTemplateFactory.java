@@ -1,11 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2008 The University of York.
+ * Copyright (c) 2008-2024 The University of York.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  * 
  * Contributors:
  *     Louis Rose - initial API and implementation
+ *     Antonio Garcia-Dominguez - add import caching via import manager
  ******************************************************************************/
 package org.eclipse.epsilon.egl;
 
@@ -16,6 +17,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
+
 import org.eclipse.epsilon.common.util.UriUtil;
 import org.eclipse.epsilon.egl.exceptions.EglRuntimeException;
 import org.eclipse.epsilon.egl.execute.context.EglContext;
@@ -28,6 +30,8 @@ import org.eclipse.epsilon.egl.incremental.IncrementalitySettings;
 import org.eclipse.epsilon.egl.spec.EglTemplateSpecification;
 import org.eclipse.epsilon.egl.spec.EglTemplateSpecificationFactory;
 import org.eclipse.epsilon.egl.util.FileUtil;
+import org.eclipse.epsilon.eol.IImportManager;
+import org.eclipse.epsilon.eol.ImportManager;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.concurrent.IEolContextParallel;
 
@@ -40,7 +44,8 @@ public class EglTemplateFactory {
 	private Formatter defaultFormatter = new NullFormatter();
 	private IncrementalitySettings defaultIncrementalitySettings = new IncrementalitySettings();
 	private final Collection<ITemplateExecutionListener> listeners = new LinkedList<>();
-	
+	private IImportManager importManager = new ImportManager();
+
 	public EglTemplateFactory() {
 		this(null);
 	}
@@ -76,7 +81,14 @@ public class EglTemplateFactory {
 	public void setContext(IEglContext context) {
 		this.context = context;
 	}
-	
+
+	public IImportManager getImportManager() {
+		return importManager;
+	}
+
+	public void setImportManager(IImportManager importManager) {
+		this.importManager = importManager;
+	}
 
 	/**
 	 * Sets the root of this template factory, unless it has already been set.
@@ -269,7 +281,7 @@ public class EglTemplateFactory {
 	
 	private EglTemplateSpecificationFactory createTemplateSpecificationFactory() {
 		return new EglTemplateSpecificationFactory(
-			defaultFormatter, defaultIncrementalitySettings,
+			defaultFormatter, defaultIncrementalitySettings, importManager,
 			listeners.toArray(new ITemplateExecutionListener[listeners.size()])
 		);
 	}

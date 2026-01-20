@@ -11,13 +11,17 @@ package org.eclipse.epsilon.egx.engine.test.acceptance;
 
 import org.eclipse.epsilon.egx.engine.test.acceptance.contributors.OperationContributorTests;
 import org.eclipse.epsilon.egx.engine.test.acceptance.equivalence.EgxModuleEquivalenceTests;
+import org.eclipse.epsilon.egx.engine.test.acceptance.extendedproperties.ExtendedPropertiesTests;
 import org.eclipse.epsilon.egx.engine.test.acceptance.formatter.FormatterTests;
 import org.eclipse.epsilon.egx.engine.test.acceptance.hutn.EgxHutnTestSuite;
-import org.eclipse.epsilon.egx.engine.test.acceptance.operations.*;
+import org.eclipse.epsilon.egx.engine.test.acceptance.imports.SubfolderImportTest;
+import org.eclipse.epsilon.egx.engine.test.acceptance.operations.IncludeTests;
+import org.eclipse.epsilon.egx.engine.test.acceptance.operations.PrintTests;
 import org.eclipse.epsilon.egx.engine.test.acceptance.parse.GenerationRuleConstructsTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 
@@ -29,7 +33,9 @@ import junit.framework.Test;
 	PrintTests.class,
 	GenerationRuleConstructsTests.class,
 	EgxModuleEquivalenceTests.class,
-	FormatterTests.class
+	FormatterTests.class,
+	ExtendedPropertiesTests.class,
+	SubfolderImportTest.class
 })
 public class EgxAcceptanceTestSuite {
 

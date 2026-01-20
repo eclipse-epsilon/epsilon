@@ -26,9 +26,14 @@ public class AST extends CommonTree {
 	protected URI uri;
 	protected Integer line = null;
 	protected Integer column = null;
+
+	// Optional: only used for undoing EGL escaping
+	protected Integer length = null;
+
 	protected Region region;
 	protected AST annotations;
 	protected boolean imaginary;
+	protected boolean extraTokensHidden = false;
 	protected List<Token> extraTokens = new ArrayList<>();
 	protected List<Token> commentTokens = new ArrayList<>();
 	protected List<AST> descendants = null;
@@ -264,6 +269,7 @@ public class AST extends CommonTree {
 	}
 	
 	public Region getRegion() {
+		
 		if (region == null) {
 			region = new Region();
 			
@@ -281,7 +287,7 @@ public class AST extends CommonTree {
 			Position endPosition = new Position();
 			if (!isImaginary()) {
 				endPosition.setLine(this.getLine());
-				endPosition.setColumn(this.getColumn() + ((CommonToken)getToken()).getStopIndex() - ((CommonToken)getToken()).getStartIndex() + 1);
+				endPosition.setColumn(this.getColumn() + getLength());
 			}
 			else {
 				endPosition.setLine(-1);
@@ -299,27 +305,27 @@ public class AST extends CommonTree {
 				}
 			}
 			
-			for (Token token : getExtraTokens()) {
-				if (token == null) continue;
-				Position tokenStartPosition = new Position();
-				tokenStartPosition.setLine(token.getLine());
-				tokenStartPosition.setColumn(token.getCharPositionInLine());
-				
-				Position tokenEndPosition = new Position();
-				tokenEndPosition.setLine(token.getLine());
-				tokenEndPosition.setColumn(token.getCharPositionInLine() + token.getText().length());
-				
-				if (tokenStartPosition.isBefore(region.getStart())) {
-					region.setStart(tokenStartPosition);
+			if (!areExtraTokensHidden()) {
+				for (Token token : getExtraTokens()) {
+					if (token == null) continue;
+					Position tokenStartPosition = new Position();
+					tokenStartPosition.setLine(token.getLine());
+					tokenStartPosition.setColumn(token.getCharPositionInLine());
+					
+					Position tokenEndPosition = new Position();
+					tokenEndPosition.setLine(token.getLine());
+					tokenEndPosition.setColumn(token.getCharPositionInLine() + token.getText().length());
+					
+					if (tokenStartPosition.isBefore(region.getStart())) {
+						region.setStart(tokenStartPosition);
+					}
+					if (tokenEndPosition.isAfter(region.getEnd())) {
+						region.setEnd(tokenEndPosition);
+					}
 				}
-				if (tokenEndPosition.isAfter(region.getEnd())) {
-					region.setEnd(tokenEndPosition);
-				}
-				
 			}
 			
 		}
-		
 		
 		return region;
 	}
@@ -355,6 +361,14 @@ public class AST extends CommonTree {
 		return imaginary || getToken() == null;
 	}
 	
+	public boolean areExtraTokensHidden() {
+		return extraTokensHidden;
+	}
+	
+	public void setExtraTokensHidden(boolean extraTokensHidden) {
+		this.extraTokensHidden = extraTokensHidden;
+	}
+	
 	public List<Token> getExtraTokens() {
 		return extraTokens;
 	}
@@ -379,6 +393,17 @@ public class AST extends CommonTree {
 		return toExtendedStringTree(0);
 	}
 	
+	public Integer getLength() {
+		if (length == null) {
+			return ((CommonToken)getToken()).getStopIndex() - ((CommonToken)getToken()).getStartIndex() + 1;
+		}
+		return length;
+	}
+
+	public void setLength(Integer length) {
+		this.length = length;
+	}
+
 	protected String toExtendedStringTree(int indent) {
 		String toString = "";
 		for (int i=0;i<indent;i++) {

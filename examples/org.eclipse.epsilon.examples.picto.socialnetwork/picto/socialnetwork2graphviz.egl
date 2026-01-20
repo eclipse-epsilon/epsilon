@@ -1,65 +1,70 @@
 digraph G {
-	node[shape=rectangle, fontname=Tahoma, fontsize=10, style="filled", gradientangle="270", fillcolor="bisque"]
+	node[shape=rectangle, fontname=Tahoma, fontsize=10, style="filled", gradientangle="270"]
 	edge[penwidth=3, style=tapered, arrowhead=none]
 	
-[%for (p in people){%]
-	
-	[%if (people.size()==1) { /* if generating individual views */
-		var tooltip = "Go to " + p.name + " in the editor";
-		var elementLabel = "<table border=\"0\"><tr>"
-				+ "<td href=\"javascript:top.showElement('" + p.id + "','" + p.eResource.uri + "')\""
-				+ " tooltip=\"" + tooltip + "\">"
-				+ trace(p.name)
-				+ "</td></tr></table>";
-	%]
-		[%=p.name%] [label=<[%=elementLabel%]>, fillcolor="azure2"]
-	[%} else {
-		addPersonWithViewEvent(p);
-	}%]
-	
-	[%if (isLayerActive("likes")){%]
-		[%for (l in p.likes){
-			addPersonWithViewEvent(l);%]
-
-			[%=p.name%] -> [%=l.name%] [color="#2A6C41"]
-		[%}%]
+	[*Generate people nodes*]
+	[%for (p in getPeopleToDraw()){%]
+		[%=p.name%] [label=<<table border="0"><tr><td href="javascript:top.[%=p.getJavaScriptLink()%]">[%=p.name%]</td></tr></table>>, fillcolor="[%=p.getColor()%]", tooltip="[%=p.getTooltip()%]"]
 	[%}%]
 	
-	[%if (isLayerActive("dislikes")){%]
-		[%for (l in p.dislikes){
-			addPersonWithViewEvent(l); %]
-
-			[%=p.name%] -> [%=l.name%] [color="#B43431"]
+	[*Generate likes/dislikes edges*]
+	[%for (p in people){%]
+		[%if (isLayerActive("likes")){%]
+			[%for (l in p.likes){%]
+				[%=p.name%] -> [%=l.name%] [color="#2A6C41"]
+			[%}%]
+		[%}%]
+		
+		[%if (isLayerActive("dislikes")){%]
+			[%for (l in p.dislikes){%]
+				[%=p.name%] -> [%=l.name%] [color="#B43431"]
+			[%}%]
 		[%}%]
 	[%}%]
-
-	
-[%}%]
-
 }
 
 [%
-operation addPersonWithViewEvent(p) {
+/* Returns the people to be drawn as nodes in the diagram*/
+operation getPeopleToDraw() {
+	if (people.size() == 1) {
+		var peopleToDraw : Set;
+		peopleToDraw.addAll(people);
+		if (isLayerActive("likes")) peopleToDraw.addAll(people.first().likes);
+		if (isLayerActive("dislikes")) peopleToDraw.addAll(people.first().dislikes);
+		return peopleToDraw;
+	}
+	else {
+		return people;
+	}
+}
 
-	var elementPath = "['Social Network', '" + p.name + "' ]";
-	var tooltip = "Go to " + p.name;
-	var elementLabel = "<table border=\"0\"><tr>"
-			+ "<td href=\"javascript:top.showView(" + elementPath + ")\""
-			+ " tooltip=\"" + tooltip+  "\">" 
-			+ trace(p.name) 
-			+ "</td></tr></table>";
-%]
-	[%=p.name%] [label=<[%=elementLabel%]>]
-[%
+/* Returns JavaScript function to be called when a node is clicked */
+operation Person getJavaScriptLink() {
+	if (self.linksToEditor()) return "showElement('" + self.id + "','" + self.eResource.uri + "')";
+	else {
+		var elementPath = "['Social Network', '" + self.name + "' ]";
+		return "showView(" + elementPath + ")";
+	}
+}
+
+operation Person getColor() {
+	if (self.linksToEditor()) return "Azure2";
+	else return "bisque";
+}
+
+operation Person getTooltip() {
+	if (self.linksToEditor()) return "Go to " + self.name + " in the editor";
+	else return "Go to " + self.name;
+}
+
+/* Returns whether the person's node links to the editor or to the person's diagram */
+operation Person linksToEditor() {
+	return people.size() == 1 and people.first() == self;
 }
 
 operation isLayerActive(id : String) {
-	var layer = layers.selectOne(l|l.id = id);
-	if (layer.isDefined()) {
-		return layer.active;
-	}
-	else {
-		return true;
-	}
+	// If there is a layer with such an id return its active status
+	// else return true by default
+	return layers.selectOne(l|l.id = id)?.active ?: true;
 }
 %]

@@ -45,11 +45,9 @@ public class SimulinkEnginePreferencePage extends PreferencePage implements IWor
 		final Composite composite = new Composite(parent, SWT.FILL);
 		
 		final DirectoryFieldEditor matlabPathEditor = new DirectoryFieldEditor(PROPERTY_MATLAB_PATH, "MATLAB installation directory", composite);
-		final DirectoryFieldEditor libraryPathEditor = new DirectoryFieldEditor(PROPERTY_LIBRARY_PATH, "Library directory", composite);
 		final FileFieldEditor engineJarPathEditor = new FileFieldEditor(PROPERTY_ENGINE_JAR_PATH, "Engine JAR file", true, composite);
 		
 		fieldEditors.add(matlabPathEditor);
-		fieldEditors.add(libraryPathEditor);
 		fieldEditors.add(engineJarPathEditor);
 		
 		for (FieldEditor fieldEditor : fieldEditors) {
@@ -66,7 +64,7 @@ public class SimulinkEnginePreferencePage extends PreferencePage implements IWor
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					MatlabEnginePool.getInstance(libraryPathEditor.getStringValue(), engineJarPathEditor.getStringValue()).getMatlabEngine().eval("42");
+					MatlabEnginePool.getInstance(engineJarPathEditor.getStringValue()).getMatlabEngine().eval("42");
 					MessageDialog.openInformation(composite.getShell(), "Success", "Engine well configured!");
 				}
 				catch (Exception ex) {
@@ -102,7 +100,6 @@ public class SimulinkEnginePreferencePage extends PreferencePage implements IWor
 	protected void resolvePreferences() {
 		String[] currentPaths = {
 			preferences.getString(PROPERTY_MATLAB_PATH),
-			preferences.getString(PROPERTY_LIBRARY_PATH),
 			preferences.getString(PROPERTY_ENGINE_JAR_PATH)
 		};
 		
@@ -110,8 +107,7 @@ public class SimulinkEnginePreferencePage extends PreferencePage implements IWor
 			MatlabEngineUtil.resolvePaths(currentPaths);
 			
 			preferences.setValue(PROPERTY_MATLAB_PATH, currentPaths[0]);
-			preferences.setValue(PROPERTY_LIBRARY_PATH, currentPaths[1]);
-			preferences.setValue(PROPERTY_ENGINE_JAR_PATH, currentPaths[2]);
+			preferences.setValue(PROPERTY_ENGINE_JAR_PATH, currentPaths[1]);
 		}
 		catch (IllegalStateException | IllegalArgumentException iax) {
 			// Couldn't resolve, so leave blank

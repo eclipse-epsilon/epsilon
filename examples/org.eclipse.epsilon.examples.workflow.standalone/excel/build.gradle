@@ -3,15 +3,12 @@ configurations {
 }
 
 repositories {
-	maven {
-		url "https://oss.sonatype.org/content/repositories/snapshots"
-	}
 	mavenCentral()
 }
 
 dependencies {
-	epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.4.0'
-	epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.emc.spreadsheets.excel:2.4.0'
+	epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.5.0'
+	epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.emc.spreadsheets.excel:2.5.0'
 }
 
 task setupEpsilonTasks {

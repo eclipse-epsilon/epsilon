@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.AST;
@@ -43,6 +44,7 @@ import org.eclipse.epsilon.egl.parse.problem.EglParseProblem;
 import org.eclipse.epsilon.egl.preprocessor.Preprocessor;
 import org.eclipse.epsilon.egl.types.EglComplexType;
 import org.eclipse.epsilon.eol.EolModule;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.TypeExpression;
 import org.eclipse.epsilon.eol.exceptions.EolInternalException;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
@@ -204,8 +206,11 @@ public class EglModule extends EolModule implements IEglModule {
 
 	@Override
 	public List<ParseProblem> getParseProblems() {
-		parseProblems.addAll(eglParser.getParseProblems());
+		if (!eglParser.getParseProblems().isEmpty()) {
+			return eglParser.getParseProblems();
+		}
 		
+		// If preprocessor has run then replace the problems with ones that are trace aware
 		for (int index = 0; index < parseProblems.size(); index++) {
 			final ParseProblem problem = parseProblems.get(index);
 			
@@ -226,8 +231,8 @@ public class EglModule extends EolModule implements IEglModule {
 	}
 	
 	@Override
-	protected HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = super.getImportConfiguration();
+	protected HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = super.getImportConfiguration();
 		importConfiguration.put("egl", EglModule.class);
 		return importConfiguration;
 	}
@@ -252,10 +257,15 @@ public class EglModule extends EolModule implements IEglModule {
 			return super.parse(eol, sourceFile);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
 			// Ignore - clients are expected to call
 			// getParseProblems in order to check for problems
 			return false;
 		}
 	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new EglDebugger();
+	}
+
 }

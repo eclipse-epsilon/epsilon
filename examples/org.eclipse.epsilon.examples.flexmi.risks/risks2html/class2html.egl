@@ -13,8 +13,8 @@
 	</tr>
 	[%for (risk in Risk.all.select(r|class.contains(r.getOverall()))){%]
 	[%if ((risk.closed and isLayerActive("closed")) or (not risk.closed and isLayerActive("open"))){%]
-	<tr pictoId="[%=risk.Id%]">
-		<td>[%=risk.Id%]</td>
+	<tr pictoId="[%=risk.id%]">
+		<td>[%=risk.id%]</td>
 		<td>[%=risk.getTitle()%]</td>
 		<td style="background-color:#[%=risk.likelihood.value.toColour()%]"> </td>
 		<td style="background-color:#[%=risk.severity.value.toColour()%]"> </td>

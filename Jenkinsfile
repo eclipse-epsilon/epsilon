@@ -28,8 +28,8 @@ pipeline {
       buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '14', numToKeepStr: ''))
     }
     tools {
-        maven 'apache-maven-3.8.6'
-        jdk 'openjdk-jdk11-latest'
+        maven 'apache-maven-3.9.5'
+        jdk 'openjdk-jdk17-latest'
     }
     triggers {
         pollSCM('H/5 * * * *')
@@ -67,13 +67,13 @@ pipeline {
           stage('Javadocs') {
             when {
               anyOf {
-                changeset comparator: 'REGEXP', pattern: "${baseTriggers}"
+                changeset comparator: 'REGEXP', pattern: "${updateTriggers}"
                 expression { return currentBuild.number == 1 }
                 triggeredBy 'UserIdCause'
               }
             }
             steps {
-              sh 'mvn -B javadoc:aggregate'
+              sh 'mvn -f plugins -B initialize javadoc:aggregate'
             }
           }
           stage('Update site') {
@@ -88,38 +88,41 @@ pipeline {
               }
             }
             steps {
-              sh 'mvn -f releng install -P updatesite'
+              sh 'mvn -B -U -f releng install -P updatesite'
               lock('download-area') {
                 sshagent (['projects-storage.eclipse.org-bot-ssh']) {
                   sh '''
                     INTERIM=/home/data/httpd/download.eclipse.org/epsilon/interim
-                    JAVADOC=/home/data/httpd/download.eclipse.org/epsilon/interim-javadoc
                     SITEDIR="$WORKSPACE/releng/org.eclipse.epsilon.updatesite/target"
                     if [ -d "$SITEDIR" ]; then
                       ssh genie.epsilon@projects-storage.eclipse.org rm -rf $INTERIM
                       scp -r "$SITEDIR/repository" genie.epsilon@projects-storage.eclipse.org:$INTERIM
                       scp "$SITEDIR"/*.zip genie.epsilon@projects-storage.eclipse.org:$INTERIM/epsilon-interim-site.zip
                     fi
-                    JAVADOCDIR="$WORKSPACE/target/site/apidocs"
+                    PROJECT_VERSION=$(grep Bundle-Version plugins/org.eclipse.epsilon.eol.engine/META-INF/MANIFEST.MF | awk '{print $2}' | tr -d '\r' | sed 's/.qualifier//')
+                    JAVADOC=/home/data/httpd/download.eclipse.org/epsilon/interim-javadoc
+                    JAVADOCDIR="$WORKSPACE/plugins/target/site/apidocs"
                     if [ -d "$JAVADOCDIR" ]; then
                       ssh genie.epsilon@projects-storage.eclipse.org "rm -rf $JAVADOC"
                       scp -r "$JAVADOCDIR" genie.epsilon@projects-storage.eclipse.org:$JAVADOC
+                      if echo "$PROJECT_VERSION" | grep -Eq "^[0-9]+.[0-9]+.[0-9]+$"; then
+                        echo "Uploading Javadocs for Epsilon ${PROJECT_VERSION}"
+                        JAVADOC_VERSIONED=/home/data/httpd/download.eclipse.org/epsilon/${PROJECT_VERSION}-javadoc
+                        ssh genie.epsilon@projects-storage.eclipse.org "rm -rf $JAVADOC_VERSIONED"
+                        scp -r "$JAVADOCDIR" genie.epsilon@projects-storage.eclipse.org:$JAVADOC_VERSIONED
+                      else
+                        echo "Project version does not follow the expected X.Y.Z format: ${PROJECT_VERSION}"
+                        exit 2
+                      fi
+                    else
+                      echo "Could not find the Javadocs folder"
+                      exit 1
                     fi
                   '''
                 }
               }
             }
           }
-          /*stage('NEW VERSION') { 
-            // This stage should only be uncommented when creating a new release!
-            steps {
-              lock('download-area') {
-                sshagent (['projects-storage.eclipse.org-bot-ssh']) {
-                  sh 'cat "$WORKSPACE/releng/org.eclipse.epsilon.releng/new_version_tasks.sh" | ssh genie.epsilon@projects-storage.eclipse.org'
-                }
-              }
-            }
-          }*/
           stage('Plain Maven build') {
             when {
               anyOf {
@@ -134,7 +137,7 @@ pipeline {
               sh 'mvn -B -T 1C -f pom-plain.xml compile'
             }
           }
-          stage('Deploy to OSSRH') {
+          stage('Deploy to Central') {
             when {
               anyOf {
                 allOf {
@@ -159,8 +162,8 @@ pipeline {
                   echo -e "5\ny\n" |  gpg --batch --command-fd 0 --expert --edit-key $fpr trust;
                 done
               '''
-              lock('ossrh') {
-                sh 'mvn -B -f pom-plain.xml -P ossrh,eclipse-sign deploy'
+              lock('central-deploy') {
+                sh 'mvn -B -T 1C -f pom-plain.xml -P central-deploy,eclipse-sign deploy'
               }
             }
           }

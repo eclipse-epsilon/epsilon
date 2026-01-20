@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<epsl:Labels xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:epsl="epsilon/labels" xmi:id="_W3XQsYB9EeCCuJzPmJiSAQ">
-  <labels xmi:id="_XgGrsIB9EeCCuJzPmJiSAQ" name="TransitionLabelLabel" text=""/>
-  <labels xmi:id="_Xt1lsIB9EeCCuJzPmJiSAQ" name="ActionLabelFigure" text="Action" style="BOLD"/>
-  <labels xmi:id="_YBwAMIB9EeCCuJzPmJiSAQ" name="DecisionLabelFigure" text="Decision" style="ITALIC"/>
-</epsl:Labels>

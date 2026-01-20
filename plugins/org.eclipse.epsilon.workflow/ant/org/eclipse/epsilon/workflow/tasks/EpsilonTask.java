@@ -17,12 +17,14 @@ import java.util.List;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
+import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 import org.eclipse.epsilon.eol.execute.context.ExtendedProperties;
 import org.eclipse.epsilon.eol.execute.context.Frame;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
 import org.eclipse.epsilon.eol.models.ModelRepository;
 import org.eclipse.epsilon.eol.models.ModelRepositoryManager;
+import org.eclipse.epsilon.workflow.tasks.debug.DebugServerSession;
 import org.eclipse.epsilon.workflow.tasks.transactions.NamedTransactionSupport;
 
 public abstract class EpsilonTask extends Task {
@@ -31,6 +33,9 @@ public abstract class EpsilonTask extends Task {
 	static final String EPSILON_EXTENDEDPROPERTIES = "epsilon.extendedProperties";
 	static final String EPSILON_FRAME = "epsilon.frame";
 	static final String EPSILON_ACTIVETRANSACTIONS = "epsilon.activeTransactions";
+
+	static final String EPSILON_DEBUG_SESSION = "epsilon.debug.session";
+
 	protected boolean profile;
 	protected boolean failOnErrors = true;
 	protected boolean failOnWarnings = false;
@@ -106,6 +111,14 @@ public abstract class EpsilonTask extends Task {
 		getProject().addReference(EpsilonTask.EPSILON_REPOSITORY, repository);
 	}
 
+	protected DebugServerSession getDebugSession() {
+		return (DebugServerSession) getProject().getReference(EpsilonTask.EPSILON_DEBUG_SESSION);
+	}
+
+	protected void setDebugSession(DebugServerSession session) {
+		getProject().addReference(EpsilonTask.EPSILON_DEBUG_SESSION, session);
+	}
+
 	protected List<NamedTransactionSupport> getActiveTransactions() {
 		
 		@SuppressWarnings("unchecked")
@@ -136,16 +149,7 @@ public abstract class EpsilonTask extends Task {
 	protected File getBaseDir() {
 		return new File(getProject().getBaseDir(),"\\");
 	}
-	
-	/*
-	protected File getFile(String path) {
-		File file = new File(path);
-		if (!file.isAbsolute()) {
-			file = new File(getBaseDir(), path);
-		}
-		return file;
-	}*/
-	
+
 	public boolean isProfile() {
 		return profile;
 	}

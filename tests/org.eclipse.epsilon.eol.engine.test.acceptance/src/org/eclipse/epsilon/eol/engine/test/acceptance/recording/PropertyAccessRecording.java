@@ -10,6 +10,7 @@
 package org.eclipse.epsilon.eol.engine.test.acceptance.recording;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Arrays;
 
@@ -61,6 +62,25 @@ public class PropertyAccessRecording {
 		);
 		
 		assertEquals(expectedPropertyAccesses, recorder.getPropertyAccesses());
+	}
+	
+	@Test
+	public void recordsAccessesOfCollectionProperties() throws Exception {
+		module.parse("Person.all.name;");
+		
+		recorder.startRecording();
+		module.execute();
+		recorder.stopRecording();
+		
+		final IPropertyAccesses expectedPropertyAccesses = new PropertyAccesses(
+			new PropertyAccess(person, "name"),
+			new PropertyAccess(enemy, "name")
+		);
+		
+		assertEquals(expectedPropertyAccesses, recorder.getPropertyAccesses());
+		
+		// Check that the "var" variable from PrecomputedObjectPropertyCallExpression does not leak
+		assertFalse(module.getContext().getFrameStack().contains("var"));
 	}
 	
 	@Test

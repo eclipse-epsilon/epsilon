@@ -1,0 +1,3 @@
+operation DB!Column setTable(a : OO!Attribute) {
+	self.table ::= a.owner;
+}

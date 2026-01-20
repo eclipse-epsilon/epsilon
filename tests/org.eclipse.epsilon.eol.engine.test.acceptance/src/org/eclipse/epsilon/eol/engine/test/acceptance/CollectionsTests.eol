@@ -361,7 +361,7 @@ operation testConcatWithGlue() {
 @test
 operation testClosure() {
 	var s = Sequence{Sequence{1, 2}, 3, Sequence{4, 5}};
-	var expected = Sequence{Sequence{1, 2}, Sequence{4, 5}};
+	var expected = OrderedSet{Sequence{1, 2}, Sequence{4, 5}};
 	var flattened = expected.flatten;
 
 	// The result of the body of the closure is traversed as
@@ -371,7 +371,14 @@ operation testClosure() {
 
 	// If we do not do that, the elements in the subsequences
 	// will be collected into a "flattened" list
-	assertEquals(flattened, s.closure(e : Sequence|e));
+	assertEquals(flattened, s.closure(e : Sequence|e).asSequence());
+}
+
+@test
+operation testEmptyClosure() {
+	var result = Sequence {}.closure(e | e);
+	assertTrue(result.isEmpty());
+	assertEquals("OrderedSet", result.type.name);
 }
 
 @test
@@ -524,4 +531,44 @@ operation testParseConcurrentMap() {
 	cm.putIfAbsent("d", 5);
 	assertEquals(4, cm.size());
 	assertEquals(4, cm.get("d"));
+}
+
+@test
+operation emptySequenceToString() {
+	assertEquals("Sequence {}", Sequence {}.asString());
+}
+
+@test
+operation emptyStringSequenceToString() {
+	assertEquals("Sequence {\"\"}", Sequence {""}.asString());
+}
+
+@test
+operation emptyMapKeyToString(){
+	assertEquals("Map {\"\"->1}", Map{""=1}.asString());
+}
+
+@test
+operation emptyMapValueToString(){
+	assertEquals("Map {1->\"\"}", Map{1=""}.asString());
+}
+
+@test
+operation setPreservesInsertionOrder() {
+	var s : new Set;
+	var items = Sequence{5, 3, 2, 7};
+	for (item in items) {
+		s.add(item);
+	}
+	assertEquals(items, s.asSequence());
+}
+
+@test
+operation mapPreservesInsertionOrder() {
+	var m : new Map;
+	var keys = Sequence{5, 3, 2, 7};
+	for (k in keys) {
+		m.put(k, k+1);
+	}
+	assertEquals(keys, m.keySet().asSequence());
 }

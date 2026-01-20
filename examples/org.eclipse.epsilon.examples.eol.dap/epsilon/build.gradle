@@ -1,0 +1,107 @@
+configurations {
+    epsilon
+}
+
+def debugPort = 4040
+def debugEpsilon = false
+
+repositories {
+  maven {
+    url "https://oss.sonatype.org/content/repositories/snapshots"
+  }
+  mavenCentral()
+}
+
+dependencies {
+  epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.8.0'
+  epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow.emf:2.8.0'
+}
+
+task setupEpsilonTasks {
+  // Set up the core Epsilon tasks
+  ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/tasks.xml', 
+    classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+  // Set up the Epsilon EMF tasks
+  ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/emf/tasks.xml', 
+    classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+  // Set logging level to info so that EOL's println() is not suppressed
+  ant.lifecycleLogLevel = 'INFO'
+}
+
+task runHello {
+  dependsOn tasks.setupEpsilonTasks
+  doLast {
+    ant.'epsilon.eol'(src: '01-hello.eol', debug: debugEpsilon, debugPort: debugPort)
+  }
+}
+
+task debugHello {
+  finalizedBy "runHello"
+  doLast {
+    debugEpsilon = true
+  }
+}
+
+task runImported {
+  dependsOn tasks.setupEpsilonTasks
+  doLast {
+    ant.'epsilon.eol'(src: '02-imports-main.eol', debug: debugEpsilon, debugPort: debugPort)
+  }
+}
+
+task debugImported {
+  finalizedBy "runImported"
+  doLast {
+    debugEpsilon = true
+  }
+}
+
+task runInspectObject {
+  dependsOn tasks.setupEpsilonTasks
+  doLast {
+    ant.'epsilon.emf.loadModel'(modelFile: 'models/person.model', metamodelFile: 'models/person.ecore', read: true, store: false, name: 'M')
+    ant.'epsilon.eol'(src: '04-inspectObject.eol', debug: debugEpsilon, debugPort: debugPort) {
+      model(ref: 'M')
+    }
+    ant.'epsilon.disposeModel'(model: 'M')
+  }
+}
+
+task debugInspectObject {
+  finalizedBy "runInspectObject"
+  doLast {
+    debugEpsilon = true
+  }
+}
+
+task runHelloEGL {
+  dependsOn tasks.setupEpsilonTasks
+  doLast {
+    ant.'epsilon.egl'(src: '05-hello.egl', debug: debugEpsilon, debugPort: debugPort)
+  }
+}
+
+task debugHelloEGL {
+  finalizedBy "runHelloEGL"
+  doLast {
+    debugEpsilon = true
+  }
+}
+
+task runEGX {
+  dependsOn tasks.setupEpsilonTasks
+  doLast {
+    ant.'epsilon.emf.loadModel'(modelFile: 'models/person.model', metamodelFile: 'models/person.ecore', read: true, store: false, name: 'M')
+    ant.'epsilon.egl'(src: '07-orchestration.egx', debug: debugEpsilon, debugPort: debugPort) {
+      model(ref: 'M')
+    }
+    ant.'epsilon.disposeModel'(model: 'M')
+  }
+}
+
+task debugEGX {
+  finalizedBy "runEGX"
+  doLast {
+    debugEpsilon = true
+  }
+}

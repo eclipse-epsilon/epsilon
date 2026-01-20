@@ -2,14 +2,17 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Object Language Development Tools
 Bundle-SymbolicName: org.eclipse.epsilon.eol.dt;singleton:=true
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Bundle-Activator: org.eclipse.epsilon.eol.dt.EolPlugin
 Require-Bundle: org.eclipse.jface.text,
  org.eclipse.ui.console,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.ui.ide,
- org.eclipse.epsilon.common.dt
+ org.eclipse.epsilon.common.dt,
+ org.eclipse.epsilon.eol.dap,
+ org.eclipse.lsp4e.debug,
+ org.eclipse.lsp4j.debug
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.epsilon.eol.dt,
  org.eclipse.epsilon.eol.dt.debug,

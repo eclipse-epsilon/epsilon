@@ -17,8 +17,6 @@ import org.eclipse.epsilon.evl.execute.context.IEvlContext;
 
 public class CommandLineFixer implements IEvlFixer {
 
-	protected boolean fix = false;
-	
 	@Override
 	public void fix(IEvlModule module) throws EolRuntimeException {
 		IEvlContext context = module.getContext();
@@ -26,7 +24,7 @@ public class CommandLineFixer implements IEvlFixer {
 		
 		for (UnsatisfiedConstraint unsatisfiedConstraint : context.getUnsatisfiedConstraints()) {
 			context.getOutputStream().println(unsatisfiedConstraint.getMessage());
-			boolean fixIt = fix && (unsatisfiedConstraint.getFixes().size() > 0) && userInput.confirm("Fix error?", true);
+			boolean fixIt = unsatisfiedConstraint.getFixes().size() > 0 && userInput.confirm("Fix error?", true);
 			
 			if (fixIt) {
 				FixInstance fixInstance = (FixInstance) userInput.choose(unsatisfiedConstraint.getMessage(), unsatisfiedConstraint.getFixes(), null);
@@ -37,12 +35,4 @@ public class CommandLineFixer implements IEvlFixer {
 		}
 	}
 
-	public boolean isFix() {
-		return fix;
-	}
-
-	public void setFix(boolean fix) {
-		this.fix = fix;
-	}
-	
 }

@@ -1,0 +1,2 @@
+// Should print out an error due to an undefined variable
+x.println();

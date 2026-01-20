@@ -12,6 +12,7 @@ package org.eclipse.epsilon.emc.emf.dt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -317,7 +318,7 @@ public class EmfModelConfigurationDialog extends AbstractCachedModelConfiguratio
 
 		final Button addURIMetamodelButton = new Button(metamodelButtons, SWT.NONE);
 		addURIMetamodelButton.setText("Add URI...");
-		addURIMetamodelButton.addListener(SWT.Selection, new BrowseEPackagesListener() {
+		addURIMetamodelButton.addListener(SWT.Selection, new BrowseEPackagesListener(true) {
 			@Override
 			public void selectionChanged(String ePackageUri) {
 				URI uri = URI.createURI(ePackageUri);
@@ -352,7 +353,9 @@ public class EmfModelConfigurationDialog extends AbstractCachedModelConfiguratio
 				metamodelList.refresh();
 			}
 		});
-
+		
+		metamodelListLayout.heightHint = metamodelButtons.computeSize(SWT.DEFAULT, SWT.DEFAULT).y; // Do not let the list grow too tall
+		
 		groupContent.layout();
 		groupContent.pack();
 		return groupContent;
@@ -376,7 +379,10 @@ public class EmfModelConfigurationDialog extends AbstractCachedModelConfiguratio
 		try {
 			ResourceSet rs = new ResourceSetImpl();
 			Resource r = rs.createResource(URI.createPlatformResourceURI(resourcePath, true));
-			r.load(null);
+
+			// Some loaders don't handle well the case where the map is null (e.g. Sirius .odesign)
+			r.load(Collections.EMPTY_MAP);
+
 			if (expandButton.getSelection()) {
 				EcoreUtil.resolveAll(r);
 			}

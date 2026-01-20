@@ -27,7 +27,9 @@
             delegate="org.eclipse.epsilon.emg.dt.launching.EmgLaunchConfigurationDelegate"
             id="org.epsilon.emg.eclipse.dt.launching.EmgLaunchConfigurationDelegate"
             modes="run, debug"
-            name="EMG Program">
+            name="EMG Program"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer">
       </launchConfigurationType>
    </extension>
    <extension

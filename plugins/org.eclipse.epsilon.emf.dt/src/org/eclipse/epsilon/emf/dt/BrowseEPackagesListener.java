@@ -22,7 +22,17 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 
 public abstract class BrowseEPackagesListener implements Listener {
-
+	
+	protected boolean multipleSelection = false;
+	
+	public BrowseEPackagesListener() {
+		this(false);
+	}
+	
+	public BrowseEPackagesListener(boolean multipleEPackages) {
+		this.multipleSelection = multipleEPackages;
+	}
+	
 	public void handleEvent(Event event) {
 		ElementListSelectionDialog dialog = new ElementListSelectionDialog( 
 				Display.getDefault().getActiveShell(), 
@@ -45,6 +55,7 @@ public abstract class BrowseEPackagesListener implements Listener {
 					
 				});
 		
+		dialog.setMultipleSelection(multipleSelection);
 		dialog.setMessage("Select an EPackage");
 		dialog.setTitle("Registered EPackages");
 		
@@ -55,7 +66,9 @@ public abstract class BrowseEPackagesListener implements Listener {
 		
 		if (dialog.open() == Window.OK) {
 			if (dialog.getResult().length > 0) {
-				selectionChanged((String) dialog.getResult()[0]);
+				for (Object result : dialog.getResult()) {
+					selectionChanged(result + "");
+				}
 			}
 		}
 	}

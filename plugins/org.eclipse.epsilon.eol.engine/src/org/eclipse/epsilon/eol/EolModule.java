@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.epsilon.eol;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.antlr.runtime.ANTLRInputStream;
+import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Lexer;
 import org.antlr.runtime.TokenStream;
 import org.eclipse.epsilon.common.module.IModule;
@@ -26,6 +29,7 @@ import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.AstUtil;
 import org.eclipse.epsilon.common.util.ListSet;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.AbortStatement;
 import org.eclipse.epsilon.eol.dom.AnnotationBlock;
 import org.eclipse.epsilon.eol.dom.AssignmentStatement;
@@ -92,6 +96,7 @@ public class EolModule extends AbstractModule implements IEolModule {
 	protected List<ModelDeclaration> declaredModelDeclarations;
 	protected Set<ModelDeclaration> modelDeclarations;
 	private IEolModule parent;
+	private IImportManager importManager;
 	
 	/**
 	 * The type of {@link #context} when using {@link #getContext()} and {@link #setContext(IEolContext)}.
@@ -124,11 +129,12 @@ public class EolModule extends AbstractModule implements IEolModule {
 	@Override
 	public void build(AST cst, IModule module) {
 		super.build(cst, module);
-		checkImports(cst);
 		
-		for (Map.Entry<String, Class<?>> entry : getImportConfiguration().entrySet()) {
-			imports.addAll(getImportsByExtension(cst, entry.getKey(), entry.getValue()));
+		for (AST importAst : AstUtil.getChildren(cst, EolParser.IMPORT)) {
+			imports.add((Import) createAst(importAst, this));
 		}
+		
+		loadImports();
 		
 		for (AST operationAst : AstUtil.getChildren(cst, EolParser.HELPERMETHOD)) {
 			declaredOperations.add((Operation) createAst(operationAst, this));
@@ -168,7 +174,6 @@ public class EolModule extends AbstractModule implements IEolModule {
 		
 		operations.addAll(this.getDeclaredOperations());
 		for (Import import_ : imports) {
-			import_.setContext(context);
 			if (import_.isLoaded() && import_.getModule() instanceof IEolModule) {
 				operations.addAll(((IEolModule)import_.getModule()).getOperations());
 			}
@@ -178,6 +183,11 @@ public class EolModule extends AbstractModule implements IEolModule {
 	@Override
 	public ModuleElement adapt(AST cst, ModuleElement parentAst) {
 		if (cst == null) return null;
+		
+		// Delegate adaptation to the parent (importing) module if one exists
+		if (getParentModule() != null && getParentModule() instanceof AbstractModule && cst.getParent() != null) {
+			return ((AbstractModule) getParentModule()).adapt(cst, parentAst);
+		}
 		
 		AST cstParent = cst.getParent();
 		
@@ -329,8 +339,8 @@ public class EolModule extends AbstractModule implements IEolModule {
 		return declaredOperations;
 	}
 	
-	protected HashMap<String, Class<?>> getImportConfiguration() {
-		HashMap<String, Class<?>> importConfiguration = new HashMap<>(4);
+	protected HashMap<String, Class<? extends IModule>> getImportConfiguration() {
+		HashMap<String, Class<? extends IModule>> importConfiguration = new HashMap<>(4);
 		importConfiguration.put("eol", EolModule.class);
 		return importConfiguration;
 	}
@@ -380,73 +390,56 @@ public class EolModule extends AbstractModule implements IEolModule {
 		return operations;
 	}
 	
-	protected Collection<Import> getImportsByExtension(AST cst, String extension, Class<?> moduleImplClass) {
-		List<AST> importAsts = AstUtil.getChildren(cst, EolParser.IMPORT);
-		List<Import> imports = new ArrayList<>(importAsts.size());
+	protected void loadImports() {
 		
-		for (AST importAst : importAsts) {
-			IModule module = null;
-			try {
-				module = (IModule) moduleImplClass.getDeclaredConstructor().newInstance();
-				if (module instanceof IEolModule) {
-					((IEolModule)module).setParentModule(this);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				continue;
-			}
-			
-			Import import_ = (Import) createAst(importAst, this);
-			
-			if (!import_.getPath().endsWith("." + extension)) continue;
-			
-			import_.setParentModule(this);
-			import_.setImportedModule(module);
-			
-			if (sourceUri == null && sourceFile == null) {
-				import_.load(null);
-			
-			} else if (sourceUri != null) {
-				import_.load(sourceUri);
-				
-			} else {
-				import_.load(sourceFile.toURI());
-			}
-			if (!import_.isLoaded()) {
-				ParseProblem problem = new ParseProblem();
-				problem.setLine(import_.getRegion().getStart().getLine());
-				String reason;
-				if (!import_.isFound()) {
-					reason = "File " + import_.getPath() + " not found";
-				}
-				else {
-					reason = "File " + import_.getPath() + " contains errors: " + import_.getModule().getParseProblems();
-				}
-				problem.setReason(reason);
-				getParseProblems().add(problem);
-			}
-			imports.add(import_);
-		}
-		return imports;
-	}
-	
-	protected void checkImports(AST cst) {
-		for (AST importAst : AstUtil.getChildren(cst, EolParser.IMPORT)) {
-			String importedFile = importAst.getFirstChild().getText();
+		for (Import import_ : imports) {
+			String importedFile = import_.getPath();
 			boolean validExtension = false;
 			for (String extension : getImportConfiguration().keySet()) {
 				if (importedFile.endsWith("." + extension)) {
+					Class<? extends IModule> moduleImplClass = getImportConfiguration().get(extension);
 					validExtension = true;
+					import_.setParentModule(this);
+					
+					URI uri = null;
+					if (sourceUri != null) {
+						uri = sourceUri;
+					} else if (sourceFile != null) {
+						uri = sourceFile.toURI();
+					}
+		
+					try {
+						getImportManager().loadModuleForImport(import_, moduleImplClass, uri);
+		
+						if (!import_.isLoaded()) {
+							ParseProblem problem = new ParseProblem();
+							problem.setLine(import_.getRegion().getStart().getLine());
+		
+							String reason = !import_.isFound()
+									? String.format("File %s not found", import_.getPath())
+									: String.format("File %s contains errors: %s", import_.getPath(),
+											import_.getModule().getParseProblems());
+		
+							problem.setReason(reason);
+							getParseProblems().add(problem);
+						}
+					} catch (URISyntaxException ex) {
+						ParseProblem problem = new ParseProblem();
+						problem.setLine(import_.getRegion().getStart().getLine());
+						problem.setReason("Imported URI is invalid: " + uri);
+						getParseProblems().add(problem);
+					}
 				}
 			}
+			
 			if (!validExtension) {
 				ParseProblem problem = new ParseProblem();
-				problem.setLine(importAst.getLine());
-				problem.setReason("Importing " + importAst.getFirstChild().getText() + " is not supported in this language");
+				problem.setLine(import_.getRegion().getStart().getLine());
+				problem.setReason("Importing " + import_.getPath() + " is not supported in this language");
 				problem.setSeverity(ParseProblem.WARNING);
 				getParseProblems().add(problem);
 			}
-		}		
+		}
 	}
 
 	@Override
@@ -526,5 +519,23 @@ public class EolModule extends AbstractModule implements IEolModule {
 			op.clearCache();
 		}
 		getContext().getExtendedProperties().clear();
+	}
+	
+	@Override
+	public IImportManager getImportManager() {
+		if (importManager == null) {
+			importManager = new ImportManager();
+		}
+		return importManager;
+	}
+	
+	@Override
+	public void setImportManager(IImportManager importManager) {
+		this.importManager = importManager;
+	}
+
+	@Override
+	public EolDebugger createDebugger() {
+		return new EolDebugger();
 	}
 }

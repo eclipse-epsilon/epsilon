@@ -1,3 +1,0 @@
-<antlib>
-    <taskdef name="eugenia" classname="org.eclipse.epsilon.workflow.tasks.eugenia.EugeniaTask"/>
-</antlib>

@@ -12,6 +12,7 @@ package org.eclipse.epsilon.ecl.engine.test.acceptance;
 
 import org.eclipse.epsilon.ecl.engine.test.acceptance.builtins.EclCanAccessBuiltinsTests;
 import org.eclipse.epsilon.ecl.engine.test.acceptance.domain.DomainTests;
+import org.eclipse.epsilon.ecl.engine.test.acceptance.equivalence.EclModuleEquivalenceTests;
 import org.eclipse.epsilon.ecl.engine.test.acceptance.matches.MatchesOperationTest;
 import org.eclipse.epsilon.ecl.engine.test.acceptance.trace.MatchTraceTest;
 import org.eclipse.epsilon.ecl.engine.test.acceptance.trees.TestXmlTreeComparison;
@@ -24,7 +25,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	EclCanAccessBuiltinsTests.class, TestXmlTreeComparison.class,
 	MatchesOperationTest.class, DomainTests.class,
-	EclUnparserTests.class, MatchTraceTest.class
+	EclUnparserTests.class, MatchTraceTest.class,
+	EclModuleEquivalenceTests.class
 })
 public class EclAcceptanceTestSuite {
 

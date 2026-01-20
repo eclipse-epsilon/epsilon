@@ -1,23 +1,28 @@
 /*******************************************************************************
- * Copyright (c) 2008 The University of York.
+ * Copyright (c) 2008-2024 The University of York.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
  * 
  * Contributors:
  *     Louis Rose - initial API and implementation
+ *     Dimitris Kolovos, Antonio Garcia-Dominguez - further refinements
  ******************************************************************************/
 package org.eclipse.epsilon.egl.preprocessor;
 
 import static org.eclipse.epsilon.egl.util.FileUtil.NEWLINE;
 import static org.eclipse.epsilon.egl.util.StringUtil.isWhitespace;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.antlr.runtime.Token;
 import org.eclipse.epsilon.common.parse.AST;
+import org.eclipse.epsilon.common.parse.Position;
 import org.eclipse.epsilon.common.parse.Region;
 import org.eclipse.epsilon.egl.parse.EglToken.TokenType;
 import org.eclipse.epsilon.egl.util.FileUtil;
@@ -29,19 +34,8 @@ public class Preprocessor {
 	private final Map<Integer, Integer> colNumber = new TreeMap<>();
 	private PreprocessorTrace trace = new PreprocessorTrace();
 	private AST child = null;
-	
-	
-	private static String escape(String s) {
-		return s
-			.replaceAll("\\\\","\\\\\\\\")
-			.replaceAll("\r","\\\\r")
-			.replaceAll("\n","\\\\n")
-			.replaceAll("\t","\\\\t")
-			.replaceAll("\b","\\\\b")
-			.replaceAll("\f","\\\\f")
-			.replace("'", "\\'")
-			.replace("\"", "\\\"");
-	}
+
+	private static final Pattern PATTERN_TO_ESCAPE = Pattern.compile("\\\\|[\r\n\t\b\f'\"]");
 	
 	private int getOffset(int lineNumber) {
 		if (colNumber.containsKey(lineNumber))
@@ -56,7 +50,7 @@ public class Preprocessor {
 
 	private void updateOffset(int eglLineNumber, int correction, int textLength) {	
 		// Update trace
-		trace.incrementColumnCorrectionNumber(getOffset(eglLineNumber) + correction);
+		trace.incrementColumnCorrectionNumber(0, getOffset(eglLineNumber) + correction);
 		
 		// Store new column number as current position + text length + length of %]
 		addToOffset(eglLineNumber, correction + textLength + 2);
@@ -69,11 +63,6 @@ public class Preprocessor {
 	private void appendNewLineToEol(int eglLineNumber, boolean appendNewLine) {
 		if (appendNewLine) eol.append(NEWLINE);
 		trace.setEglLineNumberForCurrentEolLineNumber(eglLineNumber);
-	}
-
-	private void appendToEolOnANewLine(String text, int eglLineNumber) {
-		appendNewLineToEol(eglLineNumber);
-		eol.append(text);
 	}
 	
 	private boolean eolEndsWith(String suffix) {
@@ -123,13 +112,50 @@ public class Preprocessor {
 					
 					// Gobble whitespace before [% %] and [* *] pairs
 					if (!isWhitespacePrecedingTagged) {
-						appendToEolOnANewLine("out.prinx('" + escape(text) + "');", child.getLine());
-						
-						if (TokenType.typeOf(child.getType()) == TokenType.PLAIN_TEXT) {
-							String printCall = "out.prinx('";
-							// Update trace to account for length of printCall
-							trace.incrementColumnCorrectionNumber(getOffset(child.getLine()) + -printCall.length());
+						final String printCall = "out.prinx('";
+						appendNewLineToEol(child.getLine());
+						trace.incrementColumnCorrectionNumber(0, getOffset(child.getLine()) + -printCall.length());
+
+						final StringBuilder escapedLine = new StringBuilder(printCall);
+						final Matcher escapingMatcher = PATTERN_TO_ESCAPE.matcher(text);
+						int previousEnd = 0;
+						while (escapingMatcher.find()) {
+							String newRegion = text.substring(previousEnd, escapingMatcher.start());
+							escapedLine.append(newRegion);
+
+							String toBeEscaped = escapingMatcher.group();
+							String replacement;
+							switch (toBeEscaped) {
+							case "\\":
+								replacement = "\\\\"; break;
+							case "\r":
+								replacement = "\\r"; break;
+							case "\n":
+								replacement = "\\n"; break;
+							case "\t":
+								replacement = "\\t"; break;
+							case "\b":
+								replacement = "\\b"; break;
+							case "\f":
+								replacement = "\\f"; break;
+							case "'":
+								replacement = "\\'"; break;
+							case "\"":
+								replacement = "\\\""; break;
+							default:
+								replacement = toBeEscaped; break;
+							}
+							escapedLine.append(replacement);
+							trace.incrementColumnCorrectionNumber(
+								escapedLine.toString().length(), toBeEscaped.length() - replacement.length());
+
+							previousEnd = escapingMatcher.end();
 						}
+
+						// add tail after last match and close the call
+						escapedLine.append(text.substring(previousEnd));
+						escapedLine.append("');");
+						eol.append(escapedLine.toString());
 					}
 					
 					addToOffset(child.getLine(), text.length());
@@ -184,7 +210,7 @@ public class Preprocessor {
 						String printCall = "out.printdyn(";
 						
 						// Update trace to account for length of printCall
-						trace.incrementColumnCorrectionNumber(-printCall.length());
+						trace.incrementColumnCorrectionNumber(0, -printCall.length());
 						
 						eol.append(printCall + child.getFirstChild().getText() + ");");
 					}
@@ -288,16 +314,24 @@ public class Preprocessor {
 							adjustedRegion = region;
 						}
 						
-						// Turn out.print("\n") and out.print("\r\n") to imaginary
-						if ("\\n".equals(firstParameterAst.getText()) || "\\r\\n".equals(firstParameterAst.getText())) firstParameterAst.setImaginary(true);
-						
+										
 						// Make all involved ASTs imaginary and assign them the region of the first parameter
 						for (AST imaginary : Arrays.asList(ast, outAst, printAst, parametersAst)) {
 							imaginary.setColumn(getTrace().getEglColumnNumberFor(imaginary.getLine(), imaginary.getColumn()));
 							imaginary.setLine(getTrace().getEglLineNumberFor(imaginary.getLine()));
 							imaginary.setImaginary(true);
+							imaginary.setExtraTokensHidden(true);
 							imaginary.setRegion(adjustedRegion);
 						}
+
+						// Turn out.print("\n") and out.print("\r\n") to imaginary
+						if ("prinx".equals(printAst.getText()) && ("\\n".equals(firstParameterAst.getText()) || "\\r\\n".equals(firstParameterAst.getText()))) {
+							firstParameterAst.setImaginary(true);
+							firstParameterAst.setExtraTokensHidden(true);
+							Position adjustedEnd = new Position(firstParameterAst.getRegion().getStart().getLine(), firstParameterAst.getRegion().getStart().getColumn());
+							firstParameterAst.getRegion().setEnd(adjustedEnd);
+						}
+						
 						return true;
 					}
 				}
@@ -307,7 +341,10 @@ public class Preprocessor {
 	}
 	
 	public void updateASTLocations(AST ast) {
-		ast.setColumn(getTrace().getEglColumnNumberFor(ast.getLine(), ast.getColumn()));
+		final int eglStartColumn = getTrace().getEglColumnNumberFor(ast.getLine(), ast.getColumn());
+		final int eglEndColumn = getTrace().getEglColumnNumberFor(ast.getLine(), ast.getColumn() + ast.getLength());
+		ast.setColumn(eglStartColumn);
+		ast.setLength(eglEndColumn - eglStartColumn);
 		ast.setLine(getTrace().getEglLineNumberFor(ast.getLine()));
 		
 		for (Token token : ast.getExtraTokens()) {

@@ -48,6 +48,7 @@ public class OO2DBTest extends EtlTest {
 	@Test
 	public void testOO2DBTransformation() throws Exception {	
 		IEtlModule module = moduleGetter.get();
+		getFile("OO2DB.eol"); // Make sure this imported file is also copied next to the ETL transformation
 		module.parse(getFile("OO2DB.etl"));
 
 		EmfModel dbModel = loadModel("DB", "models/DBInstance.model", "DB", false, false);

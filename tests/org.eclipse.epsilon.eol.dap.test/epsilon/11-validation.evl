@@ -1,0 +1,24 @@
+context Person {
+  constraint HasName {
+    check: self.name.isDefined() and self.name.trim().length() > 0
+  }
+
+  constraint HasLastName {
+    guard: self.satisfies('HasName')
+    check {
+      var l = self.lastName;
+      return l.isDefined() and l.trim().length() > 0;
+    }
+    fix {
+      guard: true // just to have a place for a breakpoint
+      title {
+        var newLastName = 'NoLastName';
+        return 'Add "' + newLastName + '" as placeholder';
+      }
+      do {
+        var fixedLastName = 'NoLastName';
+        self.lastName = fixedLastName;
+      }
+    }
+  }
+}

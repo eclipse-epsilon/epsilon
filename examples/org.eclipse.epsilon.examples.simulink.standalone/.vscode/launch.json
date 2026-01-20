@@ -1,0 +1,11 @@
+{
+    "configurations": [
+    {
+        "type": "java",
+        "name": "Launch Java Program",
+        "request": "launch",
+        "mainClass": "org.eclipse.epsilon.examples.simulink.standalone.Example",
+        "vmArgs": "-Djava.library.path=/Applications/MATLAB_R2024a.app/bin/maca64"
+    }
+    ]
+}

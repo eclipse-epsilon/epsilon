@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
+import org.eclipse.epsilon.eol.debug.IEolDebugger;
 import org.eclipse.epsilon.eol.dom.Import;
 import org.eclipse.epsilon.eol.dom.ModelDeclaration;
 import org.eclipse.epsilon.eol.dom.OperationList;
@@ -75,4 +76,25 @@ public interface IEolModule extends IModule {
 	default Set<String> getConfigurationProperties() {
 		return Collections.emptySet();
 	}
+
+	/**
+	 * Returns an object that caches the imports made by a module.
+	 *
+	 * @since 2.5
+	 */
+	IImportManager getImportManager();
+
+	/**
+	 * Sets the object that will cache imports to be done by a module.
+	 *
+	 * @since 2.5
+	 */
+	void setImportManager(IImportManager importManager);
+
+	/**
+	 * Creates an object that implements debugging (i.e. breakpoints and stepping) for this module.
+	 *
+	 * @since 2.6
+	 */
+	IEolDebugger createDebugger();
 }

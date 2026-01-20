@@ -11,27 +11,26 @@
 package org.eclipse.epsilon.ecl.trace;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
-import java.util.Spliterator;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Function;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.eclipse.epsilon.ecl.dom.MatchRule;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
+
+import com.google.common.graph.ElementOrder;
+import com.google.common.graph.Graphs;
+import com.google.common.graph.MutableNetwork;
+import com.google.common.graph.NetworkBuilder;
 
 /**
  * 
@@ -39,143 +38,34 @@ import org.eclipse.epsilon.eol.execute.context.IEolContext;
  * @since 1.6 Can be accessed through Collection API rather than getMatches for convenience
  */
 public class MatchTrace implements Collection<Match> {
-	
-	private class MatchIterator implements Iterator<Match> {
-		Iterator<Map<Object, Set<Match>>> itMaps = leftToRight.values().iterator();
-		Iterator<Set<Match>> itMatches = null;
-		Iterator<Match> itMatch = null;
+	/*
+	 * AVOID DIRECTLY ACCESSING THIS FIELD: use syncOnGraph() instead. This ensures
+	 * we synchronize on the graph if we're in a concurrent scenario.
+	 */
+	protected MutableNetwork<Object, Match> _matchGraph;
 
-		Match prev = null, next = null;
+	/* 
+	 * Needed to compute "first match" - whole set of edges is insertion-ordered,
+	 * but not the "small views" of in/out edges. Consistent insertion-based ordering
+	 * is supported in Guava for Graph and ValueGraph, but not Network.
+	 *
+	 * @see https://github.com/google/guava/issues/2650
+	 */
+	protected final AtomicLong creationCounter = new AtomicLong();
+	protected final Map<Match, Long> matchOrder = new IdentityHashMap<>();
 
+	private class MatchInsertionComparator implements Comparator<Match> {
 		@Override
-		public boolean hasNext() {
-			if (next == null) {
-				while (itMatch == null || !itMatch.hasNext()) {
-					while (itMatches == null || !itMatches.hasNext()) {
-						if (itMaps.hasNext()) {
-							itMatches = itMaps.next().values().iterator();
-						} else {
-							return false;
-						}
-					}
+		public int compare(Match o1, Match o2) {
+			Long l1 = matchOrder.get(o1);
+			Long l2 = matchOrder.get(o2);
 
-					if (itMatches.hasNext()) {
-						itMatch = itMatches.next().iterator();
-					} else {
-						return false;
-					}
-				}
-
-				next = itMatch.next();
+			if (l1 == null || l2 == null) {
+				throw new IllegalStateException("A match not part of the network was compared");
 			}
-			return next != null;
-		}
-	
-		@Override
-		public Match next() {
-			if (!hasNext()) throw new NoSuchElementException();
-			
-			prev = next;
-			next = null;
-			return prev;
-		}
-	
-		@Override
-		public void remove() {
-			if (prev == null) {
-				throw new IllegalStateException();
-			}
-
-			// Remove the left-to-right side
-			itMatch.remove();
-
-			Map<Object, Set<Match>> leftMap = leftToRight.get(prev.getLeft());
-			Set<Match> leftSet = leftMap.get(prev.getRight());
-			if (leftSet.isEmpty()) {
-				itMatches.remove();
-			}
-			if (leftMap.isEmpty()) {
-				leftToRight.remove(prev.getLeft());
-			}
-
-			/*
-			 * Remove the right-to-left side (note that both left->right and right->left
-			 * mappings use the same Set)
-			 */
-			Map<Object, Set<Match>> rightMap = rightToLeft.get(prev.getRight());
-			if (leftSet.isEmpty()) {
-				rightMap.remove(prev.getLeft());
-			}
-			if (rightMap.isEmpty()) {
-				rightToLeft.remove(prev.getRight());
-			}
-
-			// Invalidate the cached toString()
-			MatchTrace.this.toStringCached = null;
-
-			// Detect the case when remove() is called multiple times
-			prev = null;
+			return l1.compareTo(l2);
 		}
 	}
-
-	/**
-	 * Spliterator over the entries of a map of maps of matches.
-	 */
-	private class MatchSpliterator implements Spliterator<Match> {
-		private final Spliterator<Entry<Object, Map<Object, Set<Match>>>> rawSpliterator;
-		private Iterator<Set<Match>> currentKeyIterator;
-		private Iterator<Match> currentPairIterator;
-	
-		public MatchSpliterator(Spliterator<Entry<Object, Map<Object, Set<Match>>>> rawSpliterator) {
-			this.rawSpliterator = rawSpliterator;
-		}
-	
-		@Override
-		public boolean tryAdvance(Consumer<? super Match> action) {
-			while (currentPairIterator == null || !currentPairIterator.hasNext()) {
-				while (currentKeyIterator == null || !currentKeyIterator.hasNext()) {
-					boolean hasIterator = rawSpliterator.tryAdvance((nextEntry) -> {
-						currentKeyIterator = nextEntry.getValue().values().iterator();
-					});
-					if (!hasIterator) {
-						// No keys left
-						return false;
-					}
-				}
-				currentPairIterator = currentKeyIterator.next().iterator();
-			}
-
-			// We're here, so we have a match iterator with at least one entry left
-			action.accept(currentPairIterator.next());
-			return true;
-		}
-	
-		@Override
-		public Spliterator<Match> trySplit() {
-			Spliterator<Entry<Object, Map<Object, Set<Match>>>> rawSplit = rawSpliterator.trySplit();
-			if (rawSplit != null) {
-				return new MatchSpliterator(rawSplit);
-			}
-			return null;
-		}
-	
-		@Override
-		public long estimateSize() {
-			return rawSpliterator.estimateSize();
-		}
-	
-		@Override
-		public int characteristics() {
-			return rawSpliterator.characteristics();
-		}
-	}
-
-	/**
-	 * All matches tried during the execution of an ECL module.
-	 * This map contains both left-to-right and right-to-left mappings.
-	 */
-	protected final Map<Object, Map<Object, Set<Match>>> leftToRight;
-	protected final Map<Object, Map<Object, Set<Match>>> rightToLeft;
 
 	protected final boolean concurrent;
 	protected String toStringCached;
@@ -186,35 +76,56 @@ public class MatchTrace implements Collection<Match> {
 	
 	public MatchTrace(boolean concurrent) {
 		this.concurrent = concurrent;
-		this.leftToRight = createMap();
-		this.rightToLeft = createMap();
+		_matchGraph = createNetwork();
+	}
+
+	private MutableNetwork<Object, Match> createNetwork() {
+		return NetworkBuilder.directed()
+			.allowsParallelEdges(true)
+			.allowsSelfLoops(true)
+			.nodeOrder(ElementOrder.unordered())
+			.edgeOrder(ElementOrder.insertion())
+			.expectedNodeCount(1_000)
+			.expectedEdgeCount(1_000)
+			.build();
 	}
 
 	public MatchTrace(MatchTrace copy) {
 		this.concurrent = Objects.requireNonNull(copy).concurrent;
-		this.leftToRight = copyMap(copy.leftToRight);
-		this.rightToLeft = copyMap(copy.rightToLeft);
+
+		this.creationCounter.set(copy.creationCounter.get());
+		this.matchOrder.putAll(copy.matchOrder);
+		copy.syncOnGraph((graph) -> {
+			_matchGraph = Graphs.copyOf(copy._matchGraph);
+			return null;
+		});
+	}
+
+	private <T> T syncOnGraph(Function<MutableNetwork<Object, Match>, T> supplier) {
+		if (concurrent) {
+			synchronized (_matchGraph) {
+				return supplier.apply(_matchGraph);
+			}
+		} else {
+			return supplier.apply(_matchGraph);
+		}
 	}
 
 	/**
 	 * Returns a trace with only the successful matches.
 	 */
 	public MatchTrace getReduced() { 
-		MatchTrace reduced = new MatchTrace(concurrent);
-
-		for (Map<Object, Set<Match>> valMap : leftToRight.values()) {
-			for (Set<Match> matches : valMap.values()) {
-				for (Match match : matches) {
-					if (match.isMatching()) {
-						reduced.add(match);
-					}
+		return syncOnGraph((graph) -> {
+			MatchTrace reduced = new MatchTrace(concurrent);
+			for (Match match: graph.edges()) {
+				if (match.isMatching()) {
+					reduced.add(match);
 				}
 			}
-		}
-
-		return reduced;
+			return reduced;
+		});
 	}
-	
+
 	public Match add(Object left, Object right, boolean matching, MatchRule rule) {
 		Match match = new Match(left, right, matching, rule);
 		add(match);
@@ -225,33 +136,29 @@ public class MatchTrace implements Collection<Match> {
 	 * Returns the first match with a certain {@code left} and {@code right} object.
 	 */
 	public Match getMatch(Object left, Object right) {
-		Map<Object, Set<Match>> leftMap = leftToRight.get(left);
-		if (leftMap != null) {
-			Set<Match> matches = leftMap.get(right);
-			if (matches != null && !matches.isEmpty()) {
-				return matches.iterator().next();
+		return syncOnGraph((graph) -> {
+			Set<Object> nodes = graph.nodes();
+			if (!nodes.contains(left) || !nodes.contains(right)) {
+				return null;
 			}
-		}
-		return null;
+			
+			Set<Match> edges = graph.edgesConnecting(left, right);
+			return edges.isEmpty() ? null : Collections.min(edges, new MatchInsertionComparator());
+		});
 	}
-	
+
 	/**
 	 * Returns all the matches for a given object
 	 * @param object
 	 * @return
 	 */
 	public Collection<Match> getMatches(Object object) {
-		// The object may be on the left or the right side of the matches
-		final List<Match> matches = new ArrayList<>();
-
-		for (Map<Object, Set<Match>> sideMap : Arrays.asList(leftToRight.get(object), rightToLeft.get(object))) {
-			if (sideMap != null) {
-				for (Set<Match> sideMatches : sideMap.values()) {
-					matches.addAll(sideMatches);
-				}
+		return syncOnGraph((graph) -> {
+			if (!graph.nodes().contains(object)) {
+				return Collections.emptyList();
 			}
-		}
-		return matches;
+			return graph.incidentEdges(object);
+		});
 	}
 
 	/**
@@ -260,58 +167,59 @@ public class MatchTrace implements Collection<Match> {
 	 * @return
 	 */
 	public Match getMatch(Object object) {
-		for (Map<Object, Set<Match>> map : Arrays.asList(leftToRight.get(object), rightToLeft.get(object))) {
-			if (map != null) {
-				for (Set<Match> matches : map.values()) {
-					for (Match match : matches) {
-						if (match.isMatching()) {
-							return match;
-						}
-					}
+		return syncOnGraph((graph) -> {
+			if (!graph.nodes().contains(object)) return null;
+
+			// Try left-to-right edges first, then right-to-left edges
+			List<Match> edges = new ArrayList<>(graph.incidentEdges(object));
+			Collections.sort(edges, new MatchInsertionComparator());
+			for (Match m : edges) {
+				if (m.isMatching()) {
+					return m;
 				}
 			}
-		}
-		return null;
+
+			return null;
+		});
 	}
 
 	/**
 	 * Returns the first match which has a certain object on its left side and relates to a certain rule.
 	 */
 	public Match getMatch(Object left, MatchRule rule) {
-		Map<Object, Set<Match>> map = leftToRight.get(left);
-		if (map != null) {
-			for (Set<Match> matches : map.values()) {
-				for (Match match : matches) {
-					if (match.isMatching() && match.getRule() == rule) {
-						return match;
-					}
+		return syncOnGraph((graph) -> {
+			if (!graph.nodes().contains(left)) return null;
+
+			List<Match> outEdges = new ArrayList<>(graph.outEdges(left));
+			Collections.sort(outEdges, new MatchInsertionComparator());
+			for (Match match : outEdges) {
+				if (match.isMatching() && match.getRule() == rule) {
+					return match;
 				}
 			}
-		}
-
-		return null;
+			return null;
+		});
 	}
 
 	public boolean hasBeenMatched(Object object) {
-		return leftToRight.containsKey(object) || rightToLeft.containsKey(object);
+		return syncOnGraph((graph) -> graph.nodes().contains(object));
 	}
 
 	public String toString(IEolContext context) {
 		StringBuilder sb = new StringBuilder();
 
-		for (Map<Object, Set<Match>> valMap : leftToRight.values()) {
-			for (Set<Match> matches : valMap.values()) {
-				for (Match match : matches) {
-					sb.append("[");
-					sb.append(match.isMatching());
-					sb.append("]\n");
+		syncOnGraph((graph) -> {
+			for (Match match : graph.edges()) {
+				sb.append("[");
+				sb.append(match.isMatching());
+				sb.append("]\n");
 
-					sb.append(context.getPrettyPrinterManager().toString(match.getLeft()));
-					sb.append("\n ->");
-					sb.append(context.getPrettyPrinterManager().toString(match.getRight()));
-				}
+				sb.append(context.getPrettyPrinterManager().toString(match.getLeft()));
+				sb.append("\n ->");
+				sb.append(context.getPrettyPrinterManager().toString(match.getRight()));
 			}
-		}
+			return null;
+		});
 
 		sb.append("\n-------------------------------------------");
 		return toStringCached = sb.toString();
@@ -323,13 +231,7 @@ public class MatchTrace implements Collection<Match> {
 	 * @return
 	 */
 	public Collection<Match> getMatches() {
-		final List<Match> matches = new ArrayList<>();
-		for (Map<Object, Set<Match>> valMap : leftToRight.values()) {
-			for (Set<Match> leftMatches : valMap.values()) {
-				matches.addAll(leftMatches);
-			}
-		}
-		return matches;
+		return syncOnGraph((graph) -> graph.edges());
 	}
 
 	/**
@@ -339,12 +241,9 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public Stream<Match> stream() {
-		final Spliterator<Entry<Object, Map<Object, Set<Match>>>> keySpliterator
-			= leftToRight.entrySet().spliterator();
-
-		return StreamSupport.stream(new MatchSpliterator(keySpliterator), false);
+		return syncOnGraph((graph) -> graph.edges().stream());
 	}
-	
+
 	/**
 	 * @since 1.6
 	 */
@@ -355,8 +254,7 @@ public class MatchTrace implements Collection<Match> {
 	
 	@Override
 	public int hashCode() {
-		// We cannot use the hashCode of the maps as they are identity-based
-		return stream().collect(Collectors.toSet()).hashCode();
+		return syncOnGraph((graph) -> graph.hashCode());
 	}
 	
 	@Override
@@ -370,7 +268,7 @@ public class MatchTrace implements Collection<Match> {
 
 		// We cannot directly use equals() across maps as they are identity-based
 		MatchTrace other = (MatchTrace) obj;
-		return stream().collect(Collectors.toSet()).equals(other.stream().collect(Collectors.toSet()));
+		return syncOnGraph((myGraph) -> other.syncOnGraph((otherGraph) -> myGraph.equals(otherGraph)));
 	}
 	
 	/**
@@ -378,22 +276,16 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public boolean add(Match match) {
-		Set<Match> leftSet = leftToRight
-			.computeIfAbsent(match.getLeft(), (k) -> createMap())
-			.computeIfAbsent(match.getRight(), (k) -> createSet());
+		return syncOnGraph((graph) -> internalAdd(match, graph));
+	}
 
-		boolean result = leftSet.add(match);
-		if (result) {
-			// Change in left-to-right must be propagated
+	private boolean internalAdd(Match match, MutableNetwork<Object, Match> graph) {
+		boolean changed = graph.addEdge(match.getLeft(), match.getRight(), match);
+		if (changed) {
 			toStringCached = null;
-
-			// Both left and right sides use the same Set object, to save memory
-			rightToLeft
-				.computeIfAbsent(match.getRight(), (k) -> createMap())
-				.computeIfAbsent(match.getLeft(), (k) -> leftSet);
+			matchOrder.put(match, creationCounter.incrementAndGet());
 		}
-
-		return result;
+		return changed;
 	}
 	
 	/**
@@ -405,38 +297,16 @@ public class MatchTrace implements Collection<Match> {
 			return false;
 		}
 		Match m = (Match) o;
-		
-		Map<Object, Set<Match>> leftMap = leftToRight.get(m.getLeft());
-		if (leftMap == null) {
-			return false;
-		}
-		Set<Match> leftMatches = leftMap.get(m.getRight());
-		if (leftMatches == null) {
-			return false;
-		}
+		return syncOnGraph((graph) -> internalRemove(m, graph));
+	}
 
-		boolean result = leftMatches.remove(m);
-		if (result) {
-			if (leftMatches.isEmpty()) {
-				leftMap.remove(m.getRight());
-			}
-			if (leftMap.isEmpty()) {
-				leftToRight.remove(m.getLeft());
-			}
-
+	private boolean internalRemove(Match m, MutableNetwork<Object, Match> graph) {
+		boolean changed = graph.removeEdge(m);
+		if (changed) {
 			toStringCached = null;
-
-			Map<Object, Set<Match>> rightMap = rightToLeft.get(m.getRight());
-			Set<Match> rightMatches = rightMap.get(m.getLeft());
-			// Note: no need to remove here as left and right sides use same Set
-			if (rightMatches.isEmpty()) {
-				rightMap.remove(m.getLeft());
-			}
-			if (rightMap.isEmpty()) {
-				rightToLeft.remove(m.getRight());
-			}
+			matchOrder.remove(m);
 		}
-		return result;
+		return changed;
 	}
 
 	/**
@@ -444,13 +314,7 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public int size() {
-		int total = 0;
-		for (Map<Object, Set<Match>> valMap : leftToRight.values()) {
-			for (Set<Match> matches : valMap.values()) {
-				total += matches.size();
-			}
-		}
-		return total;
+		return syncOnGraph((graph) -> graph.edges().size());
 	}
 
 	/**
@@ -458,7 +322,7 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return leftToRight.isEmpty();
+		return syncOnGraph((graph) -> graph.edges().isEmpty());
 	}
 
 	/**
@@ -469,16 +333,7 @@ public class MatchTrace implements Collection<Match> {
 		if (!(o instanceof Match)) {
 			return false;
 		}
-
-		Match m = (Match) o;
-		Map<Object, Set<Match>> leftMap = leftToRight.get(m.getLeft());
-		if (leftMap != null) {
-			Set<Match> leftMatches = leftMap.get(m.getRight());
-			if (leftMatches != null) {
-				return leftMatches.contains(m);
-			}
-		}
-		return false;
+		return syncOnGraph((graph) -> graph.edges().contains(o));
 	}
 
 	/**
@@ -486,7 +341,7 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public Iterator<Match> iterator() {
-		return new MatchIterator();
+		return syncOnGraph((graph) -> graph.edges().iterator());
 	}
 
 	/**
@@ -494,7 +349,7 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public Object[] toArray() {
-		return getMatches().toArray();
+		return syncOnGraph((graph) -> graph.edges().toArray());
 	}
 
 	/**
@@ -502,7 +357,7 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public <T> T[] toArray(T[] a) {
-		return getMatches().toArray(a);
+		return syncOnGraph((graph) -> graph.edges().toArray(a));
 	}
 
 	/**
@@ -510,12 +365,7 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		for (Object o : c) {
-			if (!contains(o)) {
-				return false;
-			}
-		}
-		return true;
+		return syncOnGraph((graph) -> graph.edges().containsAll(c));
 	}
 
 	/**
@@ -523,11 +373,13 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public boolean addAll(Collection<? extends Match> c) {
-		boolean ret = false;
-		for (Match m : c) {
-			ret = add(m) || ret;
-		}
-		return ret;
+		return syncOnGraph((graph) -> {
+			boolean changed = false;
+			for (Match m : c) {
+				changed = internalAdd(m, graph) || changed;
+			}
+			return changed;
+		});
 	}
 
 	/**
@@ -535,11 +387,16 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public boolean removeAll(Collection<?> c) {
-		boolean ret = false;
-		for (Object o : c) {
-			ret = remove(o) || ret;
-		}
-		return ret;
+		return syncOnGraph((graph) -> {
+			boolean ret = false;
+			for (Object o : c) {
+				if (o instanceof Match) {
+					Match m = (Match) o;
+					ret = internalRemove(m, graph) || ret;
+				}
+			}
+			return ret;
+		});
 	}
 
 	/**
@@ -547,24 +404,17 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		Set<Match> matchesToRetain = new HashSet<>();
-		for (Object o : c) {
-			if (o instanceof Match) {
-				matchesToRetain.add((Match) o);
-			}
-		}
+		return syncOnGraph((graph) -> {
+			boolean changed = this.matchOrder.keySet().retainAll(c);
 
-		boolean changed = false;
-		Iterator<Match> itMatches = iterator();
-		while (itMatches.hasNext()) {
-			Match m = itMatches.next();
-			if (!matchesToRetain.contains(m)) {
-				itMatches.remove();
-				changed = true;
+			// Rebuild the network after the retain on the Map
+			_matchGraph = createNetwork();
+			for (Match m : this.matchOrder.keySet()) {
+				_matchGraph.addEdge(m.getLeft(), m.getRight(), m);
 			}
-		}
 
-		return changed;
+			return changed;
+		});
 	}
 
 	/**
@@ -572,8 +422,12 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public void clear() {
-		leftToRight.clear();
-		rightToLeft.clear();
+		syncOnGraph((graph) -> {
+			this.toStringCached = null;
+			this.matchOrder.clear();
+			this._matchGraph = createNetwork();
+			return null;
+		});
 	}
 
 	/**
@@ -581,35 +435,7 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public Stream<Match> parallelStream() {
-		final Spliterator<Entry<Object, Map<Object, Set<Match>>>> keySpliterator
-			= leftToRight.entrySet().spliterator();
-
-		return StreamSupport.stream(new MatchSpliterator(keySpliterator), true);
+		return syncOnGraph((graph) -> graph.edges().parallelStream());
 	}
 
-	private <K, V> Map<K, V> createMap() {
-		Map<K, V> rawMap = new IdentityHashMap<>();
-		if (this.concurrent) {
-			return Collections.synchronizedMap(rawMap);
-		}
-		return rawMap;
-	}
-
-	private <E> Set<E> createSet() {
-		Set<E> rawSet = new LinkedHashSet<>();
-		if (this.concurrent) {
-			return Collections.synchronizedSet(rawSet);
-		}
-		return rawSet;
-	}
-
-	private <K, V> Map<K, Map<K, V>> copyMap(Map<K, Map<K, V>> original) {
-		Map<K, Map<K, V>> copy = createMap();
-		for (Entry<K, Map<K, V>> otherEntry : original.entrySet()) {
-			Map<K, V> identitySubmap = createMap();
-			identitySubmap.putAll(otherEntry.getValue());
-			copy.put(otherEntry.getKey(), identitySubmap);
-		}
-		return copy;
-	}
 }

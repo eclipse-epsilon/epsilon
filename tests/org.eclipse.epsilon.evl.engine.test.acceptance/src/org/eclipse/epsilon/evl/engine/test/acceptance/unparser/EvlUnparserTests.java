@@ -24,7 +24,8 @@ public class EvlUnparserTests extends UnparserTests {
 				"scripts/java_annotated.evl",
 				"scripts/java_findbugs.evl",
 				"scripts/java_equals.evl",
-				"scripts/java_parallel.evl");
+				"scripts/java_parallel.evl",
+				"scripts/ValidateIntermediateModel.evl");
 	}
 	
 	@Override

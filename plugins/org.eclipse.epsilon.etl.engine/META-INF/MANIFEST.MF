@@ -2,12 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Epsilon Transformation Language Engine
 Bundle-SymbolicName: org.eclipse.epsilon.etl.engine
-Bundle-Version: 2.5.0.qualifier
+Bundle-Version: 2.9.0.qualifier
 Bundle-Vendor: Eclipse Modeling Project
 Require-Bundle: org.eclipse.epsilon.eol.engine,
- org.eclipse.epsilon.erl.engine;visibility:=reexport
+ org.eclipse.epsilon.erl.engine;visibility:=reexport,
+ com.google.guava;bundle-version="27.1.0"
 Export-Package: org.eclipse.epsilon.etl,
  org.eclipse.epsilon.etl.concurrent,
+ org.eclipse.epsilon.etl.debug,
  org.eclipse.epsilon.etl.dom,
  org.eclipse.epsilon.etl.execute.context,
  org.eclipse.epsilon.etl.execute.context.concurrent,

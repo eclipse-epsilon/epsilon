@@ -10,7 +10,6 @@
 package org.eclipse.epsilon.emc.simulink.test.unit;
 
 import static org.eclipse.epsilon.emc.simulink.common.test.MatlabEngineSetupEnum.ENGINE_JAR;
-import static org.eclipse.epsilon.emc.simulink.common.test.MatlabEngineSetupEnum.LIBRARY_PATH;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -176,8 +175,6 @@ public class LoadModelTest {
 		model.setName("M");
 		model.setCachingEnabled(false);
 		try {			
-			String path = LIBRARY_PATH.path(version);
-			model.setLibraryPath(path);
 			String engine = ENGINE_JAR.path(version);
 			model.setEngineJarPath(engine);
 		} catch (Exception e) {

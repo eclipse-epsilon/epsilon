@@ -19,13 +19,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.tools.ant.BuildException;
 import org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory;
-import org.eclipse.epsilon.egl.EglTemplateFactory;
 import org.eclipse.epsilon.egl.EglModule;
+import org.eclipse.epsilon.egl.EglTemplateFactory;
+import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.egl.IEglModule;
 import org.eclipse.epsilon.egl.IEgxModule;
-import org.eclipse.epsilon.egl.concurrent.EgxModuleParallelAnnotation;
+import org.eclipse.epsilon.egl.concurrent.EgxModuleParallel;
 import org.eclipse.epsilon.egl.engine.traceability.fine.EglFineGrainedTraceContextAdaptor;
 import org.eclipse.epsilon.egl.engine.traceability.fine.trace.ModelLocation;
 import org.eclipse.epsilon.egl.engine.traceability.fine.trace.Region;
@@ -33,6 +35,7 @@ import org.eclipse.epsilon.egl.engine.traceability.fine.trace.TextLocation;
 import org.eclipse.epsilon.egl.engine.traceability.fine.trace.Trace;
 import org.eclipse.epsilon.egl.engine.traceability.fine.trace.TraceLink;
 import org.eclipse.epsilon.egl.exceptions.EglRuntimeException;
+import org.eclipse.epsilon.egl.execute.context.EgxContext;
 import org.eclipse.epsilon.egl.execute.context.IEglContext;
 import org.eclipse.epsilon.egl.execute.context.concurrent.EgxContextParallel;
 import org.eclipse.epsilon.egl.formatter.Formatter;
@@ -50,7 +53,7 @@ public class EglTask extends ExportableModuleTask {
 	@Override
 	protected IEolModule createDefaultModule() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		final IEolModule module; 
-		final EglTemplateFactory templateFactory = templateFactoryType.getDeclaredConstructor().newInstance();
+		final EglTemplateFactory templateFactory = createDefaultTemplateFactory();
 		
 		if (templateFactory instanceof EglFileGeneratingTemplateFactory && outputRoot != null) {
 			try {
@@ -63,7 +66,7 @@ public class EglTask extends ExportableModuleTask {
 		templateFactory.setDefaultFormatters(instantiateDefaultFormatters());
 		
 		if (src != null && src.getName().endsWith("egx")) {
-			module = new EgxModuleParallelAnnotation(new EgxContextParallel(templateFactory));
+			module = new EgxModule(new EgxContext(templateFactory));
 		}
 		else {		
 			module = new EglModule(templateFactory);
@@ -76,6 +79,10 @@ public class EglTask extends ExportableModuleTask {
 		}
 		
 		return module;
+	}
+	
+	protected EglTemplateFactory createDefaultTemplateFactory() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		return templateFactoryType.getDeclaredConstructor().newInstance();
 	}
 	
 	@Override
@@ -96,7 +103,12 @@ public class EglTask extends ExportableModuleTask {
 		templateFactory.setDefaultFormatters(instantiateDefaultFormatters());
 		
 		if (module instanceof IEgxModule) {
-			module.setContext(new EgxContextParallel(templateFactory));
+			if (module instanceof EgxModuleParallel) {
+				module.setContext(new EgxContextParallel(templateFactory));
+			}
+			else {
+				module.setContext(new EgxContext(templateFactory));
+			}
 		}
 		else {		
 			((IEglModule) module).setTemplateFactory(templateFactory);

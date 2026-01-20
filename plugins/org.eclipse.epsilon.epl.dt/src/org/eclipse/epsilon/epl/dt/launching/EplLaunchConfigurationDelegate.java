@@ -15,10 +15,11 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.epsilon.common.dt.launching.extensions.ModuleImplementationExtension;
 import org.eclipse.epsilon.eol.IEolModule;
-import org.eclipse.epsilon.eol.dt.debug.EolDebugger;
+import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dt.launching.EpsilonLaunchConfigurationDelegate;
 import org.eclipse.epsilon.epl.EplModule;
 import org.eclipse.epsilon.epl.IEplModule;
+import org.eclipse.epsilon.epl.debug.EplDebugger;
 
 public class EplLaunchConfigurationDelegate extends EpsilonLaunchConfigurationDelegate {
 	

@@ -9,10 +9,19 @@
  ******************************************************************************/
 package org.eclipse.epsilon.etl.strategy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.eclipse.epsilon.common.util.CollectionUtil;
+import org.eclipse.epsilon.eol.dom.Expression;
 import org.eclipse.epsilon.eol.dom.Parameter;
 import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
+import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.types.EolCollectionType;
 import org.eclipse.epsilon.erl.execute.context.IErlContext;
 import org.eclipse.epsilon.etl.dom.TransformationRule;
@@ -65,11 +74,27 @@ public class FastTransformationStrategy extends AbstractTransformationStrategy {
 					if (!getExcluded().contains(instance) && transformRule.appliesTo(instance, context, false, false)) {
 						
 						Collection<Object> targets = CollectionUtil.createDefaultList();
-						
-						for (Parameter target : transformRule.getTargetParameters()) {
-							targets.add(target.getType(context).createInstance());
+
+						for (int i = 0; i < transformRule.getTargetParameters().size(); i++) {
+							Parameter p = transformRule.getTargetParameters().get(i);
+
+							Optional<Expression> init = transformRule.getTargetParameterInitializers().get(i);
+							if (init.isPresent()) {
+								context.getFrameStack().enterLocal(
+									FrameType.UNPROTECTED, init.get(),
+									Collections.singletonMap(
+										transformRule.getSourceParameter().getName(),
+										instance));
+								try {
+									targets.add(init.get().execute(context));
+								} finally {
+									context.getFrameStack().leaveLocal(init.get());
+								}
+							} else {
+								targets.add(p.getType(context).createInstance());
+							}
 						}
-						
+
 						transTrace.add(instance, targets, transformRule);
 					}
 				}

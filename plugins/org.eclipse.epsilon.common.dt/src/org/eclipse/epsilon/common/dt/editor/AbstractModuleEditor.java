@@ -115,7 +115,12 @@ public abstract class AbstractModuleEditor extends AbstractDecoratedTextEditor {
 
 	protected void notifyModuleParsedListeners(IModule module) {
 		for (IModuleParseListener listener : moduleParsedListeners) {
-			listener.moduleParsed(this, module);
+			try {
+				listener.moduleParsed(this, module);
+			}
+			catch (Exception ex) {
+				LogUtil.log(ex);
+			}
 		}
 	}
 
@@ -132,7 +137,7 @@ public abstract class AbstractModuleEditor extends AbstractDecoratedTextEditor {
 		try {
 			doc.replace(selection.getOffset(), 0, text);
 		} catch (BadLocationException e) {
-			e.printStackTrace();
+			
 		}
 	}
 

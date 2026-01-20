@@ -10,15 +10,14 @@
 
 package org.eclipse.epsilon.dt.epackageregistryexplorer;
 
-import java.util.ListIterator;
 import java.util.stream.Collectors;
+
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EParameter;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jface.resource.FontDescriptor;
@@ -28,7 +27,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -40,9 +38,7 @@ public class EcoreLabelProvider extends LabelProvider implements IFontProvider, 
 	protected Font italic;
 	
 	public EcoreLabelProvider(PackageRegistryExplorerView view) {
-		this.view = view;
-		bold = FontDescriptor.createFrom(new FontData()).setStyle(SWT.BOLD).createFont(Display.getCurrent());
-		italic = FontDescriptor.createFrom(new FontData()).setStyle(SWT.ITALIC).createFont(Display.getCurrent());
+		this.view = view;		
 	}
 	
 	@Override
@@ -160,24 +156,39 @@ public class EcoreLabelProvider extends LabelProvider implements IFontProvider, 
 		if (element instanceof EClass) {
 			EClass eClass = (EClass) element;
 			if (eClass.isAbstract()) {
-				return italic;
+				return getItalic();
 			}
 		}
 		if (element instanceof EReference) {
 			EReference eReference = (EReference) element;
 			if (eReference.isContainment()) {
-				return bold;
+				return getBold();
 			}
 		}
 		if (element instanceof EStructuralFeature) {
 			EStructuralFeature eStructuralFeature = (EStructuralFeature) element;
 			if (eStructuralFeature.isDerived()) {
-				return italic;
+				return getItalic();
 			}
 		}
 		return null;
 	}
 	
+	protected Font getItalic() {
+		if (italic == null) {
+			italic = FontDescriptor.createFrom(view.getFeatureViewer().getControl().getFont().getFontData()).
+					setStyle(SWT.ITALIC).createFont(Display.getCurrent());
+		}
+		return italic;
+	}
+	
+	protected Font getBold() {
+		if (bold == null) {
+			bold = FontDescriptor.createFrom(view.getFeatureViewer().getControl().getFont().getFontData()).
+					setStyle(SWT.BOLD).createFont(Display.getCurrent());
+		}
+		return bold;
+	}
 	
 }
  

@@ -1,0 +1,7 @@
+// The $ is needed as Task is a static class within JavaObjectTest
+var p = new Native('org.eclipse.epsilon.eol.dap.test.eol.JavaObjectTest$Task');
+
+p.responsible = 'John Doe';
+p.effortDays = 5;
+
+p.println();

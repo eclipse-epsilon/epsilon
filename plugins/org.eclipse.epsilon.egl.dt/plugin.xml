@@ -10,7 +10,9 @@
             delegate="org.eclipse.epsilon.egl.dt.launching.EglLaunchConfigurationDelegate"
             id="org.epsilon.egl.eclipse.dt.launching.EglLaunchConfigurationDelegate"
             modes="run,debug"
-            name="EGL Generator">
+            name="EGL Generator"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer">
          xxx
       </launchConfigurationType>
    </extension>

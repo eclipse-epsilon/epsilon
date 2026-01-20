@@ -12,7 +12,8 @@ package org.eclipse.epsilon.eol.engine.test.acceptance;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import org.eclipse.epsilon.eol.engine.test.acceptance.eunit.EUnitRunner;
+
+import org.eclipse.epsilon.eol.engine.test.acceptance.eunit.EUnitRunnerParallel;
 import org.eclipse.epsilon.eol.engine.test.acceptance.eunit.ExtraModel;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.java.JavaModel;
@@ -21,7 +22,7 @@ import org.junit.runner.RunWith;
 /**
  * Tests for Iterable objects that are not Collections.
  */
-@RunWith(EUnitRunner.class)
+@RunWith(EUnitRunnerParallel.class)
 public class IterableTests {
 	/**
 	 * Implements the Iterable interface without being a Collection, using

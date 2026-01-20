@@ -9,6 +9,7 @@
 **********************************************************************/
 package org.eclipse.epsilon.flexmi.templates;
 
+import java.io.File;
 import java.net.URI;
 
 import org.eclipse.epsilon.eol.IEolModule;
@@ -40,6 +41,18 @@ public abstract class DynamicTemplate extends XmlTemplate {
 	protected String getScript() {
 		if (content.hasAttribute("script")) return content.getAttribute("script");
 		else return content.getTextContent().trim();
+	}
+	
+	protected void parse(IEolModule module, String code, URI uri) throws Exception {
+		File file = null;
+		
+		try {
+			file = new File(uri);
+		}
+		catch (Exception ex) {}
+		
+		if (file == null) module.parse(code);
+		else module.parse(code, file);
 	}
 	
 }
