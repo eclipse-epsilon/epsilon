@@ -40,8 +40,8 @@ public class PictoTests {
 		return pictoView;
 	}
 	
-	protected ViewTree getViewTree(String path) throws Exception {
-		return new TestPictoSource(new File(path)).getViewTree(new MockIEditor());
+	protected ViewTree getViewTree(String path, PictoView pictoView) throws Exception {
+		return new TestPictoSource(new File(path)).getViewTree(new MockIEditor(), pictoView);
 	}
 	
 	

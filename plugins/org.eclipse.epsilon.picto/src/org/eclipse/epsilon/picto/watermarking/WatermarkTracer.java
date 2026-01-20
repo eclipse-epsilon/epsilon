@@ -7,10 +7,7 @@ import org.eclipse.epsilon.eol.execute.context.IEolContext;
 
 public class WatermarkTracer {
 	
-	public static WatermarkTracer Instance = new WatermarkTracer();
 	protected List<WatermarkTrace> traces = new ArrayList<WatermarkTrace>();
-	
-	private WatermarkTracer() {};
 	
 	public synchronized String getWatermark(IEolContext context, Object element, String property) {
 		WatermarkTrace trace = traces.stream().filter(t -> t.element == element && t.property.equals(property)).findFirst().orElseGet(() -> {

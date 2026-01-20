@@ -9,6 +9,7 @@
 **********************************************************************/
 package org.eclipse.epsilon.picto.source;
 
+import org.eclipse.epsilon.picto.PictoView;
 import org.eclipse.epsilon.picto.ViewTree;
 import org.eclipse.ui.IEditorPart;
 
@@ -18,7 +19,7 @@ public interface PictoSource {
 	
 	public void showElement(String id, String uri, IEditorPart editor);
 	
-	public ViewTree getViewTree(IEditorPart editorPart) throws Exception;
+	public ViewTree getViewTree(IEditorPart editorPart, PictoView pictoView) throws Exception;
 	
 	public void dispose();
 }

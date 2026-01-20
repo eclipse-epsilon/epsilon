@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.epsilon.flexmi.FlexmiResourceFactory;
+import org.eclipse.epsilon.picto.PictoView;
 import org.eclipse.epsilon.picto.ViewTree;
 import org.eclipse.epsilon.picto.dom.Picto;
 import org.eclipse.epsilon.picto.dom.PictoFactory;
@@ -45,8 +46,8 @@ public abstract class ExternalMetadataSource extends EglPictoSource {
 	}
 	
 	@Override
-	public ViewTree getViewTree(IEditorPart editor) throws Exception {
-		ViewTree viewTree = super.getViewTree(editor);
+	public ViewTree getViewTree(IEditorPart editor, PictoView pictoView) throws Exception {
+		ViewTree viewTree = super.getViewTree(editor, pictoView);
 		java.net.URI editorLocationURI = getFile(editor).getLocationURI();
 		viewTree.getBaseUris().add(editorLocationURI);
 		viewTree.getBaseUris().add(editorLocationURI.resolve("./icons/"));

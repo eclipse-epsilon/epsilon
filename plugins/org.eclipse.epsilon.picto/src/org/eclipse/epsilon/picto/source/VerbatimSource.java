@@ -12,18 +12,19 @@ package org.eclipse.epsilon.picto.source;
 import java.io.File;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.epsilon.picto.PictoView;
 import org.eclipse.epsilon.picto.ViewTree;
 import org.eclipse.ui.IEditorPart;
 
 public abstract class VerbatimSource extends SimpleSource {
 	
 	@Override
-	public ViewTree getViewTree(IEditorPart editor) throws Exception {
+	public ViewTree getViewTree(IEditorPart editor, PictoView pictoView) throws Exception {
 		IPath iPath = waitForPath(editor);
 		if (iPath == null) return createEmptyViewTree();
 		else {
 			// If the filename ends with .picto.svg, treat the file as an EGL template
-			if (iPath.toOSString().endsWith(".picto." + getFileExtension())) return super.getViewTree(editor);
+			if (iPath.toOSString().endsWith(".picto." + getFileExtension())) return super.getViewTree(editor, pictoView);
 			// else use its verbatim contents
 			else return new ViewTree(new File(iPath.toOSString()), getFormat());
 		}

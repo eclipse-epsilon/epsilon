@@ -48,6 +48,7 @@ import org.eclipse.epsilon.picto.preferences.PictoPreferencePage;
 import org.eclipse.epsilon.picto.source.PictoSource;
 import org.eclipse.epsilon.picto.source.PictoSourceExtensionPointManager;
 import org.eclipse.epsilon.picto.source.VerbatimSource;
+import org.eclipse.epsilon.picto.watermarking.WatermarkTracer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -99,6 +100,7 @@ public class PictoView extends ViewPart {
 	protected boolean renderVerbatimSources = false;
 	protected ViewTreeSelectionHistory viewTreeSelectionHistory = new ViewTreeSelectionHistory();
 	protected int treePosition = SWT.LEFT;
+	protected WatermarkTracer watermarkTracer = new WatermarkTracer();
 	
 	@Override
 	public void createPartControl(Composite parent) {
@@ -291,7 +293,7 @@ public class PictoView extends ViewPart {
 			this.editor = editor;
 			editor.addPropertyListener(listener);
 			
-			Job job = new TreeRenderingJob("Rendering tree in " + editor.getTitle());
+			Job job = new TreeRenderingJob("Rendering tree in " + editor.getTitle(), this);
 			job.setUser(true);
 			job.schedule();
 		}
@@ -467,8 +469,12 @@ public class PictoView extends ViewPart {
 	 * Runs the EGX script in the background, populates the tree, and shows the initial text.
 	 */
 	class TreeRenderingJob extends Job {
-		private TreeRenderingJob(String name) {
+		
+		protected PictoView pictoView;
+		
+		private TreeRenderingJob(String name, PictoView pictoView) {
 			super(name);
+			this.pictoView = pictoView;
 		}
 
 		@Override
@@ -482,7 +488,7 @@ public class PictoView extends ViewPart {
 				renderedEditor = editor;
 				if (!rerender) viewTreeSelectionHistory = new ViewTreeSelectionHistory();
 
-				final ViewTree viewTree = source.getViewTree(editor);
+				final ViewTree viewTree = source.getViewTree(editor, pictoView);
 
 				runInUIThread(new RunnableWithException() {
 					@Override
@@ -712,6 +718,10 @@ public class PictoView extends ViewPart {
 
 	public void setPinned(boolean pinned) {
 		this.pinned = pinned;
+	}
+	
+	public WatermarkTracer getWatermarkTracer() {
+		return watermarkTracer;
 	}
 
 }

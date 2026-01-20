@@ -44,6 +44,7 @@ import org.eclipse.epsilon.picto.Layer;
 import org.eclipse.epsilon.picto.LazyEgxModule;
 import org.eclipse.epsilon.picto.LazyEgxModule.LazyGenerationRule;
 import org.eclipse.epsilon.picto.LazyEgxModule.LazyGenerationRuleContentPromise;
+import org.eclipse.epsilon.picto.PictoView;
 import org.eclipse.epsilon.picto.ResourceLoadingException;
 import org.eclipse.epsilon.picto.StaticContentPromise;
 import org.eclipse.epsilon.picto.ViewTree;
@@ -62,7 +63,7 @@ public abstract class EglPictoSource implements PictoSource {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public ViewTree getViewTree(IEditorPart editor) throws Exception {
+	public ViewTree getViewTree(IEditorPart editor, PictoView pictoView) throws Exception {
 		
 		IPath iPath = waitForPath(editor);
 		if (iPath == null) return createEmptyViewTree();
@@ -101,9 +102,10 @@ public abstract class EglPictoSource implements PictoSource {
 			if (renderingMetadata.getFormat() == null) renderingMetadata.setFormat("egx");
 			
 			if ("egx".equals(renderingMetadata.getFormat())) {
-				module = new LazyEgxModule();
+				module = new LazyEgxModule(pictoView);
 			}
 			else {
+				//TODO: trace() only works for EGX
 				module = new EglModule(new EglFileGeneratingTemplateFactory());
 			}
 			

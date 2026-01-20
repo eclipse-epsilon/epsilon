@@ -12,10 +12,11 @@ import org.eclipse.epsilon.eol.execute.introspection.recording.IPropertyAccess;
 import org.eclipse.epsilon.eol.execute.introspection.recording.PropertyAccessExecutionListener;
 import org.eclipse.epsilon.eol.execute.introspection.recording.PropertyAccessRecorder;
 import org.eclipse.epsilon.eol.execute.operations.AbstractOperation;
+import org.eclipse.epsilon.picto.PictoView;
 
 public class PictoOperationFactory extends EglOperationFactory {
 	
-	public PictoOperationFactory() {
+	public PictoOperationFactory(PictoView pictoView) {
 		super();
 		operationCache.put("trace", new AbstractOperation() {
 			
@@ -38,7 +39,7 @@ public class PictoOperationFactory extends EglOperationFactory {
 				// TODO: This makes an assumption that there is one property access. What if there are zero or many?
 				IPropertyAccess propertyAccess = recorder.getPropertyAccesses().unique().iterator().next();
 				
-				return result + WatermarkTracer.Instance.getWatermark(context, propertyAccess.getModelElement(), propertyAccess.getPropertyName());
+				return result + pictoView.getWatermarkTracer().getWatermark(context, propertyAccess.getModelElement(), propertyAccess.getPropertyName());
 			}
 		});
 	}

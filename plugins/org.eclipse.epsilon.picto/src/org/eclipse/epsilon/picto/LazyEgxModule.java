@@ -38,8 +38,11 @@ import org.eclipse.epsilon.pinset.PinsetModule;
 
 public class LazyEgxModule extends EgxModule {
 	
-	public LazyEgxModule() {
+	protected PictoView pictoView;
+	
+	public LazyEgxModule(PictoView pictoView) {
 		super();
+		this.pictoView = pictoView;
 	}
 	
 	public LazyEgxModule(EglTemplateFactory templateFactory) {
@@ -207,7 +210,7 @@ public class LazyEgxModule extends EgxModule {
 			EglTemplate template = null;
 			if (templateCache == null || (template = templateCache.get(templateUri)) == null) {
 				template = templateFactory.load(templateUri);
-				template.getModule().getContext().setOperationFactory(new PictoOperationFactory());
+				template.getModule().getContext().setOperationFactory(new PictoOperationFactory(pictoView));
 				if (templateCache != null) {
 					templateCache.put(templateUri, template);
 				}

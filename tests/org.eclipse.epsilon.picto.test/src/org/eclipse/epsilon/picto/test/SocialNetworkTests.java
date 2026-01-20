@@ -44,7 +44,7 @@ public class SocialNetworkTests extends PictoTests {
 	public void testSocialNetwork() throws Exception {
 		
 		PictoView pictoView = createPictoView();
-		ViewTree viewTree = getViewTree(FileUtil.getFileStandalone("ecore/socialnetwork.picto", SocialNetworkTests.class).getAbsolutePath());
+		ViewTree viewTree = getViewTree(FileUtil.getFileStandalone("ecore/socialnetwork.picto", SocialNetworkTests.class).getAbsolutePath(), pictoView);
 		
 		ViewTree modelViewTree = viewTree.getChildren().get(0);
 		assertEquals("Model", modelViewTree.getName());

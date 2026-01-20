@@ -15,7 +15,7 @@ public class EditBrowserFunction implements PictoBrowserFunction {
 		try {
 			if (view.getEditor() instanceof IEditingDomainProvider) {
 				EditingDomain editingDomain = ((IEditingDomainProvider) view.getEditor()).getEditingDomain();
-				WatermarkTrace trace = WatermarkTracer.Instance.getTrace(parameters[0].toString());
+				WatermarkTrace trace = view.getWatermarkTracer().getTrace(parameters[0].toString());
 				String value = new JFaceUserInput(trace.getContext().getPrettyPrinterManager()).prompt(trace.getProperty());
 				editingDomain.getCommandStack().execute(new SetAttributeValueCommand((EObject) trace.getElement(), trace.getProperty(), value));
 				view.render(view.getEditor()); // Refresh
