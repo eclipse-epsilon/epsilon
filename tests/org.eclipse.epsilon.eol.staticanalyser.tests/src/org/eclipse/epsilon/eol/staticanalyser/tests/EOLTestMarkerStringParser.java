@@ -125,7 +125,6 @@ public class EOLTestMarkerStringParser {
 			return null;
 		}
 
-		// Eclipse IDE columns report +1 over the internal column range
 		return new Region(
 				Integer.parseInt(regexMarker.group(GRP_START_LINE)),
 				Integer.parseInt(regexMarker.group(GRP_START_COLUMN)),
