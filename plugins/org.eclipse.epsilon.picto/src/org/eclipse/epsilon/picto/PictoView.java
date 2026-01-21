@@ -48,7 +48,7 @@ import org.eclipse.epsilon.picto.preferences.PictoPreferencePage;
 import org.eclipse.epsilon.picto.source.PictoSource;
 import org.eclipse.epsilon.picto.source.PictoSourceExtensionPointManager;
 import org.eclipse.epsilon.picto.source.VerbatimSource;
-import org.eclipse.epsilon.picto.watermarking.WatermarkTracer;
+import org.eclipse.epsilon.picto.trace.TraceManager;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -100,7 +100,7 @@ public class PictoView extends ViewPart {
 	protected boolean renderVerbatimSources = false;
 	protected ViewTreeSelectionHistory viewTreeSelectionHistory = new ViewTreeSelectionHistory();
 	protected int treePosition = SWT.LEFT;
-	protected WatermarkTracer watermarkTracer = new WatermarkTracer();
+	protected TraceManager traceManager = new TraceManager();
 	
 	@Override
 	public void createPartControl(Composite parent) {
@@ -281,6 +281,7 @@ public class PictoView extends ViewPart {
 	}
 
 	public void render(IEditorPart editor) {
+		traceManager.clear();
 		if (editor == null) {
 			setTreeViewerVisible(false);
 			viewRenderer.nothingToRender();
@@ -720,8 +721,8 @@ public class PictoView extends ViewPart {
 		this.pinned = pinned;
 	}
 	
-	public WatermarkTracer getWatermarkTracer() {
-		return watermarkTracer;
+	public TraceManager getTraceMarkerManager() {
+		return traceManager;
 	}
 
 }

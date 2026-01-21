@@ -1,13 +1,14 @@
-package org.eclipse.epsilon.picto.watermarking;
+package org.eclipse.epsilon.picto.trace;
 
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 
-public class WatermarkTrace {
+public class Trace {
 		
 		protected Object element;
 		protected String property;
 		protected IEolContext context;
-		protected String watermark;
+		//TODO: There's no reason to store the watermark. We should store its length only.
+		protected String tag;
 		
 		public Object getElement() {
 			return element;
@@ -25,12 +26,12 @@ public class WatermarkTrace {
 			this.property = property;
 		}
 		
-		public String getWatermark() {
-			return watermark;
+		public String getTag() {
+			return tag;
 		}
 		
-		public void setWatermark(String watermark) {
-			this.watermark = watermark;
+		public void setTag(String tag) {
+			this.tag = tag;
 		}
 		
 		public void setContext(IEolContext context) {

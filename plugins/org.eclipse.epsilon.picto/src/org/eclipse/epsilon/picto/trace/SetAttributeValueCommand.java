@@ -1,4 +1,4 @@
-package org.eclipse.epsilon.picto.watermarking;
+package org.eclipse.epsilon.picto.trace;
 
 import java.util.ArrayList;
 import java.util.Collection;

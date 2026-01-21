@@ -1,4 +1,4 @@
-package org.eclipse.epsilon.picto.watermarking;
+package org.eclipse.epsilon.picto.trace;
 
 import java.util.List;
 
@@ -14,9 +14,9 @@ import org.eclipse.epsilon.eol.execute.introspection.recording.PropertyAccessRec
 import org.eclipse.epsilon.eol.execute.operations.AbstractOperation;
 import org.eclipse.epsilon.picto.PictoView;
 
-public class PictoOperationFactory extends EglOperationFactory {
+public class TraceOperationFactory extends EglOperationFactory {
 	
-	public PictoOperationFactory(PictoView pictoView) {
+	public TraceOperationFactory(PictoView pictoView) {
 		super();
 		operationCache.put("trace", new AbstractOperation() {
 			
@@ -38,8 +38,10 @@ public class PictoOperationFactory extends EglOperationFactory {
 				
 				// TODO: This makes an assumption that there is one property access. What if there are zero or many?
 				IPropertyAccess propertyAccess = recorder.getPropertyAccesses().unique().iterator().next();
-				
-				return result + pictoView.getWatermarkTracer().getWatermark(context, propertyAccess.getModelElement(), propertyAccess.getPropertyName());
+				// TODO: We only append the invisible tag at the end of the text
+				// We also need to account for cases where two traceable strings exist
+				// in the context of the same HTML node
+				return result + pictoView.getTraceMarkerManager().getTag(context, propertyAccess.getModelElement(), propertyAccess.getPropertyName());
 			}
 		});
 	}

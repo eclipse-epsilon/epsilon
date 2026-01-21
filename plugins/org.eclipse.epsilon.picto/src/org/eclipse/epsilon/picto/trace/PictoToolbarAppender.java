@@ -1,4 +1,4 @@
-package org.eclipse.epsilon.picto.watermarking;
+package org.eclipse.epsilon.picto.trace;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,6 +10,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+// TODO: Rename to TraceToolbarAppender? The same with the js and css files
 public class PictoToolbarAppender extends AppendingElementTransformer {
 	
 	@Override

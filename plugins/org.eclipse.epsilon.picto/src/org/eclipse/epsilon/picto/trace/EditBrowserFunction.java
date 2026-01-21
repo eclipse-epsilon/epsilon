@@ -1,4 +1,4 @@
-package org.eclipse.epsilon.picto.watermarking;
+package org.eclipse.epsilon.picto.trace;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -8,6 +8,7 @@ import org.eclipse.epsilon.eol.dt.userinput.JFaceUserInput;
 import org.eclipse.epsilon.picto.PictoView;
 import org.eclipse.epsilon.picto.browser.PictoBrowserFunction;
 
+//TODO: Create a PopupToolbarAction class and extension point specifically for toolbar actions. The class should also return a tooltip and an icon.
 public class EditBrowserFunction implements PictoBrowserFunction {
 
 	@Override
@@ -15,7 +16,7 @@ public class EditBrowserFunction implements PictoBrowserFunction {
 		try {
 			if (view.getEditor() instanceof IEditingDomainProvider) {
 				EditingDomain editingDomain = ((IEditingDomainProvider) view.getEditor()).getEditingDomain();
-				WatermarkTrace trace = view.getWatermarkTracer().getTrace(parameters[0].toString());
+				Trace trace = view.getTraceMarkerManager().getTrace(parameters[0].toString());
 				String value = new JFaceUserInput(trace.getContext().getPrettyPrinterManager()).prompt(trace.getProperty());
 				editingDomain.getCommandStack().execute(new SetAttributeValueCommand((EObject) trace.getElement(), trace.getProperty(), value));
 				view.render(view.getEditor()); // Refresh

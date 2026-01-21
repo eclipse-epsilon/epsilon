@@ -23,6 +23,7 @@ import org.eclipse.epsilon.common.util.StringUtil;
 import org.eclipse.epsilon.picto.PictoView;
 import org.eclipse.epsilon.picto.ViewContent;
 import org.eclipse.epsilon.picto.XmlHelper;
+import org.eclipse.epsilon.picto.trace.PictoToolbarAppender;
 import org.eclipse.epsilon.picto.transformers.elements.AbsoluteLinkElementTransformer;
 import org.eclipse.epsilon.picto.transformers.elements.AbsolutePathElementTransformer;
 import org.eclipse.epsilon.picto.transformers.elements.HtmlElementTransformer;
@@ -31,7 +32,6 @@ import org.eclipse.epsilon.picto.transformers.elements.MermaidRendererHeadAppend
 import org.eclipse.epsilon.picto.transformers.elements.MetroHeadAppender;
 import org.eclipse.epsilon.picto.transformers.elements.PictoViewElementTransformer;
 import org.eclipse.epsilon.picto.transformers.elements.RenderCodeElementTransformer;
-import org.eclipse.epsilon.picto.watermarking.PictoToolbarAppender;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
