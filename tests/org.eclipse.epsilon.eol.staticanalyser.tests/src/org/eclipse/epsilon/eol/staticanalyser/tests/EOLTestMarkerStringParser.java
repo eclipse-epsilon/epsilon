@@ -132,17 +132,7 @@ public class EOLTestMarkerStringParser {
 				Integer.parseInt(regexMarker.group(GRP_END_COLUMN))
 		);
 	}
-
-	public List<String> getErrorMessageStrings(List<ModuleMarker> testMarkers, Severity severity) {
-		List<String> messageStrings = new ArrayList<String>();
-		List<ModuleMarker> filteredMarkers = testMarkers.stream().filter(m -> m.getSeverity() == severity)
-				.collect(Collectors.toList());
-		for (ModuleMarker testMarker : filteredMarkers) {
-			messageStrings.add(testMarker.getMessage());
-		}
-		return messageStrings;
-	}
-
+	
 	public String asBulletListString (List<ModuleMarker> listOfModuleMarkers) {
 		String staticAnalyserMarkersString = "";
 		for (ModuleMarker staticAnalyserMarker : listOfModuleMarkers) {
