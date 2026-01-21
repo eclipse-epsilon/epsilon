@@ -58,7 +58,7 @@ class PictoToolbar {
     #createToolbar() {
         var toolbar = document.createElement("div");
         document.body.appendChild(toolbar);
-        toolbar.classList.add("picto-edit-toolbar");
+        toolbar.classList.add("picto-trace-toolbar");
         toolbar.appendChild(self.#createAction("locate"));
         toolbar.appendChild(self.#createAction("edit"));
         toolbar.appendChild(self.#createAction("delete"));
@@ -68,10 +68,10 @@ class PictoToolbar {
 
     #createAction(action) {
         var button = document.createElement("button");
-        button.classList.add("picto-edit-toolbar-button");
+        button.classList.add("picto-trace-toolbar-button");
         button.type = "button";
         var image = document.createElement("img");
-        image.classList.add("picto-toolbar-button-" + action);
+        image.classList.add("picto-trace-toolbar-button-" + action);
         button.appendChild(image);
         button.onclick = function() {
             window["picto_toolbar_" + action](self.traceManager.getTrace(self.target));

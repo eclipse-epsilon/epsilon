@@ -1,4 +1,4 @@
-.picto-edit-toolbar {
+.picto-trace-toolbar {
     display:none;
     padding: 3px;
     background-color: Canvas;
@@ -7,7 +7,7 @@
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
-.picto-edit-toolbar-button {
+.picto-trace-toolbar-button {
     border: 0px;
     padding: 3px;
     border-radius: 5px;
@@ -15,14 +15,14 @@
     cursor: pointer;
 }
 
-.picto-toolbar-button-edit {
+.picto-trace-toolbar-button-edit {
 	content: url(edit.png);
 }
 
-.picto-toolbar-button-delete {
+.picto-trace-toolbar-button-delete {
 	content: url(delete.png);
 }
 
-.picto-toolbar-button-locate {
+.picto-trace-toolbar-button-locate {
 	content: url(locate.png);
 }

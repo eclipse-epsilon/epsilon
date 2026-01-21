@@ -23,7 +23,7 @@ import org.eclipse.epsilon.common.util.StringUtil;
 import org.eclipse.epsilon.picto.PictoView;
 import org.eclipse.epsilon.picto.ViewContent;
 import org.eclipse.epsilon.picto.XmlHelper;
-import org.eclipse.epsilon.picto.trace.PictoToolbarAppender;
+import org.eclipse.epsilon.picto.trace.TraceToolbarAppender;
 import org.eclipse.epsilon.picto.transformers.elements.AbsoluteLinkElementTransformer;
 import org.eclipse.epsilon.picto.transformers.elements.AbsolutePathElementTransformer;
 import org.eclipse.epsilon.picto.transformers.elements.HtmlElementTransformer;
@@ -44,7 +44,7 @@ public class HtmlContentTransformer implements ViewContentTransformer {
 	public HtmlContentTransformer() {
 		htmlElementTransformers = new ArrayList<>();
 		htmlElementTransformers.addAll(Arrays.asList(
-			new PictoToolbarAppender(),
+			new TraceToolbarAppender(),
 			new AbsolutePathElementTransformer("img",  "src"),
 			new AbsolutePathElementTransformer("link",  "href"),
 			new AbsolutePathElementTransformer("script",  "src"),
