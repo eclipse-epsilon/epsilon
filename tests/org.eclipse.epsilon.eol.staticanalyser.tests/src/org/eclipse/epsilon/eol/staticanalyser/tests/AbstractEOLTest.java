@@ -23,7 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AbstractEOLTest extends AbstractBaseTest {
+public abstract class AbstractEOLTest extends AbstractBaseTest {
 
 	private EOLTestMarkerStringParser testMarkerParser = new EOLTestMarkerStringParser();
 	protected EolModule module;
