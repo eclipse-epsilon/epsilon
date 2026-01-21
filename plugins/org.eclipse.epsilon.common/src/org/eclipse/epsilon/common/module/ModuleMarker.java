@@ -94,8 +94,6 @@ public class ModuleMarker {
 	}
 	
 	public String toString() {
-		String moduleMarkerString = "";
-
 		String severityString;
 		switch (this.severity) {
 		case Information:
