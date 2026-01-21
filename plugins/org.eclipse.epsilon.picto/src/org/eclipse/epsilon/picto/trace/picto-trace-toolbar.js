@@ -1,4 +1,4 @@
-class PictoToolbar {
+class PictoTraceToolbar {
 
     toolbar;
     self;
@@ -59,6 +59,8 @@ class PictoToolbar {
         var toolbar = document.createElement("div");
         document.body.appendChild(toolbar);
         toolbar.classList.add("picto-trace-toolbar");
+		// TODO: Instead of hard-coding these, pull them from extensions
+		// of the TraceActionExtensionPoint (TBD)
         toolbar.appendChild(self.#createAction("locate"));
         toolbar.appendChild(self.#createAction("edit"));
         toolbar.appendChild(self.#createAction("delete"));
@@ -103,7 +105,8 @@ class PictoTraceManager {
     #getInvisibleCharactersSuffix(text) {
         var position = text.length - 1;
         var suffix = "";
-        while (position >= 0 && text.charCodeAt(position) >= 8288 && text.charCodeAt(position) <= 8292) {
+		// TODO: Eliminate duplicate zero-width character definition. This is already specified in TraceManager.java
+        while (position >= 0 && text.charCodeAt(position) == 8288 /* This is Unicode character \u2060*/) {
             suffix += text.charAt(position);
             position --;
         }
@@ -120,4 +123,4 @@ function del(suffix) {
     window.alert("delete " + suffix);
 }*/
 
-new PictoToolbar();
+new PictoTraceToolbar();

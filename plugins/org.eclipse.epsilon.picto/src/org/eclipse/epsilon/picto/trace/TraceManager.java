@@ -8,6 +8,8 @@ import org.eclipse.epsilon.eol.execute.context.IEolContext;
 public class TraceManager {
 	
 	protected List<Trace> traces = new ArrayList<Trace>();
+	// More zero-width characters to consider \u2061 - \u2064
+	protected String zeroWidthChar = "\u2060";
 	
 	public synchronized String getTag(IEolContext context, Object element, String property) {
 		Trace trace = traces.stream().filter(t -> t.element == element && t.property.equals(property)).findFirst().orElseGet(() -> {
@@ -16,7 +18,7 @@ public class TraceManager {
 			t.setProperty(property);
 			t.setContext(context);
 			String tag = "";
-			for (int i=0;i<=traces.size();i++) tag += "⁠"; //<- This is not an empty string; it is an invisible character
+			for (int i=0;i<=traces.size();i++) tag += zeroWidthChar;
 			t.setTag(tag);
 			traces.add(t);
 			return t;

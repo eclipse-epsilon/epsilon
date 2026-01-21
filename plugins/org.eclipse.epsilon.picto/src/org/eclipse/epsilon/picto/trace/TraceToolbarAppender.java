@@ -12,6 +12,22 @@ import org.w3c.dom.Element;
 
 public class TraceToolbarAppender extends AppendingElementTransformer {
 	
+	protected Path path;
+	
+	public TraceToolbarAppender() {
+		try {
+			path = Files.createTempDirectory("picto-toolbar");
+			Files.copy(TraceToolbarAppender.class.getResourceAsStream("picto-trace-toolbar.css"), path.resolve("picto-trace-toolbar.css"));
+			Files.copy(TraceToolbarAppender.class.getResourceAsStream("picto-trace-toolbar.js"), path.resolve("picto-trace-toolbar.js"));
+			Files.copy(TraceToolbarAppender.class.getResourceAsStream("edit.png"), path.resolve("edit.png"));
+			Files.copy(TraceToolbarAppender.class.getResourceAsStream("delete.png"), path.resolve("delete.png"));
+			Files.copy(TraceToolbarAppender.class.getResourceAsStream("locate.png"), path.resolve("locate.png"));
+		}
+		catch (IOException ex) {
+			LogUtil.log(ex);
+		}
+	}
+	
 	@Override
 	public String getXPath() {
 		return "//body[1]";
@@ -20,26 +36,14 @@ public class TraceToolbarAppender extends AppendingElementTransformer {
 	@Override
 	protected void append(Element root, Document document) throws DOMException {
 		
-		try {
-			Path path = Files.createTempDirectory("picto-toolbar");
-			Files.copy(TraceToolbarAppender.class.getResourceAsStream("picto-trace-toolbar.css"), path.resolve("picto-trace-toolbar.css"));
-			Files.copy(TraceToolbarAppender.class.getResourceAsStream("picto-trace-toolbar.js"), path.resolve("picto-trace-toolbar.js"));
-			Files.copy(TraceToolbarAppender.class.getResourceAsStream("edit.png"), path.resolve("edit.png"));
-			Files.copy(TraceToolbarAppender.class.getResourceAsStream("delete.png"), path.resolve("delete.png"));
-			Files.copy(TraceToolbarAppender.class.getResourceAsStream("locate.png"), path.resolve("locate.png"));
-			
-			Element include = document.createElement("script");
-			include.setAttribute("src", path.toString() + "/picto-trace-toolbar.js");
-			root.appendChild(include);
-			
-			Element css = document.createElement("link");
-			css.setAttribute("rel", "stylesheet");
-			css.setAttribute("href", path.toString() + "/picto-trace-toolbar.css");
-			root.appendChild(css);
-			
-		} catch (IOException e) {
-			LogUtil.log(e);
-		}
+		Element include = document.createElement("script");
+		include.setAttribute("src", path.toString() + "/picto-trace-toolbar.js");
+		root.appendChild(include);
+		
+		Element css = document.createElement("link");
+		css.setAttribute("rel", "stylesheet");
+		css.setAttribute("href", path.toString() + "/picto-trace-toolbar.css");
+		root.appendChild(css);		
 	}
 	
 }
