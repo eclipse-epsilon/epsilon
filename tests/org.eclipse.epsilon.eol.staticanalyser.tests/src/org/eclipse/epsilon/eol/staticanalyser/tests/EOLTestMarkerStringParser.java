@@ -125,19 +125,8 @@ public class EOLTestMarkerStringParser {
 			return null;
 		}
 
-		return new Region(
-				Integer.parseInt(regexMarker.group(GRP_START_LINE)),
+		return new Region(Integer.parseInt(regexMarker.group(GRP_START_LINE)),
 				Integer.parseInt(regexMarker.group(GRP_START_COLUMN)),
-				Integer.parseInt(regexMarker.group(GRP_END_LINE)),
-				Integer.parseInt(regexMarker.group(GRP_END_COLUMN))
-		);
-	}
-	
-	public String asBulletListString (List<ModuleMarker> listOfModuleMarkers) {
-		String staticAnalyserMarkersString = "";
-		for (ModuleMarker staticAnalyserMarker : listOfModuleMarkers) {
-			staticAnalyserMarkersString = staticAnalyserMarkersString.concat(" - " + staticAnalyserMarker.toString() + "\n");
-		}
-		return staticAnalyserMarkersString;
+				Integer.parseInt(regexMarker.group(GRP_END_LINE)), Integer.parseInt(regexMarker.group(GRP_END_COLUMN)));
 	}
 }

@@ -80,7 +80,7 @@ public abstract class AbstractEOLTest extends AbstractBaseTest {
 			}
 			assertEquals(
 					"Static Analyser reporting Markers for a Clean program test (no test markers set or expected)\n"
-							+ testMarkerParser.asBulletListString(staticAnalyserMarkers),
+							+ asBulletListString(staticAnalyserMarkers),
 					0, staticAnalyserMarkers.size());
 			return;
 		}
@@ -127,7 +127,7 @@ public abstract class AbstractEOLTest extends AbstractBaseTest {
 		// there should be no unmatched static analysis markers.
 		assertTrue(
 				"\nStatic Analysis Markers found that are not Test Markers: \n"
-						+ testMarkerParser.asBulletListString(unmatchedSAM),
+						+ asBulletListString(unmatchedSAM),
 				unmatchedSAM.isEmpty());
 	}
 		
@@ -167,7 +167,7 @@ public abstract class AbstractEOLTest extends AbstractBaseTest {
 		assertTrue(
 				"\nStatic Analysis Marker with REGION not found for Test Marker " + testMarkerIndex + " :\n"
 						+ testMarker.toString() + "\n found similar Markers:\n"
-						+ testMarkerParser.asBulletListString(candidatesByMessage),
+						+ asBulletListString(candidatesByMessage),
 				candidatesByRegion.size() > 0);
 
 		List<ModuleMarker> candidatesBySeverity = new ArrayList<ModuleMarker>();
@@ -179,14 +179,22 @@ public abstract class AbstractEOLTest extends AbstractBaseTest {
 		assertTrue(
 				"\nStatic Analysis Marker with SEVERITY not found for Test Marker " + testMarkerIndex + " :\n"
 						+ testMarker.toString() + "\n found similar Markers:\n"
-						+ testMarkerParser.asBulletListString(candidatesByRegion),
+						+ asBulletListString(candidatesByRegion),
 				candidatesBySeverity.size() > 0);
 
 		assertEquals(
 				"\nMultiple Static Analysis Markers reporting the same information:\n"
-						+ testMarkerParser.asBulletListString(candidatesBySeverity),
+						+ asBulletListString(candidatesBySeverity),
 				1, candidatesBySeverity.size());
 		return candidatesBySeverity.get(0);
+	}
+	
+	public String asBulletListString (List<ModuleMarker> listOfModuleMarkers) {
+		String staticAnalyserMarkersString = "";
+		for (ModuleMarker staticAnalyserMarker : listOfModuleMarkers) {
+			staticAnalyserMarkersString = staticAnalyserMarkersString.concat(" - " + staticAnalyserMarker.toString() + "\n");
+		}
+		return staticAnalyserMarkersString;
 	}
 
 	/*
