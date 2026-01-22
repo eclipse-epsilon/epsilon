@@ -10,6 +10,10 @@ if (mainBlock.isDefined()) {
 	}
 }
 %]
+[%for (p in Participant.all){%]
+participant "[%=trace(p.name)%]" as [%=p.name%]
+[%}%]
+
 [%=Scenario.all.first().toPlantUml()%]
 @enduml
 
@@ -33,7 +37,8 @@ operation Alt toPlantUml() {
 			}
 		}
 		else plantUml += "else ";
-		plantUml += " " + b.title;
+		// trace() doesn't work here
+		plantUml += " " + trace(b.title) + "";
 		plantUml += "\n" + b.toPlantUml();
 	}
 	if (visibleBlocks.notEmpty()) plantUml += "\nend\n";
