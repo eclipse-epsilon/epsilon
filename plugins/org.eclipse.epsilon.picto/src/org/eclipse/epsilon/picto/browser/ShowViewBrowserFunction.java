@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Display;
 public class ShowViewBrowserFunction implements PictoBrowserFunction {
 
 	@Override
-	public void accept(PictoView view, Object[] args) {
+	public Object run(PictoView view, Object[] args) {
 		if (args.length == 1 && args[0] instanceof Object[]) {
 			Object[] pathArray = (Object[]) args[0];
 			String[] pathStringArray = Arrays.copyOf(pathArray, pathArray.length, String[].class);
@@ -31,6 +31,7 @@ public class ShowViewBrowserFunction implements PictoBrowserFunction {
 			 * the middle of processing an event.
 			 */
 			Display.getCurrent().asyncExec(() -> view.selectViewTree(path));
+			return null;
 		}
 		throw new RuntimeException();
 	}

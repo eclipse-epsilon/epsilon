@@ -14,11 +14,12 @@ import org.eclipse.epsilon.picto.PictoView;
 public class ShowElementBrowserFunction implements PictoBrowserFunction {
 
 	@Override
-	public void accept(PictoView view, Object[] args) {
+	public Object run(PictoView view, Object[] args) {
 		if (args.length == 2) {
 			String id = args[0] + "";
 			String uri = args[1] + "";
 			view.getSource().showElement(id, uri, view.getEditor());
+			return null;
 		}
 		throw new RuntimeException();
 	}

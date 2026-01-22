@@ -11,7 +11,7 @@ import org.eclipse.epsilon.picto.PictoView;
 public class EditAttributeValueAction extends TraceToolbarAction {
 
 	@Override
-	public void accept(PictoView view, Object[] parameters) {
+	public Object run(PictoView view, Object[] parameters) {
 		try {
 			if (view.getEditor() instanceof IEditingDomainProvider) {
 				EditingDomain editingDomain = ((IEditingDomainProvider) view.getEditor()).getEditingDomain();
@@ -24,6 +24,7 @@ public class EditAttributeValueAction extends TraceToolbarAction {
 		catch (Exception ex) {
 			LogUtil.log(ex);
 		}
+		return null;
 	}
 	
 	@Override

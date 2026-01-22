@@ -175,8 +175,7 @@ public class PictoView extends ViewPart {
 		for (PictoBrowserFunction pbf : browserFunctions) {
 			new BrowserFunction(browser, pbf.getName()) {
 				public Object function(Object[] arguments) {
-					pbf.accept(PictoView.this, arguments);
-					return null;
+					return pbf.run(PictoView.this, arguments);
 				}
 			};
 		}

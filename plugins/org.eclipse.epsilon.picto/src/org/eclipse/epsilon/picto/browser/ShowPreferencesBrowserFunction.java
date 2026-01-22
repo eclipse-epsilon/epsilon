@@ -17,11 +17,12 @@ import org.eclipse.ui.dialogs.PreferencesUtil;
 public class ShowPreferencesBrowserFunction implements PictoBrowserFunction {
 
 	@Override
-	public void accept(PictoView view, Object[] args) {
+	public Object run(PictoView view, Object[] args) {
 		PreferenceDialog dialog = PreferencesUtil.createPreferenceDialogOn(
 			view.getSite().getShell(), PictoPreferencePage.ID,  
 			new String[] {PictoPreferencePage.ID}, null);
 		dialog.open();
+		return null;
 	}
 
 	@Override

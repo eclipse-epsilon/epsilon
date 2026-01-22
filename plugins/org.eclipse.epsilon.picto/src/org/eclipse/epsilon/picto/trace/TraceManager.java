@@ -35,6 +35,10 @@ public class TraceManager {
 	public void clear() {
 		traces.clear();
 	}
+
+	public String getZeroWidthCharacter() {
+		return zeroWidthChar;
+	}
 	
 	
 	

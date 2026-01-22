@@ -105,8 +105,7 @@ class PictoTraceManager {
     #getInvisibleCharactersSuffix(text) {
         var position = text.length - 1;
         var suffix = "";
-		// TODO: Eliminate duplicate zero-width character definition. This is already specified in TraceManager.java
-        while (position >= 0 && text.charCodeAt(position) == 8288 /* This is Unicode character \u2060*/) {
+        while (position >= 0 && text.charAt(position) == getZeroWidthCharacter()) {
             suffix += text.charAt(position);
             position --;
         }

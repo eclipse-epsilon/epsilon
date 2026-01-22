@@ -9,7 +9,6 @@
 **********************************************************************/
 package org.eclipse.epsilon.picto.browser;
 
-import java.util.function.BiConsumer;
 import org.eclipse.epsilon.picto.PictoView;
 
 /**
@@ -17,7 +16,14 @@ import org.eclipse.epsilon.picto.PictoView;
  * @author Sina Madani
  * @since 2.2
  */
-public interface PictoBrowserFunction extends BiConsumer<PictoView, Object[]> {
+public interface PictoBrowserFunction {
+	
+	@Deprecated
+	default void accept(PictoView pictoView, Object[] parameters) {
+		this.run(pictoView, parameters);
+	}
+	
+	Object run(PictoView pictoView, Object[] parameters);
 	
 	String getName();
 

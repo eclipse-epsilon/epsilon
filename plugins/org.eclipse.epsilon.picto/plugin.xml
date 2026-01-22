@@ -129,6 +129,12 @@
       <browserFunction
             class="org.eclipse.epsilon.picto.trace.ShowElementAction">
       </browserFunction>
+      <browserFunction
+            class="org.eclipse.epsilon.picto.trace.ZeroWidthCharacterFunction">
+      </browserFunction>
+      <browserFunction
+            class="org.eclipse.epsilon.picto.browser.SysoutBrowserFunction">
+      </browserFunction>
    </extension>
       <extension
          point="org.eclipse.emf.ecore.extension_parser">
