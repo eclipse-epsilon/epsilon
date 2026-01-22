@@ -6,10 +6,9 @@ import org.eclipse.emf.edit.domain.IEditingDomainProvider;
 import org.eclipse.epsilon.common.dt.util.LogUtil;
 import org.eclipse.epsilon.eol.dt.userinput.JFaceUserInput;
 import org.eclipse.epsilon.picto.PictoView;
-import org.eclipse.epsilon.picto.browser.PictoBrowserFunction;
 
-//TODO: Create a PopupToolbarAction class and extension point specifically for toolbar actions. The class should also return a tooltip and an icon.
-public class EditBrowserFunction implements PictoBrowserFunction {
+//TODO: Create an extension point specifically for toolbar actions. The class should also return a tooltip and an icon.
+public class EditAttributeValueAction extends TraceToolbarAction {
 
 	@Override
 	public void accept(PictoView view, Object[] parameters) {
@@ -26,10 +25,10 @@ public class EditBrowserFunction implements PictoBrowserFunction {
 			LogUtil.log(ex);
 		}
 	}
-
+	
 	@Override
-	public String getName() {
-		return "picto_toolbar_edit";
+	public String getId() {
+		return "edit";
 	}
-
+	
 }

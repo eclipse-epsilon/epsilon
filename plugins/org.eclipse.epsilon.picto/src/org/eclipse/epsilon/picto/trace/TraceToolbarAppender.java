@@ -21,7 +21,7 @@ public class TraceToolbarAppender extends AppendingElementTransformer {
 			Files.copy(TraceToolbarAppender.class.getResourceAsStream("picto-trace-toolbar.js"), path.resolve("picto-trace-toolbar.js"));
 			Files.copy(TraceToolbarAppender.class.getResourceAsStream("edit.png"), path.resolve("edit.png"));
 			Files.copy(TraceToolbarAppender.class.getResourceAsStream("delete.png"), path.resolve("delete.png"));
-			Files.copy(TraceToolbarAppender.class.getResourceAsStream("locate.png"), path.resolve("locate.png"));
+			Files.copy(TraceToolbarAppender.class.getResourceAsStream("show.png"), path.resolve("show.png"));
 		}
 		catch (IOException ex) {
 			LogUtil.log(ex);

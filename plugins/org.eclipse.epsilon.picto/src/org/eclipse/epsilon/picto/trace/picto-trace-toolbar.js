@@ -61,7 +61,7 @@ class PictoTraceToolbar {
         toolbar.classList.add("picto-trace-toolbar");
 		// TODO: Instead of hard-coding these, pull them from extensions
 		// of the TraceActionExtensionPoint (TBD)
-        toolbar.appendChild(self.#createAction("locate"));
+        toolbar.appendChild(self.#createAction("show"));
         toolbar.appendChild(self.#createAction("edit"));
         toolbar.appendChild(self.#createAction("delete"));
         toolbar.style.display = "none";

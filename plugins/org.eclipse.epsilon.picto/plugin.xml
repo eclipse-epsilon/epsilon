@@ -124,7 +124,10 @@
             class="org.eclipse.epsilon.picto.browser.ShowPreferencesBrowserFunction">
       </browserFunction>
       <browserFunction
-            class="org.eclipse.epsilon.picto.trace.EditBrowserFunction">
+            class="org.eclipse.epsilon.picto.trace.EditAttributeValueAction">
+      </browserFunction>
+      <browserFunction
+            class="org.eclipse.epsilon.picto.trace.ShowElementAction">
       </browserFunction>
    </extension>
       <extension

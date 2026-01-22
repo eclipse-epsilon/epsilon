@@ -12,6 +12,7 @@ public class TraceManager {
 	protected String zeroWidthChar = "\u2060";
 	
 	public synchronized String getTag(IEolContext context, Object element, String property) {
+		System.out.println(property + " -> " + element );
 		Trace trace = traces.stream().filter(t -> t.element == element && t.property.equals(property)).findFirst().orElseGet(() -> {
 			Trace t = new Trace();
 			t.setElement(element);
@@ -21,6 +22,7 @@ public class TraceManager {
 			for (int i=0;i<=traces.size();i++) tag += zeroWidthChar;
 			t.setTag(tag);
 			traces.add(t);
+			System.out.println(traces.size());
 			return t;
 		});
 		return trace.getTag();

@@ -7,7 +7,7 @@ public class Trace {
 		protected Object element;
 		protected String property;
 		protected IEolContext context;
-		//TODO: There's no reason to store the watermark. We should store its length only.
+		//TODO: There's no reason to store the tag. We should only store its length.
 		protected String tag;
 		
 		public Object getElement() {
