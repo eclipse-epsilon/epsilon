@@ -33,7 +33,7 @@ public class ImportManager implements IImportManager {
 		final String importPath = import_.getPath();
 		final URI importUri = UriUtil.resolve(importPath, baseURI).normalize();
 		final IEolModule parentModule = import_.getParentModule();
-		
+
 		IModule module = cache.get(importUri);
 		if (module != null) {
 			import_.setImportedModule(module);

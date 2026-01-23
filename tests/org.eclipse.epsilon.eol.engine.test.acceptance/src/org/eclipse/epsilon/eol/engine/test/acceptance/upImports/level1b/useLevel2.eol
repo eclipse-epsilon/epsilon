@@ -1,0 +1,3 @@
+import 'up://upImports/l2.eol';
+
+return l2();
