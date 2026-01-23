@@ -426,7 +426,7 @@ public class EolModule extends AbstractModule implements IEolModule {
 					} catch (URISyntaxException ex) {
 						ParseProblem problem = new ParseProblem();
 						problem.setLine(import_.getRegion().getStart().getLine());
-						problem.setReason("Imported URI is invalid: " + uri);
+						problem.setReason("Imported URI is invalid: " + ex.getInput() + " - " + ex.getReason());
 						getParseProblems().add(problem);
 					}
 				}
