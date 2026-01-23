@@ -19,7 +19,7 @@ import org.eclipse.epsilon.eol.execute.introspection.recording.PropertyAccess;
  */
 class TracedPropertyAccess extends PropertyAccess {
 	
-	private final Region region;
+	protected Region region;
 	
 	public TracedPropertyAccess(Object modelElement, String propertyName, Region region) {
 		super(modelElement, propertyName);
@@ -32,5 +32,9 @@ class TracedPropertyAccess extends PropertyAccess {
 	
 	public Region getRegion() {
 		return region;
+	}
+	
+	public void setRegion(Region region) {
+		this.region = region;
 	}
 }

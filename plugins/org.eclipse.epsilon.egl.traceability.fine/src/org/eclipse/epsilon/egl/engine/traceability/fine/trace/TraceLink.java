@@ -14,17 +14,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TraceLink {
-
-	public final ModelLocation source;
-	public final TextLocation destination;
+	
+	//TODO: Make these protected in 3.0
+	public ModelLocation source;
+	public TextLocation destination;
 
 	public TraceLink(ModelLocation source, TextLocation destination) {
 		this.source = source;
 		this.destination = destination;
 	}
-
-	
-	// Getters for compatibility with JavaModel, which are used in acceptance tests
 	
 	public ModelLocation getSource() {
 		return source;
@@ -32,6 +30,14 @@ public class TraceLink {
 	
 	public TextLocation getDestination() {
 		return destination;
+	}
+	
+	public void setSource(ModelLocation source) {
+		this.source = source;
+	}
+	
+	public void setDestination(TextLocation destination) {
+		this.destination = destination;
 	}
 	
 	public Collection<? extends Object> getAllContents() {

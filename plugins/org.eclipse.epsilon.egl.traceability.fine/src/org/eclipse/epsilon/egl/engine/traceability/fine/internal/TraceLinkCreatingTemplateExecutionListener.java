@@ -20,8 +20,8 @@ import org.eclipse.epsilon.eol.execute.introspection.recording.IPropertyAccess;
 
 public class TraceLinkCreatingTemplateExecutionListener extends DefaultTemplateExecutionListener {
 
-	private final Trace trace;
-	private final TracedPropertyAccessLedger ledger;
+	protected Trace trace;
+	protected TracedPropertyAccessLedger ledger;
 
 	public TraceLinkCreatingTemplateExecutionListener(Trace trace, TracedPropertyAccessLedger ledger) {
 		this.trace = trace;

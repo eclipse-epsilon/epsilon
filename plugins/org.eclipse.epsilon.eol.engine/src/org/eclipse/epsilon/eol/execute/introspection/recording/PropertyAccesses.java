@@ -19,8 +19,8 @@ import java.util.Set;
 
 public class PropertyAccesses implements IPropertyAccesses {
 
-	private final List<IPropertyAccess> storage = new LinkedList<>();
-
+	private List<IPropertyAccess> storage = new LinkedList<>();
+	
 	public PropertyAccesses(IPropertyAccess... propertyAccesses) {
 		storage.addAll(Arrays.asList(propertyAccesses));
 	}

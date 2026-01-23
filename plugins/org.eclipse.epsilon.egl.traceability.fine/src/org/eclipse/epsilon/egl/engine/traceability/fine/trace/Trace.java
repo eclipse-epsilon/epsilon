@@ -17,12 +17,10 @@ import java.util.Set;
 
 public class Trace {
 
-	public final List<TextLocation> locations = new LinkedList<>();
-	public final Set<TraceLink> traceLinks = new LinkedHashSet<>();
+	//TODO: Make these protected in 3.0
+	public List<TextLocation> locations = new LinkedList<>();
+	public Set<TraceLink> traceLinks = new LinkedHashSet<>();
 	public String destination;
-	
-	
-	// Getters for compatibility with JavaModel, which are used in acceptance tests 
 	
 	public Set<TraceLink> getTraceLinks() {
 		return traceLinks;

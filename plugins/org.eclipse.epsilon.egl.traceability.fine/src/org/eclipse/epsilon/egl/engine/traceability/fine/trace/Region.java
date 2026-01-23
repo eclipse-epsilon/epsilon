@@ -13,7 +13,8 @@ package org.eclipse.epsilon.egl.engine.traceability.fine.trace;
 import java.util.Objects;
 
 public class Region {
-
+	
+	//TODO: Make these protected in 3.0
 	public int offset, length;
 	public String text;
 	
@@ -23,19 +24,28 @@ public class Region {
 		this.text = text;
 	}
 
-	
-	// Getters for compatibility with JavaModel, which are used in acceptance tests
-
 	public int getOffset() {
 		return offset;
+	}
+	
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 	
 	public int getLength() {
 		return length;
 	}
-
+	
+	public void setLength(int length) {
+		this.length = length;
+	}
+		
 	public String getText() {
 		return text;
+	}
+	
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	@Override

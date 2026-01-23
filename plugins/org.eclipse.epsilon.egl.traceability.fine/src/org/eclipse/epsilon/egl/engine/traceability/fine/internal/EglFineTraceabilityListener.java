@@ -21,7 +21,7 @@ public class EglFineTraceabilityListener extends PropertyAccessExecutionListener
 
 	protected TracedPropertyAccessLedger ledger;
 	protected Stack<List<PropertyAccess>> propertyAccessesStack = new Stack<>();
-	protected final WeakHashMap<ModuleElement, Stack<TraceData>> cache = new WeakHashMap<>();
+	protected WeakHashMap<ModuleElement, Stack<TraceData>> cache = new WeakHashMap<>();
 	protected List<String> printMethods = Arrays.asList("printdyn", "println", "print", "prinx");
 	
 	public EglFineTraceabilityListener(TracedPropertyAccessLedger ledger) {

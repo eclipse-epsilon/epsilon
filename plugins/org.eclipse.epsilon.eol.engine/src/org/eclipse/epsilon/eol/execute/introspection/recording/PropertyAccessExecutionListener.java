@@ -23,8 +23,8 @@ import org.eclipse.epsilon.eol.execute.control.IExecutionListener;
 
 public class PropertyAccessExecutionListener implements IExecutionListener {
 
-	protected final Collection<IPropertyAccessRecorder> recorders = new LinkedList<>();
-	protected final WeakHashMap<ModuleElement, Object> cache = new WeakHashMap<>();
+	protected Collection<IPropertyAccessRecorder> recorders = new LinkedList<>();
+	protected WeakHashMap<ModuleElement, Object> cache = new WeakHashMap<>();
 	
 	public PropertyAccessExecutionListener(IPropertyAccessRecorder... recorders) {
 		this.recorders.addAll(Arrays.asList(recorders));

@@ -15,16 +15,14 @@ import java.util.List;
 
 public class TextLocation {
 
-	public final Region region;
-	public final String resource;
+	//TODO: Make these protected in 3.0
+	public Region region;
+	public String resource;
 	
 	public TextLocation(Region region, String resource) {
 		this.region = region;
 		this.resource = resource;
 	}
-
-
-	// Getters for compatibility with JavaModel, which are used in acceptance tests
 
 	public String getResource() {
 		return resource;
@@ -32,6 +30,14 @@ public class TextLocation {
 	
 	public Region getRegion() {
 		return region;
+	}
+	
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+	
+	public void setResource(String resource) {
+		this.resource = resource;
 	}
 	
 	public Collection<? extends Object> getAllContents() {

@@ -13,8 +13,8 @@ import java.util.Objects;
 
 public class PropertyAccess implements IPropertyAccess {
 	
-	protected final Object modelElement;
-	protected final String propertyName;
+	protected Object modelElement;
+	protected String propertyName;
 	
 	public PropertyAccess(Object modelElement, String propertyName) {
 		this.modelElement = modelElement;
@@ -26,9 +26,17 @@ public class PropertyAccess implements IPropertyAccess {
 		return this.modelElement;
 	}
 
+	public void setModelElement(Object modelElement) {
+		this.modelElement = modelElement;
+	}
+	
 	@Override
 	public String getPropertyName() {
 		return this.propertyName;
+	}
+	
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
 	}
 
 	@Override

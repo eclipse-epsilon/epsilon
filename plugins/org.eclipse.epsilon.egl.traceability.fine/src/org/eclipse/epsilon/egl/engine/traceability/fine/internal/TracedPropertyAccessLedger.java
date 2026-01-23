@@ -18,7 +18,7 @@ import org.eclipse.epsilon.eol.execute.introspection.recording.IPropertyAccess;
 
 public class TracedPropertyAccessLedger {
 	
-	private final Multimap<EglTemplate, TracedPropertyAccess> accessesByTemplate = new Multimap<>();
+	protected Multimap<EglTemplate, TracedPropertyAccess> accessesByTemplate = new Multimap<>();
 	
 	void associate(IPropertyAccess access, Region region, EglTemplate template) {
 		accessesByTemplate.put(template, new TracedPropertyAccess(access, region));

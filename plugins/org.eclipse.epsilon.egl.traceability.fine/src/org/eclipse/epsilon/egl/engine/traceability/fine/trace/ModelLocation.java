@@ -14,25 +14,31 @@ import java.util.Collection;
 
 public class ModelLocation {
 
-	public final Object modelElement;
-	public final String propertyName;
+	//TODO: Make these protected in 3.0
+	public Object modelElement;
+	public String propertyName;
 	
 	public ModelLocation(Object modelElement, String propertyName) {
 		this.modelElement = modelElement;
 		this.propertyName = propertyName;
 	}
 	
-	
-	// Getters for compatibility with JavaModel, which are used in acceptance tests
-
 	public Object getModelElement() {
 		return modelElement;
+	}
+	
+	public void setModelElement(Object modelElement) {
+		this.modelElement = modelElement;
 	}
 	
 	public String getPropertyName() {
 		return propertyName;
 	}
-
+	
+	public void setPropertyName(String propertyName) {
+		this.propertyName = propertyName;
+	}
+	
 	public Collection<? extends Object> getAllContents() {
 		return Arrays.asList(this, modelElement);
 	}
