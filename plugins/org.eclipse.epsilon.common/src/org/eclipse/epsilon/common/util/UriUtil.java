@@ -13,9 +13,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -88,12 +91,19 @@ public class UriUtil {
 		}
 
 		for (URI rel : relativeTo) {
-			if (!"file".equals(rel.getScheme())) {
-				// up: URIs are only supported from modules with file: URIs for now
-				continue;
-			}
-
+			FileSystem zipfs = null;
 			try {
+				if ("jar".equals(rel.getScheme())) {
+					/*
+					 * We need to open a file system for the zip file before accessing it with Path,
+					 * as this is not done automatically.
+					 */
+					zipfs = FileSystems.newFileSystem(rel, Collections.emptyMap());
+				} else if (!"file".equals(rel.getScheme())) {
+					// up: URIs are only supported from modules with jar: and file: URIs for now
+					continue;
+				}
+
 				Path relPath = Paths.get(rel).toAbsolutePath();
 				Optional<Path> subPath = firstAncestorDirectoryNamed(relPath, uri.getAuthority());
 				if (!subPath.isPresent()) {
@@ -121,6 +131,14 @@ public class UriUtil {
 				}
 			} catch (IOException ex) {
 				ex.printStackTrace();
+			} finally {
+				if (zipfs != null) {
+					try {
+						zipfs.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 
