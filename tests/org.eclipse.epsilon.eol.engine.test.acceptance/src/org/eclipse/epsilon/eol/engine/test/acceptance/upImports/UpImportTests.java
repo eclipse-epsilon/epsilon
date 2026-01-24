@@ -62,7 +62,7 @@ public class UpImportTests {
 		assertTrue("Error should mention the import URI",
 			problem.contains("up://upImports/ambiguous.eol"));
 
-		Pattern candidatePattern = Pattern.compile("^[-] .+/ambiguous[.]eol$", Pattern.MULTILINE);
+		Pattern candidatePattern = Pattern.compile("^[-] .+[\\\\/]ambiguous[.]eol$", Pattern.MULTILINE);
 		int count = 0;
 		for (Matcher m = candidatePattern.matcher(problem); m.find(); ) {
 			++count;
