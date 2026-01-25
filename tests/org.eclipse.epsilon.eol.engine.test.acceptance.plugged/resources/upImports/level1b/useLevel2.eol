@@ -1,0 +1,3 @@
+import 'up://upImports/level1a/level2/l2.eol';
+
+return l2();
