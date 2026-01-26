@@ -1,0 +1,3 @@
+import 'up://upImports/missing.eol';
+
+return 123;

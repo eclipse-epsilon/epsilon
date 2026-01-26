@@ -1,6 +1,7 @@
 package org.eclipse.epsilon.eol.engine.test.acceptance.plugged;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URI;
@@ -63,6 +64,14 @@ public class PluggedInUpImportsTest {
 	public void level2OnlyName() throws Exception {
 		EolModule module = parse("level1b/useLevel2.eol");
 		assertEquals("level 2", module.execute());
+	}
+
+	@Test
+	public void importMissing() throws Exception {
+		EolModule module = new EolModule();
+		module.parse(computePlatformURI("level1b/importMissing.eol"));
+		assertEquals(1, module.getParseProblems().size());
+		assertTrue(module.getParseProblems().get(0).getReason().contains("not found"));
 	}
 
 	protected EolModule parse(String path) throws Exception {

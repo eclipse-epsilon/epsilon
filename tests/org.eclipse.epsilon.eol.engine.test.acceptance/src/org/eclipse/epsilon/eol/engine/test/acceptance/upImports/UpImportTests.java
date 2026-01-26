@@ -82,6 +82,18 @@ public class UpImportTests {
 		assertEquals("ambiguous from level 2", module.execute());
 	}
 
+	@Test
+	public void importMissing() throws Exception {
+		EolModule module = new EolModule();
+		module.parse(new File(resourceDir, "level1b/importMissing.eol"));
+		assertEquals("There should be one parse problem",
+			1, module.getParseProblems().size());
+
+		assertEquals(1, module.getParseProblems().size());
+		String problem = module.getParseProblems().get(0).getReason();
+		assertTrue(problem.contains("not found"));
+	}
+
 	protected EolModule parse(String path) throws Exception {
 		EolModule module = new EolModule();
 		module.parse(new File(resourceDir, path));
