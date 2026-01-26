@@ -1,0 +1,90 @@
+rule StatsChart {
+	template : "barchart.egl"
+	
+	parameters : Map {
+		"position" = "1",
+		"path" = List{"Stats"},
+		"icon" = "barchart",
+		"format" = "html"
+	}
+}
+
+rule TypesTable {
+	template : "typeStats.pinset"
+	
+	parameters : Map {
+		"position" = "2",
+		"path" = Sequence{"Types"},
+		"icon" = "table",
+		"format" = "csv"
+	}
+}
+
+rule AllEntities {
+
+	template : "entity2plantuml.egl"
+
+	parameters : Map{
+		"position" = "3",
+		"path" = Sequence{"All Entities"},
+		"icon" = "diagram-ffffff",
+		"format" = "plantuml",
+		"inputEntities" = Entity.all.name,
+		"layers" = Sequence {
+			Map {"id"="documentation", "title"="Documentation", "active"=false},
+			Map {"id"="supertype", "title"="Supertype"},
+			Map {"id"="inlineReferences", "title"="Inline references"},
+			Map {"id"="referenceLabels", "title"="Reference labels", "active"=false}
+		}
+	}
+}
+
+rule Entity2PlantUML
+	transform e : Entity {
+
+	template : "entity2plantuml.egl"
+
+	parameters : Map {
+		"position" = "4",
+		"path" = Sequence{"Entities", e.name},
+		"icon" = "diagram-ffffff",
+		"format" = "plantuml",
+		"layers" = Sequence {
+			Map {"id"="documentation", "title"="Documentation"},
+			Map {"id"="supertype", "title"="Supertype"},
+			Map {"id"="subtypes", "title"="Subtypes"},
+			Map {"id"="inlineReferences", "title"="Inline references"},
+			Map {"id"="referenceLabels", "title"="Reference labels"}
+		}
+	}
+}
+
+rule Entity2Graphviz
+    transform e : Entity {
+
+    template : "entity2graphviz.egl"
+
+    parameters : Map{
+        "path" = Sequence{"Entities-Graphviz", e.name},
+        "icon" = "diagram-ffffff",
+        "format" = "graphviz-dot"
+    }
+
+}
+
+@lazy
+rule Entities2PlantUML {
+
+	template : "entity2plantuml.egl"
+
+	parameters : Map {
+		// requires "inputEntities" to work
+		"format" = "plantuml",
+		"layers" = Sequence {
+			Map {"id"="documentation", "title"="Documentation"},
+			Map {"id"="supertype", "title"="Supertype", "active"=false},
+			Map {"id"="inlineReferences", "title"="Inline references", "active"=false},
+			Map {"id"="referenceLabels", "title"="Reference labels"}
+		}
+	}
+}

@@ -1,0 +1,4 @@
+# Ignore everything
+*
+# But this .gitignore file
+!.gitignore
