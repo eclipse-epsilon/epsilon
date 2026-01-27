@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.epsilon.eol.dom;
 
-import java.io.File;
 import java.net.URI;
 import java.util.Objects;
+import java.util.Optional;
+
 import org.eclipse.epsilon.common.module.AbstractModuleElement;
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.parse.AST;
-import org.eclipse.epsilon.common.util.UriUtil;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 
@@ -51,15 +51,11 @@ public class Import extends AbstractModuleElement {
 	
 	public void load(URI baseUri) {
 		try {
-			final File file = new File(getPath());
-			URI uri;
-			
-			if (file.isAbsolute()) {
-				if (!file.exists()) return;
-				uri = file.toURI();
-			} else {
-				uri = UriUtil.resolve(getPath(), baseUri);
+			Optional<URI> oUri = parentModule.resolveUri(baseUri, getPath());
+			if (!oUri.isPresent()) {
+				return;
 			}
+			URI uri = oUri.get();
 			
 			// Detect and handle circular imports gracefully
 			for (

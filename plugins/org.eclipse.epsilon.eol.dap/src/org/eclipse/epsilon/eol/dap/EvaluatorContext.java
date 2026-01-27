@@ -19,6 +19,7 @@ import org.eclipse.epsilon.eol.execute.context.AsyncStatementInstance;
 import org.eclipse.epsilon.eol.execute.context.ExtendedProperties;
 import org.eclipse.epsilon.eol.execute.context.FrameStack;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
+import org.eclipse.epsilon.eol.execute.context.IModuleURIResolver;
 import org.eclipse.epsilon.eol.execute.introspection.IntrospectionManager;
 import org.eclipse.epsilon.eol.execute.operations.EolOperationFactory;
 import org.eclipse.epsilon.eol.execute.operations.contributors.OperationContributorRegistry;
@@ -209,6 +210,11 @@ public class EvaluatorContext implements IEolContext {
 	@Override
 	public OperationContributorRegistry getOperationContributorRegistry() {
 		return delegate.getOperationContributorRegistry();
+	}
+
+	@Override
+	public List<IModuleURIResolver> getURIResolvers() {
+		return delegate.getURIResolvers();
 	}
 
 }

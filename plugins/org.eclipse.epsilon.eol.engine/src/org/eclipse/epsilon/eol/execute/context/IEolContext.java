@@ -94,5 +94,11 @@ public interface IEolContext {
 	Queue<AsyncStatementInstance> getAsyncStatementsQueue();
 	
 	OperationContributorRegistry getOperationContributorRegistry();
-	
+
+	/**
+	 * URI resolvers to use prior to the default resolver.
+	 * 
+	 * @since 2.9
+	 */
+	List<IModuleURIResolver> getURIResolvers();
 }
