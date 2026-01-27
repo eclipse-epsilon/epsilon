@@ -22,10 +22,12 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -36,6 +38,7 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -200,8 +203,7 @@ public class FileUtil {
 		catch (URISyntaxException ex) {
 			throw new IOException(ex);
 		}
-	    
-		return Paths.get(uri).resolve(Paths.get(dir));
+		return Paths.get(uri).resolve(Paths.get(dir).toString());
 	}
 	
 	/**
@@ -216,7 +218,7 @@ public class FileUtil {
 	 * @throws URISyntaxException 
 	 * @since 1.6
 	 */
-	public static File getDirectoryStandalone(String dir, Class<?> relativeTo) throws IOException {
+	public static File getDirectoryStandalone(String dir, Class<?> relativeTo) throws IOException, URISyntaxException {
 		Objects.requireNonNull(dir, "Directory can't be null!");
 		Objects.requireNonNull(relativeTo, "relativeTo (Class) can't be null!");
 		dir = dir.replace('\\', '/');
@@ -224,23 +226,32 @@ public class FileUtil {
 			dir = dir.substring(0, dir.length()-1);
 		}
 		final String normalDir = dir;
-		
-		Path resource = getStandalonePath(normalDir, relativeTo);
-		
-		Collection<String> fileNames = Files.walk(resource)
-			//.filter(p -> p.toFile().isFile())
-			.map(p -> {
-				String pathStr = p.toString().replace('\\', '/');
-				pathStr = pathStr.substring(pathStr.indexOf(normalDir));
-				return pathStr;
-			})
-			.collect(Collectors.toList());
-		
-		for (String fileName : fileNames) {
-			getFileStandalone(fileName, relativeTo);
+
+		FileSystem zipfs = null;
+		URI relativeToUri = relativeTo.getResource("").toURI();
+		if ("jar".equals(relativeToUri.getScheme())) {
+			zipfs = FileSystems.newFileSystem(relativeToUri, Collections.emptyMap());
 		}
-		
-		return getFileStandalone(normalDir, relativeTo);
+		try {
+			Path resource = getStandalonePath(normalDir, relativeTo);
+
+			Collection<String> fileNames = Files.walk(resource)
+				.map(p -> {
+					String pathStr = p.toString().replace('\\', '/');
+					pathStr = pathStr.substring(pathStr.indexOf(normalDir));
+					return pathStr;
+				}).collect(Collectors.toList());
+
+			for (String fileName : fileNames) {
+				getFileStandalone(fileName, relativeTo);
+			}
+
+			return getFileStandalone(normalDir, relativeTo);
+		} finally {
+			if (zipfs != null) {
+				zipfs.close();
+			}
+		}
 	}
 	
 	/**
@@ -255,12 +266,34 @@ public class FileUtil {
 	 * @since 1.6
 	 */
 	public static File getFileStandalone(String name, Class<?> relativeTo) throws IOException {
-		if (StringUtil.isEmpty(name)) return tmpdir.toFile();
-		try (InputStream inStream = Objects.requireNonNull(relativeTo, "Class can't be null!").getResourceAsStream(name)) {
+		if (StringUtil.isEmpty(name)) {
+			return tmpdir.toFile();
+		}
+
+		Objects.requireNonNull(relativeTo, "Class can't be null!");
+		if (name.startsWith("..")) {
+			try {
+				// getResourceAsStream does not work with ../foo paths, and
+				// we use URL as it understands jar: URLs
+				URL relativeToUrl = relativeTo.getResource("").toURI().toURL();
+				URL newURL = new URL(relativeToUrl, name);
+				try (InputStream inStream = newURL.openStream()) {
+					return inputStreamToFile(inStream, name);
+				}
+			} catch (URISyntaxException ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		try (InputStream inStream = relativeTo.getResourceAsStream(name)) {
+			/*
+			 * We use getResourceAsStream most of the time as it works with
+			 * classloader-specific logic.
+			 */
 			return inputStreamToFile(inStream, name);
 		}
 	}
-	
+
 	/**
 	 * The getFile method of old, before we tried to fix it to work in JAR files.
 	 * 

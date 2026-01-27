@@ -13,9 +13,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.epsilon.common.module.IModule;
-import org.eclipse.epsilon.common.util.UriUtil;
 import org.eclipse.epsilon.eol.dom.Import;
 
 public class ImportManager implements IImportManager {
@@ -31,9 +31,15 @@ public class ImportManager implements IImportManager {
 		cache.put(baseURI, import_.getParentModule());
 
 		final String importPath = import_.getPath();
-		final URI importUri = UriUtil.resolve(importPath, baseURI).normalize();
 		final IEolModule parentModule = import_.getParentModule();
-		
+
+		// We use the same URI resolution logic as for the import
+		Optional<URI> oURI = parentModule.resolveUri(baseURI, importPath);
+		if (!oURI.isPresent()) {
+			return;
+		}
+		URI importUri = oURI.get();
+
 		IModule module = cache.get(importUri);
 		if (module != null) {
 			import_.setImportedModule(module);

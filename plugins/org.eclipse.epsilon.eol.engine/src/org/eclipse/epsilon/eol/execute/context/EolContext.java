@@ -10,12 +10,17 @@
 package org.eclipse.epsilon.eol.execute.context;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
 import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.util.CollectionUtil;
 import org.eclipse.epsilon.eol.execute.ExecutorFactory;
+import org.eclipse.epsilon.eol.execute.context.uris.FileUpURIResolver;
+import org.eclipse.epsilon.eol.execute.context.uris.JarUpURIResolver;
+import org.eclipse.epsilon.eol.execute.context.uris.SegmentUpURIResolver;
 import org.eclipse.epsilon.eol.execute.introspection.IntrospectionManager;
 import org.eclipse.epsilon.eol.execute.operations.EolOperationFactory;
 import org.eclipse.epsilon.eol.execute.operations.contributors.OperationContributorRegistry;
@@ -44,6 +49,7 @@ public class EolContext implements IEolContext {
 	protected OperationContributorRegistry methodContributorRegistry;
 	protected EolClasspathNativeTypeDelegate classpathNativeTypeDelegate;
 	protected List<IToolNativeTypeDelegate> nativeTypeDelegates;
+	protected List<IModuleURIResolver> uriResolvers;
 	
 	/**
 	 * The type of {@link #module} when using {@link #getModule()} and {@link #setModule(IModule)}.
@@ -68,7 +74,12 @@ public class EolContext implements IEolContext {
 		methodContributorRegistry = new OperationContributorRegistry();
 		classpathNativeTypeDelegate = new EolClasspathNativeTypeDelegate();
 		nativeTypeDelegates = CollectionUtil.asList(classpathNativeTypeDelegate);
-		
+
+		uriResolvers = new ArrayList<>();
+		uriResolvers.add(new FileUpURIResolver());
+		uriResolvers.add(new JarUpURIResolver());
+		uriResolvers.add(new SegmentUpURIResolver());
+
 		// Ensure that setModule is consistent with getModule
 		try {
 			expectedModuleType = (Class<? extends IModule>) getClass().getMethod("getModule").getReturnType();
@@ -104,6 +115,7 @@ public class EolContext implements IEolContext {
 		methodContributorRegistry = other.getOperationContributorRegistry();
 		frameStack = other.getFrameStack();
 		executorFactory = other.getExecutorFactory();
+		uriResolvers = other.getURIResolvers();
 		
 		IModule otherModule = other.getModule();
 		if (expectedModuleType.isInstance(otherModule)) {
@@ -301,4 +313,10 @@ public class EolContext implements IEolContext {
 	public Queue<AsyncStatementInstance> getAsyncStatementsQueue() {
 		return asyncStatementsQueue;
 	}
+
+	@Override
+	public List<IModuleURIResolver> getURIResolvers() {
+		return uriResolvers;
+	}
+
 }

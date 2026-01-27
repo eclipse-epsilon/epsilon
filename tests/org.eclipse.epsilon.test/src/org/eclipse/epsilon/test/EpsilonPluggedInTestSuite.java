@@ -16,6 +16,7 @@ import org.eclipse.epsilon.common.dt.test.CommonDevelopmentToolsTestSuite;
 import org.eclipse.epsilon.ecore.delegates.test.acceptance.DelegatesSuite;
 import org.eclipse.epsilon.emc.cdo.tests.CDOPluggedInTestSuite;
 import org.eclipse.epsilon.emc.emf.test.EmfPluggedInTestSuite;
+import org.eclipse.epsilon.eol.engine.test.acceptance.plugged.PluggedInUpImportsTest;
 import org.eclipse.epsilon.picto.test.PictoTestSuite;
 import org.eclipse.epsilon.workflow.test.WorkflowPluggedInTestSuite;
 import org.junit.runner.RunWith;
@@ -37,7 +38,8 @@ import junit.framework.Test;
 	WorkflowPluggedInTestSuite.class,
 	CDOPluggedInTestSuite.class,
 	DelegatesSuite.class,
-	PictoTestSuite.class
+	PictoTestSuite.class,
+	PluggedInUpImportsTest.class
 })
 public class EpsilonPluggedInTestSuite {
 	public static Test suite() {
