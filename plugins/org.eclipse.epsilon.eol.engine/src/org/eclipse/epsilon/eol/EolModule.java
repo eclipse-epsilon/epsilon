@@ -9,17 +9,17 @@
  ******************************************************************************/
 package org.eclipse.epsilon.eol;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.antlr.runtime.ANTLRInputStream;
-import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.Lexer;
 import org.antlr.runtime.TokenStream;
 import org.eclipse.epsilon.common.module.IModule;
@@ -29,6 +29,7 @@ import org.eclipse.epsilon.common.parse.EpsilonParser;
 import org.eclipse.epsilon.common.parse.problem.ParseProblem;
 import org.eclipse.epsilon.common.util.AstUtil;
 import org.eclipse.epsilon.common.util.ListSet;
+import org.eclipse.epsilon.common.util.UriUtil;
 import org.eclipse.epsilon.eol.debug.EolDebugger;
 import org.eclipse.epsilon.eol.dom.AbortStatement;
 import org.eclipse.epsilon.eol.dom.AnnotationBlock;
@@ -80,6 +81,7 @@ import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.Return;
 import org.eclipse.epsilon.eol.execute.context.EolContext;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
+import org.eclipse.epsilon.eol.execute.context.IModuleURIResolver;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.parse.EolLexer;
 import org.eclipse.epsilon.eol.parse.EolParser;
@@ -538,4 +540,31 @@ public class EolModule extends AbstractModule implements IEolModule {
 	public EolDebugger createDebugger() {
 		return new EolDebugger();
 	}
+
+	@Override
+	public Optional<URI> resolveUri(URI baseUri, String pathOrUri) throws URISyntaxException {
+		// 2.9: support URI resolvers (e.g. for up:// URIs)
+		for (IModuleURIResolver resolver : getContext().getURIResolvers()) {
+			Optional<URI> resolved;
+			try {
+				resolved = resolver.resolve(new URI(pathOrUri), this, baseUri);
+				if (resolved.isPresent()) {
+					return resolved;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// This is the pre-2.9 logic
+		final File file = new File(pathOrUri);
+		if (file.isAbsolute()) {
+			if (file.exists()) {
+				return Optional.of(file.toURI());
+			}
+			return Optional.empty();
+		}
+		return Optional.ofNullable(UriUtil.resolve(pathOrUri, baseUri));
+	}
+
 }
