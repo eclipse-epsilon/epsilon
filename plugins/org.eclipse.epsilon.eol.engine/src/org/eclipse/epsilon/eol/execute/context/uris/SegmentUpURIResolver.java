@@ -16,10 +16,13 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import org.eclipse.epsilon.common.module.IModule;
 
 public class SegmentUpURIResolver extends AbstractUpURIResolver {
+
+	private static final Logger LOGGER = Logger.getLogger(SegmentUpURIResolver.class.getName());
 
 	@Override
 	public Optional<URI> resolve(URI uri, IModule parentModule, URI baseUri) throws URISyntaxException, IOException {
@@ -32,7 +35,7 @@ public class SegmentUpURIResolver extends AbstractUpURIResolver {
 		return resolveUpViaSegments(uri, baseUri);
 	}
 
-	protected Optional<URI> resolveUpViaSegments(URI uri, URI rel) throws URISyntaxException, IOException {
+	protected Optional<URI> resolveUpViaSegments(URI uri, URI rel) throws URISyntaxException {
 		String[] segments = rel.getPath().split("/");
 
 		for (int iSegment = segments.length - 1; iSegment >= 0; --iSegment) {
@@ -45,6 +48,10 @@ public class SegmentUpURIResolver extends AbstractUpURIResolver {
 				// Try to open the URL - if we succeed, resolve it
 				try (InputStream is = resolved.toURL().openStream()) {
 					return Optional.of(resolved);
+				} catch (IOException ex) {
+					// Normally we're not interested in this error,
+					// as it just means the file doesn't exist.
+					LOGGER.fine(ex.getMessage());
 				}
 			}
 		}

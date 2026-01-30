@@ -7,6 +7,8 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.resources.IProject;
@@ -16,6 +18,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.epsilon.eol.EolModule;
+import org.eclipse.epsilon.eol.dt.launching.EclipseContextManager;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -67,6 +70,18 @@ public class PluggedInUpImportsTest {
 	}
 
 	@Test
+	public void level1FullPath() throws Exception {
+		EolModule module = parse("level1b/useLevel1FullPath.eol");
+		assertEquals("level 1", module.execute());
+	}
+
+	@Test
+	public void level2FullPath() throws Exception {
+		EolModule module = parse("level1b/useLevel2FullPath.eol");
+		assertEquals("level 2", module.execute());
+	}
+
+	@Test
 	public void importMissing() throws Exception {
 		EolModule module = new EolModule();
 		module.parse(computePlatformURI("level1b/importMissing.eol"));
@@ -74,11 +89,57 @@ public class PluggedInUpImportsTest {
 		assertTrue(module.getParseProblems().get(0).getReason().contains("not found"));
 	}
 
+	@Test
+	public void ambiguous() throws Exception {
+		EolModule module = createModule();
+		module.parse(computePlatformURI("level1b/useAmbiguous.eol"));
+		assertEquals("There should be one parse problem",
+			1, module.getParseProblems().size());
+
+		String problem = module.getParseProblems().get(0).getReason();
+		assertTrue("Error should mention 'ambiguous'",
+			problem.contains("ambiguous"));
+		assertTrue("Error should mention the import URI",
+			problem.contains("up://upImports/ambiguous.eol"));
+
+		Pattern candidatePattern = Pattern.compile("^[-] .+[\\\\/]ambiguous[.]eol$", Pattern.MULTILINE);
+		int count = 0;
+		for (Matcher m = candidatePattern.matcher(problem); m.find(); ) {
+			++count;
+		}
+		assertEquals("Error should mention both candidates", 2, count);
+	}
+
+	@Test
+	public void ambiguousLevel1() throws Exception {
+		EolModule module = parse("level1b/useAmbiguousLevel1.eol");
+		assertEquals("ambiguous from level 1", module.execute());
+	}
+
+	@Test
+	public void ambiguousLevel2() throws Exception {
+		EolModule module = parse("level1b/useAmbiguousLevel2.eol");
+		assertEquals("ambiguous from level 2", module.execute());
+	}
+
 	protected EolModule parse(String path) throws Exception {
-		EolModule module = new EolModule();
+		EolModule module = createModule();
+
 		module.parse(computePlatformURI(path));
 		assertEquals("There should not be any parse problems",
 			Collections.emptyList(), module.getParseProblems());
+		return module;
+	}
+
+	protected EolModule createModule() {
+		EolModule module = new EolModule();
+
+		/*
+		 * NOTE: EpsilonLaunchConfigurationDelegate sets up the context *after* parsing.
+		 * Do we want to change this?
+		 */
+		EclipseContextManager.setup(module.getContext());
+
 		return module;
 	}
 
