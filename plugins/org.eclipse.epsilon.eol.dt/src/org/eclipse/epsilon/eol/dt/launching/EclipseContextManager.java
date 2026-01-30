@@ -11,6 +11,7 @@ package org.eclipse.epsilon.eol.dt.launching;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -31,8 +32,8 @@ import org.eclipse.epsilon.common.dt.util.EclipseUtil;
 import org.eclipse.epsilon.common.dt.util.LogUtil;
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.eol.dt.ExtensionPointToolNativeTypeDelegate;
+import org.eclipse.epsilon.eol.dt.uris.PlatformResourceUpURIResolver;
 import org.eclipse.epsilon.eol.dt.userinput.JFaceUserInput;
-import org.eclipse.epsilon.eol.exceptions.EolRuntimeException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.execute.control.ExecutionController;
@@ -68,7 +69,8 @@ public class EclipseContextManager {
 		loadPrettyPrinters(context);
 		loadOperationContributors(context);
 		loadIo(context);
-		context.getNativeTypeDelegates().add(new ExtensionPointToolNativeTypeDelegate());		
+		context.getNativeTypeDelegates().add(new ExtensionPointToolNativeTypeDelegate());
+		context.getURIResolvers().add(new PlatformResourceUpURIResolver());
 	}
 	
 	public static void setup(IEolContext context, IProgressMonitor progressMonitor) {
