@@ -9,6 +9,9 @@
 **********************************************************************/
 package org.eclipse.epsilon.eol.dt.interpreter;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -19,7 +22,11 @@ import org.eclipse.acceleo.ui.interpreter.language.EvaluationResult;
 import org.eclipse.acceleo.ui.interpreter.language.InterpreterContext;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.epsilon.common.dt.console.EpsilonConsole;
 import org.eclipse.epsilon.common.dt.editor.AbstractModuleEditorSourceViewerConfiguration;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
@@ -67,18 +74,41 @@ public class EolInterpreter extends AbstractLanguageInterpreter {
 			module.parse(context.getExpression());
 			FrameStack frameStack = module.getContext().getFrameStack();
 			
-			List<EObject> eObjects = context.getTargetEObjects();
-			if (eObjects.isEmpty()) {
+			LinkedHashSet<Resource> resources = new LinkedHashSet<>();
+			
+			for (Notifier notifier : context.getTargetNotifiers()) {
+				Resource resource = getResource(notifier);
+				if (resource != null) resources.add(resource);
+			}
+			
+			List<InMemoryEmfModel> models = new ArrayList<InMemoryEmfModel>();
+			for (Resource resource : resources) {
+				InMemoryEmfModel model = new InMemoryEmfModel(resource) {
+					@Override
+					protected void init(String name, Resource modelImpl, Collection<EPackage> ePackages,
+							boolean isContainerListenerEnabled) {
+						// Models in the interpreter should have access to the global EPackage.Registry
+						// See https://github.com/eclipse-epsilon/epsilon/discussions/213
+						this.registry = EPackage.Registry.INSTANCE;
+						super.init(name, modelImpl, ePackages, isContainerListenerEnabled);
+					}
+				};
+				
+				model.setName(models.isEmpty() ? "M" : "M" + models.size());
+				module.getContext().getModelRepository().addModel(model);
+			}
+			
+			List<Notifier> notifiers = context.getTargetNotifiers();
+			
+			if (notifiers.isEmpty()) {
 				frameStack.put("self", null);
 			}
 			else {
-				module.getContext().getModelRepository().addModel(new InMemoryEmfModel(eObjects.get(0).eResource()));
-				
-				if (eObjects.size() == 1) {
-					frameStack.put("self", eObjects.get(0));
+				if (notifiers.size() == 1) {
+					frameStack.put("self", notifiers.get(0));
 				}
 				else {
-					frameStack.put("self", eObjects);
+					frameStack.put("self", notifiers);
 				}
 			}
 			
@@ -95,6 +125,24 @@ public class EolInterpreter extends AbstractLanguageInterpreter {
 			Object result = module.execute();
 			return new EvaluationResult(result);
 		};
+	}
+	
+	protected Resource getResource(Notifier notifier) {
+		Resource resource = null;
+		
+		if (notifier instanceof ResourceSet) {
+			ResourceSet resourceSet = (ResourceSet) notifier;
+			if (!resourceSet.getResources().isEmpty()) {
+				resource = resourceSet.getResources().get(0);
+			}
+		}
+		else if (notifier instanceof Resource) {
+			resource = (Resource) notifier;
+		}
+		else if (notifier instanceof EObject) {
+			resource = ((EObject) notifier).eResource();
+		}
+		return resource;
 	}
 
 }
