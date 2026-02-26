@@ -141,7 +141,7 @@ public class CDOModel extends AbstractReflectiveEmfModel {
 				}
 			}
 
-			registry = cdoTransaction.getSession().getPackageRegistry();
+			compositeRegistry = cdoTransaction.getSession().getPackageRegistry();
 		} catch (Exception ex) {
 			throw new EolModelLoadingException(ex, this);
 		}
