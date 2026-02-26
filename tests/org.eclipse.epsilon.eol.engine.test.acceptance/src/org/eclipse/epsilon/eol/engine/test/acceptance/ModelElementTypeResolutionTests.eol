@@ -57,7 +57,7 @@ operation warningListsAllCandidatesWithinSameModel() {
     // EClass exists in multiple metamodels from the same model, so issue a warning
     var x = EClass;
 
-    assertWarning("The type 'EClass' is ambiguous and could refer to any of the following: 'Model!ecoreLite::EClass' 'Model!ecore::EClass'. The type 'Model!ecoreLite::EClass' has been assumed.");
+    assertWarning("The type 'EClass' is ambiguous and could refer to any of the following: 'Model!ecore::EClass' 'Model!ecoreLite::EClass'. The type 'Model!ecore::EClass' has been assumed.");
 }
 
 @test

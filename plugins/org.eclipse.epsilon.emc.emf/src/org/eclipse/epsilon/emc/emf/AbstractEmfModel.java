@@ -83,6 +83,7 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 	
 	protected Resource modelImpl;
 	protected boolean expand = true;
+	protected EPackage.Registry compositeRegistry;
 	protected EPackage.Registry registry;
 	Map<String, EClass> eClassCache;
 	Map<String, Object> enumCache;
@@ -126,31 +127,28 @@ public abstract class AbstractEmfModel extends CachedModel<EObject> {
 			return new FileInputStream(file);
 		}
 	}
-	
-	public void addMetamodelUri(String nsUri) {
-		getPackageRegistry().put(nsUri, EPackage.Registry.INSTANCE.get(nsUri));
-	}
 
-	/**
-	 * Get the (cached) package registry belonging to the model implementation,
-	 * if no registry is available the global one is provided
-	 * 
-	 * @return the (global) package registry
-	 */
 	protected EPackage.Registry getPackageRegistry() {
-		if (registry == null) {
-			if (modelImpl == null || modelImpl.getResourceSet() == null) {
-				registry = EPackage.Registry.INSTANCE;
-				//new EPackageRegistryImpl();
-				//registry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+		
+		if (compositeRegistry == null) {
+			if (registry == null) {
+				if (modelImpl == null || modelImpl.getResourceSet() == null) {
+					compositeRegistry = new CompositeEPackageRegistry(EPackage.Registry.INSTANCE);
+				}
+				else {
+					compositeRegistry = new CompositeEPackageRegistry(modelImpl.getResourceSet().getPackageRegistry());
+				}
 			}
 			else {
-				// By default getPackageRegistry() returns/creates a registry backed by the global registry
-				registry = modelImpl.getResourceSet().getPackageRegistry();
+				if (modelImpl == null || modelImpl.getResourceSet() == null) {
+					compositeRegistry = new CompositeEPackageRegistry(registry);
+				}
+				else {
+					compositeRegistry = new CompositeEPackageRegistry(modelImpl.getResourceSet().getPackageRegistry(), registry);
+				}
 			}
 		}
-		
-		return registry;
+		return compositeRegistry;
 	}
 	
 	@Override
