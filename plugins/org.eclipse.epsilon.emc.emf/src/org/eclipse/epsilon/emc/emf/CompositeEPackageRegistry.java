@@ -103,7 +103,7 @@ public class CompositeEPackageRegistry implements EPackage.Registry {
 	public Collection<Object> values() {
 		return registries.stream()
 		        .flatMap(registry -> registry.values().stream())
-		        .collect(Collectors.toSet());
+		        .collect(Collectors.toList());
 	}
 
 	@Override
