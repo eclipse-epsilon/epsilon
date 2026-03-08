@@ -12,6 +12,7 @@ package org.eclipse.epsilon.eol.execute.introspection.recording;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +34,7 @@ public class PropertyAccesses implements IPropertyAccesses {
 	
 	@Override
 	public Set<? extends IPropertyAccess> unique() {
-		return new HashSet<>(storage);
+		return new LinkedHashSet<>(storage);
 	}
 
 	public void add(IPropertyAccess propertyAccess) {
