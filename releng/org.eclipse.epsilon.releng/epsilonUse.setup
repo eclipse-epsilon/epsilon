@@ -53,20 +53,6 @@
         value="${installation.location/workspace}"/>
     <setupTask
         xsi:type="setup:EclipseIniTask"
-        option="-Xms"
-        value="256m"
-        vm="true">
-      <description>Default initial heap.</description>
-    </setupTask>
-    <setupTask
-        xsi:type="setup:EclipseIniTask"
-        option="-Xmx"
-        value="4g"
-        vm="true">
-      <description>Default max heap.</description>
-    </setupTask>
-    <setupTask
-        xsi:type="setup:EclipseIniTask"
         option="-Declipse.pluginCustomization"
         value="=configuration/config.ini"
         vm="true">
@@ -94,15 +80,6 @@
         eclipse.preferences.version=1
 
       </content>
-    </setupTask>
-    <setupTask
-        xsi:type="setup:TextModifyTask"
-        url="configuration:/.settings/org.eclipse.ui.ide.prefs">
-      <modification
-          pattern="(\\+?)">
-        <substitution>\\</substitution>
-      </modification>
-      <description>Formats workspace path in RECENT_WORKSPACES</description>
     </setupTask>
     <setupTask
         xsi:type="setup:TextModifyTask"
