@@ -14,10 +14,12 @@ package org.eclipse.epsilon.egl;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.epsilon.common.module.Comment;
@@ -294,6 +296,11 @@ public class EglModule implements IEglModule {
 	@Override
 	public IEolDebugger createDebugger() {
 		return current.module.createDebugger();
+	}
+
+	@Override
+	public Optional<URI> resolveUri(URI baseUri, String pathOrUri) throws URISyntaxException {
+		return current.module.resolveUri(baseUri, pathOrUri);
 	}
 
 }

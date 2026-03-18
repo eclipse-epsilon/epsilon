@@ -1,0 +1,4 @@
+[% import "up://scripts/utils.eol"; %]
+<html>
+  <body>[%=add(2, 5)%]</body>
+</html>

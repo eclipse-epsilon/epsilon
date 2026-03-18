@@ -1,0 +1,3 @@
+import 'up://upImports/level2/ambiguous.eol';
+
+return ambiguous();

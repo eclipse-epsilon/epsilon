@@ -32,6 +32,7 @@ import org.eclipse.epsilon.eol.engine.test.acceptance.firstOrder.nested.NestedPa
 import org.eclipse.epsilon.eol.engine.test.acceptance.importCaching.ImportCachingTests;
 import org.eclipse.epsilon.eol.engine.test.acceptance.recording.PropertyAccessRecording;
 import org.eclipse.epsilon.eol.engine.test.acceptance.unparser.EolUnparserTests;
+import org.eclipse.epsilon.eol.engine.test.acceptance.upImports.UpImportTests;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -94,7 +95,8 @@ import junit.framework.Test;
 	ParseProblemTests.class,
 	TokenStreamParsersTests.class,
 	TrailingCommaTests.class,
-	ForTests.class
+	ForTests.class,
+	UpImportTests.class
 })
 public class EolAcceptanceTestSuite {
 

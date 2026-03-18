@@ -21,6 +21,7 @@ Export-Package: org.eclipse.epsilon.eol.dt,
  org.eclipse.epsilon.eol.dt.launching,
  org.eclipse.epsilon.eol.dt.launching.contextual,
  org.eclipse.epsilon.eol.dt.launching.tabs,
+ org.eclipse.epsilon.eol.dt.uris,
  org.eclipse.epsilon.eol.dt.userinput,
  org.eclipse.epsilon.eol.dt.wizards
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

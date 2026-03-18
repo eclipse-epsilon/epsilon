@@ -1,0 +1,3 @@
+operation root() {
+  return 'i am root';
+}

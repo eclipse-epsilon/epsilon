@@ -10,9 +10,12 @@
 package org.eclipse.epsilon.eol;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.epsilon.common.module.IModule;
@@ -97,4 +100,12 @@ public interface IEolModule extends IModule {
 	 * @since 2.6
 	 */
 	IEolDebugger createDebugger();
+
+	/**
+	 * Resolves a reference to a path or URI to a full absolute URI.
+	 *
+	 * @throws URISyntaxException
+	 * @since 2.9
+	 */
+	Optional<URI> resolveUri(URI baseUri, String pathOrUri) throws URISyntaxException;
 }
