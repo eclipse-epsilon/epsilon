@@ -22,7 +22,16 @@ jobs:
     steps:
     - uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594
       with:
-        egress-policy: audit    
+        egress-policy: block
+        disable-telemetry: true
+        allowed-endpoints: >
+          api.github.com:443
+          github.com:443
+          repo.maven.apache.org:443
+          168.63.129.16
+          azure.archive.ubuntu.com
+          download.eclipse.org:443
+          esm.ubuntu.com:443
     - uses: actions/checkout@v4
     - name: Install Webkit + GTK bindings
       run: sudo apt update -yq && sudo apt-get install -yq libwebkit2gtk-4.0-dev
