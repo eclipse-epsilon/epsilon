@@ -191,10 +191,10 @@
          Support for loading EMF models from RDF files (e.g. Turtle, RDF/XML, N-Triples).
       </description>
    </category-def>
-   <repository-reference location="http://download.eclipse.org/emfatic/update" name="" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/emfatic/update" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" name="" enabled="true" />
    <repository-reference location="https://download.eclipse.org/lsp4e/releases/latest/" name="" enabled="true" />
    <repository-reference location="https://download.eclipse.org/mylyn/updates/release/latest/" name="" enabled="true" />
-   <repository-reference location="http://download.eclipse.org/releases/2024-12" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/releases/2024-12" name="" enabled="true" />
    <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-12" name="" enabled="true" />
 </site>
