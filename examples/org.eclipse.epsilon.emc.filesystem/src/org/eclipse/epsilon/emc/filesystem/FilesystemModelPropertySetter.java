@@ -23,7 +23,7 @@ public class FilesystemModelPropertySetter extends JavaPropertySetter {
 	public void invoke(Object target, String property, Object value, IEolContext context) throws EolRuntimeException {
 		if ("contents".equals(property)) {
 			try (FileOutputStream fos = new FileOutputStream((File) target)) {
-				fos.write((value + "").getBytes());
+				fos.write((value != null ? value.toString() : "").getBytes());
 			}
 			catch (Exception e) {
 				throw new EolInternalException(e);
