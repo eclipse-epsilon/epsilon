@@ -48,7 +48,6 @@ public class SimulinkBlock extends SimulinkElement {
 	public SimulinkBlock(SimulinkModel model, MatlabEngine engine, String type, String destPath) throws MatlabRuntimeException {
 		super(model, engine, type, destPath);
 	}
-	
 	public SimulinkBlock(SimulinkModel model, MatlabEngine engine, Double handle) throws MatlabRuntimeException {
 		super(model, engine, handle);
 	}
@@ -74,6 +73,10 @@ public class SimulinkBlock extends SimulinkElement {
 			String parentPath = parent == null ? ((SimulinkModel)model).getSimulinkModelName() : parent.getPath();
 			Double newHandle = (Double) engine.evalWithResult(ADD_BLOCK_MAKE_NAME_UNIQUE_ON, getPath(),
 					parentPath + "/" + name);
+			// Instruct the model that the caches need updating for this block
+			if (model instanceof SimulinkModel) {
+				((SimulinkModel) model).updateCaches(handle, newHandle);
+			}
 			engine.eval(HANDLE_DELETE_BLOCK_HANDLE, handle);
 			handle = newHandle;
 		} catch (Exception ex) {
