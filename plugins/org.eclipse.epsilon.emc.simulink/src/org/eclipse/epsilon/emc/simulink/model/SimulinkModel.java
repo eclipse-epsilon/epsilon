@@ -329,7 +329,7 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 		// As caching is not currently supported for Simulink ports and lines, we
 		// always want to retrieve them from the model
 		if (isCachingEnabled()
-				&& (modelElementType.equals("Block") || TypeHelper.getKind(modelElementType).getKind().equals("Block"))) {
+				&& (modelElementType.equals(Kind.BLOCK.getKind()) || Kind.BLOCK.equals(TypeHelper.getKind(modelElementType)))) {
 			final Multimap<Object, ISimulinkModelElement> cache = isKind ? kindCache : typeCache;
 			final Object key = getCacheKeyForType(modelElementType);
 			
@@ -573,8 +573,8 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 	 * @param oldHandle handle of the old block
 	 * @param newHandle handle of the new block
 	 * @throws EolModelElementTypeNotFoundException
-	 * @throws MatlabRuntimeException if any of the blocks could not be instantiated
-	 * @throws MatlabException if the block could not be queried for its children
+	 * @throws MatlabRuntimeException
+	 * @throws MatlabException 
 	 */
 	public void updateCaches(Double oldHandle, Double newHandle) throws EolModelElementTypeNotFoundException, MatlabRuntimeException, MatlabException {
 		if(isCachingEnabled()) {
