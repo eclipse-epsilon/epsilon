@@ -216,9 +216,19 @@ public class FlexmiResource extends ResourceImpl implements Handler {
 		if (getIntrinsicIDToEObjectMap().containsKey(uriFragment)) {
 			return getIntrinsicIDToEObjectMap().get(uriFragment);
 		}
-		else if (fullyQualifiedIDs.containsKey(uriFragment)) {
-			// prevents a full model sweep
-			return fullyQualifiedIDs.get(uriFragment);
+		else if (uriFragment.contains(".")) { // Fully or partly-qualified path
+			String id = uriFragment.substring(uriFragment.lastIndexOf('.') + 1, uriFragment.length());
+			if (getIntrinsicIDToEObjectMap().containsKey(id)) {
+				if (fullyQualifiedIDs.containsKey(uriFragment)) { // Fully-qualified path
+					// prevents a full model sweep
+					return fullyQualifiedIDs.get(uriFragment);
+				}
+				else { // Partly-qualified path
+					for (String key : fullyQualifiedIDs.keySet()) {
+						if (key.endsWith(uriFragment)) return fullyQualifiedIDs.get(key);
+					}	
+				}
+			}
 		}
 		return super.getEObject(uriFragment);
 	}
