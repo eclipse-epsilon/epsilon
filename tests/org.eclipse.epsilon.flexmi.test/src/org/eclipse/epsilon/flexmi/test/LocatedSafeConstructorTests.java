@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 
 import org.eclipse.epsilon.common.util.FileUtil;
+import org.eclipse.epsilon.flexmi.yaml.LocatedList;
 import org.eclipse.epsilon.flexmi.yaml.LocatedMap;
 import org.eclipse.epsilon.flexmi.yaml.LocatedSafeConstructor;
 import org.junit.Before;
@@ -79,6 +80,36 @@ public class LocatedSafeConstructorTests {
 			// We follow the cycle
 			LocatedMap<Object, Object> lmC = (LocatedMap<Object, Object>) lmA.get("c");
 			assertSame(lmA, lmC);
+		}
+	}
+
+	@Test
+	public void locatedSeq() throws Exception {
+		File f = FileUtil.getFileStandalone("models/yaml/located-seq.yaml", getClass());
+		f.deleteOnExit();
+
+		try (FileReader fr = new FileReader(f)) {
+			LocatedList<Object> ll = yaml.load(fr);
+			assertNodeStartsInLine(ll.getLocation(0), 1);
+			assertNodeStartsInLine(ll.getLocation(1), 2);
+			assertNodeStartsInLine(ll.getLocation(2), 5);
+
+			LocatedMap<Object, Object> lm1 = (LocatedMap<Object, Object>) ll.get(1);
+			assertKeyNodeStartsInLine(lm1.getLocation("y"), 3);
+		}
+	}
+
+	@Test
+	public void locatedSeqWithMerge() throws Exception {
+		File f = FileUtil.getFileStandalone("models/yaml/located-seq-merge.yaml", getClass());
+		f.deleteOnExit();
+
+		try (FileReader fr = new FileReader(f)) {
+			LocatedList<Object> ll = yaml.load(fr);
+
+			LocatedMap<Object, Object> lm1 = (LocatedMap<Object, Object>) ll.get(2);
+			assertKeyNodeStartsInLine(lm1.getLocation("x"), 7);
+			assertKeyNodeStartsInLine(lm1.getLocation("y"), 4);
 		}
 	}
 

@@ -9,11 +9,14 @@
  **********************************************************************/
 package org.eclipse.epsilon.flexmi.yaml;
 
-import java.util.Map;
+import java.util.List;
 
-import org.yaml.snakeyaml.nodes.NodeTuple;
+import org.yaml.snakeyaml.nodes.Node;
 
-public interface LocatedMap<K, V> extends Map<K, V> {
-	Object putWithLocation(K key, NodeTuple node, V value);
-	NodeTuple getLocation(K key);
+public interface LocatedList<E> extends List<E> {
+
+	Object addWithLocation(Node n, E value);
+
+	Node getLocation(int i);
+
 }
