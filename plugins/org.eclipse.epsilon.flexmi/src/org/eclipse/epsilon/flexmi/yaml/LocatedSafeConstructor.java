@@ -1,5 +1,15 @@
+/*********************************************************************
+ * Copyright (c) 2026 The University of York.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ **********************************************************************/
 package org.eclipse.epsilon.flexmi.yaml;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +21,17 @@ import org.yaml.snakeyaml.error.YAMLException;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.NodeTuple;
+import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.nodes.Tag;
 
+/**
+ * Subclass of the default SnakeYAML constructor which uses
+ * extended lists and maps that track the YAML representation
+ * tree node that each value came from.
+ *
+ * TODO: support tracking locations of sets? These would not
+ * have much use in the Flexmi YAML flavour, however.
+ */
 public class LocatedSafeConstructor extends SafeConstructor {
 
 	protected static class LocatedSafeConstructorException extends ConstructorException {
@@ -35,7 +54,12 @@ public class LocatedSafeConstructor extends SafeConstructor {
 
 	@Override
 	protected Map<Object, Object> createDefaultMap(int initSize) {
-		return new LocatedLinkedHashMap<>();
+		return new LocatedLinkedHashMap<>(initSize);
+	}
+
+	@Override
+	protected List<Object> createDefaultList(int initSize) {
+		return new LocatedArrayList<>(initSize);
 	}
 
 	/*
@@ -75,6 +99,14 @@ public class LocatedSafeConstructor extends SafeConstructor {
 				// This is the one line we wanted to change
 				((LocatedMap<Object, Object>) mapping).putWithLocation(key, tuple, value);
 			}
+		}
+	}
+
+	@Override
+	protected void constructSequenceStep2(SequenceNode node, Collection<Object> collection) {
+		LocatedList<Object> located = (LocatedList<Object>) collection;
+		for (Node child : node.getValue()) {
+			located.addWithLocation(child, constructObject(child));
 		}
 	}
 
