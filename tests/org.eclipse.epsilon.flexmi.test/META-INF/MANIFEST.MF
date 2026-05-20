@@ -8,6 +8,7 @@ Require-Bundle: org.eclipse.epsilon.flexmi,
  org.junit,
  org.eclipse.epsilon.eol.engine,
  org.eclipse.epsilon.emc.emf,
- com.google.guava
+ com.google.guava,
+ org.yaml.snakeyaml
 Export-Package: org.eclipse.epsilon.flexmi.test
 Automatic-Module-Name: org.eclipse.epsilon.flexmi.test

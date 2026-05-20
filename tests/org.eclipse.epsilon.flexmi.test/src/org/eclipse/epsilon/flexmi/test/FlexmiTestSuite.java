@@ -26,7 +26,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	PropogenTests.class,
 	ActionTests.class,
 	ExternalTests.class,
-	FlexmiYamlTests.class
+	FlexmiYamlTests.class,
+	LocatedSafeConstructorTests.class
 })
 public class FlexmiTestSuite {
 

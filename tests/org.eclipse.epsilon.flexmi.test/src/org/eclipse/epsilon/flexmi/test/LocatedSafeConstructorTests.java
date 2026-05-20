@@ -1,0 +1,95 @@
+package org.eclipse.epsilon.flexmi.test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
+import java.io.File;
+import java.io.FileReader;
+
+import org.eclipse.epsilon.common.util.FileUtil;
+import org.eclipse.epsilon.flexmi.yaml.LocatedMap;
+import org.eclipse.epsilon.flexmi.yaml.LocatedSafeConstructor;
+import org.junit.Before;
+import org.junit.Test;
+import org.yaml.snakeyaml.LoaderOptions;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.NodeTuple;
+
+public class LocatedSafeConstructorTests {
+
+	private Yaml yaml;
+
+	@Before
+	public void setUp() {
+		yaml = new Yaml(new LocatedSafeConstructor(new LoaderOptions()));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void locatedMaps() throws Exception {
+		File f = FileUtil.getFileStandalone("models/yaml/located-map.yaml", getClass());
+		f.deleteOnExit();
+
+		try (FileReader fr = new FileReader(f)) {
+			LocatedMap<Object, Object> lm = yaml.load(fr);
+
+			assertKeyNodeStartsInLine(lm.getLocation("a"), 1);
+			assertKeyNodeStartsInLine(lm.getLocation("b"), 2);
+			assertKeyNodeStartsInLine(lm.getLocation("c"), 3);
+			
+			LocatedMap<Object, Object> lmC = (LocatedMap<Object, Object>) lm.get("c");
+			assertKeyNodeStartsInLine(lmC.getLocation("d"), 4);
+			assertKeyNodeStartsInLine(lmC.getLocation("e"), 5);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void locatedMapsWithAnchorsAndMerges() throws Exception {
+		File f = FileUtil.getFileStandalone("models/yaml/located-map-anchors.yaml", getClass());
+		f.deleteOnExit();
+
+		try (FileReader fr = new FileReader(f)) {
+			LocatedMap<Object, Object> lm = yaml.load(fr);
+			assertKeyNodeStartsInLine(lm.getLocation("d"), 4);
+
+			// We preserve the original lines of the merged keys
+			LocatedMap<Object, Object> lmD = (LocatedMap<Object, Object>) lm.get("d");
+			assertKeyNodeStartsInLine(lmD.getLocation("b"), 2);
+			assertKeyNodeStartsInLine(lmD.getLocation("c"), 3);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void locatedMapsWithCycles() throws Exception {
+		File f = FileUtil.getFileStandalone("models/yaml/located-map-cyclic.yaml", getClass());
+		f.deleteOnExit();
+
+		try (FileReader fr = new FileReader(f)) {
+			LocatedMap<Object, Object> lm = yaml.load(fr);
+			assertKeyNodeStartsInLine(lm.getLocation("a"), 1);
+
+			// First level
+			LocatedMap<Object, Object> lmA = (LocatedMap<Object, Object>) lm.get("a");
+			assertKeyNodeStartsInLine(lmA.getLocation("b"), 2);
+			assertKeyNodeStartsInLine(lmA.getLocation("c"), 3);
+	
+			// We follow the cycle
+			LocatedMap<Object, Object> lmC = (LocatedMap<Object, Object>) lmA.get("c");
+			assertSame(lmA, lmC);
+		}
+	}
+
+	protected void assertKeyNodeStartsInLine(NodeTuple nt, int expectedLine) {
+		assertNodeStartsInLine(nt.getKeyNode(), expectedLine);
+	}
+
+	protected void assertNodeStartsInLine(Node n, int expectedLine) {
+		// Note: SnakeYAML starts lines at 0, not 1
+		assertEquals(String.format("Node %s should start on line %d", n, expectedLine),
+			expectedLine, n.getStartMark().getLine() + 1);
+	}
+
+}
