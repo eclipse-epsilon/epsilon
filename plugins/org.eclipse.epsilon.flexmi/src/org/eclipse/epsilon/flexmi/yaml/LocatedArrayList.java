@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.SequenceNode;
 
 /**
  * Subclass of an ArrayList which keeps track of the YAML representation tree
@@ -26,7 +27,8 @@ public class LocatedArrayList<E> extends ArrayList<E> implements LocatedList<E> 
 
 	private static final long serialVersionUID = 1L;
 
-	private List<Node> locations = new ArrayList<>(); 
+	private List<Node> locations = new ArrayList<>();
+	private SequenceNode location;
 
 	public LocatedArrayList() {
 		super();
@@ -57,5 +59,15 @@ public class LocatedArrayList<E> extends ArrayList<E> implements LocatedList<E> 
 	public void clear() {
 		locations.clear();
 		super.clear();
+	}
+
+	@Override
+	public SequenceNode getLocation() {
+		return location;
+	}
+
+	@Override
+	public void setLocation(SequenceNode sn) {
+		this.location = sn;
 	}
 }

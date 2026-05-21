@@ -65,9 +65,16 @@ public class LocatedSafeConstructor extends SafeConstructor {
 	/*
 	 * We override this bit to change the put() call to putWithLocation(),
 	 * but otherwise keep the code as is.
+	 *
+	 * TODO: decide if we actually need per-key locations (if not, we can
+	 * simplify this method).
 	 */
 	@Override
 	protected void constructMapping2ndStep(MappingNode node, Map<Object, Object> mapping) {
+		// New - record the location of the mapping
+		LocatedMap<Object, Object> lm = ((LocatedMap<Object, Object>) mapping);
+		lm.setLocation(node);
+
 		// From SafeConstructor - needed to support merge nodes
 		flattenMapping(node);
 
@@ -97,7 +104,7 @@ public class LocatedSafeConstructor extends SafeConstructor {
 				}
 			} else {
 				// This is the one line we wanted to change
-				((LocatedMap<Object, Object>) mapping).putWithLocation(key, tuple, value);
+				lm.putWithLocation(key, tuple, value);
 			}
 		}
 	}
@@ -105,6 +112,7 @@ public class LocatedSafeConstructor extends SafeConstructor {
 	@Override
 	protected void constructSequenceStep2(SequenceNode node, Collection<Object> collection) {
 		LocatedList<Object> located = (LocatedList<Object>) collection;
+		located.setLocation(node);
 		for (Node child : node.getValue()) {
 			located.addWithLocation(child, constructObject(child));
 		}
