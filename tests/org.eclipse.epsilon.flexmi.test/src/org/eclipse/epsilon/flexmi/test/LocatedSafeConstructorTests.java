@@ -40,6 +40,8 @@ public class LocatedSafeConstructorTests {
 			assertKeyNodeStartsInLine(lm.getLocation("c"), 3);
 			
 			LocatedMap<Object, Object> lmC = (LocatedMap<Object, Object>) lm.get("c");
+			// The actual value of the "c" key starts from line 4
+			assertNodeStartsInLine(lmC.getLocation(), 4);
 			assertKeyNodeStartsInLine(lmC.getLocation("d"), 4);
 			assertKeyNodeStartsInLine(lmC.getLocation("e"), 5);
 		}
@@ -83,6 +85,7 @@ public class LocatedSafeConstructorTests {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void locatedSeq() throws Exception {
 		File f = FileUtil.getFileStandalone("models/yaml/located-seq.yaml", getClass());
@@ -90,6 +93,7 @@ public class LocatedSafeConstructorTests {
 
 		try (FileReader fr = new FileReader(f)) {
 			LocatedList<Object> ll = yaml.load(fr);
+			assertNodeStartsInLine(ll.getLocation(), 1);
 			assertNodeStartsInLine(ll.getLocation(0), 1);
 			assertNodeStartsInLine(ll.getLocation(1), 2);
 			assertNodeStartsInLine(ll.getLocation(2), 5);
@@ -99,6 +103,7 @@ public class LocatedSafeConstructorTests {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void locatedSeqWithMerge() throws Exception {
 		File f = FileUtil.getFileStandalone("models/yaml/located-seq-merge.yaml", getClass());
