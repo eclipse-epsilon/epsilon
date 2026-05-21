@@ -7,10 +7,8 @@ package:
   - name: p2
     t2: {}
   - name: p3
-    t3:
+    t3: &t3-args
       n: 5
       abstract: true
   - name: p4
-    t3:
-      n: 5
-      abstract: true
+    t3: *t3-args
