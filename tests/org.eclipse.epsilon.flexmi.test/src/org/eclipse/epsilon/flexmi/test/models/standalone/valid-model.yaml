@@ -1,7 +1,8 @@
-- ?nsuri: http://www.eclipse.org/emf/2002/Ecore
-- package:
-  - name: p1
-  - class: {name: c1, sup: c2}
-  - class: {name: c2}
-  - class: {name: c3}
-  - class: {name: c4, sup: "c1, c3"}
+$nsuri: http://www.eclipse.org/emf/2002/Ecore
+$type: package
+name: p1
+classes:
+  - {name: c1, sup: c2}
+  - {name: c2}
+  - {name: c3}
+  - {name: c4, sup: "c1, c3"}

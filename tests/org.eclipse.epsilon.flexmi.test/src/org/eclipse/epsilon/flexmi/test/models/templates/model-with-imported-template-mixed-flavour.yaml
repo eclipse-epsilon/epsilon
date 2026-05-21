@@ -1,7 +1,4 @@
-- ?nsuri: http://www.eclipse.org/emf/2002/Ecore
-
-- ?include: imported-template.flexmi
-
-- package:
-    - name: p1 #FIXME: required to avoid "t1" being parsed as package "text"
-    - t1
+?nsuri: http://www.eclipse.org/emf/2002/Ecore
+?include: imported-template.flexmi
+$type: package
+t1: {}

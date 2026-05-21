@@ -1,56 +1,46 @@
-- ?nsuri: http://www.eclipse.org/emf/2002/Ecore
-- package:
+$nsuri: http://www.eclipse.org/emf/2002/Ecore
+$type: _
+package:
   - name: p1
-  - t1:
-    - p: C1
-
-- package:
+    t1:
+      p: C1
   - name: p2
-  - t1:
-    - p: C2
-
-- package:
+    t1:
+      p: C2
   - name: p1
-  - t1:
-    - p: C3
-    - attr:
-      - name: a2
+    t1:
+      p: C3
+      attr:
+        name: a2
 
-- p1:
+p1:
   - attr:
-    - name: a3
-
-- p1:
+      name: a3
   - attr:
-    - name: a4
-  - attr:
-    - name: a5
+      - name: a4
+      - name: a5
 
-- empty:
-  - class:
-    - name: C4
+empty:
+  class:
+    name: C4
 
-- :template:
+:template:
   - name: t1
-  - parameter:
-    - name: p
-  - content:
-    - class:
-      - name: ${p}
-      - attr:
-        - name: a1
-      - :slot
-
-- :template:
+    parameter:
+      name: p
+    content:
+      class:
+        name: ${p}
+        attr:
+          name: a1
+        :slot: {}
   - name: p1
-  - content:
-    - package:
-      - name: p
-      - class:
-        - name: c
-        - :slot
-
-- :template:
+    content:
+      package:
+        name: p
+        class:
+          name: c
+          :slot: {}
   - name: empty
-  - content:
-    - :slot
+    content:
+      :slot: {}
