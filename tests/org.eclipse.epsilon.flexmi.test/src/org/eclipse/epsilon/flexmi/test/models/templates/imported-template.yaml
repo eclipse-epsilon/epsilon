@@ -1,5 +1,5 @@
-- :template:
-    - name: t1
-    - content:
-        - class:
-            - name: C1
+$type: :template
+name: t1
+content:
+  class:
+    name: C1

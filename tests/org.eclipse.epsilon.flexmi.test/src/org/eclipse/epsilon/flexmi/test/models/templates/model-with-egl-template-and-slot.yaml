@@ -1,13 +1,12 @@
-- ?nsuri: http://www.eclipse.org/emf/2002/Ecore
-
-- c1:
-  - attr:
-    - name: a1
-
-- :template:
-  - name: c1
-  - content:
-    - language: EGL
-    - script: |-
-       - class:
-         - :slot
+?nsuri: http://www.eclipse.org/emf/2002/Ecore
+$type: _
+c1:
+  attr:
+    name: a1
+:template:
+  name: c1
+  content:
+    language: EGL
+    script: |-
+       - $type: class
+         :slot: {}

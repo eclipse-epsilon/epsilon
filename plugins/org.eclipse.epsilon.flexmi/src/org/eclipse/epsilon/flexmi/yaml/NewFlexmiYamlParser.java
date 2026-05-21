@@ -73,6 +73,7 @@ public class NewFlexmiYamlParser extends FlexmiXmlParser {
 		try {
 			Object root = yaml.load(new InputStreamReader(inputStream));
 			Document document = toDocument(root);
+			//System.out.println(toXml(document));
 			return document;
 		}
 		catch (ScannerException ex) {
@@ -92,10 +93,6 @@ public class NewFlexmiYamlParser extends FlexmiXmlParser {
 		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		Element element = toRoot(root, document, document);
 		document.appendChild(element);
-
-		// For debugging
-		System.out.println(toXml(document));
-
 		return document;
 	}
 
@@ -151,21 +148,16 @@ public class NewFlexmiYamlParser extends FlexmiXmlParser {
 					element.appendChild(scalarElement);
 				}
 			} else if (isMapValue(value)) {
-				// Generate <feature><element .../></feature>
+				// Generate <element .../>
 				LocatedMap<Object, Object> lmv = (LocatedMap<Object, Object>) value;
-				Element featureElement = createElement(doc, key, lmv.getLocation());
-				element.appendChild(featureElement);
-
-				Element nested = toElement(key, lmv, featureElement, doc);
-				featureElement.appendChild(nested);
+				Element nested = toElement(key, lmv, element, doc);
+				element.appendChild(nested);
 			} else if (isMapList(value)) {
 				LocatedList<Object> ll = (LocatedList<Object>) value;
-				Element featureElement = createElement(doc, key, ll.getLocation());
-				element.appendChild(featureElement);
 				for (int i = 0; i < ll.size(); i++) {
 					LocatedMap<Object, Object> llv = (LocatedMap<Object, Object>) ll.get(i);
-					Element nested = toElement(key, llv, featureElement, doc);
-					featureElement.appendChild(nested);
+					Element nested = toElement(key, llv, element, doc);
+					element.appendChild(nested);
 				}
 			} else {
 				throw new IllegalArgumentException("Cannot transform value " + value);
@@ -219,7 +211,7 @@ public class NewFlexmiYamlParser extends FlexmiXmlParser {
 		return false;
 	}
 
-	// TODO: is this just for debugging?
+	// For debugging only
 	protected String toXml(Document document) {
 		Transformer transformer;
 		try {

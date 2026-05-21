@@ -1,29 +1,29 @@
-- :template:
-  - name: t1
-  - content:
-    - language: EGL
-    - script: |-
+- $type: :template
+  name: t1
+  content:
+    language: EGL
+    script: |-
         [%for (i in 1.to(10)){%]
-        - class:
-          - name: C[%=i%]
+        - $type: class
+          name: C[%=i%]
         [%}%]
 
-- :template:
-  - name: t2
-  - content:
-    - language: EGL
-    - script: |-
-        - class:
-          - name: C[%=11%]
+- $type: :template
+  name: t2
+  content:
+    language: EGL
+    script: |-
+        - $type: class
+          name: C[%=11%]
 
-- :template:
-  - name: t3
-  - parameter:
-    - name: n
-  - content:
-    - language: EGL
-    - script: |-
+- $type: :template
+  name: t3
+  parameter:
+    name: n
+  content:
+    language: EGL
+    script: |-
        [%for (i in 1.to(n.asInteger())){%]
-       - class:
-         - name: C[%=i%]
+       - $type: class
+         name: C[%=i%]
        [%}%]

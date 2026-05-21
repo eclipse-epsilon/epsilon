@@ -13,8 +13,8 @@ import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.util.List;
 
-import org.eclipse.epsilon.egl.EglTemplateFactory;
 import org.eclipse.epsilon.egl.EglModule;
+import org.eclipse.epsilon.egl.EglTemplateFactory;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.flexmi.FlexmiFlavour;
 import org.eclipse.epsilon.flexmi.FlexmiParseException;
@@ -23,7 +23,7 @@ import org.eclipse.epsilon.flexmi.FlexmiResource;
 import org.eclipse.epsilon.flexmi.xml.FlexmiXmlParser;
 import org.eclipse.epsilon.flexmi.xml.Location;
 import org.eclipse.epsilon.flexmi.xml.Xml;
-import org.eclipse.epsilon.flexmi.yaml.FlexmiYamlParser;
+import org.eclipse.epsilon.flexmi.yaml.NewFlexmiYamlParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -60,7 +60,7 @@ public class EglTemplate extends DynamicTemplate {
 				parser = new FlexmiXmlParser();
 			}
 			else {
-				parser = new FlexmiYamlParser();
+				parser = new NewFlexmiYamlParser();
 			}
 			
 			ByteArrayInputStream stream = new ByteArrayInputStream(generated.getBytes());
