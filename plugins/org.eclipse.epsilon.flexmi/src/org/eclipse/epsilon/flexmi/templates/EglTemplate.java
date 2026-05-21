@@ -23,7 +23,7 @@ import org.eclipse.epsilon.flexmi.FlexmiResource;
 import org.eclipse.epsilon.flexmi.xml.FlexmiXmlParser;
 import org.eclipse.epsilon.flexmi.xml.Location;
 import org.eclipse.epsilon.flexmi.xml.Xml;
-import org.eclipse.epsilon.flexmi.yaml.NewFlexmiYamlParser;
+import org.eclipse.epsilon.flexmi.yaml.FlexmiYamlParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -60,7 +60,7 @@ public class EglTemplate extends DynamicTemplate {
 				parser = new FlexmiXmlParser();
 			}
 			else {
-				parser = new NewFlexmiYamlParser();
+				parser = new FlexmiYamlParser();
 			}
 			
 			ByteArrayInputStream stream = new ByteArrayInputStream(generated.getBytes());
