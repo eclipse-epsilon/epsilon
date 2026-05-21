@@ -57,7 +57,7 @@ import org.eclipse.epsilon.flexmi.templates.Template;
 import org.eclipse.epsilon.flexmi.xml.FlexmiXmlParser;
 import org.eclipse.epsilon.flexmi.xml.FlexmiXmlParser.Handler;
 import org.eclipse.epsilon.flexmi.xml.Location;
-import org.eclipse.epsilon.flexmi.yaml.NewFlexmiYamlParser;
+import org.eclipse.epsilon.flexmi.yaml.FlexmiYamlParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -192,7 +192,7 @@ public class FlexmiResource extends ResourceImpl implements Handler {
 			return new FlexmiXmlParser();
 		}
 		else {
-			return new NewFlexmiYamlParser();
+			return new FlexmiYamlParser();
 		}
 	}
 	
