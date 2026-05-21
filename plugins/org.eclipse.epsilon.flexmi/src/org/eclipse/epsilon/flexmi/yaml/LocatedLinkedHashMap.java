@@ -12,6 +12,7 @@ package org.eclipse.epsilon.flexmi.yaml;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.NodeTuple;
 
 /**
@@ -26,6 +27,8 @@ public class LocatedLinkedHashMap<K, V> extends LinkedHashMap<K, V> implements L
 
 	private static final long serialVersionUID = 1L;
 	private Map<K, NodeTuple> keyToNode = new LinkedHashMap<>();
+
+	private MappingNode location;
 
 	public LocatedLinkedHashMap() {
 		super();
@@ -56,6 +59,16 @@ public class LocatedLinkedHashMap<K, V> extends LinkedHashMap<K, V> implements L
 	public V remove(Object o) {
 		keyToNode.remove(o);
 		return super.remove(o);
+	}
+
+	@Override
+	public MappingNode getLocation() {
+		return location;
+	}
+
+	@Override
+	public void setLocation(MappingNode mn) {
+		this.location = mn;
 	}
 
 }

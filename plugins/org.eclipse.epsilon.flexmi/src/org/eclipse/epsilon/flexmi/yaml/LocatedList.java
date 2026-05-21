@@ -12,11 +12,13 @@ package org.eclipse.epsilon.flexmi.yaml;
 import java.util.List;
 
 import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.SequenceNode;
 
 public interface LocatedList<E> extends List<E> {
 
 	Object addWithLocation(Node n, E value);
-
 	Node getLocation(int i);
 
+	SequenceNode getLocation();
+	void setLocation(SequenceNode sn);
 }
