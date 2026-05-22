@@ -47,10 +47,6 @@ import org.yaml.snakeyaml.scanner.ScannerException;
 
 public class FlexmiYamlParser extends FlexmiXmlParser {
 
-	protected static final String UNKNOWN_TYPE_TAG = "__";
-	protected static final String PI_NSURI = "nsuri";
-	protected static final String PI_TYPE = "type";
-
 	public static void main(String[] args) throws Exception {
 		EPackage.Registry.INSTANCE.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 		
@@ -99,46 +95,30 @@ public class FlexmiYamlParser extends FlexmiXmlParser {
 	@SuppressWarnings("unchecked")
 	protected Element toRoot(Object o, org.w3c.dom.Node parent, Document doc) {
 		if (o instanceof LocatedMap) {
-			return toElement(UNKNOWN_TYPE_TAG, (LocatedMap<Object, Object>) o, parent, doc);
-		} else if (isMapList(o)) {
-			return toElement((LocatedList<Object>) o, parent, doc);
+			return toElement("_", (LocatedMap<Object, Object>) o, parent, doc);
 		} else {
-			throw new IllegalArgumentException("Expected either a map or a list of maps");
+			throw new IllegalArgumentException("Expected a map");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Element toElement(String defaultTag, LocatedMap<Object, Object> lm, org.w3c.dom.Node parent, Document doc) {
-		// Do a first pass to find out the element tag
-		String elementName = defaultTag;
-		for (Entry<Object, Object> e : lm.entrySet()) {
-			String key = e.getKey().toString();
-			if (isPIKey(key) && key.substring(1).equalsIgnoreCase(PI_TYPE)) {
-				elementName = e.getValue() + "";
-			}
-		}
-		Element element = createElement(doc, elementName, lm.getLocation());
+	protected Element toElement(String tag, LocatedMap<Object, Object> lm, org.w3c.dom.Node parent, Document doc) {
+		Element element = createElement(doc, tag, lm.getLocation());
 
-		// Do a second pass to populate the element
 		for (Entry<Object, Object> e : lm.entrySet()) {
 			String key = e.getKey() + "";
 			Object value = e.getValue();
 
 			if (isPIKey(key)) {
+				// Keys starting with $ and ? become XML PIs
 				String keyName = key.substring(1);
-				if (PI_NSURI.equalsIgnoreCase(keyName)) {
-					// ?nsuri goes to the parent element
-					ProcessingInstruction pi = doc.createProcessingInstruction(keyName, value + "");
-					parent.appendChild(pi);
-				} else if (!PI_TYPE.equalsIgnoreCase(keyName)) {
-					// Everything else becomes a child of this element
-					ProcessingInstruction pi = doc.createProcessingInstruction(keyName, value + "");
-					element.appendChild(pi);
-				}
+				ProcessingInstruction pi = doc.createProcessingInstruction(keyName, value + "");
+				element.appendChild(pi);
 			} else if (isScalarValue(value)) {
+				// Generate key=value
 				element.setAttribute(key, value + "");
 			} else if (isScalarList(value)) {
-				// Generate <val>x1</val><val>x2</val>...<val>xN</val>
+				// Generate <key>val1</key><key>val2</key>...<key>valN</key>
 				LocatedList<Object> ll = (LocatedList<Object>) value;
 
 				for (int i = 0; i < ll.size(); i++) {
@@ -148,11 +128,12 @@ public class FlexmiYamlParser extends FlexmiXmlParser {
 					element.appendChild(scalarElement);
 				}
 			} else if (isMapValue(value)) {
-				// Generate <element .../>
+				// Generate <key .../>
 				LocatedMap<Object, Object> lmv = (LocatedMap<Object, Object>) value;
 				Element nested = toElement(key, lmv, element, doc);
 				element.appendChild(nested);
 			} else if (isMapList(value)) {
+				// Generate <key .../><key .../>...<key .../>
 				LocatedList<Object> ll = (LocatedList<Object>) value;
 				for (int i = 0; i < ll.size(); i++) {
 					LocatedMap<Object, Object> llv = (LocatedMap<Object, Object>) ll.get(i);
@@ -165,19 +146,6 @@ public class FlexmiYamlParser extends FlexmiXmlParser {
 		}
 
 		return element;
-	}
-
-	@SuppressWarnings("unchecked")
-	protected Element toElement(LocatedList<Object> ll, org.w3c.dom.Node parent, Document doc) {
-		Element anonElement = createElement(doc, "_", ll.getLocation());
-
-		for (Object o : ll) {
-			LocatedMap<Object, Object> lm = (LocatedMap<Object, Object>) o;
-			Element child = toElement(UNKNOWN_TYPE_TAG, lm, anonElement, doc);
-			anonElement.appendChild(child);
-		}
-
-		return anonElement;
 	}
 
 	protected Element createElement(Document document, String tagName, Node yamlNode) {

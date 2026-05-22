@@ -1,6 +1,5 @@
 ?nsuri: http://www.eclipse.org/emf/2002/Ecore
 ?include: imported-egl-templates.flexmi
-$type: _
 package:
   - name: p1
     t1: {}
