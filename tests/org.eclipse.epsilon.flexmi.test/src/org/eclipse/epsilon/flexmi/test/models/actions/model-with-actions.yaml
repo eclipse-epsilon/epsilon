@@ -1,23 +1,23 @@
 $nsuri: http://www.eclipse.org/emf/2002/Ecore
 $eol: operations.eol
 $import: templates.flexmi
-$type: package
-classes:
-  - name: C1
-    :local: c
-    op:
-      :name: "'create'+c.name"
-      :type: "c"
-  - :name: c.name
-  - :name: "c2.name + 'Clone'"
-  - name: C2
-    :global: c2
-  - name: C3
-    :local: c
-    op:
-     :name: "'create'+c.name"
-     :type: c
-  - :name: c4()
-  - $type: c5
-  - $type: c6
+package:
+  class:
+    - name: C1
+      :local: c
+      op:
+        :name: "'create'+c.name"
+        :type: "c"
+    - :name: c.name
+    - :name: "c2.name + 'Clone'"
+    - name: C2
+      :global: c2
+    - name: C3
+      :local: c
+      op:
+       :name: "'create'+c.name"
+       :type: c
+    - :name: c4()
+  c5: {}
+  c6:
     concrete: true

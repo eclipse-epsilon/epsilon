@@ -1,7 +1,0 @@
-- ?nsuri: http://www.eclipse.org/emf/2002/Ecore
-- c1
-- :template:
-  - name: c1
-  - content:
-    - class:
-      - name: C1

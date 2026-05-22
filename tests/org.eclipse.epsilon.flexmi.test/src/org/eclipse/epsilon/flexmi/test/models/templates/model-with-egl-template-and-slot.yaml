@@ -1,5 +1,4 @@
 ?nsuri: http://www.eclipse.org/emf/2002/Ecore
-$type: _
 c1:
   attr:
     name: a1
@@ -8,5 +7,5 @@ c1:
   content:
     language: EGL
     script: |-
-       - $type: class
+       class:
          :slot: {}
