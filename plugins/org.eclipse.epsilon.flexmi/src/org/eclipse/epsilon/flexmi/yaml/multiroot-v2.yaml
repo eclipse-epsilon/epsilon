@@ -1,5 +1,5 @@
-- $nsuri: http://www.eclipse.org/emf/2002/Ecore
-  $type: class
-  name: Sport
-- $type: class
-  supertype: Sport
+$nsuri: http://www.eclipse.org/emf/2002/Ecore
+class:
+  - $type: class
+    name: Sport
+  - supertype: Sport

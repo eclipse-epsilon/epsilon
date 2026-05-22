@@ -1,4 +1,4 @@
 ?nsuri: http://www.eclipse.org/emf/2002/Ecore
 ?import: imported-template.flexmi
-$type: package
-t1: {}
+package:
+  t1: {}
