@@ -13,7 +13,9 @@ import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.parse.AST;
 
 public class StringLiteral extends LiteralExpression<String> {
-		
+	
+	protected boolean doubleQuoted = false;
+	
 	public StringLiteral() {
 		super();
 	}
@@ -25,7 +27,10 @@ public class StringLiteral extends LiteralExpression<String> {
 	@Override
 	public void build(AST cst, IModule module) {
 		super.build(cst, module);
-		value = unescape(cst.getText());
+		String text = cst.getText();
+		doubleQuoted = "\"".equals(text.substring(0, 1));
+		text = text.substring(1, text.length() - 1);
+		value = unescape(text);
 	}
 	
 	public String unescape(String str) {
@@ -86,5 +91,13 @@ public class StringLiteral extends LiteralExpression<String> {
 	
 	public void accept(IEolVisitor visitor) {
 		visitor.visit(this);
+	}
+	
+	public boolean isDoubleQuoted() {
+		return doubleQuoted;
+	}
+	
+	public void setDoubleQuoted(boolean doubleQuoted) {
+		this.doubleQuoted = doubleQuoted;
 	}
 }
