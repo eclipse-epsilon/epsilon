@@ -188,8 +188,12 @@ public class FlexmiResource extends ResourceImpl implements Handler {
 	}
 	
 	public FlexmiParser createParser(BufferedInputStream inputStream) {
-		if (isXml(inputStream)) return new FlexmiXmlParser();
-		else return new FlexmiYamlParser();
+		if (isXml(inputStream)) {
+			return new FlexmiXmlParser();
+		}
+		else {
+			return new FlexmiYamlParser();
+		}
 	}
 	
 	public static boolean isXml(BufferedInputStream inputStream) {
