@@ -47,6 +47,8 @@ import org.yaml.snakeyaml.scanner.ScannerException;
 
 public class FlexmiYamlParser extends FlexmiXmlParser {
 
+	private static final String TYPE_DECLARATION_KEY = "type";
+
 	public static void main(String[] args) throws Exception {
 		EPackage.Registry.INSTANCE.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 		
@@ -110,10 +112,14 @@ public class FlexmiYamlParser extends FlexmiXmlParser {
 			Object value = e.getValue();
 
 			if (isPIKey(key)) {
-				// Keys starting with $ and ? become XML PIs
+				// Keys starting with $ and ? (other than the type declaration) become XML PIs
 				String keyName = key.substring(1);
-				ProcessingInstruction pi = doc.createProcessingInstruction(keyName, value + "");
-				element.appendChild(pi);
+				if (!TYPE_DECLARATION_KEY.equals(keyName)) {
+					ProcessingInstruction pi = doc.createProcessingInstruction(keyName, value + "");
+					element.appendChild(pi);
+				} else {
+					// ignore: $type is used to use a different tag name for an element
+				}
 			} else if (isScalarValue(value)) {
 				// Generate key=value
 				element.setAttribute(key, value + "");
@@ -130,14 +136,16 @@ public class FlexmiYamlParser extends FlexmiXmlParser {
 			} else if (isMapValue(value)) {
 				// Generate <key .../>
 				LocatedMap<Object, Object> lmv = (LocatedMap<Object, Object>) value;
-				Element nested = toElement(key, lmv, element, doc);
+				String childTag = computeTagFromMapPair(key, lmv);
+				Element nested = toElement(childTag, lmv, element, doc);
 				element.appendChild(nested);
 			} else if (isMapList(value)) {
 				// Generate <key .../><key .../>...<key .../>
 				LocatedList<Object> ll = (LocatedList<Object>) value;
 				for (int i = 0; i < ll.size(); i++) {
 					LocatedMap<Object, Object> llv = (LocatedMap<Object, Object>) ll.get(i);
-					Element nested = toElement(key, llv, element, doc);
+					String childTag = computeTagFromMapPair(key, llv);
+					Element nested = toElement(childTag, llv, element, doc);
 					element.appendChild(nested);
 				}
 			} else {
@@ -146,6 +154,14 @@ public class FlexmiYamlParser extends FlexmiXmlParser {
 		}
 
 		return element;
+	}
+
+	protected String computeTagFromMapPair(String key, Map<Object, Object> value) {
+		Object typeDecl = value.get("$" + TYPE_DECLARATION_KEY);
+		if (typeDecl == null) {
+			typeDecl = value.get("?" + TYPE_DECLARATION_KEY);
+		}
+		return typeDecl != null ? typeDecl + "" : key;
 	}
 
 	protected Element createElement(Document document, String tagName, Node yamlNode) {
