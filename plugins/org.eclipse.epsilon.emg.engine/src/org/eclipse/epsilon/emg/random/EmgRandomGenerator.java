@@ -288,6 +288,12 @@ public class EmgRandomGenerator implements IEmgRandomGenerator<IEmgRandomGenerat
 	@Override
 	public Object nextFromCollection(Collection<?> c) {
 
+		if (c.isEmpty()) {
+			throw new IllegalArgumentException("Cannot select from an empty collection");
+		}
+		if (c.size() == 1) {
+			return c.iterator().next();
+		}
 		int upper = c.size() - 1;
 		int index = 0;
 		try {
