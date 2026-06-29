@@ -45,6 +45,10 @@ public class SimulinkBlock extends SimulinkElement {
 	 * @throws EolRuntimeException
 	 */
 
+	public SimulinkBlock(SimulinkModel model, MatlabEngine engine, String type, String destPath) throws MatlabRuntimeException {
+		super(model, engine, type, destPath);
+	}
+	
 	public SimulinkBlock(SimulinkModel model, MatlabEngine engine, Double handle) throws MatlabRuntimeException {
 		super(model, engine, handle);
 	}

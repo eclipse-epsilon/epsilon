@@ -32,6 +32,34 @@ public abstract class SimulinkElement extends SimulinkModelElement {
 	protected static final String GET_HANDLE_PROPERTY = "get_param(handle, '?');";
 
 	protected Double handle = null;
+	
+	// Used when creating a new block on a given path
+	public SimulinkElement(SimulinkModel model, MatlabEngine engine, String type, String destPath) throws MatlabRuntimeException {
+		super(model, engine);
+		try {
+			String parentSysPath;
+			
+			// If the path to the parent (sub)system is not provided, create the block
+			// at the top level of the Simulink model. This should be consistent with
+			// the behaviour exhibited when re-parenting blocks
+			if (destPath != null && !destPath.isEmpty()) {
+				parentSysPath = destPath;
+			} else {
+				parentSysPath = model.getSimulinkModelName();
+			}
+			
+			this.handle = (Double) engine.evalWithResult(ADD_BLOCK_MAKE_NAME_UNIQUE_ON, type,
+					parentSysPath + "/" + SimulinkUtil.getSimpleTypeName(type));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new MatlabRuntimeException("Unable to create block element");
+		}
+		try {
+			setType();
+		} catch (MatlabException e) {
+			throw new MatlabRuntimeException("Unable to set up the type");
+		}
+	}
 
 	// Used when creating blocks
 	public SimulinkElement(SimulinkModel model, MatlabEngine engine, String type) throws MatlabRuntimeException {

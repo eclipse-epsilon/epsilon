@@ -240,6 +240,13 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 			} catch (EolRuntimeException e) {
 				throw new EolModelElementTypeNotFoundException(type, null, e.getMessage());
 			}
+		} else if (type.contains("/") && parameters.size() == 1) {
+			Object parentPath = parameters.toArray()[0];
+			try {
+				return new SimulinkBlock(this, engine, type, (String) parentPath);
+			} catch (MatlabRuntimeException e) {
+				throw new EolNotInstantiableModelElementTypeException(getSimulinkModelName(), type);
+			}
 		}
 		throw new EolModelElementTypeNotFoundException(type, null);
 	}
