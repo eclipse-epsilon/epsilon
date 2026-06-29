@@ -10,7 +10,14 @@
 package org.eclipse.epsilon.flexmi.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.epsilon.flexmi.FlexmiResource;
 import org.junit.Test;
 
 public class StandaloneTests extends FlexmiTests {
@@ -54,5 +61,34 @@ public class StandaloneTests extends FlexmiTests {
 	public void testNameAsElement() throws Exception {
 		assertEval("EPackage.all.first().name", "p1", "standalone/name-as-element.flexmi");
 	}
-	
+
+	@Test
+	public void testMixedFeature() throws Exception {
+		FlexmiResource res = loadResource("standalone/mixed-features.flexmi");
+		EClass cls = (EClass) res.getContents().get(0);
+		checkForMixedFeatures(cls);
+	}
+
+	@Test
+	public void testMixedFeatureYAML() throws Exception {
+		FlexmiResource res = loadResource("standalone/mixed-features.yaml");
+		EClass cls = (EClass) res.getContents().get(0);
+		checkForMixedFeatures(cls);
+	}
+
+	protected void checkForMixedFeatures(EClass cls) {
+		EList<EStructuralFeature> features = cls.getEStructuralFeatures();
+
+		assertEquals("r1", features.get(0).getName());
+		assertTrue("First feature is an EReference",
+			features.get(0) instanceof EReference);
+
+		assertEquals("a1", features.get(1).getName());
+		assertTrue("Second feature is an EAttribute",
+			features.get(1) instanceof EAttribute);
+
+		assertEquals("r2", features.get(2).getName());
+		assertTrue("Third feature is an EReference",
+			features.get(2) instanceof EReference);
+	}
 }
