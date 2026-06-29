@@ -22,7 +22,12 @@ public class StandaloneTests extends FlexmiTests {
 	
 	@Test
 	public void testUnresolvedReferenceWarning() throws Exception {
-		assertEquals(loadResource("standalone/unresolved-reference.flexmi").getWarnings().size(), 1);
+		assertEquals(1, loadResource("standalone/unresolved-reference.flexmi").getWarnings().size());
+	}
+
+	@Test
+	public void testUnresolvedReferenceYAMLWarning() throws Exception {
+		assertEquals(1, loadResource("standalone/unresolved-reference.yaml").getWarnings().size());
 	}
 	
 	@Test
