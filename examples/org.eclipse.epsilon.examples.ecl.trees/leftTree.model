@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Tree:Tree xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Tree="Tree" xmi:id="_Ej7hUHVqEfGYM-zfMJNU2w" label="T11">
+  <children xmi:id="_GPN-cHVqEfGYM-zfMJNU2w" label="T21">
+    <children xmi:id="_Ij9BMHVqEfGYM-zfMJNU2w" label="T31">
+      <children xmi:id="_LC03YHVqEfGYM-zfMJNU2w" label="T41"/>
+      <children xmi:id="_MGsIIHVqEfGYM-zfMJNU2w" label="T42"/>
+    </children>
+    <children xmi:id="_J-oPcHVqEfGYM-zfMJNU2w" label="T32"/>
+  </children>
+  <children xmi:id="_GlXNkHVqEfGYM-zfMJNU2w" label="T22"/>
+</Tree:Tree>
