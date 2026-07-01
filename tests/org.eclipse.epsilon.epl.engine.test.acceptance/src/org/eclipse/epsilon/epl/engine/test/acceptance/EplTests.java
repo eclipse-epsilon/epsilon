@@ -27,6 +27,7 @@ import org.eclipse.epsilon.common.concurrent.ConcurrencyUtils;
 import org.eclipse.epsilon.common.util.FileUtil;
 import org.eclipse.epsilon.emc.plainxml.PlainXmlModel;
 import org.eclipse.epsilon.eol.exceptions.EolInternalException;
+import org.eclipse.epsilon.eol.exceptions.EolUndefinedVariableException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelElementTypeNotFoundException;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 import org.eclipse.epsilon.eol.models.IModel;
@@ -197,6 +198,11 @@ public class EplTests {
 	@Test(expected = EolInternalException.class)
 	public void testInfiniteLoop() throws Exception {
 		testRepeatWhileMatches("pattern P t : t_tree { onmatch { counter.increment(); } }", -1, 0);
+	}
+	
+	@Test(expected = EolUndefinedVariableException.class)
+	public void testVariableLeackage() throws Exception {
+		testRepeatWhileMatches("pattern P1 t1 : t_tree { } pattern P2 t2 : t_tree { onmatch { t1; } } }", 1, 1);
 	}
 	
 	@Test

@@ -222,11 +222,14 @@ public abstract class AbstractEplModule extends ErlModule implements IEplModule 
 	@Override
 	public Collection<PatternMatch> match(Pattern pattern) throws EolRuntimeException {
 		Collection<PatternMatch> patternMatches = new LinkedList<>();
+		context.getFrameStack().enterLocal(FrameType.PROTECTED, pattern);
 		for (
 			Iterator<? extends Collection<? extends Iterable<?>>> candidates = getCandidates(pattern);
 			candidates.hasNext();
 			matchCombination(candidates.next(), pattern).ifPresent(patternMatches::add)
 		);
+		
+		context.getFrameStack().leaveLocal(pattern);
 		return patternMatches;
 	}
 	
