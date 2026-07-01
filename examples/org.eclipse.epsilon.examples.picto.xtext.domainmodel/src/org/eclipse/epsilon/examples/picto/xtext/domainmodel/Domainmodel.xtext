@@ -29,6 +29,7 @@ DataType:
  
 Entity:
     'entity' name=ID ('extends' superType=[Entity|QualifiedName])? '{'
+        (doc=STRING)?
         (features+=Feature)*
     '}';
  
