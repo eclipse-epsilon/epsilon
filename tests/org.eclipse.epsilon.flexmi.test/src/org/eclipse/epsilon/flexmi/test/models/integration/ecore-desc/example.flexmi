@@ -1,0 +1,5 @@
+<?nsuri http://eclipse.org/epsilon/flexmi/classdesc/1.0?>
+<?import http://www.eclipse.org/emf/2002/Ecore?>
+<model>
+  <classdesc eClass="//EClass" desc="This is an EClass."/>
+</model>

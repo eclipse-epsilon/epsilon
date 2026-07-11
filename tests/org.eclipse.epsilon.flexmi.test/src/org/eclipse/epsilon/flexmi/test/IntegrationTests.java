@@ -17,5 +17,10 @@ public class IntegrationTests extends FlexmiTests {
 	public void testSpeedMonitor() throws Exception {
 		assertNoWarnings("integration/speed-monitor/speed-monitor.flexmi", "integration/speed-monitor/comps.ecore");
 	}
-	
+
+	@Test
+	public void testClassDesc() throws Exception {
+		assertNoWarnings("integration/ecore-desc/example.flexmi", "integration/ecore-desc/ecoredesc.ecore");
+	}
+
 }
