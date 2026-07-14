@@ -81,7 +81,7 @@ public class SimulinkBlock extends SimulinkElement {
 			engine.eval(HANDLE_DELETE_BLOCK_HANDLE, handle);
 			handle = newHandle;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			throw new RuntimeException(ex);
 		}
 	}
 
