@@ -13,6 +13,19 @@ assert(BusCreator.all.size() = 1);
 var scope = new `simulink/Sinks/Scope`;
 assert(Scope.all.size() = 1);
 
+// Test creating a new block within an existing subsystem
+var subsys = new `simulink/Ports & Subsystems/Subsystem`;
+subsys.name = "TestSubsystem";
+var childSubsys = new `simulink/Ports & Subsystems/Subsystem`(subsys.path);
+assert(childSubsys.parent.path == subsys.path);
+
+// Test creating a new block on an empty path (this is expected
+// to create the block at the top level of the model)
+var blockAtTopLevel = new `simulink/Commonly Used Blocks/In1`(null);
+var anotherBlockAtTopLevel = new `simulink/Commonly Used Blocks/Out1`("");
+assert(blockAtTopLevel.parent == null);
+assert(anotherBlockAtTopLevel.parent == null);
+
 sineWave.position = "[100 100 130 130]";
 assert(sineWave.position.at(0) = 100);
 assert(sineWave.position.at(1) = 100);
