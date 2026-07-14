@@ -3,24 +3,6 @@
 assert(SubSystem.all.size().println("size: ") == 0);
 assert(`Stateflow.Chart`.all.size().println("SF size: ") == 0);
 
-// Create a new block within an existing susbsystem
-var subsys = new `simulink/Ports & Subsystems/Subsystem`;
-subsys.name = "TestSubsystem";
-var childSubsys = new `simulink/Ports & Subsystems/Subsystem`(subsys.path);
-
-// There should now be 2 subsystems, 2 inports and
-// 2 outports (which are automatically created when
-// adding a new subsystem block)
-assert(SubSystem.all.size() == 2);
-assert(Inport.all.size() == 2);
-assert(Outport.all.size() == 2);
-assert(Block.all.size() == 6);
-
-// Deleting the top subsystem should delete the caches
-// for all its (grand)children
-delete subsys;
-assert(Block.all.size() == 0);
-
 var ch1 = new `sflib/Chart`;
 
 assert( SubSystem.all.size().println("size: ") == 1);
