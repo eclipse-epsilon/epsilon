@@ -197,9 +197,8 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 			if (((ISimulinkModelElement) o).getType().equals("SubSystem")) {
 				try {
 					removeSimulinkSubsystemFromCaches((SimulinkBlock) o);
-				} catch (EolModelElementTypeNotFoundException | MatlabException e) {
-					System.err.println("Caches might not have been updated correctly for deleted blocks.");
-					e.printStackTrace();
+				} catch (MatlabException e) {
+					throw new MatlabRuntimeException(e);
 				}
 			} else {
 				removeFromCache((ISimulinkModelElement) o);
@@ -242,9 +241,7 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 					}
 				}
 			} catch (MatlabException e) {
-				System.err.println("Newly created Simulink blocks migth not have been added to caches.");
-				e.printStackTrace();
-			}
+				throw new RuntimeException(e);			}
 		}
 		return instance;
 	}
