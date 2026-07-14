@@ -1,0 +1,12 @@
+// Test creating a new block within an existing subsystem
+var subsys = new `simulink/Ports & Subsystems/Subsystem`;
+subsys.name = "TestSubsystem";
+var childSubsys = new `simulink/Ports & Subsystems/Subsystem`(subsys.path);
+assert(childSubsys.parent.path == subsys.path);
+
+// Test creating a new block on an empty path (this is expected
+// to create the block at the top level of the model)
+var blockAtTopLevel = new `simulink/Commonly Used Blocks/In1`(null);
+var anotherBlockAtTopLevel = new `simulink/Commonly Used Blocks/Out1`("");
+assert(blockAtTopLevel.parent == null);
+assert(anotherBlockAtTopLevel.parent == null);
