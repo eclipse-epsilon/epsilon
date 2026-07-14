@@ -11,6 +11,22 @@ assert(Inport.all.size() == 2);
 assert(Outport.all.size() == 2);
 assert(Block.all.size() == 6);
 
+// Create another subsystem and add it to the root
+var child2Subsys = new `simulink/Ports & Subsystems/Subsystem`();
+child2Subsys.parent = subsys;
+
+// There should still be 3 subsystems, 3 inports and 3 outports
+assert(SubSystem.all.size() == 3);
+assert(Inport.all.size() == 3);
+assert(Outport.all.size() == 3);
+assert(Block.all.size() == 9);
+
+delete child2Subsys;
+assert(SubSystem.all.size() == 2);
+assert(Inport.all.size() == 2);
+assert(Outport.all.size() == 2);
+assert(Block.all.size() == 6);
+
 // Deleting the top subsystem should delete the caches
 // for all its (grand)children
 delete subsys;
