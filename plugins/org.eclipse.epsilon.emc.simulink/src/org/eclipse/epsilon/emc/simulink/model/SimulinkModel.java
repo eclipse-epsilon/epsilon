@@ -164,6 +164,11 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 	@Override
 	protected void addToCache(String type, ISimulinkModelElement instance) throws EolModelElementTypeNotFoundException {
 		assert kindCache != null;
+		assert typeCache != null;
+		
+		Object typeCacheKey = getCacheKeyForType(type);
+		typeCache.putIfPresent(typeCacheKey, instance);
+		
 		for (String kind : getAllTypeNamesOf(instance)) {
 			Object kindCacheKey = getCacheKeyForType(kind);
 			kindCache.putIfPresent(kindCacheKey, instance);
@@ -173,6 +178,11 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 	@Override
 	protected void removeFromCache(ISimulinkModelElement instance) throws EolModelElementTypeNotFoundException {
 		assert kindCache != null;
+		assert typeCache != null;
+		
+		final Object typeCacheKey = getCacheKeyForType(getTypeNameOf(instance));
+		typeCache.remove(typeCacheKey, instance);
+		
 		for (String kind : getAllTypeNamesOf(instance)) {
 			final Object kindCacheKey = getCacheKeyForType(kind);
 			kindCache.remove(kindCacheKey, instance);
@@ -180,10 +190,19 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 	}
 
 	@Override
-	public void deleteElement(Object o) throws EolRuntimeException {
-		deleteElementInModel(o);
+	public void deleteElement(Object o) throws EolRuntimeException {		
 		if (isCachingEnabled() && o instanceof ISimulinkModelElement) {
-			removeFromCache((ISimulinkModelElement) o);
+			// Subsystems may contain child blocks that also require to
+			// be removed from the caches
+			if (((ISimulinkModelElement) o).getType().equals("SubSystem")) {
+				try {
+					removeSimulinkSubsystemFromCaches((SimulinkBlock) o);
+				} catch (MatlabException e) {
+					throw new MatlabRuntimeException(e);
+				}
+			} else {
+				removeFromCache((ISimulinkModelElement) o);
+			}
 			String type = ((ISimulinkModelElement) o).getType();
 			for (List<String> specialType : deleteBlockMap) {
 				if (specialType.contains(type)) {
@@ -195,6 +214,11 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 				}
 			}
 		}
+		// The caches are stored as mappings to Simulink collections, which rely on
+		// the handle of a block to resolve and manage the elements of the collection,
+		// hence the deletion of the block from the Simulink model must happen AFTER
+		// the caches are updated
+		deleteElementInModel(o);
 	}
 
 	@Override
@@ -202,12 +226,22 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 			throws EolModelElementTypeNotFoundException, EolNotInstantiableModelElementTypeException {
 		ISimulinkModelElement instance = createInstanceInModel(type);
 		if (isCachingEnabled()) {
-			addToCache(instance.getType(), instance);
-			if (createBlockMap.containsKey(type)) {
-				for (String equivalent : createBlockMap.get(type)) {
-					kindCache.replaceValues(equivalent, getAllOfTypeFromModel(equivalent)); // refresh for type
+			try {
+				// When instantiating Subsystem blocks, these may create other blocks
+				// (e.g., inports and outports) as their children, which would need to
+				// be added to the caches as well
+				if (instance.getType().equals("SubSystem")) {
+					addSimulinkSubsystemToCaches((SimulinkBlock) instance);
+				} else {
+					addToCache(instance.getType(), instance);
 				}
-			}
+				if (createBlockMap.containsKey(type)) {
+					for (String equivalent : createBlockMap.get(type)) {
+						kindCache.replaceValues(equivalent, getAllOfTypeFromModel(equivalent)); // refresh for type
+					}
+				}
+			} catch (MatlabException e) {
+				throw new RuntimeException(e);			}
 		}
 		return instance;
 	}
@@ -215,39 +249,49 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 	@Override
 	public Object createInstance(String type, Collection<Object> parameters)
 			throws EolModelElementTypeNotFoundException, EolNotInstantiableModelElementTypeException {
-		if (type.startsWith(STATEFLOW) && parameters.size() == 1) {
-			Object parentObject = parameters.toArray()[0];
-			try {
+		try {
+			if (type.startsWith(STATEFLOW) && parameters.size() == 1) {
+				Object parentObject = parameters.toArray()[0];
 				if (parentObject instanceof StateflowBlock) {
-					try {
-						StateflowBlock instance = new StateflowBlock(this, engine, type, (StateflowBlock) parentObject);
-						if (isCachingEnabled()) {
-							addToCache(instance.getType(), instance);
-							if (createBlockMap.containsKey(type)) {
-								for (String equivalent : createBlockMap.get(type)) {
-									kindCache.replaceValues(equivalent, getAllOfTypeFromModel(equivalent)); // refresh
-																											// for type
-								}
+					StateflowBlock instance = new StateflowBlock(this, engine, type, (StateflowBlock) parentObject);
+					if (isCachingEnabled()) {
+						addToCache(instance.getType(), instance);
+						if (createBlockMap.containsKey(type)) {
+							for (String equivalent : createBlockMap.get(type)) {
+								kindCache.replaceValues(equivalent, getAllOfTypeFromModel(equivalent)); // refresh
+																										// for type
 							}
 						}
-						return instance;
-					} catch (MatlabException e) {
-						throw new EolModelElementTypeNotFoundException(type, null, e.getMessage());
 					}
+					return instance;
 				} else {
 					throw new EolModelElementTypeNotFoundException(type, null, "invalid parameters");
 				}
-			} catch (EolRuntimeException e) {
-				throw new EolModelElementTypeNotFoundException(type, null, e.getMessage());
+			} else if (type.contains("/") && parameters.size() == 1) {
+				Object parentPath = parameters.toArray()[0];
+				ISimulinkModelElement instance = new SimulinkBlock(this, engine, type, (String) parentPath);
+				if (isCachingEnabled()) {	
+					// When instantiating Subsystem blocks, these may create other blocks
+					// (e.g., inports and outports) as their children, which would need to
+					// be added to the caches as well
+					if (instance.getType().equals("SubSystem")) {
+						addSimulinkSubsystemToCaches((SimulinkBlock) instance);
+					} else {
+						addToCache(instance.getType(), instance);
+					}
+					if (createBlockMap.containsKey(type)) {
+						for (String equivalent : createBlockMap.get(type)) {
+							kindCache.replaceValues(equivalent, getAllOfTypeFromModel(equivalent)); // refresh for type
+						}
+					}
+				}
+				return instance;
 			}
-		} else if (type.contains("/") && parameters.size() == 1) {
-			Object parentPath = parameters.toArray()[0];
-			try {
-				return new SimulinkBlock(this, engine, type, (String) parentPath);
-			} catch (MatlabRuntimeException e) {
-				throw new EolNotInstantiableModelElementTypeException(getSimulinkModelName(), type);
-			}
-		}
+		} catch (MatlabRuntimeException e) {
+			throw new EolNotInstantiableModelElementTypeException(getSimulinkModelName(), type);
+		} catch (EolRuntimeException | MatlabException e) {
+			throw new EolModelElementTypeNotFoundException(type, null, e.getMessage());
+		} 
 		throw new EolModelElementTypeNotFoundException(type, null);
 	}
 
@@ -267,6 +311,44 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 	@Override
 	protected Collection<ISimulinkModelElement> allContentsFromModel() {
 		return TypeHelper.getAll(this);
+	}
+	
+	@Override
+	protected Collection<ISimulinkModelElement> getAllOfKindOrType(boolean isKind, String modelElementType) throws EolModelElementTypeNotFoundException {
+		Collection<ISimulinkModelElement> values = null;
+		
+		// The code below is to prevent duplicate calls to getAllOf*FromModel.
+		// With multiple threads there could be a race condition, so the
+		// intent is to block the threads until the cache has been populated
+		// by a single thread, and the others can just pick up from the cache
+		// rather than recalculating.
+		
+		// As caching is not currently supported for Simulink ports and lines, we
+		// always want to retrieve them from the model
+		if (isCachingEnabled()
+				&& (modelElementType.equals(Kind.BLOCK.getKind()) || Kind.BLOCK.equals(TypeHelper.getKind(modelElementType)))) {
+			final Multimap<Object, ISimulinkModelElement> cache = isKind ? kindCache : typeCache;
+			final Object key = getCacheKeyForType(modelElementType);
+			
+			if ((values = cache.getMutable(key)) == null) synchronized (this) {
+				// Could've changed while we were waiting on the lock
+				if (!isConcurrent() || (values = cache.getMutable(key)) == null) {
+					values = wrap(isKind ?
+						getAllOfKindFromModel(modelElementType) :
+						getAllOfTypeFromModel(modelElementType)
+					);
+					cache.putAll(key, values, values == null);
+				}
+			}
+		}
+		else if (values == null) {
+			values = wrap(isKind ?
+				getAllOfKindFromModel(modelElementType) :
+				getAllOfTypeFromModel(modelElementType)
+			);
+		}
+		
+		return wrapUnmodifiable(values);
 	}
 
 	@Override
@@ -477,6 +559,76 @@ public class SimulinkModel extends AbstractSimulinkModel implements IOperationCo
 
 	public Collection<ISimulinkModelElement> findBlocks(Integer depth) throws MatlabException {
 		return SimulinkUtil.findBlocks(this, depth);
+	}
+
+	/**
+	 * Updates the caches for a Simulink block when this is replaced by a
+	 * new block. This needs to be called after the new block is created
+	 * and before the old block is deleted to ensure the blocks can be
+	 * resolved in the caches.
+	 * 
+	 * @param oldHandle handle of the old block
+	 * @param newHandle handle of the new block
+	 * @throws EolModelElementTypeNotFoundException
+	 * @throws MatlabRuntimeException
+	 * @throws MatlabException 
+	 */
+	public void updateCaches(Double oldHandle, Double newHandle) throws EolModelElementTypeNotFoundException, MatlabRuntimeException, MatlabException {
+		if(isCachingEnabled()) {
+			SimulinkBlock oldBlock = new SimulinkBlock(this, this.engine, oldHandle);
+			if (oldBlock.getType().equals("SubSystem")) {
+				removeSimulinkSubsystemFromCaches(oldBlock);
+			} else {
+				removeFromCache(oldBlock);
+			}
+				
+			SimulinkBlock newBlock = new SimulinkBlock(this, this.engine, newHandle);
+			if (newBlock.getType().equals("SubSystem")) {
+				addSimulinkSubsystemToCaches(newBlock);
+			} else {
+				addToCache(newBlock.getType(), newBlock);
+			}
+		}
+	}
+	
+	/**
+	 * Adds a Subsystem block and all its child blocks to the caches.
+	 * 
+	 * @param subSystem the Subsystem block to be cached
+	 * @throws EolModelElementTypeNotFoundException
+	 * @throws MatlabException if the block could not be queried for its children
+	 */
+	private void addSimulinkSubsystemToCaches(SimulinkBlock subSystem) throws EolModelElementTypeNotFoundException, MatlabException {
+		for (ISimulinkModelElement child : subSystem.getChildren()) {
+			if (!child.equals(subSystem)) {
+				if (child.getType().equals("SubSystem")) {
+					addSimulinkSubsystemToCaches((SimulinkBlock) child);
+				} else {
+					addToCache(child.getType(), child);
+				}
+			}
+		}
+		addToCache(subSystem.getType(), subSystem);
+	}
+	
+	/**
+	 * Removes a Subsystem block and all its child blocks from the caches.
+	 * 
+	 * @param subSystem the Subsystem block to be removed form caches
+	 * @throws EolModelElementTypeNotFoundException
+	 * @throws MatlabException if the block could not be queried for its children
+	 */
+	private void removeSimulinkSubsystemFromCaches(SimulinkBlock subSystem) throws EolModelElementTypeNotFoundException, MatlabException {
+		for (ISimulinkModelElement child : subSystem.getChildren()) {
+			if (!child.equals(subSystem)) {
+				if (child.getType().equals("SubSystem")) {
+					removeSimulinkSubsystemFromCaches((SimulinkBlock) child);
+				} else {
+					removeFromCache(child);
+				}
+			}
+		}
+		removeFromCache(subSystem);
 	}
 
 }

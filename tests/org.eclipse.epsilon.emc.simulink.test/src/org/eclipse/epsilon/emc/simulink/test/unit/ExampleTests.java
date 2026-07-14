@@ -63,6 +63,12 @@ public class ExampleTests extends AbstractSimulinkTest {
 		activeCache = true;
 		eolResourceFile = ROOT + "caching.eol";
 	}
+	
+	@Test
+	public void testCachingSubsystems() {
+		activeCache = true;
+		eolResourceFile = ROOT + "cachingSubsystems.eol";
+	}
 
 	@Test
 	public void testParent() {
