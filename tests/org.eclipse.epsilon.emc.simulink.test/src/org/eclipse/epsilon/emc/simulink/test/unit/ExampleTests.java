@@ -39,7 +39,7 @@ public class ExampleTests extends AbstractSimulinkTest {
 	}
 	
 	@Test
-	public void testCreateBlocksWithPath() {
+	public void testCreateBlocksWithPaths() {
 		eolResourceFile = ROOT + "createBlocksWithPaths.eol";
 	}
 	
