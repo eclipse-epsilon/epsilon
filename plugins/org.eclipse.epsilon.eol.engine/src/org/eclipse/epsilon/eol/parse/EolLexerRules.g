@@ -65,7 +65,6 @@ BOOLEAN
 	
 STRING
     :   ('\'' ( EscapeSequence | ~('\''|'\\') )* '\'' | '"' ( EscapeSequence | ~('\\'|'"') )* '"')
-    {setText($text.substring(1,$text.length() - 1));}
     ;
 
 StrangeNameLiteral

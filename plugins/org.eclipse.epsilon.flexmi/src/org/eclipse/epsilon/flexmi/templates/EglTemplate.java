@@ -13,8 +13,8 @@ import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.util.List;
 
-import org.eclipse.epsilon.egl.EglTemplateFactory;
 import org.eclipse.epsilon.egl.EglModule;
+import org.eclipse.epsilon.egl.EglTemplateFactory;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.flexmi.FlexmiFlavour;
 import org.eclipse.epsilon.flexmi.FlexmiParseException;

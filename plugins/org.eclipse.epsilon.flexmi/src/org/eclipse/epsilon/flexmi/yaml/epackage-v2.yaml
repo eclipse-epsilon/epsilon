@@ -1,0 +1,7 @@
+$nsuri: http://www.eclipse.org/emf/2002/Ecore
+package:
+  name: myPackage
+  classes:
+    - name: Sport
+    - name: Basketball
+      supertype: Sport

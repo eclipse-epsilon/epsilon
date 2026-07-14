@@ -527,7 +527,8 @@ public class EolUnparser implements IEolVisitor {
 	
 	@Override
 	public void visit(StringLiteral stringLiteral) {
-		buffer.append("\"" + escape(stringLiteral.getValue()) + "\"");
+		String quote = stringLiteral.isDoubleQuoted() ? "\"" : "'";
+		buffer.append(quote + escape(stringLiteral.getValue()) + quote);
 	}
 	
 	public static String escape(String s) {

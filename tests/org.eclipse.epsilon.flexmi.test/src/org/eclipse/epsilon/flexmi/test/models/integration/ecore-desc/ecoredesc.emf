@@ -1,0 +1,11 @@
+@namespace(uri="http://eclipse.org/epsilon/flexmi/classdesc/1.0", prefix="cd")
+package classdesc;
+
+class Model {
+	val ClassDesc[*] classDesc;
+}
+
+class ClassDesc {
+	ref EClass eClass;
+	attr String description;
+}

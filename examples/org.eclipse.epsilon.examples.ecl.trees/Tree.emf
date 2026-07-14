@@ -1,0 +1,8 @@
+@namespace(uri="Tree", prefix="Tree")
+package Tree;
+
+class Tree {
+   val Tree[*]#parent children;
+   ref Tree#children parent;
+   attr String label;
+}

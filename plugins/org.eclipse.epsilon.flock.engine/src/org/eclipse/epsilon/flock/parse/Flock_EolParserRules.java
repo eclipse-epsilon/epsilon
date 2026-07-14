@@ -1,6 +1,6 @@
 package org.eclipse.epsilon.flock.parse;
 
-// $ANTLR 3.1b1 EolParserRules.g 2025-03-21 07:19:04
+// $ANTLR 3.1b1 EolParserRules.g 2026-05-30 22:06:53
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -1308,7 +1308,7 @@ public class Flock_EolParserRules extends org.eclipse.epsilon.common.parse.Epsil
 
 
             // AST REWRITE
-            // elements: typeName, NAME
+            // elements: NAME, typeName
             // token labels: 
             // rule labels: retval
             // token list labels: 

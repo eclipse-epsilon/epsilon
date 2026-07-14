@@ -1,7 +1,3 @@
-- ?nsuri: http://www.eclipse.org/emf/2002/Ecore
-
-- ?include: imported-template.yaml
-
-- package:
-    - name: p1 #FIXME: required to avoid "t1" being parsed as "package" text
-    - t1
+$nsuri: http://www.eclipse.org/emf/2002/Ecore
+$include: imported-template.yaml
+package: {t1: {}}

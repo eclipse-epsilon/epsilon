@@ -1,29 +1,27 @@
-- :template:
+:template:
   - name: t1
-  - content:
-    - language: EGL
-    - script: |-
-        [%for (i in 1.to(10)){%]
-        - class:
-          - name: C[%=i%]
-        [%}%]
+    content:
+      language: EGL
+      script: |-
+          class:
+          [%for (i in 1.to(10)){%]
+            - name: C[%=i%]
+          [%}%]
 
-- :template:
   - name: t2
-  - content:
-    - language: EGL
-    - script: |-
-        - class:
-          - name: C[%=11%]
+    content:
+      language: EGL
+      script: |-
+          class:
+            - name: C[%=11%]
 
-- :template:
   - name: t3
-  - parameter:
-    - name: n
-  - content:
-    - language: EGL
-    - script: |-
-       [%for (i in 1.to(n.asInteger())){%]
-       - class:
-         - name: C[%=i%]
-       [%}%]
+    parameter:
+      name: n
+    content:
+      language: EGL
+      script: |-
+         class:
+         [%for (i in 1.to(n.asInteger())){%]
+           - name: C[%=i%]
+         [%}%]

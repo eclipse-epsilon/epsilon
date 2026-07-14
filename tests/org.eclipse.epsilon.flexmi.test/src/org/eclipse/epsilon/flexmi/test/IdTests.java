@@ -36,4 +36,10 @@ public class IdTests extends FlexmiTests {
 		assertEval("EClass.all.get(2).eSuperTypes.first().eContainer().name", "p2", "standalone/valid-model-with-fully-qualified-ids.flexmi");
 	}
 	
+	@Test
+	public void testPartlyQualifiedIds() throws Exception {
+		assertEval("EClass.all.get(1).eSuperTypes.first().eContainer().name", "p1", "standalone/valid-model-with-partly-qualified-ids.flexmi");
+		assertEval("EClass.all.get(2).eSuperTypes.first().eContainer().name", "p2", "standalone/valid-model-with-partly-qualified-ids.flexmi");
+	}
+	
 }

@@ -188,8 +188,12 @@ public class FlexmiResource extends ResourceImpl implements Handler {
 	}
 	
 	public FlexmiParser createParser(BufferedInputStream inputStream) {
-		if (isXml(inputStream)) return new FlexmiXmlParser();
-		else return new FlexmiYamlParser();
+		if (isXml(inputStream)) {
+			return new FlexmiXmlParser();
+		}
+		else {
+			return new FlexmiYamlParser();
+		}
 	}
 	
 	public static boolean isXml(BufferedInputStream inputStream) {
@@ -216,9 +220,19 @@ public class FlexmiResource extends ResourceImpl implements Handler {
 		if (getIntrinsicIDToEObjectMap().containsKey(uriFragment)) {
 			return getIntrinsicIDToEObjectMap().get(uriFragment);
 		}
-		else if (fullyQualifiedIDs.containsKey(uriFragment)) {
-			// prevents a full model sweep
-			return fullyQualifiedIDs.get(uriFragment);
+		else if (uriFragment.contains(".")) { // Fully or partly-qualified path
+			String id = uriFragment.substring(uriFragment.lastIndexOf('.') + 1, uriFragment.length());
+			if (getIntrinsicIDToEObjectMap().containsKey(id)) {
+				if (fullyQualifiedIDs.containsKey(uriFragment)) { // Fully-qualified path
+					// prevents a full model sweep
+					return fullyQualifiedIDs.get(uriFragment);
+				}
+				else { // Partly-qualified path
+					for (String key : fullyQualifiedIDs.keySet()) {
+						if (key.endsWith(uriFragment)) return fullyQualifiedIDs.get(key);
+					}	
+				}
+			}
 		}
 		return super.getEObject(uriFragment);
 	}
@@ -535,19 +549,36 @@ public class FlexmiResource extends ResourceImpl implements Handler {
 	}
 	
 	protected boolean resolveReference(UnresolvedReference unresolvedReference) {
-		EObject candidate = getEObject(unresolvedReference.getValue());
-		if (!unresolvedReference.resolve(candidate)) {
-			for (Resource resource : getResourceSet().getResources()) {
-				if (resource != this) {
-					candidate = resource.getEObject(unresolvedReference.getValue());
-					if (unresolvedReference.resolve(candidate)) return true;
+		try {
+			EObject candidate = getEObject(unresolvedReference.getValue());
+			if (unresolvedReference.resolve(candidate)) {
+				return true;
+			}
+		} catch (Exception ex) {
+			/*
+			 * Do nothing - it may be that the URI fragment syntax is not supported by the
+			 * objects in this FlexmiResource, but allowed by the other resources. (For
+			 * example, the implementation of eObjectForURIFragmentSegment in the Ecore
+			 * package allows references by name).
+			 */
+		}
+
+		for (Resource resource : getResourceSet().getResources()) {
+			if (resource != this) {
+				try {
+					EObject candidate = resource.getEObject(unresolvedReference.getValue());
+					if (unresolvedReference.resolve(candidate)) {
+						return true;
+					}
+				} catch (Exception ex) {
+					// Do nothing and try with the others - see comment above
 				}
 			}
-			return false;
 		}
-		return true;
+
+		return false;
 	}
-	
+
 	public int getLineNumber(Node node) {
 		Location location = (Location) node.getUserData(Location.ID);
 		if (location != null) {

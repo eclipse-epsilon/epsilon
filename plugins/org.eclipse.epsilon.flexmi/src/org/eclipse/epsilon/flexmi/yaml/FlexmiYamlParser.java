@@ -12,8 +12,10 @@ package org.eclipse.epsilon.flexmi.yaml;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -33,32 +35,28 @@ import org.eclipse.epsilon.flexmi.FlexmiFlavour;
 import org.eclipse.epsilon.flexmi.FlexmiParseException;
 import org.eclipse.epsilon.flexmi.FlexmiResource;
 import org.eclipse.epsilon.flexmi.FlexmiResourceFactory;
-import org.eclipse.epsilon.flexmi.templates.Template;
 import org.eclipse.epsilon.flexmi.xml.FlexmiXmlParser;
 import org.eclipse.epsilon.flexmi.xml.Location;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.ProcessingInstruction;
-import org.yaml.snakeyaml.DumperOptions.FlowStyle;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
-import org.yaml.snakeyaml.nodes.NodeTuple;
-import org.yaml.snakeyaml.nodes.ScalarNode;
-import org.yaml.snakeyaml.nodes.SequenceNode;
 import org.yaml.snakeyaml.scanner.ScannerException;
 
 public class FlexmiYamlParser extends FlexmiXmlParser {
-	
+
+	private static final String TYPE_DECLARATION_KEY = "type";
+
 	public static void main(String[] args) throws Exception {
-		
 		EPackage.Registry.INSTANCE.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new FlexmiResourceFactory());
 		
 		FlexmiResource resource =
-				(FlexmiResource) resourceSet.createResource(URI.createURI(FlexmiYamlParser.class.getResource("ecore.yaml").toURI().toString()));
+				(FlexmiResource) resourceSet.createResource(URI.createURI(FlexmiYamlParser.class.getResource("epackage-v2.yaml").toURI().toString()));
 		resource.load(null);
 		
 		EolModule module = new EolModule();
@@ -69,9 +67,11 @@ public class FlexmiYamlParser extends FlexmiXmlParser {
 	
 	@Override
 	public Document parse(InputStream inputStream) throws Exception {
-		Yaml yaml = new Yaml();
+		Yaml yaml = new Yaml(new LocatedSafeConstructor(new LoaderOptions()));
 		try {
-			Document document = toDocument(yaml.compose(new InputStreamReader(inputStream)));
+			Object root = yaml.load(new InputStreamReader(inputStream));
+			Document document = toDocument(root);
+			//System.out.println(toXml(document));
 			return document;
 		}
 		catch (ScannerException ex) {
@@ -87,95 +87,115 @@ public class FlexmiYamlParser extends FlexmiXmlParser {
 		return FlexmiFlavour.YAML;
 	}
 	
-	protected Document toDocument(Node node) throws Exception {
-		
+	protected Document toDocument(Object root) throws Exception {
 		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-		Element documentElement = toElement(document, "_", node);
-		document.appendChild(documentElement);
+		Element element = toRoot(root, document, document);
+		document.appendChild(element);
 		return document;
 	}
-	
-	protected Element toElement(Document document, ScalarNode nameNode, Node node) {
-		Element element = toElement(document, nameNode.getValue(), node);
-		element.setUserData(Location.ID,  new Location(nameNode.getStartMark().getLine()+1, nameNode.getStartMark().getColumn(), 
-				nameNode.getEndMark().getLine()+1, nameNode.getEndMark().getColumn()), null);
-		return element;
+
+	@SuppressWarnings("unchecked")
+	protected Element toRoot(Object o, org.w3c.dom.Node parent, Document doc) {
+		if (o instanceof LocatedMap) {
+			return toElement("_", (LocatedMap<Object, Object>) o, parent, doc);
+		} else {
+			throw new IllegalArgumentException("Expected a map");
+		}
 	}
-	
-	protected Element toElement(Document document, String nodeName, Node node) {
-		
-		Element element = document.createElement(nodeName);
-		List<Node> childNodes = new ArrayList<Node>();
-		
-		if (node instanceof SequenceNode) {
-			childNodes.addAll(((SequenceNode) node).getValue());
-		}
-		else if (node instanceof MappingNode) {
-			childNodes.add((MappingNode) node);
-		}
-		
-		for (Node childNode : childNodes) {
-			
-			if (childNode instanceof MappingNode) {
-				MappingNode mappingNode = (MappingNode) childNode;	
-				
-				for (NodeTuple tuple : mappingNode.getValue()) {
-					
-					ScalarNode keyNode = (ScalarNode) tuple.getKeyNode();
-					
-					if (tuple.getValueNode() instanceof ScalarNode) {
-						if (keyNode.getValue().startsWith("?")) {
-							ProcessingInstruction pi = document.createProcessingInstruction(keyNode.getValue().substring(1), ((ScalarNode)tuple.getValueNode()).getValue());
-							element.appendChild(pi);
-						}
-						else {
-							element.setAttribute(keyNode.getValue(), ((ScalarNode) tuple.getValueNode()).getValue());
-						}
-					}
-					else {
-						// Sequences of primitive values
-						if (tuple.getValueNode() instanceof SequenceNode && 
-								((SequenceNode) tuple.getValueNode()).getValue().stream().allMatch(n -> n instanceof ScalarNode && !isSlot((ScalarNode) n))) {
-							for (Node sequenceNode : ((SequenceNode) tuple.getValueNode()).getValue()) {
-								
-								Element child = document.createElement(keyNode.getValue());
-								child.setTextContent(((ScalarNode) sequenceNode).getValue());
-								child.setUserData(Location.ID,  new Location(sequenceNode.getStartMark().getLine()+1, sequenceNode.getStartMark().getColumn(), 
-										sequenceNode.getEndMark().getLine()+1, sequenceNode.getEndMark().getColumn()), null);
-								element.appendChild(child);
-							}
-						}
-						// Sequences (arrays) of nodes
-						else if (tuple.getValueNode() instanceof SequenceNode && 
-								((SequenceNode) tuple.getValueNode()).getFlowStyle() == FlowStyle.FLOW) {
-							
-							System.out.println();
-							for (Node sequenceNode : ((SequenceNode) tuple.getValueNode()).getValue()) {
-								Element child = toElement(document, keyNode, sequenceNode);
-								element.appendChild(child);
-							}
-						}
-						else {
-							Element child = toElement(document, keyNode, tuple.getValueNode());
-							element.appendChild(child);
-						}
-					}
+
+	@SuppressWarnings("unchecked")
+	protected Element toElement(String tag, LocatedMap<Object, Object> lm, org.w3c.dom.Node parent, Document doc) {
+		Element element = createElement(doc, tag, lm.getLocation());
+
+		for (Entry<Object, Object> e : lm.entrySet()) {
+			String key = e.getKey() + "";
+			Object value = e.getValue();
+
+			if (isPIKey(key)) {
+				// Keys starting with $ and ? (other than the type declaration) become XML PIs
+				String keyName = key.substring(1);
+				if (!TYPE_DECLARATION_KEY.equals(keyName)) {
+					ProcessingInstruction pi = doc.createProcessingInstruction(keyName, value + "");
+					element.appendChild(pi);
+				} else {
+					// ignore: $type is used to use a different tag name for an element
 				}
-			}
-			else if (childNode instanceof ScalarNode){
-				Element child = document.createElement(((ScalarNode) childNode).getValue());
-				element.appendChild(child);
+			} else if (isScalarValue(value)) {
+				// Generate key=value
+				element.setAttribute(key, value + "");
+			} else if (isScalarList(value)) {
+				// Generate <key>val1</key><key>val2</key>...<key>valN</key>
+				LocatedList<Object> ll = (LocatedList<Object>) value;
+
+				for (int i = 0; i < ll.size(); i++) {
+					Node loc = ll.getLocation(i);
+					Element scalarElement = createElement(doc, key, loc);
+					scalarElement.setTextContent(ll.get(i) + "");
+					element.appendChild(scalarElement);
+				}
+			} else if (isMapValue(value)) {
+				// Generate <key .../>
+				LocatedMap<Object, Object> lmv = (LocatedMap<Object, Object>) value;
+				String childTag = computeTagFromMapPair(key, lmv);
+				Element nested = toElement(childTag, lmv, element, doc);
+				element.appendChild(nested);
+			} else if (isMapList(value)) {
+				// Generate <key .../><key .../>...<key .../>
+				LocatedList<Object> ll = (LocatedList<Object>) value;
+				for (int i = 0; i < ll.size(); i++) {
+					LocatedMap<Object, Object> llv = (LocatedMap<Object, Object>) ll.get(i);
+					String childTag = computeTagFromMapPair(key, llv);
+					Element nested = toElement(childTag, llv, element, doc);
+					element.appendChild(nested);
+				}
+			} else {
+				throw new IllegalArgumentException("Cannot transform value " + value);
 			}
 		}
-		
+
 		return element;
-		
+	}
+
+	protected String computeTagFromMapPair(String key, Map<Object, Object> value) {
+		Object typeDecl = value.get("$" + TYPE_DECLARATION_KEY);
+		if (typeDecl == null) {
+			typeDecl = value.get("?" + TYPE_DECLARATION_KEY);
+		}
+		return typeDecl != null ? typeDecl + "" : key;
+	}
+
+	protected Element createElement(Document document, String tagName, Node yamlNode) {
+		Element scalarElement = document.createElement(tagName);
+		scalarElement.setUserData(Location.ID, new Location(yamlNode.getStartMark().getLine()+1, yamlNode.getStartMark().getColumn(), 
+				yamlNode.getEndMark().getLine()+1, yamlNode.getEndMark().getColumn()), null);
+		return scalarElement;
 	}
 	
-	protected boolean isSlot(ScalarNode node) {
-		return (Template.PREFIX + "slot").equals(node.getValue());
+	protected boolean isPIKey(String key) {
+		return key.startsWith("$") || key.startsWith("?");
 	}
-	
+
+	protected boolean isScalarValue(Object o) {
+		return !(o instanceof Map || o instanceof Collection);
+	}
+
+	protected boolean isMapValue(Object o) {
+		return o instanceof LocatedMap;
+	}
+
+	protected boolean isScalarList(Object o) {
+		return o instanceof LocatedList && ((List<?>) o).stream().allMatch(e -> isScalarValue(e)); 
+	}
+
+	protected boolean isMapList(Object o) {
+		if (o instanceof LocatedList) {
+			boolean allMaps = ((List<?>) o).stream().allMatch(e -> isMapValue(e));
+			return allMaps;
+		}
+		return false;
+	}
+
+	// For debugging only
 	protected String toXml(Document document) {
 		Transformer transformer;
 		try {
