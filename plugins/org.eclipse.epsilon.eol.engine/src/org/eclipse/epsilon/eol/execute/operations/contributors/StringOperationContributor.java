@@ -54,7 +54,8 @@ public class StringOperationContributor extends OperationContributor {
 	
 	public String firstToUpperCase() {
 		String value = (String) getTarget();
-		return value.substring(0,1).toUpperCase() + value.substring(1, value.length());
+		if (value.isEmpty()) return value;
+		else return value.substring(0,1).toUpperCase() + value.substring(1, value.length());
 	}
 	
 	public String characterAt(int index) {
@@ -64,7 +65,8 @@ public class StringOperationContributor extends OperationContributor {
 	
 	public String firstToLowerCase() {
 		String value = (String) getTarget();
-		return value.substring(0,1).toLowerCase() + value.substring(1, value.length());
+		if (value.isEmpty()) return value;
+		else return value.substring(0,1).toLowerCase() + value.substring(1, value.length());
 	}
 	
 	public String ftuc() {

@@ -103,9 +103,24 @@ operation testPad() {
 	assertEquals("foo".pad(5, "*", true), "foo**");
 	assertEquals("foo".pad(5, "*", false), "**foo");
 }
+
 @test
 operation testCharacterAt() {
 	assertEquals("fox".characterAt(0), "f");
 	assertEquals("fox".characterAt(1), "o");
 	assertEquals("fox".characterAt(2), "x");
+}
+
+@test
+operation testFirstToUpperCase() {
+	assertEquals("foo".ftuc(), "Foo");
+	assertEquals("".ftuc(), "");
+	assertEquals("Foo".ftuc(), "Foo");
+}
+
+@test
+operation testFirstToLowerCase() {
+	assertEquals("Foo".ftlc(), "foo");
+	assertEquals("".ftlc(), "");
+	assertEquals("foo".ftlc(), "foo");
 }
