@@ -103,11 +103,6 @@ maven MavenDependencies scope=compile dependencyDepth=infinite missingManifest=g
 		version="1.2023.11"
 	}
 	dependency {
-		groupId="com.googlecode.json-simple"
-		artifactId="json-simple"
-		version="1.1.1"
-	}
-	dependency {
         groupId="org.apache.poi"
         artifactId="poi"
         version="4.1.2"

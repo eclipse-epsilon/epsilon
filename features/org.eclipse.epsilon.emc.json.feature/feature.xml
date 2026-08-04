@@ -31,7 +31,7 @@ which is available at https://www.eclipse.org/legal/epl-2.0
          version="0.0.0"/>
 
    <plugin
-         id="com.googlecode.json-simple"
+         id="com.google.gson"
          version="0.0.0"/>
 
 </feature>
