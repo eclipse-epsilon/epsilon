@@ -69,13 +69,26 @@ public class JsonModelConfigurationDialog extends AbstractCachedModelConfigurati
 	private Button btnAddHeader;
 	private Button btnRemoveHeader;
 	private Button btnClearHeaders;
+	protected Button prettyPrintButton;
 
 	@Override
 	protected void createGroups(Composite control) {
 		super.createGroups(control);
 		createFilesGroup(control);
 		createLoadStoreOptionsGroup(control);
+		createOutputGroup(control);
 		toggleEnabledFields();
+	}
+
+	protected void createOutputGroup(Composite parent) {
+		final Composite groupContent = createGroupContainer(parent, "Output", 1);
+
+		prettyPrintButton = new Button(groupContent, SWT.CHECK);
+		prettyPrintButton.setText("Pretty-print JSON output");
+		prettyPrintButton.setSelection(true);
+
+		groupContent.layout();
+		groupContent.pack();
 	}
 	
 	protected void toggleEnabledFields() {
@@ -243,6 +256,7 @@ public class JsonModelConfigurationDialog extends AbstractCachedModelConfigurati
 		headersTable.refresh();
 
 		filebasedButton.setSelection(properties.getProperty(JsonModel.PROPERTY_FILE, "").trim().length() > 0);
+		prettyPrintButton.setSelection(!"false".equals(properties.getProperty(JsonModel.PROPERTY_PRETTY_PRINT, "true")));
 		toggleEnabledFields();
 	}
 	
@@ -252,6 +266,7 @@ public class JsonModelConfigurationDialog extends AbstractCachedModelConfigurati
 
 		properties.put(JsonModel.PROPERTY_URI, uriText.getText().trim());
 		properties.put(JsonModel.PROPERTY_FILE, fileText.getText().trim());
+		properties.put(JsonModel.PROPERTY_PRETTY_PRINT, String.valueOf(prettyPrintButton.getSelection()));
 
 		int iHeader = 0;
 		for (Header header : headers) {

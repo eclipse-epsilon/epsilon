@@ -1,1 +1,9 @@
-{"label":"t1","children":[{"label":"t2","children":[]}]}
+{
+  "label": "t1",
+  "children": [
+    {
+      "label": "t2",
+      "children": []
+    }
+  ]
+}

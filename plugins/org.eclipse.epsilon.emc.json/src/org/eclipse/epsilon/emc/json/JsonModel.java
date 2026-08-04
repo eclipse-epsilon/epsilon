@@ -59,6 +59,7 @@ import com.google.gson.JsonPrimitive;
 public class JsonModel extends CachedModel<Object> {
 
 	private static final Gson GSON = new GsonBuilder().serializeNulls().create();
+	private static final Gson GSON_PRETTY = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 
 	private static Object fromGsonElement(JsonElement element) {
 		if (element == null || element.isJsonNull()) {
@@ -123,6 +124,7 @@ public class JsonModel extends CachedModel<Object> {
 	public static final String PROPERTY_URI = "uri";
 	public static final String PROPERTY_USERNAME = "username";
 	public static final String PROPERTY_PASSWORD = "password";
+	public static final String PROPERTY_PRETTY_PRINT = "prettyPrint";
 
 	/* We use header0, header1, and so on to represent the values of various HTTP headers. */
 	public static final String PROPERTY_HEADER_PREFIX = "header";
@@ -135,6 +137,7 @@ public class JsonModel extends CachedModel<Object> {
 	protected String username;
 	protected String password;
 	protected Map<String, String> headers = new HashMap<>();
+	protected boolean prettyPrint = true;
 
 	/* ONLY SET THIS FIELD VIA setRoot() */
 	protected Object _root;
@@ -142,6 +145,14 @@ public class JsonModel extends CachedModel<Object> {
 	public JsonModel() {
 		propertyGetter = new JsonPropertyGetter();
 		propertySetter = new JsonPropertySetter();
+	}
+
+	public boolean isPrettyPrint() {
+		return prettyPrint;
+	}
+
+	public void setPrettyPrint(boolean prettyPrint) {
+		this.prettyPrint = prettyPrint;
 	}
 
 	public Object getRoot() {
@@ -256,7 +267,8 @@ public class JsonModel extends CachedModel<Object> {
 	@Override
 	public boolean store(String location) {
 		try {
-			FileUtil.setFileContents(GSON.toJson(toGsonElement(getRoot())), new File(location));
+			Gson gson = prettyPrint ? GSON_PRETTY : GSON;
+			FileUtil.setFileContents(gson.toJson(toGsonElement(getRoot())), new File(location));
 			return true;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -330,6 +342,8 @@ public class JsonModel extends CachedModel<Object> {
 	@Override
 	public void load(StringProperties properties, IRelativePathResolver resolver) throws EolModelLoadingException {
 		super.load(properties, resolver);
+
+		prettyPrint = !"false".equals(properties.getProperty(PROPERTY_PRETTY_PRINT, "true"));
 
 		String filePath = properties.getProperty(JsonModel.PROPERTY_FILE);
 
