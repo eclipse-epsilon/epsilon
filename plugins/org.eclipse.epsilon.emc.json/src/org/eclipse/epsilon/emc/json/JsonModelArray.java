@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.eclipse.epsilon.emc.json;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.IdentityHashMap;
@@ -19,16 +20,14 @@ import java.util.ListIterator;
 import java.util.Objects;
 import java.util.Set;
 
-import org.json.simple.JSONArray;
-
 /**
- * Thin wrapper over a {@link JSONArray} which adds the concept of a container.
+ * Thin wrapper over an {@link ArrayList} which adds the concept of a container.
  */
 public class JsonModelArray implements List<Object>, Contained, HasCreatorModel {
 
 	private final JsonModel creatorModel;
 	private Set<Object> containers = Collections.newSetFromMap(new IdentityHashMap<>());
-	private JSONArray array = new JSONArray();
+	private ArrayList<Object> array = new ArrayList<>();
 
 	public JsonModelArray() {
 		this.creatorModel = null;
@@ -63,7 +62,6 @@ public class JsonModelArray implements List<Object>, Contained, HasCreatorModel 
 		return array.contains(o);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Iterator<Object> iterator() {
 		return Collections.unmodifiableList(array).iterator();
@@ -80,7 +78,6 @@ public class JsonModelArray implements List<Object>, Contained, HasCreatorModel 
 		return (T[]) array.toArray(a);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean add(Object e) {
 		boolean ret = array.add(e);
@@ -99,7 +96,6 @@ public class JsonModelArray implements List<Object>, Contained, HasCreatorModel 
 		return ret;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean containsAll(Collection<?> c) {
 		return array.containsAll(c);
@@ -114,7 +110,6 @@ public class JsonModelArray implements List<Object>, Contained, HasCreatorModel 
 		return ret;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean addAll(int index, Collection<? extends Object> c) {
 		for (Object o : c) {
@@ -139,7 +134,6 @@ public class JsonModelArray implements List<Object>, Contained, HasCreatorModel 
 		return anyRemoved;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public boolean retainAll(Collection<?> c) {
 		boolean anyRemoved = false;
@@ -173,7 +167,6 @@ public class JsonModelArray implements List<Object>, Contained, HasCreatorModel 
 		return array.get(index);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object set(int index, Object newValue) {
 		final Object oldValue = array.set(index, newValue);
@@ -186,7 +179,6 @@ public class JsonModelArray implements List<Object>, Contained, HasCreatorModel 
 		return oldValue;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void add(int index, Object element) {
 		if (element instanceof Contained) {
@@ -214,19 +206,16 @@ public class JsonModelArray implements List<Object>, Contained, HasCreatorModel 
 		return array.lastIndexOf(o);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ListIterator<Object> listIterator() {
 		return Collections.unmodifiableList(array).listIterator();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ListIterator<Object> listIterator(int index) {
 		return Collections.unmodifiableList(array).listIterator(index);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object> subList(int fromIndex, int toIndex) {
 		return Collections.unmodifiableList(array).subList(fromIndex, toIndex);
@@ -249,7 +238,7 @@ public class JsonModelArray implements List<Object>, Contained, HasCreatorModel 
 
 	@Override
 	public String toString() {
-		return "JsonModelArray [array=" + array + ", containers=" + containers + "]";
+		return "JsonModelArray " + array.toString();
 	}
 	
 }

@@ -13,16 +13,16 @@ package org.eclipse.epsilon.emc.json;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 import org.apache.commons.collections.collection.UnmodifiableCollection;
 import org.apache.commons.collections.set.UnmodifiableSet;
-import org.json.simple.JSONObject;
 
 /**
- * Thin wrapper over a {@link JSONObject} which adds the concept of a container to its
+ * Thin wrapper over a {@link LinkedHashMap} which adds the concept of a container to its
  * values.
  */
 public class JsonModelObject implements Contained, Map<String, Object>, HasCreatorModel {
@@ -32,7 +32,7 @@ public class JsonModelObject implements Contained, Map<String, Object>, HasCreat
 	private Set<Object> containers = Collections.newSetFromMap(new IdentityHashMap<>());
 
 	// Underlying map is the same, but we can intercept all calls
-	private JSONObject object = new JSONObject();
+	private LinkedHashMap<String, Object> object = new LinkedHashMap<>();
 
 	public JsonModelObject() {
 		this.creatorModel = null;
@@ -69,7 +69,7 @@ public class JsonModelObject implements Contained, Map<String, Object>, HasCreat
 
 	@Override
 	public boolean containsValue(Object value) {
-		return object.containsKey(value);
+		return object.containsValue(value);
 	}
 
 	@Override
@@ -159,7 +159,7 @@ public class JsonModelObject implements Contained, Map<String, Object>, HasCreat
 
 	@Override
 	public String toString() {
-		return "JsonModelObject [object=" + object + ", containers=" + containers + "]";
+		return "JsonModelObject " + object.toString();
 	}
 
 }

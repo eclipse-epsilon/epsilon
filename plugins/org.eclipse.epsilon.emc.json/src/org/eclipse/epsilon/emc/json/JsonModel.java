@@ -48,9 +48,73 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.exceptions.models.EolNotInstantiableModelElementTypeException;
 import org.eclipse.epsilon.eol.models.CachedModel;
 import org.eclipse.epsilon.eol.models.IRelativePathResolver;
-import org.json.simple.JSONValue;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonPrimitive;
 
 public class JsonModel extends CachedModel<Object> {
+
+	private static final Gson GSON = new GsonBuilder().serializeNulls().create();
+
+	private static Object fromGsonElement(JsonElement element) {
+		if (element == null || element.isJsonNull()) {
+			return null;
+		} else if (element.isJsonObject()) {
+			JsonModelObject obj = new JsonModelObject();
+			for (Map.Entry<String, JsonElement> e : element.getAsJsonObject().entrySet()) {
+				obj.put(e.getKey(), fromGsonElement(e.getValue()));
+			}
+			return obj;
+		} else if (element.isJsonArray()) {
+			JsonModelArray arr = new JsonModelArray();
+			for (JsonElement e : element.getAsJsonArray()) {
+				arr.add(fromGsonElement(e));
+			}
+			return arr;
+		} else {
+			JsonPrimitive prim = element.getAsJsonPrimitive();
+			if (prim.isBoolean()) return prim.getAsBoolean();
+			if (prim.isNumber()) {
+				String raw = prim.getAsString();
+				if (raw.contains(".") || raw.contains("e") || raw.contains("E")) {
+					return prim.getAsDouble();
+				}
+				return prim.getAsLong();
+			}
+			return prim.getAsString();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private static JsonElement toGsonElement(Object obj) {
+		if (obj == null) {
+			return JsonNull.INSTANCE;
+		} else if (obj instanceof Map) {
+			com.google.gson.JsonObject jObj = new com.google.gson.JsonObject();
+			for (Map.Entry<String, Object> e : ((Map<String, Object>) obj).entrySet()) {
+				jObj.add(e.getKey(), toGsonElement(e.getValue()));
+			}
+			return jObj;
+		} else if (obj instanceof Iterable) {
+			com.google.gson.JsonArray jArr = new com.google.gson.JsonArray();
+			for (Object e : (Iterable<Object>) obj) {
+				jArr.add(toGsonElement(e));
+			}
+			return jArr;
+		} else if (obj instanceof Boolean) {
+			return new JsonPrimitive((Boolean) obj);
+		} else if (obj instanceof Number) {
+			return new JsonPrimitive((Number) obj);
+		} else if (obj instanceof String) {
+			return new JsonPrimitive((String) obj);
+		} else {
+			return new JsonPrimitive(obj.toString());
+		}
+	}
 
 	public static final String JSON_ARRAY_TYPE = "JSONArray";
 	public static final String JSON_OBJECT_TYPE = "JSONObject";
@@ -192,7 +256,7 @@ public class JsonModel extends CachedModel<Object> {
 	@Override
 	public boolean store(String location) {
 		try {
-			FileUtil.setFileContents(JSONValue.toJSONString(getRoot()), new File(location));
+			FileUtil.setFileContents(GSON.toJson(toGsonElement(getRoot())), new File(location));
 			return true;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -312,12 +376,12 @@ public class JsonModel extends CachedModel<Object> {
 				} else {
 					// Not HTTP, so we'll rely on Java's standard URL handling (covers file:// and jar:// by default) 
 					try (InputStream is = parsedUri.toURL().openStream(); Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-						setRoot(deepClone(JSONValue.parse(reader)));
+						setRoot(fromGsonElement(JsonParser.parseReader(reader)));
 					}
 				}
 			} else if (file != null) {
 				try (Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
-					setRoot(deepClone(JSONValue.parse(reader)));
+					setRoot(fromGsonElement(JsonParser.parseReader(reader)));
 				}
 			} else {
 				throw new IllegalStateException("Neither URI nor file path have been set");
@@ -355,7 +419,7 @@ public class JsonModel extends CachedModel<Object> {
 			HttpEntity responseEntity = httpResponse.getEntity();
 
 			Reader reader = new InputStreamReader(responseEntity.getContent(), StandardCharsets.UTF_8);
-			setRoot(deepClone(JSONValue.parse(reader)));
+			setRoot(fromGsonElement(JsonParser.parseReader(reader)));
 		}
 	}
 
@@ -422,7 +486,7 @@ public class JsonModel extends CachedModel<Object> {
 	 * loaded.
 	 */
 	public void setJsonContent(String s) {
-		setRoot(deepClone(JSONValue.parse(s)));
+		setRoot(fromGsonElement(JsonParser.parseString(s)));
 	}
 
 }

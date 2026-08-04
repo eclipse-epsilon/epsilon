@@ -17,6 +17,9 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.eclipse.epsilon.common.util.StringProperties;
 import org.eclipse.epsilon.emc.json.JsonModel;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
@@ -28,8 +31,9 @@ import org.eclipse.jetty.server.Response;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.util.Callback;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
+
+import com.google.gson.Gson;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,10 +41,10 @@ import org.junit.Test;
 public class JSONModelHttpTests {
 
 	private final class StaticJSONWithAuthHandler extends Handler.Abstract {
-		private final JSONObject root;
+		private final Map<String, Object> root;
 		private String username, password;
 
-		private StaticJSONWithAuthHandler(JSONObject root, String user, String password) {
+		private StaticJSONWithAuthHandler(Map<String, Object> root, String user, String password) {
 			this.root = root;
 			this.username = user;
 			this.password = password;
@@ -63,7 +67,7 @@ public class JSONModelHttpTests {
 				if (!username.equals(challengeUser) || !password.equals(challengePassword)) {
 					response.setStatus(HttpStatus.NOT_FOUND_404);
 				} else {
-					writeIntoResponse(response, JSONValue.toJSONString(root), callback);
+					writeIntoResponse(response, new Gson().toJson(root), callback);
 				}
 			}
 
@@ -82,7 +86,7 @@ public class JSONModelHttpTests {
 		private final String responseText;
 
 		public StaticJSONHandler(Object json) {
-			this.responseText = JSONValue.toJSONString(json);
+			this.responseText = new Gson().toJson(json);
 		}
 
 		@Override
@@ -107,10 +111,9 @@ public class JSONModelHttpTests {
 		server.join();
 	}
 
-	@SuppressWarnings("unchecked") 
 	@Test
 	public void canLoadHttp() throws Exception {
-		JSONObject root = new JSONObject();
+		Map<String, Object> root = new LinkedHashMap<>();
 		root.put("hello", "world");
 		serve(new StaticJSONHandler(root));
 
@@ -125,10 +128,9 @@ public class JSONModelHttpTests {
 		}
 	}
 
-	@SuppressWarnings("unchecked") 
 	@Test
 	public void canLoadHttpWithProperties() throws Exception {
-		JSONObject root = new JSONObject();
+		Map<String, Object> root = new LinkedHashMap<>();
 		root.put("hello", "world");
 		serve(new StaticJSONHandler(root));
 
@@ -145,10 +147,9 @@ public class JSONModelHttpTests {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void failureToAuthenticateIsReported() throws Exception {
-		JSONObject root = new JSONObject();
+		Map<String, Object> root = new LinkedHashMap<>();
 		root.put("hello", "world");
 		serve(new StaticJSONWithAuthHandler(root, "myuser", "mypassword"));
 
@@ -165,10 +166,9 @@ public class JSONModelHttpTests {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void canAuthenticate() throws Exception {
-		JSONObject root = new JSONObject();
+		Map<String, Object> root = new LinkedHashMap<>();
 		root.put("hello", "world");
 
 		final String username = "myuser";
@@ -190,7 +190,7 @@ public class JSONModelHttpTests {
 
 	@Test
 	public void cannotStoreUri() throws Exception {
-		serve(new StaticJSONHandler(new JSONObject()));
+		serve(new StaticJSONHandler(new LinkedHashMap<String, Object>()));
 
 		JsonModel model = new JsonModel();
 		model.setName("M");
@@ -208,10 +208,9 @@ public class JSONModelHttpTests {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void followsRedirects() throws Exception {
-		JSONObject root = new JSONObject();
+		Map<String, Object> root = new LinkedHashMap<>();
 		root.put("hello", "world");
 
 		serve(new Handler.Abstract() {
@@ -219,7 +218,7 @@ public class JSONModelHttpTests {
 			public boolean handle(Request request, Response response, Callback callback) throws Exception {
 				String target = request.getHttpURI().getPath();
 				if ("/model".equals(target)) {
-					writeIntoResponse(response, JSONValue.toJSONString(root), callback);
+					writeIntoResponse(response, new Gson().toJson(root), callback);
 				} else if ("/".equals(target)) {
 					response.setStatus(HttpStatus.TEMPORARY_REDIRECT_307);
 					response.getHeaders().add(HttpHeader.LOCATION.name(), serverUri + "/model");
@@ -242,10 +241,9 @@ public class JSONModelHttpTests {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void usesHeaders() throws Exception {
-		JSONObject root = new JSONObject();
+		Map<String, Object> root = new LinkedHashMap<>();
 		root.put("hello", "world");
 
 		final String authValue = "Bearer TOKEN";
@@ -256,7 +254,7 @@ public class JSONModelHttpTests {
 					response.setStatus(HttpStatus.FORBIDDEN_403);
 					callback.succeeded();
 				} else {
-					writeIntoResponse(response, JSONValue.toJSONString(root), callback);
+					writeIntoResponse(response, new Gson().toJson(root), callback);
 				}
 				callback.succeeded();
 				return true;
@@ -275,10 +273,9 @@ public class JSONModelHttpTests {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void usesHeadersThroughProperties() throws Exception {
-		JSONObject root = new JSONObject();
+		Map<String, Object> root = new LinkedHashMap<>();
 		root.put("hello", "world");
 
 		final String authValue = "Bearer TOKEN";
@@ -291,7 +288,7 @@ public class JSONModelHttpTests {
 				} else if (!expectedMimeType.equals(request.getHeaders().get(HttpHeader.ACCEPT))) {
 					response.setStatus(HttpStatus.BAD_REQUEST_400);
 				} else {
-					writeIntoResponse(response, JSONValue.toJSONString(root), callback);
+					writeIntoResponse(response, new Gson().toJson(root), callback);
 				}
 				callback.succeeded();
 				return true;
