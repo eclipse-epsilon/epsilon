@@ -106,6 +106,10 @@ Google Guava
 
 * License: Apache License 2.0
 
+Gson
+
+* License: Apache License 2.0
+
 Jdom (1.0)
 
 * License: JDom License (based on Apache 1.1 Style License)
@@ -115,12 +119,6 @@ JQuery (1.8.1)
 * License: MIT License
 * Project: http://jquery.com
 * Source: https://github.com/jquery/jquery
-
-json-simple (1.1.1)
-
-* License: Apache License 2.0
-* Project: https://code.google.com/archive/p/json-simple/
-* Source: https://github.com/fangyidong/json-simple
 
 jsoup (1.7.2)
 
