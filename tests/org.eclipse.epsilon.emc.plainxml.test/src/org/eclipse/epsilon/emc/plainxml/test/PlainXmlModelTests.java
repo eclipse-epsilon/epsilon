@@ -124,4 +124,31 @@ public class PlainXmlModelTests {
 		assertEquals(3, evaluator.evaluate("t_library.all().first().children.select(c|c.tagName=='editor').size()"));
 	}
 	
+
+	@Test
+	public void testExpandEntityReferencesDefault() throws Exception {
+		PlainXmlModel m = new PlainXmlModel();
+		m.setName("ExpandTest");
+		m.setReadOnLoad(true);
+		m.setXml("<?xml version='1.0'?><root><item text='line1&#xD;line2'/></root>");
+		m.load();
+		EolEvaluator eval = new EolEvaluator(m);
+		String text = (String) eval.evaluate("t_item.all.first().a_text");
+		assertNotNull(text);
+		m.dispose();
+	}
+
+	@Test
+	public void testExpandEntityReferencesFalse() throws Exception {
+		PlainXmlModel m = new PlainXmlModel();
+		m.setName("NoExpandTest");
+		m.setReadOnLoad(true);
+		m.setExpandEntityReferences(false);
+		m.setXml("<?xml version='1.0'?><root><item text='line1&#xD;line2'/></root>");
+		m.load();
+		EolEvaluator eval = new EolEvaluator(m);
+		String text = (String) eval.evaluate("t_item.all.first().a_text");
+		assertNotNull(text);
+		m.dispose();
+	}
 }
