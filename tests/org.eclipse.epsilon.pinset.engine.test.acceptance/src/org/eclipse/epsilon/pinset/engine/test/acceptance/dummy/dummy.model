@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dummy="pinsetdummy">
+  <dummy:A xmi:id="_F_3oIJ4UEeeZuKyTD1F9-g">
+    <ds xmi:id="_F_4PMp4UEeeZuKyTD1F9-g" name="d0"/>
+    <ds xmi:id="_F_4PM54UEeeZuKyTD1F9-g" name="d1" m="1.0"/>
+    <ds xmi:id="_F_4PNJ4UEeeZuKyTD1F9-g" name="d2" m="2.0"/>
+    <ds xmi:id="_F_4PNZ4UEeeZuKyTD1F9-g" name="d4" m="4.0"/>
+    <e xsi:type="dummy:G" xmi:id="_F_4PNp4UEeeZuKyTD1F9-g" eName="G0" gString="GS0.0"/>
+  </dummy:A>
+  <dummy:A xmi:id="_F_4PN54UEeeZuKyTD1F9-g" x="1.0">
+    <b xmi:id="_F_4POJ4UEeeZuKyTD1F9-g" y="2.0" z="3.0">
+      <c xmi:id="_F_4POZ4UEeeZuKyTD1F9-g" k="5.0"/>
+    </b>
+    <ds xmi:id="_F_4POp4UEeeZuKyTD1F9-g" name="d0" l="3.0"/>
+    <ds xmi:id="_F_4PO54UEeeZuKyTD1F9-g" name="d1" l="3.0" m="1.0"/>
+    <ds xmi:id="_F_4PPJ4UEeeZuKyTD1F9-g" name="d2" l="3.0" m="2.0"/>
+    <ds xmi:id="_F_4PPZ4UEeeZuKyTD1F9-g" name="d3" l="3.0" m="3.0"/>
+    <ds xmi:id="_F_4PPp4UEeeZuKyTD1F9-g" name="d4" l="3.0" m="4.0"/>
+    <e xsi:type="dummy:F" xmi:id="_F_4PP54UEeeZuKyTD1F9-g" eName="F1" fString="FS5.0" fDouble="3.1622776601683795"/>
+  </dummy:A>
+  <dummy:A xmi:id="_F_4PQJ4UEeeZuKyTD1F9-g" x="2.0">
+    <b xmi:id="_F_4PQZ4UEeeZuKyTD1F9-g" y="3.0" z="4.0">
+      <c xmi:id="_F_4PQp4UEeeZuKyTD1F9-g" k="7.0"/>
+    </b>
+    <ds xmi:id="_F_4PQ54UEeeZuKyTD1F9-g" name="d1" l="6.0" m="1.0"/>
+    <ds xmi:id="_F_4PRJ4UEeeZuKyTD1F9-g" name="d2" l="6.0" m="2.0"/>
+    <ds xmi:id="_F_4PRZ4UEeeZuKyTD1F9-g" name="d3" l="6.0" m="3.0"/>
+  </dummy:A>
+  <dummy:A xmi:id="_F_4PRp4UEeeZuKyTD1F9-g" x="3.0">
+    <b xmi:id="_F_4PR54UEeeZuKyTD1F9-g" y="4.0" z="5.0">
+      <c xmi:id="_F_4PSJ4UEeeZuKyTD1F9-g" k="9.0"/>
+    </b>
+    <ds xmi:id="_F_4PSZ4UEeeZuKyTD1F9-g" name="d0" l="9.0"/>
+    <ds xmi:id="_F_4PSp4UEeeZuKyTD1F9-g" name="d3" l="9.0" m="3.0"/>
+    <ds xmi:id="_F_4PS54UEeeZuKyTD1F9-g" name="d4" l="9.0" m="4.0"/>
+  </dummy:A>
+  <dummy:A xmi:id="_F_4PTJ4UEeeZuKyTD1F9-g" x="4.0">
+    <b xmi:id="_F_4PTZ4UEeeZuKyTD1F9-g" y="5.0" z="6.0">
+      <c xmi:id="_F_4PTp4UEeeZuKyTD1F9-g" k="11.0"/>
+    </b>
+    <ds xmi:id="_F_42QJ4UEeeZuKyTD1F9-g" name="d0" l="12.0"/>
+    <ds xmi:id="_F_42QZ4UEeeZuKyTD1F9-g" name="d1" l="12.0" m="1.0"/>
+    <ds xmi:id="_F_42Qp4UEeeZuKyTD1F9-g" name="d2" l="12.0" m="2.0"/>
+    <ds xmi:id="_F_42Q54UEeeZuKyTD1F9-g" name="d3" l="12.0" m="3.0"/>
+    <e xsi:type="dummy:F" xmi:id="_F_42RJ4UEeeZuKyTD1F9-g" eName="F4" fString="FS20.0" fDouble="6.324555320336759"/>
+  </dummy:A>
+  <dummy:A xmi:id="_F_42RZ4UEeeZuKyTD1F9-g" x="5.0" en="value2">
+    <b xmi:id="_F_42Rp4UEeeZuKyTD1F9-g" y="15.0" z="25.0">
+      <c xmi:id="_F_42R54UEeeZuKyTD1F9-g" k="40.0"/>
+    </b>
+    <ds xmi:id="_F_42SJ4UEeeZuKyTD1F9-g" name="d0" l="15.0"/>
+    <ds xmi:id="_F_42SZ4UEeeZuKyTD1F9-g" name="d1" l="15.0" m="1.0"/>
+    <ds xmi:id="_F_42Sp4UEeeZuKyTD1F9-g" name="d3" l="15.0" m="3.0"/>
+    <e xsi:type="dummy:F" xmi:id="_F_42S54UEeeZuKyTD1F9-g" eName="F5" fString="FS25.0" fDouble="7.0710678118654755"/>
+  </dummy:A>
+  <dummy:A xmi:id="_F_42TJ4UEeeZuKyTD1F9-g" x="6.0" en="value2">
+    <b xmi:id="_F_42TZ4UEeeZuKyTD1F9-g" y="16.0" z="26.0">
+      <c xmi:id="_F_42Tp4UEeeZuKyTD1F9-g" k="42.0"/>
+    </b>
+    <ds xmi:id="_F_42T54UEeeZuKyTD1F9-g" name="d1" l="18.0" m="1.0"/>
+    <ds xmi:id="_F_42UJ4UEeeZuKyTD1F9-g" name="d2" l="18.0" m="2.0"/>
+    <ds xmi:id="_F_42UZ4UEeeZuKyTD1F9-g" name="d3" l="18.0" m="3.0"/>
+    <e xsi:type="dummy:G" xmi:id="_F_42Up4UEeeZuKyTD1F9-g" eName="G6" gString="GS30.0"/>
+  </dummy:A>
+  <dummy:A xmi:id="_F_42U54UEeeZuKyTD1F9-g" x="7.0" en="value2">
+    <b xmi:id="_F_42VJ4UEeeZuKyTD1F9-g" y="17.0" z="27.0">
+      <c xmi:id="_F_42VZ4UEeeZuKyTD1F9-g" k="44.0"/>
+    </b>
+    <ds xmi:id="_F_42Vp4UEeeZuKyTD1F9-g" name="d0" l="21.0"/>
+    <ds xmi:id="_F_42V54UEeeZuKyTD1F9-g" name="d1" l="21.0" m="1.0"/>
+    <ds xmi:id="_F_42WJ4UEeeZuKyTD1F9-g" name="d2" l="21.0" m="2.0"/>
+    <ds xmi:id="_F_42WZ4UEeeZuKyTD1F9-g" name="d3" l="21.0" m="3.0"/>
+  </dummy:A>
+  <dummy:A xmi:id="_F_42Wp4UEeeZuKyTD1F9-g" x="8.0" en="value3">
+    <b xmi:id="_F_42W54UEeeZuKyTD1F9-g" y="108.0" z="208.0"/>
+    <ds xmi:id="_F_42XJ4UEeeZuKyTD1F9-g" name="d0" l="24.0"/>
+    <ds xmi:id="_F_42XZ4UEeeZuKyTD1F9-g" name="d1" l="24.0" m="1.0"/>
+    <ds xmi:id="_F_42Xp4UEeeZuKyTD1F9-g" name="d2" l="24.0" m="2.0"/>
+    <ds xmi:id="_F_42X54UEeeZuKyTD1F9-g" name="d4" l="24.0" m="4.0"/>
+    <e xsi:type="dummy:G" xmi:id="_F_42YJ4UEeeZuKyTD1F9-g" eName="G8" gString="GS40.0"/>
+  </dummy:A>
+  <dummy:A xmi:id="_F_42YZ4UEeeZuKyTD1F9-g" x="9.0" en="value3">
+    <b xmi:id="_F_42Yp4UEeeZuKyTD1F9-g" y="109.0" z="209.0"/>
+    <ds xmi:id="_F_42Y54UEeeZuKyTD1F9-g" name="d1" l="27.0" m="1.0"/>
+    <ds xmi:id="_F_42ZJ4UEeeZuKyTD1F9-g" name="d3" l="27.0" m="3.0"/>
+    <ds xmi:id="_F_42ZZ4UEeeZuKyTD1F9-g" name="d4" l="27.0" m="4.0"/>
+    <e xsi:type="dummy:F" xmi:id="_F_5dUJ4UEeeZuKyTD1F9-g" eName="F9" fString="FS45.0" fDouble="9.486832980505138"/>
+  </dummy:A>
+</xmi:XMI>

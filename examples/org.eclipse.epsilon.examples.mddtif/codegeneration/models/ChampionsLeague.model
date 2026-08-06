@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Application xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="TVAppDsl" name="Champions League">
+  <contents xsi:type="Text" name="Welcome to the Champions Leage TV Application" information="Here you will find information about the Champions League teams&#xD;&#xA;and you can vote for your favorite players and teams"/>
+  <contents xsi:type="Menu" name="Latest News">
+    <contents xsi:type="Text" name="Shoulder a burden for Dida" information="AC Milan goalkeeper Dida may miss the first leg &#xD;&#xA;of the UEFA Champions League semi-final against &#xD;&#xA;Manchester United FC after suffering the recurrence &#xD;&#xA;of a shoulder injury."/>
+    <contents xsi:type="Text" name="Character tells for Lampard" information="They may be the most expensive squad ever assembled, &#xD;&#xA;but Jos&#xe9; Mourinho's Chelsea FC have a quality &#xD;&#xA;that money cannot buy: grit."/>
+    <contents xsi:type="Text" name="Larsson marvels at Ronaldo magic" information="Henrik Larsson believes Cristiano Ronaldo is probably &#xD;&#xA;&quot;the best player around at the moment&quot; after watching &#xD;&#xA;his former Manchester United FC team-mate lead the rout &#xD;&#xA;of AS Roma in the quarter-finals of the UEFA Champions &#xD;&#xA;League last week."/>
+  </contents>
+  <contents xsi:type="Menu" name="Polls">
+    <contents xsi:type="Vote" name="Who will be the top scorer?">
+      <contents xsi:type="Choice" name="Kak&#xe1; (Milan)"/>
+      <contents xsi:type="Choice" name="Peter Crouch (Liverpool)"/>
+      <contents xsi:type="Choice" name="Didier Drogba (Chelsea)"/>
+    </contents>
+    <contents xsi:type="Vote" name="Who will win the Champions Leage?">
+      <contents xsi:type="Choice" name="Liverpool"/>
+      <contents xsi:type="Choice" name="Milan"/>
+      <contents xsi:type="Choice" name="Chelsea"/>
+      <contents xsi:type="Choice" name="Man. United"/>
+    </contents>
+  </contents>
+  <contents xsi:type="Menu" name="Live Reports!">
+    <contents xsi:type="Text" name="Chelsea vs. Liverpool" information="1-1 (Crouch)">
+      <history revision="1" information="1-0 (Drogba)"/>
+    </contents>
+  </contents>
+</Application>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.epsilon.examples.egl.gmf.papyrus.ActivityContribution"
+            objectClass="org.eclipse.papyrus.uml.diagram.activity.edit.parts.ActivityDiagramEditPart">
+         <action
+               class="org.eclipse.epsilon.examples.egl.gmf.papyrus.ListActivities"
+               id="org.eclipse.epsilon.examples.egl.gmf.papyrus.report"
+               label="List Activities"
+               style="push"
+               tooltip="Runs an EGL transformation to produce a report with every activity in the diagram.">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>

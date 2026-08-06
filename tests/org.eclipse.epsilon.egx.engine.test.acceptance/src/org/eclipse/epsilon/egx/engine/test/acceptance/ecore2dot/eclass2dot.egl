@@ -1,0 +1,91 @@
+digraph G {
+	graph[splines=ortho]
+	node[fontname=Tahoma, fontsize=10, shape=record]
+	edge[fontname=Tahoma, fontsize=10, dir=back, arrowtail=empty]
+	[%var main=c;%]
+	[%for (c in classes) { %]
+	[%=c.name%][shape=none, margin=0, label = <[%=c.getLabel()%]>]
+	[%}%]
+	
+	[%for (s in main.eSuperTypes){%]
+	[%=s.name%]->[%=main.name%]
+	[%}%]
+	
+	[%for (s in classes.select(c|c.eSuperTypes.includes(main))){%]
+	[%=main.name%]->[%=s.name%]
+	[%}%]
+	
+	
+	[%for (r in main.eReferences) {%]
+	[%=r.eContainer.name%]->[%=r.eType.name%][arrowtail=[%=r.getArrowTail()%],tooltip="[%=r.name%]"];
+	{rank=same; [%=r.eContainer.name%]; [%=r.eType.name%]}
+	[%}%]
+	
+}
+
+[%
+
+operation EClass getLabel() {
+	var fillcolor = "fffcdc"; if (self==main) fillcolor="c8f0a1";
+	var label = "<table cellspacing='0' cellborder='0' cellpadding='1' bgcolor='#" + fillcolor + "'>";
+	var features = self.eAllStructuralFeatures;
+	if (self.eSuperTypes.includes(main)) features = features.excludingAll(main.eAllStructuralFeatures);
+	
+	label += "<tr><td sides='B' colspan='2' border='1'>" + 
+		"<table border='0' cellspacing='0' cellborder='0' cellpading='0'>" + 
+		"<tr><td align='right' valign='middle'><img src='" + self.getIcon()+ "'></img></td>" + 
+		"<td align='left' valign='middle' href=\"javascript:top.showView('/Model/Classes/" + self.name + "')\" tooltip='Go'>" + self.name + "</td></tr></table></td></tr>";
+	
+	for (f in features.sortBy(f|f.name.toLowerCase())) {
+		label += "<tr>";
+		label += "<td><img src='" + f.getIcon() + "'></img></td><td align='left'>" + f.getLabel(self) + "</td>";
+		label += "</tr>";
+	}
+	if (features.isEmpty()){
+		label += "<tr>";
+		label += "<td>&nbsp;</td><td>&nbsp;</td>";
+		label += "</tr>";
+	}
+	
+	label += "</table>";
+	return label;
+}
+
+operation EStructuralFeature getLabel(eClass : EClass) {
+	var label = self.name;
+	if (self.eType.isDefined()) label += " : " + self.eType.name;
+	if (self.isMany) label += "["+"*"+"]";
+	if (eClass == main and self.eContainer() == eClass) label = "<font color='blue'>" + label + "</font>";
+	if (self.isTypeOf(EReference)) {
+		// add href here
+	}
+	return label; 
+}
+
+operation EOperation getLabel() {
+	var label = self.name + "(" + self.eParameters.collect(p|p.getLabel()).concat(", ") + ")";
+	if (self.eType.isDefined()) {
+		label += " : " + self.eType.name;
+		if (self.isMany) {
+			label += "["+"*"+"]";
+		}
+	}
+	return label;
+}
+
+operation EReference getArrowTail() {
+	if (self.containment) {
+		return "diamond";
+	}
+	else {
+		return "none";
+	}
+}
+
+operation Any getIcon() {
+	return new Native("java.io.File")
+		(System.context.module.file.parent, "icons/" + self.eClass.name + ".gif").absolutePath;
+}
+
+%]
+

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feed>
+  <entry>
+    <title>Composite and nested filesets in ANT</title>
+    <link href="http://kolovos.wordpress.com/2013/09/14/composite-and-nested-filesets-in-ant/"/>
+    <published>Sat, 14 Sep 2013 02:02:44 +0000</published>
+    <author>
+      <name>Dimitris Kolovos</name>
+    </author>
+    <summary>I haven&amp;#8217;t found a sensible way to combine/nest filesets in ANT so I&amp;#8217;ve implemented a ResourceCollectionGroup DataType/ResourceCollection, which allows for deep nesting of filesets/groups. An example of using ResourceCollectionGroup is available here.&lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=105&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</summary>
+    <content>&lt;p&gt;I haven&amp;#8217;t found a sensible way to combine/nest filesets in ANT so I&amp;#8217;ve implemented a &lt;a href="http://dev.eclipse.org/svnroot/modeling/org.eclipse.epsilon/trunk/standalone/org.eclipse.epsilon.standalone/src/org/eclipse/epsilon/standalone/ResourceCollectionGroup.java"&gt;ResourceCollectionGroup&lt;/a&gt; DataType/ResourceCollection, which allows for deep nesting of filesets/groups. An example of using ResourceCollectionGroup is available &lt;a href="http://dev.eclipse.org/svnroot/modeling/org.eclipse.epsilon/trunk/standalone/org.eclipse.epsilon.standalone/build-jars.xml"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;br /&gt;  &lt;a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/105/"&gt;&lt;img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/105/" /&gt;&lt;/a&gt; &lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=105&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</content>
+  </entry>
+  <entry>
+    <title>Basic username/password authentication for ksoap2 on Android</title>
+    <link href="http://kolovos.wordpress.com/2013/08/25/basic-usernamepassword-authentication-for-ksoap2-on-android/"/>
+    <published>Sun, 25 Aug 2013 21:18:30 +0000</published>
+    <author>
+      <name>Dimitris Kolovos</name>
+    </author>
+    <summary>The built-in HttpTransportBasicAuth class provided by ksoap2 doesn&amp;#8217;t seem to be part of the ksoap2 Android assembly. The following class (adapted from here) works fine for me. import java.io.IOException; import org.kobjects.base64.Base64; import org.ksoap2.transport.HttpTransportSE; import org.ksoap2.transport.ServiceConnection; public class HttpTransportBasicAuth extends HttpTransportSE { private String username; private String password; public HttpTransportBasicAuth(String url, String username, String password) { [&amp;#8230;]&lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=100&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</summary>
+    <content>&lt;p&gt;The built-in HttpTransportBasicAuth class provided by ksoap2 doesn&amp;#8217;t seem to be part of the ksoap2 Android assembly. The following class (adapted from &lt;a href="https://code.google.com/p/ec-android-pilot/source/browse/trunk/src/com/ec/prod/android/pilot/client/HttpTransportBasicAuth.java?spec=svn138&amp;amp;r=138"&gt;here&lt;/a&gt;) works fine for me.&lt;/p&gt;
+&lt;pre&gt;
+import java.io.IOException;
+
+import org.kobjects.base64.Base64;
+import org.ksoap2.transport.HttpTransportSE;
+import org.ksoap2.transport.ServiceConnection;
+
+public class HttpTransportBasicAuth extends HttpTransportSE {
+
+  private String username;
+  private String password;
+
+  public HttpTransportBasicAuth(String url, String username, String password) {
+    super(url);
+    this.username = username;
+    this.password = password;
+  }
+
+  @Override
+  public ServiceConnection getServiceConnection() throws IOException {
+    ServiceConnection serviceConnection = super.getServiceConnection();
+    addBasicAuthentication(serviceConnection);
+    return serviceConnection;
+  }
+
+  protected void addBasicAuthentication(ServiceConnection serviceConnection) 
+      throws IOException {
+    
+    if (username != null &amp;amp;&amp;amp; password != null) {
+      StringBuffer buffer = new StringBuffer(username);
+      buffer.append(':').append(password);
+      byte[] bytes = buffer.toString().getBytes();
+      buffer.setLength(0);
+      buffer.append("Basic ");
+      Base64.encode(bytes, 0, bytes.length, buffer);
+      serviceConnection.setRequestProperty
+        ("Authorization", buffer.toString());
+    }
+  }
+}
+&lt;/pre&gt;
+&lt;br /&gt;  &lt;a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/100/"&gt;&lt;img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/100/" /&gt;&lt;/a&gt; &lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=100&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</content>
+  </entry>
+  <entry>
+    <title>Sharing GWT projects to SVN with Subclipse</title>
+    <link href="http://kolovos.wordpress.com/2012/11/15/sharing-gwt-projects-to-svn-with-subclipse/"/>
+    <published>Thu, 15 Nov 2012 22:01:06 +0000</published>
+    <author>
+      <name>Dimitris Kolovos</name>
+    </author>
+    <summary>If you try to add your GWT project to an SVN repository with Subclipse, by default Subclipse will also put all GWT-generated files (which can be several MBs in size) under version control. To avoid this, before sharing your project you should mark the following folders of your project as derived in Eclipse, so that [&amp;#8230;]&lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=94&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</summary>
+    <content>&lt;p&gt;If you try to add your GWT project to an SVN repository with Subclipse, by default Subclipse will also put all GWT-generated files (which can be several MBs in size) under version control. To avoid this, before sharing your project you should mark the following folders of your project as derived in Eclipse, so that Subclipse ignores them when it tries to share the project.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;war/WEB-INF/deploy&lt;/li&gt;
+&lt;li&gt;war/&amp;lt;module_name&amp;gt;&lt;/li&gt;
+&lt;li&gt;gwt-unitCache&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To mark a folder as derived in Eclipse you need to right-click it in the Package Explorer view, click Properties, check the Derived option in the Resource panel and click OK.&lt;/p&gt;
+&lt;br /&gt;  &lt;a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/94/"&gt;&lt;img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/94/" /&gt;&lt;/a&gt; &lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=94&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</content>
+  </entry>
+  <entry>
+    <title>Model Transformation Papers</title>
+    <link href="http://kolovos.wordpress.com/2012/08/14/model-transformation-papers/"/>
+    <published>Tue, 14 Aug 2012 08:54:55 +0000</published>
+    <author>
+      <name>Dimitris Kolovos</name>
+    </author>
+    <summary>Below is a short list of papers and other resources in the area of model(-to-model) transformation aimed at newcomers to the field. Classification of Model Transformation Approaches Feature-based Survey of Model Transformation Approaches A Taxonomy of Model Transformation Model Transformation: The Heart and Soul of Model-Driven Software Development The Epsilon Transformation Language Transforming Models with [&amp;#8230;]&lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=90&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</summary>
+    <content>&lt;p&gt;Below is a short list of papers and other resources in the area of model(-to-model) transformation aimed at newcomers to the field.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://users.dsic.upv.es/~einsfran/mda/czarnecki_helsen.pdf"&gt;Classification of Model Transformation Approaches&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5386627"&gt;Feature-based Survey of Model Transformation Approaches&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.sciencedirect.com/science/article/pii/S1571066106001435"&gt;A Taxonomy of Model Transformation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=01231150"&gt;Model Transformation: The Heart and Soul of Model-Driven Software Development&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.springerlink.com/content/r575u280706p0371/"&gt;The Epsilon Transformation Language&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.springerlink.com/content/7143g735r4j59463/"&gt;Transforming Models with ATL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.omg.org/spec/QVT/1.1/"&gt;QVT 1.1 Specification&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.springerlink.com/content/31pt5242j7745410/"&gt;Model Transformations? Transformation Models!&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;  &lt;a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/90/"&gt;&lt;img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/90/" /&gt;&lt;/a&gt; &lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=90&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</content>
+  </entry>
+  <entry>
+    <title>Reviewing PDF Documents using Skim</title>
+    <link href="http://kolovos.wordpress.com/2012/08/01/reviewing-pdf-documents-using-skim/"/>
+    <published>Wed, 01 Aug 2012 10:18:26 +0000</published>
+    <author>
+      <name>Dimitris Kolovos</name>
+    </author>
+    <summary>When reviewing PDF documents (papers, reports etc.) I often need to produce a list of comments in a separate text file. For quite some time I&amp;#8217;ve been doing this by switching back and forth between the PDF viewer and a text editor but I&amp;#8217;ve recently found a more efficient way of doing this so I [&amp;#8230;]&lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=85&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</summary>
+    <content>&lt;p&gt;When reviewing PDF documents (papers, reports etc.) I often need to produce a list of comments in a separate text file. For quite some time I&amp;#8217;ve been doing this by switching back and forth between the PDF viewer and a text editor but I&amp;#8217;ve recently found a more efficient way of doing this so I thought I&amp;#8217;d share it. &lt;/p&gt;
+&lt;p&gt;To avoid switching between applications, I started marking my comments using highlights in &lt;a href="http://skim-app.sourceforge.net"&gt;Skim&lt;/a&gt; and exporting them using &lt;b&gt;File-&amp;gt;Export-&amp;gt;Notes as Text&lt;/b&gt; which creates a file with the following format.&lt;/p&gt;
+&lt;pre&gt;
+* Highlight, page 2
+some bold claim -&amp;gt; needs reference
+
+* Highlight, page 3
+confusing sentence -&amp;gt; Not entirely clear what this means
+
+* Highlight, page 4
+tyop -&amp;gt; typo
+&lt;/pre&gt;
+&lt;p&gt;This was not quite the format I wanted, so to fix this I&amp;#8217;ve created a new Skim template (&lt;a href="https://dl.dropbox.com/u/5636547/kolovos.wordpress.com/Compact%20Notes.txt"&gt;Compact Notes.txt&lt;/a&gt;) which produces notes in the following format:&lt;/p&gt;
+&lt;pre&gt;
+Page 2: some bold claim -&amp;gt; needs reference
+Page 3: confusing sentence -&amp;gt; Not entirely clear what this means
+Page 4: tyop -&amp;gt; typo
+&lt;/pre&gt;
+&lt;p&gt;To use Compact Notes.txt, you need to &lt;a href="https://dl.dropbox.com/u/5636547/kolovos.wordpress.com/Compact%20Notes.txt"&gt;download&lt;/a&gt; and place it under &lt;b&gt;/Library/Application Support/Skim/Templates/&lt;/b&gt; (you&amp;#8217;ll need to create any missing folders in this hierarchy). Once the template is in place, you can choose it in the &lt;b&gt;File Format&lt;/b&gt; drop down menu as displayed below:&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://kolovos.files.wordpress.com/2012/08/skim-export-notes.png"&gt;&lt;img src="http://kolovos.files.wordpress.com/2012/08/skim-export-notes.png?w=590" alt="" title="skim-export-notes"   class="alignnone size-full wp-image-86" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;br /&gt;  &lt;a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/85/"&gt;&lt;img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/85/" /&gt;&lt;/a&gt; &lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=85&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</content>
+  </entry>
+  <entry>
+    <title>Eclipse LaunchConfigurationDelegate prone to memory leaks</title>
+    <link href="http://kolovos.wordpress.com/2012/06/16/eclipse-launchconfigurationdelegate-prone-to-memory-leaks/"/>
+    <published>Sat, 16 Jun 2012 14:00:25 +0000</published>
+    <author>
+      <name>Dimitris Kolovos</name>
+    </author>
+    <summary>LaunchConfigurationDelegates in Eclipse remain in memory after their launch method has executed. As such, they also prevent any object they reference from being garbage-collected. For example in the following code class MyLaunchConfigurationDelegate extends LaunchConfigurationDelegate { protected BigObject bigObject = null; public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor progressMonitor) throws CoreException { this.bigObject = [&amp;#8230;]&lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=82&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</summary>
+    <content>&lt;p&gt;LaunchConfigurationDelegates in Eclipse remain in memory after their launch method has executed. As such, they also prevent any object they reference from being garbage-collected. For example in the following code&lt;/p&gt;
+&lt;pre&gt;
+class MyLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
+
+    protected BigObject bigObject = null;
+
+    public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor progressMonitor) throws CoreException {
+        this.bigObject = createBigObject();		
+    }
+}
+&lt;/pre&gt;
+&lt;p&gt;bigObject will remain in memory for ever, so it&amp;#8217;s worth keeping this in mind and cleaning up before returning from launch().&lt;/p&gt;
+&lt;br /&gt;  &lt;a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/82/"&gt;&lt;img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/82/" /&gt;&lt;/a&gt; &lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=82&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</content>
+  </entry>
+  <entry>
+    <title>Reduce space below LaTeX images</title>
+    <link href="http://kolovos.wordpress.com/2012/03/31/reduce-space-below-latex-images/"/>
+    <published>Sat, 31 Mar 2012 21:39:04 +0000</published>
+    <author>
+      <name>Dimitris Kolovos</name>
+    </author>
+    <summary>To reduce the amount of whitespace between an image and its caption, and between the image&amp;#8217;s caption and the next item in your document, you can use the following commands \addtolength{\belowcaptionskip}{-7mm} \addtolength{\abovecaptionskip}{-5mm}&lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=77&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</summary>
+    <content>&lt;p&gt;To reduce the amount of whitespace between an image and its caption, and between the image&amp;#8217;s caption and the next item in your document, you can use the following commands&lt;/p&gt;
+&lt;pre&gt;
+\addtolength{\belowcaptionskip}{-7mm}
+\addtolength{\abovecaptionskip}{-5mm}
+&lt;/pre&gt;
+&lt;br /&gt;  &lt;a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/77/"&gt;&lt;img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/77/" /&gt;&lt;/a&gt; &lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=77&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</content>
+  </entry>
+  <entry>
+    <title>LaTeX lstlisting XML formatting</title>
+    <link href="http://kolovos.wordpress.com/2012/03/31/latex-lstlisting-xml-formatting/"/>
+    <published>Sat, 31 Mar 2012 21:07:01 +0000</published>
+    <author>
+      <name>Dimitris Kolovos</name>
+    </author>
+    <summary>To format XML code in LaTeX using lstlisting, you can use the following language definition (adapted from here) \lstdefinelanguage{XML} { morestring=[b]", morestring=[s]{&amp;#62;}{&amp;#60;}, morecomment=[s]{}, identifierstyle=\textbf, showstringspaces=false }&lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=69&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</summary>
+    <content>&lt;p&gt;To format XML code in LaTeX using lstlisting, you can use the following language definition (adapted from &lt;a href="http://tex.stackexchange.com/questions/10255/xml-syntax-highlighting"&gt;here&lt;/a&gt;)&lt;/p&gt;
+&lt;pre&gt;
+\lstdefinelanguage{XML} {
+  morestring=[b]",
+  morestring=[s]{&amp;gt;}{&amp;lt;},
+  morecomment=[s]{},
+  identifierstyle=\textbf,
+  showstringspaces=false
+}
+&lt;/pre&gt;
+&lt;br /&gt;  &lt;a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/69/"&gt;&lt;img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/69/" /&gt;&lt;/a&gt; &lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=69&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</content>
+  </entry>
+  <entry>
+    <title>MDE/modelling Mailing Lists</title>
+    <link href="http://kolovos.wordpress.com/2012/03/26/mdemodelling-mailing-lists/"/>
+    <published>Mon, 26 Mar 2012 21:24:33 +0000</published>
+    <author>
+      <name>Dimitris Kolovos</name>
+    </author>
+    <summary>Below are some mailing lists/groups related to MDE/modelling. Please feel free to suggest by leaving a reply below. Planet MDE mailing list PUML mailing list MDA Discussion mailing list LinkedIn MDD group LinkedIn DSM group LinkedIn MDA group&lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=61&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</summary>
+    <content>&lt;div&gt;&lt;span style="line-height:13px;"&gt;Below are some mailing lists/groups related to MDE/modelling. Please feel free to suggest by leaving a reply below.&lt;/span&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span style="line-height:13px;"&gt;&lt;a href="http://listes.imag.fr/wws/subrequest/planetmde"&gt;Planet MDE mailing list&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span style="line-height:13px;"&gt;&lt;a href="http://www.cs.york.ac.uk/puml/joining.html"&gt;PUML mailing list&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span style="line-height:13px;"&gt;&lt;a href="http://tech.groups.yahoo.com/group/mda-discussion/"&gt;MDA Discussion mailing list&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span style="line-height:13px;"&gt;&lt;a href="http://www.linkedin.com/groups?home=&amp;amp;gid=155446"&gt;LinkedIn MDD group&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span style="line-height:13px;"&gt;&lt;a href="http://www.linkedin.com/groups/DSM-Forum-138803"&gt;LinkedIn DSM group&lt;/a&gt;&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.linkedin.com/groups/Model-Driven-Architecture-50539"&gt;LinkedIn MDA group&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br /&gt;  &lt;a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/61/"&gt;&lt;img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/61/" /&gt;&lt;/a&gt; &lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=61&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</content>
+  </entry>
+  <entry>
+    <title>Mac OS X Lion + Subclipse 1.8.x = Incompatible JavaHL library loaded. 1.7.x or later required.</title>
+    <link href="http://kolovos.wordpress.com/2012/02/03/mac-os-x-lion-subclipse-1-8-x-incompatible-javahl-library-loaded-1-7-x-or-later-required/"/>
+    <published>Fri, 03 Feb 2012 12:59:45 +0000</published>
+    <author>
+      <name>Dimitris Kolovos</name>
+    </author>
+    <summary>The problem appears to be that Subclipse 1.8.x needs Subversion 1.7 to run. Installing Subversion 1.7 from http://www.wandisco.com/get/?f=subversion-binaries/1.7/Subversion-1.7.2_10.7.x.pkg gets everything to work like a charm once again (a complete list of downloads is available here: http://www.ubersvn.com/download)&lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=56&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</summary>
+    <content>&lt;p&gt;The problem appears to be that Subclipse 1.8.x needs Subversion 1.7 to run. Installing Subversion 1.7 from &lt;a href="http://www.wandisco.com/get/?f=subversion-binaries/1.7/Subversion-1.7.2_10.7.x.pkg"&gt;http://www.wandisco.com/get/?f=subversion-binaries/1.7/Subversion-1.7.2_10.7.x.pkg&lt;/a&gt; gets everything to work like a charm once again (a complete list of downloads is available here:&lt;a href="http://www.ubersvn.com/download"&gt; http://www.ubersvn.com/download&lt;/a&gt;)&lt;/p&gt;
+&lt;br /&gt;  &lt;a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/56/"&gt;&lt;img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/56/" /&gt;&lt;/a&gt; &lt;img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&amp;#038;blog=2565049&amp;#038;post=56&amp;#038;subd=kolovos&amp;#038;ref=&amp;#038;feed=1" width="1" height="1" /&gt;</content>
+  </entry>
+</feed>

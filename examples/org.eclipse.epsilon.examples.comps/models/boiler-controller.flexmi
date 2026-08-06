@@ -1,0 +1,28 @@
+<?nsuri http://eclipse.org/epsilon/examples/comps?>
+<?render-egx ../picto/comps.egx?>
+<application name="BoilerController">
+	
+	<inport name="temperature" type="int"/>
+	<inport name="targetTemperature" type="int"/>
+	<inport name="boilerStatus" type="boolean"/>
+	<outport name="action" type="int"/>
+	
+	<component name="TemperatureController">
+		<inport name="temperature" type="int"/>
+		<inport name="targetTemperature" type="int"/>
+		<outport name="temperatureDifference" type="int"/>
+	</component>
+	
+	<component name="BoilerActuator">
+		<inport name="temperatureDifference" type="int"/>
+		<inport name="boilerStatus" type="boolean"/>
+		<outport name="action" type="int"/>
+	</component>
+	
+	<connector source="BoilerController.temperature" target="BoilerController.TemperatureController.temperature"/>
+	<connector source="BoilerController.targetTemperature" target="BoilerController.TemperatureController.targetTemperature"/>
+	<connector source="BoilerController.boilerStatus" target="BoilerController.BoilerActuator.boilerStatus"/>
+	<connector source="BoilerController.BoilerActuator.action" target="BoilerController.action"/>
+	<connector source="BoilerController.TemperatureController.temperatureDifference" target="BoilerController.BoilerActuator.temperatureDifference"/>
+	
+</application>

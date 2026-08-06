@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Flock Engine Acceptance Tests (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.flock.engine.test.acceptance
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse.org
+Require-Bundle: org.eclipse.epsilon.flock.engine;visibility:=reexport,
+ org.eclipse.epsilon.test.dependencies;visibility:=reexport,
+ org.eclipse.epsilon.hutn.test.dependencies.model;visibility:=reexport,
+ org.eclipse.epsilon.test.fixtures.hutn
+Export-Package: org.eclipse.epsilon.flock.engine.test.acceptance
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.flock.engine.test.acceptance
+

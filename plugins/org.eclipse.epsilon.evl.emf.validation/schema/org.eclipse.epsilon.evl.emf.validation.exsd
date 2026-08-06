@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.epsilon.evl.emf.validation" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.epsilon.evl.emf.validation" id="org.eclipse.epsilon.evl.emf.validation" name="EVL Constraints"/>
+      </appInfo>
+      <documentation>
+         Allow EVL constraints to be used to validate EMF models via context menu (Right Click -&gt; validate)
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="constraintsBinding" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="constraintsBinding">
+      <annotation>
+         <appInfo>
+            <meta.element labelAttribute="ePackageUri"/>
+         </appInfo>
+         <documentation>
+            Binding of an ePackage URI with a set of EVL constraints defined in a file.
+         </documentation>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="diagnosticVariable" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="additionalNamespaceURI" minOccurs="0" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="namespaceURI" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The namespace URI of the package on EClasses of which the constraints apply.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="constraints" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The file that contains the EVL constraints.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="resource"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="modelName" type="string">
+            <annotation>
+               <documentation>
+                  The name of the model in the EVL constraints file. If no value is specified the model shall be accessible as &quot;_Model&quot;.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="bundleId" type="string">
+            <annotation>
+               <documentation>
+                  The id of the bundle in which the EVL constraints module is contained. If unspecified, the contributing plugin is assumed.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="compose" type="boolean" use="default" value="true">
+            <annotation>
+               <documentation>
+                  When set to true, the EVL constraints gracefully blend with other constraints contributed through the EMF Validation framework. When set to false, only the EVL constraints are executed.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="validator" type="string">
+            <annotation>
+               <documentation>
+                  Optional extension for providing a specialised EvlValidator-based class to perform the validation of the EVL constraints.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.epsilon.evl.emf.validation.EvlValidator:"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="diagnosticVariable">
+      <annotation>
+         <documentation>
+            Adds a new global variable with the specified name to the EVL script.
+
+The value of the variable is taken from the entry with the same name in the context map of the EMF Diagnostician.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="name" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The name of the variable, which is used as the key of the Diagnostican context.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="additionalNamespaceURI">
+      <annotation>
+         <documentation>
+            Adds an additional  namespace URI of a package that is used in the validator, so the elements of this package are recognized and usable in the validators.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="namespaceURI" type="string" use="required">
+            <annotation>
+               <documentation>
+                  Additional  namespace URI of a package that is used in the validator
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;!-- EVL script for metamodel, overrides other validators.
+     The EVL script is at the root of the plugin project inside the validation folder --&gt;
+&lt;extension
+  point=&quot;org.eclipse.epsilon.evl.emf.validation&quot;&gt;
+    &lt;constraintsBinding
+      constraints=&quot;validation/myevl.evl&quot; 
+      namespaceURI=&quot;http://www.example.org/myEcore&quot;&gt;
+    &lt;/constraintsBinding&gt;
+&lt;/extension&gt;
+
+&lt;!-- EVL script for metamodel that references other metamodel, overrides other validators.
+     The EVL script is at the root of the plugin project inside the validation folder --&gt;
+&lt;extension
+  point=&quot;org.eclipse.epsilon.evl.emf.validation&quot;&gt;
+    &lt;constraintsBinding
+      constraints=&quot;validation/myevl.evl&quot;
+      namespaceURI=&quot;http://www.example.org/myEcore&quot;&gt;
+      &lt;!-- Add referenced metamodels here (can appear multiple times) --&gt;
+        &lt;additionalNamespaceURI
+          namespaceURI=&quot;http://www.example.org/otherEcore&quot;&gt;
+        &lt;/additionalNamespaceURI&gt;
+    &lt;/constraintsBinding&gt;
+&lt;/extension&gt;
+
+&lt;!-- EVL script for metamodel, merge (compose) with other validators.
+     The EVL script is at the root of the plugin project inside the validation folder --&gt;
+&lt;extension
+  point=&quot;org.eclipse.epsilon.evl.emf.validation&quot;&gt;
+    &lt;constraintsBinding
+      constraints=&quot;validation/myevl.evl&quot; 
+      namespaceURI=&quot;http://www.example.org/myEcore&quot;
+      compose=&quot;true&quot;&gt;
+    &lt;/constraintsBinding&gt;
+&lt;/extension&gt;
+      </documentation>
+   </annotation>
+
+
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) University of York 2008
+      </documentation>
+   </annotation>
+
+</schema>

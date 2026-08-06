@@ -1,0 +1,8 @@
+[%for (i in generateOptions()) {%]
+* [%=i%]
+[% }
+
+operation generateOptions() {
+  return 1.to(2);
+}
+%]

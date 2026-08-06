@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.eclipse.epsilon.evl.dt
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Validation Language Development Tools
+Bundle-SymbolicName: org.eclipse.epsilon.evl.dt;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.evl.dt.EvlPlugin
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.evl.engine,
+ org.eclipse.jface.text,
+ org.eclipse.epsilon.erl.dt,
+ org.eclipse.jface,
+ org.eclipse.core.jobs,
+ org.eclipse.epsilon.common.dt
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.epsilon.evl.dt,
+ org.eclipse.epsilon.evl.dt.editor,
+ org.eclipse.epsilon.evl.dt.editor.outline,
+ org.eclipse.epsilon.evl.dt.launching,
+ org.eclipse.epsilon.evl.dt.launching.tabs,
+ org.eclipse.epsilon.evl.dt.views,
+ org.eclipse.epsilon.evl.dt.wizards

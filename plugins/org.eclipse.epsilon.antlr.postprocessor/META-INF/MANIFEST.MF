@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Antlr AST Postprocessor
+Bundle-SymbolicName: org.eclipse.epsilon.antlr.postprocessor
+Bundle-Version: 2.9.0.qualifier
+Require-Bundle: org.eclipse.epsilon.antlr.postprocessor.model;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.epsilon.common
+Export-Package: org.eclipse.epsilon.antlr.postprocessor
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.antlr.postprocessor

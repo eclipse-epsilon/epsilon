@@ -1,0 +1,38 @@
+@namespace(uri="rts", prefix="")
+package rts;
+
+class Task {
+	attr String name;
+	ref Processor allocatedTo;
+	attr int period;
+	attr int deadline;
+	ref Device[*] accesses;
+}
+
+class Processor {
+	attr String name;
+	val Core[*] cores;
+	val Device[*]#processor devices;
+}
+
+class Core {
+	attr String name;
+}
+
+class Bus {
+	ref Processor[*] processors;
+}
+
+class Transaction {
+	ref Task[*] tasks;
+	attr int deadline;
+}
+
+abstract class Device {
+	attr String name;
+	ref Processor#devices processor;
+}
+
+class Sensor extends Device {
+	
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="petrinets" nsURI="petrinets2" nsPrefix="petrinets2">
+  <eClassifiers xsi:type="ecore:EClass" name="Net">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="places" upperBound="-1"
+        eType="#//Place" containment="true" eOpposite="#//Place/net"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transitions" upperBound="-1"
+        eType="#//Transition" containment="true" eOpposite="#//Transition/net"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="arcs" upperBound="-1" eType="#//Arc"
+        containment="true" eOpposite="#//Arc/net"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Place">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="net" lowerBound="1" eType="#//Net"
+        eOpposite="#//Net/places"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="in" upperBound="-1" eType="#//TPArc"
+        eOpposite="#//TPArc/dst"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="out" upperBound="-1" eType="#//PTArc"
+        eOpposite="#//PTArc/src"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Transition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="net" lowerBound="1" eType="#//Net"
+        eOpposite="#//Net/transitions"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="in" lowerBound="1" upperBound="-1"
+        eType="#//PTArc" eOpposite="#//PTArc/dst"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="out" lowerBound="1" upperBound="-1"
+        eType="#//TPArc" eOpposite="#//TPArc/src"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Arc" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="net" lowerBound="1" eType="#//Net"
+        eOpposite="#//Net/arcs"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PTArc" eSuperTypes="#//Arc">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="src" lowerBound="1" eType="#//Place"
+        eOpposite="#//Place/out"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dst" lowerBound="1" eType="#//Transition"
+        eOpposite="#//Transition/in"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TPArc" eSuperTypes="#//Arc">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="src" lowerBound="1" eType="#//Transition"
+        eOpposite="#//Transition/out"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dst" lowerBound="1" eType="#//Place"
+        eOpposite="#//Place/in"/>
+  </eClassifiers>
+</ecore:EPackage>

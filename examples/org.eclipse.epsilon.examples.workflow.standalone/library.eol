@@ -1,0 +1,3 @@
+for (writer in Writer.all) {
+    (writer.name + " wrote " + writer.books.title.concat(", ")).println();
+}

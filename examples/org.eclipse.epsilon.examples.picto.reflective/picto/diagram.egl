@@ -1,0 +1,16 @@
+[%import "ecoreutil.eol";%]
+
+digraph G {
+	node[style=filled]
+	
+	[%for (e in d.eContents.select(e|e.isNode())){%]
+	[%e.~nodeId = "n" + loopCount;%]
+	[%=e.~nodeId%][label="[%=e.getLabel()%]", fillcolor="[%=e.getColor()%]", shape="[%=e.getShape()%]"]
+	[%}%]
+	
+	[%for (l in d.eContents.select(l|l.isLink())){%]
+	[%=l.getSource().~nodeId%]->[%=l.getTarget().~nodeId%][label="[%=l.getLabel()%]"]
+	[%}%]
+	
+	
+}

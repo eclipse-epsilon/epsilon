@@ -1,0 +1,12 @@
+<project default="main">
+	<target name="main">
+		
+		<epsilon.xml.loadModel name="XMLDoc" file="gen_library.xml" 
+			read ="false" store="true"/>
+		
+		<epsilon.eol src="builddocument.eol">
+			<model ref="XMLDoc"/>
+		</epsilon.eol>
+		
+	</target>
+</project>

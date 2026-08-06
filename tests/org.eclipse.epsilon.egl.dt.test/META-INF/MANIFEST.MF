@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Generation Language Development Tools Tests (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.egl.dt.test
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.test.dependencies,
+ org.eclipse.epsilon.egl.dt,
+ org.eclipse.epsilon.common.dt.test
+Export-Package: org.eclipse.epsilon.egl.dt.launching.tabs,
+ org.eclipse.epsilon.egl.dt.test,
+ org.eclipse.epsilon.egl.dt.widgets
+Automatic-Module-Name: org.eclipse.epsilon.egl.dt.test

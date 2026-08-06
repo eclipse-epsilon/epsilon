@@ -1,0 +1,16 @@
+<project default="main">
+	<target name="main">
+		
+		<epsilon.xml.loadModel name="XML" file="library.xml" read="true"/>
+		
+		<epsilon.xml.loadModel name="RemoteXML" 
+			uri="http://www.eclipse.org/forums/rdf.php?mode=m&amp;l=1&amp;basic=1&amp;frm=22&amp;n=10"
+			read="true"/>
+		
+		<epsilon.eol>
+			<model ref="RemoteXML"/>
+			Element.all.random().println();
+		</epsilon.eol>
+		
+	</target>
+</project>

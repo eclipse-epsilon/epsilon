@@ -1,0 +1,12 @@
+@namespace(uri="http://york.ac.uk/emf-rdf/examples/orgchart-extra")
+package orgchart_extra;
+
+// NOTE: importing by nsURI is crucial here, to avoid having
+// separate copies of the same Employee type in memory.
+//
+// Importing by platform:/resource URI will not work as expected!
+import "http://york.ac.uk/emf-rdf/examples/orgchart";
+
+class ExtendedEmployee extends orgchart.Employee {
+	attr int salary;
+}

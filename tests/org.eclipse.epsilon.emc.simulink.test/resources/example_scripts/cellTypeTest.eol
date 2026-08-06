@@ -1,0 +1,9 @@
+var all = SubSystem.all.select(e|e.LinkStatus == "none");
+for (s in all){
+	var data = s.RTWData;
+	if (data<>null) {
+		data.println;
+		data.get('ADIGeneratedName').println;
+	}
+	
+}

@@ -1,0 +1,9 @@
+@test
+operation systemIsBuiltIn() {
+	assertTrue(System.isDefined());
+}
+
+@test
+operation nullIsBuiltIn() {
+	assertEquals("foo", null + "foo");
+}

@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EGL Fine-Grained Traceability Acceptance Tests (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.egl.traceability.fine.test.acceptance
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse.org
+Require-Bundle: org.eclipse.epsilon.egl.engine.test.acceptance,
+ org.eclipse.epsilon.egl.traceability.fine
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance,
+ org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.contributions,
+ org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.misc,
+ org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.subtemplates,
+ org.eclipse.epsilon.egl.engine.traceability.fine.test.acceptance.textlocations
+Automatic-Module-Name: org.eclipse.epsilon.egl.traceability.fine.test.acceptance

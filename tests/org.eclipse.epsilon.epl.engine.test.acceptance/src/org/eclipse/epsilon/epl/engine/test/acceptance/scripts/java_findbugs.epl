@@ -1,0 +1,147 @@
+/**
+* @see http://findbugs.sourceforge.net/bugDescriptions.html
+*/
+
+pre {
+	var methodMap = MethodDeclaration.all.mapBy(m | m.name);
+}
+
+
+operation getMethods(name : String) : Collection(MethodDeclaration) {
+	var methods = methodMap.get(name);
+	if (methods.isDefined()) return methods;
+	else return new Sequence;
+}
+
+operation InfixExpression operatorIsEquality() : Boolean {
+	return self.operator == InfixExpressionKind#EQUALS or self.operator == InfixExpressionKind#NOT_EQUALS;
+}
+
+operation Modifier isLocal() : Boolean {
+	return self.visibility == VisibilityKind#private or self.visibility == VisibilityKind#none;
+}
+
+operation AbstractTypeDeclaration implements(type : String) {
+	return self.superInterfaces.exists(si | si.type.name == type);
+}
+
+@cached
+operation AbstractTypeDeclaration getMethods() : Collection {
+	return self.bodyDeclarations.select(bd |
+			bd.isKindOf(MethodDeclaration));
+}
+
+operation ClassDeclaration hasEquals() : Boolean {
+	return self.getMethods().exists(method |
+			method.name == "equals" and
+			method.parameters.size() == 1 and
+			method.parameters.first().type.type.name == "Object" and
+			method.thrownExceptions.isEmpty() and
+			method.modifier.isDefined() and
+			method.modifier.visibility == VisibilityKind#public and
+			method.returnType.type.isTypeOf(PrimitiveTypeBoolean)
+	);
+}
+
+operation ClassDeclaration hasHashcode() : Boolean {
+	return self.getMethods().exists(method |
+			method.name == "hashCode" and
+			method.parameters.isEmpty() and
+			method.thrownExceptions.isEmpty() and
+			method.modifier.isDefined() and
+			method.modifier.visibility == VisibilityKind#public and
+			method.returnType.type.isTypeOf(PrimitiveTypeInt)
+	);
+}
+
+operation ClassDeclaration hasCompareTo() : Boolean {
+	return self.getMethods().exists(method | 
+			method.name == "compareTo" and
+			method.parameters.size() == 1 and
+			method.parameters.first().type.type.name == "Object" and
+			method.modifier.isDefined() and
+			method.modifier.visibility == VisibilityKind#public and
+			method.thrownExceptions.isEmpty() and
+			method.returnType.type.isTypeOf(PrimitiveTypeInt)
+	);
+}
+
+pattern PublicField
+	class : ClassDeclaration,
+	field : FieldDeclaration
+		from: class.bodyDeclarations,
+	setter : MethodDeclaration
+		from: class.bodyDeclarations
+		guard: setter.name = "set" + field.name,
+	getter : MethodDeclaration
+		from: class.bodyDeclarations
+		guard:
+			(getter.name = "get" + field.name or
+			getter.name = "is" + field.name) {
+	
+}
+
+pre {
+	var accessibleFields = new Set;
+	var methodMap = MethodDeclaration.all.parallelMapBy(m | m.name);
+}
+
+operation getMethod(name : String) : Collection {
+	var methods = methodMap.get(name);
+	if (methods.isDefined()) return methods;
+	else return new Set;
+}
+
+@cached
+operation FieldDeclaration getName() : String {
+	return self.fragments.first().name.firstToUpperCase();
+}
+
+pattern PublicField
+	class : ClassDeclaration
+		in: ClassDeclaration.all.parallelSelect(c |
+			c.superInterfaces.exists(t | t.type.name == "Serializable")
+		),
+	field : FieldDeclaration
+		from: class.bodyDeclarations,
+	setter : MethodDeclaration
+		active: field.modifier.isUndefined() or
+				field.modifier.visibility <> VisibilityKind::public
+		optional: false
+		from: getMethods("set" + field.getName())
+		guard: setter.abstractTypeDeclaration == class,
+	getter : MethodDeclaration
+		active: setter.isActive()
+		optional: false
+		from: getMethods("get" + field.getName()).includingAll(getMethods("is" + field.getName()))
+		guard: getter.abstractTypeDeclaration == class {
+	
+	onmatch {
+		accessibleFields.add(field);
+	}
+}
+
+post {
+	"public serializable non-static fields: ".println();
+	accessibleFields
+		.parallelReject(f | f.modifier.isDefined() and (
+			f.modifier.static or
+			f.modifier.transient
+		))
+		.parallelCollect(f | f.getName())
+		.forEach(f | f.println());
+}
+
+pattern MethodsWithLowerCase
+	md: MethodDeclaration
+		guard: md.name.firstToLowerCase() == md.name
+
+
+pattern Finalize
+	mi: MethodInvocation
+		guard:
+			mi.method.name == "finalize" and
+			mi.method.parameters.isEmpty()
+
+
+

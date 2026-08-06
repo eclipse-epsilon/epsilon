@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ant.core.antTasks">
+      <antTask
+            class="org.eclipse.epsilon.workflow.extension.example.tasks.EolExtTask"
+            library="lib/org.eclipse.epsilon.workflow.extension.example.jar"
+            name="epsilon.eol.ext">
+      </antTask>
+   </extension>
+   <extension
+         point="org.eclipse.ant.core.extraClasspathEntries">
+      <extraClasspathEntry
+            library="lib/org.eclipse.epsilon.workflow.extension.example.jar">
+      </extraClasspathEntry>
+   </extension>
+
+</plugin>

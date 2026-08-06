@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:tns="http://xml.netbeans.org/schema/junit.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+    <xsd:element name="testsuite">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element ref="properties"/>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="testcase"/>
+                <xsd:element name="system-out" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Contents of the standard output stream produced while running all tests.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+                <xsd:element name="system-err" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation>Contents of the standard error stream produced while running all the tests.</xsd:documentation>
+                    </xsd:annotation>
+                </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="errors" type="xsd:integer" use="required">
+                <xsd:annotation>
+                    <xsd:documentation>Total number of tests which failed due to an unexpected exception.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="failures" type="xsd:integer" use="required">
+                <xsd:annotation>
+                    <xsd:documentation>Total number of tests which failed due to a violated assertion.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="hostname" type="xsd:string" use="required"/>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="tests" type="xsd:integer" use="required">
+                <xsd:annotation>
+                    <xsd:documentation>Total number of tests run, regardless of their result.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="time" type="xsd:double" use="required">
+                <xsd:annotation>
+                    <xsd:documentation>Total time required by all tests, measured in seconds.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="timestamp" type="xsd:dateTime"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="properties">
+        <xsd:annotation>
+            <xsd:documentation>Key-pair values documenting any information about the environment that might be useful.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element maxOccurs="unbounded" minOccurs="0" ref="property"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="property">
+        <xsd:complexType>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="value" type="xsd:string" use="required"/>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="testcase">
+        <xsd:complexType>
+            <xsd:choice minOccurs="0">
+                <xsd:element ref="failure"/>
+                <xsd:element ref="error"/>
+            </xsd:choice>
+            <xsd:attribute name="classname" type="xsd:string" use="required"/>
+            <xsd:attribute name="name" type="xsd:string" use="required"/>
+            <xsd:attribute name="time" type="xsd:double" use="required">
+                <xsd:annotation>
+                    <xsd:documentation>Time required by the test, measured in seconds, using the English locale.</xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType mixed="true" name="failedTestContents">
+         <xsd:attribute name="message" type="xsd:string" use="required">
+             <xsd:annotation>
+                 <xsd:documentation>Message of the exception produced during the test.</xsd:documentation>
+             </xsd:annotation>
+         </xsd:attribute>
+         <xsd:attribute name="type" type="xsd:string" use="required">
+             <xsd:annotation>
+                 <xsd:documentation>Fully qualified name of the class of the exception thrown during the test.</xsd:documentation>
+             </xsd:annotation>
+         </xsd:attribute>
+    </xsd:complexType>
+    <xsd:element name="failure" type="failedTestContents"/>
+    <xsd:element name="error" type="failedTestContents"/>
+</xsd:schema>

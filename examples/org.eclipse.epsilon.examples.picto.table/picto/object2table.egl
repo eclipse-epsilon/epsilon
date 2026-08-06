@@ -1,0 +1,106 @@
+[%import "objectUtils.eol";%]
+<html>
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+</head>
+<body>
+[%
+	var javascript = "javascript:top.showElement('" + object.id + "','" + object.eResource.uri + "')";
+%]
+<h5 style="padding: 5px;">[%=object.getIdentifier()%] <a href="[%=javascript%]">(show in editor)</a></h5>
+<table class="table table-stripped">
+	<tr>
+		<th style="white-space: nowrap; width: 1%; text-align: left;">Feature</th>
+		<th style="text-align: left;">Value</th>
+	</tr>
+[%for (feature in object.getFeatures()){%]
+	<tr pictoid="[%=feature.name%]">
+		<td>[%=feature.getIcon()%][%=feature.name%]</td>
+		<td>[%=feature.displayValue(object)%]</td>
+	</tr>
+[%}%]
+</table>
+</body>
+</html>
+[%
+
+operation Any getFeatures() {
+	var features = null;
+	
+	if (isLayerActive("inherited")) {
+		features = self.eClass().getEAllStructuralFeatures(); 
+	}
+	else {
+		features = self.eClass().getEStructuralFeatures();
+	}
+
+	if (not isLayerActive("derived")) {
+		features = features.select(f | not f.derived);
+	}
+	
+	if (isLayerActive("containmentReferences")) {
+		features = features.select(f | 
+				(not f.hasProperty("eReferenceType"))
+				or 
+				(f.containment));
+	}
+
+	return features.sortBy(f | f.name.toLowerCase());
+}
+
+operation Any displayValue(object) {
+	if (self.hasProperty("eReferenceType")) {
+		return self.displayReference(object);
+	}
+	else {
+		return object.eGet(self);
+	}
+}
+
+operation Any displayReference(object) {
+	var result = "";
+	var referenced = object.eGet(self);
+	if (referenced <> null) {
+		if (referenced.isKindOf(Collection)) {
+			result = referenced.collect(r | r.toLink()).concat(", ");
+		}
+		else {
+			result = referenced.toLink();
+		}
+	} 
+	return result;
+}
+
+operation Any toLink() {
+	var javascript = "javascript:top.showView([" + 
+			self.getPath().collect(p | "'" + p + "'").concat(",") + "])";
+	var tooltip = "Jump to " + self.getIdentifier();
+	if (self.eContainer <> null) {
+		tooltip += " (" + self.eContainer.getIdentifier() + ")";
+	}
+	return '<a href="' + javascript + '" title="' + tooltip + '">' + self.getIdentifier() + '</a>';
+}
+
+operation isLayerActive(id : String) {
+	var layer = layers.selectOne(l|l.id = id);
+	if (layer.isDefined()) {
+		return layer.active;
+	}
+	else {
+		return true;
+	}
+}
+
+operation Any getIcon() {
+	if (self.hasProperty("eReferenceType")) {
+		return '<img src="' + getImage("icons/EReference.gif") + '"></img>';
+	}
+	else {
+		return '<img src="' + getImage("icons/EAttribute.gif") + '"></img>';
+	}
+}
+
+operation Any getIcon() {
+	return getImage("icons/" + self.eClass.name + ".gif");
+}
+%]

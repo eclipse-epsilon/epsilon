@@ -1,0 +1,8 @@
+<?nsuri oo?>
+<model>
+	<class name="Customer">
+		<attribute name="name" type="String"/>
+		<attribute name="age" type="Integer"/>
+	</class>
+	<class name="Invoice"/>
+</model>

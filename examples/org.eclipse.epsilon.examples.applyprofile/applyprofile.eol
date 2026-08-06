@@ -1,0 +1,13 @@
+var umlTool : new Native("org.eclipse.epsilon.emc.uml.dt.UMLTool");
+var ecoreProfile = umlTool.getProfile("http://www.eclipse.org/uml2/schemas/Ecore/5");
+// or 
+// var ecoreProfile = umlTool.getProfileFromPathmapUri("pathmap://UML_PROFILES/Ecore.profile.uml").println();
+
+var m : new Model(name="p");
+m.applyProfile(ecoreProfile);
+
+var eClassStereotype = ecoreProfile.getPackagedElement("EClass");
+
+var c : new Class(name="c");
+m.packagedElement.add(c);
+c.applyStereotype(eClassStereotype);

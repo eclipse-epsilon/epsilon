@@ -1,0 +1,62 @@
+@test
+operation emptyToEmpty() {
+  transform();
+  assertEqualModels("Graph", "GraphExpected");
+}
+
+@test
+operation oneNodeToRoot() {
+  var t = newRoot('A');
+  var g = new GraphExpected!Graph;
+  g.newNode('A');
+  transform();
+  assertEqualModels("Graph", "GraphExpected");
+}
+
+@test
+operation twoLevels() {
+  var root = newRoot('A');
+  root.newChild('B');
+  root.newChild('C');
+
+  var g = new GraphExpected!Graph;
+  var gMain = g.newNode('A');
+  gMain.newChild('B');
+  gMain.newChild('C');
+
+  transform();
+  assertEqualModels("Graph", "GraphExpected");
+}
+
+operation newRoot(label : String) : Tree!Tree {
+  var t = new Tree!Tree;
+  t.label = label;
+  return t;
+}
+
+operation Tree!Tree newChild(label : String) : Tree!Tree {
+  var child = new Tree!Tree;
+  child.label = label;
+  child.parent = self;
+  return child;
+}
+
+operation GraphExpected!Graph newNode(name : String) : GraphExpected!Node {
+  var node = new GraphExpected!Node;
+  node.name = name;
+  self.nodes.add(node);
+  return node;
+}
+
+operation GraphExpected!Node linkTo(target : GraphExpected!Node) : GraphExpected!Edge {
+  var edge = new GraphExpected!Edge;
+  edge.source = self;
+  edge.target = target;
+  return edge;
+}
+
+operation GraphExpected!Node newChild(label : String) : GraphExpected!Node {
+  var node = self.eContainer.newNode(label);
+  self.linkTo(node);
+  return node;
+}

@@ -1,0 +1,58 @@
+operation e() {
+	throw "Shouldn't have been called!";
+}
+
+operation f(x) {
+	return x;
+}
+
+@test
+operation testSimpleAssignment() {
+	var a = null;
+	var b = 1;
+	var c = a ?: b;
+	assertEquals(1, c);
+	c = b ?: a;
+	assertEquals(1, c);
+}
+
+@test
+operation testLazyAssignment() {
+	var a = 2;
+	var c = a ?: e();
+	assertEquals(2, c);
+}
+
+@test
+operation testBooleanParameters() {
+	assertTrue(true ?: false);
+	assertFalse(false ?: true);
+	assertTrue(null ?: true);
+	assertFalse(false ?: null);
+	assertTrue(true ?: e());
+}
+
+@test
+operation testOperationCallInAssignment() {
+	var result = f(null) ?: f(5);
+	assertEquals(5, result);
+}
+
+@test
+operation testWithTernary() {
+	assertTrue(false ? e() : null ?: true);
+	var result = (f(1) ?: null).isDefined() ? 2 : e();
+	assertEquals(2, result);
+}
+
+@test
+operation testChainedExpression() {
+	var c = f(1)?.getClass().getSimpleName() ?: f(e()).getClass();
+	assertEquals("Integer", c);
+}
+
+@test
+operation testUndefinedVariable() {
+	var x = nonExistentVar ?: 9;
+	assertEquals(9, x);
+}

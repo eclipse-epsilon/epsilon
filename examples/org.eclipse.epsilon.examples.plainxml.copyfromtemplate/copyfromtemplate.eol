@@ -1,0 +1,11 @@
+// The contacts list in contacts.xml
+var contacts = Contacts!t_contacts.all.first();
+
+// The vcard element in templates.xml
+var vcard = Templates!t_vcard.all.first();
+
+// Copy the vcard into the contacts document
+var clone = Contacts.document.importNode(vcard, true);
+
+// Put it under the contacts list
+contacts.appendChild(clone);

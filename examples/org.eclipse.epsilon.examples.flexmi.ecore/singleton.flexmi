@@ -1,0 +1,20 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?render-egx ecore.egx?>
+<_>
+	<singleton name="Log">
+		<attr name="level" type="int"/>
+	</singleton>
+	
+	<datatype name="int"/>
+	
+	<:template name="singleton">
+		<content>
+			<class :var="c">
+				<ref name="instance" :type="c"/>
+				<op name="getInstance" :type="c"/>
+				<:slot/>
+			</class>
+		</content>
+	</:template>
+	
+</_>

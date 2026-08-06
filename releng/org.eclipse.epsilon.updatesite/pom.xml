@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.epsilon</groupId>
+    <artifactId>releng</artifactId>
+    <version>2.9.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>org.eclipse.epsilon.updatesite</artifactId>
+  <packaging>eclipse-repository</packaging>
+
+  <build>
+    <plugins>
+
+      <!--
+      Ideally we'd want to be able to run the assemble-repository goal of tycho-p2-repository-plugin first, Groovy next (to add the missing references to content.xml) and the archive-repository goal of tycho-p2-repository-plugin to create a zip archive of the update site. I've tried to achieve this with Maven <executions> but without much success. Therefore, I've turned skipArchive to true and zipped the update site using Groovy.
+      -->
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <includeAllDependencies>false</includeAllDependencies>
+          <compress>false</compress>
+          <xzCompress>false</xzCompress>
+          <skipArchive>true</skipArchive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>groovy-maven-plugin</artifactId>
+        <version>2.1.1</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-zip</artifactId>
+            <version>1.13</version>
+            <type>jar</type>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>releng/org.eclipse.epsilon.updatesite/patch-content-xml-and-zip-site.groovy</source>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!--plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-packaging-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <archiveSite>true</archiveSite>
+        </configuration>
+      </plugin-->
+    </plugins>
+  </build>
+</project>

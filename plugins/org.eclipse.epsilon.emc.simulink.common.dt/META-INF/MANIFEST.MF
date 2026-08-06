@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Simulink Common Development Tools
+Bundle-SymbolicName: org.eclipse.epsilon.emc.simulink.common.dt;singleton:=true
+Automatic-Module-Name: org.eclipse.epsilon.emc.simulink.common.dt
+Bundle-Version: 2.9.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.common.dt;visibility:=reexport,
+ org.eclipse.epsilon.emc.simulink.common
+Bundle-Activator: org.eclipse.epsilon.emc.simulink.common.dt.Activator
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Eclipse Modeling Project
+Export-Package: org.eclipse.epsilon.emc.simulink.common.dt

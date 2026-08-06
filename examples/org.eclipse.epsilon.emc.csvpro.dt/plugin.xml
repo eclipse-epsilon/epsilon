@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.csvpro.CsvProModel"
+            dialog="org.eclipse.epsilon.emc.csvpro.dt.CsvProModelConfigurationDialogue"
+            icon="icons/csv.png"
+            label="CSV Pro Model"
+            type="CSV Pro">
+      </modelType>
+   </extension>
+
+</plugin>

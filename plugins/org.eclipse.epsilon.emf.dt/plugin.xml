@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.emf.dt.NewEmfModelWizard"
+            icon="icons/emfmodel.gif"
+            id="org.eclipse.epsilon.emf.dt.NewEmfModelWizard"
+            name="EMF Model"/>
+      <wizard
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.emf.dt.NewRegisteredEPackageWizard"
+            icon="icons/register.gif"
+            id="org.eclipse.epsilon.emf.dt.NewRegisteredEPackageWizard"
+            name="Registered EPackage">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.epsilon.perspective.popups.ecore"
+            nameFilter="*.ecore"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="org.eclipse.epsilon.emf.dt.RegisterMetamodelAction"
+               icon="icons/register.gif"
+               id="org.eclipse.epsilon.emf.dt.RegisterMetamodelAction"
+               label="Register EPackages"/>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.epsilon.perspective.popups.emf"
+            nameFilter="*.emf"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="org.eclipse.epsilon.emf.dt.RegisterMetamodelAction"
+               icon="icons/register.gif"
+               id="org.eclipse.epsilon.emf.dt.RegisterMetamodelAction"
+               label="Register EPackages"/>
+      </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="org.eclipse.epsilon.perspective.popups.ecore"
+            nameFilter="*.xsd"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="org.eclipse.epsilon.emf.dt.XSD2EcoreAction"
+               icon="icons/xsd2ecore.png"
+               id="org.eclipse.epsilon.emf.dt.XSD2EcoreAction"
+               label="Generate Ecore model">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="Epsilon"
+            class="org.eclipse.epsilon.emf.dt.EmfRegistryPreferencePage"
+            id="EmfRegistryPreferencePage"
+            name="EMF Registry"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.eclipse.epsilon.emf.dt.EmfUtilPlugin"></startup>
+   </extension>
+
+</plugin>

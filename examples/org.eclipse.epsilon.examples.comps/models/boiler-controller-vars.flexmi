@@ -1,0 +1,27 @@
+<?nsuri http://eclipse.org/epsilon/examples/comps?>
+<application name="BoilerController" :var="bc">
+	
+	<inport name="temperature" type="int"/>
+	<inport name="targetTemperature" type="int"/>
+	<inport name="boilerStatus" type="boolean"/>
+	<outport name="action" type="int"/>
+	
+	<component name="TemperatureController" :var="tc">
+		<inport name="temperature" type="int"/>
+		<inport name="targetTemperature" type="int"/>
+		<outport name="temperatureDifference" type="int"/>
+	</component>
+	
+	<component name="BoilerActuator" :var="ba">
+		<inport name="temperatureDifference" type="int"/>
+		<inport name="boilerStatus" type="boolean"/>
+		<outport name="action" type="int"/>
+	</component>
+	
+	<connector :source="bc.temperature" :target="tc.temperature"/>
+	<connector :source="bc.targetTemperature" :target="tc.targetTemperature"/>
+	<connector :source="bc.boilerStatus" :target="ba.boilerStatus"/>
+	<connector :source="ba.action" :target="bc.action"/>
+	<connector :source="tc.temperatureDifference" :target="ba.temperatureDifference"/>
+	
+</application>

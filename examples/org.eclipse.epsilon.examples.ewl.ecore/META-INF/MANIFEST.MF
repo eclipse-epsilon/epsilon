@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EWL GMF Ecore Plug-in
+Bundle-SymbolicName: org.eclipse.epsilon.examples.ewl.ecore;singleton:=true
+Bundle-Version: 1.0.0
+Require-Bundle: org.eclipse.epsilon.ewl.emf;bundle-version="0.8.1"

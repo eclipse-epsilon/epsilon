@@ -1,0 +1,5 @@
+operation comps::Component getPath() {
+	return Sequence{"Model"}.
+		includingAll(self.closure(c|c.parent).invert().name).
+		including(self.name);
+}

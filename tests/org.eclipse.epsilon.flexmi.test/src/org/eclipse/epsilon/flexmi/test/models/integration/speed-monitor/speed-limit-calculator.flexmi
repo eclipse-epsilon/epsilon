@@ -1,0 +1,27 @@
+<?nsuri comps?>
+<?import types.flexmi?>
+<?import library.flexmi?>
+<?render-egx comps.egx?>
+<comp name="SpeedLimitCalculator" :local="slc">
+	<in name="location" type="geo"/>
+	<out name="speedLimit" type="float"/>
+	
+	<comp name="MinimumSpeedLimit" :var="msl">
+		<out name="speedLimit" type="float"/>
+	</comp>
+	
+	<comp name="SpeedLimitDatastore" :var="sld">
+		<in name="location" type="geo"/>
+		<out name="speedLimit" type="float"/>
+	</comp>
+	
+	<nary_operator name="Max" 
+		action="result = in1 &lt; in2 ? in2 : in1" 
+		in="float" out="float" n="2"/>
+	
+	<con :from="slc.location" :to="sld.location"/>
+	<con :from="sld.speedLimit" :to="slc.Max.in1"/>
+	<con :from="msl.speedLimit" :to="slc.Max.in2"/>
+	<con :from="slc.Max.result" :to="slc.speedLimit"/>
+	
+</comp>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.emf.decorator.DecoratorEmfModel"
+            dialog="org.eclipse.epsilon.emc.emf.decorator.dt.DecoratorEmfModelConfigurationDialog"
+            icon="icons/Decorator.gif"
+            label="EMF Decorator Model"
+            type="EMFDecorator">
+      </modelType>
+   </extension>
+
+</plugin>

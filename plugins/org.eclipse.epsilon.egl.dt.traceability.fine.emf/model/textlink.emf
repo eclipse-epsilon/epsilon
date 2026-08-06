@@ -1,0 +1,33 @@
+@namespace(uri="http://www.eclipse.org/gmt/epsilon/egl/textlink", prefix="textlink")
+
+package textlink;
+
+class Trace {
+   val TraceLink[*] traceLinks;
+}
+
+class TraceLink {
+   val ModelLocation[1] source;
+   val TextLocation[1] destination;
+}
+
+abstract class TraceLinkEnd {}
+
+abstract class ModelLocation extends TraceLinkEnd  {
+   attr String[1] propertyName;
+}
+
+class EmfModelLocation extends ModelLocation {
+   ref EObject[1] modelElement;   
+}
+
+class TextLocation extends TraceLinkEnd {
+   attr String[1] resource;
+   val Region[1] region;
+}
+
+class Region {
+   attr Integer[1] offset;
+   attr Integer[1] length;
+   attr String text;
+}

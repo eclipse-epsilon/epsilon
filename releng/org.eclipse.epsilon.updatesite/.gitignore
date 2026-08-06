@@ -1,0 +1,8 @@
+features/
+plugins/
+binary/
+*.zip
+*.gz
+*.pack
+*.jar
+.DS_Store

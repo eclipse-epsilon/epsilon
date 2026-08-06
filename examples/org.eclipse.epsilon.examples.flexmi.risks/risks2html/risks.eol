@@ -1,0 +1,9 @@
+operation Risk getOverall() {
+	return self.severity.value * self.likelihood.value;
+}
+
+operation Integer toColour() {
+	if (self == 1) return "99cc00";
+	else if (self == 2) return "ffc000";
+	else return "ff0000";
+}

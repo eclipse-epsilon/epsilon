@@ -1,0 +1,6 @@
+var sampleTool = new Native("org.eclipse.epsilon.examples.tools.SampleTool");
+sampleTool.name = "George";
+sampleTool.sayHello().println();
+
+sampleTool.sayHelloAsVariable("greeting");
+greeting.println();

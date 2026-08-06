@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<project default="main">
+	
+	<target name="main" depends="loadModels, compare, merge, disposeModels">
+	
+	</target>
+	
+	<target name="loadModels">
+		
+		<epsilon.emf.register file="../org.eclipse.epsilon.examples.metamodels/Entity.ecore"/>
+		<epsilon.emf.register file="../org.eclipse.epsilon.examples.metamodels/DomainVocabulary.ecore"/>
+		
+		<epsilon.emf.loadModel name="Source" profile="true"
+                                       modelFile="models/Source.model"
+                                       metamodelUri="Entity"
+                                       read="true" store="false"/>
+
+		<epsilon.emf.loadModel name="Target" profile="true"
+                                       modelFile="models/Target.model"
+                                       metamodelUri="Entity"
+                                       read="false" store="true"/>
+		
+		<epsilon.emf.loadModel name="Vocabulary" profile="true"
+                                       modelFile="models/Vocabulary.model"
+                                       metamodelUri="DomainVocabulary"
+                                       read="true" store="false"/>
+	</target>
+	
+	<target name="compare">
+		
+		<epsilon.ecl src="Comparison.ecl" exportmatchtrace="eclMatchTrace">
+			<model ref="Source"/>
+			<model ref="Vocabulary"/>
+		</epsilon.ecl>
+		
+	</target>
+	
+	<target name="merge">
+		
+		<epsilon.eml src="Merging.eml" usematchtrace="eclMatchTrace">
+			<model ref="Source"/>
+			<model ref="Vocabulary"/>
+			<model ref="Target"/>
+		</epsilon.eml>
+		
+	</target>
+	
+	<target name="disposeModels">
+		<epsilon.disposeModels/>
+	</target>
+	
+</project>

@@ -1,0 +1,31 @@
+package [%=package%];
+
+public class [%=m.name%] {
+	
+	public [%=m.outPort.type%] execute([%=m.inPorts.collect(p|p.type + " " + p.name).concat(", ")%]) {
+		
+		[%for (child in m.components){%]
+		[%=child.name%] [%=child.name.ftlc()%] = new [%=child.name%]();
+		[%=child.outPort.type%] [%=child.name.ftlc()%]Result = [%=child.name.ftlc()%].execute([%=child.getInputParameters().concat(", ")%]);
+		[%}%]
+		
+		return [%=m.outPort.incoming.source.eContainer().name.ftlc() + "Result"%];
+		
+	}
+	
+}
+
+[%
+operation Component getInputParameters(){
+	var parameters : Sequence;
+	for (p in self.inPorts) {
+		if (p.incoming.source.eContainer().isTypeOf(Model)) {
+			parameters.add(p.incoming.source.name);
+		}
+		else {
+			parameters.add(p.incoming.source.eContainer().name.ftlc() + "Result");
+		}
+	}
+	return parameters;
+}
+%]

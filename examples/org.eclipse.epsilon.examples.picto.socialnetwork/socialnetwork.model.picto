@@ -1,0 +1,8 @@
+<?nsuri picto?>
+<picto format="egx" transformation="picto/socialnetwork.egx">
+	<view path="Custom, Alice and Bob" icon="diagram-ff00ff" type="Persons2Graphviz">
+		<parameter name="names" values="Alice, Bob"/>
+	</view>
+
+	<view path="Readme" icon="document" format="markdown" source="socialnetwork/readme.md" position="0"/>
+</picto>

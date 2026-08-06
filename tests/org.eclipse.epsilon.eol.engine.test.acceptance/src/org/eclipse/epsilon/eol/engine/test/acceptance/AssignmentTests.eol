@@ -1,0 +1,74 @@
+@test
+operation testAssignment() {
+	var a; 
+	a := 1 + 2;
+	assertEquals(a, 3);	
+}
+
+@test
+operation testAssignmentToResultOfEquality() {
+	var a; 
+	a := 1 = 1;
+	assertEquals(a, true);	
+}
+
+@test
+operation testEqualityActsAsAssignment() {
+	var a; 
+	a = 1 + 2;
+	assertEquals(a, 3);	
+}
+
+@test
+operation testOuterEqualityActsAsAssignment() {
+	var a; 
+	a = 1 = 1;
+	assertEquals(a, true);	
+}
+
+@test
+operation testOtherRelationalExpressionIsUnaffected() {
+	var a; 
+	a := 2 > 1;
+	assertEquals(a, true);	
+}
+
+@test
+operation testOtherRelationalExpressionIsUnaffectedByRewrite() {
+	var a; a = 2 > 1;
+	assertEquals(a, true);
+}
+
+@test
+operation testExtendedPropertyAssignmentUsesIdentity() {
+	var x : Sequence;
+	var y : Sequence;
+	x.~extended = 1;
+	assertEquals(1, x.~extended);
+	assertTrue(y.~extended.isUndefined());
+}
+
+@test
+operation testAssignmentInFor() {
+	var x = 0;
+	for (i in 1.to(2)) {
+		x = x + i;
+	}
+	assertEquals(3, x);
+}
+
+@test
+operation testExtendedPropertyAssignmentUsesIdentityLarge() {
+  var x : Sequence;
+  for (i in 1.to(300000)) {
+    var e : Sequence;
+    e.~position = i;
+    x.add(e);
+  }
+
+  var pos = 1;
+  for (e in x) {
+    assertEquals(pos, e.~position);
+    pos += 1;
+  }
+}

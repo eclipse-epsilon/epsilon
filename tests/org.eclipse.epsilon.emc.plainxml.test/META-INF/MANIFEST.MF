@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: org.eclipse.epsilon.emc.plainxml.test
+Bundle-Version: 2.9.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.emc.plainxml.test.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.epsilon.emc.plainxml,
+ org.eclipse.epsilon.test.dependencies
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.emc.plainxml.test
+Automatic-Module-Name: org.eclipse.epsilon.emc.plainxml.test

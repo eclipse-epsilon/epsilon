@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EUnit Example: comparison with JUnit
+Bundle-SymbolicName: org.eclipse.epsilon.eunit.examples.etl
+Bundle-Version: 1.0.0
+Export-Package: org.eclipse.epsilon.eunit.examples.etl.vsjunit
+Bundle-Vendor: www.example.org
+Require-Bundle: org.eclipse.emf.compare;bundle-version="3.1.0",
+ org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.erl.engine,
+ org.eclipse.epsilon.etl.engine,
+ org.eclipse.epsilon.eunit.cmp.emf;bundle-version="1.2.0",
+ org.eclipse.epsilon.eunit.dt.diff.emf;bundle-version="1.2.0",
+ org.junit;bundle-version="4.0.0",
+ com.google.guava;bundle-version="15.0.0",
+ org.eclipse.epsilon.eunit.engine;bundle-version="1.1.0",
+ org.apache.log4j,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.eunit.examples.etl

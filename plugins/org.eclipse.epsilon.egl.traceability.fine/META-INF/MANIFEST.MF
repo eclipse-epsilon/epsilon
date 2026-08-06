@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Generation Language Engine: Fine-Grained Traceability
+Bundle-SymbolicName: org.eclipse.epsilon.egl.traceability.fine;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.egl.engine.traceability.fine,
+ org.eclipse.epsilon.egl.engine.traceability.fine.internal;x-friends:="org.eclipse.epsilon.egl.traceability.fine.test.unit",
+ org.eclipse.epsilon.egl.engine.traceability.fine.trace
+Require-Bundle: org.eclipse.epsilon.egl.engine;visibility:=reexport
+Automatic-Module-Name: org.eclipse.epsilon.egl.traceability.fine

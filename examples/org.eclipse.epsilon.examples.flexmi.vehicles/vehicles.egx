@@ -1,0 +1,14 @@
+rule Vehicle2Svg 
+	transform v : Vehicle {
+
+	parameters : Map {
+		"path" = Sequence{"Vehicles", v.reg},
+		"format" = "html",
+		"icon" = "diagram"
+	}
+	
+	template : "vehicle2svg.egl"
+
+	target: v.reg + ".svg"
+
+}

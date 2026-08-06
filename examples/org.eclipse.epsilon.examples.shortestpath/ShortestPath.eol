@@ -1,0 +1,48 @@
+// This script implements Dijkstra"s shortest 
+// path algorighm
+
+var s : Node;
+s = Node.allInstances.select(n|n.label = "a").first();
+
+for (n in Node.allInstances) {
+	n.~distance = 10000;
+}
+
+s.~distance = 0;
+
+var Q : Sequence(Node);
+Q = Node.allInstances.clone();
+
+while (not Q.isEmpty()) {
+	var u : Node;
+	u = Q.extractMin();
+	for (e in u.outgoing) {
+		var v : Node;
+		v = e.target;
+		if (u.~distance + e.weight < v.~distance) {
+			v.~distance = u.~distance + e.weight;
+			v.~previous = u;
+		}
+	}
+}
+
+// Print distances and paths
+for (n in Node.allInstances){
+	("Distance of " + n.label + " from " + s.label + " : " + 
+		n.~distance + " via " + n.getPath()).println();
+}
+
+operation Sequence(Node) extractMin() : Node {
+	var min : Node;
+	min = self.select(n|self.forAll(
+		n1|n.~distance <= n1.~distance)).first();
+	self.remove(min);
+	return min;
+}
+
+operation Node getPath() : String {
+	if (self.~previous.isDefined()) {
+		return self.~previous.getPath() + "->" + self.label;
+	}
+	return self.label;
+}

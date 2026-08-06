@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate">
+<listAttribute key="models">
+<listEntry value="#&#13;&#10;#Fri Mar 12 11:55:54 GMT 2010&#13;&#10;isMetamodelFileBased=false&#13;&#10;name=Target&#13;&#10;readOnLoad=false&#13;&#10;storeOnDisposal=true&#13;&#10;aliases=&#13;&#10;metamodelUri=clone&#13;&#10;type=EMF&#13;&#10;modelFile=/org.eclipse.epsilon.examples.clone/target.model&#13;&#10;expand=true&#13;&#10;metamodelFile=&#13;&#10;"/>
+<listEntry value="#&#13;&#10;#Fri Mar 12 11:55:41 GMT 2010&#13;&#10;isMetamodelFileBased=false&#13;&#10;name=Source&#13;&#10;readOnLoad=true&#13;&#10;storeOnDisposal=false&#13;&#10;aliases=&#13;&#10;metamodelUri=clone&#13;&#10;type=EMF&#13;&#10;modelFile=/org.eclipse.epsilon.examples.clone/source.model&#13;&#10;expand=true&#13;&#10;metamodelFile=&#13;&#10;"/>
+</listAttribute>
+<stringAttribute key="source" value="\org.eclipse.epsilon.examples.clone\clone.eol"/>
+</launchConfiguration>

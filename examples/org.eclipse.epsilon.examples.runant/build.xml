@@ -1,0 +1,9 @@
+<project default="main">
+	<target name="main">
+		<epsilon.eol>
+			var f = new Native("javax.swing.JFrame");
+			f.title = "Hello";
+			f.visible = true;
+		</epsilon.eol>
+	</target>
+</project>

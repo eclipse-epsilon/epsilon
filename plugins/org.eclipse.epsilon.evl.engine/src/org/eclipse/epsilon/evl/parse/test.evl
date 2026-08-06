@@ -1,0 +1,59 @@
+pre {
+	//'swing'.getUMLPackage().uses().collect(p|p.name).concat('\r\n').println();
+	//'swing'.getPackage().println().getLayer().println();
+	//return;
+}
+
+context UML2!Package {
+	
+	guard : self.isTypeOf(UML2!Package)
+	
+	critique LayerIsDefined {
+		check : self.getLayer().isDefined()
+		message : 'Package ' + self.name + ' does not belong to a layer'
+	}
+	
+}
+
+context UML2!Usage {
+	
+	guard : self.getSupplier().isTypeOf(UML2!Package)
+		and self.getClient().isTypeOf(UML2!Package)
+		and self.getSupplier().satisfies('LayerIsDefined')
+		and self.getClient().satisfies('LayerIsDefined')
+	
+	constraint IsValid {
+		check : self.getClient().getLayer().sublayers.includes(self.getSupplier().getLayer())
+			or self.getClient().getLayer() = self.getSupplier().getLayer()
+		message : 'Usage ' + self.getClient().name + '->' + self.getSupplier().name + ' is invalid'
+	}
+	
+	
+}
+
+operation UML2!Package getLayer() : ADL!Layer {
+	return ADL!Layer.allInstances.selectOne(l|l.packages.exists(p|p=self.name));
+}
+
+operation UML2!Package uses() : Set {
+	return UML2!Usage.allInstances.select(u|u.client.includes(self)).
+		collect(u|u.supplier).flatten().asSet();
+}
+
+operation UML2!Package uses(other : UML2!Package) : Boolean {
+	return UML2!Usage.allInstances.exists(u|u.client.includes(self) and
+		u.supplier.includes(other));
+}
+
+operation String getPackage() : UML2!Package {
+	return UML2!Package.allInstances.selectOne(p|p.name=self);
+}
+
+operation UML2!Usage getClient() {
+	return self.client.first();
+}
+
+operation UML2!Usage getSupplier() {
+	//'Into getSupplier'.println();
+	return self.supplier.first();
+}

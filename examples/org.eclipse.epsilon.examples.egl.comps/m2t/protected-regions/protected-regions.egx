@@ -1,0 +1,19 @@
+rule Model2Class 
+	transform m : Model {
+
+	template : "../common/model2class.egl"
+
+	parameters : Map{"package"="protectedregions"}
+
+	target : "src-gen-protected-regions/protectedregions/" + m.name + ".java"
+	
+}
+
+rule Component2Class 
+	transform c : Component {
+
+	template : "protected-regions-component2class.egl"
+
+	target : "src-gen-protected-regions/protectedregions/" + c.name + ".java"
+	
+}

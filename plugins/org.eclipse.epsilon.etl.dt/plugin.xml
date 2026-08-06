@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="transformationStrategy" name="Transformation Strategy" schema="schema/transformationStrategy.exsd"/>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.epsilon.etl.dt.editor.EtlEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="etl"
+            icon="icons/etl.gif"
+            id="org.eclipse.epsilon.etl.dt.editor.EtlEditor"
+            name="Epsilon Transformation Language Editor"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.epsilon.etl.eclipse.dt.launching.EtlLaunchConfigurationDelegate"
+            icon="icons/etl.gif"
+            id="ETLTransformation"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.epsilon.etl.dt.launching.EtlLaunchConfigurationDelegate"
+            id="org.epsilon.etl.eclipse.dt.launching.EtlLaunchConfigurationDelegate"
+            modes="run, debug"
+            name="ETL Transformation"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.epsilon.etl.dt.launching.EtlLaunchConfigurationTabGroup"
+            description="Create a configuration to launch an ETL Transformation"
+            id="org.eclipse.epsilon.eclipse.dt.launching.EtlLaunchConfigurationTabGroup"
+            type="org.epsilon.etl.eclipse.dt.launching.EtlLaunchConfigurationDelegate"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.etl.dt.wizards.NewEtlFileWizard"
+            icon="icons/etl.gif"
+            id="org.eclipse.epsilon.etl.dt.wizards.NewEtlFileWizard"
+            name="ETL Transformation"/>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.etl.dt.transformationStrategy">
+      <transformationStrategy
+            class="org.eclipse.epsilon.etl.strategy.DefaultTransformationStrategy"
+            description="Supports @lazy rules"
+            id="Default"
+            label="Default transformation strategy"/>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.moduleImplementation">
+      <implementation
+            class="org.eclipse.epsilon.etl.EtlModule"
+            default="true"
+            dialog="org.eclipse.epsilon.etl.dt.launching.EtlModuleConfiguration"
+            language="ETL"
+            name="Sequential">
+      </implementation>
+      <implementation
+            class="org.eclipse.epsilon.etl.concurrent.EtlModuleParallel"
+            default="false"
+            dialog="org.eclipse.epsilon.etl.dt.launching.EtlModuleParallelConfiguration"
+            language="ETL"
+            name="Parallel (Declarative operations)">
+      </implementation>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.tool">
+      <tool
+            class="org.eclipse.epsilon.etl.EtlModule"
+            defaultName="etlModule">
+      </tool>
+   </extension>
+
+</plugin>

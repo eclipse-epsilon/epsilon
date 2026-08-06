@@ -1,0 +1,9 @@
+// Load the standard UML primitive types library
+var libURI = M.resource.uri.createURI("platform:/plugin/org.eclipse.uml2.uml.resources/libraries/UMLPrimitiveTypes.library.uml");
+var libResource = M.resource.resourceSet.createResource(libURI);
+libResource.load(null);
+M.resource.resourceSet.resources.add(libResource);
+
+var p : new Property;
+
+p.type = DataType.all.selectOne(pt|pt.name = "Integer");

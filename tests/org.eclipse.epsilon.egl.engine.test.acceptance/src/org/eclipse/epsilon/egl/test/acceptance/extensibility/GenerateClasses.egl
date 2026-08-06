@@ -1,0 +1,13 @@
+package [%=class.package.name%];
+
+public class [%=class.name%] [%=class.extensionString()%]{
+}
+[%
+	operation Class extensionString() : String {
+		if (self.extends.isDefined()) {
+			return 'extends' + ' ' + self.extends.name + ' ';
+		}
+	
+		return '';
+	}
+%]

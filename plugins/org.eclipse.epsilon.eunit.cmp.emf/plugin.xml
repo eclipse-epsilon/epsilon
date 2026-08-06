@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.epsilon.eunit.engine.comparator">
+      <modelComparator
+            class="org.eclipse.epsilon.eunit.cmp.emf.EMFModelComparator">
+      </modelComparator>
+   </extension>
+
+</plugin>

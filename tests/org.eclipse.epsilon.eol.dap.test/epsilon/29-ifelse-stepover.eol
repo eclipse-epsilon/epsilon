@@ -1,0 +1,15 @@
+var x = 10;
+
+if (x < 20) {
+  'first line'.println();
+  'second line'.println();
+} else {
+  'ignore me'.println();
+}
+
+if (x < 10) {
+  'ignore me'.println();
+} else {
+  'third line'.println();
+  'fourth line'.println();
+}

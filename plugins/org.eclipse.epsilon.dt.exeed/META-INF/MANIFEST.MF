@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Exeed EMF Model Editor
+Bundle-SymbolicName: org.eclipse.epsilon.dt.exeed;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.dt.exeed.ExeedPlugin
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.epsilon.emc.emf;visibility:=reexport,
+ org.eclipse.emf.ecore.editor;visibility:=reexport,
+ org.eclipse.epsilon.common.dt;visibility:=reexport,
+ org.eclipse.epsilon.emf.dt;visibility:=reexport,
+ org.eclipse.epsilon.eol.dt,
+ org.jdom
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.epsilon.dt.exeed,
+ org.eclipse.epsilon.dt.exeed.extensions,
+ org.eclipse.epsilon.dt.exeed.modelink
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.dt.exeed

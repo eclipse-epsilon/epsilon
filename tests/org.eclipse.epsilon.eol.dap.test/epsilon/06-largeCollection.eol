@@ -1,0 +1,5 @@
+var numbers = 1.to(950);
+numbers.println('Numbers: ');
+
+var numberSet = numbers.asSet();
+numberSet.println('As a set: ');

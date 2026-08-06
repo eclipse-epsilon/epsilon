@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Model xmi:version="2.0" 
+	xmlns:xmi="http://www.omg.org/XMI" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://eclipse.org/epsilon/rdf/inheritance" 
+	xsi:schemaLocation="http://eclipse.org/epsilon/rdf/inheritance metamodel.emf" 
+	name="myModel">
+  <elements xsi:type="Rule" name="firstRule"/>
+  <elements xsi:type="Action" action="secondAction"/>
+</Model>

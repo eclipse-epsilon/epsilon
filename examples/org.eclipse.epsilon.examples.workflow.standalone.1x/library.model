@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Library xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="library" xmi:id="_A1Jr8EpMEeOg99lxwZeUmQ">
+  <writers xmi:id="_QF9jkEpMEeOg99lxwZeUmQ" name="Agatha Christie" books="_CAePkEpMEeOg99lxwZeUmQ"/>
+  <books xmi:id="_CAePkEpMEeOg99lxwZeUmQ" title="Endless Night" pages="224" author="_QF9jkEpMEeOg99lxwZeUmQ"/>
+</Library>

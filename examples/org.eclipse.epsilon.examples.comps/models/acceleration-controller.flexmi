@@ -1,0 +1,38 @@
+<?nsuri http://eclipse.org/epsilon/examples/comps?>
+<?render-egx platform:/resource/org.eclipse.epsilon.examples.comps/picto/comps.egx?>
+<application name="AccelerationController" :var="ac">
+	
+	<inport name="speed" type="int"/>
+	<inport name="speedLimit" type="int"/>
+	<inport name="traction" type="int"/>
+	<inport name="luminosity" type="int"/>
+	<outport name="accelerate" type="boolean"/>
+	
+	<component name="SpeedController" :var="sc">
+		<inport name="speed" type="int"/>
+		<inport name="speedLimit" type="int"/>
+		<outport name="speedDifference" type="int"/>
+	</component>
+
+	<component name="EnvironmentController" :var="ec">
+		<inport name="traction" type="int"/>
+		<inport name="luminosity" type="int"/>
+		<outport name="safe" type="boolean"/>
+	</component>
+	
+	<component name="AccelerationActuator" :var="aa">
+		<inport name="speedDifference" type="int"/>
+		<inport name="safe" type="boolean"/>
+		<outport name="accelerate" type="boolean"/>
+	</component>
+	
+	
+	<connector :source="ac.speed" :target="sc.speed"/>
+	<connector :source="ac.speedLimit" :target="sc.speedLimit"/>
+	<connector :source="ac.traction" :target="ec.traction"/>
+	<connector :source="ec.safe" :target="aa.safe"/>
+	<connector :source="ac.luminosity" :target="ec.luminosity"/>
+	<connector :source="sc.speedDifference" :target="aa.speedDifference"/>
+	<connector :source="aa.accelerate" :target="ac.accelerate"/>
+	
+</application>

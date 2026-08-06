@@ -1,0 +1,129 @@
+@test
+operation testAdd() {
+	assertEquals(1 + 1, 2);
+}
+
+@test
+operation equalNumbers() {
+	assertEquals(1, 1.0f);
+	assertEquals(1.0d, 1.0f);
+	assertEquals(1, 1.0d);
+}
+
+@test
+operation equalRealNumbers() {
+	assertEquals(42, 42.0);
+	assertEquals(42, 4.2e1);
+	assertEquals(42, 4.2e+1);
+	assertEquals(42, 420e-1);
+	assertEquals(42, 4.2E1);
+	assertEquals(42, 4.2E+1);
+	assertEquals(42, 420E-1);
+	assertEquals(42d, 42f);
+	assertEquals(42D, 42F);
+}
+
+@test
+operation testAddNegative() {
+	assertEquals(1 + (-2), -1);
+}
+
+@test
+operation testIntegerEqualsDouble() {
+	assertEquals(1.0d.asInteger(), 1);
+}
+
+@test
+operation testIntegerEqualsFloat() {
+	assertEquals(1.0f.asInteger(), 1);
+}
+
+@test
+operation testFloatEqualsDouble() {
+	assertEquals(1.0f.asDouble(), 1.0d);
+}
+
+@test
+operation testConvertStringToReal() {
+	assertEquals("2.0".asReal(), 2.0f);
+}
+
+@test
+operation testMultiply() {
+	assertEquals(2 * 4, 8);
+}
+
+@test
+operation testMultiplyWithFloat() {
+	assertEquals(3 * 0.5, 1.5);
+}
+
+@test
+operation testDivide() {
+	assertEquals(2 / 4, 0);
+}
+
+@test
+operation testDivideWithFloatResult() {
+	assertEquals(2 / 4.0, 0.5);
+}
+
+@test
+operation testDivideByZero() {
+	assertError(1 / 0);
+}
+
+@test
+operation testDivideString() {
+	assertError("foo" / 2);
+}
+
+@test
+operation testMin() {
+	assertEquals(1.min(2.0), 1);
+}
+
+@test
+operation textMax() {
+	assertEquals(2.max(3.1d), 3.1d);
+}
+
+@test
+operation testIntegerTo() {
+	assertEquals(1.to(5), Sequence{1, 2, 3, 4, 5});
+}
+
+@test
+operation testIntegerToReverse() {
+	assertEquals(5.to(1), Sequence{5, 4, 3, 2, 1});
+}
+
+@test
+operation testIntegerToSame() {
+	assertEquals(1.to(1), Sequence{1});
+}
+
+@test
+operation testPow() {
+	assertEquals(2.pow(3), 8);
+	assertEquals(2.pow(3).type(), Integer);
+	assertEquals(2.pow(-1), 0.5);
+}
+
+@test
+operation testIota() {
+	assertEquals(0.iota(10, 2), Sequence{0, 2, 4, 6, 8, 10});
+	assertEquals(0.iota(10, 3), Sequence{0, 3, 6, 9});
+	assertError(0.iota(10, 0));
+}
+
+@test
+operation testLog() {
+	assertEquals(1.log(), 0);
+	assertEquals(2.log().asString().substring(0, 4), "0.69");
+}
+
+@test
+operation testLog10() {
+	assertEquals(10.log10(), 1);
+}

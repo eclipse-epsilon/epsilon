@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="Cookbooks" xsi:schemaLocation="Cookbooks ../metamodels/cookbook.ecore">
+  <Cookbooks>
+    <cookbooks name="Easy meals" description="You don't need to be an expert to make these dishes!" contents="/0/@categories.0/@recipes.0 /0/@categories.1/@recipes.0 /0/@categories.3/@recipes.0 /1 /0/@categories.2/@recipes.1"/>
+    <categories name="Light lunches" meta="Lunch">
+      <recipes name="Caesar salad" description="The mother of all salads." serves="1">
+        <instructions name="Preparation">
+          <instruction>Add everything together.</instruction>
+        </instructions>
+        <ingredients name="Lettuce" amount="50.0" measurement="grams"/>
+        <ingredients name="Rocket" amount="11.0" measurement="grams"/>
+        <ingredients name="Croutons" amount="25.0" measurement="grams"/>
+        <ingredients name="Olive oil" amount="4.0" measurement="litres" modifier="milli"/>
+        <ingredients name="Lemon juice" amount="5.0" measurement="litres" modifier="milli"/>
+        <ingredients name="Parmesan cheese" amount="14.0" measurement="grams"/>
+      </recipes>
+    </categories>
+    <categories name="Naughty desserts" meta="Pudding">
+      <recipes name="Chocolate cake" description="Yummy!" serves="3">
+        <instructions name="Buy it">
+          <instruction>Drive to nearest store.</instruction>
+          <instruction>Buy cake.</instruction>
+        </instructions>
+        <ingredients name="Chocolate cake" amount="1.0" otherUnit=""/>
+      </recipes>
+    </categories>
+    <categories name="General">
+      <recipes name="Rice" description="Goes well with almost anything.">
+        <instructions name="Preparation"/>
+        <instructions name="Cooking"/>
+        <ingredients name="Rice grain" amount="0.6" measurement="grams" modifier="kilo"/>
+        <ingredients name="Salt" amount="4.1" measurement="grams"/>
+        <ingredients name="Vegetable oil" amount="3.0" measurement="litres" modifier="milli"/>
+      </recipes>
+      <recipes name="Chicken breast" description="Cooked breast of chicken served hot." serves="2">
+        <instructions name="Cooking">
+          <instruction>Cook the chicken.</instruction>
+        </instructions>
+        <ingredients name="Chicken breast" amount="4.0" otherUnit="pieces"/>
+      </recipes>
+    </categories>
+    <categories name="Healthy dinners" meta="Dinner">
+      <recipes name="Chicken breast and rice" description="A simple, nutritious dinner." serves="2">
+        <instructions name="Serving">
+          <instruction>Combine rice and cooked chicken breast into plate.</instruction>
+          <instruction>Eat &amp; enjoy!</instruction>
+        </instructions>
+      </recipes>
+    </categories>
+  </Cookbooks>
+  <Recipe name="Tuna mayonnaise" serves="1">
+    <instructions name="Preparation">
+      <instruction>Empty tuna tin into bowl.</instruction>
+      <instruction>Add mayo and seasoning.</instruction>
+      <instruction>Mix thoroughly.</instruction>
+    </instructions>
+    <ingredients name="Tuna chunks" amount="1.0" otherUnit="tin"/>
+    <ingredients name="Mayonnaise" amount="15.0" measurement="grams"/>
+    <ingredients name="Pepper" amount="6.0" measurement="grams"/>
+    <ingredients name="Mint" amount="5.0" measurement="grams"/>
+  </Recipe>
+  <Recipe name="Tuna Caesar salad" dependencies="/0/@categories.0/@recipes.0 /1" serves="1">
+    <instructions name="Preparation">
+      <instruction>Add tuna mayo to caesar salad.</instruction>
+      <instruction>Add salad cream and mix.</instruction>
+    </instructions>
+    <instructions name="Serving">
+      <instruction>Grab cutlery.</instruction>
+      <instruction>Enjoy!</instruction>
+    </instructions>
+    <ingredients name="Salad cream" amount="17.0"/>
+  </Recipe>
+</xmi:XMI>

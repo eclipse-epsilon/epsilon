@@ -1,0 +1,9 @@
+// As the model is already profiled, when it is parsed,
+// the EPackage of the ActivityFunctions profile
+// is put in its package registry automatically
+// and does not need to be added explicitly
+
+var func = Function.all.first();
+func.body.println();
+var activity = func.base_Activity;
+activity.name.println();

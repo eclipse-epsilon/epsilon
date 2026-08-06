@@ -1,0 +1,11 @@
+[% var path : FlowchartPath!Path = FlowchartPath!Path.all.first; %]
+<html>
+<body>
+	<h1>The chosen path was:</h1>
+	<ol>
+		[% for (stop in path.stops) { %]
+		<li>[%=stop.label%]</li>
+		[% } %]
+	</ol>
+</body>
+</html>

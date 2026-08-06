@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<TraceLinksModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://eclipse.org/epsilon/examples/suspectlinks/tracelinks" xmi:id="_Yp0noGRMEeqneLRQuTz7_w">
+  <traceLinks xmi:id="_ZNOPoGRMEeqneLRQuTz7_w">
+    <from xmi:id="_ZomkEGRMEeqneLRQuTz7_w" id="R1" version="1"/>
+    <to xmi:id="_aymSAGRMEeqneLRQuTz7_w" id="T1" version="1"/>
+  </traceLinks>
+</TraceLinksModel>

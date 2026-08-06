@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.epsilon.examples.egl.patch/src" modelPluginID="org.eclipse.epsilon.examples.egl.patch"
+    modelName="Comps" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>comps.ecore</foreignModel>
+  <genPackages prefix="Comps" disposableProviderFactory="true" ecorePackage="comps.ecore#/">
+    <genClasses ecoreClass="comps.ecore#//Model"/>
+    <genClasses ecoreClass="comps.ecore#//Component">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute comps.ecore#//Component/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference comps.ecore#//Component/inPorts"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference comps.ecore#//Component/outPorts"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference comps.ecore#//Component/components"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference comps.ecore#//Component/connectors"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute comps.ecore#//Component/action"/>
+    </genClasses>
+    <genClasses ecoreClass="comps.ecore#//ComponentInstance">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference comps.ecore#//ComponentInstance/prototype"/>
+    </genClasses>
+    <genClasses ecoreClass="comps.ecore#//Port">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute comps.ecore#//Port/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference comps.ecore#//Port/outgoing"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference comps.ecore#//Port/incoming"/>
+    </genClasses>
+    <genClasses ecoreClass="comps.ecore#//Connector">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference comps.ecore#//Connector/from"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference comps.ecore#//Connector/to"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

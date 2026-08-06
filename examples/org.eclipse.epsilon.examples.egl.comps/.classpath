@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src-protected-regions"/>
+	<classpathentry kind="src" path="src-gen-protected-regions"/>
+	<classpathentry kind="src" path="src-inheritance"/>
+	<classpathentry kind="src" path="src-gen-inheritance"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

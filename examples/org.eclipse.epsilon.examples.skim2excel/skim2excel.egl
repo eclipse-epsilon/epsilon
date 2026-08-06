@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <LastAuthor></LastAuthor>
+  <Created></Created>
+  <LastSaved></LastSaved>
+  <Version>14.0</Version>
+ </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>16380</WindowHeight>
+  <WindowWidth>38400</WindowWidth>
+  <WindowTopX>0</WindowTopX>
+  <WindowTopY>0</WindowTopY>
+  <Date1904/>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="12" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="s62">
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="12" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s64">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" ss:Size="26" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s66">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" ss:Size="20" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s67">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="12" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s69">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="12" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s70">
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="12" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s71">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="12" ss:Color="#FFFFFF"
+    ss:Bold="1"/>
+   <Interior ss:Color="#333333" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s72">
+   <Alignment ss:Vertical="Bottom" ss:WrapText="1"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="12" ss:Color="#000000"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Document Review Form">
+  <Table ss:ExpandedColumnCount="5" x:FullColumns="1"
+   x:FullRows="1" ss:StyleID="s62" ss:DefaultColumnWidth="65"
+   ss:DefaultRowHeight="15">
+   <Column ss:Index="2" ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="202"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="131"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="325"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="258"/>
+   <Row ss:Height="33">
+    <Cell ss:MergeAcross="1" ss:StyleID="s64"><Data ss:Type="String">Project</Data></Cell>
+    <Cell ss:MergeAcross="2" ss:StyleID="s66"><Data ss:Type="String">Document Review Form</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="1" ss:StyleID="s67"><Data ss:Type="String">Document:</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="s67"><Data ss:Type="String">Author(s):</Data></Cell>
+    <Cell ss:StyleID="s70"><Data ss:Type="String">Reviewer:</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="1" ss:StyleID="s67"><Data ss:Type="String">Version:</Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="s67"><Data ss:Type="String">Internal submission date: </Data></Cell>
+    <Cell ss:StyleID="s70"><Data ss:Type="String">Internal review date:</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s67"/>
+    <Cell ss:StyleID="s67"/>
+    <Cell ss:StyleID="s67"/>
+    <Cell ss:StyleID="s69"/>
+    <Cell ss:StyleID="s70"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Page</Data></Cell>
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Text</Data></Cell>
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Type</Data></Cell>
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Recommendation</Data></Cell>
+    <Cell ss:StyleID="s71"><Data ss:Type="String">Response</Data></Cell>
+   </Row>
+[%for (note in t_note.all) { %] 
+   <Row ss:AutoFitHeight="1">
+    <Cell ss:StyleID="s72"><Data ss:Type="String">[%=note.e_page.text%]</Data></Cell>
+    <Cell ss:StyleID="s72"><Data ss:Type="String">[%=note.getText()%]</Data></Cell>
+    <Cell ss:StyleID="s72"><Data ss:Type="String">[%=note.getType()%]</Data></Cell>
+    <Cell ss:StyleID="s72"><Data ss:Type="String">[%=note.getComment()%]</Data></Cell>
+    <Cell ss:StyleID="s72"><Data ss:Type="String"></Data></Cell>    
+   </Row>
+[%}%]
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <Print>
+    <ValidPrinterInfo/>
+    <PaperSizeIndex>9</PaperSizeIndex>
+    <HorizontalResolution>-4</HorizontalResolution>
+    <VerticalResolution>-4</VerticalResolution>
+   </Print>
+   <PageLayoutZoom>0</PageLayoutZoom>
+   <Selected/>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>6</ActiveRow>
+     <ActiveCol>1</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>
+[%
+operation t_note getText() {
+	return self.getContentPart(0);
+}
+operation t_note getComment() {
+	return self.getContentPart(1);
+}
+operation t_note getType() {
+	if (self.e_color.e_red.text == "1") {
+		return "content";
+	}
+	else {
+		return "presentation";
+	}
+}
+operation t_note getContentPart(p : Integer) {
+	var parts = self.e_contents.text.split("->");
+	if (parts.size() > p) {
+		return parts.at(p).trim().escapeXml();
+	}
+	else {
+		return "";
+	}
+}
+%]

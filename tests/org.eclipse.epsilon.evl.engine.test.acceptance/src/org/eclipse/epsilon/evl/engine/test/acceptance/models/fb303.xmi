@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="ASCII"?>
+<thriftIDL:Document xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:thriftIDL="http://www.apache.org/thrift/Thrift">
+  <definitions xsi:type="thriftIDL:Enum" identifier="fb_status" comment="/**&#xA; * Common status reporting mechanism across all services&#xA; */">
+    <pairs identifier="DEAD" hasFID="true"/>
+    <pairs identifier="STARTING" hasFID="true" fieldID="1"/>
+    <pairs identifier="ALIVE" hasFID="true" fieldID="2"/>
+    <pairs identifier="STOPPING" hasFID="true" fieldID="3"/>
+    <pairs identifier="STOPPED" hasFID="true" fieldID="4"/>
+    <pairs identifier="WARNING" hasFID="true" fieldID="5"/>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Service" identifier="FacebookService" comment="/**&#xA; * Standard base service&#xA; */">
+    <functions comment="/**&#xA;   * Returns a descriptive name of the service&#xA;   */" identifier="getName">
+      <funcType>
+        <fieldType>
+          <defType base="string"/>
+        </fieldType>
+      </funcType>
+    </functions>
+    <functions comment="/**&#xA;   * Returns the version of the service&#xA;   */" identifier="getVersion">
+      <funcType>
+        <fieldType>
+          <defType base="string"/>
+        </fieldType>
+      </funcType>
+    </functions>
+    <functions comment="/**&#xA;   * Gets the status of this service&#xA;   */" identifier="getStatus">
+      <funcType>
+        <fieldType identifier="fb_status"/>
+      </funcType>
+    </functions>
+    <functions comment="/**&#xA;   * User friendly description of status, such as why the service is in&#xA;   * the dead or warning state, or what is being started or stopped.&#xA;   */" identifier="getStatusDetails">
+      <funcType>
+        <fieldType>
+          <defType base="string"/>
+        </fieldType>
+      </funcType>
+    </functions>
+    <functions comment="/**&#xA;   * Gets the counters for this service&#xA;   */" identifier="getCounters">
+      <funcType>
+        <fieldType>
+          <defType>
+            <container xsi:type="thriftIDL:MapType" keyword="map">
+              <keyType>
+                <defType base="string"/>
+              </keyType>
+              <valType>
+                <defType base="i64"/>
+              </valType>
+            </container>
+          </defType>
+        </fieldType>
+      </funcType>
+    </functions>
+    <functions comment="/**&#xA;   * Gets the value of a single counter&#xA;   */" identifier="getCounter">
+      <funcType>
+        <fieldType>
+          <defType base="i64"/>
+        </fieldType>
+      </funcType>
+      <args fieldID="1" hasFID="true" identifier="key">
+        <fieldType>
+          <defType base="string"/>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+    </functions>
+    <functions comment="/**&#xA;   * Sets an option&#xA;   */" identifier="setOption">
+      <funcType void="true"/>
+      <args fieldID="1" hasFID="true" identifier="key">
+        <fieldType>
+          <defType base="string"/>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+      <args fieldID="2" hasFID="true" identifier="value">
+        <fieldType>
+          <defType base="string"/>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+    </functions>
+    <functions comment="/**&#xA;   * Gets an option&#xA;   */" identifier="getOption">
+      <funcType>
+        <fieldType>
+          <defType base="string"/>
+        </fieldType>
+      </funcType>
+      <args fieldID="1" hasFID="true" identifier="key">
+        <fieldType>
+          <defType base="string"/>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+    </functions>
+    <functions comment="/**&#xA;   * Gets all options&#xA;   */" identifier="getOptions">
+      <funcType>
+        <fieldType>
+          <defType>
+            <container xsi:type="thriftIDL:MapType" keyword="map">
+              <keyType>
+                <defType base="string"/>
+              </keyType>
+              <valType>
+                <defType base="string"/>
+              </valType>
+            </container>
+          </defType>
+        </fieldType>
+      </funcType>
+    </functions>
+    <functions comment="/**&#xA;   * Returns a CPU profile over the given time interval (client and server&#xA;   * must agree on the profile format).&#xA;   */" identifier="getCpuProfile">
+      <funcType>
+        <fieldType>
+          <defType base="string"/>
+        </fieldType>
+      </funcType>
+      <args fieldID="1" hasFID="true" identifier="profileDurationInSec">
+        <fieldType>
+          <defType base="i32"/>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+    </functions>
+    <functions comment="/**&#xA;   * Returns the unix time that the server has been running since&#xA;   */" identifier="aliveSince">
+      <funcType>
+        <fieldType>
+          <defType base="i64"/>
+        </fieldType>
+      </funcType>
+    </functions>
+    <functions comment="/**&#xA;   * Tell the server to reload its configuration, reopen log files, etc&#xA;   */" isOneway="true" identifier="reinitialize">
+      <funcType void="true"/>
+    </functions>
+    <functions comment="/**&#xA;   * Suggest a shutdown to the server&#xA;   */" isOneway="true" identifier="shutdown">
+      <funcType void="true"/>
+    </functions>
+  </definitions>
+</thriftIDL:Document>

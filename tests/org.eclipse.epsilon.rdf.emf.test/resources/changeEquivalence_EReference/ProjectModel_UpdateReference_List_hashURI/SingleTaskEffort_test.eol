@@ -1,0 +1,13 @@
+import "../TestOperations.eol";
+
+"\n----\n".println();
+var t = Task.all.get(1);
+showTaskEffort(t);
+"\n++Add one effort++\n".println();
+t.effort.add(Effort.all.get(0));
+showTaskEffort(t);
+"\n----\n".println();
+
+
+
+

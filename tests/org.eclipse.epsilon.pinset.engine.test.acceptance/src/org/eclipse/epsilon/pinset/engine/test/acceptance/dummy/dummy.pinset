@@ -1,0 +1,159 @@
+import "operations.eol";
+
+dataset Dummy01_As over a : A {
+  properties [x, en]
+  column twiceX : a.x * 2
+}
+
+operation twice(number) {
+	return number * 2;
+}
+
+dataset Dummy01_As_ExternalOperation over a : A {
+  properties [x, en]
+  column twiceX : twice(a.x)
+}
+
+dataset Dummy01_As_ImportedOperation over a : A {
+  properties [x, en]
+  column tripleX : triple(a.x)
+}
+
+dataset Dummy02_AsAndPartialBs over a : A {
+  properties [x, en]
+  reference b[y]
+}
+
+dataset Dummy04_AsAndNumberOfDs over a : A {
+  properties [x]
+  column numberOfDs : a.ds.size()
+}
+
+dataset Dummy05_filteredAs over a : A {
+  guard : a.x > 5
+  properties [x]
+  column numberOfDs : a.ds.size()
+}
+
+dataset Dummy06_grid over a : A {
+  properties [x]
+  grid {
+    keys   : 1.to(5)
+    header : "x_plus_" + key
+    body   : a.x + key
+  }
+}
+
+dataset Dummy09_from over number
+                     from : 1.to(5) {
+  column number : number
+  grid {
+    keys : 2.to(5)
+    header : "times_" + key
+    body : number * key
+  }
+}
+
+dataset Dummy10a_silentColumn over a : A {
+  properties [x]
+  @silent
+  column b_y : a.b.y // there is an A element that does not have a B
+}
+
+@silent
+dataset Dummy10b_silentColumn over a : A {
+  properties [x]
+  column b_y : a.b.y // there is an A element that does not have a B
+}
+
+@silent
+dataset Dummy11a_silentGrid over a : A {
+  grid {
+    keys : 2.to(5)
+    header : "times_" + key
+    body : a.getNonExistentValue(key) // fails if annotation removed
+  }
+}
+
+dataset Dummy11b_silentGrid over a : A {
+  @silent
+  grid {
+    keys : 2.to(5)
+    header : "times_" + key
+    body : a.getNonExistentValue(key) // fails if annotation removed
+  }
+}
+
+dataset Dummy13_gridReturnBlocks over a : A {
+  grid {
+    keys {
+      return 1.to(5);
+    }
+    header {
+      return key;
+    }
+    body {
+      return key * 10;
+    }
+  }
+}
+
+dataset Dummy14_DerivedColumn over a : A {
+  column x : a.x
+  column twiceX : x * 2
+   grid {
+    keys :  1.to(3)
+    header : "twiceXtimes" + key
+    body : twiceX * key
+  }
+}
+
+dataset Dummy15_nestedFrom over a : A {
+  properties [x]
+  from b : a.b {
+    properties[y]
+    reference c[k] // uses accessors
+    column z : b.z // and columns
+    grid {         // and grids
+      keys : 2.to(5)
+      header : "y_times_" + key
+      body : b.y * key
+    }
+    from c : b.c { // and even more nested froms
+      column nested_c_k : c.k
+    }
+  }
+}
+
+dataset Dummy16_postProcessing over a : A {
+  properties[x]
+
+  @normalize
+  column x_normalized : a.x
+
+  // check null value in fillnulls annotation
+  @fillNulls
+  @silent
+  column b_y_fill_null : a.b.y
+
+  @fillNulls 0
+  @silent
+  column b_y_fill_0 : a.b.y
+
+  @fillNulls mean
+  @silent
+  column b_y_fill_mean : a.b.y
+
+  @fillNulls mode
+  @silent
+  column b_y_fill_mode : a.b.y
+}
+
+dataset Dummy17_AliasedReference over a : A {
+  properties [x, en]
+  reference b[y as aliased_y]
+}
+
+dataset Dummy18_AliasedProperties over a : A {
+  properties [x as aliased_x, en]
+}

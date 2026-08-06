@@ -1,0 +1,25 @@
+context Requirement {
+	
+	constraint IdIsUnique {
+		check : Requirement.all.select(r|r.id = self.id).size() = 1
+	}
+	
+}
+
+context TraceLink {
+	
+	constraint SuspectLink {
+	
+		check {	
+			var requirement = Requirement.all.selectOne(r|r.id = self.from.id);
+			var test = Test.all.selectOne(t|t.id = self.to.id);
+			
+			return requirement.version = self.from.version 
+				and test.version = self.to.version;
+		}
+		
+		message : "Link from " + self.from.id + " to " + self.to.id + " is suspect"
+		
+	}
+	
+}

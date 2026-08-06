@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EUnit Engine
+Bundle-SymbolicName: org.eclipse.epsilon.eunit.engine;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.eunit,
+ org.eclipse.epsilon.eunit.extensions,
+ org.eclipse.epsilon.eunit.operations,
+ org.eclipse.epsilon.internal.eunit.io,
+ org.eclipse.epsilon.internal.eunit.util,
+ org.eclipse.epsilon.internal.eunit.xml
+Require-Bundle: org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.common.dt;resolution:=optional
+Automatic-Module-Name: org.eclipse.epsilon.eunit.engine

@@ -1,0 +1,44 @@
+context EClass {
+	
+	// Dummy constraint to demonstrate the capabilities of EVL
+	constraint Unamed {
+	
+		check : self.name.isDefined()
+		
+		message : 'Unnamed class'
+		
+		fix {
+			
+			title : 'Create another one'
+			
+			do {
+				var eClass = new EClass;
+				eClass.name = 'foo';
+				self.eContainer().eClassifiers.add(eClass);
+			}
+			
+		}
+		
+	}
+	
+	critique NameStartsWithCapital {
+		
+		guard : self.satisfies('Unamed')
+		
+		check {
+			var nameToUpperCase = self.name.firstToUpperCase();
+			return nameToUpperCase = self.name;
+		}
+		
+		message : 'Class ' + self.name + 
+			' should start with an upper-case letter'
+			
+		fix {
+			title : 'Rename to ' + 
+				self.name.firstToUpperCase()
+			do {
+				self.name := self.name.firstToUpperCase();
+			}
+		}
+	}
+}

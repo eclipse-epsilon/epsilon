@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: org.eclipse.epsilon.emc.graphml.tests
+Bundle-Version: 2.9.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.emc.graphml.tests.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.epsilon.emc.graphml,
+ org.junit,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.emc.muddle,
+ org.eclipse.epsilon.flexmi.test
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.emc.graphml.tests
+Automatic-Module-Name: org.eclipse.epsilon.emc.graphml.tests

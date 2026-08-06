@@ -1,0 +1,82 @@
+gunit Flock;
+@header{package org.eclipse.epsilon.flock.parse;}
+
+flockModule:
+	// Empty, single rule, and many rules.
+	"" -> "FLOCKMODULE"
+	"migrate Person { name := nom; }" -> "(FLOCKMODULE (MIGRATE Person (BLOCK (:= name nom))))"
+	"migrate Person { name := nom; } migrate Animal { name := nom; }" -> "(FLOCKMODULE (MIGRATE Person (BLOCK (:= name nom))) (MIGRATE Animal (BLOCK (:= name nom))))"
+
+	// Retyping and rule
+	"migrate Person { name := nom; } retype Person to Employee" -> "(FLOCKMODULE (MIGRATE Person (BLOCK (:= name nom))) (RETYPE Person Employee))"
+
+	// Operations
+	"operation Integer inc() { self := self + 1; }" -> "(FLOCKMODULE (operation Integer inc (BLOCK (:= self (+ self 1)))))"
+	"@cached operation Integer inc() { self := self + 1; }" -> "(FLOCKMODULE (ANNOTATIONBLOCK @cached operation Integer inc() { self := self + 1; }))"
+
+retyping:
+	// Simple, and guarded
+	"retype Person to Employee" -> "(RETYPE Person Employee)"
+	"retype Person to Employee when: original.name.isDefined()" -> "(RETYPE Person Employee (GUARD (. (. original name) (isDefined PARAMETERS))))"
+
+	// Missing parts
+	"retype Person Employee" FAIL
+	"retype to Employee" FAIL
+	"retype Person to" FAIL
+	
+	// Packages
+	"retype package families to families2" -> "(RETYPEPACKAGE families families2)"
+	"retype package families to families2 when: original.name.isDefined()" -> "(RETYPEPACKAGE families families2 (GUARD (. (. original name) (isDefined PARAMETERS))))"
+	"retype package families families2" FAIL
+	"retype package to families2" FAIL
+	"retype package families to" FAIL
+	
+deletion:
+ 	// Typical
+ 	"delete Person"	-> (DELETE Person)
+ 	
+ 	// with guard
+ 	"delete Person when: original.name.isUndefined()" -> "(DELETE Person (GUARD (. (. original name) (isUndefined PARAMETERS))))"
+
+	// Packages
+	"delete package families" -> "(DELETEPACKAGE families)"
+	"delete package families when: original.name.isUndefined()" -> "(DELETEPACKAGE families (GUARD (. (. original name) (isUndefined PARAMETERS))))"
+	
+
+migrateRule:
+	// Empty
+	"migrate Person { }" -> "(MIGRATE Person BLOCK)"
+	
+	// Missing brace
+	"migrate Person { name := nom; " FAIL
+	
+	// Statement
+	"migrate Person { name := nom; }" -> "(MIGRATE Person (BLOCK (:= name nom)))"
+	
+	// Ignoring
+	"migrate Person ignoring name"                     -> "(MIGRATE Person (IGNORING name))"
+		
+	// Guard
+	"migrate Person when: original.name.isDefined() { name := nom; }" -> "(MIGRATE Person (GUARD (. (. original name) (isDefined PARAMETERS))) (BLOCK (:= name nom)))"
+
+	// Guard with no statement, no when
+	"migrate Person when {}" FAIL
+	"migrate Person original.name.isDefined(); {}" FAIL
+	
+	// Guard with semicolon
+ 	"migrate Person when: original.name.isDefined(); {}" FAIL
+
+	// No body
+	"migrate Person" FAIL
+
+ignoring:
+	"ignoring name" -> "(IGNORING name)"
+	
+	"ignoring name, number, address" -> "(IGNORING name number address)"
+
+guard:
+	"when: original.name.isDefined()" -> "(GUARD (. (. original name) (isDefined PARAMETERS)))"
+	"when { var n := original.name; return n.isDefined(); }" -> "(GUARD (BLOCK (:= (var n) (. original name)) (return (. n (isDefined PARAMETERS)))))"
+		
+	// Guard with no when
+	"original.name.isDefined()" FAIL

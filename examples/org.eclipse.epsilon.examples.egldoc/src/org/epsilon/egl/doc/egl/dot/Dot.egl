@@ -1,0 +1,117 @@
+digraph G { 
+	node [shape=record, fontname=Tahoma, fontsize=10];
+	edge [fontname=Tahoma, fontsize=8];
+	center=true;
+	nodesep=1.5;
+[%
+
+var skip : new Bag;
+
+for (ref in EReference.allInstances()) {	
+	if (skip.excludes(ref)) {
+		var edge : String;
+		var end1 : EClassifier = ref.eContainingClass;
+		var end2 : EClassifier = ref.eType;
+		
+		edge = "	_" + end1.name + "->_" + end2.name;
+		
+		if (ref.eOpposite.isDefined()) {
+			edge = edge + " [headlabel=\"" + ref.eOpposite.getLabel() + 
+				"\" taillabel=\"" + ref.getLabel() + "\"";
+			edge = edge + " arrowhead=" + ref.eOpposite.getArrow() 
+				+ " arrowtail=" + ref.getArrow();
+			
+			// Add opposite to refs to be skipped
+			skip.add(ref.eOpposite);
+		} else {
+			edge = edge + " [headlabel=\"\" taillabel=\"" 
+				+ ref.getLabel() + "\"";
+			
+			if (ref.getArrow() = "none") {
+				edge = edge + " arrowhead=vee arrowtail=" + ref.getArrow();
+			} else {
+				edge = edge + " arrowhead=none arrowtail=" + ref.getArrow();
+			}
+		}
+		
+		edge = edge + " labeldistance=3.5];";
+		out.println(edge);
+	}
+}
+
+for (class in EClass.allInstances()){
+	for (super in class.eSuperTypes){ %]
+	_[%=class.name%]->_[%=super.name%] [arrowhead=onormal];
+[%	}
+}
+
+for (class in EClass.allInstances()){
+	
+	var node : String;
+	node = "	_" + class.name + " [label=\"{" + class.name + "|{";
+	
+	for (attr in class.eAllAttributes){
+		node = node + attr.getLabel() + "\\n";
+	}
+	
+	node = node + "}|{}}\"];";
+	out.println(node);
+} %]
+}
+[%
+  
+// Returns the label of an AssociationEnd
+operation ETypedElement getLabel() : String {
+	var lower : Any;
+	var upper : Any;
+	
+	if (self.lowerBound.isDefined()) {
+		lower = self.lowerBound;
+	} else {
+		lower = "0";
+	}
+	
+	if (self.upperBound.isDefined() and self.upperBound > -1){
+		upper = self.upperBound;
+	}
+	else {
+		upper = "*";
+	}
+	
+	return self.name + " [" + lower + ".." + upper + "]";	
+}
+
+// Returns the arrow of an AssociationEnd
+operation EReference getArrow() : String {
+	if (self.containment){
+		return "normalinv";
+	}
+	else {
+		return "none";
+	}
+}
+
+// Returns the label of an Attribute
+operation EAttribute getLabel() : String {
+	var multiplicity : String = "[";
+	
+	if (self.lowerBound.isDefined()) {
+		multiplicity = multiplicity + self.lowerBound;
+	} else {
+		multiplicity = multiplicity + "0";
+	}
+
+	multiplicity = multiplicity + "..";
+
+	if (self.upperBound.isDefined()) {
+		multiplicity = multiplicity + self.upperBound;
+	} else {
+		multiplicity = multiplicity + "*";
+	}
+	
+	multiplicity = multiplicity + "]";
+
+	return self.name + " : " + self.eType.name + " " + multiplicity;
+}
+%]
+

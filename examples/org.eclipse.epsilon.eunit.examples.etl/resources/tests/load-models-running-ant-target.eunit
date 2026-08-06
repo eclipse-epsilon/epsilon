@@ -1,0 +1,10 @@
+@model
+operation loadModels() {
+  runTarget("load-models");
+}
+
+@test
+operation transformationWorksAsExpected() {
+  runTarget("tree2graph");
+  assertEqualModels("GraphExpected", "Graph");
+}

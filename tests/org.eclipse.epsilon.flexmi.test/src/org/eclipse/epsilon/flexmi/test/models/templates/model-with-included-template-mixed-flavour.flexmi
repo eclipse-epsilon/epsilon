@@ -1,0 +1,5 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?include imported-template.yaml?>
+<package>
+	<t1/>
+</package>

@@ -1,0 +1,5 @@
+<?nsuri library?>
+<library>
+  <writer name="Agatha Christie"/>
+  <book title="Endless Night" pages="224" author="Agatha Christie"/>
+</library>

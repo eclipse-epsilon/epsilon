@@ -1,0 +1,16 @@
+rule CopyChild
+    transform s : Source!Child
+    to t: Target!Child
+    extends CopyMom, CopyDad {     t.name := t.name;
+}
+
+rule CopyMom
+    transform s : Source!Mom
+    to t : Target!Mom {     t.surname2 := t.surname2;
+    
+}
+
+rule CopyDad
+    transform s : Source!Dad
+    to t : Target!Dad {     t.surname := t.surname;
+} 

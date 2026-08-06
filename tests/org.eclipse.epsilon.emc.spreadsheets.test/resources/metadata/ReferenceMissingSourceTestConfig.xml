@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spreadsheet>
+	
+	<worksheet name="Sheet1">
+		<column index="0" many="false"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet2">
+		<column index="0" many="true"></column>
+	</worksheet>
+	
+	<reference target="Sheet2->c_0"></reference>
+	
+</spreadsheet>

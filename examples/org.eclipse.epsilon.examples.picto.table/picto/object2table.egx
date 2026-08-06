@@ -1,0 +1,20 @@
+import "objectUtils.eol";
+
+rule Object2HTML
+	transform object in: M.allInstances() {
+
+	parameters {
+		return Map {
+			"path" = object.getPath(),
+			"icon" = "diagram-000000",
+			"format" = "html",
+			"layers" = Sequence {
+				Map {"id"="inherited", "title"="Inherited features"},
+				Map {"id"="derived", "title"="Derived features", "active"=false},
+				Map {"id"="containmentReferences", "title"="Only containment references", "active"=false}
+			}
+		};
+	}
+
+	template: "object2table.egl"
+}

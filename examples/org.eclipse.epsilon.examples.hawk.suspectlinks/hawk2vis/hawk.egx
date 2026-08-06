@@ -1,0 +1,14 @@
+rule Hawk2Graph {
+
+	template : "reflective.egl"
+
+	parameters : Map{
+		"path" = Sequence{"System","Hawk Graph"},
+		"icon" = "diagram",
+		"format" = "graphviz-dot",
+		"layers" = Sequence {
+			Map {"id"="files", "title"="Files"}
+		}
+	}
+
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="flock" nsURI="flock" nsPrefix="flock">
+  <eClassifiers xsi:type="ecore:EClass" name="FlockModule" eSuperTypes="#//EolLibraryModule">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="typeMappings" upperBound="-1"
+        eType="#//TypeMappingConstruct" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rules" upperBound="-1"
+        eType="#//MigrateRule" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pre" upperBound="-1" eType="#//NamedBlock"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="post" upperBound="-1" eType="#//NamedBlock"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassifierTypedConstruct" abstract="true"
+      eSuperTypes="#//GuardedConstruct"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MigrateRule" eSuperTypes="#//ClassifierTypedConstruct #//GuardedConstruct">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//StatementBlock"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ignoredFeatures" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="originalType" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strict" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeMappingConstruct" abstract="true"
+      eSuperTypes="#//ClassifierTypedConstruct #//GuardedConstruct"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Deletion" eSuperTypes="#//TypeMappingConstruct #//ClassifierTypedConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="originalType" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strict" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascade" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Retyping" eSuperTypes="#//TypeMappingConstruct #//ClassifierTypedConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="evolvedType" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="originalType" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="strict" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EolLibraryModule"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExpressionOrStatementBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="StatementBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="GuardedConstruct" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="guard" eType="#//ExpressionOrStatementBlock"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PackageTypedConstruct" abstract="true"
+      eSuperTypes="#//GuardedConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="originalPackage" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PackageDeletion" eSuperTypes="#//GuardedConstruct #//TypeMappingConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="originalPackage" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PackageRetyping" eSuperTypes="#//TypeMappingConstruct">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="originalPackage" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="evolvedPackage" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedBlock">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" lowerBound="1" eType="#//StatementBlock"/>
+  </eClassifiers>
+</ecore:EPackage>

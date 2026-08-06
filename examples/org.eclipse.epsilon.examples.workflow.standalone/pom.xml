@@ -1,0 +1,78 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>epsilon-maven</artifactId>
+  <groupId>org.eclipse.epsilon</groupId>
+  <version>1.0-SNAPSHOT</version>
+  <pluginRepositories>
+    <pluginRepository>
+        <id>Sonatype</id>
+        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <configuration>
+              <target>
+                <!-- Set up the core Epsilon tasks -->
+                <taskdef
+                  resource="org/eclipse/epsilon/workflow/tasks/tasks.xml"/>
+
+                <!-- Set up the Epsilon EMF tasks -->
+                <taskdef
+                  resource="org/eclipse/epsilon/workflow/tasks/emf/tasks.xml"/>
+
+                <!-- Load the library.model EMF model -->
+                <epsilon.emf.loadModel name="Library"
+                  modelfile="library.model"
+                  metamodelfile="library.ecore"/>
+
+                <!-- Run library.eol against it -->
+                <epsilon.eol src="library.eol">
+                    <model ref="Library"/>
+                </epsilon.eol>
+
+                <!-- Run library.eunit -->
+                <epsilon.eunit src="library.eunit">
+                  <modelTasks>
+                    <epsilon.emf.loadModel name="A" metamodelfile="library.ecore" read="false" store="false" modelfile="dummyA.model"/>
+                    <epsilon.emf.loadModel name="B" metamodelfile="library.ecore" read="false" store="false" modelfile="dummyB.model"/>
+                  </modelTasks>
+                  <comparators>
+                    <comparator classname="org.eclipse.epsilon.eunit.cmp.emf.EMFModelComparator" />
+                  </comparators>
+                </epsilon.eunit>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.eclipse.epsilon</groupId>
+            <artifactId>org.eclipse.epsilon.workflow</artifactId>
+            <version>2.5.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.eclipse.epsilon</groupId>
+            <artifactId>org.eclipse.epsilon.workflow.emf</artifactId>
+            <version>2.5.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.eclipse.epsilon</groupId>
+            <artifactId>org.eclipse.epsilon.eunit.cmp.emf</artifactId>
+            <version>2.5.0</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>

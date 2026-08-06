@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Cookbooks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="Cookbooks" xsi:schemaLocation="Cookbooks ../metamodels/cookbook.ecore" xmi:id="_p5hicKW6EeW0g8eCAce0EA">
+  <cookbooks xmi:id="_SyoC4KW7EeW0g8eCAce0EA" name="cbk1" description="" contents="_0r5WgKXTEeWxY-VaL64HBg _pbR94KXTEeWxY-VaL64HBg _m7B7kKW7EeW0g8eCAce0EA _rdz2UKXTEeWxY-VaL64HBg _zSPb8KXTEeWxY-VaL64HBg"/>
+  <cookbooks xmi:id="_T0uZEKW7EeW0g8eCAce0EA" name="cbk2" contents="_ryuWYKXTEeWxY-VaL64HBg _m7B7kKW7EeW0g8eCAce0EA _pbR94KXTEeWxY-VaL64HBg _rdz2UKXTEeWxY-VaL64HBg _zSPb8KXTEeWxY-VaL64HBg _MlVtEKZyEeWWBLzjgEPstg"/>
+  <cookbooks xmi:id="_UvszkKW7EeW0g8eCAce0EA" name="cbk3" contents="_0r5WgKXTEeWxY-VaL64HBg _m7B7kKW7EeW0g8eCAce0EA _ryuWYKXTEeWxY-VaL64HBg _rdz2UKXTEeWxY-VaL64HBg"/>
+  <categories xmi:id="_uEvcUKXTEeWxY-VaL64HBg" name="cat1" meta="Beverage">
+    <recipes xmi:id="_0r5WgKXTEeWxY-VaL64HBg" name="rcp1.1" dependencies="_ryuWYKXTEeWxY-VaL64HBg _pbR94KXTEeWxY-VaL64HBg">
+      <instructions xmi:id="_FteBIKXUEeWxY-VaL64HBg" name="ins1.1.1">
+        <instruction>ist1.1.1.1</instruction>
+      </instructions>
+      <ingredients xmi:id="_FM5qsKXUEeWxY-VaL64HBg" name="ing1.1.1" amount="111.0"/>
+      <ingredients xmi:id="_FcaGUKXUEeWxY-VaL64HBg" name="ing1.1.2" amount="112.0"/>
+    </recipes>
+  </categories>
+  <categories xmi:id="_yimHsKXTEeWxY-VaL64HBg" name="cat2" meta="Breakfast">
+    <recipes xmi:id="_zSPb8KXTEeWxY-VaL64HBg" name="rcp2.1" dependencies="_0r5WgKXTEeWxY-VaL64HBg">
+      <instructions xmi:id="_E4EqMKXUEeWxY-VaL64HBg" name="ins2.1.1">
+        <instruction>ist2.1.1.1</instruction>
+      </instructions>
+      <ingredients xmi:id="_EXqr0KXUEeWxY-VaL64HBg" name="ins2.1.1" amount="211.0"/>
+      <ingredients xmi:id="_EpFL8KXUEeWxY-VaL64HBg" name="ing2.1.2" amount="212.0"/>
+    </recipes>
+  </categories>
+  <categories xmi:id="_rCiPkKXTEeWxY-VaL64HBg" name="cat3" meta="Dinner">
+    <recipes xmi:id="_rdz2UKXTEeWxY-VaL64HBg" name="rcp3.1" dependencies="_zSPb8KXTEeWxY-VaL64HBg">
+      <instructions xmi:id="_DTOMQKXUEeWxY-VaL64HBg" name="ins3.1.1">
+        <instruction>ist3.1.1.1</instruction>
+      </instructions>
+      <ingredients xmi:id="_CiIGgKXUEeWxY-VaL64HBg" name="ing3.1.1" amount="311.0"/>
+      <ingredients xmi:id="_C-zbcKXUEeWxY-VaL64HBg" name="ing3.1.2" amount="312.0"/>
+    </recipes>
+  </categories>
+  <categories xmi:id="_qmB5wKXTEeWxY-VaL64HBg" name="cat4" meta="Lunch">
+    <recipes xmi:id="_ryuWYKXTEeWxY-VaL64HBg" name="rcp4.1" dependencies="_ryuWYKXTEeWxY-VaL64HBg _zSPb8KXTEeWxY-VaL64HBg">
+      <instructions xmi:id="_9regoKXTEeWxY-VaL64HBg" name="ins4.1.1">
+        <instruction>ist4.1.1.1</instruction>
+      </instructions>
+      <ingredients xmi:id="_-Pz8wKXTEeWxY-VaL64HBg" name="ing4.1.1" amount="411.0"/>
+      <ingredients xmi:id="_-5730KXTEeWxY-VaL64HBg" name="ing4.1.2" amount="412.0"/>
+    </recipes>
+  </categories>
+  <categories xmi:id="_TX1owKW7EeW0g8eCAce0EA" name="cat5" meta="Pudding">
+    <recipes xmi:id="_pbR94KXTEeWxY-VaL64HBg" name="rcp5.1">
+      <instructions xmi:id="_9GgyYKXTEeWxY-VaL64HBg" name="ins5.1.1">
+        <instruction>ist5.1.1.1</instruction>
+      </instructions>
+      <ingredients xmi:id="_8w5uwKXTEeWxY-VaL64HBg" name="ing5.1.1" amount="511.0"/>
+      <ingredients xmi:id="__zTv0KXTEeWxY-VaL64HBg" name="ing5.1.2" amount="512.0"/>
+    </recipes>
+  </categories>
+  <categories xmi:id="_l-KDoKW7EeW0g8eCAce0EA" name="cat6" meta="Snack">
+    <recipes xmi:id="_m7B7kKW7EeW0g8eCAce0EA" name="rcp6.1" description="" serves="-1">
+      <instructions xmi:id="_QnDL0KZuEeWWBLzjgEPstg" name="ins6.1.1">
+        <instruction>ist6.1.1.1</instruction>
+      </instructions>
+      <ingredients xmi:id="_pyaYYKW7EeW0g8eCAce0EA" name="ing6.1.1" amount="611.0"/>
+      <ingredients xmi:id="_qJI2UKW7EeW0g8eCAce0EA" name="ing6.1.2" amount="612.0"/>
+    </recipes>
+  </categories>
+  <categories xmi:id="_IOXs0KZyEeWWBLzjgEPstg" name="cat7">
+    <recipes xmi:id="_MlVtEKZyEeWWBLzjgEPstg" name="" dependencies="_m7B7kKW7EeW0g8eCAce0EA"/>
+  </categories>
+</Cookbooks>

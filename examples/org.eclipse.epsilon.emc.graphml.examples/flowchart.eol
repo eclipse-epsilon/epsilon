@@ -1,0 +1,38 @@
+var event = Event.all.selectOne(e|e.entryPoint = true);
+var time = event.time.hours.toMinutes();
+event.process();
+
+operation Event process() {
+	("Event: " + self.name + " at " + time.toHours()).println();
+	self.outgoing.first().target.process();
+}
+
+operation Action process() {
+	("Action: " + self.name).println();
+	if (self.outgoing.size() == 1) {
+		self.outgoing.first().target.process();
+	}
+}
+
+operation Decision process() {
+	("Decision: " + self.name).println();
+	var randomTransition = self.outgoing.random();
+	("Chose: " + randomTransition.name).println();
+	randomTransition.target.process();
+}
+
+operation Delay process() {
+	time = time + self.mins;
+	("Waited for " + self.mins + "mins").println();
+	self.outgoing.first().target.process();
+}
+
+operation String toMinutes() : Integer {
+	var parts = self.split(":");
+	return parts[0].asInteger() * 60 + parts[1].asInteger();
+}
+
+operation Integer toHours() : String {
+	return (self / 60).asString().pad(2, "0", false) + 
+		":" + (self - (self / 60)*60).asString().pad(2, "0", false);
+}

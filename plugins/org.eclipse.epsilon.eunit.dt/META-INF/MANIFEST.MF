@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EUnit Developer Tools
+Bundle-SymbolicName: org.eclipse.epsilon.eunit.dt;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.eunit.dt.EUnitPlugin
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.epsilon.eunit.engine,
+ org.eclipse.epsilon.common.dt,
+ org.eclipse.compare
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.epsilon.eunit.dt,
+ org.eclipse.epsilon.eunit.dt.diff,
+ org.eclipse.epsilon.eunit.dt.listener,
+ org.eclipse.epsilon.eunit.dt.ui,
+ org.eclipse.epsilon.internal.eunit.dt.diff,
+ org.eclipse.epsilon.internal.eunit.dt.history
+Automatic-Module-Name: org.eclipse.epsilon.eunit.dt

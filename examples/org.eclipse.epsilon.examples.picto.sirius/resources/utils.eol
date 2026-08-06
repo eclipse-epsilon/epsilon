@@ -1,0 +1,25 @@
+operation Family getTitle() : String{
+	return "Family";
+}
+
+operation Person getTitle() : String{
+	return "Children of " + self.name;
+}
+	
+
+operation Family getNumberOfMen() : String {
+	return self.getMembers().select(m|m.isTypeOf(Man)).size.toString();
+}
+
+operation Person getNumberOfMen() : String {
+	return self.getChildren().select(m|m.isTypeOf(Man)).size.toString();
+}
+
+operation Family getNumberOfWomen() : String {
+	return self.getMembers().select(m|m.isTypeOf(Woman)).size.toString();
+}
+
+operation Person getNumberOfWomen() : String {
+	return self.getChildren().select(m|m.isTypeOf(Woman)).size.toString();
+}
+

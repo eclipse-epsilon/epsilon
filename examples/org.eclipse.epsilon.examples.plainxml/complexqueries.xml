@@ -1,0 +1,15 @@
+<project default="main">
+	<target name="main">
+		
+		<epsilon.loadModel name="XMLDoc" type="PlainXML">
+			<parameter name="file" file="library.xml"/>
+			<parameter name="readOnLoad" value="true"/>
+			<parameter name="storeOnDisposal" value="false"/>
+		</epsilon.loadModel>
+		
+		<epsilon.eol src="complexqueries.eol">
+			<model ref="XMLDoc"/>
+		</epsilon.eol>
+		
+	</target>
+</project>

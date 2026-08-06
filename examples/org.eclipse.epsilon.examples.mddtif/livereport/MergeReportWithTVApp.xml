@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project default="main">
+	
+	<epsilon.emf.register file="../metamodels/TVAppDsl.ecore"/>
+	<epsilon.emf.register file="../metamodels/ReportDsl.ecore"/>
+		
+	<epsilon.emf.loadModel name="Report"
+                               modelFile="models/Report.model"
+                               metamodelUri="ReportDsl"
+                               read="true" store="false" />
+	
+	<epsilon.emf.loadModel name="OldTVApp"
+                               aliases="Source"
+                               modelUri="file://${basedir}/models/TVApp1.model"
+                               metamodelUri="TVAppDsl"
+                               read="true" store="false"/>
+	
+	<epsilon.emf.loadModel name="NewTVApp"
+                               aliases="Target"
+                               modelUri="file://${basedir}/models/TVApp2.model"
+                               metamodelUri="TVAppDsl"
+                               read="false" store="true"/>
+
+	<target name="main">
+		<epsilon.ecl src="MatchReportWithTVApp.ecl" exportmatchtrace="trace">
+			<model ref="OldTVApp"/>
+			<model ref="Report"/>
+		</epsilon.ecl>
+
+		<epsilon.evl src="ValidateReport.evl">
+			<model ref="OldTVApp"/>
+			<model ref="Report"/>
+			<uses ref="trace"/>
+		</epsilon.evl>
+			
+		<epsilon.eml src="MergeReportWithTVApp.eml" usematchtrace="trace">
+			<model ref="OldTVApp"/>
+			<model ref="Report"/>
+			<model ref="NewTVApp"/>
+		</epsilon.eml>
+		
+		<epsilon.storeModel model="NewTVApp"/>
+		
+	</target>
+	
+</project>

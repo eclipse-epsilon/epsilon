@@ -1,0 +1,19 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?include imported-egl-templates.yaml?>
+<_>
+	<package name="p1">
+		<t1/>
+	</package>
+	
+	<package name="p2">
+		<t2/>
+	</package>
+	
+	<package name="p3">
+		<t3 n="5" abstract="true"/>
+	</package>
+
+	<package name="p4">
+		<t3 n="5" abstract="true"/>
+	</package>
+</_>

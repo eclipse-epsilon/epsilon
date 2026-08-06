@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Simulink Model Support (base)
+Bundle-SymbolicName: org.eclipse.epsilon.emc.simulink.common
+Bundle-Version: 2.9.0.qualifier
+Automatic-Module-Name: org.eclipse.epsilon.emc.simulink.common
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.eol.engine;visibility:=reexport,
+ org.eclipse.epsilon.common,
+ org.apache.commons.collections;visibility:=reexport,
+ org.eclipse.epsilon.profiling;visibility:=reexport
+Export-Package: org.eclipse.epsilon.emc.simulink.engine,
+ org.eclipse.epsilon.emc.simulink.exception,
+ org.eclipse.epsilon.emc.simulink.introspection.java,
+ org.eclipse.epsilon.emc.simulink.model,
+ org.eclipse.epsilon.emc.simulink.model.element,
+ org.eclipse.epsilon.emc.simulink.types,
+ org.eclipse.epsilon.emc.simulink.util,
+ org.eclipse.epsilon.emc.simulink.util.collection,
+ org.eclipse.epsilon.emc.simulink.util.manager
+Bundle-Vendor: Eclipse Modeling Project

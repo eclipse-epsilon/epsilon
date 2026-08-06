@@ -1,0 +1,67 @@
+@test
+operation simpleAssignment() {
+	var result = 1 > 2 ? "t" : "f";
+	assertEquals("f", result);
+	result = true ? false else true;
+	assertFalse(result);
+}
+
+@test
+operation inExpression() {
+	assertTrue((((2+2==4) and 4-1==3) ? "quick mafs" : null).isDefined());
+}
+
+@test
+operation nestedAssignment() {
+	var result = 10 <= 1 ? null else (300 > 300000 ? "madness" : "SPARTA!!");
+	assertEquals("SPARTA!!", result);
+}
+
+@test
+operation reassignToSelf() {
+	var value = "status quo";
+	value = -(1/12) > 2147483647 ? "revolution" : value;
+	assertEquals("status quo", value);
+	value = value.isUndefined() ? value : "revolution";
+	assertEquals("revolution", value);
+}
+
+@test
+operation test4LevelNestingWithSideEffects() {
+	var count = 0;
+	var result = (count++ > 0 and "Hop out the 4-door".isDefined() ? (
+		(count++ > 1 and "with the .44".isDefined()) ? (
+			(count++ > 2 and ("it was 1,2,"+count+" and "+count++).isDefined()) ? (
+				count == 4 ? "Chillin' in the corridor" : "your dad is 44"
+			)
+			else "MNH")
+		else "MNH")
+	else "MNH");
+	assertEquals(result.length(), 24);
+	assertEquals(count, 4);
+}
+
+@test
+operation inOperationReturn() {
+	var input = "yo";
+	assertEquals(input, input.doPseudoMath("QM"));
+}
+
+operation String doPseudoMath(shaq : Any) : String {
+	return 2+2=4-1=3 ? shaq.toString() : self;
+}
+
+@test
+operation assertLazy() {
+	var b = false;
+	var result = b ? neverCalled() : "Yes".getResult();
+	assertEquals(1, result);
+}
+
+operation String getResult() : Integer {
+	return 1;
+}
+
+operation neverCalled() {
+	throw true ? "Shouldn't be here!" : "Something has gone catastrophically wrong if you're seeing this in the stack trace";
+}

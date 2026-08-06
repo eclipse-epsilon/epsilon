@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Generation Language Development Tools
+Bundle-SymbolicName: org.eclipse.epsilon.egl.dt;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-Activator: org.eclipse.epsilon.egl.dt.EglPlugin
+Require-Bundle: org.eclipse.epsilon.egl.engine,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.jface.text,
+ org.eclipse.ui.ide,
+ org.eclipse.epsilon.egl.traceability.fine,
+ org.eclipse.ui.console,
+ org.eclipse.epsilon.erl.dt
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.epsilon.egl.dt,
+ org.eclipse.epsilon.egl.dt.editor,
+ org.eclipse.epsilon.egl.dt.editor.outline,
+ org.eclipse.epsilon.egl.dt.extensions,
+ org.eclipse.epsilon.egl.dt.extensions.fineGrainedTracePostprocessor,
+ org.eclipse.epsilon.egl.dt.extensions.formatter,
+ org.eclipse.epsilon.egl.dt.extensions.templateFactoryType,
+ org.eclipse.epsilon.egl.dt.launching,
+ org.eclipse.epsilon.egl.dt.launching.tabs,
+ org.eclipse.epsilon.egl.dt.views,
+ org.eclipse.epsilon.egl.dt.widgets;x-friends:="org.eclipse.epsilon.egl.dt.test",
+ org.eclipse.epsilon.egl.dt.wizards
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.egl.dt

@@ -1,0 +1,23 @@
+@test
+operation testCreate() {
+	var prev = EClass.all.size();
+	var x : new EClass;
+	var next = EClass.all.size();
+	assertEquals(prev + 1, next);
+}
+
+@test
+operation testDelete() {
+	var prev = EClass.all.size();
+	var x = EClass.all.random();
+	delete x;
+	var next = EClass.all.size();
+	assertEquals(prev - 1, next);
+}
+
+@test
+operation testDeleteAll() {
+	delete EClass.all;
+	var next = EClass.all.size();
+	assertEquals(0, next);
+}

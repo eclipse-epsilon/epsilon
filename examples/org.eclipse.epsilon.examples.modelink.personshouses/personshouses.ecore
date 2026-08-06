@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="personshouses" nsURI="personshouses" nsPrefix="">
+  <eClassifiers xsi:type="ecore:EClass" name="PersonHouseRelationshipGroup">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="personHouseRelationships"
+        upperBound="-1" eType="#//PersonHouseRelationship" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PersonHouseRelationship">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="house" eType="ecore:EClass houses#//House"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="person" eType="ecore:EClass persons#//Person"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//PersonHouseRelationshipType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PersonHouseRelationshipType">
+    <eLiterals name="Owns"/>
+    <eLiterals name="Lets" value="1"/>
+  </eClassifiers>
+</ecore:EPackage>

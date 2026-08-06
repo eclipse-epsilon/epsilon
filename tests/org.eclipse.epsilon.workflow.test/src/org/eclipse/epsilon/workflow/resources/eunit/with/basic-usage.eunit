@@ -1,0 +1,32 @@
+$with Map {"" = "A"}
+$with Map {"" = "B"}
+@test
+operation hasOneA() {
+  assertEquals("The model has one A", 1, Element.allInstances.select(e|e.name='A').size()); 
+}
+
+$with Map {"" = "A"}
+@test
+operation hasOneB() {
+  assertEquals("The model has one B", 1, Element.allInstances.select(e|e.name.startsWith('B')).size());
+}
+
+$with Map {"" = "B"}
+@test
+operation hasTwoB() {
+  assertEquals("The model has two B", 2, Element.allInstances.select(e|e.name.startsWith('B')).size());
+}
+
+$with Map {"" = "B"}
+@test
+operation hasTwoElements() {
+  // this test should pass (A is still available)
+  assertEquals("A has two elements", 2, A!Element.allInstances.size());
+}
+
+$with Map {"" = "A"}
+@test
+operation hasThreeElements() {
+  // this test should pass (B is still available)
+  assertEquals("B has three elements", 3, B!Element.allInstances.size());
+}

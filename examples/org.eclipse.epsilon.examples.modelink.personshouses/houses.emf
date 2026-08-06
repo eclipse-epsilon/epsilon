@@ -1,0 +1,10 @@
+@namespace(uri="http://houses", prefix="")
+package houses;
+
+class HousesGroup {
+	val House[*] houses;
+}
+
+class House {
+	attr String address;
+}

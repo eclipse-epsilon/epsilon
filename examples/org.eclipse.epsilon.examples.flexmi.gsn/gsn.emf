@@ -1,0 +1,36 @@
+@namespace(uri="gsn", prefix="gsn")
+package gsn;
+
+class Model {
+  val Node[*] nodes;
+  val SupportedBy[*] supportedBy;
+  val ContextOf[*] contextOf;
+}
+
+abstract class Node {
+  attr String name;
+  attr String description;
+}
+
+class Goal extends Node {
+}
+
+class Strategy extends Node {
+}
+
+class SupportedBy {
+  ref Node source;
+  ref Node target;
+}
+
+class ContextOf {
+  ref Node source;
+  ref Context target;
+}
+
+class Context extends Node {
+}
+
+class Solution extends Node {
+}
+

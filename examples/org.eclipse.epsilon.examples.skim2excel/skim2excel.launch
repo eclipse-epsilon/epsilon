@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.egl.eclipse.dt.launching.EglLaunchConfigurationDelegate">
+<booleanAttribute key="appendToFile" value="false"/>
+<listAttribute key="defaultFormatters"/>
+<booleanAttribute key="fine_grained_profiling" value="false"/>
+<intAttribute key="generateTo" value="2"/>
+<listAttribute key="models">
+<listEntry value="#&#10;#Sun Mar 09 09:11:08 GMT 2014&#10;name=M&#10;readOnLoad=true&#10;storeOnDisposal=false&#10;aliases=&#10;uri=&#10;cached=true&#10;file=/org.eclipse.epsilon.examples.skim2excel/notes.xml&#10;fileBased=true&#10;type=PlainXML&#10;"/>
+</listAttribute>
+<stringAttribute key="outputFilePath" value="/org.eclipse.epsilon.examples.skim2excel/notes.excel.xml"/>
+<booleanAttribute key="produceTrace" value="false"/>
+<booleanAttribute key="profile_model_loading" value="false"/>
+<booleanAttribute key="profiling_enabled" value="false"/>
+<booleanAttribute key="reset_profiler" value="false"/>
+<stringAttribute key="source" value="/org.eclipse.epsilon.examples.skim2excel/skim2excel.egl"/>
+<stringAttribute key="templateFactoryType" value="org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory"/>
+<stringAttribute key="traceDestination" value=""/>
+</launchConfiguration>

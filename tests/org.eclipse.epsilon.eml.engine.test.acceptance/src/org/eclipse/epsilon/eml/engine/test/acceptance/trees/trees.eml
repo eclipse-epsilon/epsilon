@@ -1,0 +1,35 @@
+import "imported.eml";
+
+pre {
+	var unmatched = new Merged!t_unmatched;
+	info.put("pre", "pre");
+}
+
+post {
+	info.put("post", "post");
+}
+
+rule TreeWithTree
+	merge l : Left!t_tree
+	with r : Right!t_tree 
+	into t : Merged!t_tree {
+	
+	if (l.parent.isUndefined()) {
+		Merged.root = t;
+		t.appendChild(unmatched);
+	}
+	else {
+		l.getParentNode().equivalent().appendChild(t);
+	}
+	
+	t.a_label = l.a_label;
+}
+
+rule Tree2Tree
+	transform s : Source!t_tree
+	to t : Merged!t_tree {
+	
+	t.a_label = s.a_label;
+	unmatched.appendChild(t);
+	
+}

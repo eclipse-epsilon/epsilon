@@ -1,0 +1,20 @@
+// Print the text of all <strong> elements
+for (s in t_strong.all) {
+	s.text().println();
+}
+
+// Print all links that point to external websites
+for (link in t_a.all) {
+	if (link.a_href.startsWith("http")) {
+		link.a_href.println();
+	}
+}
+
+// Print the text of all <li> elements which are
+// children of the <ul> that's the first sibling
+// of the "Why Epsilon?" <h2>
+var whyEpsilon = t_h2.all.selectOne(h2|h2.text.startsWith("Why Epsilon"));
+var ul = whyEpsilon.nextElementSibling();
+for (li in ul.c_li) {
+	li.text.println();
+}

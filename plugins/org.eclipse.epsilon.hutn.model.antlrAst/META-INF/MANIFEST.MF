@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Human Usable Textual Notation AST Model
+Bundle-SymbolicName: org.eclipse.epsilon.hutn.model.antlrAst;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-Localization: plugin
+Export-Package: org.eclipse.epsilon.hutn.model.hutnAntlrAst,
+ org.eclipse.epsilon.hutn.model.hutnAntlrAst.impl,
+ org.eclipse.epsilon.hutn.model.hutnAntlrAst.util
+Require-Bundle: org.eclipse.epsilon.common,
+ org.eclipse.epsilon.antlr.postprocessor.model
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.hutn.model.antlrAst

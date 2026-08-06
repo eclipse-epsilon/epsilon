@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate">
+<listAttribute key="models">
+<listEntry value="#&#13;&#10;#Tue Mar 10 00:07:46 GMT 2009&#13;&#10;isMetamodelFileBased=false&#13;&#10;name=Model&#13;&#10;readOnLoad=true&#13;&#10;storeOnDisposal=false&#13;&#10;aliases=&#13;&#10;metamodelUri=Tree&#13;&#10;type=EMF&#13;&#10;modelFile=/org.eclipse.epsilon.examples.modelmodification/tree.model&#13;&#10;expand=true&#13;&#10;metamodelFile=&#13;&#10;"/>
+</listAttribute>
+<stringAttribute key="source" value="\org.eclipse.epsilon.examples.modelmodification\AddLeaves.eol"/>
+</launchConfiguration>

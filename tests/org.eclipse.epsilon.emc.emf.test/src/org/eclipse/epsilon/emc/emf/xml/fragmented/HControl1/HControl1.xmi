@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<wt:Subsystem xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:wt="http://mondo.org/WT" name="HControl1">
+  <subsystems href="HControl2/HControl2.xmi#/"/>
+  <ensembles href="H1Arquitecture.arq#/"/>
+  <beh href="HControlDefinition.control#/"/>
+  <beh href="H2.control#/"/>
+  <beh href="H3.control#/"/>
+  <beh href="H4.control#/"/>
+  <beh href="new_file.control#/"/>
+</wt:Subsystem>

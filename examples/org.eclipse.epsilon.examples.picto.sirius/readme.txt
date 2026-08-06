@@ -1,0 +1,1 @@
+Please see https://www.eclipse.org/epsilon/doc/articles/visualising-models-with-picto-and-sirius/

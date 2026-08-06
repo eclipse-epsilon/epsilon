@@ -1,0 +1,42 @@
+digraph G {
+	node[shape=record, fontname=Tahoma, fontsize=10, style=filled, fillcolor=azure]
+	edge[fontname=Tahoma, fontsize=10, fontcolor=grey]
+	
+	[%
+	var nodes = M.allInstances().collect(e|e.getNode());
+	nodes = nodes.includingAll(nodes.closure(n | n.getOutgoing().collect(e|e.getEndNode())));
+	nodes = nodes.includingAll(nodes.closure(n | n.getIncoming().collect(e|e.getStartNode()))).asSet();
+	%]
+	
+	[%for (n in nodes) { %]
+	[%=n.getNodeId()%][label = "{[%=n.getNodeLabel()%]|[%=n.getNodeProperties()%]}", fillcolor="beige"]
+	[%}%]
+	
+	[%for (n in nodes) { %]
+	[%for (o in n.getOutgoing()){%]
+	[%=n.getNodeId()%]->[%=o.getEndNode().getNodeId()%] [label="[%=o.getType()%]"]
+	[%}%]
+	[%}%]
+	
+}
+
+[%
+
+operation Any getNodeLabel() {
+	return (self.id+"");
+}
+
+
+operation Any getNodeId() {
+	return (self.id+"").replaceAll("#","x").replaceAll(":","x");
+}
+
+operation Any getNodeProperties() {
+	return self.getPropertyKeys().excludingAll(Sequence{"resource", "_hawksignature"}).collect(k|(k + " = " + self.getProperty(k)).
+		replaceAll("\\|","\\\\|").
+		replaceAll("\\{","\\\\{").
+		replaceAll("\\}","\\\\}")
+		).concat("\\n");
+}
+
+%]

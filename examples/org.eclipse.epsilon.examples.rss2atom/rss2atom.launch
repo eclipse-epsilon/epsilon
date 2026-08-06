@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.etl.eclipse.dt.launching.EtlLaunchConfigurationDelegate">
+<booleanAttribute key="fine_grained_profiling" value="false"/>
+<listAttribute key="models">
+<listEntry value="#&#13;&#10;#Mon Sep 30 21:15:01 BST 2013&#13;&#10;name=RSS&#13;&#10;readOnLoad=true&#13;&#10;storeOnDisposal=false&#13;&#10;aliases=&#13;&#10;uri=&#13;&#10;cached=true&#13;&#10;file=/org.eclipse.epsilon.examples.rss2atom/rss.xml&#13;&#10;fileBased=true&#13;&#10;type=PlainXML&#13;&#10;"/>
+<listEntry value="#&#13;&#10;#Mon Sep 30 21:14:31 BST 2013&#13;&#10;name=Atom&#13;&#10;readOnLoad=false&#13;&#10;storeOnDisposal=true&#13;&#10;aliases=&#13;&#10;uri=&#13;&#10;cached=true&#13;&#10;file=/org.eclipse.epsilon.examples.rss2atom/atom-gen.xml&#13;&#10;fileBased=true&#13;&#10;type=PlainXML&#13;&#10;"/>
+</listAttribute>
+<booleanAttribute key="profile_model_loading" value="false"/>
+<booleanAttribute key="profiling_enabled" value="false"/>
+<booleanAttribute key="reset_profiler" value="false"/>
+<stringAttribute key="source" value="/org.eclipse.epsilon.examples.rss2atom/rss2atom.etl"/>
+</launchConfiguration>

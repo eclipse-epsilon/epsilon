@@ -1,0 +1,394 @@
+@cached
+operation EOL() {
+	return '\n';
+}
+
+operation foo() {
+	"dummy operation";
+}
+
+operation Integer isDivisibleBy(num : Integer) {
+	return self.mod(num) == 0;
+}
+
+operation busyComp(target) {
+	var Math = Native("java.lang.Math");
+	var rand : Real = 0.0;
+	while (rand < target) {
+		rand = Math.random();
+	}
+}
+
+operation String removeSurroundingQuotes() : String {
+	return self.substring(1, self.length()-1);
+}
+
+operation String getCommentContents() : String {
+	return self
+		.replaceAll("/"+"\\*", "")
+		.replaceAll("\\*"+'/', "");
+}
+
+operation String makeComment(start, prefix, end, padding) : String {
+	return self.makeComment(padding+start, padding+prefix, padding+end);
+}
+
+operation String makeComment(start, prefix, end) : String {
+	var comment : String = "";
+	var hasPrefix = prefix.isDefined() and prefix.length() > 0;
+	var lines = self.split(EOL());
+	if (start.isDefined() and start.length() > 0) {
+		comment += start;
+	}
+	for (line : String in lines) {
+		if (hasPrefix) {
+			comment += prefix;
+		}
+		if (line.length() > 0) {
+			comment += line;
+		}
+		comment += EOL();
+	}
+	if (end.isDefined() and end.length() > 0) {
+		comment += end;
+	}
+	return comment;
+}
+
+operation String escapedString() : String {
+	return self.replaceAll("\"", "\\"+'"');
+}
+
+operation String startsWithNumber() : Boolean {
+	return not self.matches("^[0-9]");
+}
+
+@cached
+operation String makeValidName() : String {
+	var vName : String = self;
+	if (vName.isDefined() and vName.length() > 0) {
+		if (vName.startsWithNumber()) {
+			jName = "_"+vName;
+		}
+		vName.replaceAll("[^a-zA-Z0-9]+", "_");
+	}
+	return vName;
+}
+
+@cached
+operation String camelToUnderscore() : String {
+    return self.firstToUpperCase().split("(?=[A-Z])").concat("_").toUpperCase();
+}
+
+operation String changeIf(condition : Boolean, nval : String) {
+	if (condition)
+		return nval;
+	return self;
+}
+
+operation String contains(other) : Boolean {
+	return other.isSubstringOf(self);
+}
+
+operation Sequence replace(index : Integer, with) : Sequence {
+	var what = self.at(index);
+	var newSeq = Sequence{};
+	if (index < 0 or index >= self.size())
+		return self.clone();
+	else if (index == 0) {
+		newSeq.add(with);
+		newSeq.addAll(self.excluding(what));
+	}
+	else if (index == self.size()-1) {
+		newSeq.addAll(self.excluding(what));
+		newSeq.add(with);
+	}
+	else {
+		var leftSeq = Sequence{};
+		var rightSeq = Sequence{};
+		for (i : Integer in Sequence{0..index-1}) {
+			leftSeq.add(self.at(i));
+		}
+		for (i : Integer in Sequence{index+1..self.size()-1}) {
+			rightSeq.add(self.at(i));
+		}
+		newSeq.addAll(leftSeq);
+		newSeq.add(with);
+		newSeq.addAll(rightSeq);
+	}
+	return newSeq;
+}
+
+operation Any printlnIf(condition : Boolean) {
+	if (condition) self.println();
+}
+
+operation Any printIf(condition : Boolean) {
+	if (condition) self.print();
+}
+
+operation printIfDefined(str : String) {
+	printIfDefined(str, "");
+}
+
+operation printIfDefined(str : String, padding : String) {
+	if (str.isDefined() and str.length() > 0) {
+		(padding+str.replace(EOL(), EOL()+padding)).print();
+	}
+}
+
+operation String hasNesting() : Boolean {
+	return self.hasNesting(1);
+}
+
+operation String hasNesting(level : Integer) : Boolean {
+	return self.getNestingLevel() >= level;
+}
+
+@cached
+operation String getNestingSequence() : Sequence {
+	var nestSeq : Sequence = self.split("<");
+	if (nestSeq.isDefined() and nestSeq.size() > 0) {
+		nestSeq = nestSeq.replace(nestSeq.size()-1, nestSeq.last().replace(">", ""));
+	}
+	return nestSeq;
+}
+
+@cached
+operation String typeErasure() : String {
+	return self.split("<").first();
+}
+
+@cached
+operation String getNestingLevel() : Integer {
+	return self.split("<").size()-1;
+}
+
+@cached
+operation String getInnerType() : String {
+	var parts : Sequence = self.split("<");
+	if (parts.size() > 1) {
+		parts.removeAt(0);
+		var inner : String = parts.concat("<");
+		if (inner.endsWith(">")) {
+			inner = inner.substring(0, inner.length()-1);
+			if (not inner.contains("<")) {
+				inner = inner.split(">").first();
+			}
+		}
+		return inner;
+	}
+	return self;
+}
+
+operation String spaceBetweenMap() : String {
+	return self.replace(",", ", ");
+}
+
+@cached
+operation String getMapKey() : String {
+	var brackets = self.split("(?=<)");
+	if (brackets.size() <= 1 and not ",".isSubstringOf(brackets.second())) {
+		return self.split(",").first();
+	}
+	var key : String = brackets.removeAt(1).substring(1);
+	brackets.removeAt(0);
+	key += brackets.concat();
+	if (">,".isSubstringOf(key)) {
+		return key.split(">,").first()+'>';
+	}
+	else {
+		return key.split(",").first();
+	}
+}
+
+@cached
+operation String getMapValue() : String {
+	var value : String = self.substring(0, self.length()-1);
+	if (">,".isSubstringOf(value)) {
+		return value.split(">,").last();
+	}
+	else {
+		var commas = value.split(",");
+		if (commas.size() > 2) {
+			commas.removeAt(0);
+			return commas.concat(",");
+		}
+		else {
+			return commas.last();
+		}
+	}
+}
+
+operation String isValidMonth() : Boolean {
+	switch (self.toUpperCase()) {
+		case "JANUARY": return true; case "JAN": return true; case "01": return true; case "1": return true;
+		case "FEBRUARY": return true; case "FEB": return true; case "02": return true; case "2": return true;
+		case "MARCH": return true; case "MAR": return true; case "03": return true; case "3": return true;
+		case "APRIL": return true; case "APRIL": return true; case "04": return true; case "4": return true;
+		case "MAY": return true; case "5": return true; case "05": return true; case "5": return true;
+		case "JUNE": return true; case "JUN": return true; case "06": return true; case "6": return true;
+		case "JULY": return true; case "JUL": return true; case "07": return true; case "7": return true;
+		case "AUGUST": return true; case "AUG": return true; case "08": return true; case "8": return true;
+		case "SEPTEMBER": return true; case "SEPT": return true; case "SEP": return true; case "09": return true; case "9": return true;
+		case "OCTOBER": return true; case "OCT": return true; case "10": return true;
+		case "NOVEMBER": return true; case "NOV": return true; case "11": return true;
+		case "DECEMBER": return true; case "DEC": return true; case "12": return true;
+		case "UNDECIMBER": return true; case "UND": return true; case "UN": return true; case "13": return true;
+	}
+	return false;
+}
+
+operation String isJavaPrimitive() : Boolean {
+	return self.isJavaPrimitive(false);
+}
+
+operation String isJavaPrimitive(includeWrappers : Boolean) : Boolean {
+	switch (self) {
+		case "int": return true;
+		case "double": return true;
+		case "long": return true;
+		case "short": return true;
+		case "float": return true;
+		case "boolean": return true;
+		case "char": return true;
+		case "byte": return true;
+	}
+	if (includeWrappers) {
+		switch (self) {
+			case "String": return true;
+			case "Object": return true;
+			case "Integer": return true;
+			case "Short": return true;
+			case "Boolean": return true;
+			case "Character": return true;
+			case "Long": return true;
+			case "Byte": return true;
+			case "Float": return true;
+			case "Double": return true;
+		}
+	}
+	return false;
+}
+
+operation String isValidJavaName() : Boolean {
+	return
+		self.length > 0 and
+		not self.startsWith("[0-9]") and
+		not self.isJavaToken() and
+		not self.isJavaKeyword() and
+		not self.startsWithNumber();
+}
+
+operation String isJavaKeyword() : Boolean {
+	switch (self) {
+		case "abstract": return true;
+		case "continue": return true;
+		case "for": return true;
+		case "new": return true;
+		case "switch": return true;
+		case "assert": return true;
+		case "default": return true;
+		case "goto": return true;
+		case "package": return true;
+		case "synchronized": return true;
+		case "boolean": return true;
+		case "do": return true;
+		case "if": return true;
+		case "private": return true;
+		case "this": return true;
+		case "break": return true;
+		case "double": return true;
+		case "implements": return true;
+		case "protected": return true;
+		case "throw": return true;
+		case "byte": return true;
+		case "else": return true;
+		case "import": return true;
+		case "public": return true;
+		case "throws": return true;
+		case "case": return true;
+		case "enum": return true;
+		case "instanceof": return true;
+		case "return": return true;
+		case "transient": return true;
+		case "catch": return true;
+		case "extends": return true;
+		case "int": return true;
+		case "short": return true;
+		case "try": return true;
+		case "char": return true;
+		case "final": return true;
+		case "interface": return true;
+		case "static": return true;
+		case "void": return true;
+		case "class": return true;
+		case "finally": return true;
+		case "long": return true;
+		case "strictfp": return true;
+		case "volatile": return true;
+		case "const": return true;
+		case "float": return true;
+		case "native": return true;
+		case "super": return true;
+		case "while":
+	}
+	return false;
+}
+
+operation String isJavaToken() : Boolean {
+	switch (self) {
+		case "/": return true;
+		case "*": return true;
+		case "-": return true;
+		case "+": return true;
+		case ".": return true;
+		case "_": return true;
+		case ",": return true;
+		case "=": return true;
+		case "==": return true;
+		case "&": return true;
+		case "&&": return true;
+		case "|": return true;
+		case "||": return true;
+		case "{": return true;
+		case "}": return true;
+		case "[": return true;
+		case "]": return true;
+		case "%": return true;
+		case "\"": return true;
+		case "'": return true;
+		case "@": return true;
+		case ":": return true;
+		case ";": return true;
+		case "!": return true;
+		case "(": return true;
+		case ")": return true;
+		case "^": return true;
+		case "^^": return true;
+		case "%=": return true;
+		case "...": return true;
+		case "[]": return true;
+		case "{}": return true;
+		case "!": return true;
+		case "!=": return true;
+		case ">=": return true;
+		case "<=": return true;
+		case "?": return true;
+		case " ": return true;
+		case "+=": return true;
+		case "*=": return true;
+		case "-=": return true;
+		case "/=": return true;
+		case "&=": return true;
+		case "|=": return true;
+		case "<": return true;
+		case ">": return true;
+		case "->": return true;
+		case "::": return true;
+		case "()": return true;
+		case "<>": return true;
+		case "\\":
+	}
+	return false;
+}

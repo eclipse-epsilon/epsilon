@@ -1,0 +1,5 @@
+@test
+operation compareModel() {
+  runTarget("atl");
+  assertEqualModels("GraphExpected", "Graph");
+}

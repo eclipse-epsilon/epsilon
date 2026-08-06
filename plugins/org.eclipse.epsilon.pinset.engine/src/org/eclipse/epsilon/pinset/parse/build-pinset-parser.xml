@@ -1,0 +1,6 @@
+<project default="main">
+	<import file="../../../../../../../org.eclipse.epsilon.eol.engine/src/org/eclipse/epsilon/eol/parse/build-epsilon-parser-macro.xml"/>
+	<target name="main">
+		<buildEpsilonParser lang="pinset" languppercase="Pinset"/>
+	</target>
+</project>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<Application name="Champions League">
+  <Text name="Welcome to the Champions Leage TV Application">
+      Here you will find information about the Champions League teams
+and you can vote for your favorite players and teams
+  </Text>
+  <Menu name="Latest News">
+    <Text name="Shoulder a burden for Dida">
+        AC Milan goalkeeper Dida may miss the first leg 
+of the UEFA Champions League semi-final against 
+Manchester United FC after suffering the recurrence 
+of a shoulder injury.
+    </Text>
+    <Text name="Character tells for Lampard">
+        They may be the most expensive squad ever assembled, 
+but José Mourinho's Chelsea FC have a quality 
+that money cannot buy: grit.
+    </Text>
+    <Text name="Larsson marvels at Ronaldo magic">
+        Henrik Larsson believes Cristiano Ronaldo is probably 
+"the best player around at the moment" after watching 
+his former Manchester United FC team-mate lead the rout 
+of AS Roma in the quarter-finals of the UEFA Champions 
+League last week.
+    </Text>
+  </Menu>
+  <Menu name="Polls">
+    <Vote name="Who will be the top scorer?">
+      <Choice name="Kaká (Milan)">
+      </Choice>
+      <Choice name="Peter Crouch (Liverpool)">
+      </Choice>
+      <Choice name="Didier Drogba (Chelsea)">
+      </Choice>
+    </Vote>
+    <Vote name="Who will win the Champions Leage?">
+      <Choice name="Liverpool">
+      </Choice>
+      <Choice name="Milan">
+      </Choice>
+      <Choice name="Chelsea">
+      </Choice>
+      <Choice name="Man. United">
+      </Choice>
+    </Vote>
+  </Menu>
+  <Menu name="Live Reports!">
+    <Text name="Chelsea vs. Liverpool">
+        1-1 (Crouch)
+    </Text>
+  </Menu>
+</Application>
+

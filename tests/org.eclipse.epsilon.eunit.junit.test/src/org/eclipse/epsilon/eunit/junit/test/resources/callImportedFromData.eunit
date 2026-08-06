@@ -1,0 +1,11 @@
+import "common.eol";
+
+@data x
+operation elements() {
+  return pair(1, 2);
+}
+
+@test
+operation greaterThan() {
+  assertTrue(x > 0);
+}

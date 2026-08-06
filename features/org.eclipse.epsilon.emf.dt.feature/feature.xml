@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.epsilon.emf.dt.feature"
+      label="Epsilon Development Tools for EMF"
+      version="2.9.0.qualifier"
+      provider-name="Eclipse Modeling Project"
+      license-feature="org.eclipse.license"
+      license-feature-version="0.0.0">
+
+   <description url="http://www.eclipse.org/epsilon">
+      This feature provides the Epsilon development tools needed to work with EMF models. These include:
+- The EPackage Registry view for querying all registered EPackages.
+- The reflective Exeed editor and the ModeLink model weaving editor.
+- Apache Ant tasks for working with EMF models in Epsilon.
+- EUnit extensions for comparing EMF models and showing their differences from the EUnit view.
+   </description>
+
+   <copyright>
+        Copyright (c) 2018 The University of York.
+        This program and the accompanying materials are made
+        available under the terms of the Eclipse Public License 2.0
+        which is available at https://www.eclipse.org/legal/epl-2.0
+   </copyright>
+
+	<url>
+      <discovery label="Emfatic" url="http://download.eclipse.org/emfatic/update"/>
+   </url>
+   
+   <includes id="org.eclipse.epsilon.emf.feature" version="2.9.0.qualifier"/>
+   <includes id="org.eclipse.epsilon.core.dt.feature" version="2.9.0.qualifier"/>
+
+   <plugin
+         id="org.eclipse.epsilon.dt.epackageregistryexplorer"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.dt.exeed"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.emc.emf.decorator.dt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.emc.emf.dt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.egl.dt.traceability.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.egl.dt.traceability.fine.emf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.flock.dt.emf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.workflow.emf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.emf.dt"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="org.eclipse.epsilon.eol.dt.interpreter"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+</feature>

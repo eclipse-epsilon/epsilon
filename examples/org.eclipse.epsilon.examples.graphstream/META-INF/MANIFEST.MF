@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vis
+Bundle-SymbolicName: org.eclipse.epsilon.examples.graphstream
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.eclipse.epsilon.vis
+Bundle-RequiredExecutionEnvironment: JavaSE-11

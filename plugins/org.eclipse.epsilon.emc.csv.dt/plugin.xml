@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.csv.CsvModel"
+            dialog="org.eclipse.epsilon.emc.csv.dt.CsvModelConfigurationDialogue"
+            icon="icons/csv.png"
+            label="CSV Model"
+            type="CSV">
+      </modelType>
+   </extension>
+</plugin>

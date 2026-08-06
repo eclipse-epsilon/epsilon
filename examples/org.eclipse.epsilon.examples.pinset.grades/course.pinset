@@ -1,0 +1,102 @@
+dataset studentsSummary over s : Student {
+	column id: s.ID
+	column name: s.name
+	column phone: s.contact.phone
+	
+	column items_completed: s.grades.size
+	column final_grade : s.getFinalGrade()
+
+	column course_outcome {
+		if (final_grade < 50) {
+			return "fail";
+		}
+		else if (final_grade < 70) {
+			return "good";
+		}
+		else if (final_grade < 90) {
+			return "notable";
+		}
+		else {
+			return "excellent";
+		}
+	}
+}
+
+@cached
+operation Student getFinalGrade() {
+	return self.grades
+			.collect(g | g.points * g.item.percentage)
+			.sum() / 100;
+}
+
+
+dataset studentsContact over s : Student {
+	properties [ID as StudentId, name]
+	reference contact[email, phone]
+}
+
+
+dataset remoteStudents over s : Student {
+	guard: s.isRemote
+
+	properties[ID, name]
+}
+
+dataset finalExamAssistants over s : Student
+	from : Student.all.select(s |
+			s.grades.exists(g | g.item.name == "Final Exam")) {
+
+	properties[ID, name]
+}
+
+
+dataset studentGrades over s : Student {
+	properties[ID, name]
+
+	grid {
+		keys: EvaluationItem.all
+		header: key.name
+		body: s.grades.selectOne(g | g.item == key)?.points
+	}
+
+	column final_grade : s.getFinalGrade()
+}
+
+
+dataset numbers over n from : 1.to(5) {
+	column number : n
+	column squared : n * n
+
+	grid {
+		keys: 2.to(5)
+		header: "times_" + key
+		body: n * key
+	}
+}
+
+
+dataset gradesDetails over g : Grade {
+	properties[points]
+	reference item[name]
+	from student : g.eContainer {
+		column id : student.ID
+		column final_grade : student.getFinalGrade()
+		column grade_lowerthan_final : g.points < final_grade
+	}
+}
+
+
+dataset studentGradesPostProcessed over s : Student {
+	properties[ID]
+
+	@fillNulls 0
+	grid {
+		keys: EvaluationItem.all
+		header: key.name
+		body: s.grades.selectOne(g | g.item == key)?.points
+	}
+
+	column final_grade : s.getFinalGrade()
+	@normalize 100
+	column final_grade_normalized : final_grade
+}

@@ -1,0 +1,23 @@
+var emfTool = new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
+var ecoreUtil = emfTool.ecoreUtil;
+
+var m = new Target!Model;
+
+for (c in Source!Cloneable.all) {
+	
+	for (i in 1.to(5)) {
+	
+		// Create a clone of c. When created,
+		// the clone doesn't belong to any model.
+		var targetCloneable = ecoreUtil.copy(c);
+		
+		// Important: before accessing any properties of 
+		// the cloned object, you need to add it to one 
+		// of the involved models. For example, if the 
+		// two following statements are put in reverse
+		// order, it won't work.
+		m.contents.add(targetCloneable);
+		targetCloneable.name = targetCloneable.name + i;
+	}
+	
+}

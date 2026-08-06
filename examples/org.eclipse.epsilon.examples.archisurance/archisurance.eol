@@ -1,0 +1,28 @@
+import "archi-util.eol";
+
+var sourceElements = ArchimateRelationship.all.source;
+var targetElements = ArchimateRelationship.all.target;
+
+var unlinkedElements = ArchimateElement.all.select(e|
+	sourceElements.excludes(e) and 
+	targetElements.excludes(e));
+
+newDiagram("Unlinked View").
+	display(unlinkedElements, 3);
+	
+var policy = ArchimateElement.all.select(ac|ac.name="Car Insurance Policy").first();
+newDiagram("Car Insurance Policy Dependencies View").
+	display(policy.getTransitiveDependencies().including(policy), 3);
+
+ArchimateElement.all.select(e|e.getTransitiveDependencies().size() > 2 and e.getTransitiveDependencies().size() < 10).name.println();
+
+@cached
+operation ArchimateElement getTransitiveDependencies() {
+	return self.closure(e|e.getDependencies());
+}
+
+@cached
+operation ArchimateElement getDependencies() {
+	return ArchimateRelationship.all.select(r|r.source = self).target;
+}
+

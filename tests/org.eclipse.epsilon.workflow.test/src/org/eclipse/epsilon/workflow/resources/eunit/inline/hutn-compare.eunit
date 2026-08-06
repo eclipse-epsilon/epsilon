@@ -1,0 +1,31 @@
+@model
+operation loadHUTNModel() {
+  loadHutn('TreeHUTN', '
+@Spec {
+	Metamodel {
+		nsUri: "Tree"
+	}
+}
+Model {
+  Tree "t1" {
+    label : "t1"
+  }
+  Tree "t2" {
+    label : "t2"
+    parent : Tree "t1"
+  }
+}
+');
+}
+
+$with Map {"A" = "TreeHUTN"}
+operation hutnShouldBeEqualToItself() {
+  assertEqualModels("A", "A");
+}
+
+$with Map {"A" = "TreeHUTN", "B" = "TreeEMF"}
+$with Map {"A" = "TreeEMF", "B" = "TreeHUTN"}
+@test
+operation rawAndHUTNModelsShouldBeEqual() {
+  assertEqualModels("A", "B");
+}

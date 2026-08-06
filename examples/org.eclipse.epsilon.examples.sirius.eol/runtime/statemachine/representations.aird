@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation" xmlns:statemachine="http://www.eclipse.org/epsilon/statemachine" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style">
+  <viewpoint:DAnalysis uid="_1mm9YO7ZEeuLR9c_iC2_Gg" selectedViews="_J2ySAO7aEeurvOeK6suRQQ" version="14.3.1.202003261200">
+    <semanticResources>My.statemachine</semanticResources>
+    <ownedViews xmi:type="viewpoint:DView" uid="_J2ySAO7aEeurvOeK6suRQQ">
+      <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']"/>
+      <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_KEIxgO7aEeurvOeK6suRQQ" name="new State Machine Diagram" repPath="#_KD3rwO7aEeurvOeK6suRQQ" changeId="2c3fe4fe-4215-4d2c-9641-bc7d0708d3fc">
+        <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']"/>
+        <target xmi:type="statemachine:StateMachine" href="My.statemachine#/"/>
+      </ownedRepresentationDescriptors>
+    </ownedViews>
+  </viewpoint:DAnalysis>
+  <diagram:DSemanticDiagram uid="_KD3rwO7aEeurvOeK6suRQQ">
+    <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_KEf94O7aEeurvOeK6suRQQ" source="GMF_DIAGRAMS">
+      <data xmi:type="notation:Diagram" xmi:id="_KEf94e7aEeurvOeK6suRQQ" type="Sirius" element="_KD3rwO7aEeurvOeK6suRQQ" measurementUnit="Pixel">
+        <children xmi:type="notation:Node" xmi:id="_KFQL0O7aEeurvOeK6suRQQ" type="2001" element="_KEogwO7aEeurvOeK6suRQQ">
+          <children xmi:type="notation:Node" xmi:id="_KFVrYO7aEeurvOeK6suRQQ" type="5002">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_KFVrYe7aEeurvOeK6suRQQ" y="5"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KFdnMO7aEeurvOeK6suRQQ" type="3016" element="_KE2jMO7aEeurvOeK6suRQQ">
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_KFdnMe7aEeurvOeK6suRQQ" fontName="Segoe UI"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KFdnMu7aEeurvOeK6suRQQ"/>
+          </children>
+          <styles xmi:type="notation:ShapeStyle" xmi:id="_KFQL0e7aEeurvOeK6suRQQ" fontName="Segoe UI" fontHeight="12"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KFQL0u7aEeurvOeK6suRQQ" x="395" y="195" width="136" height="101"/>
+        </children>
+        <children xmi:type="notation:Node" xmi:id="_KFbK8O7aEeurvOeK6suRQQ" type="2001" element="_KE5mgO7aEeurvOeK6suRQQ">
+          <children xmi:type="notation:Node" xmi:id="_KFbyAO7aEeurvOeK6suRQQ" type="5002">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_KFbyAe7aEeurvOeK6suRQQ" y="5"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KFeOQO7aEeurvOeK6suRQQ" type="3016" element="_KE7bsO7aEeurvOeK6suRQQ">
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_KFeOQe7aEeurvOeK6suRQQ" fontName="Segoe UI"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KFeOQu7aEeurvOeK6suRQQ"/>
+          </children>
+          <styles xmi:type="notation:ShapeStyle" xmi:id="_KFbK8e7aEeurvOeK6suRQQ" fontName="Segoe UI" fontHeight="12"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KFbK8u7aEeurvOeK6suRQQ" x="395" y="470" width="130" height="71"/>
+        </children>
+        <children xmi:type="notation:Node" xmi:id="_KFbyAu7aEeurvOeK6suRQQ" type="2001" element="_KE7bsu7aEeurvOeK6suRQQ">
+          <children xmi:type="notation:Node" xmi:id="_KFcZEO7aEeurvOeK6suRQQ" type="5002">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_KFcZEe7aEeurvOeK6suRQQ" y="5"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KFe1UO7aEeurvOeK6suRQQ" type="3016" element="_KE7bs-7aEeurvOeK6suRQQ">
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_KFe1Ue7aEeurvOeK6suRQQ" fontName="Segoe UI"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KFe1Uu7aEeurvOeK6suRQQ"/>
+          </children>
+          <styles xmi:type="notation:ShapeStyle" xmi:id="_KFbyA-7aEeurvOeK6suRQQ" fontName="Segoe UI" fontHeight="12"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KFbyBO7aEeurvOeK6suRQQ" x="740" y="200" width="136" height="91"/>
+        </children>
+        <children xmi:type="notation:Node" xmi:id="_KFcZEu7aEeurvOeK6suRQQ" type="2001" element="_KE8Cwe7aEeurvOeK6suRQQ">
+          <children xmi:type="notation:Node" xmi:id="_KFdAIO7aEeurvOeK6suRQQ" type="5002">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_KFdAIe7aEeurvOeK6suRQQ" y="5"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KFe1U-7aEeurvOeK6suRQQ" type="3016" element="_KE8p0O7aEeurvOeK6suRQQ">
+            <styles xmi:type="notation:ShapeStyle" xmi:id="_KFe1VO7aEeurvOeK6suRQQ" fontName="Segoe UI"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KFe1Ve7aEeurvOeK6suRQQ"/>
+          </children>
+          <styles xmi:type="notation:ShapeStyle" xmi:id="_KFcZE-7aEeurvOeK6suRQQ" fontName="Segoe UI" fontHeight="12"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_KFcZFO7aEeurvOeK6suRQQ" x="90" y="200" width="151" height="116"/>
+        </children>
+        <styles xmi:type="notation:DiagramStyle" xmi:id="_KEf94u7aEeurvOeK6suRQQ"/>
+        <edges xmi:type="notation:Edge" xmi:id="_KFrCkO7aEeurvOeK6suRQQ" type="4001" element="_KFA7QO7aEeurvOeK6suRQQ" source="_KFcZEu7aEeurvOeK6suRQQ" target="_KFQL0O7aEeurvOeK6suRQQ">
+          <children xmi:type="notation:Node" xmi:id="_KFrpoO7aEeurvOeK6suRQQ" type="6001">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_la9_wO7aEeurvOeK6suRQQ" x="-3" y="-18"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KFsQsO7aEeurvOeK6suRQQ" type="6002">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_la9_we7aEeurvOeK6suRQQ" x="-3" y="10"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KFsQsu7aEeurvOeK6suRQQ" type="6003">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_la9_wu7aEeurvOeK6suRQQ" x="-3" y="10"/>
+          </children>
+          <styles xmi:type="notation:ConnectorStyle" xmi:id="_KFrCke7aEeurvOeK6suRQQ"/>
+          <styles xmi:type="notation:FontStyle" xmi:id="_KFrCku7aEeurvOeK6suRQQ" fontName="Segoe UI" fontHeight="12"/>
+          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KFrCk-7aEeurvOeK6suRQQ" points="[2, -5, -155, 0]$[156, -5, -1, 0]"/>
+          <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KF2BsO7aEeurvOeK6suRQQ" id="(0.9867549668874173,0.45689655172413796)"/>
+          <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KF2Bse7aEeurvOeK6suRQQ" id="(0.007352941176470588,0.5247524752475248)"/>
+        </edges>
+        <edges xmi:type="notation:Edge" xmi:id="_KF2Bsu7aEeurvOeK6suRQQ" type="4001" element="_KFDXgO7aEeurvOeK6suRQQ" source="_KFQL0O7aEeurvOeK6suRQQ" target="_KFbK8O7aEeurvOeK6suRQQ">
+          <children xmi:type="notation:Node" xmi:id="_KF2Btu7aEeurvOeK6suRQQ" type="6001">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZpG7QO7aEeurvOeK6suRQQ" x="4" y="-75"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KF2owO7aEeurvOeK6suRQQ" type="6002">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZpG7Qe7aEeurvOeK6suRQQ" x="30"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KF2owu7aEeurvOeK6suRQQ" type="6003">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ZpG7Qu7aEeurvOeK6suRQQ" x="14"/>
+          </children>
+          <styles xmi:type="notation:ConnectorStyle" xmi:id="_KF2Bs-7aEeurvOeK6suRQQ"/>
+          <styles xmi:type="notation:FontStyle" xmi:id="_KF2BtO7aEeurvOeK6suRQQ" fontName="Segoe UI" fontHeight="12"/>
+          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KF2Bte7aEeurvOeK6suRQQ" points="[-1, 4, 2, -177]$[-3, 38, 0, -143]$[-3, 178, 0, -3]"/>
+          <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KF2oxO7aEeurvOeK6suRQQ" id="(0.49264705882352944,0.9603960396039604)"/>
+          <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KF2oxe7aEeurvOeK6suRQQ" id="(0.49230769230769234,0.04225352112676056)"/>
+        </edges>
+        <edges xmi:type="notation:Edge" xmi:id="_KF2oxu7aEeurvOeK6suRQQ" type="4001" element="_KFD-lO7aEeurvOeK6suRQQ" source="_KFQL0O7aEeurvOeK6suRQQ" target="_KFbyAu7aEeurvOeK6suRQQ">
+          <children xmi:type="notation:Node" xmi:id="_KF3P0O7aEeurvOeK6suRQQ" type="6001">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_4hxRgO7aEeurvOeK6suRQQ" x="6" y="-24"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KF3P0u7aEeurvOeK6suRQQ" type="6002">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_4hxRge7aEeurvOeK6suRQQ" y="10"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KF3P1O7aEeurvOeK6suRQQ" type="6003">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_4hxRgu7aEeurvOeK6suRQQ" y="10"/>
+          </children>
+          <styles xmi:type="notation:ConnectorStyle" xmi:id="_KF2ox-7aEeurvOeK6suRQQ"/>
+          <styles xmi:type="notation:FontStyle" xmi:id="_KF2oyO7aEeurvOeK6suRQQ" fontName="Segoe UI" fontHeight="12"/>
+          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KF2oye7aEeurvOeK6suRQQ" points="[5, 0, -213, -9]$[214, 8, -4, -1]"/>
+          <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KF324O7aEeurvOeK6suRQQ" id="(0.9632352941176471,0.3465346534653465)"/>
+          <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KF324e7aEeurvOeK6suRQQ" id="(0.029411764705882353,0.42857142857142855)"/>
+        </edges>
+        <edges xmi:type="notation:Edge" xmi:id="_KF324u7aEeurvOeK6suRQQ" type="4001" element="_KFEloO7aEeurvOeK6suRQQ" source="_KFbyAu7aEeurvOeK6suRQQ" target="_KFQL0O7aEeurvOeK6suRQQ">
+          <children xmi:type="notation:Node" xmi:id="_KF325u7aEeurvOeK6suRQQ" type="6001">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_vZqdgO7aEeurvOeK6suRQQ" x="1" y="12"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KF326O7aEeurvOeK6suRQQ" type="6002">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_vZqdge7aEeurvOeK6suRQQ" y="10"/>
+          </children>
+          <children xmi:type="notation:Node" xmi:id="_KF326u7aEeurvOeK6suRQQ" type="6003">
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_vZqdgu7aEeurvOeK6suRQQ" x="1" y="10"/>
+          </children>
+          <styles xmi:type="notation:ConnectorStyle" xmi:id="_KF324-7aEeurvOeK6suRQQ"/>
+          <styles xmi:type="notation:FontStyle" xmi:id="_KF325O7aEeurvOeK6suRQQ" fontName="Segoe UI" fontHeight="12"/>
+          <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_KF325e7aEeurvOeK6suRQQ" points="[-10, -4, 211, 0]$[-219, -4, 2, 0]"/>
+          <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KF4d8O7aEeurvOeK6suRQQ" id="(0.07352941176470588,0.8021978021978022)"/>
+          <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KF4d8e7aEeurvOeK6suRQQ" id="(0.9852941176470589,0.7326732673267327)"/>
+        </edges>
+      </data>
+    </ownedAnnotationEntries>
+    <ownedAnnotationEntries xmi:type="description:AnnotationEntry" uid="_KFFMsO7aEeurvOeK6suRQQ" source="DANNOTATION_CUSTOMIZATION_KEY">
+      <data xmi:type="diagram:ComputedStyleDescriptionRegistry" uid="_KFFMse7aEeurvOeK6suRQQ"/>
+    </ownedAnnotationEntries>
+    <ownedDiagramElements xmi:type="diagram:DNode" uid="_KEogwO7aEeurvOeK6suRQQ" name="A" outgoingEdges="_KFDXgO7aEeurvOeK6suRQQ _KFD-lO7aEeurvOeK6suRQQ" incomingEdges="_KFA7QO7aEeurvOeK6suRQQ _KFEloO7aEeurvOeK6suRQQ" width="3" height="3" resizeKind="NSEW">
+      <target xmi:type="statemachine:State" href="My.statemachine#//@states.0"/>
+      <semanticElements xmi:type="statemachine:State" href="My.statemachine#//@states.0"/>
+      <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+      <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+      <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+      <ownedStyle xmi:type="diagram:Ellipse" uid="_KE2jMO7aEeurvOeK6suRQQ" labelSize="12" showIcon="false" labelPosition="node">
+        <description xmi:type="style:EllipseNodeDescription" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node']/@style"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node']"/>
+    </ownedDiagramElements>
+    <ownedDiagramElements xmi:type="diagram:DNode" uid="_KE5mgO7aEeurvOeK6suRQQ" name="Final State" incomingEdges="_KFDXgO7aEeurvOeK6suRQQ" width="3" height="3" resizeKind="NSEW">
+      <target xmi:type="statemachine:FinalState" href="My.statemachine#//@states.1"/>
+      <semanticElements xmi:type="statemachine:FinalState" href="My.statemachine#//@states.1"/>
+      <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+      <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+      <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+      <ownedStyle xmi:type="diagram:Ellipse" uid="_KE7bsO7aEeurvOeK6suRQQ" labelSize="12" showIcon="false" labelPosition="node" color="138,226,52">
+        <description xmi:type="style:EllipseNodeDescription" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node']/@conditionnalStyles.0/@style"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node']"/>
+    </ownedDiagramElements>
+    <ownedDiagramElements xmi:type="diagram:DNode" uid="_KE7bsu7aEeurvOeK6suRQQ" name="B" outgoingEdges="_KFEloO7aEeurvOeK6suRQQ" incomingEdges="_KFD-lO7aEeurvOeK6suRQQ" width="3" height="3" resizeKind="NSEW">
+      <target xmi:type="statemachine:State" href="My.statemachine#//@states.2"/>
+      <semanticElements xmi:type="statemachine:State" href="My.statemachine#//@states.2"/>
+      <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+      <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+      <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+      <ownedStyle xmi:type="diagram:Ellipse" uid="_KE7bs-7aEeurvOeK6suRQQ" labelSize="12" showIcon="false" labelPosition="node">
+        <description xmi:type="style:EllipseNodeDescription" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node']/@style"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node']"/>
+    </ownedDiagramElements>
+    <ownedDiagramElements xmi:type="diagram:DNode" uid="_KE8Cwe7aEeurvOeK6suRQQ" name="Initial State" outgoingEdges="_KFA7QO7aEeurvOeK6suRQQ" width="3" height="3" resizeKind="NSEW">
+      <target xmi:type="statemachine:InitialState" href="My.statemachine#//@initialState"/>
+      <semanticElements xmi:type="statemachine:InitialState" href="My.statemachine#//@initialState"/>
+      <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
+      <arrangeConstraints>KEEP_SIZE</arrangeConstraints>
+      <arrangeConstraints>KEEP_RATIO</arrangeConstraints>
+      <ownedStyle xmi:type="diagram:Ellipse" uid="_KE8p0O7aEeurvOeK6suRQQ" labelSize="12" showIcon="false" labelPosition="node" color="114,159,207">
+        <description xmi:type="style:EllipseNodeDescription" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='Initial%20State%20Node']/@style"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='Initial%20State%20Node']"/>
+    </ownedDiagramElements>
+    <ownedDiagramElements xmi:type="diagram:DEdge" uid="_KFA7QO7aEeurvOeK6suRQQ" name="true;" sourceNode="_KE8Cwe7aEeurvOeK6suRQQ" targetNode="_KEogwO7aEeurvOeK6suRQQ">
+      <target xmi:type="statemachine:Transition" href="My.statemachine#//@transitions.0"/>
+      <semanticElements xmi:type="statemachine:Transition" href="My.statemachine#//@transitions.0"/>
+      <ownedStyle xmi:type="diagram:EdgeStyle" uid="_KFCwcO7aEeurvOeK6suRQQ" size="2">
+        <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@edgeMappings[name='Transition%20Edge']/@style"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_KFCwce7aEeurvOeK6suRQQ" labelSize="12" showIcon="false"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@edgeMappings[name='Transition%20Edge']"/>
+    </ownedDiagramElements>
+    <ownedDiagramElements xmi:type="diagram:DEdge" uid="_KFDXgO7aEeurvOeK6suRQQ" name="moveAToB==false;" sourceNode="_KEogwO7aEeurvOeK6suRQQ" targetNode="_KE5mgO7aEeurvOeK6suRQQ">
+      <target xmi:type="statemachine:Transition" href="My.statemachine#//@transitions.1"/>
+      <semanticElements xmi:type="statemachine:Transition" href="My.statemachine#//@transitions.1"/>
+      <ownedStyle xmi:type="diagram:EdgeStyle" uid="_KFD-kO7aEeurvOeK6suRQQ" size="2">
+        <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@edgeMappings[name='Transition%20Edge']/@style"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_KFD-ke7aEeurvOeK6suRQQ" labelSize="12" showIcon="false"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@edgeMappings[name='Transition%20Edge']"/>
+    </ownedDiagramElements>
+    <ownedDiagramElements xmi:type="diagram:DEdge" uid="_KFD-lO7aEeurvOeK6suRQQ" name="moveAToB == true;" sourceNode="_KEogwO7aEeurvOeK6suRQQ" targetNode="_KE7bsu7aEeurvOeK6suRQQ">
+      <target xmi:type="statemachine:Transition" href="My.statemachine#//@transitions.2"/>
+      <semanticElements xmi:type="statemachine:Transition" href="My.statemachine#//@transitions.2"/>
+      <ownedStyle xmi:type="diagram:EdgeStyle" uid="_KFD-le7aEeurvOeK6suRQQ" size="2">
+        <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@edgeMappings[name='Transition%20Edge']/@style"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_KFD-lu7aEeurvOeK6suRQQ" labelSize="12" showIcon="false"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@edgeMappings[name='Transition%20Edge']"/>
+    </ownedDiagramElements>
+    <ownedDiagramElements xmi:type="diagram:DEdge" uid="_KFEloO7aEeurvOeK6suRQQ" name="true;" sourceNode="_KE7bsu7aEeurvOeK6suRQQ" targetNode="_KEogwO7aEeurvOeK6suRQQ">
+      <target xmi:type="statemachine:Transition" href="My.statemachine#//@transitions.3"/>
+      <semanticElements xmi:type="statemachine:Transition" href="My.statemachine#//@transitions.3"/>
+      <ownedStyle xmi:type="diagram:EdgeStyle" uid="_KFEloe7aEeurvOeK6suRQQ" size="2">
+        <description xmi:type="style:EdgeStyleDescription" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@edgeMappings[name='Transition%20Edge']/@style"/>
+        <centerLabelStyle xmi:type="diagram:CenterLabelStyle" uid="_KFElou7aEeurvOeK6suRQQ" labelSize="12" showIcon="false"/>
+      </ownedStyle>
+      <actualMapping xmi:type="description_1:EdgeMapping" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@edgeMappings[name='Transition%20Edge']"/>
+    </ownedDiagramElements>
+    <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']"/>
+    <filterVariableHistory xmi:type="diagram:FilterVariableHistory" uid="_KEAOoO7aEeurvOeK6suRQQ"/>
+    <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.eclipse.epsilon.sirius.widget.examples.statemachine.design/description/statemachine.odesign#//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer"/>
+    <target xmi:type="statemachine:StateMachine" href="My.statemachine#/"/>
+  </diagram:DSemanticDiagram>
+</xmi:XMI>

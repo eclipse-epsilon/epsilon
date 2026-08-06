@@ -1,0 +1,194 @@
+operation InfixExpression operatorIsEquality() : Boolean {
+	return self.operator == InfixExpressionKind#EQUALS or self.operator == InfixExpressionKind#NOT_EQUALS;
+}
+
+operation Modifier isLocal() : Boolean {
+	return self.visibility == VisibilityKind#private or self.visibility == VisibilityKind#none;
+}
+
+operation AbstractTypeDeclaration implements(type : String) {
+	return self.superInterfaces.sequentialExists(si | si.type.name == type);
+}
+
+@cached
+operation AbstractTypeDeclaration getMethods() : Collection {
+	return self.bodyDeclarations.sequentialSelect(bd | bd.isKindOf(MethodDeclaration));
+}
+
+operation ClassDeclaration hasEquals() : Boolean {
+	return self.getMethods().sequentialExists(method |
+			method.name == "equals" and
+			method.parameters.size() == 1 and
+			method.parameters.first().type.type.name == "Object" and
+			method.thrownExceptions.isEmpty() and
+			method.modifier.isDefined() and
+			method.modifier.visibility == VisibilityKind#public and
+			method.returnType.type.isTypeOf(PrimitiveTypeBoolean)
+	);
+}
+
+operation ClassDeclaration hasHashcode() : Boolean {
+	return self.getMethods().sequentialExists(method |
+			method.name == "hashCode" and
+			method.parameters.isEmpty() and
+			method.thrownExceptions.isEmpty() and
+			method.modifier.isDefined() and
+			method.modifier.visibility == VisibilityKind#public and
+			method.returnType.type.isTypeOf(PrimitiveTypeInt)
+	);
+}
+
+operation ClassDeclaration hasCompareTo() : Boolean {
+	return self.getMethods().sequentialExists(method | 
+			method.name == "compareTo" and
+			method.parameters.size() == 1 and
+			method.parameters.first().type.type.name == "Object" and
+			method.modifier.isDefined() and
+			method.modifier.visibility == VisibilityKind#public and
+			method.thrownExceptions.isEmpty() and
+			method.returnType.type.isTypeOf(PrimitiveTypeInt)
+	);
+}
+
+$parallel self.size() > 16
+context MethodInvocation {
+	guard: self.method.isDefined()
+	
+	constraint doesNotCallFinalize {
+		check: not (
+			self.method.name == "finalize" and
+			self.method.parameters.isEmpty()
+		) 
+	}
+	
+	constraint doesNotCallExit {
+		check: not (
+			self.method.name = "exit" and
+			self.method.parameters.size() == 1 and
+			self.method.parameters.first().type.type.isTypeOf(PrimitiveTypeInt)
+		)
+	}
+	
+	constraint doesNotCallRunFinalizers {
+		check: not (
+			self.method.name = "runFinalizersOnExit" and
+			self.method.parameters.size() == 1 and
+			self.method.parameters.first().type.type.isTypeOf(PrimitiveTypeBoolean)
+		)
+	}
+}
+
+context AbstractMethodDeclaration {
+	constraint localMethodIsUsed {
+		guard: self.modifier.isDefined() and self.modifier.isLocal()
+		check: self.usages.notEmpty()
+	}
+	
+	constraint parametersEffectivelyFinal {
+		guard: self.body.isDefined() and self.parameters.notEmpty()
+		check: self.body.statements
+				.sequentialSelect(s |
+					s.isKindOf(ExpressionStatement) and
+					s.expression.isKindOf(Assignment)
+				)
+				.sequentialCollect(s | s.expression)
+				.sequentialSelect(assignment |
+					assignment.leftHandSide.isKindOf(SingleVariableAccess) and
+					assignment.operator == AssignmentKind#ASSIGN and
+					assignment.leftHandSide.isKindOf(SingleVariableAccess) and
+					self.parameters.excludes(assignment.leftHandSide.variable)
+				)
+				.isEmpty()
+	}
+}
+
+context ClassDeclaration {
+	constraint hashCodeAndEquals {
+		check {
+			var hasEquals = self.hasEquals();
+			var hasHashcode = self.hasHashcode();
+			return
+				(hasEquals implies hasHashcode) and
+				(hasHashcode implies hasEquals);
+		}
+	}
+	
+	$parallel self.getMethods().size() >= 25
+	constraint noCovariantEquals {
+		guard: self.getMethods().sequentialExists(method |
+			method.name = "equals" and
+			method.modifier <> null and
+			method.modifier.visibility = VisibilityKind#public and
+			method.returnType.type.isTypeOf(PrimitiveTypeBoolean)
+		)
+		check: self.hasEquals()
+	}
+	
+	constraint noCovariantCompareTo {
+		guard: self.getMethods().sequentialExists(method | 
+			method.name == "compareTo" and
+			method.modifier.isDefined() and
+			method.modifier.visibility == VisibilityKind#public and
+			method.returnType.type.isTypeOf(PrimitiveTypeInt)
+		)
+		check: self.hasCompareTo()
+	}
+	
+	constraint cloneInCloneable {
+		guard: self.implements("Cloneable")
+		check: self.getMethods().sequentialExists(md |
+			md.name == "clone" and
+			md.parameters.isEmpty() and
+			md.thrownExceptions.size() == 1 and
+			md.thrownExceptions.first().type.name == "CloneNotSupportedException" and
+			md.modifier.isDefined() and
+			md.modifier.visibility == VisibilityKind#public
+		)
+	}
+	
+	constraint noRedundantInterfaceImpl {
+		guard: self.superInterfaces.isDefined() and
+			self.superClass.isDefined() and
+			self.superClass.type.isKindOf(ClassDeclaration) and
+			self.superClass.type.superInterfaces.isDefined()
+		
+		check: self.superInterfaces.sequentialExists(tIface |
+			self.superClass.type.isKindOf(AbstractTypeDeclaration) implies (
+				self.superClass.type.superInterfaces.includes(tIface)
+			)
+		)
+	}
+	
+	constraint noObscuredVariables {
+		check {
+			var fields = self.bodyDeclarations.sequentialSelect(bd | bd.isKindOf(FieldDeclaration));
+			return
+				self.bodyDeclarations
+					.sequentialSelect(bd | bd.isKindOf(AbstractMethodDeclaration))
+					.sequentialForAll(md | md.body.isDefined() implies md.body.statements
+						.sequentialSelect(s | s.isKindOf(VariableDeclaration))
+						.sequentialForAll(vd | fields.sequentialForAll(fd | fd.name <> vd.name))
+					);
+		}
+	}
+}
+
+context CompilationUnit {
+	@parallel
+	constraint allImportsAreUsed {
+		check: self.imports.sequentialForAll(imp |
+			NamedElement.allInstances().sequentialExists(ne | ne.originalCompilationUnit == self)
+		)
+	}
+}
+
+$parallel false
+context NamedElement {
+	constraint notReservedWord {
+		check: self.name <> "var" and
+			self.name <> "_" and
+			self.name <> "strictfp" and
+			self.name <> "assert" and
+			self.name <> "enum"
+	}
+}

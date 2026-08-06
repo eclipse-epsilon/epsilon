@@ -1,0 +1,52 @@
+digraph G {
+	node[shape=record, fontname=Arial, fontsize=11]
+	edge[fontname=Arial, fontsize=11, fontcolor=grey, arrowhead=open]
+	[%
+	var elements = M.allInstances();
+	%]
+	
+	[*Generate a node for every element in the model*]
+	[%for (e in elements) { %]
+	[%=e.getNodeId()%][label = "{[%=e.getNodeLabel()%]|[%=e.getNodeAttributes()%]}"]
+	[%}%]
+	
+	[*Generate an edge for every reference between elements omitting opposites*]
+	[%for (e in elements) {%]
+	[%for (r in e.getReferenced()) {%]
+	[%for (v in r.at(0).select(r|M.allInstances().includes(r))){%]
+	[%if (r.at(1).eOpposite.isUndefined() or r.at(1).eOpposite.name.compareTo(r.at(1).name) > 0){%]
+	
+	[%=e.getNodeId()%] -> [%=v.getNodeId()%][%=getReferenceLabel(e, v, r.at(1))%]
+	[%}}}}%]
+}
+[%
+operation Any getNodeId() {
+	return "N" + M.allInstances().indexOf(self);
+}
+operation Any getNodeLabel() {
+	return ":" + self.eClass().name;
+}
+operation Any getNodeAttributes() {
+	return self.eClass().getEAllAttributes().collect(a|a.name + " = " + self.eGet(a)).concat("\\n");
+}
+operation Any getReferenced() {
+
+	if (self.isUndefined()) return Sequence{};
+
+	var c = self.eClass();
+	var referenced : Sequence;
+	for (r in c.getEAllReferences()) {
+		referenced.add(Sequence{self.eGet(r).asSequence(), r});
+	}
+	return referenced;
+}
+operation getReferenceLabel(s, t, r) {
+	
+	for (ref in s.eClass().getEAllReferences()) {
+		if (ref.eType.isSuperTypeOf(t.eClass()) and r <> ref) {
+			return "[label=" + r.name + "]";
+		}
+	}
+	return "";
+}
+%]

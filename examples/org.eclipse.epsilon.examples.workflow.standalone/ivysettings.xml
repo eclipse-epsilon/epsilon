@@ -1,0 +1,14 @@
+<ivysettings>
+
+    <settings defaultResolver="default-chain" defaultConflictManager="all" />
+    
+    <resolvers>
+        <ibiblio name="maven-central"  m2compatible="true" usepoms="true" />
+        <ibiblio name="sonatype-snapshots" root="https://oss.sonatype.org/content/repositories/snapshots" m2compatible="true"/>
+        <chain name="default-chain">
+            <resolver ref="sonatype-snapshots"/>
+            <resolver ref="maven-central"/>
+        </chain>
+    </resolvers>
+    
+</ivysettings>

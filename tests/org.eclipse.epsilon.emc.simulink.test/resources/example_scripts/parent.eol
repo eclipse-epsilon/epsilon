@@ -1,0 +1,53 @@
+M.clearCache();
+
+for (m in M.allContents()){
+	delete m;
+}
+
+assert(SubSystem.all.size().println("size: ") == 0);
+
+var subsys = new `simulink/Ports & Subsystems/Subsystem`;
+assert(SubSystem.all.size().println("size: ") == 1);
+
+var childSubsys = new `simulink/Ports & Subsystems/Subsystem`;
+assert(SubSystem.all.size().println("size: ") == 2);
+
+var chart = new `sflib/Chart`;
+assert(SubSystem.all.size().println("size: ") == 3);
+
+var chartPath = chart.path.println("Chart path ");
+
+var sfChart = `Stateflow.Chart`.all.first().println("sf: ");
+assert(`Stateflow.Chart`.all.size().println("size: ") == 1);
+
+var sfChartPath = sfChart.path.println("SFChart path ");
+assert(sfChartPath == chartPath);
+
+childSubsys.parent = subsys;
+assert(childSubsys.path.startsWith(subsys.path));
+
+chart.parent = childSubsys;
+assert(chart.path.startsWith(childSubsys.path));
+
+chartPath = chart.path.println("Chart path ");
+
+sfChartPath = sfChart.println("SF: ").path;//.println("sfpath");
+//assert(sfChartPath == chartPath);// Crashes
+
+var foundSfChart = `Stateflow.Chart`.all.first().println("Found sf: ");
+var  foundSfChartPath= foundSfChart.path.println("Found sf path: ");
+assert(foundSfChartPath == chartPath);
+
+var name =  "newName";
+chart.name = name;
+assert(chart.path.println("updated path") <> chartPath); //Simuink Path is updated when path or name change
+foundSfChart.println("Found chart" );
+
+var sA = new `Stateflow.State`;
+sA.parent = `Stateflow.Chart`.all.first();
+sA.path.println;
+
+sA.println(">> CREATED: ");
+chart.parent = subsys;
+sA.println(">> CHART CHANGED PARENT: ");
+`Stateflow.State`.all.first().println(">> RETRIEVED: ");

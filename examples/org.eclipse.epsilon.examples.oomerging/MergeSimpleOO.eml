@@ -1,0 +1,27 @@
+rule MergeModel
+	merge l : Left!Model with r : Right!Model into t : Target!Model {
+	
+	t.name = l.name + " and " + r.name;
+	t.contents ::= l.contents + r.contents;	
+}
+
+rule MergeClass
+	merge l : Left!Class with r : Right!Class  into t : Target!Class {
+	
+	t.name = l.name;
+	t.isAbstract = l.isAbstract;
+}
+
+rule CopyModel
+	transform s : Source!Model to t : Target!Model {
+	
+	t.contents ::= s.contents;
+}
+rule CopyClass
+	transform s : Source!Class to t : Target!Class {
+	
+	t.name = s.name;
+	t.isAbstract = s.isAbstract;
+}
+
+

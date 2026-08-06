@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="*******************************************************************************&#xA;Copyright (c) 2008 The University of York.&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v1.0&#xA;which accompanies this distribution, and is available at&#xA;http://www.eclipse.org/legal/epl-v10.html&#xA;&#xA;Contributors:&#xA;    Louis Rose - initial API and implementation&#xA;******************************************************************************"
+    modelDirectory="/org.eclipse.epsilon.hutn.model.config/src" modelPluginID="org.eclipse.epsilon.hutn.model.config"
+    modelName="HUTNConfig" importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0"
+    copyrightFields="false">
+  <foreignModel>HUTNConfig.ecore</foreignModel>
+  <genPackages prefix="HutnConfig" basePackage="org.eclipse.epsilon.hutn.model.config"
+      disposableProviderFactory="true" ecorePackage="HUTNConfig.ecore#/">
+    <genClasses ecoreClass="HUTNConfig.ecore#//Configuration">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference HUTNConfig.ecore#//Configuration/rules"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="HUTNConfig.ecore#//Rule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute HUTNConfig.ecore#//Rule/classifier"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute HUTNConfig.ecore#//Rule/attribute"/>
+    </genClasses>
+    <genClasses ecoreClass="HUTNConfig.ecore#//IdentifierRule"/>
+    <genClasses ecoreClass="HUTNConfig.ecore#//DefaultValueRule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute HUTNConfig.ecore#//DefaultValueRule/defaultValue"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

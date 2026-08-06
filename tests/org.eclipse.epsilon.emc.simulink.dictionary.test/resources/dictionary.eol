@@ -1,0 +1,15 @@
+'Starting'.println();
+Dictionary.all.first().println();
+Section.all.first().println();
+Entry.all.size().println('Entries: ');
+Entry.all.collect(e |e.Name.println()); 
+var e = new Entry;
+e.Name = "MyNewEntrdasdfadadfy2hj";
+e.Name.println("Name: ");
+e.Value = "My Value";
+e.Value.println("Value: ");
+e.Value = "My Value2";
+e.Value.println("Value: ");
+e.LastModified.println("LastModified: ");
+
+'Done'.println();

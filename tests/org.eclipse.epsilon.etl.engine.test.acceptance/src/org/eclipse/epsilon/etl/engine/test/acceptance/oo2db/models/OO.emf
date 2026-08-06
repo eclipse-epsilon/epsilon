@@ -1,0 +1,73 @@
+@namespace(uri="OO", prefix="OO")
+package OO;
+
+class Model extends Package {
+}
+
+abstract class PackageableElement extends NamedElement {
+  ref Package#contents ~package;
+}
+
+abstract class AnnotatedElement {
+  val Annotation[*] annotations;
+}
+
+class Annotation {
+  attr String key;
+  attr String value;
+}
+
+abstract class NamedElement extends AnnotatedElement {
+  attr String name;
+}
+
+class Package extends PackageableElement {
+  val PackageableElement[*]#~package contents;
+}
+
+abstract class ~Classifier extends PackageableElement {
+}
+
+class ExternalClass extends ~Class {
+}
+
+class ~Class extends ~Classifier {
+  ref ~Class#extendedBy ~extends;
+  ref ~Class[*]#~extends extendedBy;
+  val Feature[*]#owner features;
+  attr Boolean isAbstract;
+}
+
+class Datatype extends ~Classifier {
+}
+
+abstract class Feature extends NamedElement {
+  ref ~Class#features owner;
+  ref ~Classifier type;
+  attr VisibilityEnum visibility;
+}
+
+abstract class StructuralFeature extends Feature {
+  attr Boolean isMany;
+}
+
+class Operation extends Feature {
+  val Parameter[*]#owner parameters;
+}
+
+class Parameter extends NamedElement {
+  ref ~Classifier type;
+  ref Operation#parameters owner;
+}
+
+class Reference extends StructuralFeature {
+}
+
+class Attribute extends StructuralFeature {
+}
+
+enum VisibilityEnum {
+  public = 1;
+  private = 2;
+}
+

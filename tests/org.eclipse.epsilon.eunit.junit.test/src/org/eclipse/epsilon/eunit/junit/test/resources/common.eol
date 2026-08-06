@@ -1,0 +1,3 @@
+operation pair(x, y): Sequence {
+  return Sequence {x, y};
+}

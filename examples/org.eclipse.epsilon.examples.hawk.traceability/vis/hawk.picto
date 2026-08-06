@@ -1,0 +1,7 @@
+<?nsuri picto?>
+<picto format="egx" transformation="hawk.egx" standalone="true">
+	<model type="Hawk">
+		<parameter name="databaseName" value="hawk"/>
+		<parameter name="name" value="M"/>
+	</model>	
+</picto>

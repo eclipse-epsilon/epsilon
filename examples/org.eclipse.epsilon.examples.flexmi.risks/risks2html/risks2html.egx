@@ -1,0 +1,35 @@
+import "risks.eol";
+
+pre {
+	var low = 1.to(3);
+	low.~title = "Low";
+	low.~overall = 1;
+	
+	var medium = 4.to(5);
+	medium.~title = "Medium";
+	medium.~overall = 2;
+	
+	var high = 6.to(9);
+	high.~title = "High";
+	high.~overall = 3;
+	
+	var classes = Sequence{low, medium, high};
+}
+
+rule Class2HTML
+	transform class : Any in: classes {
+
+	parameters {
+		return Map {
+			"path" = Sequence{"Risks", class.~title},
+			"icon" = "diagram-" + class.~overall.toColour(),
+			"format" = "html",
+			"layers" = Sequence {
+				Map {"id"="open", "title"="Open", "active"=true},
+				Map {"id"="closed", "title"="Closed", "active"=true}
+			}
+		};
+	}
+
+	template: "class2html.egl"
+}

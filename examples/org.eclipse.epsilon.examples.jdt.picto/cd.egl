@@ -1,0 +1,177 @@
+@startuml
+hide circle
+[%diagram.populate();%]
+[%=diagram.preamble%]
+[%for (class in diagram.types.select(t|t.isTypeOf(Class))){%]
+class [%=class.name%] {
+	[%for (attribute in class.attributes){%]
+	[%=attribute.name%] : [%=attribute.type%]
+	[%}%]
+	[%for (method in class.methods) { %]
+	[%=method.getLabel()%]
+	[%}%]
+}
+
+[%for (reference in class.references){%]
+[%=reference.getEdge()%]
+[%}%]
+
+[%for (superType in class.superTypes){%]
+[%=getEdge(class, superType)%]
+[%}%]
+
+[%}%]
+[%=diagram.postamble%]
+@enduml
+
+[%
+operation JCD!Diagram populate() {
+
+	// Resolve type declaration from includes and create types
+	for (include in self.includes) {
+		var typeDeclaration = JDT!TypeDeclaration.all.select(td|td.name = include.name).first();
+		if (typeDeclaration.isDefined()) {
+			var class = new JCD!Class;
+			class.name = typeDeclaration.name.identifier;
+			self.types.add(class);
+			class.~typeDeclaration = typeDeclaration;
+		}
+	}
+	
+	// Populate supertypes
+	for (class in self.types.select(t|t.isTypeOf(JCD!Class) and t.~typeDeclaration.isDefined())) {
+		if (class.~typeDeclaration.getSuperclassType().isDefined()) {
+			class.superTypes.addAll(self.types.select(c:JCD!Class|c.name = class.~typeDeclaration.getSuperclassType().toString()/*name.identifier*/));
+		}
+		
+		for (interface in class.~typeDeclaration.superInterfaceTypes()) {
+			class.superTypes.addAll(self.types.select(c:JCD!Class|c.name = interface.name.identifier));	
+		}
+	}
+	
+	// Populate class attributes, references and methods
+	for (class in self.types.select(t|t.isTypeOf(JCD!Class) and t.~typeDeclaration.isDefined())) {
+		for (field in class.~typeDeclaration.fields) {
+			if (not field.getType().isVisible(diagram)) {
+				var attribute = new JCD!Attribute;
+				attribute.name = field.getName();
+				attribute.type = field.getType().getLabel();
+				attribute.many = field.isCollection();
+				class.attributes.add(attribute);
+			}
+			else {
+				var reference = new JCD!Reference;
+				reference.name = field.getName();
+				reference.type = diagram.types.selectOne(c|c.name = field.getType().name.identifier);
+				reference.many = field.isCollection();
+				class.references.add(reference);
+			}
+		}
+		
+		// Populate class methods
+		for (methodDeclaration in class.~typeDeclaration.methods) {
+			var method = new JCD!Method;
+			method.name = methodDeclaration.name.identifier;
+			for (formalParameter in methodDeclaration.parameters()) {
+				var parameter : new JCD!Parameter;
+				parameter.name = formalParameter.name.identifier;
+				parameter.type = formalParameter.type.getLabel();
+				method.parameters.add(parameter);
+			}
+			//method.type = methodDeclaration.returnType2.getLabel();
+			class.methods.add(method);
+		}
+		
+	}
+	
+	
+}
+
+/**
+ * Produces a generalization edge, taking into account contstraints
+ */ 
+operation getEdge(class:JCD!Class, superClass:JCD!Class) {
+	var diagram = class.eContainer();
+	
+	if (diagram.constraints.exists(c|c.above = class.name and c.below = superClass.name)) {
+		return class.name + " --|> " + superClass.name;
+	}
+	else if (diagram.constraints.exists(c|c.left = class.name and c.right = superClass.name)) {
+		return class.name + " -|> " + superClass.name;
+	}
+	else if (diagram.constraints.exists(c|c.left = superClass.name and c.right = class.name)) {
+		return superClass.name + " <|- " + class.name;
+	}
+	else {
+		return superClass.name + " <|-- " + class.name;
+	}
+}
+
+/*
+ * Prdoduces a reference edge, taking into account constraints
+ */
+operation JCD!Reference getEdge() {
+	var diagram = self.eContainer().eContainer();
+	var label = " \" " + self.name + (self.many ? "*" : "") + "\" ";
+	
+	if (diagram.constraints.exists(c|c.above = self.eContainer().name and c.below = self.type.name)) {
+		return self.eContainer().name + " -down-> " + self.type.name + " : " + label;
+	}
+	else if (diagram.constraints.exists(c|c.below = self.eContainer().name and c.above = self.type.name)) {
+		return self.eContainer().name + " -up-> " + self.type.name + " : " + label;
+	}
+	else if (diagram.constraints.exists(c|c.right = self.eContainer().name and c.left = self.type.name)) {
+		return self.eContainer().name + " -left-> " + self.type.name + " : " + label;
+	}
+	else {
+		return self.eContainer().name + " -right-> " + self.type.name + " : " + label;
+	}
+}
+
+operation JDT!FieldDeclaration getName() {
+	return self.fragments.at(0)/*VariableDeclarationFragment*/.name.identifier;
+}
+
+operation JDT!ParameterizedType getLabel() {
+	return self.type.name + "<" + self.typeArguments.collect(ta|ta.getLabel()).concat(", ") + ">";
+}
+
+operation JDT!WildcardType getLabel() {
+	return self.toString();
+}
+
+operation JDT!SimpleType getLabel() {
+	return self.name.identifier;
+}
+
+operation JDT!PrimitiveType getLabel() {
+	return self.toString();
+}
+
+operation JDT!FieldDeclaration getType() {
+	if (self.isCollection()) {
+		return self.type.typeArguments.first();
+	}
+	else {
+		return self.type;
+	}
+}
+
+operation JDT!FieldDeclaration isCollection() {
+	return self.type.isTypeOf(JDT!ParameterizedType) 
+		and self.type.typeArguments.size() == 1 
+		and self.type.type.name.identifier = "List"; /*FIXME*/
+}
+
+operation JDT!Type isVisible(diagram : JCD!Diagram) {
+	if (not self.isTypeOf(JDT!SimpleType)) return false;
+	return diagram.types.name.includes(self.name.identifier);
+}
+
+operation JCD!Method getLabel() {
+	var label = self.name + "(" + self.parameters.collect(p|p.name + ":" + p.type).concat(", ") + ")";
+	if (self.type.isDefined() and self.type != "void") label += " : " + self.type;
+	return label;
+}
+
+%]

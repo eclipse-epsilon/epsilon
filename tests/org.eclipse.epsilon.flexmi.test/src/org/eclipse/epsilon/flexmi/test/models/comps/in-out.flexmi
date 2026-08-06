@@ -1,0 +1,5 @@
+<?nsuri comps?>
+<component>
+	<in name="in1"/>
+	<out name="out1"/>
+</component>

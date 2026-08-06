@@ -1,0 +1,3 @@
+operation ambiguous() {
+  return 'ambiguous from level 1';
+}

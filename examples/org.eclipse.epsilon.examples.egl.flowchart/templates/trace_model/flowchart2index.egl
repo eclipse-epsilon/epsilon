@@ -1,0 +1,9 @@
+[% import "util.eol"; %]
+<h1>[%=flowchart.name%]</h1>
+
+<h2>Nodes</h2>
+<ul>
+[% for (node in flowchart.nodes) { %]
+	<li><a href="[%=node.name.clean()%].html">[%=node.name%]</a></li>
+[% } %]
+</ul>

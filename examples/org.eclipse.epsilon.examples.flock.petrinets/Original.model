@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ASCII"?>
+<petrinets1:Net xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:petrinets1="petrinets1" xmi:id="_452goIvqEd6BVtJzMeIVYw">
+  <places xmi:id="_6Dcl8IvqEd6BVtJzMeIVYw" name="Start" dst="_9DOw0IvqEd6BVtJzMeIVYw"/>
+  <places xmi:id="_99dkcIvqEd6BVtJzMeIVYw" name="Mid 1" src="_9DOw0IvqEd6BVtJzMeIVYw" dst="_AInNYIvrEd6BVtJzMeIVYw"/>
+  <places xmi:id="_-OUq8IvqEd6BVtJzMeIVYw" name="Mid 2" src="_9DOw0IvqEd6BVtJzMeIVYw" dst="_AInNYIvrEd6BVtJzMeIVYw"/>
+  <places xmi:id="_B0Rd8IvrEd6BVtJzMeIVYw" name="End" src="_AInNYIvrEd6BVtJzMeIVYw"/>
+  <transitions xmi:id="_9DOw0IvqEd6BVtJzMeIVYw" src="_6Dcl8IvqEd6BVtJzMeIVYw" dst="_99dkcIvqEd6BVtJzMeIVYw _-OUq8IvqEd6BVtJzMeIVYw" name="Split"/>
+  <transitions xmi:id="_AInNYIvrEd6BVtJzMeIVYw" src="_99dkcIvqEd6BVtJzMeIVYw _-OUq8IvqEd6BVtJzMeIVYw" dst="_B0Rd8IvrEd6BVtJzMeIVYw" name="Join"/>
+</petrinets1:Net>

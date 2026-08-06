@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Rule Language Development Tools
+Bundle-SymbolicName: org.eclipse.epsilon.erl.dt;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.epsilon.eol.dt;visibility:=reexport,
+ org.eclipse.epsilon.common.dt;visibility:=reexport
+Export-Package: org.eclipse.epsilon.erl.dt,
+ org.eclipse.epsilon.erl.dt.editor.outline
+Bundle-Activator: org.eclipse.epsilon.erl.dt.ErlPlugin
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: org.eclipse.epsilon.erl.dt

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ext
+Bundle-SymbolicName: org.eclipse.epsilon.emc.emf.ext
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.eclipse.epsilon.emc.emf.ext
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.eol.engine

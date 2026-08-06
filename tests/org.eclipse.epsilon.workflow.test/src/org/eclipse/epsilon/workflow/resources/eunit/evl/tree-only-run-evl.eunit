@@ -1,0 +1,10 @@
+@setup
+operation createModel() {
+  var tree := new Tree!Tree;
+  tree.label := nodename;
+}
+
+@test
+operation validate() {
+  runTarget("validate-tree");
+}

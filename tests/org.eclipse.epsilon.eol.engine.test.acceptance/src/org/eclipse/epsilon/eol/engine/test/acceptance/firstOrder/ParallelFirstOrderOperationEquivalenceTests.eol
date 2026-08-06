@@ -1,0 +1,273 @@
+var testData = Bag {
+	1, 2, 4, 8, 3, 9, 10, 1024, 1024768, 0,
+	-2147483647, "a string", "6", 22, "0.75f", 32.0,
+	12.5, 2.0000000000000000000000001, "66.2", 335d,
+	350f, "a string with a num83R", null, false, 99,
+	"true", "FALSE", "1", "0", "", "-2147483648",
+	999999l, -1l, -2d, 0f, 7, null, 6
+};
+
+var numberRegex = "-?[0-9]+(\\.[0-9]*)?(d|f|l)?";
+
+operation Collection equalsIgnoreOrder(other : Collection) {
+	assertTrue(self.containsAll(other));
+	assertEquals(other.size(), self.size());
+}
+
+@test
+operation testParallelSelectEquivalence() {
+	var expected = testData.select(t |
+		t <> null and
+		t.asString().matches(numberRegex) and
+		t.asReal() > 22/7
+	);
+	
+	var actual = testData.parallelSelect(t |
+		t <> null and
+		t.asString().matches(numberRegex) and
+		t.asReal() > 22/7
+	);
+	
+	assertEquals(Sequence { expected }, Sequence { actual });
+}
+
+@test
+operation testParallelRejectEquivalence() {
+	var expected = testData.reject(t |
+		t <> null and
+		t.asString().matches(numberRegex) and
+		t.asReal() > 22/7
+	);
+	
+	var actual = testData.parallelReject(t |
+		t <> null and
+		t.asString().matches(numberRegex) and
+		t.asReal() > 22/7
+	);
+	
+	assertEquals(Sequence { expected }, Sequence { actual });
+}
+
+@test
+operation testParallelSelectOneEquivalence() {
+	var expected = testData.selectOne(t |
+		t <> null and 
+		t.asString().length() > 3 and
+		(
+			t.asString().matches(numberRegex) or
+			t.asString().matches("FALSE") or 
+			t.asString().matches("true")
+		) and t.asBoolean()
+	);
+	
+	var actual = testData.parallelSelectOne(t |
+		t <> null and 
+		t.asString().length() > 3 and
+		(
+			t.asString().matches(numberRegex) or
+			t.asString().matches("FALSE") or 
+			t.asString().matches("true")
+		) and t.asBoolean()
+	);
+	
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelRejectOneEquivalence() {
+	var expected = testData.rejectOne(t | t <> null and t.asBoolean());
+	var actual = testData.parallelRejectOne(t | t <> null and t.asBoolean());
+	actual.equalsIgnoreOrder(expected);
+	
+	expected = testData.rejectOne(t | t <> null and t.asString().length() > 256);
+	actual = testData.parallelRejectOne(t | t <> null and t.asString().length() > 256);
+	actual.equalsIgnoreOrder(expected);
+}
+
+@test
+operation testParallelExistsEquivalence() {
+	var expected = testData.exists(t | t == null);
+	assertTrue(expected);
+	var actual = testData.parallelExists(t | t == null);
+	assertEquals(expected, actual);
+	
+	expected = testData.exists(t | t <> null and not t.getClass().getName().startsWith("java"));
+	assertFalse(expected);
+	actual = testData.parallelExists(t | t <> null and not t.getClass().getName().startsWith("java"));
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelOneEquivalence() {
+	var expected = testData.one(t | t <> null and t.asString().isEmpty());
+	assertTrue(expected);
+	var actual = testData.parallelOne(t | t <> null and t.asString().isEmpty());
+	assertEquals(expected, actual);
+		
+	expected = testData.one(t | t <> null and not t.asBoolean());
+	assertFalse(expected);
+	actual = testData.parallelOne(t | t <> null and not t.asBoolean());
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelNoneEquivalence() {
+	var expected = testData.none(t | t == null);
+	assertFalse(expected);
+	var actual = testData.parallelNone(t | t == null);
+	assertEquals(expected, actual);
+		
+	expected = testData.none(t | t <> null and not t.getClass().getName().startsWith("java"));
+	assertTrue(expected);
+	actual = testData.parallelNone(t | t <> null and not t.getClass().getName().startsWith("java"));
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelAtMostNMatchEquivalence() {
+	var expected = testData.atMostNMatch(t | t <> null and t.asBoolean(), 1);
+	assertTrue(expected);
+	var actual = testData.parallelAtMostNMatch(t | t <> null and t.asBoolean(), 1);
+	assertEquals(expected, actual);
+	
+	expected = testData.atMostNMatch(t | t <> null and t.asString().length() > 1, testData.size());
+	assertTrue(expected);
+	actual = testData.parallelAtMostNMatch(t | t <> null and t.asString().length() > 1, testData.size());
+	assertEquals(expected, actual);
+	
+	expected = testData.atMostNMatch(t | t <> null and t.asString().isEmpty(), 0);
+	assertFalse(expected);
+	actual = testData.parallelAtMostNMatch(t | t <> null and t.asString().isEmpty(), 0);
+	assertEquals(expected, actual);
+	
+	expected = testData.atMostNMatch(t | t <> null, 35);
+	assertFalse(expected);
+	actual = testData.parallelAtMostNMatch(t | t <> null, 35);
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelAtLeastNMatchEquivalence() {
+	var expected = testData.atLeastNMatch(t | t == null, 3);
+	assertFalse(expected);
+	var actual = testData.parallelAtLeastNMatch(t | t == null, 3);
+	assertEquals(expected, actual);
+	
+	expected = testData.atLeastNMatch(t | t <> null and t.asString().length() == 1, 10);
+	assertTrue(expected);
+	actual = testData.parallelAtLeastNMatch(t | t <> null and t.asString().length() == 1, 10);
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelNMatchEquivalence() {
+	var expected = testData.nMatch(t | t == null, 2);
+	assertTrue(expected);
+	var actual = testData.parallelNMatch(t | t == null, 2);
+	assertEquals(expected, actual);
+	
+	expected = testData.nMatch(t | t <> null and t.asString().length() == 1, 15);
+	assertFalse(expected);
+	actual = testData.parallelNMatch(t | t <> null and t.asString().length() == 1, 15);
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelCountEquivalence() {
+	var expected = testData.count(t | t <> null and t.asString().asBoolean());
+	assertEquals(1, expected);
+	var actual = testData.parallelCount(t | t <> null and t.asString().asBoolean());
+	assertEquals(expected, actual);
+	
+	expected = testData.count(t | t == null);
+	assertEquals(2, expected);
+	actual = testData.parallelCount(t | t == null);
+	assertEquals(expected, actual);
+	
+	expected = testData.count(t | t.isDefined());
+	assertEquals(testData.size()-3, expected);
+	actual = testData.parallelCount(t | t.isDefined());
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelForAllEquivalence() {
+	var expected = testData.forAll(t | t <> null);
+	assertFalse(expected);
+	var actual = testData.parallelForAll(t | t <> null);
+	assertEquals(expected, actual);
+	
+	expected = testData.forAll(t |
+		t == null or
+		t.isKindOf(Real) or
+		t.isKindOf(Integer) or
+		t.asString().matches(numberRegex) or
+		t.asBoolean() == true or
+		t.asBoolean() == false
+	);
+	
+	assertTrue(expected);
+	
+	actual = testData.parallelForAll(t |
+		t == null or
+		t.isKindOf(Real) or
+		t.isKindOf(Integer) or
+		t.asString().matches(numberRegex) or
+		t.asBoolean() == true or
+		t.asBoolean() == false
+	);
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelCollectEquivalence() {
+	var data : new Sequence;
+	data.addAll(testData);
+	var expected = data.collect(t | t == null or t.asString().length() >= 5);
+	var actual = data.parallelCollect(t | t == null or t.asString().length() >= 5);
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelSortByEquivalence() {
+	var data : new Bag;
+	data.add(0);
+	data.add("");
+	var i = 1073741824;
+	while (i > 2) {
+		i /= 2;
+		data.add(i);
+	}
+	data.add("a loooooooooooooooooooong string");
+	data.add(1);
+	data.add(15);
+	var expected = data.sortBy(n | n.asString().length());
+	var actual = data.parallelSortBy(n | n.asString().length());
+	actual.equalsIgnoreOrder(expected);
+}
+
+@test
+operation testParallelSortByEquivalence() {
+	var data : new Sequence;
+	data.add(0);
+	data.add("");
+	var i = 1073741824;
+	while (i > 2) {
+		i /= 2;
+		data.add(i);
+	}
+	data.add("a loooooooooooooooooooong string");
+	data.add(1);
+	data.add(15);
+	var expected = data.sortBy(n | n.asString().length());
+	var actual = data.parallelSortBy(n | n.asString().length());
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParallelMapByEquivalence() {
+	var data := Sequence {-127..1024};
+	var expected = data.mapBy(n | n.asString().length());
+	var actual = data.parallelMapBy(n | n.asString().length());
+	assertEquals(expected, actual);
+}

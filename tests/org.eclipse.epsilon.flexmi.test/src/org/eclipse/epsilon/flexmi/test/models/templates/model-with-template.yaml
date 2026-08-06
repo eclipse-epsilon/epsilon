@@ -1,0 +1,45 @@
+$nsuri: http://www.eclipse.org/emf/2002/Ecore
+package:
+  - name: p1
+    t1:
+      p: C1
+  - name: p2
+    t1:
+      p: C2
+  - name: p1
+    t1:
+      p: C3
+      attr:
+        name: a2
+
+p1:
+  - attr:
+      name: a3
+  - attr:
+      - name: a4
+      - name: a5
+
+empty:
+  class:
+    name: C4
+
+:template:
+  - name: t1
+    parameter:
+      name: p
+    content:
+      class:
+        name: ${p}
+        attr:
+          name: a1
+        :slot: {}
+  - name: p1
+    content:
+      package:
+        name: p
+        class:
+          name: c
+          :slot: {}
+  - name: empty
+    content:
+      :slot: {}

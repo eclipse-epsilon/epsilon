@@ -1,0 +1,25 @@
+context Flowchart {
+	constraint MustHaveOneStart {
+		check  {
+			var numberOfStartNodes = self.nodes.select(n|n.isStart()).size(); 
+			return numberOfStartNodes == 1;
+		}
+		message : "There must be precisely 1 starting node, but there are " + numberOfStartNodes
+	}
+	
+	constraint MustHaveAtLeastOneFinal {
+		check  {
+			var numberOfFinalNodes = self.nodes.select(n|n.isFinal()).size(); 
+			return numberOfFinalNodes >= 1;
+		}
+		message : "There must be at least 1 final node, but there are " + numberOfFinalNodes
+	}
+}
+
+operation Flowchart!Node isStart() : Boolean {
+	return self.incoming.isEmpty(); 
+}
+
+operation Flowchart!Node isFinal() : Boolean {
+	return self.outgoing.isEmpty();
+}

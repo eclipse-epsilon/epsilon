@@ -1,0 +1,17 @@
+<project default="evl-exportAsModel">
+
+	<target name="evl-exportAsModel">
+		<epsilon.eunit src="tree-export-as-model.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="Tree" metamodelfile="tree.ecore" read="false" store="false" />
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="validate-tree">
+		<epsilon.evl src="tree-constraints.evl" failOnErrors="false" failOnWarnings="false" exportAsModel="EVL">
+			<model ref="Tree" />
+		</epsilon.evl>
+	</target>
+
+</project>

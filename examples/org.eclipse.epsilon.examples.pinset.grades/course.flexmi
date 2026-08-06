@@ -1,0 +1,33 @@
+<?nsuri grades?>
+<course name="Model-Driven Engineering">
+	<item name="Lab 1" perc="15"/>
+	<item name="Lab 2" perc="15"/>
+	<item name="Partial Test" perc="20"/>
+	<item name="Final Exam" perc="50"/>
+
+	<student id="S1" name="Alice">
+		<contact email="alice@university.com" phone="+44 101"/>
+		<grade item="Lab 1" points="60"/>
+		<grade item="Lab 2" points="90"/>
+		<grade item="Partial Test" points="80"/>
+		<grade item="Final Exam" points="85"/>
+	</student>
+	<student id="S2" name="Bob" remote="true">
+		<contact email="bob@university.com" phone="+44 654"/>
+		<grade item="Lab 1" points="60"/>
+		<grade item="Final Exam" points="100"/>
+	</student>
+	<student id="S3" name="Charlie" remote="true">
+		<contact email="charlie@university.com" phone="+44 333"/>
+		<grade item="Lab 1" points="50"/>
+		<grade item="Lab 2" points="35"/>
+		<grade item="Partial Test" points="20"/>
+	</student>
+	<student id="S4" name="Dana">
+		<contact email="dana@university.com"/>
+		<grade item="Lab 1" points="100"/>
+		<grade item="Lab 2" points="90"/>
+		<grade item="Partial Test" points="70"/>
+		<grade item="Final Exam" points="95"/>
+	</student>
+</course>

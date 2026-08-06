@@ -1,0 +1,6 @@
+<project default="default">
+	<target name="default">
+		<echo>Building ANT jar</echo>
+		<jar destfile="lib/org.eclipse.epsilon.workflow.extension.example.jar" basedir="bin"></jar>
+	</target>
+</project>

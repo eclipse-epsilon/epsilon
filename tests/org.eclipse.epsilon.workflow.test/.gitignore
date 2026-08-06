@@ -1,0 +1,6 @@
+*.xml
+!pom.xml
+!eunit.xml
+!sharedmodelrepository.xml
+!eol.xml
+!emg.xml

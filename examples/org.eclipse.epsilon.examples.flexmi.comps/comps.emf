@@ -1,0 +1,35 @@
+@namespace(uri="comps", prefix="comps")
+package comps;
+
+class Component {
+	attr String name;
+	val Port[*] inPorts;
+	val Port[*] outPorts;
+	val Component[*]#parent components;
+	ref Component#components parent;
+	val Connector[*] connectors;
+	attr String action;
+	val Group[*] groups;
+}
+
+class Group {
+	attr String name;
+	attr String color;
+	ref Component[*] components;
+}
+
+class Port {
+	attr String name;
+	ref Connector[*]#from outgoing;
+	ref Connector[*]#to incoming;
+	ref Type type;
+}
+
+class Connector {
+	ref Port#outgoing from;
+	ref Port#incoming to;
+}
+	
+class Type {
+	attr String name;
+}

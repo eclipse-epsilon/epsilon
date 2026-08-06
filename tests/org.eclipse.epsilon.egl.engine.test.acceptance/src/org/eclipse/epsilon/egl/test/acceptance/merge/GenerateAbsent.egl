@@ -1,0 +1,7 @@
+[%
+for (class in Class.allInstances) {
+	var t : Template := TemplateFactory.load('OOClass2JavaClassUnprotected.egl');
+	t.populate('class', class);
+	t.generate(class.name + '_generateAbsent.txt');
+}
+%]

@@ -1,0 +1,9 @@
+var i := 0;
+for (leaf in Tree.all.select(t|t.children.isEmpty())) {
+	var child : new Tree;
+	i := i+1;
+	child.label := 'Added' + i;
+	leaf.children.add(child);
+}
+
+Model.store(Model.modelFile + 'copy.model');

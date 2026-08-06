@@ -1,0 +1,6 @@
+package rl;
+
+class Requirement {
+	attr String ~id;
+	attr String description;
+}

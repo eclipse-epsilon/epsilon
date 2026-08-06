@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<_>
+	<package name="p1">
+		<t1 p1="C1" p2="a1"/>
+	</package>
+	<:template name="t1">
+		<parameter name="p1"/>
+		<parameter name="p2"/>
+		<content>
+			<class name="${p1}">
+				<attr name="${p2}"/>
+			</class>
+		</content>
+	</:template>
+</_>

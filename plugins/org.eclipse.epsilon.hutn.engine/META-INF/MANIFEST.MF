@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.eclipse.epsilon.hutn.engine
+Bundle-ManifestVersion: 2
+Bundle-Name: Human Usable Textual Notation Engine
+Bundle-SymbolicName: org.eclipse.epsilon.hutn.engine
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.hutn.model;visibility:=reexport,
+ org.eclipse.epsilon.hutn.model.antlrAst;visibility:=reexport,
+ org.eclipse.epsilon.hutn.model.config;visibility:=reexport,
+ org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.eol.engine;visibility:=reexport,
+ org.eclipse.epsilon.etl.engine;visibility:=reexport,
+ org.eclipse.epsilon.egl.engine;visibility:=reexport,
+ org.eclipse.epsilon.evl.engine,
+ org.eclipse.epsilon.antlr.postprocessor;visibility:=reexport
+Export-Package: org.eclipse.epsilon.hutn,
+ org.eclipse.epsilon.hutn.exceptions,
+ org.eclipse.epsilon.hutn.generate,
+ org.eclipse.epsilon.hutn.generate.metamodel,
+ org.eclipse.epsilon.hutn.generate.model,
+ org.eclipse.epsilon.hutn.parse;uses:="antlr.collections.impl,antlr",
+ org.eclipse.epsilon.hutn.parse.postprocessor,
+ org.eclipse.epsilon.hutn.parse.spec,
+ org.eclipse.epsilon.hutn.translate;uses:="antlr.collections",
+ org.eclipse.epsilon.hutn.util,
+ org.eclipse.epsilon.hutn.validation,
+ org.eclipse.epsilon.hutn.validation.config,
+ org.eclipse.epsilon.hutn.validation.model

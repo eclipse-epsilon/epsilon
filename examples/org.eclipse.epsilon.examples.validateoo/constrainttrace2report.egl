@@ -1,0 +1,22 @@
+<html>
+<body>
+<h1>Validation report</h1>
+<ul>
+[%var color = ""; var label="";%]
+[%for (item in trace){%]
+	[%if (item.result) {
+		color="green"; 
+		label="passed";
+	}
+	else {
+		color="red";
+		label="failed";
+	}%]
+	<li>
+	<span style="color:[%=color%]">
+		Constraint [%=item.constraint.name + " " + label%] for object [%=item.instance%]
+	</span>
+[%}%]
+</ul>
+</body>
+</html>

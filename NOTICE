@@ -1,0 +1,162 @@
+# Notices for Eclipse Epsilon
+
+This content is produced and maintained by the Eclipse Epsilon project.
+
+* Project home: https://projects.eclipse.org/projects/modeling.epsilon
+
+## Trademarks
+
+Eclipse Epsilon™ is a trademark of the Eclipse Foundation.
+
+## Copyright
+
+All content is the property of the respective authors or their employers. For
+more information regarding authorship of content, please consult the listed
+source code repository logs.
+
+## Declared Project Licenses
+
+This program and the accompanying materials are made available under the terms
+of the Eclipse Public License v. 2.0 which is available at
+http://www.eclipse.org/legal/epl-2.0.
+
+SPDX-License-Identifier: EPL-2.0
+
+## Source Code
+
+The project maintains the following source code repositories:
+
+* https://github.com/eclipse/epsilon
+* https://github.com/eclipse/epsilon-website
+
+## Third-party Content
+
+This project leverages the following third party content.
+
+ANTLR 3 Runtime
+
+* License: New BSD license
+
+Apache Commons Command Line Interface CLI (1.4)
+
+* License: Apache-2.0
+
+Apache Commons CSV
+
+* License: Apache-2.0
+
+Apache Commons Lang (3.1.0)
+
+* License: Apache License, 2.0
+
+Apache Commons Math (3.5.0)
+
+* License: Apache License, 2.0, New BSD License
+
+Apache commons-collections-3.2.jar (3.2)
+
+* License: Apache License, 2.0
+
+Apache Jena (5.1.0)
+
+* License: Apache License, 2.0
+
+Apache Log4j (1.2.17)
+
+* License: Apache License 2.0
+
+Apache POI (3.10.1)
+
+* License: Apache License, 2.0
+* Project: http://poi.apache.org/
+* Source:
+   http://www.apache.org/dyn/closer.cgi/poi/release/src/poi-src-3.10.1-20140818.tar.gz
+
+Apache poi-ooxml (3.10.1)
+
+* License: Apache License, 2.0
+
+Apache poi-ooxml-schemas (3.10.1)
+
+* License: Apache License, 2.0
+* Project: http://poi.apache.org/index.html
+* Source:
+   http://archive.apache.org/dist/poi/release/src/poi-src-3.10.1-20140818.zip
+
+Apache XMLBeans (2.6.0)
+
+* License: Apache License, 2.0
+* Project: http://xmlbeans.apache.org/
+
+commons-collections (3.2.1)
+
+* License: Apache License 2.0
+
+dom4j (1.6.1)
+
+* License: Custom license based on Apache 1.1
+
+GData (1.47.1)
+
+* License: Apache License, 2.0
+* Project: https://code.google.com/p/gdata-java-client/
+* Source: https://code.google.com/p/gdata-java-client/downloads/list
+
+Google Guava
+
+* License: Apache License 2.0
+
+Gson
+
+* License: Apache License 2.0
+
+Jdom (1.0)
+
+* License: JDom License (based on Apache 1.1 Style License)
+
+JQuery (1.8.1)
+
+* License: MIT License
+* Project: http://jquery.com
+* Source: https://github.com/jquery/jquery
+
+jsoup (1.7.2)
+
+* License: MIT license
+
+JUnit (4.13)
+
+* License: Eclipse Public License
+
+Mockito
+
+* License: Apache License 2.0, New BSD license, MIT license
+* License: MIT
+
+plantUML (2018.8)
+
+* License: (EPL-1.0 OR BSD-3-CLAUSE OR MIT OR Apache-2.0 OR GPL-2.0-or-later OR
+   LGPL-3.0-or-later) AND (EPL-1.0 OR BSD-3-CLAUSE OR MIT OR Apache-2.0 OR
+   GPL-2.0-or-later OR LGPL-3.0-or-later OR AGPL-3.0-or-later) AND BSD-3-Clause
+   AND MIT AND Apache-2.0
+
+SnakeYAML (2.2.0)
+
+* License: Apache License 2.0
+
+SLF4J API (1.7.2)
+
+* License: MIT License
+
+slf4j log4j12 (1.7.2)
+
+* License: MIT License
+
+## Cryptography
+
+Content may contain encryption software. The country in which you are currently
+may have restrictions on the import, possession, and use, and/or re-export to
+another country, of encryption software. BEFORE using any encryption software,
+please check the country's laws, regulations and policies concerning the import,
+possession, or use, and re-export of encryption software, to see if this is
+permitted.

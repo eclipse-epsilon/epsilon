@@ -1,0 +1,1034 @@
+@cached
+operation EOL() {
+	return '\n';
+}
+
+//For testing purposes
+operation getThriftFileName() : String {
+	return "EpsilonThriftTest";
+}
+
+operation getDate() : String {
+	return new Native("java.text.SimpleDateFormat")("yyyy-MM-dd").format(new Native("java.util.Date"));
+}
+
+operation incrementAndGet() : Integer {
+	return Document.allInstances().first().~internalCounter++;
+}
+
+operation String iterNum() : String {
+	return self+incrementAndGet();
+}
+
+operation getOutputDir(packageName : String) {
+	return "output/"+packageName.replace("\\.", '/')+'/';
+}
+
+operation makeStruct(fields, identifier : String, isResult : Boolean, isException : Boolean) : Struct {
+	var structure : new Struct;
+	structure.fields.addAll(fields);
+	structure.identifier = identifier;
+	structure.isException = isException;
+	structure.~accessorName = identifier.firstToUpperCase();
+	structure.~capsIdentifier = identifier.camelToUnderscore();
+	structure.~isInner = true;
+	structure.~isResult = isResult;
+	return structure;
+}
+
+operation Function structifyArgs() : Struct {
+	return makeStruct(self.args, self.identifier+"_args", false, false);
+}
+
+operation Function structifyResult() : Struct {
+	var fields = OrderedSet{};
+	if (not self.isVoid()) {
+		var resultField : Field = new Field;
+		resultField.identifier = "success";
+		resultField.fieldType = self.funcType.fieldType;
+		fields.add(resultField);
+	}
+	fields.addAll(self.exceptions);
+	return makeStruct(fields, self.identifier+"_result", true, false);
+}
+
+operation assignFieldIDs(fvals : Collection) {
+	if (fvals.size() <= 0) return;
+	for (i : Integer in Sequence{0..fvals.size()-1}) {
+		if (not fvals.at(i).hasFID) {
+			var numval : Integer = fvals.at(i).fieldID;
+			if (i == 0)
+				numval = 0;
+			else
+				numval = fvals.at(i-1).fieldID+1;
+			fvals.at(i).fieldID = numval;
+		}
+	}
+}
+
+operation doSetup() {
+	Document.allInstances().first().~internalCounter = -1;
+	attachProperties();
+}
+
+operation attachProperties() {
+	attachCapsIdentifierProperty(Field.allInstances());
+	attachAccessorNameProperty(Field.allInstances());
+	assignFieldIDs(Field.allInstances());
+	assignFieldIDs(EnumPair.allInstances());
+	attachAliases(FieldType.allInstances(), Typedef.allInstances());
+	attachAccessorNameProperty(EnumPair.allInstances());
+	attachAccessorNameProperty(Function.allInstances());
+	attachAccessorNameProperty(Struct.allInstances());
+	attachCapsIdentifierProperty(Struct.allInstances());
+	attachAccessorNameProperty(Union.allInstances());
+	attachCapsIdentifierProperty(Union.allInstances());
+	attachAccessorNameProperty(Enum.allInstances());
+	attachCapsIdentifierProperty(Enum.allInstances());
+}
+
+operation attachAliases(fieldTypes : Collection, typedefs : Collection) {
+	for (fieldType in fieldTypes.select(ft | ft.identifier.isDefined() and ft.identifier.length() > 0)) {
+		var tdProp : Typedef = typedefs.selectOne(td | td.identifier.isDefined() and fieldType.identifier.matches(td.identifier));
+		if (tdProp.isDefined()) {
+			fieldType.~typedef = tdProp.identifier;
+			fieldType.~trueType = tdProp.aliasFor;
+		}
+	}
+}
+
+operation attachAccessorNameProperty(fcol) {
+	for (field in fcol) {
+		field.~accessorName = field.identifier.firstToUpperCase();
+	}
+}
+
+operation attachCapsIdentifierProperty(fcol) {
+	for (field in fcol) {
+		field.~capsIdentifier = field.identifier.camelToUnderscore();
+	}
+}
+
+operation Any getRawComment() : String {
+	if (self.comment.isDefined())
+		return self.comment.getCommentContents();
+	return "";
+}
+
+operation String removeSurroundingQuotes() : String {
+	return self.substring(1, self.length()-1);
+}
+
+operation String getCommentContents() : String {
+	return self
+		.replaceAll("/"+"\\*", "")
+		.replaceAll("\\*"+'/', "");
+}
+
+operation String makeComment(start, prefix, end, padding) : String {
+	return self.makeComment(padding+start, padding+prefix, padding+end);
+}
+
+operation String makeComment(start, prefix, end) : String {
+	var comment : String = "";
+	var hasPrefix = prefix.isDefined() and prefix.length() > 0;
+	var lines = self.split(EOL());
+	if (start.isDefined() and start.length() > 0) {
+		comment += start;
+	}
+	for (line : String in lines) {
+		if (hasPrefix) {
+			comment += prefix;
+		}
+		if (line.length() > 0) {
+			comment += line;
+		}
+		comment += EOL();
+	}
+	if (end.isDefined() and end.length() > 0) {
+		comment += end;
+	}
+	return comment;
+}
+
+operation String escapedString() : String {
+	return self.replaceAll("\"", "\\"+'"');
+}
+
+@cached
+operation String makeValidName() : String {
+	var vName : String = self;
+	if (vName.isDefined() and vName.length() > 0) {
+		if (vName.startsWith("[0-9]")) {
+			jName = "_"+vName;
+		}
+		vName.replaceAll("[^a-zA-Z0-9]+", "_");
+	}
+	return vName;
+}
+
+@cached
+operation String camelToUnderscore() : String {
+    return self.firstToUpperCase().split("(?=[A-Z])").concat("_").toUpperCase();
+}
+
+operation String changeIf(condition : Boolean, nval : String) {
+	if (condition)
+		return nval;
+	return self;
+}
+
+operation String contains(other) : Boolean {
+	return other.isSubstringOf(self);
+}
+
+operation Sequence replace(index : Integer, with) : Sequence {
+	var what = self.at(index);
+	var newSeq = Sequence{};
+	if (index < 0 or index >= self.size())
+		return self.clone();
+	else if (index == 0) {
+		newSeq.add(with);
+		newSeq.addAll(self.excluding(what));
+	}
+	else if (index == self.size()-1) {
+		newSeq.addAll(self.excluding(what));
+		newSeq.add(with);
+	}
+	else {
+		var leftSeq = Sequence{};
+		var rightSeq = Sequence{};
+		for (i : Integer in Sequence{0..index-1}) {
+			leftSeq.add(self.at(i));
+		}
+		for (i : Integer in Sequence{index+1..self.size()-1}) {
+			rightSeq.add(self.at(i));
+		}
+		newSeq.addAll(leftSeq);
+		newSeq.add(with);
+		newSeq.addAll(rightSeq);
+	}
+	return newSeq;
+}
+
+operation Boolean ternary(rIfTrue, rIfFalse) {
+	if (self == true) return rIfTrue;
+	return rIfFalse;
+}
+
+operation Any printlnIf(condition : Boolean) {
+	if (condition) out.println(self);
+}
+
+operation Any printIf(condition : Boolean) {
+	if (condition) out.print(self);
+}
+
+operation printIfDefined(str : String) {
+	printIfDefined(str, "");
+}
+
+operation printIfDefined(str : String, padding : String) {
+	if (str.isDefined() and str.length() > 0) {
+		out.print(padding+str.replace(EOL(), EOL()+padding));
+	}
+}
+
+operation getNamespaceFor(language : String) : String {
+	var ns : Namespace = Namespace.allInstances().selectOne(ns | ns.scope.literal == language);
+	if (ns.isDefined())
+		return ns.identifier;
+	return "";
+}
+
+@cached
+operation String getConst() : Const {
+	return Const.allInstances().selectOne(ct | ct.identifier == self);
+}
+
+@cached
+operation String getTypedef() : Typedef {
+	return Typedef.allInstances().selectOne(td | td.identifier == self);
+}
+
+operation String getStruct() : Struct {
+	return Struct.allInstances().selectOne(st | st.identifier == self);
+}
+
+@cached
+operation IntConst getValue() : Integer {
+	return self.negative.ternary(self.value*-1, self.value);
+}
+
+@cached
+operation DoubleConst getValue() : Real {
+	var significant : Integer = self.significant.getValue();
+	var numberOfPlaces : Integer = self.fractional.asString().length();
+	var fractional : Real = self.fractional/((10.0).pow(numberOfPlaces));
+	var multiplier = 1;
+	if (self.exponent.isDefined()) {
+		multiplier = (10.0).pow(self.exponent.getValue());
+	}
+	var doubleValue : Real = significant+fractional;
+	return doubleValue * multiplier;
+}
+
+@cached
+operation Service hasSuper() : Boolean {
+	return self.supers.isDefined() and self.supers.length() > 0;
+}
+
+@cached
+operation Function includeReturn() : String {
+	if (self.isVoid())
+		return "";
+	return "return ";
+}
+
+operation Function getType() : String {
+	if (self.isVoid()) return "void";
+	return self.funcType.fieldType.thriftType();
+}
+
+@cached
+operation Function isVoid() : Boolean {
+	return self.funcType.void.isDefined() and self.funcType.void;
+}
+
+@cached
+operation Field isDefault() : Boolean {
+	return not self.fieldReq.isDefined() or self.fieldReq.literal.toLowerCase() == "default";
+}
+
+@cached
+operation Field getRequirement() : String {
+	if (self.fieldReq.isDefined()) {
+		return self.fieldReq.literal.toUpperCase();
+	}
+	return "DEFAULT";
+}
+
+@cached
+operation Field isRequired() : Boolean {
+	return self.fieldReq.isDefined() and self.fieldReq.literal == "required";
+}
+
+@cached
+operation Field isOptional() : Boolean {
+	return self.fieldReq.isDefined() and self.fieldReq.literal == "optional";
+}
+
+@cached
+operation ConstList isUnique() : Boolean {
+	var listVals = self.constVals;
+	return listVals.forAll(cv1 | listVals.one(cv2 | cv1.equals(cv2)));
+}
+
+@cached
+operation ConstValue getValue() : String {
+	if (self.identifier.isDefined()) {
+		var constant : Const = self.identifier.getConst();
+		if (constant.isDefined()) {
+			return constant.constVal.getValue();
+		}
+		return self.identifier;
+	}
+	if (self.isMap()) {
+		var mapVals : String = "{";
+		for (kvp in self.map.pairs) {
+			var key : String = kvp.key.getValue();
+			var value : String = kvp.value.getValue();
+			mapVals += key+':'+value+", ";
+		}
+		if (mapVals.endsWith(", "))
+			mapVals = mapVals.substring(0, mapVals.length()-3);
+		return mapVals+'}';
+	}
+	if (self.isList()) {
+		var listVals : String = "[";
+		for (cv in self.list.constVals) {
+			listVals += cv.getValue()+", ";
+		}
+		if (listVals.endsWith(", "))
+			listVals = listVals.substring(0, listVals.length()-2);
+		return listVals+']';
+	}
+	if (self.isDouble()) {
+		if (self.double.isDefined()) {
+			return self.double.getValue().asString();
+		}
+		return self.integer.getValue().asString();
+	}
+	if (self.isInteger()) {
+		return self.integer.getValue().asString();
+	}
+	if (self.isString()) {
+		return self.literal.removeSurroundingQuotes();
+	}
+	if (self.isBool()) {
+		return self.bool.literal;
+	}
+}
+
+operation ConstValue equals(other : ConstValue) : Boolean {
+	if (self.isMap() and other.isMap()) {
+		return self.map.pairs.forAll(kvp1 | other.map.pairs.forAll(kvp2 |
+				kvp1.key.equals(kvp2.key) and kvp1.value.equals(kvp2.value)));
+	}
+	if (self.isList() and other.isList()) {
+		return self.list.forAll(cv1 | other.list.forAll(cv2 | cv1.equals(cv2)));
+	}
+	if (self.isDouble() and other.isDouble()) {
+		return self.double.getValue() == other.double.getValue();
+	}
+	if (self.isInteger() and other.isInteger()) {
+		return self.integer.getValue() == other.integer.getValue();
+	}
+	if (self.isString() and other.isString()) {
+		return self.literal == other.literal;
+	}
+	if (self.isBool() and other.isBool()) {
+		return self.bool.literal == other.bool.literal;
+	}
+	return self.identifier == other.identifier;
+}
+
+operation ConstValue isOfType(expected : String) : Boolean {
+	var trueType : String = self.getTrueType();
+	var ctype : String = expected.getTrueType();
+	if (self.isMap()) {
+		if (ctype.startsWith("map<")) {
+			var key : String = ctype.getMapKey();
+			var value : String = ctype.getMapValue();
+			return self.map.pairs.forAll(kvp |
+				kvp.key.isOfType(key) and kvp.value.isOfType(value));
+		}
+		var struct = ctype.getStruct();
+		if (struct.isDefined()) {
+			var structFields = struct.fields;
+			if (self.map.isDefined()) {
+				var kvps = self.map.pairs;
+				for (pair in kvps) {
+					var key = pair.key;
+					if (not key.isString()) {
+						return false;
+					}
+					var keyVal : String = key.getValue();
+					var matchingField = structFields.selectOne(fd | keyVal.matches(fd.identifier));
+					if (matchingField.isUndefined()) {
+						return false;
+					} 
+					return pair.value.isOfType(matchingField.thriftType().getTrueType());
+				}
+			}
+			else return struct.fields.forAll(field |
+				('"'+field.identifier+'"').isSubstringOf(trueType));
+		}
+	}
+	else if (ctype.startsWith("list<") or ctype.startsWith("set<")) {
+		if (self.isList()) {
+			var inner : String = ctype.getInnerType();
+			//TODO: if (self.isSet())
+			return self.list.constVals.forAll(cv | cv.isOfType(inner));
+		}
+		
+		var constant : Const = self.identifier.getConst();
+		if (constant.isDefined()) {
+			return constant.constVal.isOfType(ctype);
+		}
+		return false;
+	}
+	else {
+		var isInt : Boolean = self.isInteger();
+		var intVal;
+		if (isInt) intVal = self.getValue().asInteger();
+		switch (ctype) {
+			case "double": return self.isDouble() or isInt;
+			case "string": return self.isString();
+			case "integer": continue;
+			case "i64": return isInt;
+			case "i32": return isInt and intVal < 2147483647;
+			case "i16": return isInt and intVal < 65535;
+			case "i8": continue;
+			case "byte": return isInt and intVal < 127;
+			case "bool": return self.isBool() or (isInt and intVal <= 1);
+			default: trueType.matches(ctype);
+		}
+	}
+	return false;
+}
+
+@cached
+operation ConstValue deduceType() : String {
+	if (self.isMap()) {
+		if (self.map.pairs.isDefined() and self.map.pairs.size() > 0) {
+			var pair = self.map.pairs.first();
+			return "map<"+pair.key.deduceType()+
+				','+pair.value.deduceType()+'>';
+		}
+		return "map";
+	}
+	else if (self.isList()) {
+		if (self.list.constVals.isDefined() and self.list.constVals.size() > 0) {
+			return "list<"+self.list.constVals.first().deduceType()+'>';
+		}
+		return "list";
+	}
+	else if (self.isString()) {
+		return "string";
+	}
+	else if (self.isDouble()) {
+		return "double";
+	}
+	else if (self.isInteger()) {
+		if (self.integer.value <= 1)
+			return "bool";
+		else if (self.integer.value < 127)
+			return "byte";
+		else if (self.integer.value < 65535)
+			return "i16";
+		else if (self.integer.value < 2147483647)
+			return "i32";
+		else
+			return "i64";
+	}
+	else if (self.isBool()) {
+		return self.bool.literal;
+	}
+	else {
+		return self.identifier.getTrueType();
+	}
+}
+
+@cached
+operation String getTrueType() : String {
+	var typedef = self.getTypedef();
+	if (typedef.isDefined()) {
+		return typedef.aliasFor.thriftType();
+	}
+	var constant = self.getConst();
+	if (constant.isDefined()) {
+		return constant.thriftType();
+	}
+	return self;
+}
+
+@cached
+operation ConstValue getTrueType() : String {
+	if (self.identifier.isDefined() and self.identifier.length() > 0)
+		return self.identifier.getTrueType();
+	return "";
+}
+
+operation ConstValue getMappings() {
+	if (self.map.isDefined()) {
+		return self.map.pairs;
+	}
+	else if (self.identifier.isDefined() and self.identifier.length() > 0) {
+		return self.identifier.getConst().constVal.map.pairs;
+	}
+}
+
+operation ConstValue getListings() {
+	if (self.list.isDefined()) {
+		return self.list.constVals;
+	}
+	else if (self.identifier.isDefined() and self.identifier.length() > 0) {
+		return self.identifier.getConst().constVal.list.constVals;
+	}
+}
+
+@cached
+operation Const thriftType() : String {
+	return self.fieldType.thriftType();
+}
+
+operation makeStringFieldType() : FieldType {
+ 	var stringFT: new FieldType;
+	var dType : new DefinitionType;
+	dType.base = BaseType#string;
+	stringFT.defType = dType;
+	return stringFT;
+}
+
+operation DefinitionType thriftType() : String {
+	if (self.~thriftType.isUndefined()) {
+		var container = self.container;
+		var base = self.base;
+		if (container.isDefined()) {
+			self.~thriftType = container.keyword+'<';
+			if (container.keyword == "map") {
+				self.~thriftType += container.keyType.thriftType()+','+container.valType.thriftType()+'>';
+			}
+			else {
+				self.~thriftType += container.fieldType.thriftType()+'>';
+			}
+		}
+		else {
+			self.~thriftType = base.literal;
+		}
+	}
+	return self.~thriftType;
+}
+
+@cached
+operation Field thriftType() : String {
+	return self.fieldType.thriftType();
+}
+
+operation FieldType thriftType() : String {
+	if (self.~thriftType.isUndefined()) {
+		if (self.~trueType.isDefined()) {
+			self.~thriftType = self.~trueType.thriftType();
+		}
+		else if (self.defType.isDefined()) {
+			self.~thriftType = self.defType.thriftType();
+		}
+		else if (self.typedef.isDefined()) {
+			self.~thriftType = self.typedef.aliasFor.thriftType();
+		}
+		else {
+			self.~thriftType = self.identifier.getTrueType();
+		}
+	}
+	return self.~thriftType;
+}
+
+@cached
+operation Field getTypeName() : String {
+	return self.fieldType.getTypeName();
+}
+
+operation FieldType getTypeName() : String {
+	if (self.~capitalType.isUndefined()) {
+		if (self.isEnum()) {
+			self.~capitalType = "ENUM";
+		}
+		else if (self.isStruct() or self.isException()) {
+			self.~capitalType = "STRUCT";
+		}
+		else if (self.isBinary()) {
+			self.~capitalType = "STRING";
+		}
+		else {
+			self.~capitalType = self.thriftType().toUpperCase();
+			if ("<".isSubstringOf(self.~capitalType)) {
+				self.~capitalType = self.~capitalType.split("<").at(0);
+			}
+		}
+	}
+	return self.~capitalType;
+}
+
+@cached
+operation FieldType getStruct() {
+	if (self.identifier.isDefined()) {
+		self.~structure = Struct.allInstances()
+			.reject(structure | structure.isException)
+			.selectOne(structure | self.identifier == structure.identifier);
+	}
+	return self.~structure;
+}
+
+operation FieldType getException() {
+	if (self.identifier.isDefined()) {
+		self.~exception = Struct.allInstances()
+			.select(structure | structure.isException)
+			.selectOne(structure | self.identifier == structure.identifier);
+	}
+	return self.~exception;
+}
+
+@cached
+operation FieldType getEnum() {
+	if (self.identifier.isDefined()) {
+		self.~enumeration = Enum.allInstances().selectOne(enumeration | self.identifier == enumeration.identifier);
+	}
+	return self.~enumeration;
+}
+
+@cached
+operation FieldType getTypedef() {
+	return self.~typedef;
+}
+
+operation Field hasNesting() : Boolean {
+	return self.fieldType.hasNesting();
+}
+
+operation Field getNestingSequence() : Sequence {
+	return self.fieldType.getNestingSequence();
+}
+
+operation Field containsType(ttype : String) : Boolean {
+	return self.fieldType.containsType(ttype);
+}
+
+operation FieldType containsType(ttype : String) : Boolean {
+	return self.thriftType().containsType(ttype);
+}
+
+operation FieldType hasNesting() : Boolean {
+	return self.thriftType().hasNesting();
+}
+
+operation FieldType getNestingSequence() : Boolean {
+	return self.thriftType().getNestingSequence();
+}
+
+operation String hasNesting() : Boolean {
+	return self.hasNesting(1);
+}
+
+operation String hasNesting(level : Integer) : Boolean {
+	return self.getNestingLevel() >= level;
+}
+
+@cached
+operation String getNestingSequence() : Sequence {
+	var nestSeq : Sequence = self.split("<");
+	if (nestSeq.isDefined() and nestSeq.size() > 0) {
+		nestSeq = nestSeq.replace(nestSeq.size()-1, nestSeq.last().replace(">", ""));
+	}
+	return nestSeq;
+}
+
+@cached
+operation String typeErasure() : String {
+	return self.split("<").first();
+}
+
+operation FieldType containsType(ttype : String) : Boolean {
+	return self.thriftType().contains(ttype.toLowerCase());
+}
+
+@cached
+operation FieldType nestedTypeIsBase() : Boolean {
+	if (self.isContainer()) {
+		var container = self.defType.container;
+		if (self.isMap())
+			return container.keyType.isBase() and container.valType.isBase();
+		else
+			return container.fieldType.isBase();
+	}
+	return self.isBase();
+}
+
+@cached
+operation FieldType getMapKey() : FieldType {
+	if (self.isMap()) {
+		return self.defType.container.keyType;
+	}
+	return self;
+}
+
+@cached
+operation FieldType getMapValue() : FieldType {
+	if (self.isMap()) {
+		return self.defType.container.valType;
+	}
+	return self;
+}
+
+@cached
+operation FieldType getInnerType() : FieldType {
+	if (self.isList() or self.isSet()) {
+		return self.defType.container.fieldType;
+	}
+	return self;
+}
+
+@cached
+operation String getNestingLevel() : Integer {
+	return self.split("<").size()-1;
+}
+
+@cached
+operation String getInnerType() : String {
+	var parts : Sequence = self.split("<");
+	if (parts.size() > 1) {
+		parts.removeAt(0);
+		var inner : String = parts.concat("<");
+		if (inner.endsWith(">")) {
+			inner = inner.substring(0, inner.length()-1);
+			if (not inner.contains("<")) {
+				inner = inner.split(">").first();
+			}
+		}
+		return inner;
+	}
+	return self;
+}
+
+operation String spaceBetweenMap() : String {
+	return self.replace(",", ", ");
+}
+
+@cached
+operation String getMapKey() : String {
+	var brackets = self.split("(?=<)");
+	if (brackets.size() <= 1 and not ",".isSubstringOf(brackets.second())) {
+		return self.split(",").first();
+	}
+	var key : String = brackets.removeAt(1).substring(1);
+	brackets.removeAt(0);
+	key += brackets.concat();
+	if (">,".isSubstringOf(key)){
+		return key.split(">,").first()+'>';
+	}
+	else {
+		return key.split(",").first();
+	}
+}
+
+@cached
+operation String getMapValue() : String {
+	var value : String = self.substring(0, self.length()-1);
+	if (">,".isSubstringOf(value)) {
+		return value.split(">,").last();
+	}
+	else {
+		var commas = value.split(",");
+		if (commas.size() > 2) {
+			commas.removeAt(0);
+			return commas.concat(",");
+		}
+		else {
+			return commas.last();
+		}
+	}
+}
+
+@cached
+operation ConstValue isSet() : Boolean {
+	if (self.isList()) {
+		return self.list.isUnique();
+	}
+	return false;
+}
+
+@cached
+operation ConstValue isList() : Boolean {
+	return self.list.isDefined() or self.getTrueType().startsWith("list<");
+}
+
+@cached
+operation ConstValue isMap() : Boolean {
+	return self.map.isDefined() or self.getTrueType().startsWith("map<");
+}
+
+@cached
+operation ConstValue isDouble() : Boolean {
+	return self.double.isDefined() or self.getTrueType().matches("double");
+}
+
+@cached
+operation ConstValue isInteger() : Boolean {
+	var trueType : String = self.getTrueType();
+	return self.integer.isDefined() or
+		(trueType.length() > 0 and (
+			trueType.matches("i32")) or
+			trueType.matches("i64") or
+			trueType.matches("i8") or
+			trueType.matches("byte") or
+			trueType.matches("i16"));
+}
+
+@cached
+operation ConstValue isBool() : Boolean {
+	return (self.bool.isDefined() and
+		not self.bool.literal.toUpperCase().matches("DEFAULT")) or
+			self.getTrueType().matches("bool");
+}
+
+@cached
+operation ConstValue isString() : Boolean {
+	return (self.literal.isDefined() and self.literal.length() > 0) or
+		self.getTrueType().matches("string");
+}
+
+@cached
+operation ConstValue isCustom() : Boolean {
+	return self.identifier.isDefined() and self.identifier.length() > 0;
+}
+
+@cached
+operation Field isTypedef() : Boolean {
+	return self.fieldType.isTypedef();
+}
+
+@cached
+operation Field isEnum() : Boolean {
+	return self.fieldType.isEnum();
+}
+
+@cached
+operation Field isStruct() : Boolean {
+	return self.fieldType.isStruct();
+}
+
+@cached
+operation Field isException() : Boolean {
+	return self.fieldType.isException();
+}
+
+@cached
+operation Field isContainer() : Boolean {
+	return self.fieldType.isContainer();
+}
+
+@cached
+operation Field isBase() : Boolean {
+	return self.fieldType.isBase();
+}
+
+@cached
+operation String isContainerType() : Boolean {
+	return
+		self.isType("map", false) or
+		self.isType("list", false) or
+		self.isType("set", false);
+}
+
+@cached
+operation String isBaseType() : Boolean {
+	return
+		self.isType("bool") or
+		self.isType("byte") or
+		self.isType("i16") or
+		self.isType("i32") or
+		self.isType("i64") or
+		self.isType("double") or
+		self.isType("string") or
+		self.isType("i8") or
+		self.isType("slist");
+}
+
+@cached
+operation FieldType isThriftType() : Boolean {
+	return
+		self.isContainer() or
+		self.isBase() or
+		self.isEnum() or
+		self.isStruct() or
+		self.isException();
+}
+
+@cached
+operation FieldType isTypedef() : Boolean {
+	return self.getTypedef().isDefined();
+}
+
+operation FieldType isEnum() : Boolean {
+	return self.getEnum().isDefined();
+}
+
+operation FieldType isStruct() : Boolean {
+	return self.getStruct().isDefined();
+}
+
+operation FieldType isException() : Boolean {
+	return self.getException().isDefined();
+}
+
+@cached
+operation FieldType isContainer() : Boolean {
+	return "<".isSubstringOf(self.thriftType());
+}
+
+@cached
+operation FieldType isBase() : Boolean {
+	return
+		self.isString() or
+		self.isBool() or
+		self.isI32() or
+		self.isDouble() or
+		self.isI64() or
+		self.isByte() or
+		self.isI16() or
+		self.isBinary() or
+		self.isI8();
+}
+
+operation Field isType(type : String) : Boolean {
+	return self.fieldType.isType(type);
+}
+
+operation FieldType isType(type : String) : Boolean {
+	return self.isType(type, true);
+}
+
+operation FieldType isType(type : String, matchWhole : Boolean) : Boolean {
+	return self.thriftType().isType(type, matchWhole);
+}
+
+operation String isType(type : String) : Boolean {
+	return self.isType(type, true);
+}
+
+operation String isType(type : String, matchWhole : Boolean) : Boolean {
+	if (matchWhole)
+		return self.matches(type.toLowerCase());
+	else
+		return self.startsWith(type.toLowerCase());
+}
+
+@cached
+operation FieldType isMap() : Boolean {
+	return self.isType("map", false) or (self.~typedef.isDefined() and self.~typedef.startsWith("map"));
+}
+
+@cached
+operation FieldType isList() : Boolean {
+	return self.isType("list", false) or (self.~typedef.isDefined() and self.~typedef.startsWith("list"));
+}
+
+@cached
+operation FieldType isSet() : Boolean {
+	return self.isType("set", false) or (self.~typedef.isDefined() and self.~typedef.startsWith("set"));
+}
+
+@cached
+operation FieldType isBool() : Boolean {
+	return self.isType("bool") or self.~typedef == "bool";
+}
+
+@cached
+operation FieldType isByte() : Boolean {
+	return self.isType("byte") or self.~typedef == "byte";
+}
+
+@cached
+operation FieldType isI8() : Boolean {
+	return self.isType("i8") or self.~typedef == "i8";
+}
+
+@cached
+operation FieldType isI16() : Boolean {
+	return self.isType("i16") or self.~typedef == "i16";
+}
+
+@cached
+operation FieldType isI32() : Boolean {
+	return self.isType("i32") or self.~typedef == "i32";
+}
+
+@cached
+operation FieldType isI64() : Boolean {
+	return self.isType("i64") or self.~typedef == "i64";
+}
+
+@cached
+operation FieldType isDouble() : Boolean {
+	return self.isType("double") or self.~typedef == "double";
+}
+
+@cached
+operation FieldType isString() : Boolean {
+	return self.isType("string") or self.~typedef == "string";
+}
+
+@cached
+operation FieldType isBinary() : Boolean {
+	return self.isType("binary") or self.~typedef == "binary";
+}

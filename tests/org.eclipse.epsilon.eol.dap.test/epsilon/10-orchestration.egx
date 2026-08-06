@@ -1,0 +1,16 @@
+operation computeTarget(firstName, lastName) {
+  return tempFolder + '/' + firstName + '-' + lastName + '.txt';
+}
+
+rule Person2Text transform p: Person {
+  template: '10-person.egl'
+  target {
+    var t = computeTarget(p.name, p.lastName);
+    return t;
+  }
+}
+
+rule Person2TextExpressionTarget transform p: Person {
+  template: '10-person.egl'
+  target: computeTarget(p.name, p.lastName)
+}

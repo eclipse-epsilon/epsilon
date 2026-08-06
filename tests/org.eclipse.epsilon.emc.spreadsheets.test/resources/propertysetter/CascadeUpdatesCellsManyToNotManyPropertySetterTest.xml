@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spreadsheet>
+	
+	<worksheet name="Sheet1">
+		<column index="1" name="id" many="false"></column>
+		<column index="2" many="true"></column>
+		<column index="4" many="true"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet2">
+		<column index="1" name="id" many="false"></column>
+		<column index="2" many="true"></column>
+		<column index="4" many="true"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet3">
+		<column index="1" name="id" many="false"></column>
+		<column index="2" many="false"></column>
+		<column index="4" many="false"></column>
+	</worksheet>
+	
+	<reference source="Sheet1->c_2" target="Sheet2->c_2" many="false" cascadeUpdates="false"></reference>
+	<reference source="Sheet2->c_2" target="Sheet3->c_2" many="false" cascadeUpdates="true"></reference>
+	
+	<reference source="Sheet1->c_4" target="Sheet2->c_4" many="false" cascadeUpdates="true"></reference>
+	<reference source="Sheet2->c_4" target="Sheet3->c_4" many="false" cascadeUpdates="true"></reference>
+	
+</spreadsheet>

@@ -1,0 +1,7 @@
+operation Library!Book getAuthorNames() {
+	return self.authors.collect(a|a.name).concat(',');
+}
+
+operation Library!Book getAuthors() {
+	return self.authors;
+}

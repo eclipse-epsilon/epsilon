@@ -1,0 +1,43 @@
+var EXPECTED_PATH  = basedir + "/expected.txt";
+var GENERATED_PATH = basedir + "/tree.txt";
+
+var EXPECTED_MODEL = '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+
+Model {
+  Tree "A" {
+    label: "A"
+  }
+  Tree "B" {
+    label: "B"
+    parent: Tree "A"
+  }
+  Tree "C" {
+    label: "C"
+    parent: Tree "B"
+  }
+  Tree "D" {
+    label: "D"
+    parent: Tree "B"
+  }
+  Tree "E" {
+    label: "E"
+    parent: Tree "A"
+  }
+}  
+';
+
+@model
+operation loadModels() {
+  loadHutn("Tree", EXPECTED_MODEL);
+}
+
+@test
+operation expectedModelGeneratesExpectedFile() {
+  runTarget("tree2text");
+  assertEqualFiles(EXPECTED_PATH, GENERATED_PATH);
+}

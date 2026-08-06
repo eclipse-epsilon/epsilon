@@ -1,0 +1,27 @@
+// Elements can be retrieved through their BlockType
+// in Simulink's Model Explorer e.g. SubSystem.all
+
+for (subsystem in SubSystem.all) {
+	
+	("Exploring subsystem: " + subsystem.name).println();
+	
+	for (child in subsystem.getChildren()) {
+		if (child.isTypeOf(Inport)) {
+			("Inport: " + child.name).println("\t");
+			("To: " + child.outports[0].lines[0].destination).println("\t\t");
+		}
+		else if (child.isTypeOf(Outport)) {
+			("Outport: " + child.name).println("\t");
+			("From: " + child.inports[0].lines[0].destination).println("\t\t");
+		}
+		else {
+			("Child: " + child.name).println("\t");
+		}
+	}
+}
+
+// This is inefficient and will be replaced
+// with a built-in .children property  
+operation Any getChildren() {
+	return Block.all.select(b|b.parent = self);
+}

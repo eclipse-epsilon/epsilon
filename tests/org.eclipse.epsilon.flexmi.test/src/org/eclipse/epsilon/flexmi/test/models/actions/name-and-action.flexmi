@@ -1,0 +1,5 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<class name="C">
+	<reference :name="self.eType.name.ftlc() + 's'" type="C"/>
+	<attr name="name"/>
+</class>

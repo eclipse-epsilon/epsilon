@@ -1,0 +1,5 @@
+[%      
+    var t: Template := TemplateFactory.load('Traceability.egl');
+    t.populate('unused', 'n/a');
+%]
+[%=t.generate('Traceability.txt', false, false)%]

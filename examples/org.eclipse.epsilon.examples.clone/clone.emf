@@ -1,0 +1,16 @@
+@namespace(uri="clone", prefix="clone")
+package clone;
+
+class Model {
+   val Cloneable[*] contents;
+}
+
+class Cloneable {
+   attr String name;
+   val Detail[*] details;
+}
+
+class Detail {
+   attr String key;
+   attr String value;
+}

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="pictoSource" name="Picto Source" schema="schema/pictoSource.exsd"/>
+   <extension-point id="browserFunction" name="Picto Browser Function" schema="schema/browserFunction.exsd"/>
+   <extension-point id="browserScript" name="Picto Browser Script" schema="schema/browserScript.exsd"/>
+   <extension-point id="viewContentTransformer" name="Picto View Content Transformer" schema="schema/viewContentTransformer.exsd"/>
+   <extension-point id="htmlElementTransformer" name="HTML Element Transformer" schema="schema/htmlElementTransformer.exsd"/>
+<extension
+       point="org.eclipse.ui.views">
+    <view
+          category="org.eclipse.epsilon.dt"
+          class="org.eclipse.epsilon.picto.PictoView"
+          icon="icons/picto.png"
+          id="org.eclipse.epsilon.picto.PictoView"
+          inject="true"
+          name="Picto">
+    </view>
+</extension>
+	<extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="Epsilon"
+            class="org.eclipse.epsilon.picto.preferences.PictoPreferencePage"
+            id="org.eclipse.epsilon.picto.preferences.PictoPreferencePage"
+            name="Picto">
+      </page>
+   </extension>
+    <extension
+        point="org.eclipse.ui.handlers">
+    <handler
+           class="org.eclipse.epsilon.picto.FindReplaceHandler"
+           commandId="org.eclipse.ui.edit.findReplace">
+        <activeWhen>
+           <with
+                 variable="activePartId">
+              <equals
+                    value="org.eclipse.epsilon.picto.PictoView">
+              </equals>
+           </with>
+        </activeWhen>
+     </handler>
+     </extension> 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dom -->
+      <package
+            uri="picto"
+            class="org.eclipse.epsilon.picto.dom.PictoPackage"
+            genModel="src/org/eclipse/epsilon/picto/dom/dom.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.picto.pictoSource">
+      <pictoSource class="org.eclipse.epsilon.picto.source.EmfaticSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.EditingDomainProviderSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.StandalonePictoSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.FlexmiSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.HtmlSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.SvgSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.DotSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.NeatoSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.MarkdownSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.MermaidSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.PlantUmlSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.MathjaxSource"/>
+      <pictoSource class="org.eclipse.epsilon.picto.source.CsvSource"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.epsilon.picto.PictoEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="picto"
+            icon="icons/picto.png"
+            id="org.eclipse.epsilon.picto.PictoEditor"
+            name="Picto Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.picto.viewContentTransformer">
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.HtmlContentTransformer">
+      </viewContentTransformer>
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.SvgContentTransformer">
+      </viewContentTransformer>
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.TextContentTransformer">
+      </viewContentTransformer>
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.ExceptionContentTransformer">
+      </viewContentTransformer>
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.GraphvizContentTransformer">
+      </viewContentTransformer>
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.MarkdownContentTransformer">
+      </viewContentTransformer>
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.MermaidContentTransformer">
+      </viewContentTransformer>
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.PlantUmlContentTransformer">
+      </viewContentTransformer>
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.MathjaxContentTransformer">
+      </viewContentTransformer>
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.CsvContentTransformer">
+      </viewContentTransformer>
+      <viewContentTransformer
+            class="org.eclipse.epsilon.picto.transformers.KrokiContentTransformer">
+      </viewContentTransformer>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.picto.browserFunction">
+      <browserFunction
+            class="org.eclipse.epsilon.picto.browser.ShowViewBrowserFunction">
+      </browserFunction>
+      <browserFunction
+            class="org.eclipse.epsilon.picto.browser.ShowElementBrowserFunction">
+      </browserFunction>
+      <browserFunction
+            class="org.eclipse.epsilon.picto.browser.ShowPreferencesBrowserFunction">
+      </browserFunction>
+   </extension>
+      <extension
+         point="org.eclipse.emf.ecore.extension_parser">
+      <parser
+            class="org.eclipse.epsilon.flexmi.FlexmiResourceFactory"
+            type="picto">
+      </parser>
+   </extension>
+</plugin>

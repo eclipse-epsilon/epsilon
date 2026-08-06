@@ -1,0 +1,14 @@
+@test
+operation addShouldWorkWhenPreconditionIsSatisfied() {
+	assertEquals(3, 2.add(1));
+}
+
+@test
+operation addShouldFailWhenPreconditionIsUnsatisfied() {
+	assertError(2.add(-1));
+}
+
+$pre i > 0
+operation Integer add(i : Integer) : Integer {
+	return self + i;
+}

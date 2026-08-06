@@ -1,0 +1,20 @@
+[%
+modelManager.registerMetamodel('Tree.ecore');
+modelManager.loadModel('Sample', 'Sample.model', 'Tree');
+%]
+<html>
+[%=Tree.all.selectOne(t|not t.parent.isDefined()).toHtml()%]
+</html>
+[%
+@template
+operation Tree toHtml() {
+%]
+<ul>
+	<li>[%=self.label%]
+	[%for (c in self.children){%]
+	[%=c.toHtml()%]
+	[%}%]
+</ul>
+[%
+}
+%]

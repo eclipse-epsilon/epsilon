@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ActivityFunctions="http:///schemas/ActivityFunctions/_ATry4EkZEee2K7NDkbm2lQ/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/ActivityFunctions/_ATry4EkZEee2K7NDkbm2lQ/1 ../org.eclipse.epsilon.examples.uml2simulink.profile/model.profile.uml#_ATsZ8EkZEee2K7NDkbm2lQ">
+  <uml:Model xmi:id="_2qKl0EkWEee2K7NDkbm2lQ" name="UML2SimulinkDemo">
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_2rVDcEkWEee2K7NDkbm2lQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Activity" xmi:id="_2qXaIEkWEee2K7NDkbm2lQ" name="UML2SimulinkDemo" node="_8kgdUEkWEee2K7NDkbm2lQ __ZUuUEkWEee2K7NDkbm2lQ _5wD4YEkZEee2K7NDkbm2lQ">
+      <ownedBehavior xmi:type="uml:Activity" xmi:id="_ganlAEkXEee2K7NDkbm2lQ" name="Double" node="_oz0roEkXEee2K7NDkbm2lQ _rjsLMEkXEee2K7NDkbm2lQ">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_Jpz_UEkaEee2K7NDkbm2lQ" name="in">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_vOe6kEkaEee2K7NDkbm2lQ" name="out" direction="out">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <edge xmi:type="uml:ControlFlow" xmi:id="_5tQKEEkbEee2K7NDkbm2lQ" target="_gHreE0kbEee2K7NDkbm2lQ" source="_rjsLMEkXEee2K7NDkbm2lQ"/>
+        <node xmi:type="uml:ActivityParameterNode" xmi:id="_oz0roEkXEee2K7NDkbm2lQ" name="in" incoming="_vw7nsEkXEee2K7NDkbm2lQ" parameter="_Jpz_UEkaEee2K7NDkbm2lQ">
+          <upperBound xmi:type="uml:LiteralInteger" xmi:id="_oz1SsEkXEee2K7NDkbm2lQ" value="1"/>
+        </node>
+        <node xmi:type="uml:ActivityParameterNode" xmi:id="_rjsLMEkXEee2K7NDkbm2lQ" name="out" outgoing="_5tQKEEkbEee2K7NDkbm2lQ" parameter="_vOe6kEkaEee2K7NDkbm2lQ">
+          <upperBound xmi:type="uml:LiteralInteger" xmi:id="_rjsLMUkXEee2K7NDkbm2lQ" value="1"/>
+        </node>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:Activity" xmi:id="_hO_g4EkaEee2K7NDkbm2lQ" name="Triple" node="_hO_g4kkaEee2K7NDkbm2lQ _hO_g5EkaEee2K7NDkbm2lQ">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_hO_g4UkaEee2K7NDkbm2lQ" name="in">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_zgSG8EkaEee2K7NDkbm2lQ" name="out" direction="out">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <edge xmi:type="uml:ControlFlow" xmi:id="_6jnKUEkbEee2K7NDkbm2lQ" target="_jwDS8EkbEee2K7NDkbm2lQ" source="_hO_g5EkaEee2K7NDkbm2lQ"/>
+        <node xmi:type="uml:ActivityParameterNode" xmi:id="_hO_g4kkaEee2K7NDkbm2lQ" name="in" incoming="_AVzn4EkbEee2K7NDkbm2lQ" parameter="_hO_g4UkaEee2K7NDkbm2lQ">
+          <upperBound xmi:type="uml:LiteralInteger" xmi:id="_hO_g40kaEee2K7NDkbm2lQ" value="1"/>
+        </node>
+        <node xmi:type="uml:ActivityParameterNode" xmi:id="_hO_g5EkaEee2K7NDkbm2lQ" name="out" outgoing="_6jnKUEkbEee2K7NDkbm2lQ" parameter="_zgSG8EkaEee2K7NDkbm2lQ">
+          <upperBound xmi:type="uml:LiteralInteger" xmi:id="_hO_g5UkaEee2K7NDkbm2lQ" value="1"/>
+        </node>
+      </ownedBehavior>
+      <ownedBehavior xmi:type="uml:Activity" xmi:id="_gHreEEkbEee2K7NDkbm2lQ" name="Add" node="_gHreE0kbEee2K7NDkbm2lQ _gHreFUkbEee2K7NDkbm2lQ _jwDS8EkbEee2K7NDkbm2lQ">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_gHreEUkbEee2K7NDkbm2lQ" name="x">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_gHreEkkbEee2K7NDkbm2lQ" name="out" direction="out">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_0KPNcEkbEee2K7NDkbm2lQ" name="y">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+        </ownedParameter>
+        <edge xmi:type="uml:ControlFlow" xmi:id="_4nOWIEkbEee2K7NDkbm2lQ" target="_5wD4YEkZEee2K7NDkbm2lQ" source="_gHreFUkbEee2K7NDkbm2lQ"/>
+        <node xmi:type="uml:ActivityParameterNode" xmi:id="_gHreE0kbEee2K7NDkbm2lQ" name="x" incoming="_5tQKEEkbEee2K7NDkbm2lQ" parameter="_gHreEUkbEee2K7NDkbm2lQ">
+          <upperBound xmi:type="uml:LiteralInteger" xmi:id="_gHreFEkbEee2K7NDkbm2lQ" value="1"/>
+        </node>
+        <node xmi:type="uml:ActivityParameterNode" xmi:id="_gHreFUkbEee2K7NDkbm2lQ" name="out" outgoing="_4nOWIEkbEee2K7NDkbm2lQ" parameter="_gHreEkkbEee2K7NDkbm2lQ">
+          <upperBound xmi:type="uml:LiteralInteger" xmi:id="_gHreFkkbEee2K7NDkbm2lQ" value="1"/>
+        </node>
+        <node xmi:type="uml:ActivityParameterNode" xmi:id="_jwDS8EkbEee2K7NDkbm2lQ" name="y" incoming="_6jnKUEkbEee2K7NDkbm2lQ" parameter="_0KPNcEkbEee2K7NDkbm2lQ">
+          <upperBound xmi:type="uml:LiteralInteger" xmi:id="_jwDS8UkbEee2K7NDkbm2lQ" value="1"/>
+        </node>
+      </ownedBehavior>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_yyV4UEkZEee2K7NDkbm2lQ" name="a">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_3OkMAEkZEee2K7NDkbm2lQ" name="b">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedParameter>
+      <ownedParameter xmi:type="uml:Parameter" xmi:id="_BMB6sEkaEee2K7NDkbm2lQ" name="out" direction="out">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Real"/>
+      </ownedParameter>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_vw7nsEkXEee2K7NDkbm2lQ" target="_oz0roEkXEee2K7NDkbm2lQ" source="_8kgdUEkWEee2K7NDkbm2lQ"/>
+      <edge xmi:type="uml:ControlFlow" xmi:id="_AVzn4EkbEee2K7NDkbm2lQ" target="_hO_g4kkaEee2K7NDkbm2lQ" source="__ZUuUEkWEee2K7NDkbm2lQ"/>
+      <node xmi:type="uml:ActivityParameterNode" xmi:id="_8kgdUEkWEee2K7NDkbm2lQ" name="a" outgoing="_vw7nsEkXEee2K7NDkbm2lQ" parameter="_yyV4UEkZEee2K7NDkbm2lQ">
+        <upperBound xmi:type="uml:LiteralInteger" xmi:id="_8ki5kEkWEee2K7NDkbm2lQ" value="1"/>
+      </node>
+      <node xmi:type="uml:ActivityParameterNode" xmi:id="__ZUuUEkWEee2K7NDkbm2lQ" name="b" outgoing="_AVzn4EkbEee2K7NDkbm2lQ" parameter="_3OkMAEkZEee2K7NDkbm2lQ">
+        <upperBound xmi:type="uml:LiteralInteger" xmi:id="__ZVVYEkWEee2K7NDkbm2lQ" value="1"/>
+      </node>
+      <node xmi:type="uml:ActivityParameterNode" xmi:id="_5wD4YEkZEee2K7NDkbm2lQ" name="out" incoming="_4nOWIEkbEee2K7NDkbm2lQ" parameter="_BMB6sEkaEee2K7NDkbm2lQ">
+        <upperBound xmi:type="uml:LiteralInteger" xmi:id="_5wEfcEkZEee2K7NDkbm2lQ" value="1"/>
+      </node>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_D_GUsEkZEee2K7NDkbm2lQ">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_D_Hi0EkZEee2K7NDkbm2lQ" source="PapyrusVersion">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_D_Hi0UkZEee2K7NDkbm2lQ" key="Version" value="0.0.2"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_D_Hi0kkZEee2K7NDkbm2lQ" key="Comment" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_D_Hi00kZEee2K7NDkbm2lQ" key="Copyright" value=""/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_D_Hi1EkZEee2K7NDkbm2lQ" key="Date" value="2017-06-04"/>
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_D_Hi1UkZEee2K7NDkbm2lQ" key="Author" value=""/>
+      </eAnnotations>
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_D_G7wEkZEee2K7NDkbm2lQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="../AcitivtyFunctions/model.profile.uml#_ATsZ8EkZEee2K7NDkbm2lQ"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="../AcitivtyFunctions/model.profile.uml#_XkHo8EkYEee2K7NDkbm2lQ"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_jSi0UExMEeeup9ti_DLZcg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_jSnFwExMEeeup9ti_DLZcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="model.profile.uml#_ATsZ8EkZEee2K7NDkbm2lQ"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="model.profile.uml#_XkHo8EkYEee2K7NDkbm2lQ"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_xmHAkExMEeeup9ti_DLZcg">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_xmHnoExMEeeup9ti_DLZcg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="../org.eclipse.epsilon.examples.uml2simulink.profile/model.profile.uml#_ATsZ8EkZEee2K7NDkbm2lQ"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="../org.eclipse.epsilon.examples.uml2simulink.profile/model.profile.uml#_XkHo8EkYEee2K7NDkbm2lQ"/>
+    </profileApplication>
+  </uml:Model>
+  <ActivityFunctions:Function xmi:id="_LH3uMEkZEee2K7NDkbm2lQ" base_Activity="_ganlAEkXEee2K7NDkbm2lQ" body="out = 2 * in"/>
+  <ActivityFunctions:Function xmi:id="_hPB9IEkaEee2K7NDkbm2lQ" base_Activity="_hO_g4EkaEee2K7NDkbm2lQ" body="out = 3 * in"/>
+  <ActivityFunctions:Function xmi:id="_gHssNEkbEee2K7NDkbm2lQ" base_Activity="_gHreEEkbEee2K7NDkbm2lQ" body="out = x + y"/>
+</xmi:XMI>

@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CSV Pro
+Bundle-SymbolicName: org.eclipse.epsilon.emc.csvpro
+Bundle-Version: 0.0.1.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.eol.engine
+Export-Package: org.eclipse.epsilon.emc.csvpro

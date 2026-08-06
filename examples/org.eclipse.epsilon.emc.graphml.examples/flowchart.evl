@@ -1,0 +1,12 @@
+context Decision {
+	
+	constraint HasAtLeastTwoOptions {
+		
+		check : self.outgoing.size() > 2
+		
+		message : "Decision '" + self.name + "' must have at least two " +
+			"outgoing transitions"
+		
+	}
+	
+}

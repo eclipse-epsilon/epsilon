@@ -1,0 +1,34 @@
+[% import "utils.eol";%]
+<html>
+
+<head>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.js" integrity="sha512-zO8oeHCxetPn1Hd9PdDleg5Tw1bAaP0YmNvPY8CwcRyUk7d7/+nyElmFrB6f7vg4f7Fv4sui1mcep8RIEShczg==" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<div id="canvas" style="width:60%">
+		<canvas id="chart"></canvas>
+	</div>
+
+	<script>
+		new Chart(document.getElementById("chart"), {
+		    type: 'pie',
+		    data: {
+		      labels: ["Men", "Women"],
+		      datasets: [{
+		        label: "Family",
+		        backgroundColor: ["#add8e6","#e8c3b9"],
+		        data: [[%= currentElement.getNumberOfMen() %] , [%= currentElement.getNumberOfWomen() %]]
+		      }]
+		    },
+		    options: {
+		      title: {
+		        display: true,
+		        text: '[%= currentElement.getTitle() %] '
+		      }
+		    }
+		});		
+	</script>
+</body>
+
+</html>

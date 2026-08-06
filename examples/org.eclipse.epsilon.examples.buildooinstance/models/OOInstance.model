@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ASCII"?>
+<OO:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:OO="OO" name="m">
+  <contents xsi:type="OO:Package" name="p1">
+    <contents xsi:type="OO:Class" name="c11" extends="//@contents.3/@contents.0" isAbstract="false"/>
+    <contents xsi:type="OO:Class" name="c12" extends="//@contents.0/@contents.2" isAbstract="false"/>
+    <contents xsi:type="OO:Class" name="c13" extends="//@contents.1/@contents.2" extendedBy="//@contents.0/@contents.1" isAbstract="false"/>
+  </contents>
+  <contents xsi:type="OO:Package" name="p2">
+    <contents xsi:type="OO:Class" name="c21" extends="//@contents.1/@contents.1" extendedBy="//@contents.3/@contents.1" isAbstract="false"/>
+    <contents xsi:type="OO:Class" name="c22" extends="//@contents.1/@contents.1" extendedBy="//@contents.1/@contents.0 //@contents.1/@contents.1 //@contents.3/@contents.0 //@contents.4/@contents.0 //@contents.4/@contents.1" isAbstract="false"/>
+    <contents xsi:type="OO:Class" name="c23" extends="//@contents.3/@contents.0" extendedBy="//@contents.0/@contents.2" isAbstract="false"/>
+  </contents>
+  <contents xsi:type="OO:Package" name="p3">
+    <contents xsi:type="OO:Class" name="c31" extends="//@contents.4/@contents.1" isAbstract="false"/>
+    <contents xsi:type="OO:Class" name="c32" extends="//@contents.4/@contents.2" isAbstract="false"/>
+    <contents xsi:type="OO:Class" name="c33" extends="//@contents.4/@contents.0" extendedBy="//@contents.3/@contents.2" isAbstract="false"/>
+  </contents>
+  <contents xsi:type="OO:Package" name="p4">
+    <contents xsi:type="OO:Class" name="c41" extends="//@contents.1/@contents.1" extendedBy="//@contents.0/@contents.0 //@contents.1/@contents.2" isAbstract="false"/>
+    <contents xsi:type="OO:Class" name="c42" extends="//@contents.1/@contents.0" isAbstract="false"/>
+    <contents xsi:type="OO:Class" name="c43" extends="//@contents.2/@contents.2" isAbstract="false"/>
+  </contents>
+  <contents xsi:type="OO:Package" name="p5">
+    <contents xsi:type="OO:Class" name="c51" extends="//@contents.1/@contents.1" extendedBy="//@contents.2/@contents.2 //@contents.4/@contents.2" isAbstract="false"/>
+    <contents xsi:type="OO:Class" name="c52" extends="//@contents.1/@contents.1" extendedBy="//@contents.2/@contents.0" isAbstract="false"/>
+    <contents xsi:type="OO:Class" name="c53" extends="//@contents.4/@contents.0" extendedBy="//@contents.2/@contents.1" isAbstract="false"/>
+  </contents>
+</OO:Model>

@@ -1,0 +1,9 @@
+grammar org.eclipse.epsilon.examples.evl.xtext.EvlDSL with org.eclipse.xtext.common.Terminals
+
+generate evlDSL "http://www.eclipse.org/epsilon/examples/evl/xtext/EvlDSL"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';

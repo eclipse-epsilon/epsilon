@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ActivityFunctions="http:///schemas/ActivityFunctions/_ATry4EkZEee2K7NDkbm2lQ/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http:///schemas/ActivityFunctions/_ATry4EkZEee2K7NDkbm2lQ/1 activityfunctions.uml#_ATsZ8EkZEee2K7NDkbm2lQ">
+  <uml:Model xmi:id="_5TlYADs4EeuD2bu5H6I0gQ" name="NewModel">
+    <packagedElement xmi:type="uml:Activity" xmi:id="_5TzacDs4EeuD2bu5H6I0gQ" name="NewActivity"/>
+    <profileApplication xmi:id="_5Tn0QDs4EeuD2bu5H6I0gQ">
+      <eAnnotations xmi:id="_5TsFsDs4EeuD2bu5H6I0gQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="activityfunctions.uml#_ATsZ8EkZEee2K7NDkbm2lQ"/>
+      </eAnnotations>
+      <appliedProfile href="activityfunctions.uml#_XkHo8EkYEee2K7NDkbm2lQ"/>
+    </profileApplication>
+  </uml:Model>
+  <ActivityFunctions:Function xmi:id="_5T4S8Ds4EeuD2bu5H6I0gQ" base_Activity="_5TzacDs4EeuD2bu5H6I0gQ" body="return 42;"/>
+</xmi:XMI>

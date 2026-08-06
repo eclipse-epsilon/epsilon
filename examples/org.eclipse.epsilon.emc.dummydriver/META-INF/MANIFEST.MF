@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dummydriver
+Bundle-SymbolicName: org.eclipse.epsilon.emc.dummydriver
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.emc.dummydriver.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.epsilon.eol.engine
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.emc.dummydriver

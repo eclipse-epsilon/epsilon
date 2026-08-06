@@ -1,0 +1,22 @@
+@namespace(uri="risks", prefix="risks")
+package risks;
+
+class System {
+	attr String name;
+	val Risk[*] risks;
+}
+
+class Risk {
+	id attr String ~id;
+	attr String title;
+	attr Scale likelihood;
+	attr Scale severity;
+	attr boolean closed = false;
+}
+
+enum Scale {
+	LOW = 1;
+	MEDIUM = 2;
+	HIGH = 3;
+}
+

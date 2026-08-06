@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="muddle" nsURI="http://www.eclipse.org/epsilon/emc/muddle" nsPrefix="">
+  <eAnnotations source="emf.gen">
+    <details key="basePackage" value="org.eclipse.epsilon.emc"/>
+    <details key="modelDirectory" value="/org.eclipse.epsilon.emc.muddle/src-gen"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="Muddle">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="#//Type" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//MuddleElement" containment="true" eOpposite="#//MuddleElement/muddle"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MuddleElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="slots" upperBound="-1"
+        eType="#//Slot" containment="true" eOpposite="#//Slot/owningElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//MuddleElementType"
+        eOpposite="#//MuddleElementType/instances"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="muddle" eType="#//Muddle"
+        eOpposite="#//Muddle/elements"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//MuddleElementStyle"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MuddleElementStyle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="color" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shape" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="height" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="borderWidth" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelFontSize" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="x" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="y" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Slot">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="#//Feature"
+        eOpposite="#//Feature/slots"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owningElement" eType="#//MuddleElement"
+        eOpposite="#//MuddleElement/slots"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Feature">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="many" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="primary" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="runtime" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owningType" eType="#//MuddleElementType"
+        eOpposite="#//MuddleElementType/features"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="slots" upperBound="-1"
+        eType="#//Slot" eOpposite="#//Slot/feature"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MuddleElementType" eSuperTypes="#//Type">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instances" upperBound="-1"
+        eType="#//MuddleElement" eOpposite="#//MuddleElement/type"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
+        eType="#//Feature" containment="true" eOpposite="#//Feature/owningType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="superTypes" upperBound="-1"
+        eType="#//MuddleElementType" eOpposite="#//MuddleElementType/subTypes"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subTypes" upperBound="-1"
+        eType="#//MuddleElementType" eOpposite="#//MuddleElementType/superTypes"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LinkElementType" eSuperTypes="#//MuddleElementType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceFeature" eType="#//Feature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="targetFeature" eType="#//Feature"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="roleInSourceFeature" eType="#//Feature"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="roleInTargetFeature" eType="#//Feature"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PrimitiveType" abstract="true" eSuperTypes="#//Type"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IntegerType" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="StringType" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BooleanType" eSuperTypes="#//PrimitiveType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RealType" eSuperTypes="#//PrimitiveType"/>
+</ecore:EPackage>

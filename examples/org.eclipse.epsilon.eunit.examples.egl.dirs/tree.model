@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Tree:Tree xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Tree="Tree" xmi:id="_h37IMXuoEeCAfYj9UnY67A" label="Root">
+  <children xmi:id="_jchugHuoEeCAfYj9UnY67A" label="A">
+    <children xmi:id="_lcQxoHuoEeCAfYj9UnY67A" label="A1"/>
+    <children xmi:id="_lsSKoHuoEeCAfYj9UnY67A" label="A2"/>
+  </children>
+  <children xmi:id="_jv1FAHuoEeCAfYj9UnY67A" label="B">
+    <children xmi:id="_nN9YwHuoEeCAfYj9UnY67A" label="B2"/>
+  </children>
+</Tree:Tree>

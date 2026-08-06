@@ -1,0 +1,8 @@
+Stuff here
+[%=out.startControl("/*", "*/", "anId", true)%]
+Controlled
+[%=out.stopControl()%]
+[%=out.startPreserve("/*", "*/", "anotherId", true)%]
+Preserved
+[%=out.stopPreserve()%]
+Stuff there

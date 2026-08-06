@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<TVAppDsl:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TVAppDsl="TVAppDsl">
+  <contents xsi:type="TVAppDsl:Text" name="Arsenal vs. Bolton" information="1-1">
+    <history revision="1" information="0-0"/>
+    <history revision="2" information="1-0"/>
+  </contents>
+</TVAppDsl:Application>

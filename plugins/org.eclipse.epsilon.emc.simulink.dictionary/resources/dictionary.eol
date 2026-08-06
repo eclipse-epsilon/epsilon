@@ -1,0 +1,2 @@
+var e = Entry.all.select();
+D.section.entries.all.select();

@@ -1,0 +1,25 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?eol operations.eol?>
+<?import templates.flexmi?>
+<_>
+	<class name="C1" :local="c">
+		<op :name="'create'+c.name" :type="c"/>
+	</class>
+	
+	<class :name="c.name"/>
+	
+	<class :name="c2.name + 'Clone'"/>
+	
+	<class name="C2" :global="c2"/>
+	
+	<class name="C3" :local="c">
+		<op :name="'create'+c.name" :type="c"/>
+	</class>
+	
+	<class :name="c4()"/>
+	
+	<c5/>
+	
+	<c6 concrete="true"/>
+	
+</_>

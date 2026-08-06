@@ -1,0 +1,7 @@
+operation c5() {
+	return "C5";
+}
+
+operation c6() {
+	return "C6";
+}

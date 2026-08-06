@@ -1,0 +1,19 @@
+[%
+"Before processTemplate".println();
+processTemplate(true);
+"After processTemplate".println();
+var t = TemplateFactory.load("template.egl");
+t.process();
+"Before processTemplate".println();
+processTemplate(false);
+"After processTemplate";
+
+operation processTemplate(process : Boolean) {
+	"In processTemplate()".println();
+	// template.egl can be any file
+	if (process) {
+		var t = TemplateFactory.load("template.egl");
+		t.process();
+	}
+}
+%]

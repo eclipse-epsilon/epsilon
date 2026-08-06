@@ -1,0 +1,8 @@
+<?nsuri picto?>
+<picto format="egx" transformation="platform:/resource/org.eclipse.epsilon.examples.rdf.emf.picto/emfrdf.egx" standalone="true">
+    <model type="EMF">
+        <parameter name="name" value="Model"/>
+        <parameter name="metamodelUri" value="http://york.ac.uk/emf-rdf/examples/orgchart,http://york.ac.uk/emf-rdf/examples/orgchart-extra"/>
+        <parameter name="modelFile" file="myorg-extra.rdfres"/>
+    </model>
+</picto>

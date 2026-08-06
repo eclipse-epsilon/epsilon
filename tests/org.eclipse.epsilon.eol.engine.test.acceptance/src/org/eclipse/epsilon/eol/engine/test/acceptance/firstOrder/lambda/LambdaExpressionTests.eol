@@ -1,0 +1,218 @@
+var Random = new Native("java.util.Random");
+var IntStream = Native("java.util.stream.IntStream");
+var Stream = Native("java.util.stream.Stream");
+var Collectors = Native("java.util.stream.Collectors");
+
+/*@test
+operation testHeterogenousDoubleParameters() {
+	var powerOfTwo = Stream
+		.iterate(1, (i|i*2))
+		.limit(10l)
+		.filter(i | i == 512)
+		.findAny()
+		.orElse(null);
+	
+	assertEquals(512, powerOfTwo);
+}*/
+
+@test
+operation testStreamLambda() {
+	var doubleOfFirstEvenNumberGT10 = IntStream
+		.range(0, 10)
+		.filter(i | i.mod(2) == 0)
+		.map(i | i * 2)
+		.filter(i : Integer | i > 10)
+		.boxed()
+		.sorted(o1, o2 | o1.compareTo(o2))
+		.findFirst()
+		.orElseGet(null | gobbledegook);
+	
+	assertEquals(12, doubleOfFirstEvenNumberGT10);
+}
+
+@test
+operation testStreamCollect() {
+	assertEquals(Sequence{0..10},
+		IntStream.range(0, 20)
+		.filter(i | i <= 10)
+		.boxed()
+		.collect(Collectors.toList())
+	);
+}
+
+@test
+operation testBinaryOperator() {
+	var data := Sequence{0..10};
+	var expected = data.product();
+	var actual = data.stream().reduce(i1, i2 | i1 * i2).get();
+	assertEquals(expected, actual);
+}
+
+@test
+operation testParameterless() {
+	assertEquals(1, IntStream
+		.range(1, 10)
+		.findFirst()
+		.orElseGet( | Random.nextInt(10) - 20)
+	);
+}
+
+@test
+operation testConsumer() {
+	Sequence{0..1}.forEach(i | i.println());
+}
+
+@test
+operation testSupplier() {
+	assertEquals(16, Native("java.util.stream.DoubleStream")
+		.generate(_| Random.nextDouble())
+		.limit(16l)
+		.count()
+	);
+}
+
+@test
+operation testStreamIsLazy() {
+	assertEquals(-1,
+		IntStream.range(0, 2048)
+		.filter(i | i.mod(1336) == 0)
+		.map(i | i * 2)
+		.filter(i | i > 10 and i < 1337)
+		.filter(i | lazyTest(i))
+		.findAny()
+		.orElse(-1)
+	);
+}
+
+operation lazyTest(i) : Boolean {
+	throw "Shouldn't be here!";
+}
+
+// EolLambdaFactory tests
+
+@test
+operation testRunnableThread() {
+	var called : new Native("java.util.concurrent.atomic.AtomicBoolean");
+	assertFalse(called.get());
+	var runnable = runnable( | called.set(true));
+	var thread = new Native("java.lang.Thread")(runnable);
+	thread.start();
+	thread.join();
+	assertTrue(called.get());
+	assertFalse(thread.isAlive());
+}
+
+@test
+operation testContextlessSupplier() {
+	var sup1 = supplier(|1);
+	assertEquals(sup1.get(), 1);
+	var supNested = supplier(null | sup1.get());
+	assertEquals(supNested.get(), sup1.get());
+	assertEquals(supNested.getClass(), sup1.getClass());
+}
+
+@test
+operation testContextlessConsumer() {
+	var sideEffect = Sequence{};
+	assertTrue(sideEffect.isEmpty());
+	var consumer = consumer(a | sideEffect.add(a));
+	var localVar : new Native("java.lang.Object");
+	consumer.accept(localVar);
+	assertFalse(sideEffect.isEmpty());
+	assertEquals(sideEffect.first(), localVar);
+}
+
+@test
+operation testContextlessFunction() {
+	var rand = Random.nextInt();
+	var const = 2;
+	var func = `function`(i | i * const);
+	assertEquals(func.apply(rand), rand * 2);
+}
+
+@test
+operation testPredicateVariable() {
+	var isEvenPredicate = predicate(i | i.mod(2) == 0);
+	var testData := Sequence {-15..16};
+	var expected = testData.select(i | i.mod(2) == 0);
+	var actual = testData.select(isEvenPredicate);
+	assertEquals(expected, actual);
+}
+
+@test
+operation testUnaryVariable() {
+	var doubler = unary(i | i * 2);
+	var testData := Sequence {1..12};
+	var expected = testData.collect(i | i * 2);
+	var actual = testData.collect(doubler);
+	assertEquals(expected, actual);
+}
+
+@test
+operation testFunctionVariable() {
+	var hasher = func(d | d.hashCode());
+	var testData := Sequence {-8..16};
+	var expected = testData.collect(d | d.hashCode());
+	var actual = testData.collect(hasher);
+	assertEquals(expected, actual);
+	actual = testData.collect(i | hasher.applyThrows(i));
+	assertEquals(expected, actual);
+}
+
+@test
+operation testSupplierVariable() {
+	var expected = IntStream.rangeClosed(0, 10)
+		.boxed()
+		.filter(i | i > 10 and i.mod(2) == 0)
+		.findFirst()
+		.orElseGet( | -1);
+		
+	assertEquals(-1, expected);
+	
+	var supplier = supplier(| -1);
+	var filter = predicate(i | i > 10 and i.mod(2) == 0);
+	
+	var actual = IntStream.rangeClosed(0, 10)
+		.boxed()
+		.filter(filter)
+		.findFirst()
+		.orElseGet(supplier);
+	
+	assertEquals(expected, actual);
+}
+
+@test
+operation testContextlessLambda() {
+	var raiseMagnitude = unary(i | i * 10);
+	var data := Sequence {-2..3};
+	var expected = Sequence {-20, -10, 0, 10, 20, 30};
+	var actual = data.collect(raiseMagnitude);
+	assertEquals(expected, actual);
+	actual = data.collect(i | i * 10);
+	assertEquals(expected, actual);
+	actual = data.stream().map(raiseMagnitude).collect(Collectors.toList());
+	assertEquals(expected, actual);
+	var toSequence = Collectors.toCollection( | new Sequence);
+	actual = data.stream().map(raiseMagnitude).collect(toSequence);
+	assertEquals(expected, actual);
+	toSequence = Collectors.toCollection(supplier(null | new Sequence));
+	var map = func(i | i * 10);
+	actual = data.stream().map(map).collect(toSequence);
+	assertEquals(expected, actual);
+}
+
+@test
+operation testLambdaReuse() {
+	var data := Sequence {-12..4};
+	var isEvenAbs = predicate(i | i.abs().mod(2) == 0);
+	var expected = Sequence {-12, -10, -8, -6, -4, -2, 0, 2, 4};
+	var actual = data.select(isEvenAbs);
+	assertEquals(expected, actual);
+	actual = data.select(i | i.abs().mod(2) == 0);
+	assertEquals(expected, actual);
+	data := Sequence {11, -9, 7, 17, -64, -9, 5, 3, 1, 2};
+	expected = data.exists(isEvenAbs);
+	assertTrue(expected);
+	actual = data.exists(i | i.abs().mod(2) == 0);
+	assertEquals(expected, actual);
+}

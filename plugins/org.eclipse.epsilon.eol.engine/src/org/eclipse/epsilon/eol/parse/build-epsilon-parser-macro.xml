@@ -1,0 +1,48 @@
+<project>
+	<macrodef name="buildEpsilonParser">
+		<attribute name="lang"/>
+		<attribute name="langUpperCase"/>
+		<attribute name="extends" default="erl"/>
+		
+		<sequential>
+			<property name="project_loc" location="../../../../../.."/>
+			<property name="plugins_loc" location="${project_loc}/../../plugins"/>
+			<property name="lang_parse_loc" location="${project_loc}/src/org/eclipse/epsilon/@{lang}/parse"/>
+			<property name="extends_parse_loc" location="${plugins_loc}/org.eclipse.epsilon.@{extends}.engine/src/org/eclipse/epsilon/@{extends}/parse"/>
+			<property name="eol_parse_loc" location="${plugins_loc}/org.eclipse.epsilon.eol.engine/src/org/eclipse/epsilon/eol/parse"/>
+			<property name="erl_parse_loc" location="${plugins_loc}/org.eclipse.epsilon.erl.engine/src/org/eclipse/epsilon/erl/parse"/>
+			<property name="temp_gen_loc" location="${lang_parse_loc}/temp"/>
+			<property name="epsilon-antlr-dev" location="${project_loc}/../../../epsilon-antlr-dev/org.eclipse.epsilon.antlr.dev"/>
+			
+			<copy todir="${temp_gen_loc}">
+				<fileset dir="${eol_parse_loc}"/>
+				<fileset dir="${erl_parse_loc}"/>
+				<fileset dir="${extends_parse_loc}"/>
+				<fileset dir="${lang_parse_loc}"/>
+			</copy>
+
+			<echo message="Generating @{langUpperCase} parser..."></echo>
+			<java classname="org.eclipse.epsilon.antlr.dev.Tool">
+				<classpath>
+					<!--pathelement location="${eol_parse_loc}/../../../../../../lib/antlr-3.5.2-complete-no-st3.jar"/-->
+					<pathelement location="${epsilon-antlr-dev}/org.eclipse.epsilon.antlr.dev.jar"/>
+    				<pathelement location="${epsilon-antlr-dev}/lib/antlr-3.1b1.jar"/>
+    				<pathelement location="${epsilon-antlr-dev}/lib/stringtemplate-3.2.1.jar"/>
+    				<pathelement location="${epsilon-antlr-dev}/lib/antlr-2.7.7.jar"/>
+				</classpath>
+				<arg value="-package"/>
+				<arg value="org.eclipse.epsilon.@{lang}.parse"/>
+				<arg value="-lib"/>
+				<arg value="${temp_gen_loc}"/>
+				<arg value="-o"/>
+				<arg value="${lang_parse_loc}"/>
+				<arg value="${lang_parse_loc}/@{langUpperCase}.g"/>
+			</java>
+			
+			<delete dir="${temp_gen_loc}"/>
+			
+			<eclipse.refreshLocal resource="org.eclipse.epsilon.@{lang}.engine"/>
+			
+		</sequential>
+	</macrodef>
+</project>

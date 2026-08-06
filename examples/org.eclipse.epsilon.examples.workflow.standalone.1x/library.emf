@@ -1,0 +1,25 @@
+@namespace(uri="library", prefix="")
+package library;
+
+class Library {
+   val Writer[*] writers;
+   val Book[*] books;
+}
+
+class Writer {
+   attr String name;
+   ref Book[*]#author books;
+}
+
+class Book {
+   attr String title;
+   attr int pages = 100;
+   attr BookCategory category;
+   ref Writer[1]#books author;
+}
+
+enum BookCategory {
+   Mystery;
+   ScienceFiction;
+   Biography;
+}

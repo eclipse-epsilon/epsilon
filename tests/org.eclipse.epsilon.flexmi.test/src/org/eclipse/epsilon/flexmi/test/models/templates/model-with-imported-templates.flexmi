@@ -1,0 +1,6 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?import imported-templates.flexmi?>
+<package>
+	<t1 name="O1"/>
+	<t2/>
+</package>

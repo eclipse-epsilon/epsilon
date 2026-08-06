@@ -1,0 +1,51 @@
+@test
+operation breakInWhile() {
+	while(true) {
+		break;
+	}
+}
+
+@test
+operation breakAllInNestedWhile() {
+	while(true) {
+		while(true) {
+			breakAll;
+		}
+	}
+}
+
+@test
+operation continueInWhile() {
+	var i = 1;
+	while(true) {
+		if (i == 1) {
+			i++;
+			continue;
+		}
+		else {
+			break;
+		}
+		i++;
+	}
+	assertEquals(2, i);
+}
+
+@test
+operation breakInFor() {
+	var i = 1;
+	for (j in 1.to(10)) {
+		i = j;
+		if (i == 5) break;
+	}
+	assertEquals(5, i);
+}
+
+@test
+operation continueInFor() {
+	var i = 0;
+	for (j in 1.to(3)) {
+		if (j == 2) continue;
+		i += j;
+	}
+	assertEquals(4, i);
+}

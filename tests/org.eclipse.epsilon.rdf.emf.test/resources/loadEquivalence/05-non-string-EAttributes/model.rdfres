@@ -1,0 +1,4 @@
+dataModels:
+  - model_data.ttl
+schemaModels:
+  - simpleModelEntity_schema.ttl

@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Human Usable Textual Notation XMI Bridge Development Tools
+Bundle-SymbolicName: org.eclipse.epsilon.hutn.xmi.dt;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.epsilon.hutn.xmi,
+ org.eclipse.epsilon.hutn.engine,
+ org.eclipse.epsilon.hutn.dt,
+ org.eclipse.epsilon.common.dt
+Export-Package: org.eclipse.epsilon.hutn.xmi.dt,
+ org.eclipse.epsilon.hutn.xmi.dt.actions
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.hutn.xmi.dt

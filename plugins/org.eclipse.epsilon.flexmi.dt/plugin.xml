@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="Flexmi Editor"
+            extensions="flexmi"
+            icon="icons/flexmi.png"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="org.eclipse.epsilon.flexmi.dt.FlexmiEditor"
+            id="org.eclipse.epsilon.flexmi.dt.FlexmiEditor">
+      </editor>
+   </extension>
+	<extension
+         id="problemmarker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+ <extension
+       point="org.eclipse.ui.popupMenus">
+    <objectContribution
+          adaptable="true"
+          id="org.eclipse.epsilon.flexmi.dt.contribution1"
+          nameFilter="*.flexmi"
+          objectClass="org.eclipse.core.resources.IFile">
+       <action
+             class="org.eclipse.epsilon.flexmi.dt.GenerateXMIAction"
+             enablesFor="1"
+             id="org.eclipse.epsilon.flexmi.dt.GenerateXMIAction"
+             label="Generate XMI">
+       </action>
+    </objectContribution>
+ </extension>
+
+<extension point="org.eclipse.ui.preferencePages">
+    <page
+    	category="Epsilon"
+        class="org.eclipse.epsilon.flexmi.dt.preferences.FlexmiRootPreferencePage"
+        id="org.eclipse.epsilon.flexmi.dt.preferences"
+        name="Flexmi"/>
+    <page
+        category="org.eclipse.epsilon.flexmi.dt.preferences"
+        class="org.eclipse.epsilon.flexmi.dt.preferences.FlexmiSyntaxColoringPreferencePage"
+        id="org.eclipse.epsilon.flexmi.dt.preferences.coloring"
+        name="Syntax Coloring"/>
+ </extension>
+</plugin>

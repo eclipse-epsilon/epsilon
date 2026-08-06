@@ -1,0 +1,8 @@
+[%
+  import 'tree2dirs.eol';
+  var file := new Native('java.io.File')(basedir, 'node.txt');
+  var root := Tree.allInstances.select(s | not s.parent.isDefined()).first();
+  if (root.isDefined()) {
+    process(root, file.getCanonicalPath());
+  }
+%]

@@ -1,0 +1,74 @@
+/**
+ * This example shows how easy it is to use the profiler tool  
+ * in Epsilon.
+ *
+ * The fibonacci number can be calculated by using a simple recursive 
+ * algorithm which uses an exponentially growing number of executions. 
+ * 
+ * This example is taken from 
+ * http://www.eclipse.org/epsilon/doc/EpsilonProfilingTools.pdf
+ * See also 
+ * http://epsilonblog.wordpress.com/2007/12/16/cached-operations-in-eol/
+ * 
+ * HOW TO RUN THIS EXAMPLE:
+ * 
+ * 1. Open the Epsilon Profiling window:
+ *     In Eclipse, open Window->Show View->Other.. and search for  
+ *     "Profiling" in order to open the Epsilon Profiling view. 
+ * 
+ * 2. Launch the program:
+ *     Select fibonacci.launch
+ *     Open the context-menu (right-click) and select Run As-> fibonacci
+ * 
+ * 3. Refresh the data in the profiler window:
+ *     In the top right corner of the profiling window, click 
+ *     "Refresh view". You should now see that target "Program" has 
+ *     been called once and "fib" has been called 1973 times.
+ *
+ * 4. Repeat with @cached annotation
+ *     Reset the profiler (top right corner of profiling window) and  
+ *     uncomment the @cached annotation located just before the 
+ *     fib operation.
+ *
+ *     Repeat step 1 - 3. You should now see that "fib" has 
+ *     been called only 16 times. 
+ **/
+
+// Instantiate the profiler through its native type
+var profiler : new Native('org.eclipse.epsilon.eol.tools.ProfilerTool');
+
+// Start profiling for a target called "Program"
+profiler.start('Program');
+// Calculate the 15th fibonacci number
+15.fib();
+// Stop profiling for the current target
+profiler.stop();
+
+/*
+ * With caching, the fib operation is executed 1973 times, but when 
+ * Epsilon is instructed to cache the return value for each combination 
+ * of object and input parameters, it is only executed 16 times. 
+ * 
+ **/
+ 
+// Uncomment the annotation @cached to stop Epsilon 
+// from recalculating known values 
+// @cached  
+operation Integer fib() : Integer {
+	// Start profiling for target "fib" with this integer as context
+	profiler.start('fib', self);
+	
+	var fib : Integer;
+	// Base cases for the fibonacci number
+	if (self = 1 or self = 0) {
+		fib = 1;
+	} else {
+		// Recursively calculate the fibonacci number 
+		// (i.e. f(n) = f(n-1) + f(n-2) )  
+		fib = (self-1).fib() + (self-2).fib();
+	}
+	// Stop profiling for the current target
+	profiler.stop();
+
+	return fib;
+}

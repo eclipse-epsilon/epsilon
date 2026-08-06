@@ -1,0 +1,3 @@
+import "util.eol";
+
+return f();

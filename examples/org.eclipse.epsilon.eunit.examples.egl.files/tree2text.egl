@@ -1,0 +1,13 @@
+[%
+  var sb := new Native("java.lang.StringBuilder");
+  process(sb, "", Tree.allInstances.select(s|s.parent.isUndefined()).first());
+
+%][%=sb.toString()%][%
+
+  operation process(sb, indent : String, node : Tree) : String {
+    sb.append(indent + "- " + node.label + "\n");
+    for (child in node.children) {
+	  process(sb, indent + "  ", child);
+    }
+  }
+%]

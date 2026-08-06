@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+	       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.epsilon</groupId>
+  <artifactId>org.eclipse.epsilon.eunit.cmp.emf</artifactId>
+  <name>Eclipse Epsilon EUnit EMF Model Comparator</name>
+
+  <parent>
+    <groupId>org.eclipse.epsilon</groupId>
+    <artifactId>epsilon-plain-parent</artifactId>
+    <version>2.9.0-SNAPSHOT</version>
+    <relativePath>../../pom-plain.xml</relativePath>
+  </parent>
+
+  <build>
+    <plugins>
+      <!-- Prevents getting a warning from "duplicated files" when we
+           run the build a second time (it tries to shade an already
+           shaded JAR). -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.0</version>
+        <configuration>
+          <forceCreation>true</forceCreation>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <includes>
+                  <include>org.eclipse.emf:org.eclipse.emf.compare</include>
+                </includes>
+              </artifactSet>
+              <filters>
+                <filter>
+                  <artifact>org.eclipse.emf:org.eclipse.emf.compare</artifact>
+                  <excludes>
+                    <exclude>META-INF/*</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.eunit.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.emc.emf</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!--
+        Use the download-emf-compare.sh script to install EMF Compare in the local Maven repository.
+    -->
+    <dependency>
+      <groupId>org.eclipse.emf</groupId>
+      <artifactId>org.eclipse.emf.compare</artifactId>
+      <version>3.5.3.202311200811</version>
+    </dependency>
+
+    <!-- From EMF Compare -->
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

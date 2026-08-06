@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SocialNetwork xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="socialnetwork" xmi:id="_0jl0gGdlEeqdGrZV4aDylA">
+  <people xmi:id="_0jl0gWdlEeqdGrZV4aDylA" name="Alice" likes="_0jl0gmdlEeqdGrZV4aDylA _0jl0g2dlEeqdGrZV4aDylA"/>
+  <people xmi:id="_0jl0gmdlEeqdGrZV4aDylA" name="Bob" likes="_0jl0hWdlEeqdGrZV4aDylA _0jl0gWdlEeqdGrZV4aDylA" dislikes="_0jl0hmdlEeqdGrZV4aDylA _0jl0g2dlEeqdGrZV4aDylA"/>
+  <people xmi:id="_0jl0g2dlEeqdGrZV4aDylA" name="Charlie" likes="_0jl0hmdlEeqdGrZV4aDylA _0jl0gWdlEeqdGrZV4aDylA" dislikes="_0jl0hGdlEeqdGrZV4aDylA _0jl0hWdlEeqdGrZV4aDylA"/>
+  <people xmi:id="_0jl0hGdlEeqdGrZV4aDylA" name="Dawn" likes="_0jl0gmdlEeqdGrZV4aDylA" dislikes="_0jl0hmdlEeqdGrZV4aDylA"/>
+  <people xmi:id="_0jl0hWdlEeqdGrZV4aDylA" name="Enid" likes="_0jl0g2dlEeqdGrZV4aDylA" dislikes="_0jl0gWdlEeqdGrZV4aDylA"/>
+  <people xmi:id="_0jl0hmdlEeqdGrZV4aDylA" name="Fred" likes="_0jl0hWdlEeqdGrZV4aDylA _0jl0gWdlEeqdGrZV4aDylA" dislikes="_0jl0gmdlEeqdGrZV4aDylA"/>
+</SocialNetwork>

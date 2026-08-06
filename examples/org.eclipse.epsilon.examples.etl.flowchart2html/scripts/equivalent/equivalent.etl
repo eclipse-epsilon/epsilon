@@ -1,0 +1,21 @@
+rule Flowchart2Div
+	transform f : Flowchart!Flowchart
+	to div : HTML!DIV {
+	
+	div.children ::= f.transitions;
+	
+	// The preceeding line is the same as:
+	//   div.children.addAll(f.transitions.equivalent());
+	//
+	// And also the same as:
+	//   for (t in f.transitions) {
+	//     div.children.add(t.equivalent());
+	//   }
+}
+
+rule Transition2Heading
+	transform t : Flowchart!Transition
+	to h1 : HTML!H1 {
+	
+	h1.value = t.name;
+}

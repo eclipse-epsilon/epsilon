@@ -1,0 +1,11 @@
+operation Any toDbType() : String {
+	var mapping : OO2DB!TypeMapping;
+	mapping := OO2DB!TypeMapping.allInstances().select(tm|tm.source = self).first;
+	if (not mapping.isDefined()){
+		('Cannot find DB type for OO type ' + self + '. Setting the default.').println();
+		return OO2DB!TypeMap.allInstances().first().`default`.target;
+	}
+	else {
+		return mapping.target;
+	}
+}

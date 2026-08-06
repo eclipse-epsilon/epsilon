@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Profile xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_XkHo8EkYEee2K7NDkbm2lQ" name="ActivityFunctions" metaclassReference="_cH6kQEkYEee2K7NDkbm2lQ">
+  <eAnnotations xmi:id="_jOV0YEkYEee2K7NDkbm2lQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+    <contents xmi:type="ecore:EPackage" xmi:id="_ATsZ8EkZEee2K7NDkbm2lQ" name="ActivityFunctions" nsURI="http:///schemas/ActivityFunctions/_ATry4EkZEee2K7NDkbm2lQ/1" nsPrefix="ActivityFunctions">
+      <eAnnotations xmi:id="_ATtBAEkZEee2K7NDkbm2lQ" source="PapyrusVersion">
+        <details xmi:id="_ATtBAUkZEee2K7NDkbm2lQ" key="Version" value="0.0.2"/>
+        <details xmi:id="_ATtBAkkZEee2K7NDkbm2lQ" key="Comment" value=""/>
+        <details xmi:id="_ATtBA0kZEee2K7NDkbm2lQ" key="Copyright" value=""/>
+        <details xmi:id="_ATtBBEkZEee2K7NDkbm2lQ" key="Date" value="2017-06-04"/>
+        <details xmi:id="_ATtBBUkZEee2K7NDkbm2lQ" key="Author" value=""/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_ATsZ8UkZEee2K7NDkbm2lQ" name="Function">
+        <eAnnotations xmi:id="_ATsZ8kkZEee2K7NDkbm2lQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_Yh6G4EkYEee2K7NDkbm2lQ"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_ATsZ80kZEee2K7NDkbm2lQ" name="base_Activity" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Activity"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_ATsZ9UkZEee2K7NDkbm2lQ" name="body" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+    <contents xmi:type="ecore:EPackage" xmi:id="_jOWbcEkYEee2K7NDkbm2lQ" name="RootElement" nsURI="http:///schemas/RootElement/_jORi8EkYEee2K7NDkbm2lQ/0" nsPrefix="RootElement">
+      <eAnnotations xmi:id="_jOY3sEkYEee2K7NDkbm2lQ" source="PapyrusVersion">
+        <details xmi:id="_jOY3sUkYEee2K7NDkbm2lQ" key="Version" value="0.0.1"/>
+        <details xmi:id="_jOY3skkYEee2K7NDkbm2lQ" key="Comment" value=""/>
+        <details xmi:id="_jOY3s0kYEee2K7NDkbm2lQ" key="Copyright" value=""/>
+        <details xmi:id="_jOY3tEkYEee2K7NDkbm2lQ" key="Date" value="2017-06-04"/>
+        <details xmi:id="_jOY3tUkYEee2K7NDkbm2lQ" key="Author" value=""/>
+      </eAnnotations>
+      <eClassifiers xmi:type="ecore:EClass" xmi:id="_jOWbcUkYEee2K7NDkbm2lQ" name="Function">
+        <eAnnotations xmi:id="_jOWbckkYEee2K7NDkbm2lQ" source="http://www.eclipse.org/uml2/2.0.0/UML" references="_Yh6G4EkYEee2K7NDkbm2lQ"/>
+        <eStructuralFeatures xmi:type="ecore:EReference" xmi:id="_jOWbc0kYEee2K7NDkbm2lQ" name="base_Activity" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EClass" href="http://www.eclipse.org/uml2/5.0.0/UML#//Activity"/>
+        </eStructuralFeatures>
+        <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_jOWbdUkYEee2K7NDkbm2lQ" name="body" ordered="false" lowerBound="1">
+          <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/uml2/5.0.0/Types#//String"/>
+        </eStructuralFeatures>
+      </eClassifiers>
+    </contents>
+  </eAnnotations>
+  <elementImport xmi:id="_cH6kQEkYEee2K7NDkbm2lQ" alias="Activity">
+    <importedElement xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Activity"/>
+  </elementImport>
+  <packageImport xmi:id="_XnJHwEkYEee2K7NDkbm2lQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packageImport xmi:id="_XnJu0EkYEee2K7NDkbm2lQ">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_METAMODELS/UML.metamodel.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Stereotype" xmi:id="_Yh6G4EkYEee2K7NDkbm2lQ" name="Function">
+    <ownedAttribute xmi:id="_dcTkUUkYEee2K7NDkbm2lQ" name="base_Activity" association="_dcRvIEkYEee2K7NDkbm2lQ">
+      <type xmi:type="uml:Class" href="pathmap://UML_METAMODELS/UML.metamodel.uml#Activity"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_gUBYUEkYEee2K7NDkbm2lQ" name="body">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Extension" xmi:id="_dcRvIEkYEee2K7NDkbm2lQ" name="E_Function_Activity1" memberEnd="_dcTkUEkYEee2K7NDkbm2lQ _dcTkUUkYEee2K7NDkbm2lQ">
+    <ownedEnd xmi:type="uml:ExtensionEnd" xmi:id="_dcTkUEkYEee2K7NDkbm2lQ" name="extension_Function" type="_Yh6G4EkYEee2K7NDkbm2lQ" aggregation="composite" association="_dcRvIEkYEee2K7NDkbm2lQ"/>
+  </packagedElement>
+</uml:Profile>

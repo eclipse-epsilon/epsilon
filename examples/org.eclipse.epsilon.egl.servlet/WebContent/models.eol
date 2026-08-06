@@ -1,0 +1,4 @@
+operation loadModels() {
+	modelManager.registerMetamodel('Ecore.ecore');
+	modelManager.loadModel('Ecore', 'Ecore.ecore', 'http://www.eclipse.org/emf/2002/Ecore');
+}

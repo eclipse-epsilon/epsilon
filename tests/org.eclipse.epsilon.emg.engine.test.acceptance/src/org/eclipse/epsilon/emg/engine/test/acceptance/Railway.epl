@@ -1,0 +1,118 @@
+operation RailwayContainer create(){
+
+}
+$instances 4
+operation Semaphore create(){
+ //self.signal= new Signal();
+}
+$instances Sequence{0..6}
+operation Route create(){
+
+}
+operation Sensor create(){
+
+}
+$instances Sequence{0..6}
+operation Switch create(){
+self.currentPosition= Position#FAILURE;
+}
+$instances 7
+operation Segment create(){
+ self.length= randomInteger(500000);
+}
+$instances 7
+operation SwitchPosition create(){
+ self.position= 0;
+ self.id=randomInteger(500000);
+ self.position.println();
+}
+operation createRandom(){
+
+}
+pattern ConnectedSegment
+	segment:Segment,sensor:Sensor
+	guard:segment.sensor.isUndefined() and sensor.elements.select(s|s.isTypeOf(Segment)).size()<5{
+		onmatch{
+		sensor.elements.add(segment);
+		//segment.sensor=sensor;
+		}
+	}
+
+pattern SwitchSensor
+	switc:Switch
+	guard: switc.sensor.isUndefined(){
+		onmatch{
+			switc.sensor=Sensor.all.randomD();
+		}
+	}
+
+pattern switchPosition
+	sw:SwitchPosition
+	{
+		onmatch{
+			sw.`switch`=Switch.all.randomD();
+			sw.route= Route.all.randomD();
+		}
+	}
+pattern RouteSensor
+	sw:SwitchPosition
+	from:Switch.all.select(s|s.sensor.isDefined())
+	guard: sw.route.isDefined(),
+	sensor:Sensor
+	guard: sensor.elements.includes(sw.sensor){
+		onmatch{
+			sw.route.definedBy.add(s);
+		}
+	}
+
+pattern SemaphoreNeighbour
+	track1:TrackElement,track2:TrackElement
+	from: TrackElement.all.select(t|t.connectsTo.size()>0 and t.sensor.isDefined())
+	guard: track1.connectsTo.includes(track2),
+	route1:Route,route2:Route
+	from: Route.all.select(t|t.definedBy.size()>0)
+	guard: route1<>route2 and route1.definedBy.includes(track1.sensor)and route2.definedBy.includes(track2.sensor)
+	{
+		onmatch{
+			var s:Semaphore= new Semaphore;
+			s.signal= Signal#FAILURE;
+			s.id= randomInteger();
+			route1.exit=s;
+			route2.entry=s;
+		}
+	}
+
+pattern SwitchSet
+	swP:SwitchPosition
+	from: SwitchPosition.all.select(t|t.position.isDefined() and t.`switch`.isDefined())
+	guard: swP.position=swP.`switch`.currentPosition,
+	route:Route
+	from: Route.all.select(t|t.entry.isDefined())
+	guard: route.follows.includes(swP){
+		onmatch{
+			if(randomBoolean()){
+				route.entry.signal=Signal#GO;
+			}
+	
+		}
+	}
+pattern RailwayContainer
+railway:RailwayContainer
+from:RailwayContainer.all()
+guard:true,
+route:Route
+from:Route.all()
+guard:true,
+sem:Semaphore
+from:Semaphore.all()
+guard:true
+//invalid:RailwayElement
+//from:RailwayElement.all()
+//guard:false
+{
+onmatch{
+railway.routes.add(route);
+railway.semaphores.add(sem);
+}
+}
+

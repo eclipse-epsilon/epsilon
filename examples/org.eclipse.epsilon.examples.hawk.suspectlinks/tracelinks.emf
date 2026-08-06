@@ -1,0 +1,16 @@
+@namespace(uri="http://eclipse.org/epsilon/examples/suspectlinks/tracelinks", prefix="")
+package tracelinks;
+
+class TraceLinksModel {
+	val TraceLink[*] traceLinks;
+}
+
+class TraceLink {
+	val TraceLinkEnd from;
+	val TraceLinkEnd to;
+}
+
+class TraceLinkEnd {
+	attr String ~id;
+	attr String version;
+}

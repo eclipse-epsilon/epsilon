@@ -1,0 +1,25 @@
+[% import 'util.eol'; %]
+[% out.setContentType("HTML"); %]
+<html>
+<head>
+[%= out.startPreserve("style", true) %]
+	<style type="text/css">
+	</style>
+[%= out.stopPreserve()%]
+</head>
+<body>
+<h1>[%=action.name%]</h1>
+<br/>
+
+[%
+	var nextSteps = action.outgoing.collect(t : Transition | t.target);
+%]
+
+
+[% if (not nextSteps.isEmpty()) { %]
+<a href="[%=nextSteps.first().name.clean()%].html">Next step</a>
+[% } else { %]
+<b>finished</b>
+[% } %]
+</body>
+</html>

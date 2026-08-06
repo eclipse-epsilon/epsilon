@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon CSV Workflow Tasks Plugin
+Bundle-SymbolicName: org.eclipse.epsilon.workflow.csv;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.workflow.tasks.csv
+Require-Bundle: org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.emc.csv;visibility:=reexport,
+ org.eclipse.epsilon.emc.csv.dt,
+ org.eclipse.ant.core,
+ org.eclipse.epsilon.workflow;visibility:=reexport
+Automatic-Module-Name: org.eclipse.epsilon.workflow.csv

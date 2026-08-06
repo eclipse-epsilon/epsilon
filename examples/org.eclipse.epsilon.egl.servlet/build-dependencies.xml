@@ -1,0 +1,12 @@
+<project default="main">
+	<target name="main">
+		<jar destfile="WebContent/WEB-INF/lib/antlr-runtime-3.1b1.jar" basedir="../../plugins/org.antlr.runtime_3.1.b1"/>
+		<jar destfile="WebContent/WEB-INF/lib/org.eclipse.epsilon.eol.engine.jar" basedir="../../plugins/org.eclipse.epsilon.eol.engine/bin"/>
+		<jar destfile="WebContent/WEB-INF/lib/org.eclipse.epsilon.eol.tools.jar" basedir="../../plugins/org.eclipse.epsilon.eol.tools/bin"/>
+		<jar destfile="WebContent/WEB-INF/lib/org.eclipse.epsilon.egl.engine.jar" basedir="../../plugins/org.eclipse.epsilon.egl.engine/bin"/>	
+		<jar destfile="WebContent/WEB-INF/lib/org.eclipse.epsilon.common.jar" basedir="../../plugins/org.eclipse.epsilon.common/bin"/>
+		<jar destfile="WebContent/WEB-INF/lib/org.eclipse.epsilon.emc.emf.jar" basedir="../../plugins/org.eclipse.epsilon.emc.emf/bin"/>
+		<jar destfile="WebContent/WEB-INF/lib/org.eclipse.epsilon.emc.muddle.jar" basedir="../../plugins/org.eclipse.epsilon.emc.muddle/bin"/>
+		<jar destfile="WebContent/WEB-INF/lib/org.eclipse.epsilon.emc.graphml.jar" basedir="../../plugins/org.eclipse.epsilon.emc.graphml/bin"/>	
+	</target>
+</project>

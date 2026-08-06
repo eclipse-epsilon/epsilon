@@ -1,0 +1,3 @@
+operation doQuery() {
+	return 'Hello world';
+}

@@ -1,0 +1,12 @@
+<?nsuri picto?>
+<picto format="egx" transformation="jcd.egx" standalone="true">
+	 <model type="EMF">
+        <parameter name="name" value="JCD"/>
+        <parameter name="metamodelUri" value="jcd"/>
+        <parameter name="modelFile" file="jcd.flexmi"/>
+    </model>
+	 <model type="JDT">
+        <parameter name="name" value="JDT"/>
+        <parameter name="projects" value="org.eclipse.epsilon.examples.jdt.picto"/>
+    </model>    
+</picto>

@@ -1,0 +1,11 @@
+[%
+	for (class in Class.all) {
+		var classT := TemplateFactory.load('GenerateClasses.egl');
+		classT.populate('class', class);
+		classT.generate(class.name + '.java');
+		
+		var fieldsT := TemplateFactory.load('GenerateFields.egl');
+		fieldsT.populate('class', class);
+		fieldsT.generate(class.name + '.java');
+	}
+%]

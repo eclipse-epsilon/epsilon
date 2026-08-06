@@ -1,0 +1,19 @@
+@patch
+rule EClass2Getters 
+	transform c : EClass {
+	
+	guard : c.eAnnotations.exists(a|a.source = "instance")
+	
+	template : "getters.egl"
+
+	target : "src/" + c.eContainer().name + "/impl/" + c.name + "Impl.java"
+}
+
+@patch
+rule EClass2ToString 
+	transform c : EClass {
+	
+	template : "toString.egl"
+
+	target : "src/" + c.eContainer().name + "/impl/" + c.name + "Impl.java"
+}

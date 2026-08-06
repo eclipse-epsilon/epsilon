@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.emg.eclipse.dt.launching.EmgLaunchConfigurationDelegate">
+<booleanAttribute key="fine_grained_profiling" value="false"/>
+<intAttribute key="maxLoops" value="-1"/>
+<listAttribute key="models">
+<listEntry value="isMetamodelFileBased=true&#10;name=petrinet&#10;readOnLoad=false&#10;storeOnDisposal=true&#10;aliases=&#10;cached=true&#10;fileBasedMetamodelUri=platform\:/resource/org.eclipse.epsilon.examples.emg.petrinet/model/PetriNet.ecore&#10;metamodelUri=&#10;modelUri=platform\:/resource/org.eclipse.epsilon.examples.emg.petrinet/model/PetriNet2000.xmi&#10;reuseUnmodifiedFileBasedMetamodels=true&#10;type=EMF&#10;modelFile=/org.eclipse.epsilon.examples.emg.petrinet/model/PetriNet2000.xmi&#10;expand=true&#10;metamodelFile=/org.eclipse.epsilon.examples.emg.petrinet/model/PetriNet.ecore"/>
+</listAttribute>
+<listAttribute key="parameters">
+<listEntry value="name=nouns&#10;type=String&#10;value=Person,Bus,Cow,Plane,Duck,Ship,Chair"/>
+<listEntry value="name=places&#10;type=String&#10;value=Waiting,Arrving,Walking,Diving,Singing,Drifting,Spinning"/>
+<listEntry value="name=transitions&#10;type=String&#10;value=Moves,Stops,Leaves,Sits,Levels,Stares,Docks,Departs,Breaks,Dissapears"/>
+<listEntry value="name=total&#10;type=Integer&#10;value=2000"/>
+</listAttribute>
+<booleanAttribute key="profile_model_loading" value="false"/>
+<booleanAttribute key="profiling_enabled" value="false"/>
+<booleanAttribute key="repeatWhileMatchesFound" value="false"/>
+<booleanAttribute key="reset_profiler" value="false"/>
+<stringAttribute key="source" value="/org.eclipse.epsilon.examples.emg.petrinet/scripts/PetriNet.emg"/>
+<booleanAttribute key="useSeed" value="false"/>
+</launchConfiguration>

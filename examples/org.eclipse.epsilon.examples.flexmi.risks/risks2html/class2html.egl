@@ -1,0 +1,43 @@
+[%import "risks.eol";%]
+<html>
+<head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+</head>
+<body>
+<table class="table table-stripped">
+	<tr>
+		<th style="width:40px">Id</th>
+		<th>Title</th>
+		<th style="width:40px">Likelihood</th>
+		<th style="width:40px">Severity</th>
+	</tr>
+	[%for (risk in Risk.all.select(r|class.contains(r.getOverall()))){%]
+	[%if ((risk.closed and isLayerActive("closed")) or (not risk.closed and isLayerActive("open"))){%]
+	<tr pictoId="[%=risk.id%]">
+		<td>[%=risk.id%]</td>
+		<td>[%=risk.getTitle()%]</td>
+		<td style="background-color:#[%=risk.likelihood.value.toColour()%]"> </td>
+		<td style="background-color:#[%=risk.severity.value.toColour()%]"> </td>
+	</tr>
+	[%}%]
+	[%}%]
+</table>
+</body>
+</html>
+
+[%
+operation Risk getTitle() : String {
+	if (self.closed) return "<del>" + self.title + "</del>";
+	else return self.title;
+}
+
+operation isLayerActive(id : String) {
+	var layer = layers.selectOne(l|l.id = id);
+	if (layer.isDefined()) {
+		return layer.active;
+	}
+	else {
+		return true;
+	}
+}
+%]

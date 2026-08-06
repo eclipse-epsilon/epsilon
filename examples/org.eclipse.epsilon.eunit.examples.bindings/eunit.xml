@@ -1,0 +1,28 @@
+<project>
+	<target name="run-tests">
+		<epsilon.emf.loadModel name="LoopingA"
+			modelfile="graph-with-loops-1.model"
+			metamodelfile="graph.ecore"
+			read="true" store="false" />
+		<epsilon.emf.loadModel name="LoopingB"
+			modelfile="graph-with-loops-2.model"
+			metamodelfile="graph.ecore"
+			read="true" store="false" />
+		<epsilon.emf.loadModel name="NonLooping"
+			modelfile="graph-without-loops.model"
+			metamodelfile="graph.ecore"
+			read="true" store="false" />
+		<epsilon.emf.loadModel name="Empty"
+			metamodelfile="graph.ecore"
+			read="false" store="false" />
+
+		<epsilon.eunit src="bind-model.eunit" package="loops">
+			<model ref="LoopingA" />
+			<model ref="LoopingB" />
+			<model ref="NonLooping" />
+		</epsilon.eunit>
+		<epsilon.eunit src="bind-data.eunit" package="loops">
+			<model ref="Empty" />
+		</epsilon.eunit>
+	</target>
+</project>

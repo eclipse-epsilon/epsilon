@@ -1,0 +1,20 @@
+@setup
+operation prepare() {
+  var firstElement  := Element.allInstances.first();
+}
+
+@data x
+@data y
+operation elements() {
+  return Sequence {1, 2};
+}
+
+@test
+operation twoElements() {
+  assertEquals(2, Element.allInstances.size());
+}
+
+@test
+operation firstElement() {
+  assertEquals('A', firstElement.name);
+}

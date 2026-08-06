@@ -1,0 +1,77 @@
+@setup
+operation setup() {
+	modelManager.unloadAllModels();
+}
+
+@test
+operation warnWhenUsingAnUnqualifiedReferenceToATypeThatIsAvailableInMoreThanOneModel() {
+	modelManager.createInMemoryEmfModel("First", "http://www.eclipse.org/emf/2002/Ecore");
+	modelManager.createInMemoryEmfModel("Second", "ecoreLite");
+	
+	// EClass is a valid type for both First and Second, so issue a warning
+	var x = EClass;
+
+	assertWarning("The type 'EClass' is ambiguous and could refer to any of the following: 'First!EClass' 'Second!EClass'. The type 'First!EClass' has been assumed.");
+}
+
+@test
+operation noWarningsWhenUsingAnUnqualifiedReferenceToATypeThatIsAvailableInOnlyTheFirstModel() {
+	modelManager.createInMemoryEmfModel("First", "http://www.eclipse.org/emf/2002/Ecore");
+	modelManager.createInMemoryEmfModel("Second", "ecoreLite");
+	
+	// EPackage is a valid type only for Ecore (First) => no warning
+	var x = EPackage;
+	
+	assertNoWarnings();
+}
+
+@test
+operation noWarningsWhenUsingAQualifiedReferenceToATypeThatIsAvailableInMoreThanOneModel() {
+	modelManager.createInMemoryEmfModel("First", "http://www.eclipse.org/emf/2002/Ecore");
+	modelManager.createInMemoryEmfModel("Second", "ecoreLite");
+	
+	// Qualified references => no warning
+	var x = First!EClass;
+	var x = Second!EClass;
+	
+	assertNoWarnings();
+}
+
+@test
+operation warningListsAllModelsThatHaveTheAmbiguousType() {
+	modelManager.createInMemoryEmfModel("Premier", "http://www.eclipse.org/emf/2002/Ecore");
+	modelManager.createInMemoryEmfModel("Deuxieme", "ecoreLite");
+	modelManager.createInMemoryEmfModel("Troisieme", "fruits");
+	modelManager.createInMemoryEmfModel("Quatrieme", "http://www.eclipse.org/emf/2002/Ecore");
+	
+	// EClass is a valid type for First, Second and Fourth, so issue a warning
+	var x = EClass;
+
+	assertWarning("The type 'EClass' is ambiguous and could refer to any of the following: 'Premier!EClass' 'Deuxieme!EClass' 'Quatrieme!EClass'. The type 'Premier!EClass' has been assumed.");
+}
+
+@test
+operation warningListsAllCandidatesWithinSameModel() {
+    modelManager.createInMemoryEmfModel("Model", "http://www.eclipse.org/emf/2002/Ecore", "ecoreLite");
+
+    // EClass exists in multiple metamodels from the same model, so issue a warning
+    var x = EClass;
+
+    assertWarning("The type 'EClass' is ambiguous and could refer to any of the following: 'Model!ecoreLite::EClass' 'Model!ecore::EClass'. The type 'Model!ecoreLite::EClass' has been assumed.");
+}
+
+@test
+operation warningMultiplePathsToType() {
+    modelManager.createInMemoryEmfModel("Model", "exampleSuper", "exampleSubpackage");
+
+    var x = NestedType;
+
+    // We can get to the NestedType through multiple paths:
+    //
+    //   - superpkg -> subpkg -> NestedType
+    //   - subpkg -> NestedType
+    //
+    // However, there is no ambiguity as we would get the same type,
+    // so no warnings should be issued.
+    assertNoWarnings();
+}

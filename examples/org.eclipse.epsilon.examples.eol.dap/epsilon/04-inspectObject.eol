@@ -1,0 +1,2 @@
+var jane = Person.all.selectOne(p | p.firstName = 'Jane');
+(jane.lastName).println('Jane\'s last name: ');

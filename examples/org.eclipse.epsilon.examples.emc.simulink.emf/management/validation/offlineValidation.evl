@@ -1,0 +1,110 @@
+pre Inports {
+	var inports = new Map;
+	for (i in InPortBlock.all){
+		var parent = i.parent;
+		if (parent <> null){
+			var entry = inports.get(parent);
+			if (entry <> null) {
+				entry.add(i);
+			} else {
+				inports.put( parent, i.asSequence());
+			}
+		}
+	}
+}
+context Block { 	
+	critique PropertyCheck_BlockNameIsLowerCase { 
+		check :	self.simulinkRef.name == self.simulinkRef.name.toLowerCase()
+		fix {
+			title : "Name (" + self.simulinkRef.name +") in lower case"
+			do {
+				self.simulinkRef.name = self.simulinkRef.name.toLowerCase();
+			}
+		}
+	}
+}
+context InPortBlock {
+ 	critique PropertyCheck_PortDimensionsHasAssignedValue {  
+		check : self.get("PortDimensions") <> "-1"
+		fix {
+			title : "set port dimension to 1"
+			do {
+				self.set("PortDimensions", "1");
+			}
+		}
+	}
+}
+context Goto {
+	critique PropertyCheck_TagVisibility { 
+		check: self.get("TagVisibility") == "local"		
+	}
+}
+context From {
+	critique NavigationAndFilter_ThereExistsAGotoBlockWithTheFromGotoTagAndInScope {
+		check : Goto.all.exists(g | g.get("GotoTag") == self.get("GotoTag") and (
+				(g.get("TagVisibility") == "global") or
+				( (g.get("TagVisibility") == "local") and (g.parent == self.parent) ) or 
+				( (g.get("TagVisibility") == "scoped") and (self.closure(f|f.parent).existsOne(p|p == g.parent)) )))
+	}
+}
+context OutPortBlock { 
+ 	critique PropertyCheck_HasDescription {
+		check : self.get("Description") <> null and self.get("Description") <> ""
+		fix {
+			title : "set Description value as Name"
+			do {
+				self.set("Description", "Outport " + self.simulinkRef.name);
+			}
+		}
+	}
+}
+context SubSystem {
+	critique NavigationAndFilter_InportsAreGreen {
+		guard: self.parent <> null and inports.get(self.parent) <> null
+		check : inports.get(i|self.parent).forAll(i|i.get("ForegroundColor") == "green")
+		fix {
+			title : "Setting inport as green"
+			do {
+				for (i in inports.get(self.parent).select(i|i.get("ForegroundColor") <> "green")){
+					i.set("ForegroundColor", "green");
+				}
+			}
+		}
+	}
+	critique TransitiveClosure_NoMoreThanThreeLevelsDeep { 
+		check : self.closure(p|p.parent).flatten().size() < 3 
+	}
+	critique VertexConnectivity_AllOutportsConnected {  
+		check {
+			var connections = self.getOutgoingSingleConnections();
+			return (not connections.isEmpty()) and connections.forAll(c|c <> null and c.to.container <> null);
+		}				
+	}
+	critique LoopAbsence { 
+		check {
+			var connections = self.getOutgoingSingleConnections().select(c|c <> null);
+			return connections.isEmpty() or (not connections.exists(c|c.to.container == self));
+		}  
+	}
+}
+operation SimulinkElement get(property : String) : Any {
+	return self.parameters.selectOne(p|p.name == property).value;
+}
+operation SimulinkElement set(property : String, value : Any) {
+	self.parameters.selectOne(p|p.name == property).value = value;
+}
+operation Block getOutgoingSingleConnections() : Sequence {
+	var result = new Sequence;
+	var outports = self.ports.select(p|p.isTypeOf(OutPort));
+	if (not outports.isEmpty()){
+		var connection = outports.connection;
+		for (c in connection){
+			if (c.isTypeOf(MultiConnection)){
+				result.addAll(c.connections);
+			} else {
+				result.add(c);
+			}
+		}
+	}
+	return result.flatten();
+}

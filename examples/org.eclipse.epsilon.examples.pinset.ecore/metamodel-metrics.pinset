@@ -1,0 +1,8 @@
+dataset basicMetrics over class : EClass {
+	properties [name, abstract]
+
+	reference ePackage [name, nsURI]
+
+	column numAttributes : class.eAttributes.size()
+	column numOperations : class.eOperations.size()
+}

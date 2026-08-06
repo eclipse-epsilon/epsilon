@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+[%=Document.allInstances().first().rootElement.toString(0)%]
+
+[%
+operation Element toString(indent : Integer) : String {
+	var str : String;
+	str = indent.getIndent() + '<' + self.name.normalize();
+	for (a in self.attributes) {
+		str = str + ' ' + a.name.normalize() + '="' + 
+			a.value.normalize() + '"';
+		if (hasMore){
+			str = str + ' ';
+		}
+	}
+	str = str + '>\r\n';
+	for (c in self.contents) {
+		str = str + c.toString(indent + 1);
+	}
+	str = str + indent.getIndent() + '</' + self.name.normalize() + '>\r\n';
+	return str;
+}
+
+operation Text toString(indent : Integer) : String {
+	return (indent + 1).getIndent() + self.cdata.normalize() + '\r\n';
+}
+
+operation Integer getIndent() : String {
+	var indent : String;
+	for (i in 1.to(self)){
+		indent = indent + '  ';
+	}
+	return indent;
+}
+
+operation String normalize() {
+	var normalized : String = self;
+	if (not normalized.isDefined()) { 
+		normalized = '';
+	}
+	else {
+		normalized = normalized.replace('<', '&lt;');
+		normalized = normalized.replace('>', '&gt;');
+		// etc
+	}
+	return normalized;
+}
+%]

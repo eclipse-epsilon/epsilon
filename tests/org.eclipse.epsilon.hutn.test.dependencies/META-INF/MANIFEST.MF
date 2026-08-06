@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Human Usable Textual Notation Test Dependencies (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.hutn.test.dependencies;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: Eclipse.org
+Export-Package: org.eclipse.epsilon.hutn.test.util
+Require-Bundle: org.eclipse.epsilon.test.dependencies;visibility:=reexport,
+ org.eclipse.epsilon.hutn.test.dependencies.model;visibility:=reexport
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.hutn.test.dependencies

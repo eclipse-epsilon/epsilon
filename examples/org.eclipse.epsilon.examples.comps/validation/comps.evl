@@ -1,0 +1,56 @@
+context Connector {
+	
+	/* Checks that the types of the source and the target ports of each connector match */
+	constraint TypesMatch {
+		
+		guard : self.source.isDefined() and self.target.isDefined()
+		
+		check : self.source.type = self.target.type
+		
+		message : "Ports " + self.source.getFullName() + " and " + self.target.getFullName() +
+			" cannot be connected because they have different types"
+	}
+}
+
+context Component {
+	
+	/* Checks that each component has at least one input port */
+	constraint HasInputPorts {
+	
+		check : self.inPorts.size() >= 1
+		
+		message : "Component " + self.name + " has no input ports"
+	}
+	
+	/* Checks that each component has at least one output port */
+	constraint HasOutputPort {
+	
+		check : self.outPort.isDefined()
+		
+		message : "Component " + self.name + " has no output port"
+	}
+	
+	/* Checks that the name of each component starts with an upper-case letter */
+	critique NameStartsWithUpperCase {
+		
+		check : self.name.firstToUpperCase() == self.name
+		
+		message : self.eClass.name + " " + self.name + " should start with an upper-case letter"
+	}
+}
+
+context Port {
+
+	/* Checks that the name of each port starts with an lower-case letter */
+	critique NameStartsWithLowerCase {
+		
+		check : self.name.firstToLowerCase() == self.name
+		
+		message : "Port " + self.getFullName() + " should start with a lower-case letter"
+	}
+}
+
+/* Computes the fully-qualified name of a port */
+operation Port getFullName() {
+	return self.eContainer().name + "." + self.name;
+}

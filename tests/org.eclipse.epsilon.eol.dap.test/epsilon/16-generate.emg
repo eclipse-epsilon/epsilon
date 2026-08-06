@@ -1,0 +1,5 @@
+$instances 1
+operation Person create() {
+  self.name = nextString("LETTER_LOWER", 10).ftuc();
+  self.lastName = nextString("LETTER_LOWER", 10).ftuc(); 
+}

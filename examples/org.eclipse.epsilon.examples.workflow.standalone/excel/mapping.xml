@@ -1,0 +1,13 @@
+<spreadsheet>
+  <worksheet name="Writer">
+    <column name="name"/>
+    <column name="books" many="true"/>
+  </worksheet>
+  <worksheet name="Book">
+    <column name="id"/>
+    <column name="title"/>    
+    <column name="pages" datatype="integer"/>
+  </worksheet>
+  <reference source="Writer->books"
+             target="Book->id"/>                    
+</spreadsheet>

@@ -1,0 +1,6 @@
+{
+  "name": "Antonio",
+  "email": "antonio@example.com",
+  "id": 1234,
+  "accounts": [123, 456]
+}

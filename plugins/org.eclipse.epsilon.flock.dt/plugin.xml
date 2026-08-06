@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="strategy" name="Migration Strategy" schema="schema/strategy.exsd"/>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.epsilon.flock.dt.editor.FlockEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="mig"
+            icon="icons/flock16.png"
+            id="org.eclipse.epsilon.migration.dt.editor.MigrationEditor"
+            name="Epsilon Flock Migration Strategy Editor"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.epsilon.migration.eclipse.dt.launching.MigrationLaunchConfigurationDelegate"
+            icon="icons/flock16.png"
+            id="EpsilonFlock"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.epsilon.flock.dt.launching.FlockLaunchConfigurationDelegate"
+            id="org.epsilon.migration.eclipse.dt.launching.MigrationLaunchConfigurationDelegate"
+            modes="run,debug"
+            name="Epsilon Flock Migration Strategy"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.epsilon.flock.dt.launching.FlockLaunchConfigurationTabGroup"
+            description="Create a configuration to launch an Epsilon Flock Migration Strategy"
+            id="org.eclipse.epsilon.eclipse.dt.launching.MigrationLaunchConfigurationTabGroup"
+            type="org.epsilon.migration.eclipse.dt.launching.MigrationLaunchConfigurationDelegate"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.flock.dt.wizards.NewFlockMigrationStrategyFileWizard"
+            icon="icons/flock16.png"
+            id="org.eclipse.epsilon.flock.dt.wizards.NewMigrationFileWizard"
+            name="Epsilon Flock Migration Strategy"/>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.moduleImplementation">
+      <implementation
+            class="org.eclipse.epsilon.flock.FlockModule"
+            default="true"
+            dialog="org.eclipse.epsilon.flock.dt.launching.FlockModuleConfiguration"
+            language="FLOCK"
+            name="Default">
+      </implementation>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.tool">
+      <tool
+            class="org.eclipse.epsilon.flock.FlockModule"
+            defaultName="module">
+      </tool>
+   </extension>
+</plugin>

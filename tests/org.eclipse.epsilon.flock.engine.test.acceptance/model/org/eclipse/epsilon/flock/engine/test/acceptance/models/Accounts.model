@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<bankAccounts:Accounts xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:bankAccounts="bankAccounts" xmi:id="_MZkDwFMxEeGQVIyss3LkbQ">
+  <accounts xmi:id="_NHwmgFMxEeGQVIyss3LkbQ" sortCode="111111111" number="123"/>
+</bankAccounts:Accounts>

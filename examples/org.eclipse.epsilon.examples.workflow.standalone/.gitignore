@@ -1,0 +1,4 @@
+ivy
+lib
+**/.gradle
+/TEST-*.xml

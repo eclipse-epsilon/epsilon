@@ -1,0 +1,11 @@
+@namespace(uri="http://eclipse.org/epsilon/examples/suspectlinks/tests", prefix="")
+package tests;
+
+class TestsModel {
+	val Test[*] tests;
+}
+
+class Test {
+	attr String ~id;
+	attr String version;
+}

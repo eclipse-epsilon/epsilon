@@ -1,0 +1,19 @@
+@suitesetup
+operation createTestCounter() {
+  var collector := new Native("org.eclipse.epsilon.workflow.tasks.eunit.SharedStringCollector");
+}
+
+@data x
+operation values() {
+  return 0.to(3);
+}
+
+@test
+operation mytest() {
+  collector.add("mytest - " + x);
+}
+
+@suiteteardown
+operation addEndString() {
+  collector.add("end test");
+}

@@ -1,0 +1,65 @@
+@abstract
+rule NamedElement2Element
+	transform ne : TVApp!NamedElement
+	to n : Xml!Element {
+	
+	n.addAttribute("name", ne.name);
+}
+
+rule Application2Element
+	transform a : TVApp!Application
+	to n : Xml!Element extends NamedElement2Element{
+	
+	var doc : new Xml!Document;
+	doc.rootElement = n;
+	
+	n.name = "Application";
+	n.contents = a.contents.equivalent();
+}
+
+rule Vote2Element
+	transform v : TVApp!Vote
+	to n : Xml!Element extends NamedElement2Element {
+	
+	n.name = "Vote";	
+	n.contents = v.contents.equivalent();
+}
+
+rule Choice2Element
+	transform c : TVApp!Choice
+	to n : Xml!Element extends NamedElement2Element {
+	
+	n.name = "Choice";	
+}
+
+rule Label2Element
+	transform c : TVApp!Label
+	to n : Xml!Element extends NamedElement2Element {
+	
+	n.name = "Label";
+}
+
+rule Text2Element
+	transform t : TVApp!Text
+	to e : Xml!Element extends NamedElement2Element {
+	
+	e.name = "Text";
+	var text : new Xml!Text;
+	text.cdata = t.information;
+	e.contents.add(text);
+}
+
+rule Menu2Element
+	transform m : TVApp!Menu
+	to e : Xml!Element extends NamedElement2Element {
+	
+	e.name = "Menu";
+	e.contents = m.contents.equivalent();
+}
+
+operation Xml!Element addAttribute(name : String, value : String) {
+	var attr : new Xml!Attribute;
+	attr.name = name;
+	attr.value = value;
+	self.attributes.add(attr);
+}

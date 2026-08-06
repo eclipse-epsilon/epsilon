@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  <extension
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.simuink.requirement.dt.SimulinkRequirementModelInEclipse"
+            dialog="org.eclipse.epsilon.emc.simuink.requirement.dt.SimulinkRequirementModelConfigurationDialog"
+            icon="images/matlab.png"
+            label="Simulink Requirement Model"
+            stable="false"
+            type="SimulinkRequirement">
+      </modelType>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.modelElementLocator">
+      <modelElementLocator
+            class="org.eclipse.epsilon.emc.simuink.requirement.dt.SimulinkRequirementModelElementLocator">
+      </modelElementLocator>
+   </extension>
+</plugin>

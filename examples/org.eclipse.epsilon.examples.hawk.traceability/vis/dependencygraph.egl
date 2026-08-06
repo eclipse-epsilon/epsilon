@@ -1,0 +1,16 @@
+digraph G {
+	node[shape=record, fontname=Tahoma, fontsize=10, style=filled, fillcolor=azure]
+	edge[fontname=Tahoma, fontsize=10, fontcolor=grey]
+
+	[%for (e in Requirement.all) { %]
+	[%=e.id%][label = "[%=e.id%]", fillcolor="beige"]
+	[%}%]
+	
+	[%for (e in Test.all) { %]
+	[%=e.id%][label = "[%=e.id%]", fillcolor="wheat"]
+	[%var requirement = e.requirement;%]
+	[%if (requirement.isDefined()){%]
+	[%=e.id%] -> [%=requirement.id%];
+	[%}%]
+	[%}%]
+}

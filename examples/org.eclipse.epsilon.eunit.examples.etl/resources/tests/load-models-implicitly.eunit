@@ -1,0 +1,5 @@
+@test
+operation transformationWorksAsExpected() {
+  runTarget("tree2graph");
+  assertEqualModels("GraphExpected", "Graph");
+}

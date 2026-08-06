@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="Library">
+  <xsd:complexType name="Book"/>
+  <xsd:complexType name="Author"/>
+</xsd:schema>

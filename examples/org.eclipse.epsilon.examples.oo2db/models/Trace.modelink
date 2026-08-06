@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modelink threeWay="true">
+  <model path="\org.eclipse.epsilon.examples.oo2db\models\OOInstance.model" position="LEFT" />
+  <model path="\org.eclipse.epsilon.examples.oo2db\models\Trace.model" position="MIDDLE" />
+  <model path="\org.eclipse.epsilon.examples.oo2db\models\DBInstance.model" position="RIGHT" />
+</modelink>
+

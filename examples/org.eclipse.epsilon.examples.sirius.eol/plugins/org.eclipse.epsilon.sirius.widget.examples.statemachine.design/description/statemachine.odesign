@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:properties="http://www.eclipse.org/sirius/properties/1.0.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="statemachine" version="12.0.0.2017041100">
+  <ownedViewpoints name="Statemachine">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="State Machine Diagram" domainClass="statemachine::StateMachine" enablePopupBars="true">
+      <metamodel href="../../org.eclipse.epsilon.sirius.widget.examples.statemachine/model/statemachine.ecore#/"/>
+      <defaultLayer name="Default">
+        <nodeMappings name="State Node" semanticCandidatesExpression="feature:states" domainClass="statemachine::State">
+          <style xsi:type="style:EllipseNodeDescription" labelSize="12" showIcon="false" labelPosition="node" resizeKind="NSEW">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+          </style>
+          <conditionnalStyles predicateExpression="aql:self.oclIsTypeOf(statemachine::FinalState)">
+            <style xsi:type="style:EllipseNodeDescription" labelSize="12" showIcon="false" labelExpression="aql:'Final State'" labelPosition="node" resizeKind="NSEW">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+            </style>
+          </conditionnalStyles>
+        </nodeMappings>
+        <nodeMappings name="Initial State Node" semanticCandidatesExpression="feature:initialState" domainClass="statemachine::InitialState">
+          <style xsi:type="style:EllipseNodeDescription" labelSize="12" showIcon="false" labelExpression="aql:'Initial State'" labelPosition="node" resizeKind="NSEW">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='blue']"/>
+          </style>
+        </nodeMappings>
+        <edgeMappings name="Transition Edge" semanticCandidatesExpression="feature:transitions" sourceMapping="//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node'] //@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='Initial%20State%20Node']" targetMapping="//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node'] //@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='Initial%20State%20Node']" targetFinderExpression="feature:to" sourceFinderExpression="feature:from" domainClass="statemachine::Transition" useDomainElement="true">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='gray']"/>
+            <centerLabelStyleDescription labelSize="12" showIcon="false" labelExpression="aql:self.guard">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <toolSections name="Creation Tools">
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Create State" nodeMappings="//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="statemachine::State" referenceName="states"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Create Initial State" nodeMappings="//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="statemachine::InitialState" referenceName="initialState"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="Create Final State" nodeMappings="//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@nodeMappings[name='State%20Node']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="statemachine::FinalState" referenceName="states"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="Create Transition" edgeMappings="//@ownedViewpoints[name='Statemachine']/@ownedRepresentations[name='State%20Machine%20Diagram']/@defaultLayer/@edgeMappings[name='Transition%20Edge']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="aql:source.eContainer()">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="statemachine::Transition" referenceName="transitions">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="to" valueExpression="var:target"/>
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="from" valueExpression="var:source"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="Run Tools">
+          <ownedTools xsi:type="tool_1:OperationAction" name="Run State Machine">
+            <view name="views"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="aql:self.execute()"/>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </defaultLayer>
+    </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="org.eclipse.epsilon.sirius.widget.examples.statemachine.design.Services"/>
+  </ownedViewpoints>
+  <extensions xsi:type="properties:ViewExtensionDescription" name="Custom Properties Views">
+    <categories name="Props">
+      <pages>
+        <extends href="platform:/plugin/org.eclipse.sirius.properties.defaultrules/model/properties.odesign#//@extensions.0/@categories.0/@pages.0"/>
+      </pages>
+      <pages name="Eol Page" labelExpression="EOL" domainClass="statemachine::NamedElement" semanticCandidateExpression="var:self" groups="//@extensions.0/@categories.0/@groups.0"/>
+      <groups name="Eol Group" labelExpression="EOL" domainClass="statemachine::NamedElement" semanticCandidateExpression="var:self">
+        <controls xsi:type="properties:ContainerDescription" name="eol">
+          <controls xsi:type="properties:CustomDescription" name="org.eclipse.epsilon.sirius.widget"/>
+        </controls>
+      </groups>
+    </categories>
+  </extensions>
+</description:Group>

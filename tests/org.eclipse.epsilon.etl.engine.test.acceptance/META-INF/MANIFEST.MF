@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ETL acceptance tests
+Bundle-SymbolicName: org.eclipse.epsilon.etl.engine.test.acceptance
+Bundle-Version: 2.9.0.qualifier
+Require-Bundle: org.eclipse.epsilon.test.dependencies,
+ org.eclipse.epsilon.etl.engine,
+ org.eclipse.epsilon.eol.engine.test.acceptance
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.etl.engine.test.acceptance,
+ org.eclipse.epsilon.etl.engine.test.acceptance.builtins,
+ org.eclipse.epsilon.etl.engine.test.acceptance.models,
+ org.eclipse.epsilon.etl.engine.test.acceptance.oo2db,
+ org.eclipse.epsilon.etl.engine.test.acceptance.oo2db.models,
+ org.eclipse.epsilon.etl.engine.test.acceptance.tree2graph,
+ org.eclipse.epsilon.etl.engine.test.acceptance.tree2graph.models
+Automatic-Module-Name: org.eclipse.epsilon.etl.engine.test.acceptance

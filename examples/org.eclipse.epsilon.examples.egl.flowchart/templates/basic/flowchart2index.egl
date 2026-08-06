@@ -1,0 +1,10 @@
+[% var flowchart = Flowchart.all.first; %]
+
+<h1>[%=flowchart.name%]</h1>
+
+<h2>Nodes</h2>
+<ul>
+[% for (node in flowchart.nodes) { %]
+	<li>[%=node.name%]</li>
+[% } %]
+</ul>

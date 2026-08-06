@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<test:TLN xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:test="MyWWW" xsi:schemaLocation="MyWWW mymetamodel.ecore" text="text" text1="text1">
+  <dOI accessControl="tdoi-2" access="2"/>
+  <dOI accessControl="tdoi-1" access="1"/>
+  <dOI accessControl="tdoi-3" access="3"/>
+</test:TLN>

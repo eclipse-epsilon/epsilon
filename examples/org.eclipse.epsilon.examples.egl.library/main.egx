@@ -1,0 +1,31 @@
+rule Book2Page 
+	transform book : t_book {
+	
+	// We only want to generate pages
+	// for books that have their public
+	// attribute set to true
+	guard : book.b_public
+	
+	parameters {
+		// These parameters will be made available
+		// to the invoked template as variables
+		var params : new Map;
+		params.put("index", t_book.all.indexOf(book) + 1);
+		return params;
+	}
+	
+	// The EGL template to be invoked
+	template : "book2page.egl"
+	
+	// Output file
+	target : "gen/" + book.e_id.text + ".html"
+	
+}
+
+rule Library2Page 
+	transform library : t_library {
+	
+	template : "library2page.egl"
+	
+	target : "gen/index.html"
+}

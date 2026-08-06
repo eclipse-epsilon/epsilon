@@ -1,0 +1,63 @@
+// QUERY
+var reqSet=R!RequirementSet.all.println();
+var reqs=R!Requirement.all.println();
+var just=R!Justification.all.println();
+var refs=R!Reference.all.println();
+var functional=R!RQ_Functional.all.println();  
+var container=R!RF_Container.all.println(); 
+
+var linkset=R!LinkSet.all.println();
+var link=R!Link.all.println(); 
+var implement=R!L_Implement.all.println(); 
+
+var total = reqs.size()+just.size()+refs.size() + link.size() + linkset.size() + reqSet.size() ;
+(total.println("elements:") == R.allContents().size()).println();
+
+// READ
+reqs.first().Id.println();
+just.first().Id.println();
+functional.first().Summary.println();
+refs.first().Id.println();
+container.first().Summary.println();
+
+linkset.first().Domain.println();
+link.first().CreatedBy.println();
+implement.first().Rationale.println();
+
+// CREATE
+var rq = new R1!Requirement;
+var j = new R1!Justification;
+var rf = new R1!Reference;
+var f = new R1!`RQ_Functional`;
+
+var l = new R1!Link;
+
+// MODIFY
+j.Summary = "j";
+j.Summary.println();
+rq.Summary = "rq";
+rq.Summary.println();
+f.Summary = "f";
+f.Summary.println();
+rf.Domain="linktype_rmi_word";
+rf.Rationale = "asdf"; //FIXME
+rf.Rationale.println("rationale");
+rf.Artifact.println("artifact");
+rf.Artifact= "documents/crs_req.docx"; 
+rf.Rationale.println("rationale");
+rf.Artifact.println("artifact");
+//container.first().Name = ""; //FIXME
+
+//l.Name = ""; //FIXME
+linkset.first().Description ="modified";
+implement.first().Rationale ="asdfa";
+
+reqs.first().isJustifiedFor("Implement").println("Justified:");
+
+// DELETE
+
+delete j;
+delete rq;
+delete f;
+delete rf;
+delete l;

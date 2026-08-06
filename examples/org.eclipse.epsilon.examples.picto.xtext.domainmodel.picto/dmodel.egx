@@ -1,0 +1,12 @@
+rule Entity2Graphviz
+    transform e : Entity {
+
+    template : "entity2graphviz.egl"
+
+    parameters : Map{
+        "path" = Sequence{"Model", e.name},
+        "icon" = "diagram-ffffff",
+        "format" = "graphviz-dot"
+    }
+
+}

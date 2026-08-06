@@ -1,0 +1,34 @@
+rule Flowchart2Heading
+	transform f : Flowchart!Flowchart
+	to contents : HTML!DIV {
+	
+	// Produce a DIV containing only the headings of the transitions
+	// and not containing the links
+	for (t in f.transitions) {
+		contents.children.add(t.equivalents().first);
+	}
+}
+
+rule Transition2SourceLink
+	transform t : Flowchart!Transition
+	to a : HTML!A {
+	
+	a.value = t.source.name;
+	a.ahref = "#" + t.source.name;
+}
+
+rule Transition2TargetLink
+	transform t : Flowchart!Transition
+	to a : HTML!A {
+	
+	a.value = t.name;
+	a.ahref = "#" + t.target.name;
+}
+
+@primary
+rule Transition2Heading 
+	transform t : Flowchart!Transition
+	to h1 : HTML!H1 {
+	
+	h1.value = t.name;
+}

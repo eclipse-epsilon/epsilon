@@ -1,0 +1,16 @@
+pre {
+	var classNames = Sequence{"Class1"};
+	var attributeNames = Sequence{"Attribute1", "Attribute2"};
+}
+
+$instances 1
+@list classes
+operation EClass create() {
+    self.name = nextFromCollection(classNames);
+}
+
+$instances 2
+operation EAttribute create() {
+	self.name = nextFromCollection(attributeNames);
+	nextFromList("classes").eStructuralFeatures.add(self);
+}

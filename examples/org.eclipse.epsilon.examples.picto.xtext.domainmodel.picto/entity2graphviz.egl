@@ -1,0 +1,98 @@
+digraph G {
+	graph[splines=ortho]
+	node[fontname=Arial, fontsize=10, shape=record]
+	edge[fontname=Arial, fontsize=10]
+
+[%var entities = getVisibleEntities();%]
+
+[%for (e in entities){%]
+	[%=e.getNodeName()%][shape=none, margin=0, label=<[%=e.getLabel()%]>]
+[%}%]
+
+[%for (f in e.features.flatten().select(f|f.type.isTypeOf(Entity) and f.type <> e)){%]
+	[%=f.eContainer.getNodeName()%]->[%=f.type.getNodeName()%][arrowhead=[%=f.getArrow()%],arrowtail=none,tooltip="[%=f.name%]"];
+[%}%]
+
+[%if (e.superType.isDefined()){%]
+	[%=e.superType.getNodeName()%]->[%=e.getNodeName()%][arrowhead=none,arrowtail=empty,dir=back];
+[%}%]
+
+[%for (s in Entity.all.select(en|en.superType = e)){%]
+	[%=e.getNodeName()%]->[%=s.getNodeName()%][arrowhead=none,arrowtail=empty,dir=back];
+[%}%]
+
+}
+
+[%
+operation Entity getLabel() {
+	
+	var onClick = "top.showView(['Model','" + self.name + "'])";
+	
+	if (self == e) {
+		onClick = "top.showElement('" + self.id + "', '" + self.eResource.uri + "')";
+	}
+	
+	var label = "<table cellspacing='0' cellborder='0' cellpadding='1' bgcolor='" + self.getColour() + "'>";
+	label += "<tr><td sides='B' colspan='2' border='1' cellpadding='0'>" + 
+		"<table border='0' cellspacing='0' cellborder='0'>" + 
+		"<tr><td align='right' valign='middle'><img src='" + self.getIcon()+ "'></img></td>" + 
+		"<td align='left' valign='middle' href=\"javascript:" + onClick + "\" tooltip='Go'>" + self.name + " </td></tr></table></td></tr>";
+	
+	label += "<tr><td></td><td></td></tr>";
+	
+	for (f in self.features.sortBy(a|a.name.toLowerCase())) {
+		label += "<tr>";
+		label += "<td><img src='" + f.getIcon() + "'></img></td><td align='left'>" + f.getLabel() + "</td>";
+		label += "</tr>";
+	}
+	
+	
+	if (self.features.isEmpty()){
+		label += "<tr>";
+		label += "<td> </td><td> </td>";
+		label += "</tr>";
+	}
+	
+	label += "</table>";
+	return label;
+}
+
+operation Entity getIcon() {
+	return getImage("icons/entity.gif");
+}
+
+operation Feature getLabel() {
+	return self.name + " : " + self.type?.name + (self.many ? "["+"*"+"]" : "") + " " ;
+}
+
+operation Feature getIcon() {
+	return getImage("icons/attribute.gif");
+}
+
+operation Entity getNodeName() {
+	return "_Entity" + Entity.all.indexOf(self);
+}
+
+operation Feature getArrow() {
+	if (self.many) {
+		return "crow";
+	}
+	else {
+		return "open";
+	}
+}
+
+operation getVisibleEntities() {	
+	var visibleEntities : Set;
+	visibleEntities.add(e);
+	visibleEntities.addAll(e.features.select(f|f.type.isTypeOf(Entity)).collect(f|f.type));
+	if (e.superType.isDefined()) visibleEntities.add(e.superType);
+	visibleEntities.addAll(Entity.all.select(en|en.superType = e));
+	return visibleEntities;
+}
+
+operation Entity getColour() {
+	if (self == e) return "#fff2d2";
+	else return "#fffcdc";
+}
+%]

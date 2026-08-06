@@ -1,0 +1,47 @@
+rule All2Dot {
+	
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "graphviz-dot",
+		"path" = List{"Model", "(All classes)"},
+		"icon" = "diagram-ff0000"
+	}
+	
+	template: "eclass2dot.egl"
+	
+}
+
+rule Ecore2Barchart {
+	
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "html",
+		"path" = List{"Model", "Stats"},
+		"icon" = "barchart"
+	}
+	
+	template: "stats.egl"
+	
+}
+
+rule EClass2Dot 
+	transform c : EClass {
+	
+	parameters {
+		var classes = Set{c};
+		classes.addAll(c.eReferences.eType);
+		classes.addAll(EClass.all.select(o|o.eReferences.eType.includes(c)));
+		classes.addAll(c.eSuperTypes);
+		classes.addAll(EClass.all.select(o|o.eSuperTypes.includes(c)));
+		
+		return Map{
+			"classes" = classes, 
+			"format" = "graphviz-dot",
+			"path" = Sequence{"Model", "Classes", c.name},
+			"icon" = "diagram-00ff00"
+		};
+	}
+	
+	template: "eclass2dot.egl"
+	
+}

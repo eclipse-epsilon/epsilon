@@ -1,0 +1,7 @@
+for (r in Requirement.all) {
+	r.derived.println();
+	r.text.println();
+	for (d in r.derived) {
+		d.text.println();
+	}
+}

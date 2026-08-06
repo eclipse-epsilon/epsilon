@@ -1,0 +1,64 @@
+[**
+Based on the API in https://www.eclipse.org/hawk/advanced-use/meta-queries/
+*]
+digraph G {
+	node[shape=record, fontname=Tahoma, fontsize=10, style=filled, fillcolor=azure]
+	edge[fontname=Tahoma, fontsize=10, fontcolor=grey]
+	
+	[%var colors = Sequence{"floralwhite", "lemonchiffon", "mistyrose", "pink", "wheat", "plum"};%]
+	[%var types = M.types;%]
+	[%var files : Set;%]
+	
+	[* For every type *]
+	[%for (t in types){%]
+		[%var elements = t.all;%]
+		
+		[* For all elements that are instances of the type *]
+		[%for (e in elements){%]
+		
+			[* Produce the element node*]
+			[%=e.getNodeId()%][label="{:[%=t.name%]|[%=e.getAttributesLabel(t)%]}", fillcolor="[%=colors.get(types.indexOf(t).mod(colors.size()))%]"];
+			
+			[* Link the element to its file *]
+			[%if(isLayerActive("files")){%]
+				[%var file = M.getFileOf(e); files.add(file);%]
+				[%=file.getNodeId()%] -> [%=e.getNodeId()%];
+			[%}%]
+			
+			[* Create links for references by*]
+			[%for (r in t.references){%]
+				[%for (target in e.getFeature(r.name).select(target | target.isDefined())){%]
+					[%=e.getNodeId()%] -> [%=target.getNodeId()%] [label="[%=r.name%]"]
+				[%}%]
+			[%}%]
+			
+		[%}%]
+	[%}%]
+	
+	[* Produce the file nodes *]
+	[%if(isLayerActive("files")){%]
+	[%for (f in files){%]
+	[%=f.getNodeId()%][label="[%=f.path%]",shape="note", fillcolor="beige"];
+	[%}%]
+	[%}%]
+}
+
+[%
+operation Any getAttributesLabel(type : Any) {
+	return type.attributes.collect(a|a.name + " = " + self.getFeature(a.name)).concat("\\n");
+}
+
+operation Any getNodeId() {
+	return (self.getNode().id+"").replaceAll("#","x").replaceAll(":","x");
+}
+
+operation isLayerActive(id : String) {
+	var layer = layers.selectOne(l|l.id = id);
+	if (layer.isDefined()) {
+		return layer.active;
+	}
+	else {
+		return true;
+	}
+}
+%]

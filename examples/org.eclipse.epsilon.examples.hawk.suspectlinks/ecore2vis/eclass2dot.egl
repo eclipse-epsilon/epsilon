@@ -1,0 +1,175 @@
+[%
+import "ecore2dot.eol";
+
+// If the root EPackage has a @constraints(file="foo.evl")
+// annotation, parse the constraints into an EVL module
+var module = getValidationModule();
+
+// Compute the set of classes to be shown in this diagram
+var classes = OrderedSet{c}; // The root class
+classes.addAll(c.getVisibleEReferences().eType); // The types of its references
+if (isLayerActive("supertypes")) classes.addAll(c.eSuperTypes); // All its supertypes
+if (isLayerActive("subtypes")) classes.addAll(EClass.all.select(o|o.eSuperTypes.includes(c))); // All its subtypes
+%]
+digraph G {
+	graph[splines=ortho, nodesep=0.5]
+	node[fontname=Tahoma, fontsize=10, shape=record]
+	edge[fontname=Tahoma, fontsize=10, dir=back, arrowtail=empty]
+	
+	[%var main=c;%]
+	[%for (c in classes) { %]
+		[** Create a node for the class **]
+		[%=c.name%][shape=none, margin=0, label = <[%=c.getLabel()%]>]
+		
+		
+		[%if (main == c){%]
+			
+			[** Create nodes for all the constraints of the main class*]
+			[%if (isLayerActive("constraints")){%]
+			[%for (constraint in module.constraintContexts.select(ctx|ctx.typeName=c.name).collect(ctx|ctx.constraints).flatten()){%]
+				[%=c.name+constraint.name%][label="[%=constraint.getConstraintLabel()%]", style="filled", fillcolor="[%=constraint.getConstraintColour()%]"]
+				[%=c.name%]->[%=c.name+constraint.name%][arrowtail=none, style=dashed]
+			[%}%]
+			[%}%]
+			
+			[** Create node for all the documentation of the main class*]
+			[%if (isLayerActive("documentation")){%]
+			[%var documentation = c.getAnnotationValue("http://www.eclipse.org/emf/2002/GenModel", "documentation");%]
+			[%if (documentation.isDefined()){%]
+				[%=c.name%]_Documentation[shape="note", label="[%=documentation.toMultiline()%]", style="filled", fillcolor="azure"]
+				[%=c.name%]_Documentation->[%=c.name%][arrowtail=none, style=dashed];
+			[%}%]
+			[%}%]
+		[%}%]
+		
+	[%}%]
+	
+	[** Create edges for the supertypes of the main class **]
+	[%if (isLayerActive("supertypes")){%]
+	[%for (s in main.eSuperTypes){%]
+		[%=s.name%]->[%=main.name%]
+	[%}%]
+	[%}%]
+	
+	[** ... and for its subtypes **]
+	[%if (isLayerActive("subtypes")){%]
+	[%for (s in classes.select(c|c.eSuperTypes.includes(main))){%]
+		[%=main.name%]->[%=s.name%]
+	[%}%]
+	[%}%]
+	[* ... and for its references *]
+	[%for (r in main.getVisibleEReferences().select(r|r.eType <> main)) {%]
+		[%=main.name%]->[%=r.eType.name%][arrowtail=[%=r.getArrowTail()%],tooltip="[%=r.name%]"];
+		[%if (not r.isContainment()){%]{rank=same; [%=main.name%]; [%=r.eType.name%]}[%}%]
+	[%}%]
+	
+}
+
+[%
+
+operation EClass getLabel() {
+	var fillcolor = "fffcdc"; if (self==main) fillcolor="c8f0a1";
+	var label = "<table cellspacing='0' cellborder='0' cellpadding='1' bgcolor='#" + fillcolor + "'>";
+	var features = self.eAllStructuralFeatures;
+	
+	if (not isLayerActive("inherited") and self == main) features = self.eStructuralFeatures;
+	if (not isLayerActive("derived")) features = features.reject(f|f.isDerived);
+	
+	if (self.eSuperTypes.includes(main)) features = features.excludingAll(main.eAllStructuralFeatures);
+	
+	var javascript = "javascript:top.showView('/Model/Classes/" + self.name + "')";
+	var tooltip = "Show class diagram for " + self.name;
+	if (self==main) {
+		javascript = "javascript:top.showElement('" + self.id + "','" + self.eResource.uri + "')";
+		tooltip = "Go to " + self.name + " in the Ecore editor";
+	}
+	
+	label += "<tr><td sides='B' colspan='2' border='1'>" + 
+		"<table border='0' cellspacing='0' cellborder='0' cellpading='0'>" + 
+		"<tr><td align='right' valign='middle'><img src='" + self.getIcon()+ "'></img></td>" + 
+		"<td align='left' valign='middle' href=\""+javascript+"\" tooltip='" + tooltip + "'>" + self.name + "</td></tr></table></td></tr>";
+	
+	label += "<tr><td></td><td></td></tr>";
+	
+	for (f in features.sortBy(f|f.name.toLowerCase())) {
+		label += "<tr>";
+		label += "<td><img src='" + f.getIcon() + "'></img></td><td align='left'>" + f.getLabel(self) + "</td>";
+		label += "</tr>";
+	}
+	
+	if (features.isEmpty()){
+		label += "<tr>";
+		label += "<td> </td><td> </td>";
+		label += "</tr>";
+	}
+	
+	label += "</table>";
+	return label;
+}
+
+operation EStructuralFeature getLabel(eClass : EClass) {
+	var label = self.name;
+	if (self.eType.isDefined()) label += " : " + self.eType.name;
+	if (self.isMany) label += "["+"*"+"]";
+	label += "  ";
+	if (eClass == main and self.eContainer() == eClass) label = "<font color='blue'>" + label + "</font>";
+	if (self.isTypeOf(EReference)) {
+		// add href here
+	}
+	return label; 
+}
+
+operation EOperation getLabel() {
+	var label = self.name + "(" + self.eParameters.collect(p|p.getLabel()).concat(", ") + ")";
+	if (self.eType.isDefined()) {
+		label += " : " + self.eType.name;
+		if (self.isMany) {
+			label += "["+"*"+"]";
+		}
+	}
+	return label;
+}
+
+operation EReference getArrowTail() {
+	if (self.containment) {
+		return "diamond";
+	}
+	else {
+		return "none";
+	}
+}
+
+operation Any getIcon() {
+	return new Native("java.io.File")
+		(System.context.module.file.parent, "icons/" + self.eClass.name + ".gif").absolutePath;
+}
+
+operation Any getConstraintLabel() {
+	var label = self.name;
+	if (self.comments.notEmpty()) label = label + ": " + self.comments.first();
+	return label.toMultiline();
+}
+
+operation Any getConstraintColour() {
+	if (self.isCritique()) return "khaki1";
+	else return "mistyrose";
+}
+
+operation EClass getVisibleEReferences() {
+	var eReferences = self.eReferences;
+	if (not isLayerActive("derived")) eReferences = eReferences.reject(r|r.isDerived);
+	return eReferences;
+}
+
+operation isLayerActive(id : String) {
+	var layer = layers.selectOne(l|l.id = id);
+	if (layer.isDefined()) {
+		return layer.active;
+	}
+	else {
+		return true;
+	}
+}
+
+%]
+

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Database xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="db" xmi:id="_LhqtAAutEeuz2KpgRiJYTA">
+  <tables xmi:id="_LhqtAQutEeuz2KpgRiJYTA" name="Customer">
+    <columns xmi:id="_LhqtAgutEeuz2KpgRiJYTA" name="name" type="nvarchar"/>
+    <columns xmi:id="_LhqtAwutEeuz2KpgRiJYTA" name="age" type="int"/>
+  </tables>
+  <tables name="Invoice"/>
+</Database>

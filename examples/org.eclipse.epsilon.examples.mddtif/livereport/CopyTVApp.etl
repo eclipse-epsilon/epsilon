@@ -1,0 +1,49 @@
+rule CopyApplication
+	transform s : OldTVApp!Application
+	to t : Target!Application {
+	
+	t.name = s.name;
+	t.contents ::= s.contents;
+}
+rule CopyText
+	transform s : OldTVApp!Text
+	to t : Target!Text {
+
+	t.name = s.name;
+	t.information = s.information;
+	t.history ::= s.history;
+}
+rule CopyTextHistory
+	transform s : OldTVApp!TextHistory
+	to t : Target!TextHistory {
+
+	t.revision = s.revision;
+	t.information = s.information;
+}
+rule CopyVote
+	transform s : OldTVApp!Vote
+	to t : Target!Vote {
+
+	t.name = s.name;
+	t.contents ::= s.contents;
+}
+rule CopyChoice
+	transform s : OldTVApp!Choice
+	to t : Target!Choice {
+
+	t.name = s.name;
+}
+rule CopyLabel
+	transform s : OldTVApp!Label
+	to t : Target!Label {
+
+	t.name = s.name;
+}
+rule CopyMenu
+	transform s : OldTVApp!Menu
+	to t : Target!Menu {
+	
+	t.name = s.name;
+	t.contents ::= s.contents;
+}
+

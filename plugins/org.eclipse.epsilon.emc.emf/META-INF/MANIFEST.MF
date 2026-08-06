@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon EMF Model Support
+Bundle-SymbolicName: org.eclipse.epsilon.emc.emf;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.eol.engine,
+ org.eclipse.emf;visibility:=reexport,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ org.eclipse.emf.ecore.change;visibility:=reexport,
+ org.eclipse.xsd
+Export-Package: org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.emc.emf.m0,
+ org.eclipse.epsilon.emc.emf.tools,
+ org.eclipse.epsilon.emc.emf.transactions,
+ org.eclipse.epsilon.emc.emf.util,
+ org.eclipse.epsilon.emc.emf.xmi,
+ org.eclipse.epsilon.emc.emf.xml
+Automatic-Module-Name: org.eclipse.epsilon.emc.emf

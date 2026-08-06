@@ -1,0 +1,14 @@
+// Print the titles of all books in the library
+for (book in t_book.all) {
+	book.a_title.println();
+}
+
+// Print the publication year of each book
+for (book in t_book.all) {
+	book.e_published.text.println();
+}
+
+// Print the authors of each book
+for (book in t_book.all) {
+	book.c_author.collect(a|a.text).concat(", ").println();
+}

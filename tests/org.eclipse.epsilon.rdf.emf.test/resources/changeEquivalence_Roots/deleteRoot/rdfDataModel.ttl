@@ -1,0 +1,7 @@
+PREFIX : <http://eclipse.org/epsilon/rdf/changeEquivalence-model#>
+PREFIX psl:    <http://eclipse.org/epsilon/rdf/changeEquivalence#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+:_f_n38FvXEfC1HLQSXyvKDQ
+        rdf:type        psl:Project ;
+        psl:title       "My Only Project" ;

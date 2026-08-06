@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<?nsuri http://messaging?>
+<sys>
+  <u name="tom">
+    <box q="15">
+      <out>
+        <msg from="mary" subject="Hello Tom">
+          <body> 
+            Fuzzy parsing is
+            so cool.
+          </body>
+        </msg>
+      </out>
+    </box>
+  </u>
+  <u name="mary">
+    <box q="20">
+      <out>
+        <msg to="tom, mary" t="Hello everyone"/>
+      </out>
+    </box>
+  </u>
+</sys>

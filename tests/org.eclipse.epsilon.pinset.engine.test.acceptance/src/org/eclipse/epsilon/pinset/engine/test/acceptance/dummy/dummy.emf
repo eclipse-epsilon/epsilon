@@ -1,0 +1,46 @@
+@namespace(uri="pinsetdummy", prefix="pinsetdummy")
+package dummy;
+
+class A {
+	attr double x;
+	attr EnumExample en;
+	val B b;
+	val D[*] ds;
+	val E e;
+}
+
+class B {
+	attr double y;
+	attr double z;
+	val C c;
+}
+
+class C {
+	attr double k;
+}
+
+class D {
+	attr String name;
+	attr double l;
+	attr double m;
+}
+
+abstract class E {
+	attr String eName;
+}
+
+class F extends E {
+	attr String fString;
+	attr double fDouble;
+}
+
+class G extends E {
+	attr String gString;
+}
+
+enum EnumExample {
+	value1 = 0;
+	value2 = 1;
+	value3 = 2;
+}
+

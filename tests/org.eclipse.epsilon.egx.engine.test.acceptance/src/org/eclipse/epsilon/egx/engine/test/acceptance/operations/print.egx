@@ -1,0 +1,7 @@
+rule Foo {
+	
+	pre { "EGX".print(); }
+	
+	template : "print.egl"
+	
+}

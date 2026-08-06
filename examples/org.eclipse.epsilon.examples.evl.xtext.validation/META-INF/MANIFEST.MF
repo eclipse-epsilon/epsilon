@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Validation
+Bundle-SymbolicName: org.eclipse.epsilon.examples.evl.xtext.validation;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.eclipse.epsilon.examples.evl.xtext.validation
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.evl.emf.validation,
+ org.eclipse.ui.ide

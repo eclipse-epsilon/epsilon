@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Examples
+Bundle-SymbolicName: org.eclipse.epsilon.common.dt.examples;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.common.dt.examples.Activator
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui.ide,
+ org.eclipse.epsilon.common.dt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.epsilon.common.dt.examples
+Automatic-Module-Name: org.eclipse.epsilon.common.dt.examples

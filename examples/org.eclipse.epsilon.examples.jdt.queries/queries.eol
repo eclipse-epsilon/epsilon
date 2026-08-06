@@ -1,0 +1,9 @@
+TypeDeclaration.all
+	.size.println('Number of types: ');
+
+TypeDeclaration.all
+	.first.class.println('Class of the first TD: ');
+
+TypeDeclaration.all
+	.select(td|td.name = 'Coin')
+	.size().println('Found classes named Coin: ');

@@ -1,0 +1,8 @@
+var block = M!Block.all.size().println("block");
+var line = M!Line.all.size().println("line");
+var port = M!Port.all.size().println("port");
+var sim = M!Simulink.all.size().println("sim");
+assert(sim == (block + line + port));
+var all = M.allContents().size().println("all");
+var sf = M!Stateflow.all.size().println("sf");
+assert(all == (sim + sf));

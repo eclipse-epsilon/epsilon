@@ -1,0 +1,35 @@
+var simulinks = Simulink.all;
+assert(simulinks.size().println("size: ") == 43);
+
+var blocks = Block.all;
+assert(blocks.size().println("size: ") == 13);
+
+var subsystems = SubSystem.all;
+assert(subsystems.size().println("size: ") == 4);
+var subsystem = SubSystem.all.first.println("subsystem: ");
+subsystem.Name.println("name: ");
+
+var inportBlocks = Inport.all;
+assert(inportBlocks.size().println("size: ") ==  3);
+var inportBlock = inportBlocks.println("Inport:").first(); // Block kind Inport Type
+inportBlock.Name.println("name: ");
+
+var inports = inport.all;
+assert(inports.size().println("size: ") == 10);
+var inport = inports.println("inport:").first();  // Port Kind Input Type
+inport.Name.println("name: ");
+
+var ports = Port.all;
+assert(ports.size().println("size: ") == 20);
+var port = ports.println("Port:").first(); // Port Kind
+port.Name.println("name: ");
+
+var lines = Line.all;
+assert(lines.size().println("size: ") == 10);
+var line = lines.println("Line:").first();  // Line kind
+line.Name.println("name: ");
+
+var signals = signal.all;
+assert(signals.size().println("size: ") == 10);
+var signal = signals.println("Signal:").first();  // Line kind
+signal.Name.println("name: ");

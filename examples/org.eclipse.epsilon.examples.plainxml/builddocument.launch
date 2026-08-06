@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate">
+<listAttribute key="models">
+<listEntry value="#&#13;&#10;#Thu Mar 18 14:16:01 GMT 2010&#13;&#10;aliases=&#13;&#10;name=XMLDoc&#13;&#10;file=/org.eclipse.epsilon.examples.plainxml/gen_library.xml&#13;&#10;type=PlainXML&#13;&#10;uri=&#13;&#10;storeOnDisposal=true&#13;&#10;fileBased=true&#13;&#10;readOnLoad=false&#13;&#10;"/>
+</listAttribute>
+<stringAttribute key="source" value="/org.eclipse.epsilon.examples.plainxml/builddocument.eol"/>
+</launchConfiguration>

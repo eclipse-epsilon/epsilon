@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="Cookbooks" xsi:schemaLocation="Cookbooks ../metamodels/cookbook.ecore">
+  <Cookbooks>
+    <cookbooks name="cookbook1" contents="/0/@categories.0/@recipes.0 /0/@categories.1/@recipes.3 /0/@categories.0/@recipes.1 /2"/>
+    <cookbooks name="cookbook2" contents="/0/@categories.1/@recipes.3 /1 /0/@categories.1/@recipes.0 /0/@categories.1/@recipes.1 /0/@categories.1/@recipes.2"/>
+    <categories name="category1">
+      <recipes name="recipe1.1">
+        <instructions name="instructionSet1.1.1">
+          <instruction>instruction1.1.1.1</instruction>
+          <instruction>instruction1.1.1.2</instruction>
+          <instruction>instruction1.1.1.3</instruction>
+        </instructions>
+        <ingredients name="ingredient1.1.1" amount="2.14748365E9" measurement="litres" modifier="centi"/>
+        <ingredients name="ingredient1.1.2" amount="5.0" measurement="ounces" otherUnit=""/>
+      </recipes>
+      <recipes name="recipe1.3" dependencies="/2">
+        <instructions name="instructionSet1.3.1"/>
+        <ingredients name="ingredient1.3.1" amount="50.0" measurement="grams" modifier="milli"/>
+      </recipes>
+    </categories>
+    <categories name="category2">
+      <recipes name="recipe2.3">
+        <instructions name="instructionSet2.3.1">
+          <instruction>instruction2.3.1.1</instruction>
+          <instruction>instruction2.3.1.2</instruction>
+          <instruction>instruction2.3.1.3</instruction>
+          <instruction>instruction2.3.1.4</instruction>
+          <instruction>instruction2.3.1.5</instruction>
+          <instruction>instruction2.3.1.6</instruction>
+          <instruction>instruction2.3.1.7</instruction>
+          <instruction>instruction2.3.1.8</instruction>
+          <instruction>instruction2.3.1.9</instruction>
+          <instruction>instruction2.3.1.10</instruction>
+          <instruction>instruction2.3.1.11</instruction>
+          <instruction>instruction2.3.1.12</instruction>
+          <instruction>instruction2.3.1.13</instruction>
+          <instruction>instruction2.3.1.14</instruction>
+          <instruction>instruction2.3.1.15</instruction>
+          <instruction>instruction2.3.1.16</instruction>
+          <instruction>instruction2.3.1.17</instruction>
+        </instructions>
+        <ingredients name="ingredient2.3.1" amount="99.0" otherUnit="otherUnit2.3.1"/>
+        <ingredients name="ingredient2.3.2" amount="40.0" measurement="grams" modifier="kilo"/>
+        <ingredients name="ingredient2.3.3" amount="0.8" measurement="litres" modifier="centi" otherUnit=""/>
+        <ingredients name="ingredient2.3.4" amount="66.3" otherUnit="otherUnit2.3.4"/>
+      </recipes>
+      <recipes name="recipe2.4" dependencies="/0/@categories.1/@recipes.0">
+        <instructions name="instructionSet2.4.1">
+          <instruction>instruction2.4.1.1</instruction>
+          <instruction>instruction2.4.1.2</instruction>
+          <instruction>instruction2.4.1.3</instruction>
+          <instruction>instruction2.4.1.4</instruction>
+          <instruction>instruction2.4.1.5</instruction>
+        </instructions>
+        <instructions name="instructionSet2.4.2">
+          <instruction>instruction2.4.2.1</instruction>
+          <instruction>instruction2.4.2.2</instruction>
+          <instruction>instruction2.4.2.3</instruction>
+        </instructions>
+        <instructions name="instructionSet2.4.3">
+          <instruction>instruction2.4.3.1</instruction>
+          <instruction>instruction2.4.3.2</instruction>
+        </instructions>
+        <ingredients name="ingredient2.4.1" amount="89.3" measurement="grams" otherUnit=""/>
+      </recipes>
+      <recipes name="recipe2.5" dependencies="/0/@categories.1/@recipes.1">
+        <instructions name="instructionSet2.5.1">
+          <instruction>instruction2.5.1.1</instruction>
+          <instruction>instruction2.5.1.2</instruction>
+          <instruction>instruction2.5.1.3</instruction>
+          <instruction>instruction2.5.1.4</instruction>
+          <instruction>instruction2.5.1.5</instruction>
+          <instruction>instruction2.5.1.6</instruction>
+          <instruction>instruction2.5.1.7</instruction>
+          <instruction>instruction2.5.1.8</instruction>
+        </instructions>
+      </recipes>
+      <recipes name="recipe1.2" description="description_recipe1.2" serves="12">
+        <instructions name="instructionSet1.2.1">
+          <instruction>instruction1.2.1.1</instruction>
+        </instructions>
+        <instructions name="instructionSet1.2.2">
+          <instruction>instruction1.2.2.1</instruction>
+          <instruction>instruction1.2.2.2</instruction>
+          <instruction>instruction1.2.2.3</instruction>
+          <instruction>instruction1.2.2.4</instruction>
+        </instructions>
+        <ingredients name="ingredient1.2.1" amount="35.0" measurement="grams" modifier="kilo"/>
+        <ingredients name="ingredient1.2.2" amount="1.0" otherUnit="otherUnit1.2.2"/>
+        <ingredients name="ingredient1.2.3" amount="25.0" otherUnit="otherUnit1.2.3"/>
+      </recipes>
+    </categories>
+  </Cookbooks>
+  <Recipe name="recipe2.1">
+    <instructions name="instructionSet2.1.1">
+      <instruction>instruction2.1.1.1</instruction>
+      <instruction>instruction2.1.1.2</instruction>
+    </instructions>
+    <ingredients name="ingredient2.1.1" otherUnit="otherUnit2.1.1"/>
+  </Recipe>
+  <Recipe name="recipe2.2" dependencies="/0/@categories.0/@recipes.0">
+    <instructions name="instructionSet2.2.1">
+      <instruction>instruction2.2.1.1</instruction>
+    </instructions>
+    <instructions name="instructionSet2.2.2">
+      <instruction>instruction2.2.2.1</instruction>
+    </instructions>
+    <ingredients name="ingredient2.2.1" amount="21.0" modifier="kilo" otherUnit="otherUnit2.2.1"/>
+  </Recipe>
+</xmi:XMI>

@@ -1,0 +1,7 @@
+operation process(tree : Tree, path : String) {
+  var t = TemplateFactory.load("tree2dirs-aux.egl");
+  t.populate('node', tree);
+  t.populate('path', path);
+  t.process();
+  t.generate(path);
+}

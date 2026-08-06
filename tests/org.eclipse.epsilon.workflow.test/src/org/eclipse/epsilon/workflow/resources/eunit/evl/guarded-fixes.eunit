@@ -1,0 +1,26 @@
+operation validate(tree, label) : Sequence {
+  tree.label := label;
+  runTarget('validate-tree');
+  return EVL!UnsatisfiedConstraint.allInstances;
+}
+
+@setup
+operation prepare() {
+  var tree := new Tree!Tree;
+} 
+
+@test
+operation guardPasses() {
+  var errors := validate(tree, '1n');
+  assertEquals('The model should not be valid', 1, errors.size);
+  var error  := errors.first;
+  assertEquals('The guard should pass and the fix should be listed', 1, error.fixes.size);
+}
+
+@test
+operation guardFails() {
+  var errors := validate(tree, '1.nofix');
+  assertEquals('The model should not be valid', 1, errors.size);
+  var error := errors.first;
+  assertEquals('The guard should fail and the fix should not be listed', 0, error.fixes.size);
+}

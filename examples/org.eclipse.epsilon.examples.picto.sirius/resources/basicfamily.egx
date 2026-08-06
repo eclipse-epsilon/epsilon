@@ -1,0 +1,17 @@
+rule Model2Bar transform family : Family {
+	parameters : Map {
+		"currentElement" = currentElement,
+		"format" = "html",
+		"path" = List{"Bar"}
+	}
+	template : "model2bar.egl"
+}
+
+rule Model2Pie transform family : Family {
+	parameters : Map {
+		"currentElement" = currentElement,
+		"format" = "html",
+		"path" = List{"Pie"}
+	}
+	template : "model2pie.egl"
+}

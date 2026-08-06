@@ -1,0 +1,24 @@
+<?nsuri picto?>
+<picto format="egx" transformation="platform:/resource/org.eclipse.epsilon.examples.picto.ecore/ecore2vis/ecore.egx">
+	<view path="Model, Custom, Core" type="ClassDiagram">
+		<parameter name="classNames" values="EPackage, EClass, EAttribute, EReference, EStructuralFeature, EClassifier"/>
+		<patch format="graphviz-dot" content_="ecore-patches/core.patch" applies="referenceLabels"/>
+		<parameter name="hide" values="EReference.eKeys"/>
+	</view>
+	<view path="Model, Custom, DataTypes" type="ClassDiagram">
+		<parameter name="classNames" values="EPackage, EClassifier, EDataType, EEnum, EEnumLiteral"/>
+		
+	</view>
+	<view path="Model, Custom, Features" type="ClassDiagram">
+		<parameter name="classNames" values="EStructuralFeature, EOperation, EAttribute, EReference, ETypeParameter"/>
+	</view>
+	<view path="Model, Custom, Features (extended)" type="ClassDiagram">
+		<parameter name="classNames" values="EClass, EStructuralFeature, EOperation, EAttribute, EReference, ETypeParameter"/>
+		<parameter name="clusters">
+			<item values="EStructuralFeature, EReference, EAttribute"/>
+			<item values="EOperation, ETypeParameter"/>
+		</parameter>
+		<!--parameter name="hide" values="EReference.eKeys"/-->
+	</view>
+	
+</picto>

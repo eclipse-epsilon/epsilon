@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+	       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.epsilon</groupId>
+  <artifactId>org.eclipse.epsilon.flexmi</artifactId>
+  <name>Eclipse Epsilon Flexmi</name>
+
+  <parent>
+    <groupId>org.eclipse.epsilon</groupId>
+    <artifactId>epsilon-plain-parent</artifactId>
+    <version>2.9.0-SNAPSHOT</version>
+    <relativePath>../../pom-plain.xml</relativePath>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.egl.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.emc.plainxml</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.emc.emf</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+	  <groupId>org.yaml</groupId>
+	  <artifactId>snakeyaml</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

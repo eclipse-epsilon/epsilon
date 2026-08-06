@@ -1,0 +1,24 @@
+@namespace(uri="sdl", prefix="")
+package sdl;
+
+class Vendor {
+	attr String name;
+	val Bundle[*] bundles;
+	val Component[*] components;
+	val Jar[*] jars;
+}
+
+class Bundle {
+	attr String name;
+	ref Component[*] components;
+}
+
+class Component {
+	attr String name;
+	ref Component[*] dependencies;
+	ref Jar[*] jars;
+}
+
+class Jar {
+	attr String filename;
+}

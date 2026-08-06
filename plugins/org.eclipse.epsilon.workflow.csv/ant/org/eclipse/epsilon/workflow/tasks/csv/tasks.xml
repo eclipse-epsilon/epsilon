@@ -1,0 +1,3 @@
+<antlib>
+    <taskdef name="epsilon.csv.loadModel" classname="org.eclipse.epsilon.workflow.tasks.csv.LoadCsvModelTask"/>
+</antlib>

@@ -1,0 +1,50 @@
+rule Hawk2TraceabilityMatrix {
+
+	template : "traceabilitymatrix.egl"
+
+	parameters : Map{
+		"path" = Sequence{"System","Traceability Matrix"},
+		"icon" = "table",
+		"format" = "html"
+	}
+
+}
+
+rule Hawk2DependencyGraph {
+
+	template : "dependencygraph.egl"
+
+	parameters : Map{
+		"path" = Sequence{"System","Dependency Graph"},
+		"icon" = "diagram",
+		"format" = "graphviz-dot"
+	}
+
+}
+
+rule Hawk2Graph {
+
+	template : "reflective.egl"
+
+	parameters : Map{
+		"path" = Sequence{"System","Hawk Graph"},
+		"icon" = "diagram",
+		"format" = "graphviz-dot",
+		"layers" = Sequence {
+			Map {"id"="files", "title"="Files"}
+		}
+	}
+
+}
+
+rule Hawk2DBGraph {
+
+	template : "dbgraph.egl"
+
+	parameters : Map{
+		"path" = Sequence{"System","Hawk Low-Level Graph"},
+		"icon" = "diagram",
+		"format" = "graphviz-dot"
+	}
+
+}

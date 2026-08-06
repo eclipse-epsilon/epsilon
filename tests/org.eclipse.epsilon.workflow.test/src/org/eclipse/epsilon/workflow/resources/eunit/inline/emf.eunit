@@ -1,0 +1,19 @@
+@model
+operation loadEMF() {
+  var task := antProject.createTask('epsilon.emf.loadModel');
+  var mmfile := new Native('java.io.File')(
+    antProject.getBaseDir().getParentFile(), 'metamodels/elements.ecore');
+  var mfile := new Native('java.io.File')(
+    antProject.getBaseDir().getParentFile(), 'models/elements1.model');
+
+  task.setMetaModelFile(mmfile);
+  task.setModelFile(mfile);
+  task.setRead(true);
+  task.setStore(false);
+  task.execute();
+}
+
+@Test
+operation twoElements() {
+  assertEquals(2, Element.allInstances.size());
+}

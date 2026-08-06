@@ -1,0 +1,17 @@
+<?nsuri family?>
+<?render-graphviz-dot objectdiagram.egl?>
+<_>
+	
+	<family>
+		<person name="Tom" partner="Jayne"/>
+		<person name="Jayne"/>
+		<person name="Nick" parents="Tom, Jayne"/>
+		<pet name="Rex"/>
+	</family>
+	
+	<family>
+		<person name="Matt"/>
+		<person name="John" parents="Matt, Jayne"/>
+	</family>
+	
+</_>

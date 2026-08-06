@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="gsn" nsURI="gsn" nsPrefix="gsn">
+  <eClassifiers xsi:type="ecore:EClass" name="Model">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodes" upperBound="-1"
+        eType="#//Node" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="supportedBy" upperBound="-1"
+        eType="#//SupportedBy" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextOf" upperBound="-1"
+        eType="#//ContextOf" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Node" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Goal" eSuperTypes="#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Strategy" eSuperTypes="#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SupportedBy">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//Node"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Node"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextOf">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//Node"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" eType="#//Context"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Context" eSuperTypes="#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Solution" eSuperTypes="#//Node"/>
+</ecore:EPackage>

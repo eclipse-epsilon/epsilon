@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://eclipse.org/epsilon/examples/comps" xmi:id="_7f3gIIeQEeqFyvmr-OkbzQ" name="BoilerController">
+  <inPorts xmi:id="_7f3gIYeQEeqFyvmr-OkbzQ" name="temperature" type="int" outgoing="_7f3gLYeQEeqFyvmr-OkbzQ"/>
+  <inPorts xmi:id="_7f3gIoeQEeqFyvmr-OkbzQ" name="targetTemperature" type="int" outgoing="_7f3gLoeQEeqFyvmr-OkbzQ"/>
+  <inPorts xmi:id="_7f3gI4eQEeqFyvmr-OkbzQ" name="boilerStatus" type="boolean" outgoing="_7f3gL4eQEeqFyvmr-OkbzQ"/>
+  <outPort xmi:id="_7f3gJIeQEeqFyvmr-OkbzQ" name="action" type="int" incoming="_7f3gMIeQEeqFyvmr-OkbzQ"/>
+  <components xmi:id="_7f3gJYeQEeqFyvmr-OkbzQ" name="TemperatureController">
+    <inPorts xmi:id="_7f3gJoeQEeqFyvmr-OkbzQ" name="temperature" type="int" incoming="_7f3gLYeQEeqFyvmr-OkbzQ"/>
+    <inPorts xmi:id="_7f3gJ4eQEeqFyvmr-OkbzQ" name="targetTemperature" type="int" incoming="_7f3gLoeQEeqFyvmr-OkbzQ"/>
+    <outPort xmi:id="_7f3gKIeQEeqFyvmr-OkbzQ" name="temperatureDifference" type="int" outgoing="_7f3gMYeQEeqFyvmr-OkbzQ"/>
+  </components>
+  <components xmi:id="_7f3gKYeQEeqFyvmr-OkbzQ" name="BoilerActuator">
+    <inPorts xmi:id="_7f3gKoeQEeqFyvmr-OkbzQ" name="temperatureDifference" type="int" incoming="_7f3gMYeQEeqFyvmr-OkbzQ"/>
+    <inPorts xmi:id="_7f3gK4eQEeqFyvmr-OkbzQ" name="boilerStatus" type="boolean" incoming="_7f3gL4eQEeqFyvmr-OkbzQ"/>
+    <outPort xmi:id="_7f3gLIeQEeqFyvmr-OkbzQ" name="action" type="int" outgoing="_7f3gMIeQEeqFyvmr-OkbzQ"/>
+  </components>
+  <connectors xmi:id="_7f3gLYeQEeqFyvmr-OkbzQ" source="_7f3gIYeQEeqFyvmr-OkbzQ" target="_7f3gJoeQEeqFyvmr-OkbzQ"/>
+  <connectors xmi:id="_7f3gLoeQEeqFyvmr-OkbzQ" source="_7f3gIoeQEeqFyvmr-OkbzQ" target="_7f3gJ4eQEeqFyvmr-OkbzQ"/>
+  <connectors xmi:id="_7f3gL4eQEeqFyvmr-OkbzQ" source="_7f3gI4eQEeqFyvmr-OkbzQ" target="_7f3gK4eQEeqFyvmr-OkbzQ"/>
+  <connectors xmi:id="_7f3gMIeQEeqFyvmr-OkbzQ" source="_7f3gLIeQEeqFyvmr-OkbzQ" target="_7f3gJIeQEeqFyvmr-OkbzQ"/>
+  <connectors xmi:id="_7f3gMYeQEeqFyvmr-OkbzQ" source="_7f3gKIeQEeqFyvmr-OkbzQ" target="_7f3gKoeQEeqFyvmr-OkbzQ"/>
+</Application>

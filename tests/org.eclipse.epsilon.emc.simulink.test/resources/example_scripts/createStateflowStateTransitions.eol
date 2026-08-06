@@ -1,0 +1,136 @@
+var simulinkChart = new `sflib/Chart`;
+assert(`Stateflow.Chart`.all.size() = 1);  
+assert(SubSystem.all.size() = 1);
+
+simulinkChart.name = "Chart";
+assert(simulinkChart.name.println = "Chart");
+
+simulinkChart.position = "[200 100 230 130]";
+assert(simulinkChart.position.at(0) = 200);
+assert(simulinkChart.position.at(1) = 100);
+assert(simulinkChart.position.at(2) = 230);
+assert(simulinkChart.position.at(3) = 130);
+
+var chart = `Stateflow.Chart`.all.selectOne(ch | ch.name = "Chart");
+
+var sA = new `Stateflow.State`(chart);
+assert(`Stateflow.State`.all.size() = 1);
+
+sA.Name  = "A";
+assert(sA.Name.println  = "A");
+
+sA.position = "[50 50 310 200]";
+assert(sA.position.at(0) = 50);
+assert(sA.position.at(1) = 50);
+assert(sA.position.at(2) = 310);
+assert(sA.position.at(3) = 200);
+
+var sA1 = new `Stateflow.State`;
+
+chart.add(sA1);
+assert(`Stateflow.State`.all.size() = 2);
+
+sA1.Name = "A1";
+assert(sA1.Name = "A1");
+
+sA1.position = "[80 120 90 60]";
+assert(sA1.position.at(0) = 80);
+assert(sA1.position.at(1) = 120);
+assert(sA1.position.at(2) = 90);
+assert(sA1.position.at(3) = 60);
+
+var sA2 = new `Stateflow.State`(chart);
+assert(`Stateflow.State`.all.size() = 3);
+
+sA2.Name = "A2";
+assert(sA2.Name = "A2");
+
+sA2.position = "[240 120 90 60]";
+assert(sA2.position.at(0) = 240);
+assert(sA2.position.at(1) = 120);
+assert(sA2.position.at(2) = 90);
+assert(sA2.position.at(3) = 60);
+
+var tA1A2 = new `Stateflow.Transition`;
+chart.add(tA1A2);
+assert(`Stateflow.Transition`.all.size() = 1);
+
+tA1A2.source = sA1; 
+//assert(tA1A2.source.id = sA1.id);
+
+tA1A2.destination = sA2; 
+//assert(tA1A2.destination = sA2);
+
+tA1A2.sourceOClock = 3;
+assert(tA1A2.sourceOClock = 3);
+
+tA1A2.destinationOClock = 9;
+assert(tA1A2.destinationOClock = 9);
+
+tA1A2.labelPosition = "[180 140 8 14]";
+assert(tA1A2.labelPosition.at(0) = 180);
+assert(tA1A2.labelPosition.at(1) = 140);
+assert(tA1A2.labelPosition.at(2) = 8);
+assert(tA1A2.labelPosition.at(3) = 14);
+
+tA1A2.labelString = "E1";
+assert(tA1A2.labelString = "E1");
+
+var E1 = new `Stateflow.Event`(chart);
+assert(`Stateflow.Event`.all.size() = 1);
+
+E1.name = 'E1';
+assert(E1.name = 'E1');
+
+var pos = tA1A2.LabelPosition;
+pos.set(0, pos.at(0) + 5);
+
+tA1A2.LabelPosition = "[" + pos.concat(" ") + "]";
+assert(tA1A2.LabelPosition.at(0) = pos.at(0));
+assert(tA1A2.LabelPosition.at(1) = pos.at(1));
+assert(tA1A2.LabelPosition.at(2) = pos.at(2));
+assert(tA1A2.LabelPosition.at(3) = pos.at(3));
+
+var dtA = new `Stateflow.Transition`(chart);
+assert(`Stateflow.Transition`.all.size() = 2);
+
+dtA.destination = sA;
+//assert(dtA.destination = sA);
+
+dtA.destinationOClock = 0;
+assert(dtA.destinationOClock = 0);
+
+var xsource = sA.Position.at(0) + sA.Position.at(2)/2;
+var ysource = sA.Position.at(1) - 30;
+
+dtA.SourceEndPoint = "[" + xsource + " " + ysource +"]";
+dtA.SourceEndPoint.println;
+assert(dtA.SourceEndPoint.at(0) = xsource);
+assert(dtA.SourceEndPoint.at(1) = ysource);
+
+xsource.println;
+ysource.println;
+dtA.MidPoint = "[" + xsource + " " + (ysource + 15) +"]";
+assert(dtA.MidPoint.at(0) = xsource);
+assert(dtA.MidPoint.at(1) = (ysource + 15));
+
+var dtA1 = new `Stateflow.Transition`(chart);
+assert(`Stateflow.Transition`.all.size() = 3);
+
+dtA1.destination = sA1;
+//assert(dtA1.destination = sA1); 
+//dtA1.destination.println; // FAILS
+
+dtA1.destinationOClock = 0;
+assert(dtA1.destinationOClock = 0);
+
+var xsource = sA1.Position.at(0) + sA1.Position.at(2)/2;
+var ysource = sA1.Position.at(1) - 30;
+
+dtA1.sourceEndPoint = "[" + xsource + " " + ysource +"]";
+assert(dtA1.SourceEndPoint.at(0) = xsource);
+assert(dtA1.SourceEndPoint.at(1) = ysource);
+
+dtA1.midPoint = "[" + xsource + " " + (ysource + 15 ) +"]";
+assert(dtA1.midPoint.at(0) = xsource);
+assert(dtA1.midPoint.at(1) = (ysource + 15));

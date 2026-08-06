@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<library>
+  <book pages="38" title="Book1">
+    <author name="Author1">blah</author>
+  </book>
+  <book pages="99" title="Book2">
+    <author name="Author2">blah</author>
+  </book>
+</library>

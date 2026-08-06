@@ -1,0 +1,8 @@
+@namespace(uri="http://york.ac.uk/emf-rdf/examples/multi-inherit/extend")
+package mhExtend;
+
+// IMPORTANT - import must be done using EPackage URL, otherwise
+// the isSubtype checks won't work as intended.
+import "http://york.ac.uk/emf-rdf/examples/multi-inherit/base";
+
+class CombinedNode extends mhBase.LabeledNode, mhBase.WeightedNode {}

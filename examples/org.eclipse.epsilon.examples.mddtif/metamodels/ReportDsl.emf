@@ -1,0 +1,7 @@
+package ReportDsl;
+
+class Report {
+  attr String name;
+  attr String information;
+}
+

@@ -1,0 +1,19 @@
+<?nsuri rts?>
+<?render-graphviz-circo ../org.eclipse.epsilon.examples.flexmi.reflective/objectdiagram.egl?>
+<_>
+	
+	<task name="T1" alloc="P1" dead="25" acc="Sensor1"/>
+	<task name="T2" alloc="P2" dead="25" acc="Sensor1"/>
+	
+	<processor name="P1">
+		<core name="C1"/>
+		<core name="C2"/>
+		<device name="Sensor1"/>
+	</processor>
+	
+	<processor name="P2"/>
+	
+	<bus processors="P1, P2"/>
+	
+	<trans tasks="T1, T2" dead="20"/>
+</_>

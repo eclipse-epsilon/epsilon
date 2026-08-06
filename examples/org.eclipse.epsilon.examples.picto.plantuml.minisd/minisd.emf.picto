@@ -1,0 +1,18 @@
+<?nsuri picto?>
+<picto format="egx" transformation="platform:/resource/org.eclipse.epsilon.examples.picto.ecore/ecore2vis/ecore.egx">
+	<view path="Model, (All Classes)">
+		<patch format="graphviz-dot" applies="referenceLabels">
+			<content>
++{rank=same;_Block_steps;_Alt_blocks}
++{rank=same;_Step;_Alt}
+}
+			</content>
+		</patch>
+		<patch format="graphviz-dot" applies="not referenceLabels">
+			<content>
++{rank=same;_Scenario;_Block}
+}
+			</content>
+		</patch>
+	</view>
+</picto>

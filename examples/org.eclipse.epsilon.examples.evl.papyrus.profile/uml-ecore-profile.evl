@@ -1,0 +1,11 @@
+context EClass {
+	
+	constraint NotEC1 {
+		
+		check: self.className <> "EC1"
+		
+		message: "Class should not be called EC1"
+		
+	}
+	
+}

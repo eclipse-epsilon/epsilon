@@ -1,0 +1,17 @@
+?nsuri: flowchart
+?render-egx: picto/reflective.egx
+flowchart:
+  title: Chocolate flowchart
+  
+  # Actions and decisions
+  action: {name: Start thinking about chocolate, ':var': a0}
+  decision: {name: 'Have you eaten chocolate?', ':var': d1}
+  action: {name: Eat chocolate, ':var': a1}
+  action: {name: Eat more chocolate, ':var': a2}
+  
+  # Transitions between actions/decisions
+  transition: {name: no, ':from': d1, ':to': a1}
+  transition: {name: yes, ':from': d1, ':to': a2}
+  transition: {':from': a0, ':to': d1} 
+  # transition: {':from': a1, ':to': a0}   
+  # transition: {':from': a2, ':to': a0}

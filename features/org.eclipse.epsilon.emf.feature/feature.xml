@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.epsilon.emf.feature"
+      label="Epsilon EMF Integration"
+      version="2.9.0.qualifier"
+      provider-name="Eclipse Modeling Project"
+      license-feature="org.eclipse.license"
+      license-feature-version="0.0.0">
+
+   <description url="http://www.eclipse.org/epsilon">
+      This feature provides the Epsilon Model Connectivity driver for EMF models. This driver is required in order to work with EMF models in Epsilon.
+   </description>
+
+   <copyright>
+      Copyright (c) 2018 The University of York.
+        This program and the accompanying materials are made
+        available under the terms of the Eclipse Public License 2.0
+        which is available at https://www.eclipse.org/legal/epl-2.0
+   </copyright>
+
+   <url>
+      <discovery label="EMF Releases" url="https://download.eclipse.org/modeling/emf/emf/builds/release"/>
+   </url>
+
+   <includes
+         id="org.eclipse.epsilon.core.feature"
+         version="2.9.0.qualifier"/>
+
+   <plugin
+         id="org.eclipse.epsilon.emc.emf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.emc.emf.virtual"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.emc.emf.decorator"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.epsilon.ecore.delegates"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

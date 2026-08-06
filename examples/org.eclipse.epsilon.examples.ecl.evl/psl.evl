@@ -1,0 +1,16 @@
+// Source!Task refers to tasks from both the left and the right
+// model as both of these have the Source alias in Example.java
+context Source!Task {
+
+    // Check that each task only appears in one of the models
+    constraint EachTaskInOnlyOneModel {
+
+        // If the task exists in the ECL match trace, it means that appears in both
+        // models and therefore the constraint should fail
+        check: not matchTrace.matches.exists(t | t.left = self or t.right = self)
+
+        // This will fail for both "Analysis" tasks in the left and the right models
+        // Note: `title` is enclosed in backticks because it is a reserved keyword in EVL
+        message: "Task " + self.`title` + " appears in both models"
+    }
+}

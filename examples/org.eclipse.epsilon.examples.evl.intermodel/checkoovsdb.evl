@@ -1,0 +1,27 @@
+context OO!Class {
+	
+	constraint TableExists {
+		
+		// The condition that needs to be satisfied: 
+		// For every class X there is a table named T_X
+		check : DB!Table.all.select(t|t.name = "T_" + self.name).size() > 0
+		
+		// The message that is displayed to the user
+		// if the check part returns false
+		message : "No table found for class " + self.name
+		
+		// This is an optional fix which the user may want to invoke
+		// to fix this inconsistency
+		fix {
+		
+			title : "Add missing table"
+			
+			do {
+				var table = new DB!Table;
+				table.name = "T_" + self.name;
+				DB!Database.all.first().contents.add(table);
+			}
+		}
+	}
+	
+}

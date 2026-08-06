@@ -1,0 +1,92 @@
+operation returnsNullContextless() {
+	return null;
+}
+
+operation Any returnsNullAny() {
+	return returnsNullContextless();
+}
+
+operation Any assertSelfIsNull() {
+	assert(self == null);
+	assertEquals(null, self);
+}
+
+@test
+operation testOperationCall() {
+	var str = "a string";
+	var result = str?.getClass();
+	assertTrue(result.isDefined());
+	str = null;
+	result = str?.getClass();
+	assertEquals(null, result);
+}
+
+@test
+operation testChainedOperationCalls() {
+	var number = 3.14159d;
+	var result = number?.asString().substring(0, 1).asInteger();
+	assertEquals(3, result);
+	result = number?.asString()?.substring(0, 1)?.asInteger();
+	assertEquals(3, result);
+	result = null?.getClass()?.getSimpleName();
+	assertEquals(null, result);
+	assertEquals(3.14?.asString(), number.asString()?.substring(0, 4));
+}
+
+@test
+operation testPropertyCallChain() {
+	System.context?.module?.getClass().println();
+	var expected = System.context.module.getClass();
+	var actual = System?.context.module?.getClass();
+	assertEquals(expected, actual);
+}
+
+@test
+operation testWithTernary() {
+	var result = x?.isDefined() ? x?.getClass() : System?.class.getName().length() >= 5 ? 1 : 0;
+	assertEquals(1, result);
+}
+
+@test
+operation testNullReturnFromOperation() {
+	var result = returnsNullContextless()?.getClass();
+	assertEquals(null, result);
+	var x = new Bag;
+	result = x?.getClass();
+	assertTrue(result <> null);
+	result = result.returnsNullAny()?.getClass();
+	assertEquals(null, result);
+	result = returnsNullContextless()?.returnsNullAny();
+	assertEquals(null, result);
+}
+
+@test
+operation testPropertyToOperationCallConversion() {
+	var expected = System.context.module.parent;
+	var actual = System.context?.module.parent?.getClass()?.getName();
+	assertEquals(expected, actual);
+	actual = System.context?.module?.module?.parent?.shouldNeverBeCalled;
+	assertEquals(expected, actual);
+}
+
+@test
+operation testNative() {
+	assertEquals("main", Native("java.lang.Thread")?.currentThread?.getName());
+}
+
+@test
+operation testInComparisonOperator() {
+	assertTrue(8.getClass() <> 8.returnsNullAny()?.class);
+}
+
+@test
+operation testFirstOrderOperationCall() {
+	var result = Sequence{0..10}->select(i|i?.mod(2) == 0)->size();
+	assertEquals(6, result);
+	var result = Sequence{0, null, 1, null, 2}->select(i|i?.mod(2) == 0)?.size();
+	assertEquals(2, result);
+	result = Bag{}?.collect(i|i?.returnsNullAny?.neverCalled.npe)?.size;
+	assertEquals(0, result);
+	result = null?.select(x|true or x.npe)?.getClass();
+	assertEquals(null, result);
+}

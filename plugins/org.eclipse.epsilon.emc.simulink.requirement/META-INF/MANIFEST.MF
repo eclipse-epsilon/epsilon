@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Simulink Requirements Model Support
+Bundle-SymbolicName: org.eclipse.epsilon.emc.simulink.requirement
+Bundle-Version: 2.9.0.qualifier
+Require-Bundle: org.eclipse.epsilon.emc.simulink,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.common,
+ org.eclipse.epsilon.emc.simulink.common
+Export-Package: org.eclipse.epsilon.emc.simulink.requirement.introspection.java,
+ org.eclipse.epsilon.emc.simulink.requirement.model,
+ org.eclipse.epsilon.emc.simulink.requirement.model.element,
+ org.eclipse.epsilon.emc.simulink.requirement.operations.contributors,
+ org.eclipse.epsilon.emc.simulink.requirement.util.collection,
+ org.eclipse.epsilon.emc.simulink.requirement.util.manager
+Automatic-Module-Name: org.eclipse.epsilon.emc.simulink.requirement
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Eclipse Modeling Project

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension id="org.eclipse.epsilon.common.dt" point="org.eclipse.core.runtime.products">
+      <product name="%productName" application="org.eclipse.ui.ide.workbench" description="%aboutText"> 
+         <property name="aboutImage" value="%aboutImage"/>
+         <property name="aboutText" value="%aboutText"/>
+         <property name="windowImage" value="icons/epsilon16.png"/>
+      </product>
+   </extension>
+   <extension-point id="modelType" name="Model Type" schema="schema/modelType.exsd"/>
+   <extension-point id="modelElementLocator" name="Model Element Locator" schema="schema/modelElementLocator.exsd"/>
+   <extension-point id="prettyPrinter" name="Pretty Printer" schema="schema/prettyPrinter.exsd"/>
+   <extension-point id="operationContributor" name="Operation Contributor" schema="schema/operationContributor.exsd"/>
+   <extension-point id="tool" name="Tool" schema="schema/tool.exsd"/>
+   <extension-point id="moduleValidator" name="Module Validator" schema="schema/moduleValidator.exsd"/>
+   <extension-point id="moduleImplementation" name="Module Implementation" schema="schema/moduleImplementation.exsd"/>
+   <!--extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.epsilon.common.dt.launching.chain.ChainLaunchConfigurationDelegate"
+            icon="icons/chain.gif"
+            id="org.eclipse.epsilon.common.dt.launching.chain.ChainLaunchConfigurationDelegate"/>
+   </extension-->
+   <extension
+         point="org.eclipse.core.variables.dynamicVariables">
+      <variable
+            description="Prompts for a resource in the workspace and returns its absolute path in the filesystem"
+            name="resource_prompt"
+            resolver="org.eclipse.epsilon.common.dt.variables.ResourcePromptVariableResolver"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.console.consolePageParticipants">
+      <consolePageParticipant
+            class="org.eclipse.epsilon.common.dt.console.EpsilonConsolePageParticipant"
+            id="org.eclipse.epsilon.common.dt.console.EpsilonConsolePageParticipant">
+         <enablement/>
+      </consolePageParticipant>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.common.dt.tools.ToolsView"
+            icon="icons/tool.png"
+            id="org.eclipse.epsilon.common.dt.tools.ToolsView"
+            name="Tools">
+      </view>
+   </extension>
+   <extension
+         id="problemmarker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+        class="org.eclipse.epsilon.common.dt.preferences.EpsilonPreferencePage"
+        id="Epsilon"
+        name="Epsilon">
+      </page>
+      <page
+        category="Epsilon"
+        class="org.eclipse.epsilon.common.dt.preferences.EpsilonSyntaxColoringPreferencePage"
+        id="Epsilon.SyntaxColoring"
+        name="Syntax Coloring">
+      </page>
+   </extension>
+      <extension
+            point="org.eclipse.epsilon.common.dt.tool">
+         <tool
+               class="org.eclipse.epsilon.common.dt.launching.extensions.ModelTypeExtension"
+               defaultName="modelTypeExtension">
+         </tool>
+      </extension>
+      <extension
+            point="org.eclipse.ui.bindings">
+         <key
+               commandId="org.eclipse.epsilon.common.dt.editor.AbsractModuleEditor.ToggleComment"
+               contextId="org.eclipse.ui.textEditorScope"
+               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+               sequence="M1+/">
+         </key>
+      </extension>
+      <extension
+            point="org.eclipse.ui.commands">
+         <command
+               categoryId="org.eclipse.ui.category.textEditor"
+               id="org.eclipse.epsilon.common.dt.editor.AbsractModuleEditor.ToggleComment"
+               name="Toggle Comment">
+         </command>
+      </extension>
+</plugin>

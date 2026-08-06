@@ -1,0 +1,7 @@
+<spreadsheet>
+  <worksheet name="Calc">
+    <column index="0" name="a" datatype="integer"/>
+  	<column index="1" name="b" datatype="integer"/>
+  	<column index="2" name="sum" datatype="integer"/>
+  </worksheet>
+</spreadsheet>

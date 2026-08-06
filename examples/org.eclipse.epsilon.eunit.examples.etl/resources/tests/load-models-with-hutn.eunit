@@ -1,0 +1,50 @@
+@model
+operation loadModels() {
+  loadHutn("Tree", '
+@Spec { Metamodel { nsUri: "Tree" } }
+Model {
+  Tree "t1" { label : "t1" }
+  Tree "t2" {
+    label : "t2"
+    parent : Tree "t1" 
+  }
+}
+');
+
+  loadHutn("GraphExpected", '
+@Spec { Metamodel { nsUri: "Graph" } }
+Model {
+  Graph {
+    nodes :
+      Node "t1" {
+        name : "t1"
+        outgoing : Edge {
+          source : Node "t1"
+          target : Node "t2"
+        }
+      },
+      Node "t2" {
+        name : "t2"
+      }
+  }
+}
+');
+
+  /* use empty placeholder model as destination for the ETL transformation */
+  loadHutn("Graph", '@Spec { Metamodel { nsUri: "Graph" } }');
+}
+
+@test
+operation transformationWorksAsExpected() {
+  runETL();
+  assertEqualModels("GraphExpected", "Graph");
+}
+
+operation runETL() {
+  var etlTask := antProject.createTask("epsilon.etl");
+  etlTask.setSrc(new Native('java.io.File')(
+    antProject.getBaseDir(), 'resources/etl/Tree2Graph.etl'));
+  etlTask.createModel().setRef("Tree");
+  etlTask.createModel().setRef("Graph");
+  etlTask.execute();
+}

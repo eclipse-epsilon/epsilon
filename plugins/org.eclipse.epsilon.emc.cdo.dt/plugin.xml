@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.cdo.CDOModel"
+            dialog="org.eclipse.epsilon.emc.cdo.dt.CDOModelConfigurationDialog"
+            icon="icons/ecorefile.gif"
+            label="CDO Model"
+            type="cdo">
+      </modelType>
+   </extension>
+
+</plugin>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+	       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.eclipse.epsilon</groupId>
+  <artifactId>org.eclipse.epsilon.workflow</artifactId>
+  <name>Eclipse Epsilon Ant Workflow Tasks</name>
+
+  <parent>
+    <groupId>org.eclipse.epsilon</groupId>
+    <artifactId>epsilon-plain-parent</artifactId>
+    <version>2.9.0-SNAPSHOT</version>
+    <relativePath>../../pom-plain.xml</relativePath>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.ecl.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.egl.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.egl.traceability.fine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.eml.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.eol.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.eol.dap</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.epl.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.emg.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.etl.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.evl.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.pinset.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.emc.composite</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.emc.plainxml</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.eunit.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.flock.engine</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>org.eclipse.epsilon.profiling</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>ant</sourceDirectory>
+	<resources>
+	    <resource>
+	        <directory>ant</directory>
+	        <includes>
+	          <include>**/*.xml</include>
+	        </includes>
+	  </resource>
+	</resources>
+  </build>
+
+</project>

@@ -1,0 +1,379 @@
+//see http://findbugs.sourceforge.net/bugDescriptions.html
+
+// WARNING: Very demanding!
+context ImportDeclaration {
+	@parallel
+	constraint allImportsAreUsed {
+		check: NamedElement.allInstances().exists(ne |
+			ne == self.importedElement and
+			ne.originalCompilationUnit == self.originalCompilationUnit
+		)
+	}
+}
+
+@parallel
+context NamedElement {
+	constraint notReservedWord {
+		check: self.name <> "var" and
+			self.name <> "_" and
+			self.name <> "strictfp" and
+			self.name <> "assert" and
+			self.name <> "enum"
+	}
+}
+
+context TypeDeclaration {
+	constraint shouldStartWithUpperCase {
+		check: self.name.firstToUpperCase() == self.name
+	}
+}
+
+@parallel
+context MethodInvocation {
+	guard: self.method.isDefined()
+	
+	constraint doesNotCallFinalize {
+		check: not (
+			self.method.name == "finalize" and
+			self.method.parameters.isEmpty()
+		) 
+	}
+	
+	constraint doesNotCallExit {
+		check: not (
+			self.method.name = "exit" and
+			self.method.parameters.size() == 1 and
+			self.method.parameters.first().type.type.isTypeOf(PrimitiveTypeInt)
+		)
+	}
+	
+	constraint doesNotCallRunFinalizers {
+		check: not (
+			self.method.name = "runFinalizersOnExit" and
+			self.method.parameters.size() == 1 and
+			self.method.parameters.first().type.type.isTypeOf(PrimitiveTypeBoolean)
+		)
+	}
+}
+
+context MethodDeclaration {
+	constraint shouldStartWithLowerCase {
+		check: self.name.firstToLowerCase() == self.name
+	}
+}
+
+context AbstractMethodDeclaration {
+	constraint canBeLocal {
+		guard: self.modifier.isDefined() and not self.modifier.isLocal()
+		check: self.usages.exists(m | m.originalClassFile <> self.originalClassFile)
+	}
+	
+	constraint localMethodIsUsed {
+		guard: self.modifier.isDefined() and self.modifier.isLocal()
+		check: self.usages.notEmpty()
+	}
+	
+	@parallel
+	constraint parametersEffectivelyFinal {
+		guard: self.body.isDefined() and self.parameters.notEmpty()
+		check: self.body.statements
+				.select(s |
+					s.isKindOf(ExpressionStatement) and
+					s.expression.isKindOf(Assignment)
+				)
+				.collect(s | s.expression)
+				.select(assignment |
+					assignment.leftHandSide.isKindOf(SingleVariableAccess) and
+					assignment.operator == AssignmentKind#ASSIGN and
+					assignment.leftHandSide.isKindOf(SingleVariableAccess) and
+					self.parameters.excludes(assignment.leftHandSide.variable)
+				)
+				.isEmpty()
+	}
+}
+
+context Assignment {
+	constraint noRedundantAssignments {
+		guard: self.operator == AssignmentKind#ASSIGN
+		check: self.leftHandSide <> self.rightHandSide
+	}
+}
+
+context VariableDeclaration {
+	constraint variableIsUsed {
+		check: self.usageInVariableAccess.notEmpty()
+	}
+}
+
+context VariableDeclarationStatement {
+	constraint publicVariableIsFinal {
+		guard: self.modifier.visibility == VisibilityKind#public
+		check: self.modifier.inheritance == InheritanceKind#final
+	}
+}
+
+context VariableDeclarationExpression {
+	constraint publicVariableIsFinal {
+		guard: self.modifier.visibility == VisibilityKind#public
+		check: self.modifier.inheritance == InheritanceKind#final
+	}
+}
+
+context CatchClause {
+	constraint exceptionIsUsed {
+		check: self.exception.usageInVariableAccess.notEmpty()
+	}
+	constraint doesNotCatchDubiousExceptions {
+		check: self.exception.type.type.name <> "IllegalMonitorStateException"
+	}
+}
+
+context Block {
+	constraint emptyBlockIsDocumented {
+		guard: self.statements.isEmpty()
+		check: self.comments.notEmpty()
+	}
+}
+
+context SwitchStatement {
+	constraint moreThan3Cases {
+		check: self.statements.size() > 3
+	}
+}
+
+context SuperConstructorInvocation {
+	constraint noRedundantSuperCall {
+		check: self.arguments.notEmpty()
+	}
+}
+
+context IfStatement {
+	constraint noDeadCode {
+		check: not self.expression.isKindOf(TypeLiteral)
+	}
+	
+	constraint noUselessControlFlow {
+		check:
+			not self.thenStatement.isTypeOf(EmptyStatement) and
+			(self.elseStatement.isDefined() implies not self.elseStatement.isTypeOf(EmptyStatement))
+	}
+}
+
+context ClassDeclaration {
+	constraint publicFieldsOnlyInPOJO {
+		guard: self.getPublicFields().notEmpty()
+		check: self.bodyDeclarations.select(bd |
+			bd.isKindOf(MethodDeclaration) and
+			(bd.modifier.isUndefined() or (bd.modifier.static.isDefined() and bd.modifier.static))
+			and not (
+				bd.isEquals() or bd.isHashcode() or bd.isToString()
+				or bd.isFinalize() or bd.isClone() or bd.isCompareTo()
+			)
+		).isEmpty()
+	}
+
+	@parallel
+	constraint hashCodeAndEquals {
+		check {
+			var hasEquals = self.getMethods().exists(md | md.isEquals());
+			var hasHashcode = self.getMethods().exists(md | md.isHashcode());
+			return
+				(hasEquals implies hasHashcode) and
+				(hasHashcode implies hasEquals);
+		}
+	}
+	
+	constraint noCovariantEquals {
+		guard: self.getMethods().exists(method |
+			method.name = "equals" and
+			method.returnType.isDefined() and
+			method.returnType.type.isTypeOf(PrimitiveTypeBoolean)
+		)
+		check: self.getMethods().exists(md | md.isEquals())
+	}
+	
+	constraint noCovariantCompareTo {
+		guard: self.getMethods().exists(method | 
+			method.name == "compareTo" and
+			method.returnType.isDefined() and
+			method.returnType.type.isTypeOf(PrimitiveTypeInt)
+		)
+		check: self.getMethods().exists(md | md.isCompareTo())
+	}
+	
+	@parallel
+	constraint equalsAndCompareTo {
+		guard: self.getMethods().exists(md | md.isCompareTo())
+		check: self.getMethods().exists(md | md.isEquals())
+	}
+	
+	constraint cloneInCloneable {
+		guard: self.implements("Cloneable")
+		check: self.getMethods().exists(md | md.isClone())
+	}
+	
+	constraint serialUIDInSerializableClass {
+		guard: self.implements("Serializable")
+		check: self.bodyDeclarations.exists(bd |
+			bd.isKindOf(FieldDeclaration) and
+			bd.name == "serialVersionUID" and
+			bd.modifier.static and
+			bd.modifier.inheritance == InheritanceKind#final and
+			bd.type.type.isTypeOf(PrimitiveTypeLong)
+		)
+	}
+	
+	@parallel
+	constraint noRedundantInterfaceImpl {
+		guard: self.superInterfaces.isDefined() and
+			self.superClass.isDefined() and
+			self.superClass.type.isKindOf(ClassDeclaration) and
+			self.superClass.type.superInterfaces.isDefined()
+		
+		check: self.superInterfaces.exists(tIface |
+			self.superClass.type.isKindOf(AbstractTypeDeclaration) implies (
+				self.superClass.type.superInterfaces.includes(tIface)
+			)
+		)
+	}
+	
+	constraint comparatorImplementsSerializable {
+		guard: self.implements("Comparator")
+		check: self.implements("Serializable")
+	}
+	
+	@parallel
+	constraint noObscuredVariables {
+		check {
+			var fields = self.bodyDeclarations.select(bd | bd.isKindOf(FieldDeclaration));
+			return
+				self.bodyDeclarations
+					.select(bd | bd.isKindOf(AbstractMethodDeclaration))
+					.forAll(md | md.body.isDefined() implies md.body.statements
+						.select(s | s.isKindOf(VariableDeclaration))
+						.forAll(vd | fields.forAll(fd | fd.name <> vd.name))
+					);
+		}
+	}
+}
+
+context InfixExpression {
+	constraint noRedundantComparison {
+		check: self.leftOperand <> self.rightOperand
+	}
+	
+	constraint equalsNotOnLiterals {
+		guard: self.operatorIsEquality()
+		check: self.leftOperand.type() == self.rightOperand.type() and not (
+				self.leftOperand.isTypeOf(StringLiteral) or
+				self.leftOperand.isTypeOf(NumberLiteral) or
+				self.leftOperand.isTypeOf(CharacterLiteral) or
+				self.leftOperand.isTypeOf(BooleanLiteral) or
+				self.leftOperand.isTypeOf(NullLiteral) or
+				self.leftOperand.isTypeOf(TypeLiteral)
+			)
+	}
+	
+	constraint equalsNotOnStrings {
+		guard: self.operatorIsEquality()
+		check: not (
+			self.leftOperand.isTypeOf(StringLiteral) or
+			self.rightOperand.isTypeOf(StringLiteral)
+		)
+	}
+}
+
+context SynchronizedStatement {
+	constraint hasStatements {
+		check: self.body.statements.notEmpty()
+	}
+}
+
+operation InfixExpression operatorIsEquality() : Boolean {
+	return self.operator == InfixExpressionKind#EQUALS or self.operator == InfixExpressionKind#NOT_EQUALS;
+}
+
+operation Modifier isLocal() : Boolean {
+	return self.visibility == VisibilityKind#private or self.visibility == VisibilityKind#none;
+}
+
+operation AbstractTypeDeclaration implements(type : String) {
+	return self.superInterfaces.exists(si | si.type.name == type);
+}
+
+@cached
+operation AbstractTypeDeclaration getMethods() : Collection {
+	return self.bodyDeclarations.select(bd |bd.isKindOf(MethodDeclaration));
+}
+
+@cached
+operation AbstractTypeDeclaration getPublicFields() : Collection {
+	return self.bodyDeclarations.select(bd |
+		bd.isKindOf(FieldDeclaration) and
+		bd.modifier.isDefined() and
+		bd.modifier.visibility == VisibilityKind#public
+	);
+}
+
+operation MethodDeclaration isEquals() : Boolean {
+	return self.name == "equals" and
+		self.parameters.size() == 1 and
+		self.parameters.first().type.type.name == "Object" and
+		self.thrownExceptions.isEmpty() and
+		self.returnType.isDefined() and
+		self.returnType.type.isTypeOf(PrimitiveTypeBoolean) and
+		self.modifier.isDefined() and
+		self.modifier.visibility == VisibilityKind#public;
+}
+
+operation MethodDeclaration isHashcode() : Boolean {
+	return self.name == "hashCode" and
+		self.parameters.isEmpty() and
+		self.thrownExceptions.isEmpty() and
+		self.returnType.isDefined() and
+		self.returnType.type.isTypeOf(PrimitiveTypeInt) and
+		self.modifier.isDefined() and
+		self.modifier.visibility == VisibilityKind#public;
+}
+
+operation MethodDeclaration isToString() : Boolean {
+	return self.name == "toString" and
+		self.parameters.isEmpty() and
+		self.thrownExceptions.isEmpty() and
+		self.returnType.isDefined() and
+		(self.returnType.type.name == "String" or
+		self.returnType.type.name == "java.lang.String") and
+		self.modifier.isDefined() and
+		self.modifier.visibility == VisibilityKind#public;
+}
+
+operation MethodDeclaration isClone() : Boolean {
+	return self.name == "clone" and
+		self.parameters.isEmpty() and
+		self.returnType.isDefined() and
+		self.thrownExceptions.size() == 1 and
+		self.thrownExceptions.first().type.name == "CloneNotSupportedException" and
+		self.modifier.isDefined() and
+		self.modifier.visibility == VisibilityKind#public;
+}
+
+operation MethodDeclaration isFinalize() : Boolean {
+	return self.name == "finalize" and
+		self.parameters.isEmpty() and
+		self.thrownExceptions.size() == 1 and
+		self.thrownExceptions.first().type.name == "Throwable" and
+		(self.returnType.isUndefined() or self.returnType.type.isTypeOf(PrimitiveTypeVoid)) and
+		self.modifier.isDefined() and
+		(self.modifier.visibility == VisibilityKind#public or
+		self.modifier.visibility == VisibilityKind#protected);
+}
+
+operation MethodDeclaration isCompareTo() : Boolean {
+	return self.name == "compareTo" and
+		self.parameters.size() == 1 and
+		self.thrownExceptions.isEmpty() and
+		self.returnType.isDefined() and
+		self.returnType.type.isTypeOf(PrimitiveTypeInt) and
+		self.modifier.isDefined() and
+		self.modifier.visibility == VisibilityKind#public;
+}

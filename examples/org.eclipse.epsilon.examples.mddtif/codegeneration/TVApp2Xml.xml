@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<project default="main">
+	
+	<epsilon.emf.register file="../metamodels/Xml.ecore"/>
+	<epsilon.emf.register file="../metamodels/TVAppDsl.ecore"/>
+	
+	<epsilon.emf.loadModel name="TVApp"
+                               modelFile="models/ChampionsLeague.model"
+                               metamodelUri="TVAppDsl"
+                               read="true" store="false"/>
+	
+	<epsilon.emf.loadModel name="Xml"
+                               modelFile="models/TVAppXml.model"
+                               metamodelUri="Xml"
+                               read="false" store="true"/>
+
+	<target name="main">
+		<epsilon.etl src="TVApp2Xml.etl">
+			<model ref="TVApp"/>
+			<model ref="Xml"/>
+		</epsilon.etl>
+		
+		<epsilon.egl src="Xml2Text.egl" target="output/TVApp.xml">
+			<model ref="Xml"/>
+		</epsilon.egl>
+		
+	</target>
+	
+</project>

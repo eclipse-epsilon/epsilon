@@ -1,0 +1,88 @@
+rule Rss2Atom 
+	transform r : RSS!t_rss
+	to f : Atom!t_feed {
+	
+	Atom.root = f;
+	f.appendChildren(r.e_channel.c_item.equivalent());	
+}
+
+@lazy
+rule Item2Entry
+	transform i : RSS!t_item
+	to e : Atom!t_entry {
+	
+	e.appendEquivalentsOfChildrenOf(i);
+}
+
+@lazy
+rule Title2Title
+	transform s : RSS!t_title
+	to t : Atom!t_title {
+	
+	t.text = s.text;
+}
+
+@lazy
+rule Link2Link
+	transform s : RSS!t_link
+	to t : Atom!t_link {
+	
+	t.a_href = s.text;
+}
+
+@lazy
+rule Generator2Generator
+	transform s : RSS!t_generator
+	to t : Atom!t_generator {
+	
+	t.a_href = s.text;
+}
+
+@lazy
+rule Creator2Author 
+	transform c : RSS!`t_dc:creator`
+	to a : Atom!t_author {
+	
+	a.appendChild(new Atom!t_name);
+	a.e_name.text = c.text;	
+}
+
+@lazy
+rule Description2Summary
+	transform d : RSS!t_description
+	to s : Atom!t_summary {
+	
+	s.text = d.text;	
+}
+
+@lazy
+rule ContentEncoded2Content 
+	transform s : RSS!`t_content:encoded`
+	to t : Atom!t_content {
+	
+	t.text = s.text;
+}
+
+@lazy
+rule PubDate2Published 
+	transform s : RSS!t_pubDate
+	to t : Atom!t_published {
+	
+	t.text = s.text;
+	
+}
+
+operation Any appendChildren(c : Collection) {
+	for (child in c) {
+		self.appendChild(child);
+	}
+}
+
+operation Any appendEquivalentsOfChildrenOf(source : Any) {
+	for (child in source.children) {
+		var e = child.equivalent();
+		if (e.isDefined()) {
+			self.appendChild(e);
+		}
+	}
+}

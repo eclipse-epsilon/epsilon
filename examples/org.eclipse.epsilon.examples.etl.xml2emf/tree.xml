@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<tree name="t1">
+	<tree name="t2"/>
+	<tree name="t3">
+		<tree name="t4"/>
+	</tree>
+</tree>

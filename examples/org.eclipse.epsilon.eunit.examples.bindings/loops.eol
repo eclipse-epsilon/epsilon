@@ -1,0 +1,26 @@
+operation hasLoop(n) : Boolean {
+  for (n in Node.all) {
+    n.~status = 0; // not visited yet
+  }
+  return hasLoopAux(n);
+}
+
+operation hasLoopAux(n) : Boolean {
+  if (n.~status == 2) {
+    // We already visited this node and did not find any loops
+    return false;
+  }
+  else if (n.~status == 1) {
+    // We have returned to a node through its outgoing edges: we found a loop
+    return true;
+  }
+
+  n.~status = 1;
+  for (e in n.outgoing) {
+    if (hasLoopAux(e.target)) {
+      return true;
+    } 
+  }
+  n.~status = 2;
+  return false;
+}

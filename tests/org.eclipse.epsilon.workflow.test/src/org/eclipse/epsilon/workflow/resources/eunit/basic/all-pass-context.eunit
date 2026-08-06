@@ -1,0 +1,14 @@
+@data name
+operation names() {
+  return Sequence { "A", "B" };
+}
+
+@test
+operation context() {
+  assertEquals('Element ' + name,
+    Element.allInstances.selectOne(e|e.name == name).formatName());
+}
+
+operation Element formatName() {
+  return 'Element ' + self.name;
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<n label="t1">
+  <n label="t2">
+    <n label="t3"/>
+    <n label="t3_copy"/>
+  </n>
+  <n label="t2_copy"/>
+</n>

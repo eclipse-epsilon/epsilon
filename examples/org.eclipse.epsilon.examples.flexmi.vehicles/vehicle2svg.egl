@@ -1,0 +1,100 @@
+[%
+var top : Sequence;
+top.addAll(v.wheels.sublist(0, v.wheels.size()/2));
+var bottom = v.wheels.excludingAll(top);
+var rearWindowWidth = 35;
+var roofWidth = Sequence{top.size()*90, 150}.max();
+var spacing = 10;
+var frontWindowWidth = 45;
+var engineWidth = 80;
+var regPlateWidth = 103;
+var bodyWidth = rearWindowWidth + roofWidth + frontWindowWidth + engineWidth + spacing*5;
+var regPlateX = rearWindowWidth+spacing*2+roofWidth/2-regPlateWidth/2;
+%]
+<html>
+<body>
+<style>
+.round {
+  stroke-linejoin: round;
+}
+</style>
+<svg width="580" height="400" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <rect fill="#fff" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+  <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+   <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+  </g>
+ </g>
+ <g>
+  <title>[%=v.reg%]</title>
+  
+  
+  <!-- Wheels -->
+  [%for(w in top){%]
+  <rect rx="10" height="30" width="50" y="50" x="[%=50+(loopCount-1)*120%]" stroke-width="1.5" stroke="#000" fill="#666666"/>
+  <text xml:space="preserve" text-anchor="start" 
+  	font-family="Helvetica, Arial, sans-serif" font-size="16" 
+  	y="40" x="[%=60+(loopCount-1)*120%]" fill-opacity="null" stroke-opacity="null" 
+  	stroke-width="0" stroke="#000" fill="#000000">[%=w.size%]''</text>
+  [%}%]
+  [%for(w in bottom){%]
+  <rect rx="10" height="30" width="50" y="140" x="[%=50+(loopCount-1)*120%]" stroke-width="1.5" stroke="#000" fill="#666666"/>
+  <text xml:space="preserve" text-anchor="start" 
+  	font-family="Helvetica, Arial, sans-serif" font-size="16" 
+  	y="192" x="[%=60+(loopCount-1)*120%]" fill-opacity="null" stroke-opacity="null" 
+  	stroke-width="0" stroke="#000" fill="#000000">[%=w.size%]''</text>
+  [%}%]
+  
+  <!-- Main body -->
+  <rect rx="20" id="svg_1" height="100" width="[%=bodyWidth%]" y="60" x="1" stroke-width="1.5" stroke="#000" fill="#[%=v.getColour()%]"/>
+  
+  <!-- Rear window -->
+  <!--rect rx="10" id="svg_8" height="80" width="[%=rearWindowWidth%]" y="70" x="[%=spacing%]" stroke-width="1.5" stroke="#000" fill="#fff"/-->
+  <polygon class="round" stroke-width="1.5" points="[%=spacing%],70 [%=spacing+rearWindowWidth%],75 [%=rearWindowWidth+spacing%],145 [%=spacing%],150" stroke="#000" fill="#fff"/>
+  
+  <!-- Roof -->
+  <rect id="svg_5" height="70" width="[%=roofWidth%]" y="75" x="[%=rearWindowWidth+spacing*2%]" stroke-width="1.5" stroke="#000" fill="#[%=v.getColour()%]"/>
+  
+  <!-- Front window -->
+  <polygon class="round" stroke-width="1.5" points="[%=rearWindowWidth+roofWidth+spacing*3%],75 [%=rearWindowWidth+roofWidth+spacing*3+frontWindowWidth%],70 [%=rearWindowWidth+roofWidth+spacing*3+frontWindowWidth%],150 [%=rearWindowWidth+roofWidth+spacing*3%],145" stroke="#000" fill="#fff"/>
+  
+  <!-- Engine -->
+  <rect rx="10" id="svg_8" height="80" width="[%=engineWidth%]" y="70" x="[%=rearWindowWidth+roofWidth+frontWindowWidth+spacing*4%]" stroke-width="1.5" stroke="#000" fill="#[%=v.getEngineColour()%]"/>
+  <text xml:space="preserve" text-anchor="start" 
+  	font-family="Helvetica, Arial, sans-serif" font-size="16" 
+  	y="117" x="[%=rearWindowWidth+roofWidth+frontWindowWidth+spacing*5%]" fill-opacity="null" stroke-opacity="null" 
+  	stroke-width="0" stroke="#000" fill="#000000">[%=v.getEngineLabel()%]CC</text>
+  
+  <!-- Reg plate -->
+  <rect rx="0" id="svg_8" height="30" width="[%=regPlateWidth%]" y="95" x="[%=regPlateX%]" stroke-width="1.5" stroke="#000" fill="#ecc274"/>
+  <text xml:space="preserve" text-anchor="start" 
+  	font-family="UKNumberPlate, sans-serif" font-size="20" 
+  	y="117" x="[%=regPlateX+spacing%]" fill-opacity="1" stroke-opacity="null" 
+  	stroke-width="0" stroke="#000" fill="#000">[%=v.reg%]</text>
+  
+  	
+ </g>
+</svg>
+</body>
+</html>
+
+[%
+operation Vehicle getColour() {
+	if (self.colour.isDefined()) return self.colour;
+	else return "ffffff";
+}
+
+operation Engine getColour(){
+	if (self.isTypeOf(DieselEngine)) return "cce8f2";
+	else return "cccccc";
+}
+operation Vehicle getEngineLabel() {
+	if (self.engine.isDefined()) return self.engine.cc;
+	else return "???";
+}
+
+operation Vehicle getEngineColour() {
+	if (self.engine.isDefined()) return self.engine.getColour();
+	else return "fff";
+}
+%]

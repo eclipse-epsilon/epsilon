@@ -1,0 +1,37 @@
+operation newDiagram(name : String) {
+	var views = Folder.all.selectOne(f|f.name="Views");
+	var diagram = ArchimateDiagramModel.all.selectOne(d|d.name=name);
+	if (diagram == null) {
+		diagram = new ArchimateDiagramModel(name=name);
+		views.elements.add(diagram);
+	}
+	else {
+		diagram.children.clear();
+	}
+	return diagram;
+}
+
+operation ArchimateDiagramModel display(elements : Any, columns : Integer) {
+	
+	for (e in elements) {
+		// Create a diagram element for the element
+		var diagramObject = new DiagramModelArchimateObject;
+		diagramObject.archimateElement = e;
+		e.~diagramObject = diagramObject;
+		self.children.add(diagramObject);
+		var bounds = new Bounds;
+		bounds.x = (loopCount -1).mod(columns) * 130;
+		bounds.y = (loopCount - 1) / columns * 60;
+		diagramObject.bounds = bounds;
+	}
+	
+	for (r in ArchimateRelationship.all.select(r|elements.includes(r.source) and elements.includes(r.target))) {
+		var diagramConnection = new DiagramModelArchimateConnection;
+		diagramConnection.source = r.source.~diagramObject;
+		diagramConnection.target = r.target.~diagramObject;
+		diagramConnection.archimateRelationship = r;
+		r.source.~diagramObject.sourceConnections.add(diagramConnection);
+		r.target.~diagramObject.targetConnections.add(diagramConnection);
+	}
+	
+}

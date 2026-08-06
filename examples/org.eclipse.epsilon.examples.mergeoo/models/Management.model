@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?>
+<OO:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:OO="OO" name="management">
+  <contents xsi:type="OO:Class" name="School" isAbstract="false">
+    <features xsi:type="OO:Attribute" name="address" type="//@contents.1" isMany="false"/>
+    <features xsi:type="OO:Attribute" name="acceptsPostcodes" type="//@contents.1" isMany="true"/>
+    <features xsi:type="OO:Reference" name="employees" type="//@contents.2" isMany="true"/>
+  </contents>
+  <contents xsi:type="OO:Datatype" name="String"/>
+  <contents xsi:type="OO:Class" name="Employee" extends="//@contents.3" extendedBy="//@contents.5 //@contents.6" isAbstract="true">
+    <features xsi:type="OO:Attribute" name="salary" type="//@contents.4" isMany="false"/>
+    <features xsi:type="OO:Reference" name="manager" type="//@contents.2" isMany="false"/>
+  </contents>
+  <contents xsi:type="OO:Class" name="Person" extendedBy="//@contents.2" isAbstract="true">
+    <features xsi:type="OO:Attribute" name="details" type="//@contents.1" isMany="false"/>
+  </contents>
+  <contents xsi:type="OO:Datatype" name="Real"/>
+  <contents xsi:type="OO:Class" name="Teacher" extends="//@contents.2" isAbstract="false"/>
+  <contents xsi:type="OO:Class" name="Support" extends="//@contents.2" isAbstract="false">
+    <features xsi:type="OO:Attribute" name="role" type="//@contents.1" isMany="false"/>
+  </contents>
+  <contents xsi:type="OO:Datatype" name="Boolean"/>
+</OO:Model>

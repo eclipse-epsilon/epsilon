@@ -1,0 +1,19 @@
+@setup
+operation prepare() {
+  var firstElement  := Element.allInstances.first();
+}
+
+@data x
+operation firstLevel() {
+  return Sequence {1, 2};
+}
+
+@test
+operation twoElements() {
+  assertEquals(2, Element.allInstances.size());
+}
+
+@test
+operation firstElement() {
+  assertEquals('A', firstElement.name);
+}

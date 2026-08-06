@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="Epsilon" url="https://www.eclipse.org/epsilon">
+      Epsilon is a platform of task-specific languages and tools for model management. Epsilon provides languages for tasks such as model transformation, validation, comparison, merging and code generation. It also includes Eclipse-based development tools for the languages and ANT tasks for executing them in the context of complex workflows. Additional features include support live validation, repairing, and scripting of models in EMF and GMF-based editors.
+   </description>
+   <feature url="features/org.eclipse.epsilon.core.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.core.feature" version="2.9.0.qualifier">
+      <category name="Epsilon Core"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.core.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.core.dt.feature" version="2.9.0.qualifier">
+      <category name="Epsilon Core"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.emf.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emf.feature" version="2.9.0.qualifier">
+      <category name="Epsilon EMF Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.ewl.emf.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.ewl.emf.feature" version="2.9.0.qualifier">
+      <category name="Epsilon EMF Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.emf.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emf.dt.feature" version="2.9.0.qualifier">
+      <category name="Epsilon EMF Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.evl.emf.validation.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.evl.emf.validation.feature" version="2.9.0.qualifier">
+      <category name="Epsilon EMF Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.eunit.dt.emf.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.eunit.dt.emf.feature" version="2.9.0.qualifier">
+      <category name="Epsilon EMF Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.uml.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.uml.dt.feature" version="2.9.0.qualifier">
+      <category name="Epsilon UML Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.uml.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.uml.feature" version="2.9.0.qualifier">
+      <category name="Epsilon UML Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.simulink.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.simulink.dt.feature" version="2.9.0.qualifier">
+      <category name="Epsilon Simulink Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.simulink.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.simulink.feature" version="2.9.0.qualifier">
+      <category name="Epsilon Simulink Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.ewl.gmf.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.ewl.gmf.feature" version="2.9.0.qualifier">
+      <category name="Epsilon GMF Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.hutn.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.hutn.feature" version="2.9.0.qualifier">
+      <category name="Human Usable Textual Notation (HUTN)"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.hutn.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.hutn.dt.feature" version="2.9.0.qualifier">
+      <category name="Human Usable Textual Notation (HUTN)"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.emc.graphml.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emc.graphml.feature" version="2.9.0.qualifier">
+      <category name="Epsilon EMF Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.excel.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.excel.feature" version="2.9.0.qualifier">
+      <category name="Epsilon Spreadsheet Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.excel.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.excel.dt.feature" version="2.9.0.qualifier">
+      <category name="Epsilon Spreadsheet Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.emc.spreadsheets.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.feature" version="2.9.0.qualifier">
+      <category name="Epsilon Spreadsheet Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.flexmi.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.flexmi.feature" version="2.9.0.qualifier">
+      <category name="Epsilon EMF Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.flexmi.dt.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.flexmi.dt.feature" version="2.9.0.qualifier">
+      <category name="Epsilon EMF Integration"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.picto.feature_2.9.0.qualifier.jar" id="org.eclipse.epsilon.picto.feature" version="2.9.0.qualifier">
+      <category name="Picto"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.csv.dt.feature">
+      <category name="Epsilon Spreadsheet Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.csv.feature">
+      <category name="Epsilon Spreadsheet Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.yaml.dt.feature">
+      <category name="Epsilon YAML Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.yaml.feature">
+      <category name="Epsilon YAML Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.html.dt.feature">
+      <category name="Epsilon HTML Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.html.feature">
+      <category name="Epsilon HTML Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.jdt.dt.feature">
+      <category name="Epsilon JDT Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.jdt.feature">
+      <category name="Epsilon JDT Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.cdo.dt.feature">
+      <category name="Epsilon CDO Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.cdo.feature">
+      <category name="Epsilon CDO Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.json.dt.feature">
+      <category name="Epsilon JSON Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.emc.json.feature">
+      <category name="Epsilon JSON Integration"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.eol.dap.feature">
+      <category name="org.eclipse.epsilon.dap"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.rdf.emf.dt.feature">
+      <category name="org.eclipse.epsilon.rdf"/>
+   </feature>
+   <feature id="org.eclipse.epsilon.rdf.emf.feature">
+      <category name="org.eclipse.epsilon.rdf"/>
+   </feature>
+   <category-def name="Epsilon Core" label="Epsilon Core">
+      <description>
+         Parsers, execution engines, development tools (editors, launch configurations, debuggers etc.) for languages of the Epsilon platform.
+      </description>
+   </category-def>
+   <category-def name="Epsilon EMF Integration" label="Epsilon EMF Integration">
+      <description>
+         Support for managing EMF-based models with languages of the Epsilon platform.
+      </description>
+   </category-def>
+   <category-def name="Epsilon YAML Integration" label="Epsilon YAML Integration">
+      <description>
+         Support for managing YAML-based models with languages of the Epsilon platform.
+      </description>
+   </category-def>
+   <category-def name="Picto" label="Picto">
+      <description>
+         Model visualisation via model-to-text transformation.
+      </description>
+   </category-def>
+   <category-def name="Epsilon UML Integration" label="Epsilon UML Integration">
+      <description>
+         Support for managing EMF-based UML models with languages of the Epsilon platform.
+      </description>
+   </category-def>
+   <category-def name="Epsilon Simulink Integration" label="Epsilon Simulink Integration">
+      <description>
+         Support for managing Simulink models with languages of the Epsilon platform.
+      </description>
+   </category-def>
+   <category-def name="Epsilon GMF Integration" label="Epsilon GMF Integration">
+      <description>
+         Support for developing GMF-based editors (EuGENia), and for refactoring models in GMF-based editors using the Epsilon Wizard Language.
+      </description>
+   </category-def>
+   <category-def name="Human Usable Textual Notation (HUTN)" label="Human Usable Textual Notation (HUTN)">
+      <description>
+         Parser and development tools for the OMG Human Usable Textual Notation (HUTN).
+      </description>
+   </category-def>
+   <category-def name="Epsilon Spreadsheet Integration" label="Epsilon Spreadsheet Integration">
+      <description>
+         Support for managing spreadsheet models with languages of the Epsilon platform.
+      </description>
+   </category-def>
+   <category-def name="Epsilon HTML Integration" label="Epsilon HTML Integration">
+      <description>
+         Support for managing HTML models with languages of the Epsilon platform.
+      </description>
+   </category-def>
+   <category-def name="Epsilon JDT Integration" label="Epsilon JDT Integration">
+      <description>
+         Support for managing Java source code with languages of the Epsilon platform.
+      </description>
+   </category-def>
+   <category-def name="Epsilon Sirius Integration" label="Epsilon Sirius Integration">
+      <description>
+         Support for embedding Epsilon based editors into Sirius properties views.
+      </description>
+   </category-def>
+   <category-def name="Epsilon CDO Integration" label="Epsilon CDO Integration">
+      <description>
+         Support for connecting to Eclipse CDO model repositories.
+      </description>
+   </category-def>
+   <category-def name="Epsilon JSON Integration" label="Epsilon JSON Integration">
+      <description>
+         Support for managing JSON-based models with languages of the Epsilon platform.
+      </description>
+   </category-def>
+   <category-def name="org.eclipse.epsilon.dap" label="Epsilon Debug Adapter Support">
+      <description>
+         Support for debugging local and remote Epsilon programs via the Debug Adapter Protocol.
+      </description>
+   </category-def>
+   <category-def name="org.eclipse.epsilon.rdf" label="Epsilon RDF Integration">
+      <description>
+         Support for loading EMF models from RDF files (e.g. Turtle, RDF/XML, N-Triples).
+      </description>
+   </category-def>
+   <repository-reference location="https://download.eclipse.org/emfatic/update" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/lsp4e/releases/latest/" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/mylyn/updates/release/latest/" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/releases/2024-12" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-12" name="" enabled="true" />
+</site>

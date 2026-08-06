@@ -1,0 +1,13 @@
+@namespace(uri="http://eclipse.org/epsilon/examples/traceability/tests", prefix="")
+package tests;
+
+import "http://eclipse.org/epsilon/examples/traceability/requirements";
+
+class TestsModel {
+	val Test[*] tests;
+}
+
+class Test {
+	attr String ~id;
+	ref requirements.Requirement requirement;
+}

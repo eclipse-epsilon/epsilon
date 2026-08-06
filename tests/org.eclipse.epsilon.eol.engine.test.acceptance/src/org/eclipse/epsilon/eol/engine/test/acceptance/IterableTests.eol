@@ -1,0 +1,162 @@
+operation J!FakeIterable average() {
+	if (self.isEmpty) {
+		return 0;
+	}
+	else {
+		return self.sum / self.size;
+	}
+}
+
+@test
+operation stream() {
+	var x = new J!FakeIterable;
+	assertEquals(0, x.stream().count());
+	x.populate(99);
+	assertEquals(33, x.stream().filter(i|i.mod(3) == 0).count());
+}
+
+@test
+operation parallelStream() {
+	var x = new J!FakeIterable;
+	assertEquals(0, x.parallelStream().count());
+	x.populate(99);
+	assertEquals(33, x.parallelStream().filter(i|i.mod(3) == 0).count());
+}
+
+@test
+operation sizeEmpty() {
+	var x = new J!FakeIterable;
+}
+
+@test
+operation sizeOne() {
+	var x = new J!FakeIterable;
+	x.populate(1);
+	assertEquals(1, x.size);
+}
+
+@test
+operation sizeTwo() {
+	var x = new J!FakeIterable;
+	x.populate(2);
+	assertEquals(2, x.size);
+}
+
+@test
+operation at() {
+	var x = new J!FakeIterable;
+	x.populate(3);
+	for (i in 0.to(2)) {
+		assertEquals(i, x.at(i));
+	}
+}
+
+@test
+operation removeAt() {
+	var x = new J!FakeIterable;
+	x.populate(5);
+	x.removeAt(2);
+	assertEquals(3, x.at(2));
+}
+
+@test
+operation includes() {
+	var x = new J!FakeIterable;
+	x.populate(10);
+	assertTrue(x.includes(0));
+	assertTrue(x.includes(9));
+	assertFalse(x.includes(10));
+}
+
+@test
+operation firstEmpty() {
+	var x = new J!FakeIterable;
+	var first = x.first;
+	assertTrue(first.isUndefined());
+}
+
+@test
+operation firstOne() {
+	var x = new J!FakeIterable.create(1);
+	assertEquals(0, x.first);
+}
+
+@test
+operation lastEmpty() {
+	var x = new J!FakeIterable;
+	var last = x.last;
+	assertTrue(last.isUndefined());
+}
+
+@test
+operation lastOne() {
+	var x = new J!FakeIterable.create(1);
+	assertEquals(0, x.last);
+}
+
+@test
+operation lastTwo() {
+	var x = new J!FakeIterable.create(2);
+	assertEquals(1, x.last);
+}
+
+@test
+operation lastFour() {
+	var x = new J!FakeIterable.create(4);
+	assertEquals(3, x.last);
+}
+
+@test
+operation indexOf() {
+	var x = new J!FakeIterable.create(10);
+	assertEquals(0, x.indexOf(0));
+	assertEquals(6, x.indexOf(6));
+	assertEquals(-1, x.indexOf(20));
+}
+
+@test
+operation average() {
+	var y = new J!FakeIterable;
+	var x = y.create(3);
+	assertEquals(0, y.average());
+	assertEquals(1, x.average());
+}
+
+@test
+operation sum() {
+	var numbers = Sequence{0..16};
+	var expected = (numbers.last() * (numbers.last() + 1)) / 2;
+	var actual = numbers.sum();
+	assertEquals(expected, actual);
+	numbers.add("gobbledeegook");
+	numbers.add(5, "filler");
+	numbers.add(2, null);
+	actual = numbers.sum();
+	assertEquals(expected, actual);
+}
+
+@test
+operation product() {
+	var numbers = Sequence{1..11};
+	var expected = numbers.last().factorial();
+	var actual = numbers.product();
+	assertEquals(expected, actual);
+}
+
+@test
+operation sum_bigdecimal() {
+	var s : Sequence;
+	s.add(new Native("java.math.BigDecimal")("2.5"));
+	s.add(3);
+	s.add(4.1);
+	assertEquals(9.6, s.sum());
+}
+
+@test
+operation product_bigdecimal() {
+	var s : Sequence;
+	s.add(new Native("java.math.BigDecimal")("2.5"));
+	s.add(3);
+	s.add(4.1);
+	assertEquals(30.749998, s.product().asFloat());
+}

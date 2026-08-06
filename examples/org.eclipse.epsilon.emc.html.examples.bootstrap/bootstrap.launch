@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.evl.eclipse.dt.launching.EvlLaunchConfigurationDelegate">
+<booleanAttribute key="fine_grained_profiling" value="false"/>
+<listAttribute key="models">
+<listEntry value="name=M&#10;readOnLoad=true&#10;storeOnDisposal=false&#10;aliases=&#10;uri=https\://www-users.cs.york.ac.uk/~dkolovos/&#10;cached=true&#10;file=&#10;fileBased=false&#10;type=HTML"/>
+</listAttribute>
+<booleanAttribute key="optimizeConstraints" value="false"/>
+<listAttribute key="parameters"/>
+<booleanAttribute key="profile_model_loading" value="false"/>
+<booleanAttribute key="profiling_enabled" value="false"/>
+<booleanAttribute key="reset_profiler" value="false"/>
+<stringAttribute key="source" value="/org.eclipse.epsilon.emc.html.examples.bootstrap/bootstrap.evl"/>
+</launchConfiguration>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.evl.eclipse.dt.launching.EvlLaunchConfigurationDelegate">
+<listAttribute key="models">
+<listEntry value="#&#13;&#10;#Tue Jul 06 12:29:12 BST 2010&#13;&#10;isMetamodelFileBased=false&#13;&#10;name=Graph&#13;&#10;readOnLoad=true&#13;&#10;storeOnDisposal=true&#13;&#10;aliases=&#13;&#10;metamodelUri=DirectedGraph&#13;&#10;type=EMF&#13;&#10;modelFile=/org.eclipse.epsilon.examples.shortestpath/models/AcyclicGraphInstance.ecore&#13;&#10;expand=false&#13;&#10;metamodelFile=/org.eclipse.epsilon.examples.shortestpath/metamodels/DirectedGraph.ecore&#13;&#10;"/>
+</listAttribute>
+<stringAttribute key="source" value="\org.eclipse.epsilon.examples.shortestpath\ValidateDirectedGraph.evl"/>
+<listAttribute key="tools"/>
+</launchConfiguration>

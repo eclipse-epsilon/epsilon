@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="test.nature"
+         name="Test Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.eclipse.epsilon.common.dt.nature.ToggleNatureActionTests$FakeNature">
+         </run>
+      </runtime>
+   </extension>
+
+</plugin>

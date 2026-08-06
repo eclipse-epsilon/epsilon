@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.bibtex.BibtexModel"
+            dialog="org.eclipse.epsilon.emc.bibtex.dt.BibtexModelConfigurationDialogue"
+            icon="icons/bibtex.png"
+            label="BibTeX Model"
+            stable="false"
+            type="BIBTEX">
+      </modelType>
+   </extension>
+</plugin>

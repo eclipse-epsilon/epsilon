@@ -1,0 +1,41 @@
+var numOfElements: Integer = val;
+numOfElements.println("elements:");
+new `sflib/Chart`;
+var chart = `Stateflow.Chart`.all().first();   
+// SETUP
+var prevState=null;
+var prevSubsys=null;
+for (i in Sequence{1..numOfElements}){
+	// INSTANTIATION
+	var subsys = new `simulink/Ports & Subsystems/Subsystem`;
+	var state = new `Stateflow.State`(chart);
+	var pos : String = "[" + Sequence{100 + i*100, 120, 90, 60}.concat(" ") + "]";
+	state.position = pos.println();
+	if (prevSubsys <> null){
+		prevSubsys.link(subsys);
+	}
+	var transition = new `Stateflow.Transition`(chart);
+	transition.destination = state;
+	if (prevState <> null){
+		transition.source = prevState;
+	}
+	
+	// ODD
+	if (i.mod(2)==0){
+		subsys.Name = "Epsilon" + subsys.Name + i.asString();
+		state.Name = "Epsilon" + state.Name + i.asString();
+		transition.labelString = "transition";	
+	}
+	// EVEN 
+	else {
+		subsys.Name = subsys.Name + "Epsilon" + i.asString();
+		state.Name = state.Name + "Epsilon" + i.asString();
+		if (i.mod(3) == 0){
+			state.ExecutionOrder = 1;			
+		}
+	}
+	prevSubsys=subsys;
+	prevState=state;
+}
+// Arrange top level
+M.statement("Simulink.BlockDiagram.arrangeSystem('"+M.getSimulinkModelName()+"');");r

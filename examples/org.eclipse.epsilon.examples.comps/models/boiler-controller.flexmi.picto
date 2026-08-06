@@ -1,0 +1,16 @@
+<?nsuri picto?>
+<picto template="platform:/resource/org.eclipse.epsilon.examples.comps/picto/comps.egx" standalone="true">
+	<view path="BoilerController (Vertical)" type="Application2Dot">
+		<parameter name="applicationName" value="BoilerController"/>
+		<patch format="graphviz-dot">
+			<content>
++{rank=same;TemperatureController;BoilerActuator}
+}
+			</content>
+		</patch>
+	</view>
+	<model type="EMF">
+		<parameter name="modelFile" file="boiler-controller.flexmi"/>
+		<parameter name="metamodelUri" value="http://eclipse.org/epsilon/examples/comps"/>
+	</model>
+</picto>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Cookbooks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="Cookbooks" xmi:id="_gFYsQLfuEeemCI3FYx2Bwg">
+  <cookbooks xmi:id="_g4MCMLfuEeemCI3FYx2Bwg" name="cb" description="desc" contents="_jeVlELfuEeemCI3FYx2Bwg _oGbKgLfuEeemCI3FYx2Bwg _tHOx8LfuEeemCI3FYx2Bwg"/>
+  <categories xmi:id="_ijJIILfuEeemCI3FYx2Bwg" name="myCat">
+    <recipes xmi:id="_jeVlELfuEeemCI3FYx2Bwg" name="A" description="d" dependencies="_oGbKgLfuEeemCI3FYx2Bwg" serves="2">
+      <instructions xmi:id="_gFlOoLfwEeeB8quVnPewUQ" name="is1">
+        <instruction>a</instruction>
+      </instructions>
+      <ingredients xmi:id="_Tr4HALfwEeeB8quVnPewUQ" name="i1" otherUnit="u"/>
+    </recipes>
+    <recipes xmi:id="_oGbKgLfuEeemCI3FYx2Bwg" name="B" description="d" dependencies="_tHOx8LfuEeemCI3FYx2Bwg" serves="1">
+      <instructions xmi:id="_h9l5ILfwEeeB8quVnPewUQ" name="is2">
+        <instruction>a</instruction>
+      </instructions>
+      <ingredients xmi:id="_cHjS0LfwEeeB8quVnPewUQ" name="i2" otherUnit="u"/>
+    </recipes>
+    <recipes xmi:id="_tHOx8LfuEeemCI3FYx2Bwg" name="C" description="d" dependencies="_jeVlELfuEeemCI3FYx2Bwg" serves="1">
+      <instructions xmi:id="_jBj3kLfwEeeB8quVnPewUQ" name="is3">
+        <instruction>a</instruction>
+      </instructions>
+      <ingredients xmi:id="_eZybMLfwEeeB8quVnPewUQ" name="i3" otherUnit="u"/>
+    </recipes>
+    <recipes xmi:id="_OwskELotEeewoaNfbUTiaQ" name="D" description="desc" dependencies="_oGbKgLfuEeemCI3FYx2Bwg _tHOx8LfuEeemCI3FYx2Bwg" serves="1">
+      <instructions xmi:id="_Wmn-gLotEeewoaNfbUTiaQ" name="is4">
+        <instruction>i</instruction>
+      </instructions>
+      <ingredients xmi:id="_VBw5gLotEeewoaNfbUTiaQ" name="i4" otherUnit="u"/>
+    </recipes>
+    <recipes xmi:id="_SP2ykLotEeewoaNfbUTiaQ" name="E" description="desc">
+      <instructions xmi:id="_aK-PALotEeewoaNfbUTiaQ" name="is5">
+        <instruction>i</instruction>
+      </instructions>
+      <ingredients xmi:id="_etL18LotEeewoaNfbUTiaQ" name="i5" otherUnit="u"/>
+    </recipes>
+  </categories>
+</Cookbooks>

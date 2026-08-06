@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_hiYToIJsEeaGC4oOeSyi5w" name="TestLang">
+  <packagedElement xmi:type="uml:Association" xmi:id="_XTM38IJuEeaGC4oOeSyi5w" name="declaredOperations" visibility="private" memberEnd="_XTSXgIJuEeaGC4oOeSyi5w _XTS-kIJuEeaGC4oOeSyi5w">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_XTPUMIJuEeaGC4oOeSyi5w" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_XTP7QIJuEeaGC4oOeSyi5w" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_XTS-kIJuEeaGC4oOeSyi5w" name="eolmodule" type="_z3C90IJsEeaGC4oOeSyi5w" association="_XTM38IJuEeaGC4oOeSyi5w"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_h0CkAIJvEeaGC4oOeSyi5w" name="IEolContext"/>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_pQG3gIJwEeaGC4oOeSyi5w" client="_jkOPkIJsEeaGC4oOeSyi5w" supplier="_Odiz8IJwEeaGC4oOeSyi5w"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_2i90sIJwEeaGC4oOeSyi5w" name="testlang.engine">
+    <packagedElement xmi:type="uml:Class" xmi:id="_jkOPkIJsEeaGC4oOeSyi5w" name="TestLangModule">
+      <generalization xmi:type="uml:Generalization" xmi:id="_7QYi4IJsEeaGC4oOeSyi5w" general="_z3C90IJsEeaGC4oOeSyi5w"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_BCuU8IJtEeaGC4oOeSyi5w" name="execute"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_DbVLEIJtEeaGC4oOeSyi5w" name="prepareContext" visibility="protected">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_p2TC4IJyEeaGC4oOeSyi5w" name="ctx" type="_h0CkAIJvEeaGC4oOeSyi5w"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Odiz8IJwEeaGC4oOeSyi5w" name="TestLangOperationContributor">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_Tud7AIJwEeaGC4oOeSyi5w" name="contributesTo">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_WP-OcIJwEeaGC4oOeSyi5w" name="o">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EJavaObject"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_YMPt4IJwEeaGC4oOeSyi5w" name="result" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_YsG5sIJwEeaGC4oOeSyi5w" name="areEqual">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_gCQA0IJwEeaGC4oOeSyi5w" name="a">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EJavaObject"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_hEsVQIJwEeaGC4oOeSyi5w" name="b">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EJavaObject"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_3uWCsIJwEeaGC4oOeSyi5w" name="eol.engine">
+    <packagedElement xmi:type="uml:Class" xmi:id="_z3C90IJsEeaGC4oOeSyi5w" name="EolModule">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_XTSXgIJuEeaGC4oOeSyi5w" name="operation" type="_VSQwYIJtEeaGC4oOeSyi5w" aggregation="composite" association="_XTM38IJuEeaGC4oOeSyi5w">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aezRQIJuEeaGC4oOeSyi5w"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ae1GcIJuEeaGC4oOeSyi5w" value="*"/>
+      </ownedAttribute>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_FEeTIIJtEeaGC4oOeSyi5w" name="getOperations">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_zdEiIIJtEeaGC4oOeSyi5w" name="ops" type="_VSQwYIJtEeaGC4oOeSyi5w" direction="return">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1JAfgIJtEeaGC4oOeSyi5w"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1JMswIJtEeaGC4oOeSyi5w" value="*"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_VSQwYIJtEeaGC4oOeSyi5w" name="Operation">
+      <generalization xmi:type="uml:Generalization" xmi:id="_NHGa4IJvEeaGC4oOeSyi5w" general="_IGY6EIJvEeaGC4oOeSyi5w"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_c_pdYIJuEeaGC4oOeSyi5w" name="getName">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_f23iIIJuEeaGC4oOeSyi5w" name="name" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_IGY6EIJvEeaGC4oOeSyi5w" name="AnnotatableModuleElement">
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_TVLGsIJvEeaGC4oOeSyi5w" name="hasAnnotation">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_XYIl0IJvEeaGC4oOeSyi5w" name="ann">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_Z935AIJvEeaGC4oOeSyi5w" name="result" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_Ubjf8IJvEeaGC4oOeSyi5w" name="getAnnotationValues">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_lwUMUIJvEeaGC4oOeSyi5w" name="ann">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_pbNJsIJvEeaGC4oOeSyi5w" name="result" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/EcorePrimitiveTypes.library.uml#EJavaObject"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7f1z0IJvEeaGC4oOeSyi5w"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7f-WsIJvEeaGC4oOeSyi5w" value="*"/>
+        </ownedParameter>
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_F7UUMIJwEeaGC4oOeSyi5w" name="ctx" type="_h0CkAIJvEeaGC4oOeSyi5w"/>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_AcySIIJ0EeaGC4oOeSyi5w" name="testlang.dt">
+    <packagedElement xmi:type="uml:Class" xmi:id="_N7_pQIJ0EeaGC4oOeSyi5w" name="NewTestLangWizard">
+      <generalization xmi:type="uml:Generalization" xmi:id="_hFAPkIJ2EeaGC4oOeSyi5w" general="_bAjrwIJ0EeaGC4oOeSyi5w"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_CMuJQIJ1EeaGC4oOeSyi5w" name="getTitle">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_4L-LIIJ2EeaGC4oOeSyi5w" name="ret" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_C3p8oIJ1EeaGC4oOeSyi5w" name="getExtension">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_54McYIJ2EeaGC4oOeSyi5w" name="ret" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_Dob5UIJ1EeaGC4oOeSyi5w" name="getDescription">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_9fXXYIJ2EeaGC4oOeSyi5w" name="ret" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_QHOxwIJ0EeaGC4oOeSyi5w" name="TestLangSourceConfigurationTab">
+      <generalization xmi:type="uml:Generalization" xmi:id="_iedV0IJ2EeaGC4oOeSyi5w" general="_i4NkgIJ0EeaGC4oOeSyi5w"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_GNxj4IJ1EeaGC4oOeSyi5w" name="getPlugin">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_Aq9UMIJ4EeaGC4oOeSyi5w" name="ret" type="_zDiHIIJ1EeaGC4oOeSyi5w" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_IX88cIJ1EeaGC4oOeSyi5w" name="getImagePath">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_DUeUIIJ4EeaGC4oOeSyi5w" name="ret" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_Jdlu0IJ1EeaGC4oOeSyi5w" name="getSelectionTitle">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_FIlWEIJ4EeaGC4oOeSyi5w" name="ret" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_SMRWMIJ1EeaGC4oOeSyi5w" name="getSelectionSubtitle">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_HBnUQIJ4EeaGC4oOeSyi5w" name="ret" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ThTr8IJ0EeaGC4oOeSyi5w" name="TestLangLaunchConfigurationDelegate">
+      <generalization xmi:type="uml:Generalization" xmi:id="_jHgS0IJ2EeaGC4oOeSyi5w" general="_fFYzIIJ0EeaGC4oOeSyi5w"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_WxX5EIJ1EeaGC4oOeSyi5w" name="createModule">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_K1Zu8IJ4EeaGC4oOeSyi5w" name="ret" type="_jkOPkIJsEeaGC4oOeSyi5w" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_VFBhcIJ0EeaGC4oOeSyi5w" name="TestLangLaunchConfigurationTabGroup">
+      <generalization xmi:type="uml:Generalization" xmi:id="_hqLZMIJ2EeaGC4oOeSyi5w" general="_hGyDIIJ0EeaGC4oOeSyi5w"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_Uzxj8IJ1EeaGC4oOeSyi5w" name="getSourceConfigurationTab"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_jjYzAIJ1EeaGC4oOeSyi5w" client="_VFBhcIJ0EeaGC4oOeSyi5w" supplier="_QHOxwIJ0EeaGC4oOeSyi5w"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_zDiHIIJ1EeaGC4oOeSyi5w" name="TestLangPlugin">
+      <generalization xmi:type="uml:Generalization" xmi:id="_gOEnkIJ2EeaGC4oOeSyi5w" general="_sZ0BIIJ1EeaGC4oOeSyi5w"/>
+      <ownedOperation xmi:type="uml:Operation" xmi:id="_3Wg_QIJ1EeaGC4oOeSyi5w" name="getDefault" isStatic="true">
+        <ownedParameter xmi:type="uml:Parameter" xmi:id="_1zB90IJ2EeaGC4oOeSyi5w" name="ret" type="_zDiHIIJ1EeaGC4oOeSyi5w" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Usage" xmi:id="_O4EIkIJ3EeaGC4oOeSyi5w" client="_ThTr8IJ0EeaGC4oOeSyi5w" supplier="_jkOPkIJsEeaGC4oOeSyi5w"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_BjsP0IJ0EeaGC4oOeSyi5w" name="eol.dt">
+    <packagedElement xmi:type="uml:Class" xmi:id="_fFYzIIJ0EeaGC4oOeSyi5w" name="EolLaunchConfigurationDelegate"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_CbdlUIJ0EeaGC4oOeSyi5w" name="common.dt">
+    <packagedElement xmi:type="uml:Class" xmi:id="_bAjrwIJ0EeaGC4oOeSyi5w" name="AbstractNewFileWizard2"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_hGyDIIJ0EeaGC4oOeSyi5w" name="EpsilonLaunchConfigurationTabGroup"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_i4NkgIJ0EeaGC4oOeSyi5w" name="AbstractSourceConfigurationTab"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_sZ0BIIJ1EeaGC4oOeSyi5w" name="AbstractEpsilonUIPlugin"/>
+  </packagedElement>
+</uml:Model>

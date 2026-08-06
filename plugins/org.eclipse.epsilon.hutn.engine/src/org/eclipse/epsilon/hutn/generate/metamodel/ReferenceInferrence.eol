@@ -1,0 +1,65 @@
+// Type Inferrence //
+
+operation Intermediate!Slot getEType() : MetaModel!EClass {
+	var types : Set := self.getSampleData().collect(s | s.getReferences()).flatten().collect(s | s.type).asSet();
+	
+	if (types.size = 1) {
+		return getEClass(types.first());
+		
+	} else {
+		// if there are multiple types then introduce a supertype for these types and return it
+		if (types.size > 1) {
+			var supertype := new MetaModel!EClass;
+			
+			supertype.name := self.owner.type + self.feature.firstToUpperCase();
+		
+			if (supertype.name.endsWith('s')) {
+				supertype.name := supertype.name.substring(0, supertype.name.length() - 1);
+			}
+		
+			self.owner.getPackage().equivalent().eClassifiers.add(supertype);
+			
+			types.forAll(t | MetaModel!EClass.allInstances().select(c | c.name = t).first().eSuperTypes.add(supertype));
+			
+			return supertype;
+		}
+	}
+}
+
+operation Intermediate!ReferenceSlot getReferences() : Sequence {
+	return self.identifiers.collect(i | Intermediate!ClassObject.allInstances.select(c | c.identifier = i).first());
+}
+
+operation Intermediate!ContainmentSlot getReferences() : Sequence {
+	return self.objects;
+}
+
+
+// Multiplicity Inferrence //
+
+operation Intermediate!Slot isMany() : Boolean {	
+	return self.getSampleData().exists(s | s.hasManyElements());	
+}
+
+operation Intermediate!ReferenceSlot hasManyElements() : Boolean {
+	return self.identifiers.size > 1;
+}
+
+operation Intermediate!ContainmentSlot hasManyElements() : Boolean {
+	return self.objects.size > 1;
+}
+
+
+// Utility //
+
+operation Intermediate!ClassObject getClassObjectsOfSameType() : Sequence {
+	return Intermediate!ClassObject.allInstances().select(c|c.type = self.type);
+}
+
+operation Intermediate!ReferenceSlot getSampleData() : Sequence {
+	return self.owner.getClassObjectsOfSameType().collect(o | o.slots.select(s : Intermediate!ReferenceSlot | s.feature = self.feature)).flatten();
+}
+
+operation Intermediate!ContainmentSlot getSampleData() : Sequence {
+	return self.owner.getClassObjectsOfSameType().collect(o | o.slots.select(s : Intermediate!ContainmentSlot | s.feature = self.feature)).flatten();
+}

@@ -1,0 +1,19 @@
+<?nsuri gsn?>
+<?render-egx gsn.egx?>
+<_>
+    <model>
+        <context name="TIS" desc="Tokeneer ID Station includes functions of biometric authentication and smartcards in a networked system requiering identification and authentication mechanisms"/>
+        <context name="Rets" desc="Requirements will be provided to Altran in the document from known as a Protection Profile"/>
+        <goal name="Top" desc="Development process of Tokeneer can show compliance to Common Criteria (CC) at EAL5" />
+        <contextOf source="Top" target="TIS"/>
+        <contextOf source="Top" target="Rets"/>
+        <supp source="Top" target="TwoAims"/>
+        <strat name="TwoAims" desc="a) Feasibility (does the process achieve 'good' software, and b) Cost-effectiveness (is it a cheaper approach?)" />
+        <goal name="G2" desc="The practicality/cost -effectiveness of the design process is demonstrated"/>
+        <supp source="TwoAims" target="G2"/>
+        <goal name="G1" desc="The development process shows compliance at EAL5 for the Tokeneer System"/>
+        <supp source="TwoAims" target="G1"/>
+        <strat name="Metrics" desc="Argument by collecting metrics to enable comparision to previous development"/>
+        <supp source="G2" target="Metrics"/>        
+    </model>
+</_>

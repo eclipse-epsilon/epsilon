@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.epsilon.emc.cdo.feature"
+      label="Epsilon CDO Model Support Feature"
+      version="2.9.0.qualifier"
+      provider-name="Eclipse Modeling Project"
+      license-feature="org.eclipse.license"
+      license-feature-version="0.0.0">
+
+   <description url="http://www.eclipse.org/epsilon">
+      This feature provides the Epsilon CDO model driver.
+   </description>
+
+   <copyright>
+      Copyright (c) 2022 The University of York.
+This program and the accompanying materials are made
+available under the terms of the Eclipse Public License 2.0
+which is available at https://www.eclipse.org/legal/epl-2.0
+   </copyright>
+
+   <plugin
+         id="org.eclipse.epsilon.emc.cdo"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

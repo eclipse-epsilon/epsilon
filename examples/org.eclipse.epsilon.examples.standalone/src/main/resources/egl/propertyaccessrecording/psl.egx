@@ -1,0 +1,8 @@
+rule Task2HTML
+	transform t : Task {
+	
+	guard: t.duration > 0
+	
+	template: "task2html.egl"
+	
+}

@@ -1,0 +1,18 @@
+# Eclipse Epsilon
+
+([%=M.root.stargazers_count%] stars, [%=M.root.watchers_count%] watchers, [%=M.root.forks_count%] forks)
+
+[%=M.root.description%]
+
+* Clone via HTTPS: [%=M.root.clone_url%]
+* Clone via SSH: [%=M.root.ssh_url%]
+
+## License
+
+Epsilon is licensed under the [[%=M.root.license.name%]]([%=M.root.license.url%]).
+
+## Topics
+
+[% for (topic in M.root.topics) {%]
+* [%=topic.ftuc()%]
+[% } %]

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.epsilon.ewl.dt.editor.EwlEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="ewl"
+            icon="icons/ewl.png"
+            id="org.eclipse.epsilon.ewl.dt.editor.EwlEditor"
+            name="Epsilon Wizard Language Editor"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.ewl.dt.wizards.NewEwlFileWizard"
+            icon="icons/ewl.png"
+            id="org.eclipse.epsilon.ewl.dt.wizards.NewEwlFileWizard"
+            name="EWL Wizards"/>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.tool">
+      <tool
+            class="org.eclipse.epsilon.ewl.EwlModule"
+            defaultName="module">
+      </tool>
+   </extension>
+
+</plugin>

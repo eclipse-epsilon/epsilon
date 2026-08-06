@@ -1,0 +1,8 @@
+<?nsuri picto?>
+<picto transformation="ecore.egx">
+	<model type="EMF">
+		<parameter name="name" value="M"/>
+		<parameter name="metamodelUri" value="http://www.eclipse.org/emf/2002/Ecore"/>
+		<parameter name="modelFile" file="socialnetwork.ecore"/>
+	</model>
+</picto>

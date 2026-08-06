@@ -1,0 +1,7 @@
+[%  
+for (class in Class.allInstances) {
+	var t : Template := TemplateFactory.load('OOClass2JavaClass.egl');
+	t.populate('class', class);
+	t.store(class.name + '_store.txt');
+}
+%]

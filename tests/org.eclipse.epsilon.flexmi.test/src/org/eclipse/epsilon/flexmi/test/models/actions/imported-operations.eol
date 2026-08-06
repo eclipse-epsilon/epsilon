@@ -1,0 +1,3 @@
+operation importedC4() {
+	return "C4";
+}

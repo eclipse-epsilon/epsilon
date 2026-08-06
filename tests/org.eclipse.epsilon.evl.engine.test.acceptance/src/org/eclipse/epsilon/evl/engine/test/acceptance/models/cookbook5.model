@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Cookbooks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="Cookbooks" xsi:schemaLocation="Cookbooks ../metamodels/cookbook.ecore" xmi:id="_uskMoKcYEeWvfZY4vlaTIQ">
+  <cookbooks xmi:id="_v8F60KcYEeWvfZY4vlaTIQ" name="cbk1" description="" contents="_wY3WYKcYEeWvfZY4vlaTIQ _xOYpIKcYEeWvfZY4vlaTIQ _xgj-QKcYEeWvfZY4vlaTIQ _yMKgAKcYEeWvfZY4vlaTIQ _ygB3MKcYEeWvfZY4vlaTIQ"/>
+  <categories xmi:id="_vnhZAKcYEeWvfZY4vlaTIQ" name="cat1">
+    <recipes xmi:id="_wY3WYKcYEeWvfZY4vlaTIQ" name="rcp1.1">
+      <instructions xmi:id="_9y4EcKcYEeWvfZY4vlaTIQ" name="ins1.1.1"/>
+    </recipes>
+    <recipes xmi:id="_xOYpIKcYEeWvfZY4vlaTIQ" name="rcp1.2">
+      <instructions xmi:id="_-QRyIKcYEeWvfZY4vlaTIQ" name="ins.12.1"/>
+    </recipes>
+    <recipes xmi:id="_xgj-QKcYEeWvfZY4vlaTIQ" name="rcp1.3">
+      <instructions xmi:id="_-rV9gKcYEeWvfZY4vlaTIQ" name="ins1.3.1"/>
+      <ingredients xmi:id="_61vysKcdEeWc8u6RgQEA3w" name="ing1.3.1" amount="131.0"/>
+    </recipes>
+    <recipes xmi:id="_yMKgAKcYEeWvfZY4vlaTIQ" name="rcp1.4">
+      <instructions xmi:id="__AJv4KcYEeWvfZY4vlaTIQ" name="ins1.4.1"/>
+      <ingredients xmi:id="_-mZZ0KcdEeWc8u6RgQEA3w" name="ing1.4.1" amount="141.0"/>
+    </recipes>
+    <recipes xmi:id="_ygB3MKcYEeWvfZY4vlaTIQ" name="rcp1.5">
+      <instructions xmi:id="__XjjQKcYEeWvfZY4vlaTIQ" name="ins1.5.1"/>
+      <ingredients xmi:id="_CMFHEKceEeWc8u6RgQEA3w" name="ing1.5.1" amount="151.0"/>
+    </recipes>
+  </categories>
+</Cookbooks>

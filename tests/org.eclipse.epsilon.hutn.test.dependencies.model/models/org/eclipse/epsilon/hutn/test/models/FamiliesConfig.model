@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<hutnConfig:Configuration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:hutnConfig="http://www.eclipse.org/gmt/epsilon/hutnConfig" xmi:id="_2ldP0b3zEdyxqupRGeR7-w">
+  <rules xsi:type="hutnConfig:IdentifierRule" xmi:id="_5SbzcL3zEdyxqupRGeR7-w" classifier="Family" attribute="id"/>
+  <rules xsi:type="hutnConfig:IdentifierRule" xmi:id="_9ydpEL3zEdyxqupRGeR7-w" classifier="Pet" attribute="name"/>
+  <rules xsi:type="hutnConfig:IdentifierRule" xmi:id="_IvDScL30EdyxqupRGeR7-w" classifier="Person" attribute="name"/>
+  <rules xsi:type="hutnConfig:DefaultValueRule" xmi:id="_90o2EMNTEdyHcPs8W9NUFw" classifier="Family" attribute="numberOfChildren" defaultValue="2"/>
+  <rules xsi:type="hutnConfig:DefaultValueRule" xmi:id="_M1uC4GlIEd22PJBmYJDHxA" classifier="Family" attribute="averageAge" defaultValue="23.2"/>
+</hutnConfig:Configuration>

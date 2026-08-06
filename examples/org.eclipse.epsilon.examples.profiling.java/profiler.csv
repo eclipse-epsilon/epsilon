@@ -1,0 +1,22 @@
+target;count;aggregate_ms;individual_ms
+example.eol;1;395;0
+EolModule (1:0);1;395;0
+StatementBlock (1:0);1;394;0
+ForStatement (1:0);1;394;0
+OperationCallExpression (1:10);1;6;6
+IntegerLiteral (1:10);1;0;0
+IntegerLiteral (1:15);1;0;0
+StatementBlock (1:21);100;388;0
+ForStatement (2:2);100;388;1
+OperationCallExpression (2:12);100;7;0
+IntegerLiteral (2:12);100;0;0
+IntegerLiteral (2:17);100;1;0
+StatementBlock (2:23);10000;361;0
+ExpressionStatement (3:4);10000;351;0
+OperationCallExpression (3:4);10000;343;31
+ExpressionInBrackets (3:4);10000;46;0
+PlusOperatorExpression (3:5);20000;59;0
+NameExpression (3:5);10000;4;0
+StringLiteral (3:9);10000;4;0
+NameExpression (3:16);10000;7;0
+StringLiteral (3:27);10000;5;0

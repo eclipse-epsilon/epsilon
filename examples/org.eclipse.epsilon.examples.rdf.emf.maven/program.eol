@@ -1,0 +1,7 @@
+for (t in Team.all) {
+    t.employees.name.println('Employees in the ' + t.name + ' team: ');
+}
+
+Employee.all
+  .name
+  .println('Names of all employees: ');

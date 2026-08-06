@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ASCII"?>
+<clone:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:clone="clone" xmi:id="_awQisS3DEd-aEPkJaaumnA">
+  <contents xmi:id="_bL-1YC3DEd-aEPkJaaumnA" name="a">
+    <details xmi:id="_iPCocC3DEd-aEPkJaaumnA" key="foo" value="bar"/>
+  </contents>
+  <contents xmi:id="_ca9J8C3DEd-aEPkJaaumnA" name="b">
+    <details xmi:id="_jedo8C3DEd-aEPkJaaumnA" key="bar" value="foo"/>
+  </contents>
+</clone:Model>

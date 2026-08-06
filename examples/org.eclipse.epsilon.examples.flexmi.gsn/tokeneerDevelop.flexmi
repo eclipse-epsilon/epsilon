@@ -1,0 +1,69 @@
+<?nsuri gsn?>
+<?render-egx gsn.egx?>
+<?import ccp.flexmi?>
+<_>
+    <model>
+        <context name="TIS" desc="Tokeneer ID Station includes functions of biometric authentication and smartcards in a networked system requiering identification and authentication mechanisms"/>
+        <context name="Rets" desc="Requirements will be provided to Altran in the document from known as a Protection Profile"/>
+        <goal name="Top" desc="Development process of Tokeneer can show compliance to Common Criteria (CC) at EAL5" />
+        <contextOf source="Top" target="TIS"/>
+        <contextOf source="Top" target="Rets"/>
+        <supp source="Top" target="TwoAims"/>
+        <strat name="TwoAims" desc="a) Feasibility b) Cost-effectiveness" />
+        <goal name="Demo" desc="The practicality/cost -effectiveness of the design process is demonstrated"/>
+        <supp source="TwoAims" target="Demo"/>
+        <supp source="TwoAims" target="G1"/>
+        <strat name="Metrics" desc="Argument by collecting metrics to enable comparision to previous development"/>
+        <supp source="Demo" target="Metrics"/>        
+        
+        <goal name="G1" desc="The development process shows compliance at EAL5 for the Tokeneer System"/>
+        
+		<!-- Use the pattern template -->
+		<compliance goal="G1" process="CbC" system="TIS">
+			
+		    <!-- Informal phases -->
+		    <informal-phase name="Security Target" document="S.P1229.40.1" 
+		    	standard="REQIF 1.2 Specification"/>
+		    <informal-phase name="Security Properties" document="S.P1229.40.4" 
+		    	standard="REQIF 1.2 Specification"/>
+		    <informal-phase name="INFORMED Design" document="S.P1229.50.2" 
+		    	standard="SPARK 2014 Specification"/>
+		    <informal-phase name="System Test Specification" 
+		    	document="S.P1229.63.1" standard="SPRE Test Script"/>    
+	        	
+	    	<!-- Formal phases -->
+	    	<formal-phase name="Formal Specification" spec="TIS Formal Specification (S.P1229.41.2)"> 
+	    		<activity name="Proof of Security Properties (Z)"/>
+	    		<activity name="Proof of Formal Specification (Z)"/>
+	    		<input name="Security Properties"/>
+	    		<input name="Formal Specification"/>
+	    		<evidence name="Proof of Security Properties (Z)"/>
+	    		<evidence name="Proof of Formal Specification (Z)"/>
+	    	</formal-phase>
+	    	
+	    	<formal-phase name="Formal Design" spec="TIS Formal Design (S.P1229.50.1)"> 
+		        <activity name="Refinement Proof of Formal Design (Z)"/>
+		        <input name="Formal Specification"/>
+		        <input name="Formal Design"/>
+		        <evidence name="Refinement Proof of Formal Design (Z)"/>
+	    	</formal-phase>
+	    	
+	    	<formal-phase name="SPARK Implementation" spec="ADA Source Code"> 
+		        <activity name="Proof of Security Properties (SPARK Proof)"/>
+		        <activity name="Proof of Functional Properties (SPARK Proof)"/>
+		        <activity name="Static Analysis"/>
+		        <activity name="System Test"/>
+		        <input name="Security Properties"/>
+		        <input name="Formal Design"/>
+		        <input name="SPARK Implementation"/>
+		        <input name="System Test Specification"/>    
+		        <evidence name="Static Analysis"/>
+		        <evidence name="System Test"/>
+		        <evidence name="Proof of Security Properties (SPARK Proof)"/>
+		        <evidence name="Proof of Functional Properties (SPARK Proof)"/>
+		    </formal-phase>
+	    	
+	    </compliance>
+        
+    </model>
+</_>

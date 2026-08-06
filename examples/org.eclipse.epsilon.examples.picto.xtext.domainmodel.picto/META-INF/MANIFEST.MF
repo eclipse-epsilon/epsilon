@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Picto
+Bundle-SymbolicName: org.eclipse.epsilon.examples.picto.xtext.domainmodel.picto;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.eclipse.epsilon.examples.picto.xtext.domainmodel.picto
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: org.eclipse.epsilon.picto,
+ org.eclipse.epsilon.examples.picto.xtext.domainmodel,
+ org.eclipse.epsilon.examples.picto.xtext.domainmodel.ide,
+ org.eclipse.epsilon.examples.picto.xtext.domainmodel.ui,
+ org.eclipse.xtext.ui,
+ org.eclipse.ui.ide

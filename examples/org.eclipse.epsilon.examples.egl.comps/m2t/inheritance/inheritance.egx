@@ -1,0 +1,19 @@
+rule Model2Class 
+	transform m : Model {
+
+	template : "../common/model2class.egl"
+
+	parameters : Map{"package"="inheritance"}
+
+	target : "src-gen-inheritance/inheritance/" + m.name + ".java"
+	
+}
+
+rule Component2Class 
+	transform c : Component {
+
+	template : "inheritance-component2class.egl"
+	
+	target : "src-gen-inheritance/inheritance/" + c.name + "Base.java"
+	
+}

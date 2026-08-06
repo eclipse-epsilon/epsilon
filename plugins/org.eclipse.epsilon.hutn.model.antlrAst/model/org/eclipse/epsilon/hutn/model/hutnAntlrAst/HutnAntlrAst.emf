@@ -1,0 +1,35 @@
+@namespace(uri="http://www.eclipse.org/gmt/epsilon/hutnAntlrAst", prefix="hutnAntlrAst")
+package hutnAntlrAst;
+
+import "platform:/resource/org.eclipse.epsilon.hutn.model.antlrAst/model/org/eclipse/epsilon/hutn/model/hutnAntlrAst/AntlrAst.ecore";
+
+class AdjectiveNode extends antlrAst.Node {
+}
+
+class TextualValueNode extends antlrAst.Node {
+}
+
+class NumericValueNode extends antlrAst.Node {
+}
+
+class NameNode extends antlrAst.Node {
+}
+
+class NullNode extends antlrAst.Node {
+}
+
+class TrueNode extends antlrAst.Node {
+}
+
+class FalseNode extends antlrAst.Node {
+}
+
+class ReferenceNode extends antlrAst.Node {
+}
+
+class ClassifierLevelAttributeNode extends antlrAst.Node {
+}
+
+class AssociationInstanceNode extends antlrAst.Node {
+}
+

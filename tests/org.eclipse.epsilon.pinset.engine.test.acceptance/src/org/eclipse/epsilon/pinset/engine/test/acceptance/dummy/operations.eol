@@ -1,0 +1,3 @@
+operation triple(number) {
+	return number * 3;
+}

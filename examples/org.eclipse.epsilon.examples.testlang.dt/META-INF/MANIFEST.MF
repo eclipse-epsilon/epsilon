@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Annotation-based test language example (dev tools)
+Bundle-SymbolicName: org.eclipse.epsilon.examples.testlang.dt;singleton:=true
+Bundle-Version: 1.5.0.qualifier
+Bundle-Vendor: Eclipse.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.epsilon.common.dt,
+ org.eclipse.epsilon.eol.dt,
+ org.eclipse.epsilon.examples.testlang.engine,
+ org.eclipse.jface.text
+Bundle-Activator: org.eclipse.epsilon.examples.testlang.dt.TestLangPlugin
+Bundle-ActivationPolicy: lazy

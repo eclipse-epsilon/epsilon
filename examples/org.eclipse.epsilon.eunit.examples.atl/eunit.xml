@@ -1,0 +1,60 @@
+<project default="run-tests">
+
+	<property name="metamodels.location" location="${basedir}/metamodels" />
+	<property name="elements.metamodel.location" location="${metamodels.location}/elements.ecore" />
+	<property name="graph.metamodel.location" location="${metamodels.location}/graph.ecore" />
+	<property name="tree.metamodel.location" location="${metamodels.location}/tree.ecore" />
+	<property name="graph.metamodel.uri" value="Graph" />
+	<property name="tree.metamodel.uri" value="Tree" />
+
+	<target name="run-tests">
+		<!--
+		 Note: when comparing models with EUnit, avoid using metamodelfile in the epsilon.emf.loadModel task!
+		 It will result in each model having a different EPackage instance, producing unwanted differences
+		 in assertEqualModels.
+		 -->
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.emf.register file="${tree.metamodel.location}"/>
+
+		<epsilon.eunit src="tests/atl.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel
+					name="Tree" modelfile="models/tree.model"
+					metamodeluri="${tree.metamodel.uri}" read="true" store="false" />
+				<epsilon.emf.loadModel
+					name="GraphExpected" modelfile="models/graph-expected.model"
+					metamodeluri="${graph.metamodel.uri}" read="true" store="false" />
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="atl">
+		<!-- Create temporary files for input and output models -->
+		<tempfile property="atl.temp.srcfile" />
+		<tempfile property="atl.temp.dstfile" />
+
+		<!-- Save input model to a file -->
+		<epsilon.storeModel model="Tree" targetfile="${atl.temp.srcfile}" />
+
+		<!-- Load the metamodels and the source model -->
+		<atl.loadModel name="TreeMM"  metamodel="MOF" path="metamodels/tree.ecore" />
+		<atl.loadModel name="GraphMM" metamodel="MOF" path="metamodels/graph.ecore" />
+		<atl.loadModel name="Tree"    metamodel="TreeMM" path="${atl.temp.srcfile}" />
+
+		<!-- Run ATL and save the model -->
+		<atl.launch path="transformation/tree2graph.atl">
+			<inmodel name="IN"   model="Tree" />
+			<outmodel name="OUT" model="Graph" metamodel="GraphMM" />
+		</atl.launch>
+                <!-- derived="true" (the default) fails on a headless build -->
+		<atl.saveModel model="Graph" path="${atl.temp.dstfile}" derived="false" />
+
+		<!-- Load it back into the EUnit suite -->
+		<epsilon.emf.loadModel name="Graph"
+			modelfile="${atl.temp.dstfile}" metamodeluri="${graph.metamodel.uri}" read="true" store="false" />
+
+		<!-- Delete temporary files -->
+		<delete file="${atl.temp.srcfile}" />
+		<delete file="${atl.temp.dstfile}" />
+	</target>
+</project>

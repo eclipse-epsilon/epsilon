@@ -1,0 +1,9 @@
+@parallel
+rule Tree2Txt
+	transform t : Tree {
+	
+	template : eglTemplateFileName
+	
+	target : t.label + ".txt"
+	
+}

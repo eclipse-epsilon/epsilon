@@ -1,0 +1,35 @@
+[%
+	TemplateFactory.setOutputRoot(outputDir + "/" + metaModelName);
+
+	var t : Template = TemplateFactory.load("html/Page.egl");
+	
+	t.run("index.html", metaModelName, null, null);
+
+	for (package in EPackage.allInstances()) {
+		t.run(package.filename(), metaModelName, package, null);
+		
+		for (classifier in package.getEClassifiers()) { 
+			t.run(classifier.filename(), metaModelName, package, classifier);
+		}
+	}
+	
+	operation Template run(filename : String, metaModelName : String, 
+		package : EPackage, classifier : EClassifier) {
+		var t : Template = TemplateFactory.load("html/Page.egl");
+		
+		t.populate("metaModelName", metaModelName);
+		t.populate("package",       package);
+		t.populate("classifier",    classifier);
+		
+		t.generate(filename);
+	}
+	
+	operation EPackage filename() : String {
+		return self.name + "-package-index.html";
+	}
+
+	operation EClassifier filename() : String {
+		return self.ePackage.name + "-" + self.name + ".html";
+	}
+
+ %]

@@ -1,0 +1,42 @@
+var library = new t_library;
+XMLDoc.root = library;
+
+library.createBook("EMF Eclipse Modeling Framework", 
+	List{"Dave Steinberg", "Frank Budinsky", 
+		"Marcelo Paternostro", "Ed Merks"}, 
+	744, 2009);
+
+library.createBook("Eclipse Modeling Project: " + 
+	"A Domain-Specific Language (DSL) Toolkit", 
+		List{"Richard Gronback"}, 736, 2009);
+
+library.createBook("Official Eclipse 3.0 FAQs", 
+	List{"John Arthorne", "Chris Laffra"}, 432, 2004);
+
+operation Element createBook(title : String, authors : List(String), 
+	pages : Integer, published : Integer) {
+
+	// Create a new book element
+	var book = new t_book;
+	
+	// Set its title
+	book.a_title = title;
+	
+	// Set its pages
+	book.i_pages = pages;
+	
+	// Create its author children
+	for (author in authors) {
+		var authorElement = new t_author;
+		authorElement.text = author;
+		book.appendChild(authorElement);
+	}
+	
+	// Create its published child
+	var publishedElement = new t_published;
+	publishedElement.text = published;
+	
+	// Add the book as a child
+	self.appendChild(book);
+
+}

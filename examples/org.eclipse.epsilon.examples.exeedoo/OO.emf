@@ -1,0 +1,140 @@
+@namespace(uri="OO", prefix="")
+package OO;
+
+@exeed(classIcon="model")
+class Model extends Package {
+}
+
+@exeed(referenceLabel="
+var str : String;
+str = self.closure(pe:PackageableElement|pe.package).collect(p|p.name).invert().concat('.');
+if (self.package.isDefined()){
+	str = str + '.';
+}
+str = str + self.name;
+return str;
+")
+abstract class PackageableElement extends NamedElement {
+  !ordered ref Package[1]#contents ~package;
+}
+
+abstract class AnnotatedElement {
+  !ordered val Annotation[*] annotations;
+}
+
+@exeed(label="return self.key + ' -> ' + self.value;", classIcon="annotation")
+class Annotation {
+  !unique !ordered attr String[1] key;
+  !unique !ordered attr String[1] value;
+}
+
+@exeed(label="return self.name;")
+abstract class NamedElement extends AnnotatedElement {
+  !unique !ordered attr String[1] name;
+}
+
+@exeed(classIcon="platform:/resource/org.eclipse.epsilon.examples.exeedoo/icons/package.gif", label="return self.name;")
+class Package extends PackageableElement {
+  !ordered val PackageableElement[*]#~package contents;
+  ref Package[*] uses;
+}
+
+abstract class Classifier extends PackageableElement {
+}
+
+class ExternalClass extends Class {
+}
+
+@exeed(classIcon="class", label="
+var label : String;
+label = self.name;
+if (self.extends.isDefined()){
+	label = label + ' extends ' + self.extends.name;
+}
+return label;
+")
+class Class extends Classifier {
+  !ordered ref Class[1]#extendedBy ~extends;
+  !ordered ref Class[*]#~extends extendedBy;
+  !ordered val Feature[*]#owner features;
+  !unique !ordered attr Boolean[1] isAbstract;
+}
+
+@exeed(classIcon="datatype")
+class Datatype extends Classifier {
+}
+
+abstract class Feature extends NamedElement {
+  !ordered ref Class[1]#features owner;
+  !ordered ref Classifier[1] type;
+  !unique !ordered attr VisibilityEnum[1] visibility;
+}
+
+@exeed(label="
+var label : String;
+label = self.name;
+if (self.type.isDefined()){
+	if (self.isMany) {
+		label = label + ' [*]';
+	}
+	label = label + '  : ' + self.type.name;
+}
+return label;", 
+icon="
+if (self.visibility = VisibilityEnum#private) {
+	return 'private';
+}
+else {
+	return 'public';
+}
+")
+abstract class StructuralFeature extends Feature {
+  !unique !ordered attr Boolean[1] isMany;
+}
+
+@exeed(label="
+var label : String;
+label = self.name + ' (';
+for (p in self.parameters) {
+	label = label + p.name;
+	if (p.type.isDefined()) {
+		label = label + ' : ' + p.type.name;
+	}
+	if (hasMore) {
+		label = label + ', ';
+	}
+}
+label = label + ')';
+if (self.type.isDefined()) {
+	label = label + ' : ' + self.type.name;
+}
+return label;
+", classIcon="operation")
+class Operation extends Feature {
+  !ordered val Parameter[*]#owner parameters;
+}
+
+@exeed(label="
+var label : String;
+label = self.name;
+if (self.type.isDefined()){
+	label = label + ' : ' + self.type.name;
+}
+return label;
+", classIcon="parameter")
+class Parameter extends NamedElement {
+  !ordered ref Classifier[1] type;
+  !ordered ref Operation[1]#parameters owner;
+}
+
+class Reference extends StructuralFeature {
+}
+
+class Attribute extends StructuralFeature {
+}
+
+enum VisibilityEnum {
+  public = 1;
+  private = 2;
+}
+

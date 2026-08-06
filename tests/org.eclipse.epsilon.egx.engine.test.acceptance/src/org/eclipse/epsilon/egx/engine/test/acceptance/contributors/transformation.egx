@@ -1,0 +1,18 @@
+pre {
+	simpleOperation(10).println();
+}
+
+// For EgxParallelAnnotation
+@parallel true
+rule TransformationRule 
+
+	transform number in: 1.to(5) {
+	
+	template: "rule.egl"
+	
+	target: "gen/number" + number + ".txt" 
+}
+
+post {
+	simpleOperation(20).println();
+}

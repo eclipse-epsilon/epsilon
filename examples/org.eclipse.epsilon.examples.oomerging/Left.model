@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SimpleOO:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:SimpleOO="SimpleOO" xmi:id="_QlsRYPQUEdya9usFINTSNQ" name="m1">
+  <contents xmi:id="_R0g08PQUEdya9usFINTSNQ" name="c1" isAbstract="true"/>
+  <contents xmi:id="_S2YhoPQUEdya9usFINTSNQ" name="c2" isAbstract="true"/>
+  <contents xmi:id="_UX-3QPQUEdya9usFINTSNQ" name="c4" isAbstract="false"/>
+</SimpleOO:Model>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="ASCII"?>
+<SimpleTrace:Trace xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:SimpleTrace="SimpleTrace">
+  <links description="Transformed by Class2Table">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.0"/>
+    <targets href="DBInstance.model#//@contents.0"/>
+    <targets href="DBInstance.model#//@contents.0/@columns.0"/>
+  </links>
+  <links description="Transformed by Class2Table">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.1"/>
+    <targets href="DBInstance.model#//@contents.1"/>
+    <targets href="DBInstance.model#//@contents.1/@columns.0"/>
+  </links>
+  <links description="Transformed by Class2Table">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.2"/>
+    <targets href="DBInstance.model#//@contents.2"/>
+    <targets href="DBInstance.model#//@contents.2/@columns.0"/>
+  </links>
+  <links description="Transformed by Class2Table">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.3"/>
+    <targets href="DBInstance.model#//@contents.4"/>
+    <targets href="DBInstance.model#//@contents.4/@columns.0"/>
+  </links>
+  <links description="Transformed by Class2Table">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.4"/>
+    <targets href="DBInstance.model#//@contents.6"/>
+    <targets href="DBInstance.model#//@contents.6/@columns.0"/>
+  </links>
+  <links description="Transformed by Class2Table">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.7"/>
+    <targets href="DBInstance.model#//@contents.8"/>
+    <targets href="DBInstance.model#//@contents.8/@columns.0"/>
+  </links>
+  <links description="Transformed by SingleValuedAttribute2Column">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.0/@features.0"/>
+    <targets href="DBInstance.model#//@contents.0/@columns.1"/>
+  </links>
+  <links description="Transformed by SingleValuedAttribute2Column">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.1/@features.0"/>
+    <targets href="DBInstance.model#//@contents.1/@columns.2"/>
+  </links>
+  <links description="Transformed by SingleValuedAttribute2Column">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.2/@features.0"/>
+    <targets href="DBInstance.model#//@contents.2/@columns.1"/>
+  </links>
+  <links description="Transformed by SingleValuedAttribute2Column">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.3/@features.0"/>
+    <targets href="DBInstance.model#//@contents.4/@columns.2"/>
+  </links>
+  <links description="Transformed by MultiValuedAttribute2Table">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.0/@features.2"/>
+    <targets href="DBInstance.model#//@contents.9"/>
+    <targets href="DBInstance.model#//@contents.9/@columns.0"/>
+    <targets href="DBInstance.model#//@contents.9/@columns.1"/>
+    <targets href="DBInstance.model#//@contents.0/@columns.2"/>
+    <targets href="DBInstance.model#//@contents.10"/>
+  </links>
+  <links description="Transformed by Reference2ForeignKey">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.0/@features.1"/>
+    <targets href="DBInstance.model#//@contents.11"/>
+    <targets href="DBInstance.model#//@contents.1/@columns.3"/>
+  </links>
+  <links description="Transformed by Reference2ForeignKey">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.4/@features.0"/>
+    <targets href="DBInstance.model#//@contents.12"/>
+    <targets href="DBInstance.model#//@contents.8/@columns.1"/>
+  </links>
+  <links description="Transformed by Reference2ForeignKey">
+    <sources href="OOInstance.model#//@contents.0/@contents.0/@contents.7/@features.0"/>
+    <targets href="DBInstance.model#//@contents.13"/>
+    <targets href="DBInstance.model#//@contents.1/@columns.4"/>
+  </links>
+</SimpleTrace:Trace>

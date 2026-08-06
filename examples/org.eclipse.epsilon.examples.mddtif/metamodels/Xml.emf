@@ -1,0 +1,25 @@
+package Xml;
+
+class Document {
+  val Element rootElement;
+}
+
+abstract class Content {
+  ref Element#contents parent;
+}
+
+class Element extends Content {
+  attr String name;
+  val Content[*]#parent contents;
+  val Attribute[*] attributes;
+}
+
+class Text extends Content {
+  attr String cdata;
+}
+
+class Attribute {
+  attr String name;
+  attr String value;
+}
+

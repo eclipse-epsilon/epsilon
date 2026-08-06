@@ -1,0 +1,1 @@
+Before you open twitter.flexmi, please right-click on services.ecore and click on "Register EPackages"

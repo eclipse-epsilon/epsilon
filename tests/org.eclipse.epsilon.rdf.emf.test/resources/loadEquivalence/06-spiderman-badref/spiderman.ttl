@@ -1,0 +1,23 @@
+# Adapted sample Turtle document from the W3C: https://www.w3.org/TR/turtle/#sec-intro
+
+@base <http://example.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spid: <http://eclipse.org/epsilon/people#> .
+@prefix rel: <http://www.perceive.net/schemas/relationship/> .
+@prefix story: <http://eclipse.org/epsilon/story#> .
+
+# Note: this test is to ensure that references to missing elements do not produce
+# "the no null constraint is violated" errors during deserialisation.
+
+<#spiderman>
+    spid:enemyOf ( <#green-goblin> );
+    a spid:Person ;
+    spid:name "Spiderman" ;
+    story:characterType "Hero" .
+
+<#captain>
+    a spid:Person ;
+    story:friendOf <#spiderman> ;
+    spid:name "Captain America" ;
+    story:characterType "Hero" .

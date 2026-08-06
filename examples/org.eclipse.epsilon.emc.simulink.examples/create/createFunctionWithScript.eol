@@ -1,0 +1,32 @@
+var multiply = new `simulink/User-Defined Functions/MATLAB Function`;
+assert(SubSystem.all.size() = 1);
+
+multiply.name = "Multiply";
+assert(multiply.name = "Multiply");
+
+multiply.script = "function y = fcn(x) \\n y = 2 * x;";
+assert(multiply.script = "function y = fcn(x) \n y = 2 * x;");
+
+multiply.position = "[100 100 180 160]";
+assert(multiply.position.at(0) = 100);
+assert(multiply.position.at(1) = 100);
+assert(multiply.position.at(2) = 180);
+assert(multiply.position.at(3) = 160);
+
+var divide = new `simulink/User-Defined Functions/MATLAB Function`;
+assert(SubSystem.all.size() = 2);
+
+divide.name = "Divide";
+assert(divide.name = "Divide");
+
+divide.script = "function x = fcn(y) \\n x = y / 2;";
+assert(divide.script = "function x = fcn(y) \n x = y / 2;");
+
+divide.position = "[250 100 330 160]";
+assert(divide.position.at(0) = 250);
+assert(divide.position.at(1) = 100);
+assert(divide.position.at(2) = 330);
+assert(divide.position.at(3) = 160);
+
+multiply.link(divide);//TODO assert
+

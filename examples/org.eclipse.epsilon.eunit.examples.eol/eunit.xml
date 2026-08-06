@@ -1,0 +1,5 @@
+<project>
+	<target name="run-tests">
+		<epsilon.eunit src="tests.eunit"/>
+	</target>
+</project>

@@ -1,0 +1,34 @@
+$with Map {"M" = "Tree"}
+$with Map {"M" = "GraphExpected"}
+$with Map {"M" = "GraphDifferent"}
+@test
+operation sameModelsAreEqual() {
+  assertEqualModels("M", "M");
+}
+
+$with Map {"A" = "Tree", "B" = "GraphDifferent"}
+$with Map {"A" = "GraphDifferent", "B" = "Tree"}
+@test
+operation modelsFromDifferentMetamodelsAreDifferent() {
+  assertNotEqualModels("A", "B");
+}
+
+@test
+operation modelsWithDifferentContentAreDifferent() {
+  assertNotEqualModels("GraphExpected", "GraphDifferent");
+}
+
+@test
+operation modelsWithDifferentContentAreDifferentFailing() {
+  assertEqualModels("GraphExpected", "GraphDifferent");
+}
+
+@test
+operation transformedIsEqualToExpected() {
+  assertEqualModels("GraphExpected", "Graph");
+}
+
+@test
+operation transformedIsEqualToExpectedFailing() {
+  assertNotEqualModels("GraphExpected", "Graph");
+}

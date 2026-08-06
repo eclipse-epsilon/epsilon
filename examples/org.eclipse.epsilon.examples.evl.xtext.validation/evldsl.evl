@@ -1,0 +1,21 @@
+context Greeting {
+	
+	constraint OnlyWorld {
+		
+		check : self.name == "World"
+		
+		message : "Was expecting World but found " + self.name + " instead"
+		
+		fix {
+		
+			title : "Change to World"
+			
+			do {
+				self.name = "World";
+			}
+			
+		}
+		
+	}
+
+}

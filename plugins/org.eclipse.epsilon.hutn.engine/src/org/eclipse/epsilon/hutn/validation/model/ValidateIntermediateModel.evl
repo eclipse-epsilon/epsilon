@@ -1,0 +1,234 @@
+pre {
+	var EmfTool := new Native('org.eclipse.epsilon.emc.emf.tools.EmfTool');
+}
+
+context Object {	
+	constraint IdentifiersMustBeUnique {
+		guard: self.identifier.isDefined()
+		check: self.identifier.isUniqueIdentifier()
+		message: 'Duplicate identifier: ' + self.identifier
+	}
+}
+
+context ClassObject {
+	constraint ClassifierMustExist {
+		guard: hasSpecificMetamodel()
+		check: self.hasEClass() or Metamodel!EClassifier.allInstances().select(c|c.name = self.type).size() = 1
+		message: 'Unrecognised classifier: ' + self.type
+	}
+	
+	constraint ClassifierMustBeClass {
+		guard: self.satisfies('ClassifierMustExist')
+		check: self.hasEClass()
+		message: 'Cannot instantiate the enumeration or data type: ' + self.type
+	}
+	
+	constraint ClassMustNotBeAbstract {
+		guard: self.satisfies('ClassifierMustBeClass')
+		check: not self.toClass().isAbstract()
+		message: 'Cannot instantiate the abstract class: ' + self.type
+	}
+	
+	constraint ClassMustSpecifyRequiredReferences {
+		guard: self.satisfies('ClassMustNotBeAbstract')
+		check: self.getAllReferencesThatRequireAValueButDontHaveOne().isEmpty() 
+		message: self.identifier + ' must specify a value for the following reference features: ' + self.getAllReferencesThatRequireAValueButDontHaveOne().collect(f|f.name).toString()
+		
+		fix {
+			title : 'Infer empty instances'
+			do {
+				for (reference in self.getAllReferencesThatRequireAValueButDontHaveOne()) {
+					// An instance can be inferred if no values are required	
+					if (reference.aValueCanBeInferred()) {
+						var instance := new Intermediate!ClassObject;
+						instance.type := reference.eType.name;
+						
+						var slot := new Intermediate!ContainmentSlot;
+						slot.feature := reference.name;
+						slot.values.add(instance);
+						
+						self.slots.add(slot);
+					}
+				}
+			}
+		}
+	}
+}
+
+context Slot {
+	constraint FeatureMustExist {
+		guard: hasSpecificMetamodel() and self.owner.isTypeOf(ClassObject) and self.owner.toClass().isDefined() and self.feature.isDefined() 
+		check: self.owner.toClass().eAllStructuralFeatures.select(c|c.name = self.feature).size() = 1
+		message: 'Unrecognised feature: ' + self.feature
+	}
+	
+	constraint FeatureMustBeChangeable {
+		guard: self.satisfies('FeatureMustExist')
+		check: self.getEStructuralFeature().changeable
+		message: 'Feature ' + self.getEStructuralFeature().name + ' is not changeable'
+	}
+	
+	constraint MustBeTypeCompatibleWithFeature {
+		guard: self.satisfies('FeatureMustExist')
+		check: self.typeCompatibleWith(self.getEStructuralFeature())
+		message: 'Expected ' + self.getEStructuralFeature().eType.name + ' for: ' + self.feature
+	}
+	
+	constraint SingleValuedFeatureCannotTakeMultipleValues {
+		guard: self.satisfies('FeatureMustExist')
+		check: self.getEStructuralFeature().isMany() or self.values.size = 1
+		message: 'Multiple values not permitted for: ' + self.feature
+	}
+}
+
+context ReferenceSlot {
+	constraint FeatureMustBeReference {
+		guard: self.satisfies('MustBeTypeCompatibleWithFeature')
+		check: not self.getEStructuralFeature().isContainment
+		message: 'A reference value was specified for the containment feature ' +
+		         self.owner.type + '#' + self.feature + '.'
+	}
+
+	constraint ReferencedIdentifiersMustExist {
+		guard: self.satisfies('FeatureMustBeReference')
+		check: self.values.forAll(i|i.isRecognisedIdentifier())
+		message: self.values.selectOne(i|not i.isRecognisedIdentifier()).getMessage()
+				 
+	}
+}
+
+context ContainmentSlot {
+	constraint FeatureMustBeContainment {
+		guard: self.satisfies('MustBeTypeCompatibleWithFeature')
+		check: self.getEStructuralFeature().isContainment
+		message: 'A contained object was specified for the non-containment feature ' +
+		         self.owner.type + '#' + self.feature + '.'
+	}
+}
+
+operation hasSpecificMetamodel() : Boolean {
+	return Spec.allInstances().at(0).nsUris.notEmpty();
+}
+
+operation String isUniqueIdentifier() : Boolean {
+	return ClassObject.allInstances().select(c|c.identifier = self).size() = 1;
+}
+
+operation String isRecognisedIdentifier() : Boolean {
+	if ('#'.isSubstringOf(self)) {	
+		return self.canLocateExternalModel() and self.canLocateExternalModelElement();
+
+	} else {
+		return self.isUniqueIdentifier();
+	}
+}
+
+operation String getMessage() : String {
+	if ('#'.isSubstringOf(self)) {
+		if (not self.canLocateExternalModel()) {
+			return 'Model not found: ' + self.split('#').first();
+		}
+		
+		return 'Model element not found: ' + self.split('#').last();
+	
+	} else {
+		return 'Unrecognised identifier: ' + self;
+	}
+}
+
+operation String canLocateExternalModel() : Boolean {
+	return EmfTool.resourceExists(self.split('#').first());
+}
+
+operation String canLocateExternalModelElement() : Boolean {
+	return EmfTool.modelElementExists(self);
+}
+
+operation String toClass() {
+	if ('#'.isSubstringOf(self)) {
+		// External object reference, locate in external model
+
+		var object := EmfTool.getEObject(self);
+		
+		if (object.isDefined()) {
+			return object.eClass();
+		}
+	
+	} else {
+		// Internal object reference, located in current model
+
+		var object := ClassObject.allInstances().selectOne(c|c.identifier = self);
+	
+		if (object.isDefined()) {
+			return object.toClass();
+		}
+	}
+}
+
+operation ClassObject toClass() {
+	return self.getEClass();
+} 
+
+operation Intermediate!EClass getAllClassObjects() : Collection(ClassObject) {
+	return ClassObject.all.select(c|c.hasEClass() and c.getEClass().name = self.name);
+}
+
+operation Intermediate!EClass getAllFeaturesThatRequireAValue() : OrderedSet(EReference) {
+	return self.eAllStructuralFeatures.select(f|f.lowerBound > 0 and f.changeable and not f.transient);
+}
+
+operation Intermediate!EClass getAllReferencesThatRequireAValue() : OrderedSet(EReference) {
+	return self.eAllReferences.select(f|f.lowerBound > 0 and f.changeable and not f.transient);
+}
+
+operation Metamodel!EClass getAllClassObjects() : Collection(ClassObject) {
+	return ClassObject.all.select(c|c.hasEClass() and c.getEClass().name = self.name);
+}
+
+operation Metamodel!EClass getAllFeaturesThatRequireAValue() : OrderedSet(EReference) {
+	return self.eAllStructuralFeatures.select(f|f.lowerBound > 0 and f.changeable and not f.transient);
+}
+
+operation Metamodel!EClass getAllReferencesThatRequireAValue() : OrderedSet(EReference) {
+	return self.eAllReferences.select(f|f.lowerBound > 0 and f.changeable and not f.transient);
+}
+
+operation Metamodel!EReference hasOppositeReferencing(classObject : ClassObject) : Boolean {
+	if (self.eOpposite.isDefined()) {
+		for (class in self.eType.getAllClassObjects()) {
+			var slot := class.findSlot(self.eOpposite.name);
+			
+			if (slot.isDefined()) {
+				if (slot.isKindOf(ReferenceSlot) and slot.values.includes(classObject.identifier)) {
+					return true;
+					
+				} else if (slot.classObjects.includes(classObject)) {
+					return true;
+				}
+			
+			} 
+		}
+	}
+	
+	return false;
+}
+
+operation ClassObject getAllReferencesThatRequireAValueButDontHaveOne() : OrderedSet(EReference) {
+    return self.toClass().getAllReferencesThatRequireAValue().reject(r|self.slots.exists(s|s.feature = r.name) or r.hasOppositeReferencing(self));
+}
+
+operation Metamodel!EReference aValueCanBeInferred() : Boolean {
+	return self.isContainment and self.eType.getAllFeaturesThatRequireAValue().isEmpty();
+}
+
+
+operation Sequence toString() : String {
+	var result : String := '';
+
+	for (element in self) {
+		result := result + element.toString();
+		if (hasMore) { result := result + ', '; }
+	}
+	
+	return result;
+}

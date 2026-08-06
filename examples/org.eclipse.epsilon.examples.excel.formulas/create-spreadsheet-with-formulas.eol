@@ -1,0 +1,6 @@
+var calc : new Calc;
+calc.a = 1;
+calc.b = 2;
+calc.sum = "=A2+B2";
+
+calc.sum.println(); // Prints 3

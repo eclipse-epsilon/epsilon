@@ -1,0 +1,15 @@
+<?nsuri rl?>
+<?render-egx platform:/plugin/org.eclipse.epsilon.examples.picto.relativepaths/m2t/rl.egx?>
+<_>
+	<req id="R1">
+		<desc>
+		<![CDATA[
+# Relative image paths
+If everything works well, you should see numbers 1 and 2 below.
+
+![](1.png)
+![](2.png)
+		]]>
+		</desc>
+	</req>
+</_>

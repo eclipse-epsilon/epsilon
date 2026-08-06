@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ContentTypes SYSTEM "http://www.epsilon.org/egl/ContentTypes.dtd">
+
+<ContentTypes>
+	<ContentType name="Java">
+		<CommentStyle startsWith="//" />
+		<CommentStyle startsWith="/*" endsWith="*/" />
+	</ContentType>
+	
+	<ContentType name="HTML">
+		<CommentStyle startsWith="&lt;!--" endsWith="--&gt;"/>
+	</ContentType>
+
+	<ContentType name="VisualBasic">
+		<CommentStyle startsWith="&apos;" />
+	</ContentType>
+	
+	<ContentType name="EGL">
+		<CommentStyle startsWith="--" />
+	</ContentType>
+	
+	<ContentType name="Perl">
+		<CommentStyle startsWith="#" />
+	</ContentType>
+</ContentTypes>

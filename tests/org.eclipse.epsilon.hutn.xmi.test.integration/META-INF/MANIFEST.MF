@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Human Usable Textual Notation XMI Bridge Integration Tests (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.hutn.xmi.test.integration
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse.org
+Require-Bundle: org.eclipse.epsilon.hutn.xmi;visibility:=reexport,
+ org.eclipse.epsilon.hutn.test.dependencies;visibility:=reexport
+Export-Package: org.eclipse.epsilon.hutn.xmi.test.integration
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.hutn.xmi.test.integration

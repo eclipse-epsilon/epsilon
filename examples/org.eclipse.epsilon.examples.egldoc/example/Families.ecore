@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="families"
+    nsURI="families" nsPrefix="families">
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Family" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="address" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pets" upperBound="-1" eType="#//Pet"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfChildren" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="members" upperBound="-1"
+        eType="#//Person" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nuclear" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="averageAge" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dogs" lowerBound="1" upperBound="-1"
+        eType="#//Dog" changeable="false" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="district" eType="#//District"
+        eOpposite="#//District/families"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lotteryNumbers" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="averageAgePrecise" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Pet" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="male" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Person" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sharedAccounts" upperBound="-1"
+        eType="ecore:EClass BankAccounts.ecore#//Account"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="accounts" upperBound="-1"
+        eType="ecore:EClass BankAccounts.ecore#//Account" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="friends" upperBound="-1"
+        eType="#//Person"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parents" upperBound="2"
+        eType="#//Person"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allParents" upperBound="4"
+        eType="#//Person"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Dog" eSuperTypes="#//Pet">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="loud" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="breed" lowerBound="1" eType="#//DogBreed"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="district" eType="#//District"
+        eOpposite="#//District/dogs"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="DogBreed">
+    <eLiterals name="poodle" value="1"/>
+    <eLiterals name="labrador" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="District">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="families" lowerBound="1"
+        upperBound="-1" eType="#//Family" containment="true" eOpposite="#//Family/district"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dogs" lowerBound="1" upperBound="-1"
+        eType="#//Dog" containment="true" eOpposite="#//Dog/district"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Model">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" upperBound="-1"
+        eType="#//NamedElement" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents2" upperBound="-1"
+        eType="#//NamedElement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Bike">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rider" eType="#//Person"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owner" eType="#//Family"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Band">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="members" lowerBound="3"
+        upperBound="-1" eType="#//Person"/>
+  </eClassifiers>
+</ecore:EPackage>

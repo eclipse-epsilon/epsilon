@@ -1,0 +1,90 @@
+@test
+operation nullIsNotDefined() {
+	assert(not null.isDefined());
+}
+
+@test
+operation nullIsUndefined() {
+	assert(null.isUndefined());
+}
+
+@test
+operation nonEmptyStringIsDefined() {
+	assert("foo".isDefined());
+}
+
+@test
+operation nonEmptyStringIsNotUndefined() {
+	assert(not "foo".isUndefined());
+}
+
+@test
+operation emptyStringIsNotDefined() {
+	assert(not "".isDefined());
+}
+
+@test
+operation emptyStringIsUndefined() {
+	assert("".isUndefined());
+}
+
+@test
+operation undeclaredVariableIsUndefinedNoException() {
+	assert(myVar.isUndefined());
+}
+
+@test
+operation undeclaredVariableIsNotDefinedNoException() {
+	assert(not myUndeclaredVar.isDefined());
+}
+
+@test
+operation declaredVariableIsDefined() {
+	var definedVar = 2;
+	assert(definedVar.isDefined());
+}
+
+@test
+operation nullVariableIsUndefined() {
+	var myNull = null;
+	assert(myNull.isUndefined());
+}
+
+@test
+operation unassignedVariableIsNotDefined() {
+	var unassigned;
+	assert(not unassigned.isDefined());
+}
+
+@test
+operation outOfScopeVariableIsUndefined() {
+	assert(definedVar.isUndefined());
+	var maybe;
+	if (Native("java.lang.Math").random() > 0.5) {
+		maybe = Sequence{""};
+		assert(maybe.isDefined());
+	}
+	else {
+		assert(maybe.isUndefined());
+		return;
+	}
+	assert(maybe.isDefined());
+}
+
+@test
+operation ifUndefinedWorks() {
+	var undef;
+	var res = undef.ifUndefined(6);
+	assert(res == 6);
+	assert(res.ifUndefined(3) == res);
+}
+
+@test
+operation isDefinedWorksWithNullNavigation() {
+	var x = null;
+	assert(x?.isUndefined() == null);
+	assert(x?.isDefined()?.isDefined() == null);
+	x = "null";
+	assert(x?.isDefined());
+	assert(x?.isUndefined()?.isDefined());
+}

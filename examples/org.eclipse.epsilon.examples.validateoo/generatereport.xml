@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<project default="main">
+	<target name="main">
+		<epsilon.emf.loadModel name="M" metamodeluri="OO"
+			read="true" store="false" modelfile="models/OOInstance.model"/>
+		
+		<epsilon.evl src="ValidateOO.evl" exportconstrainttrace="trace"
+			failonerrors="false" failonwarnings="false">
+			<model ref="M"/>
+		</epsilon.evl>
+		
+		<epsilon.egl src="constrainttrace2report.egl" target="report.html">
+			<model ref="M"/>
+			<uses ref="trace"/>
+		</epsilon.egl>
+		
+	</target>
+</project>

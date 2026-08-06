@@ -1,0 +1,3 @@
+migrate Tree {
+	migrated.label = "migrated_" + original.label;
+}

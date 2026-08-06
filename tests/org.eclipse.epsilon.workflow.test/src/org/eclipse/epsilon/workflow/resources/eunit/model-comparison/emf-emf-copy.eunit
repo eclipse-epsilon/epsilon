@@ -1,0 +1,4 @@
+@test
+operation copyShouldBeEqual() {
+  assertEqualModels("TreeCopy", "Tree");
+}

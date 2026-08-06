@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.eclipse.epsilon.erl.engine
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Rule Language Engine
+Bundle-SymbolicName: org.eclipse.epsilon.erl.engine;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.eol.engine;visibility:=reexport
+Export-Package: org.eclipse.epsilon.erl,
+ org.eclipse.epsilon.erl.concurrent,
+ org.eclipse.epsilon.erl.dom,
+ org.eclipse.epsilon.erl.exceptions,
+ org.eclipse.epsilon.erl.execute,
+ org.eclipse.epsilon.erl.execute.context,
+ org.eclipse.epsilon.erl.execute.context.concurrent,
+ org.eclipse.epsilon.erl.execute.control,
+ org.eclipse.epsilon.erl.execute.data,
+ org.eclipse.epsilon.erl.launch,
+ org.eclipse.epsilon.erl.parse,
+ org.eclipse.epsilon.erl.strategy

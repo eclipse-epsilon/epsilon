@@ -1,0 +1,10 @@
+pre {
+  var xml = new Native('org.eclipse.epsilon.egl.formatter.language.XmlFormatter');
+}
+
+rule Foo {
+	pre { "EGX".print(); }
+	template : "xml.egl"
+	formatter : xml
+	target : 'output.xml'
+}

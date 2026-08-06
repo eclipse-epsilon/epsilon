@@ -1,0 +1,7 @@
+@greedy
+rule NamedElement2Heading
+	transform e : Flowchart!NamedElement
+	to h1 : HTML!H1 {
+	
+	h1.value = e.name;
+}

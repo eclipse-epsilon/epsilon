@@ -1,0 +1,53 @@
+digraph G {
+	node[shape=record]
+	edge[dir=back, arrowtail=empty]
+	 
+	[%for (c in classes) { %]
+	[%=c.name%][label = "{[%=c.name%]|[%=c.eAttributes.collect(a|a.getLabel()).concat("\\n")%]|[%=c.eOperations.collect(a|a.getLabel()).concat("\\n")%]}"]
+	[%for (s in c.eSuperTypes.select(c|classes.includes(c))){%]
+	[%=s.name%]->[%=c.name%]
+	[%}%]
+	[%}%]
+	
+	[%for (r in EReference.all.select(r|classes.includes(r.eContainer) and classes.includes(r.eType))) {%]
+	[%=r.eContainer.name%]->[%=r.eType.name%][label=" [%=r.getLabel()%] ",arrowtail=[%=r.getArrowTail()%]];
+	[%}%]
+	
+}
+
+[%
+
+operation EReference getLabel() {
+	var label = self.name;
+	if (self.isMany) label += "*";
+	return label; 
+}
+
+operation ETypedElement getLabel() {
+	var label = self.name + " : " + self.eType.name;
+	if (self.isMany) label += "["+"*"+"]";
+	return label;  
+}
+
+operation EOperation getLabel() {
+	var label = self.name + "(" + self.eParameters.collect(p|p.getLabel()).concat(", ") + ")";
+	if (self.eType.isDefined()) {
+		label += " : " + self.eType.name;
+		if (self.isMany) {
+			label += "["+"*"+"]";
+		}
+	}
+	return label;
+}
+
+operation EReference getArrowTail() {
+	if (self.containment) {
+		return "diamond";
+	}
+	else {
+		return "none";
+	}
+}
+
+%]
+

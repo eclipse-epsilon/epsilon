@@ -1,0 +1,11 @@
+<?nsuri picto?>
+<picto transformation="platform:/resource/org.eclipse.epsilon.examples.picto.ecore/ecore2vis/ecore.egx">
+	<view path="Model, (All Classes)" layers="referenceLabels, inlineReferences, features">
+		<patch format="graphviz-dot">
+			<content>
+-{rank=same;_Port;_Connector;_Port_outgoing}
+-{rank=same;_Port;_Connector;_Port_incoming}	
+			</content>
+		</patch>
+	</view>
+</picto>

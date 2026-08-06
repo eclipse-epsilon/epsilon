@@ -1,0 +1,12 @@
+
+/*m!Row.all().size().println();
+for (row in m!Row.all()) {
+	row.first_name.println();
+}
+m!Female.all().size().println();
+m!Male.all().size().println();
+*/
+m!Row.all().select(r | r.id == "531-52-7468").first().first_name.println();
+for (row in m!Row.all().select(r | r.id >= "531-52-7468")) {
+	row.first_name.println();
+}

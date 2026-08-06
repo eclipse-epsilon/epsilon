@@ -1,0 +1,123 @@
+pre allNamedElements {
+	var allNames : Bag;
+	var namesAndTypes : Bag;
+	var namedObjects = NamedElement.getAllOfKind();
+	for (object : NamedElement in namedObjects) {
+		allNames.add(object.name);
+		namesAndTypes.add(object.name+" : "+object.type().name);
+	}
+}
+
+context Recipe {
+	constraint cannotUseItself {
+		guard: self.dependencies.isDefined()
+		check: self.dependencies.closure(r | r == self).isEmpty()
+		message: "Recipe \""+self.name+"\" references itself as a dependency."
+		fix {
+			title: "Remove \""+self.name+"\" from all dependencies."
+			do {
+				//TODO: implement a way to remove self from an indirect reference (n-dimensional dependency chain)
+				self.removeFromDependencies();
+			}
+		}
+	}
+	constraint mustUseSomething {
+		check: self.ingredients.size() > 0 or self.dependencies.size() > 0
+		message: "Recipe \""+self.name+"\" requires at least one ingredient or recipe."
+		fix {
+			title: "Delete \""+self.name+"\"."
+			do {
+				Recipe.all.remove(self);
+			}
+		}
+	}
+	constraint amountMustBePositive {
+		check: self.ingredients.forAll(ingr : Ingredient | ingr.amount > 0)
+		message: "All ingredients in recipe \""+self.name+"\" must have a positive amount."
+		fix {
+			title: "Remove invalid ingredient(s)."
+			do {
+				self.removeAll(self.ingredients.select(invgr | invgr.amount <= 0));
+			}
+		}
+	}
+	constraint ingredientsMustBeUnique {
+		check: namesAndTypes.count(self.name+" : "+self.type().name) == 1
+		message: "Ingredients in recipe \""+self.name+"\" must have unique names."
+	}
+	constraint instructionSetsMustBeUnique {
+		check: namesAndTypes.count(self.name+" : "+self.type().name) == 1
+		message: "Instruction Sets in\""+self.name+"\" must have unique names."
+	}
+	critique servesShouldBePositive {
+		guard: self.serves.isUndefined()
+		check: self.serves >= 1
+		message: "Recipe \""+self.name+"\" should serve at least one person."
+		fix {
+			title: "Set to default."
+			do {
+				self.serves = 1;
+			}
+		}
+	}
+}
+
+context Ingredient {
+	critique shouldHaveUnit {
+		guard: self.measurement.name == "other"
+		check: self.otherUnit.isDefined() and self.otherUnit.length() > 0
+		message: "Ingredient \""+self.name+"\" should specify its units."
+	}
+}
+
+context InstructionSet {
+	critique instructionsAreSentences {
+		check: self.instruction.forAll(inst : String | (inst.endsWith(".") or inst.endsWith("!")) and inst.length() > 2 and inst.firstToUpperCase() == inst)
+		message: "Instructions in \""+self.name+"\"should be a sentence."
+		fix {
+			title: "Remove if blank, add full stop and capitalize otherwise."
+			do {
+				var fixed = self.instruction.reject(instr : String | instr.length() < 3);
+				for (inst : String in fixed) {
+					inst = inst.firstToUpperCase();
+					if (inst.endsWith(".") or inst.endsWith("!")) {
+						continue;
+					}
+					inst = inst+".";
+				}
+				self.instruction = fixed;
+			}
+		}
+	}
+}
+
+context NamedElement {
+	guard: not self.isTypeOf(Ingredient) and not self.isTypeOf(InstructionSet)
+	constraint isUnique {
+		check: namesAndTypes.count(self.name+" : "+self.type().name) == 1
+		message: self.type().name+" names must be unique."
+		fix {
+			title: "Rename to \""+self.name+"_duplicate\""
+			do {
+				self.name = self.name+"_duplicate";
+			}
+		}
+	}
+	critique namesDontClash {
+		check: allNames.count(self.name) == 1
+		message: "\""+self.name+"\" is used more than once. Consider renaming to avoid confusion."
+		fix {
+			title: "Rename to \""+self.name+" ("+self.type().name+")\""
+			do {
+				self.name = self.name+" ("+self.type().name+")";
+			}
+		}
+	}
+}
+
+operation Recipe removeFromDependencies() {
+	var recipesWithDependencies = Recipe.allInstances().select(recp | recp.dependencies.isDefined() and recp.dependencies.notEmpty());
+	for (recp in recipesWithDependencies) {
+		recp.dependencies.remove(self);
+	}
+}

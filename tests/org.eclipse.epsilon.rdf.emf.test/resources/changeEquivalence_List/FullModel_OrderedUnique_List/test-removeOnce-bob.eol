@@ -1,0 +1,9 @@
+import "../TestOperations.eol";
+
+var value = "bob";
+
+beforeChange(value);
+
+getNames().remove(value);
+
+afterChange();

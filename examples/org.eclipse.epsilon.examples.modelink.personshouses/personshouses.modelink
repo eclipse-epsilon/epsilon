@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modelink threeWay="true" forceExeedL="false" forceExeedM="false" forceExeedR="false">
+  <model path="/org.eclipse.epsilon.examples.modelink.personshouses/persons.model" position="LEFT" />
+  <model path="/org.eclipse.epsilon.examples.modelink.personshouses/personshouses.model" position="MIDDLE" />
+  <model path="/org.eclipse.epsilon.examples.modelink.personshouses/houses.model" position="RIGHT" />
+</modelink>
+

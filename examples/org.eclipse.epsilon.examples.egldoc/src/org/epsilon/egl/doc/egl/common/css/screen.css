@@ -1,0 +1,192 @@
+html, body, div, h1, h2, h3, h4, ul, li, p, table, td, tr, th {
+	margin:  0;
+	padding: 0;
+	border: 0 solid black;
+	font-size: small;
+	font-weight: normal;
+	font-family: Verdana, Arial, sans-serif;
+}
+
+body {
+	background-color: #ffffff;
+}
+
+h1 a:link, h1 a:visited {
+	color: white;
+	border: 0;
+}
+
+div {
+	padding: 0.5em 1em;
+}
+
+fieldset {
+	border: 0;
+}
+
+a:link, a:visited {
+	text-decoration: none;
+	border-bottom: 1px dotted #596C85;
+}
+
+a:hover, a:active {
+	border-bottom-style: none;
+}
+
+a:link, a:visited {
+	color: #0A0A0A;
+	border-bottom-color: #0A0A0A;
+}
+
+a:hover, #sidebar a:active {
+	color: #B02B2C;
+}
+
+td.inheritedFrom a {
+	border: 0;
+}
+
+td.inheritedFrom a img {
+	border: 0;
+}
+
+#container {
+	padding: 0;
+	width: 100%;
+}
+
+#header {
+	padding: 1em 1em 0.5em;
+	border-bottom: 10px solid #841818;
+	background-color: #B02B2C;
+	color: #ffffff;
+}
+
+#header h1 {
+	font-family: Georgia,Serif;
+	font-size: xx-large;
+}
+
+#wrapper {
+	padding: 0;
+	overflow: hidden;
+	width: 100%;
+	background-color: #FFFFFF;
+}
+
+#sidebar {
+	float: left;
+	width: 20em;
+	background: #E4E4E4;
+}
+
+#sidebar div {
+	padding: .25em 0 0 .1em;
+}
+
+#sidebar ul {
+	margin-bottom: 1em;
+	list-style: none;
+	padding-left: 0.25em;
+}
+
+#sidebar li {
+	margin-top: 0.2em;
+}
+
+#sidebar #classifiers h1 {
+	padding-top: 0.5em;
+}
+
+#sidebar h1 {
+	font-size: large;
+}
+
+#content {
+	border-left: 22em solid #E4E4E4;
+	background-color: #FFFFFF;
+}
+
+#content h1 {
+	font-family: Georgia,Serif;
+	font-size: large;
+	font-weight: bold;
+	padding-top: 0.25em;
+	padding-bottom: .75em;
+}
+
+#content h2 {
+	font-family: Georgia,Serif;
+	font-size: xx-large;
+	font-weight: bold;
+	padding-bottom: 0.25em;
+}
+
+#content h3 {
+	font-weight: bold;
+}
+
+#content ul {
+	padding: 0 0 1em 1em;
+}
+
+#content ul li {
+	display: inline;
+	margin-right: 0.5em;
+}
+
+#description {
+	padding: 0.75em 0 1.5em;
+}
+
+#version {
+	padding: 0 0.5em 0.5em;
+}
+
+#content h4 {
+	padding: 0.75em 0;
+	font-weight: bold;
+}
+
+#content table {
+	border-right: 1px solid black;
+	margin-bottom: 1.5em;
+}
+
+#content table th {
+	border: 1px solid black;
+	border-right-width: 0;
+	text-align: left;
+	padding: 0.25em 0.5em;
+	font-weight: bold;
+}
+
+#content table .inheritedFrom {
+	width: 20px;
+}
+
+#content table td {
+	border-left: 1px solid black;
+	border-bottom: 1px solid black;
+	padding: 0.25em 0.5em;
+}
+
+div#controls {
+	margin-bottom: 3em;
+}
+
+#footer {
+	padding: .5em 0;
+	clear: both;
+	background-color: #841818;
+	color: #FFFFFF;
+}
+
+#footer h1, #footer p {
+	text-align: center;
+	font-size: x-small;
+}
+
+#footer p {
+	margin: 0.5em 0;
+}

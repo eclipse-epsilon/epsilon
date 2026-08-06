@@ -1,0 +1,7 @@
+// Returns all students supervised by Matthew Thomas
+Student.all.select(s|s.supervisor?.lastname = "Thomas").println();
+
+// Returns the modules taught by Daniel Jackson
+Module.all.select(m|
+    Staff.all.exists(s|
+        s.firstname="Daniel" and s.teaches.includes(m))).println();

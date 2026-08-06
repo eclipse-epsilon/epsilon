@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="MyEcore">
+  <eClassifiers xsi:type="ecore:EClass" name="L3LHAQDX">
+    <eAnnotations source="gmf.diagram"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dtuetbq" eType="#//Metapod_N"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="qdsahjm" eType="#//Omastar_N"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="smnubhj" eType="#//Nidoran_N"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="lpjfpel" eType="#//Poliwrath_N"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ijdppxm" eType="#//Articuno_L"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="xgqslun" eType="#//Exeggcute_L"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="djhgobm" eType="#//Ditto_L"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jyzewms" eType="#//Diglett_L"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pogjrgi" eType="#//Dragonair_L"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Metapod_N">
+    <eAnnotations source="gmf.node"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Omastar_N">
+    <eAnnotations source="gmf.node">
+      <details key="figure" value="svg"/>
+      <details key="svg.uri" value="ssh://irdxlglbwz:9abc125d7a@www.rCooXq.net:9412/#HRj0Zmo"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Great Pyrenees" eType="#//kumrHjx"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Nidoran_N">
+    <eAnnotations source="gmf.node"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Poliwrath_N">
+    <eAnnotations source="gmf.node">
+      <details key="figure" value="svg"/>
+      <details key="svg.uri" value="ftp://psjitgj:da029ab1@www.VsFIbdPyUk.net/ilhzqq/ymnmow/?wky=567476#::x:O(h"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Nidoqueen_N">
+    <eAnnotations source="gmf.node"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Mankey_N">
+    <eAnnotations source="gmf.node">
+      <details key="figure" value="svg"/>
+      <details key="svg.uri" value="ftp://ujengo@www.ZREOWxvM.com/?jmoas=93146&amp;hivkh=00012&amp;eaytg=43137319"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Siberian Husky" eType="#//5MHvu4e"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Exeggutor_N">
+    <eAnnotations source="gmf.node"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Kerry Blue Terrier" eType="#//kumrHjx"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Articuno_L">
+    <eAnnotations source="gmf.link">
+      <details key="source" value="o0vBPFW"/>
+      <details key="target" value="i7sAUa7"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="o0vBPFW" eType="#//L3LHAQDX"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="i7sAUa7" eType="#//L3LHAQDX"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Exeggcute_L">
+    <eAnnotations source="gmf.link">
+      <details key="source" value="nFPgBeU"/>
+      <details key="target" value="m5JflJj"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Chinook" eType="#//5MHvu4e"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Norfolk Terrier" eType="#//5MHvu4e"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Cardigan Welsh Corgi" eType="#//5MHvu4e"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nFPgBeU" eType="#//Metapod_N"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="m5JflJj" eType="#//Metapod_N"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Ditto_L">
+    <eAnnotations source="gmf.link">
+      <details key="source.decoration" value="arrow"/>
+      <details key="target.decoration" value="filledrhomb"/>
+      <details key="source" value="oQ5ZebC"/>
+      <details key="target" value="zZ4WQpS"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Smooth Fox Terrier" eType="#//KU1iJ6u"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="oQ5ZebC" eType="#//Omastar_N"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="zZ4WQpS" eType="#//Omastar_N"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Diglett_L">
+    <eAnnotations source="gmf.link">
+      <details key="source.decoration" value="filledclosedarrow"/>
+      <details key="target.decoration" value="none"/>
+      <details key="source" value="Ut15Yjp"/>
+      <details key="target" value="572Bhhc"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Great Dane" eType="#//kumrHjx"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Whippet" eType="#//5MHvu4e"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Clumber Spaniel" eType="#//l8nDAA5"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="Ut15Yjp" eType="#//Nidoran_N"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="572Bhhc" eType="#//Nidoran_N"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Dragonair_L">
+    <eAnnotations source="gmf.link">
+      <details key="source.decoration" value="none"/>
+      <details key="target.decoration" value="closedarrow"/>
+      <details key="source" value="HVVRy1t"/>
+      <details key="target" value="wZCeRz5"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Harrier" eType="#//5MHvu4e"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="American English Coonhound"
+        eType="#//l8nDAA5"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Golden Retriever" eType="#//5MHvu4e"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="HVVRy1t" eType="#//Poliwrath_N"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="wZCeRz5" eType="#//Poliwrath_N"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="KU1iJ6u"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="l8nDAA5"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="5MHvu4e"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="frWWtwy"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="kumrHjx"/>
+</ecore:EPackage>

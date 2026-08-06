@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spreadsheet>
+	
+	<worksheet name="Sheet1">
+		<column index="1" name="id" many="false"></column>
+		<column index="2" many="false"></column>
+		<column index="3" many="false"></column>
+		<column index="4" many="false"></column>
+		<column index="5" many="false"></column>
+		<column index="6" many="true"></column>
+		<column index="7" many="true"></column>
+		<column index="8" many="true"></column>
+		<column index="9" many="true"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet2">
+		<column index="1" name="id" many="false"></column>
+		<column index="2" many="false"></column>
+		<column index="3" many="false"></column>
+		<column index="4" many="true"></column>
+		<column index="5" many="true"></column>
+		<column index="6" many="false"></column>
+		<column index="7" many="false"></column>
+		<column index="8" many="true"></column>
+		<column index="9" many="true"></column>
+	</worksheet>
+	
+	<reference source="Sheet1->c_2" target="Sheet2->c_2" many="false" cascadeUpdates="false"></reference>
+	<reference source="Sheet1->c_3" target="Sheet2->c_3" many="true" cascadeUpdates="false"></reference>
+	<reference source="Sheet1->c_4" target="Sheet2->c_4" many="false" cascadeUpdates="false"></reference>
+	<reference source="Sheet1->c_5" target="Sheet2->c_5" many="true" cascadeUpdates="false"></reference>
+	<reference source="Sheet1->c_6" target="Sheet2->c_6" many="false" cascadeUpdates="false"></reference>
+	<reference source="Sheet1->c_7" target="Sheet2->c_7" many="true" cascadeUpdates="false"></reference>
+	<reference source="Sheet1->c_8" target="Sheet2->c_8" many="false" cascadeUpdates="false"></reference>
+	<reference source="Sheet1->c_9" target="Sheet2->c_9" many="true" cascadeUpdates="false"></reference>
+	
+</spreadsheet>

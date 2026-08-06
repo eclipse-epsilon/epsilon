@@ -1,0 +1,14 @@
+context Tree {
+  constraint LabelsStartWithT {
+    check : self.label.startsWith('t')
+    message : 'label starts with t'
+
+    fix {
+      guard : not self.label.endsWith('.nofix')
+      title : 'Add t at the beginning'
+      do {
+        self.label = 't' + self.label;
+      }
+    }
+  }
+}

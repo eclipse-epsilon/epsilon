@@ -1,0 +1,70 @@
+@namespace(uri="http://eclipse.org/epsilon/rdf/containment", prefix="")
+package containment;
+
+class Model {
+  attr String name;
+  val Entity[*] entities;
+}
+
+class Entity {
+  attr String name;
+  attr String[*] names;
+  
+  attr boolean eBoolean;
+  attr boolean[*] eBooleans;
+  
+  attr Boolean eBooleanObject;
+  attr Boolean[*] eBooleanObjects;
+  
+  attr byte eByte;
+  attr byte[*] eBytes;
+  
+  attr Byte eByteObject;
+  attr Byte[*] eByteObjects;
+  
+  attr char eChar;
+  attr char[*] eChars;
+  
+  attr Character eCharacterObject;
+  attr Character[*] eCharacterObjects;
+  
+  attr double eDouble;
+  attr double[*] eDoubles;
+  
+  attr Double eDoubleObject;
+  attr Double[*] eDoubleObjects;
+  
+  attr float eFloat;
+  attr float[*] eFloats;
+  
+  attr Float eFloatObject;
+  attr Float[*] eFloatObjects;
+  
+  attr int eInt;
+  attr int[*] eInts;
+  
+  attr Integer eIntegerObject;
+  attr Integer[*] eIntegerObjects;
+  
+  attr long eLong;
+  attr long[*] eLongs;
+  
+  attr Long eLongObject;
+  attr Long[*] eLongObjects;
+  
+  attr short eShort;
+  attr short[*] eShorts;
+  
+  attr Short eShortObject;
+  attr Short[*] eShortObjects;
+  
+  attr Date eDate;
+  attr Date[*] eDates; 
+  
+  
+  // Do not test
+  // attr Object eJavaObject;
+  // attr Class eJavaClass;
+  // attr EObject eObject;
+  // attr EClass eClass; 
+}

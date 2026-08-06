@@ -1,0 +1,7 @@
+[%  
+    var s : String   := 'Child.egl';
+    var t : Template := TemplateFactory.load(s);
+%]
+Parent [%=out.getCurrentLineNumber()%]
+[%=t.process()%]
+Parent [%=out.getCurrentLineNumber()%]

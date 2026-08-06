@@ -1,0 +1,7 @@
+This example is intended as a way to illustrate Patricia Fernández's issues
+with assertMatchingLine in bug #405001.
+
+		partial class Edge {
+			foo;
+			bar;
+		}

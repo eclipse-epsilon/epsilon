@@ -1,0 +1,10 @@
+@namespace(uri="http://persons", prefix="")
+package persons;
+
+class PersonGroup {
+	val Person[*] persons;
+}
+
+class Person {
+	attr String name;
+}

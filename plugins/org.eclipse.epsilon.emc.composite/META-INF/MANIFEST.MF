@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Composite Model Plug-in
+Bundle-SymbolicName: org.eclipse.epsilon.emc.composite
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.epsilon.ecl.engine,
+ org.eclipse.epsilon.eol.engine
+Export-Package: org.eclipse.epsilon.emc.composite
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.emc.composite

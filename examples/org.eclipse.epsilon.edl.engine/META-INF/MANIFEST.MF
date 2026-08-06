@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Demo Language Engine
+Bundle-SymbolicName: org.eclipse.epsilon.edl.engine
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Eclipse.org
+Require-Bundle: org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.emc.plainxml
+Export-Package: org.eclipse.epsilon.edl,
+ org.eclipse.epsilon.edl.parse
+Bundle-ClassPath: org.eclipse.epsilon.ecl.engine.jar
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.edl.engine

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<TVAppDsl:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:TVAppDsl="TVAppDsl" name="World Cup Application">
+  <contents xsi:type="TVAppDsl:Vote" name="Who will win the World Cup?">
+    <contents xsi:type="TVAppDsl:Label" name="Group A"/>
+    <contents xsi:type="TVAppDsl:Choice" name="Italy"/>
+    <contents xsi:type="TVAppDsl:Choice" name="France"/>
+    <contents xsi:type="TVAppDsl:Label" name="Group B"/>
+    <contents xsi:type="TVAppDsl:Choice" name="Germany"/>
+    <contents xsi:type="TVAppDsl:Choice" name="Spain"/>
+  </contents>
+</TVAppDsl:Application>

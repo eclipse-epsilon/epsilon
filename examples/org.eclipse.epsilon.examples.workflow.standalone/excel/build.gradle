@@ -1,0 +1,32 @@
+configurations {
+	epsilon
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.5.0'
+	epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.emc.spreadsheets.excel:2.5.0'
+}
+
+task setupEpsilonTasks {
+	// Set up the core Epsilon tasks
+	ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/tasks.xml', 
+		classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+	// Set logging level to info so that EOL's println() is not suppressed
+	ant.lifecycleLogLevel = 'INFO'
+}
+
+task run {
+	dependsOn tasks.setupEpsilonTasks
+	// Load the library.xlsx spreadsheet
+	ant.'epsilon.loadModel'(name: 'Library', impl: 'org.eclipse.epsilon.emc.spreadsheets.excel.ExcelModel'){
+		parameter(name: 'SPREADSHEET_FILE', file: 'library.xlsx')
+		parameter(name: 'CONFIGURATION_FILE', file: 'mapping.xml')
+	}
+
+	// Run library.eol against it
+	ant.'epsilon.eol'(src: '../library.eol'){ model(ref: 'Library') }
+}

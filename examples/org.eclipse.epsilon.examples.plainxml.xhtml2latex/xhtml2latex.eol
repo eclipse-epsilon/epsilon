@@ -1,0 +1,51 @@
+XML.uri = null;
+XML.xml = '<?xml version="1.0"?><xhtml:div><xhtml:p style="">Some formatting: <xhtml:b>bold</xhtml:b>, <xhtml:i>italic</xhtml:i>, <xhtml:span style="text-decoration: underline;">underlined</xhtml:span>, <xhtml:span style="text-decoration: line-through;">strikethrough</xhtml:span>.</xhtml:p></xhtml:div>';
+XML.readOnLoad = true;
+XML.load();
+
+XML.root.toLatex().println();
+
+operation XML!t_div toLatex() {
+	return self.childrenLatex();
+}
+
+operation XML!t_p toLatex() {
+	return "\\par " + self.childrenLatex();
+}
+
+operation XML!t_span toLatex() {
+	var latex = self.childrenLatex();
+	if (self.a_style.indexOf("text-decoration: line-through") > -1) {
+		latex = "\\sout{" + latex + "}";
+	}
+	if (self.a_style.indexOf("text-decoration: underline") > -1) {
+		latex = "\\underline{" + latex + "}";
+	}
+	return latex;
+}
+
+operation XML!t_b toLatex() {
+	return "\\textbf{" + self.childrenLatex() + "}";
+}
+
+operation XML!t_i toLatex() {
+	return "\\textit{" + self.childrenLatex() + "}";
+}
+
+operation XML!Element toLatex() {
+	return "";
+}
+
+operation XML!Element childrenLatex() {
+	var latex = "";
+	for (i in 0.to(self.childNodes.length -1)) {
+		var child = self.childNodes.item(i);
+		if (child.class.name.endsWith("DeferredTextImpl")) {
+			latex += child.textContent;
+		}
+		else {
+			latex += child.toLatex();
+		}
+	}
+	return latex;
+}

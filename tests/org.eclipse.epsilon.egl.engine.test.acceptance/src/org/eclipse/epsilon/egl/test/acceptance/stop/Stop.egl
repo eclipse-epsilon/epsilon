@@ -1,0 +1,2 @@
+Before[% out.stop(); %]
+After

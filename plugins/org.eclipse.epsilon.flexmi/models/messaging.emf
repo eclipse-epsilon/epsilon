@@ -1,0 +1,24 @@
+x@namespace(uri="http://messaging", prefix="")
+package messaging;
+
+class System {
+  val User[*] users;
+}
+
+class User {
+  id attr String name;
+  val Mailbox mailbox;
+}
+
+class Mailbox {
+  attr int quota;
+  val Message[*] incoming;
+  val Message[*] outgoing;
+}
+
+class Message {
+  attr String subject;
+  attr String body;
+  ref User from;
+  ref User[*] to;
+}

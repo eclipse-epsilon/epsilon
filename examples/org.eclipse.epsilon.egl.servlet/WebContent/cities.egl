@@ -1,0 +1,7 @@
+[%
+modelManager.loadMuddle("Cities", "cities.graphml");
+%]
+
+Number of cities: [%=City.all.size()%]
+<br/>
+Cities: [%=City.all.name.concat(", ")%]

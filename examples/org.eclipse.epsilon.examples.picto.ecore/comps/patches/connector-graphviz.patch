@@ -1,0 +1,3 @@
++ __ExtraNote[shape="note", label="Connectors will be represented\n as edges in diagrams.", style="filled", fillcolor="lightgoldenrod"]
++ _Connector -> __ExtraNote [arrowhead=none]
+}

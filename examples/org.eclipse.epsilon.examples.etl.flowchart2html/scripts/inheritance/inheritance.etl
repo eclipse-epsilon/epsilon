@@ -1,0 +1,17 @@
+// If we make the following rule abstract, then only
+// subflows will be transformed.
+// @abstract
+rule Flowchart2H1
+	transform e : Flowchart!Flowchart
+	to h1 : HTML!H1 {
+	
+	h1.value = "Flowchart " + e.name;
+}
+
+rule Subflow2H1
+	transform e : Flowchart!Subflow
+	to h1 : HTML!H1
+	extends Flowchart2H1 {
+	
+	h1.value = "Subflow " + h1.value;
+}

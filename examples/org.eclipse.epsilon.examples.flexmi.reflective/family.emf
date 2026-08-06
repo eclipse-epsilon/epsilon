@@ -1,0 +1,22 @@
+@namespace(uri="family", prefix="")
+package family;
+
+class Model {
+	val Family[*] families;
+}
+
+class Family {
+	val Person[*] members;
+	val Pet[*] pets;
+}
+
+class Person {
+	attr String name;
+	ref Person[*]#parents children;
+	ref Person partner;
+	ref Person[*]#children parents;
+}
+
+class Pet {
+	attr String name;
+}

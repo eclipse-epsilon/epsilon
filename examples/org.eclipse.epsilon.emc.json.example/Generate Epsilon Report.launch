@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.egl.eclipse.dt.launching.EglLaunchConfigurationDelegate">
+    <booleanAttribute key="appendToFile" value="false"/>
+    <listAttribute key="defaultFormatters"/>
+    <intAttribute key="egxGenerateTo" value="1"/>
+    <booleanAttribute key="fine_grained_profiling" value="false"/>
+    <intAttribute key="generateTo" value="1"/>
+    <stringAttribute key="implementation_name" value="EGL (Default)"/>
+    <listAttribute key="models">
+        <listEntry value="storeOnDisposal=false&#10;aliases=&#10;file=&#10;header1=Accept\:application/vnd.github+json&#10;header0=X-GitHub-Api-Version\:2022-11-28&#10;cached=true&#10;name=M&#10;concurrent=false&#10;type=JSON&#10;readOnLoad=true&#10;uri=https\://api.github.com/repos/eclipse/epsilon"/>
+    </listAttribute>
+    <stringAttribute key="outputDirPath" value=""/>
+    <stringAttribute key="outputFilePath" value=""/>
+    <listAttribute key="parameters"/>
+    <booleanAttribute key="produceTrace" value="false"/>
+    <booleanAttribute key="profile_model_loading" value="false"/>
+    <booleanAttribute key="profiling_enabled" value="false"/>
+    <booleanAttribute key="reset_profiler" value="false"/>
+    <stringAttribute key="source" value="/org.eclipse.epsilon.emc.json.example/epsilonReport.egl"/>
+    <stringAttribute key="templateFactoryType" value="org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory"/>
+    <stringAttribute key="traceDestination" value=""/>
+</launchConfiguration>

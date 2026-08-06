@@ -1,0 +1,26 @@
+<project name="run-tests">
+	<target name="run-tests">
+		<!-- load the model normally -->
+		<epsilon.emf.loadModel name="Model" modelfile="tree.model"
+			metamodelfile="tree.ecore" read="true" store="false" />
+
+		<!--
+			EUnit receives the Ant basedir and a model reference. The
+			referenced model will be disposed and reloaded before each
+			test.
+		-->
+		<epsilon.eunit src="tests.eunit" failOnErrors="false">
+			<parameter name="basedir" value="${basedir}" />
+			<model ref="Model" />
+		</epsilon.eunit>
+	</target>
+
+	<target name="egl">
+		<epsilon.egl src="tree-main.egl">
+			<!-- destdir is exported from the EOL script -->
+			<uses ref="destdir" />
+			<!-- reference to the Tree model loaded in the EUnit suite -->
+			<model ref="Model" />
+		</epsilon.egl>
+	</target>
+</project>

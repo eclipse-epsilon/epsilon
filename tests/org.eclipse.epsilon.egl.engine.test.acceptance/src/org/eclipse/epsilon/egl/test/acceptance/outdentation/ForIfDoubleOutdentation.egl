@@ -1,0 +1,7 @@
+class [%="Post"%] {
+	[%for (f in Sequence{"title", "content"}) {-%]
+		[%if(true){-%]
+		public String [%=f%];
+		[%}%]
+	[%}%]
+}

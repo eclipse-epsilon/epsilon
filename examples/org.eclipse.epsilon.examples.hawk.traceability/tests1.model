@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<TestsModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://eclipse.org/epsilon/examples/traceability/tests" xmi:id="_uCO-wF09Eeq90vADfBTxDQ">
+  <tests xmi:id="_xOW8gF09Eeq90vADfBTxDQ" id="T1">
+    <requirement href="requirements.model#_d4Ay4F09Eeq90vADfBTxDQ"/>
+  </tests>
+</TestsModel>

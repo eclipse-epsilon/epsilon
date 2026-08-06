@@ -1,0 +1,29 @@
+rule CatalogueWithCatalogue
+	merge c1 : Catalogue1!t_catalogue
+	with c2 : Catalogue2!t_catalogue 
+	into merged : Merged!t_catalogue {
+	
+	Merged.root = merged;
+	
+}
+
+rule ProductWithProduct
+	merge p1 : Catalogue1!t_product
+	with p2 : Catalogue2!t_product 
+	into merged : Merged!t_product {
+	
+	merged.a_id = p1.a_id;
+	merged.i_quantity = p1.i_quantity + p2.i_quantity;
+	p1.parentNode.equivalent().appendChild(merged);
+	
+}
+
+rule Product2Product
+	transform p : In!t_product
+	to merged : Merged!t_product {
+
+	merged.a_id = p.a_id;
+	merged.i_quantity = p.a_quantity;
+	p.parentNode.equivalent().appendChild(merged);
+	
+}

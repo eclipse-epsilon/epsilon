@@ -1,0 +1,19 @@
+<spreadsheet>
+  <worksheet name="Student">
+    <column index="0" name="firstName"/>
+    <column index="1" name="lastName"/>
+    <column index="2" name="email"/>
+    <column index="3" name="gender"/>
+    <column index="4" name="team" datatype="integer"/>
+    <column index="5" name="mark" datatype="integer"/>
+    <column index="6" name="repeatsYear" datatype="boolean"/>
+    <column index="7" name="conflicts" many="true"/>
+    <column index="8" name="average" datatype="double"/>
+  </worksheet>
+  <worksheet name="Team">
+  	<column index="0" name="id" datatype="integer"/>  
+  	<column index="1" name="mark" datatype="integer"/>
+  </worksheet>
+  <reference source="Student->team" target="Team->id"/>
+  <reference source="Student->conflicts" target="Student->email" many="true"/>  
+</spreadsheet>

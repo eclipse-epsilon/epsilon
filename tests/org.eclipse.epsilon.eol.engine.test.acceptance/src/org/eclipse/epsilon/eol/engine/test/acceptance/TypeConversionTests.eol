@@ -1,0 +1,143 @@
+@setup
+operation setup() {
+	modelManager.unloadAllModels();
+}
+
+@test
+operation createIntegerVar() {
+	var i : Integer = 5;
+}
+
+@test
+operation testStringAsInteger() {
+	assertEquals("1".asInteger(), 1);
+}
+
+@test
+operation testIllegalStringAsInteger() {
+	assertError("foo".asInteger());
+}
+
+@test
+operation testStringAsReal() {
+	assertEquals("1".asReal(), 1.0);
+}
+
+@test
+operation testIllegalStringAsReal() {
+	assertError("foo".asReal());
+}
+
+@test
+operation testStringAsBoolean() {
+	assertEquals("true".asBoolean(), true);
+}
+
+@test
+operation testIllegalStringAsBoolean() {
+	assertEquals("foo".asBoolean(), false);
+}
+
+@test
+operation testBooleanAsInteger() {
+	assertError(true.asInteger());
+}
+
+@test
+operation testStringAsSequence() {
+	assertEquals("foo".asSequence(), Sequence{"foo"});
+}
+
+@test
+operation testStringAsSet() {
+	assertEquals("foo".asSet(), Set{"foo"});
+}
+
+@test
+operation testIntegerAsSet() {
+	assertEquals(1.asSet(), Set{1});
+}
+
+@test
+operation testBooleanAsOrderedSet() {
+	assertEquals(true.asOrderedSet(), OrderedSet{true});
+}
+
+@test
+operation testSequenceAsSet() {
+	assertEquals(Sequence{1, 2, 1}.asSet(), Set{2, 1});
+}
+
+@test
+operation testSequenceAsOrderedSet() {
+	assertEquals(Sequence{1, 2}.asOrderedSet().first(), 1);
+}
+
+@test
+operation testOrderedSetType() {
+	assertEquals(Sequence{1, 2}.asOrderedSet().isTypeOf(OrderedSet), true);
+}
+
+@test
+operation testSequenceType() {
+	assertEquals(Set{1, 2}.asSequence().isTypeOf(Sequence), true);
+}
+
+@test
+operation testBooleanAsString() {
+	assertEquals(true.asString(), "true");
+}
+
+@test
+operation testIntegerAsReal() {
+	assertEquals(1.plus(2), 3);
+}
+
+operation Integer plus(x : Real) {
+	return self + x;
+}
+
+@test
+operation testAnyToInteger() {
+	var any : Any = createNonPrimitiveWhoseTypeShouldBeConvertable(2);
+	assertEquals(2, any.asInteger());
+}
+
+@test
+operation testAnyToReal() {
+	var any : Any = createNonPrimitiveWhoseTypeShouldBeConvertable(2.3);
+	assertEquals(2.3, any.asReal());
+}
+
+@test
+operation testAnyToBoolean() {
+	var any : Any = createNonPrimitiveWhoseTypeShouldBeConvertable(true);
+	assertEquals(true, any.asBoolean());
+}
+
+@test
+operation testAnyIsInteger() {
+	var i : Any = createNonPrimitiveWhoseTypeShouldBeConvertable(2);
+	var s : Any = createNonPrimitiveWhoseTypeShouldBeConvertable("foo");
+	
+	assertTrue(i.isInteger());
+	assertFalse(s.isInteger());
+}
+
+@test
+operation testAnyIsReal() {
+	var r : Any = createNonPrimitiveWhoseTypeShouldBeConvertable(2.3);
+	var s : Any = createNonPrimitiveWhoseTypeShouldBeConvertable("foo");
+	
+	assertTrue(r.isReal());
+	assertFalse(s.isReal());
+}
+
+operation createNonPrimitiveWhoseTypeShouldBeConvertable(value : Any) {
+	modelManager.createInMemoryEmfModel("First", "http://www.eclipse.org/emf/2002/Ecore");
+	
+	// EEnumLiteral's string representation is the same as its literal attribute
+	var el = new EEnumLiteral;
+	el.literal = value.asString();
+	return el;
+}

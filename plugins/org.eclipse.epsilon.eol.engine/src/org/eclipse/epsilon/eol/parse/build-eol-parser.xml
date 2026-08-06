@@ -1,0 +1,6 @@
+<project default="main">
+	<import file="build-epsilon-parser-macro.xml"/>
+	<target name="main">
+		<buildEpsilonParser lang="eol" languppercase="Eol"/>
+	</target>
+</project>

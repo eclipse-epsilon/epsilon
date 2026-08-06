@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ASCII"?>
+<OO:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:OO="OO" xmi:id="_toE8MSwhEd-7NbMLkFh99w">
+  <contents xsi:type="OO:Class" xmi:id="_xLUZcCwhEd-7NbMLkFh99w" name="Customer"/>
+  <contents xsi:type="OO:Class" xmi:id="_zExOYCwhEd-7NbMLkFh99w" name="Product"/>
+</OO:Model>

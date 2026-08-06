@@ -1,0 +1,20 @@
+PREFIX :       <file:///home/hmz514/git/emc-rdf/tests/org.eclipse.epsilon.rdf.emf.test/resources/equivalence/03-containment/model_data.ttl#>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX simple: <http://eclipse.org/epsilon/rdf/changeEquivalence#>
+PREFIX xsd:    <http://www.w3.org/2001/XMLSchema#>
+
+<http://example/org/theModel>
+        rdf:type         simple:Model;
+        simple:entities  <http://example/org/firstEntity>;
+        simple:label     "FullModel" .
+
+<http://example/org/firstEntity>
+        rdf:type                   simple:Entity;
+        simple:label               "FullModelEntity";
+        simple:names               [ rdf:type  rdf:Bag;
+                                     rdf:_1     "bob";
+                                     rdf:_2     "jeff";
+                                     rdf:_3     "jeff";
+                                   ] .

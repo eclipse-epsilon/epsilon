@@ -1,0 +1,13 @@
+operation String clean() {
+	var clean;
+	var badChars = Sequence{'?','\\', '/'};
+	for (c in self.toCharSequence()) {
+		if (badChars.exists(i|i=c)) {
+			clean = clean + '_';
+		}	
+		else {
+			clean = clean + c;
+		}
+	}
+	return clean;
+}

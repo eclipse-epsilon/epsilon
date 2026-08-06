@@ -1,0 +1,14 @@
+import "loops.eol";
+
+$with Map {"" = "LoopingA"}
+$with Map {"" = "LoopingB"}
+@test
+operation looping() {
+  assertTrue(hasLoop(Node.all.first));
+}
+
+$with Map {"" = "NonLooping"}
+@test
+operation nonLooping() {
+  assertFalse(hasLoop(Node.all.first));
+}

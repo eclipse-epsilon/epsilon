@@ -1,0 +1,19 @@
+// IF Action Block
+var action = new `simulink/Ports & Subsystems/If Action Subsystem`;
+// In1 Block
+var in1 = new `simulink/Commonly Used Blocks/In1`;
+
+// Output port of In1
+var inPort = in1.getOutports().first();
+// Action port of Action Block
+var actionP = action.getPorts().selectByType(ifaction).first();
+// Alternatively it can be looked up from 
+// ActionPort.all.println();
+
+// Link between ports, not blocks
+inPort.link(actionP);
+
+// You can have a look at other port types to filter using:
+var port = Port.all.collect(p|p.getType()).println();
+// And select them using: 
+var port = Port.all.selectByType(ifaction).first();

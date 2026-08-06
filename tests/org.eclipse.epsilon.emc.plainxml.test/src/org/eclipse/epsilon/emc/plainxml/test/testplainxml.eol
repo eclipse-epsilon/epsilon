@@ -1,0 +1,39 @@
+var l = new t_library(true);
+
+l.appendChild(createBook("Book1", "Author1"));
+l.appendChild(createBook("Book2", "Author2"));
+
+for (book in l.c_book) {
+	book.a_title.println("title: ");
+	book.i_pages.println();
+	book.b_published.println();
+}
+
+t_book.all.println();
+
+function createBook(title : String, author : String) : Element {
+	var book = new t_book;
+	book.a_title = title;
+	var authorElement = new t_author;
+	book.i_pages = List{1..200}.random();
+	authorElement.a_name = author;
+	authorElement.text = "blah";
+	book.appendChild(authorElement);
+	return book;
+}
+
+/*var items = Element.all.select(e|e.tagName = "item");
+
+for (item in items) {
+	item.title.text.println();
+	item.description.text.println();
+}*/
+
+/*var x : new XML!Element("library");
+
+for (book in XML!Element.select(e|e.tagName = "book")) {
+	book.title.println();
+	book.authors.println();
+	book.setAttribute("generated", "yes");
+	book.children.println();
+}*/

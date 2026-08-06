@@ -1,0 +1,6 @@
+for (t in Master!t_tree.all) {
+	
+	var descriptionModel = X.models.selectOne(m|m.name = t.a_label);
+	descriptionModel!t_description.all.first().text.println();
+	
+}

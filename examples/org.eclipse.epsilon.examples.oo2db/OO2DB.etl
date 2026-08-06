@@ -1,0 +1,142 @@
+pre {
+	"Running ETL".println();
+	var db : new DB!Database;
+}
+
+post {
+	// Store traceability links in custom model
+	var trace : new Trace!Trace;
+	for (t in transTrace.transformations) {
+		var link : new Trace!TraceLink;
+		link.sources.add(t.source);
+		link.targets = t.targets;
+		link.description = "Transformed by " + t.getRule().name;
+		trace.links.add(link);
+	}
+}
+
+// Transforms a class into a table and 
+// a primary key column
+rule Class2Table
+	transform c : OO!Class 
+	to t : DB!Table, pk : DB!Column {
+	
+	t.name = c.name;	
+	t.database = db;
+	
+	// Fill the details of the primary key 
+	// of the table
+	pk.name = t.primaryKeyName();
+	pk.type = "INT";
+	t.columns.add(pk);
+	t.primaryKeys.add(pk);
+	
+	// If the class extends some other class
+	// create a foreign key pointing towards
+	// the primary key of the parent class
+	if (c.`extends`.isDefined()){
+		
+		var fk : new DB!ForeignKey;
+		var childFkCol : new DB!Column;
+		var parentFkCol : DB!Column;
+		var parentTable : DB!Table;
+		
+		parentTable ::= c.`extends`;
+		parentFkCol = parentTable.primaryKeys.first();
+		
+		childFkCol.name = parentFkCol.name;
+		childFkCol.type = "INT";
+		childFkCol.table = t;
+		
+		fk.database = db;
+		fk.parent = parentFkCol;
+		fk.child = childFkCol;
+		fk.name = c.name + "Extends" + c.`extends`.name;
+	}
+}
+
+// Transforms a single-valued attribute
+// to a column
+rule SingleValuedAttribute2Column
+	transform a : OO!Attribute
+	to c : DB!Column {
+	
+	guard : not a.isMany
+	
+	c.name = a.name;
+	c.table ::= a.owner;
+	c.type = a.type.name.toDbType();
+}
+
+// Transforms a multi-valued attribute
+// to a table where its values are stored
+// and a foreign key 
+rule MultiValuedAttribute2Table
+	transform a : OO!Attribute
+	to t : DB!Table, pkCol : DB!Column, valueCol : DB!Column, 
+	   fkCol : DB!Column, fk : DB!ForeignKey {
+	
+	guard : a.isMany
+	
+	// The table that stores the values 
+	// has an "id" column and a "value" column
+	t.name = a.valuesTableName();
+	t.database = db;
+	
+	pkCol.name = "id";
+	pkCol.table = t;
+	pkCol.type = "INT";
+	valueCol.name = "value";
+	valueCol.table = t;
+	valueCol.type = a.type.name.toDbType();
+	
+	// Another column is added into the table
+	// to link with the "id" column of the 
+	// values table
+	fkCol.name = a.name + "Id";
+	fkCol.table ::= a.owner;
+	fkCol.type = "INT";
+	
+	// The foreign key that connects
+	// the two columns is defined
+	fk.parent = pkCol;
+	fk.child = fkCol;
+	fk.database = db;
+} 
+
+// Transforms a referecne into a foreign key
+rule Reference2ForeignKey
+	transform r : OO!Reference
+	to fk : DB!ForeignKey, fkCol : DB!Column {
+	
+	fkCol.table ::= r.type;
+	fkCol.name = r.name + "Id";
+	fkCol.type = "INT";
+	fk.database = db;
+	fk.parent = r.owner.equivalent().primaryKeys.first();
+	fk.child = fkCol;
+	fk.name = r.name;
+	
+}
+
+operation DB!Table primaryKeyName() : String {
+	return self.name.firstToLowerCase() + "Id";
+}
+
+operation OO!Attribute valuesTableName() : String {
+	return self.owner.name + "_" + self.name.firstToUpperCase() + "Values";
+}
+
+operation Any toDbType() : String {
+	var mapping : OO2DB!TypeMapping;
+	mapping = OO2DB!TypeMapping.allInstances().
+		select(tm|tm.source = self).first;
+	if (not mapping.isDefined()){
+		("Cannot find DB type for OO type " + self + 
+			". Setting the default.").println();
+		return OO2DB!TypeMap.allInstances().first().`default`.target;
+	}
+	else {
+		return mapping.target;
+	}
+}

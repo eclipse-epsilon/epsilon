@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://eclipse.org/epsilon/examples/person" xmi:id="_q24fMEVLEfCmEN4rtoP3hA">
+  <people xmi:id="_rWjdwEVLEfCmEN4rtoP3hA" firstName="John" lastName=""/>
+</Model>

@@ -1,0 +1,28 @@
+<project default="main">
+	
+	<macrodef name="runParserBuildFile">
+		<attribute name="lang"/>
+		<attribute name="parser" default="@{lang}"/>
+		<sequential>
+			<property name="plugins_loc" location="../../../../../../.."/>
+			<ant inheritall="false" antfile="${plugins_loc}/org.eclipse.epsilon.@{lang}.engine/src/org/eclipse/epsilon/@{lang}/parse/build-@{parser}-parser.xml"/>			
+		</sequential>
+	</macrodef>
+	
+	<target name="main">
+		<!--parallel threadCount="9"-->
+			<runParserBuildFile lang="eol"/>
+			<runParserBuildFile lang="erl"/>
+			<runParserBuildFile lang="etl"/>
+			<runParserBuildFile lang="epl"/>
+			<runParserBuildFile lang="evl"/>
+			<runParserBuildFile lang="ecl"/>
+			<runParserBuildFile lang="ewl"/>
+			<runParserBuildFile lang="eml"/>
+			<runParserBuildFile lang="egl" parser="egx"/>
+			<runParserBuildFile lang="flock"/>
+			<runParserBuildFile lang="pinset"/>		
+		<!--/parallel-->
+	</target>
+	
+</project>

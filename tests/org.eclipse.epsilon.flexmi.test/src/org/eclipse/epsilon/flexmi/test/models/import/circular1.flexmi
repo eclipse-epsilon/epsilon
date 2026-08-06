@@ -1,0 +1,3 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?import circular2.flexmi?>
+<class name="C1" supertypes="C2"/>

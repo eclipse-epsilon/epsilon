@@ -1,0 +1,14 @@
+@model
+operation prepareModels() {
+   var bA = new A!Book;
+   bA.title = 'Hello World';
+
+   // Try changing this to a different string and watch EUnit fail the test.
+   var bB  := new B!Book;
+   bB.title = 'Hello World';
+}
+
+@test
+operation shouldBeEqual() {
+  assertEqualModels("A", "B");
+}

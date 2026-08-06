@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<statemachine:StateMachine xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:statemachine="http://www.eclipse.org/epsilon/statemachine">
+  <initialState action="var elementsInA = 3;&#xD;&#xA;var elementsInB = 0;&#xD;&#xA;var moveAToB = false;&#xD;&#xA;&#xD;&#xA;elementsInA.println(&quot;Initial Number of Elements in A: &quot;);&#xD;&#xA;elementsInB.println(&quot;Initial Number of Elements in B: &quot;);" outgoing="//@transitions.0"/>
+  <transitions to="//@states.0" from="//@initialState" guard="true;"/>
+  <transitions name="" to="//@states.1" from="//@states.0" guard="moveAToB==false;"/>
+  <transitions to="//@states.2" from="//@states.0" guard="moveAToB == true;"/>
+  <transitions name="" to="//@states.0" from="//@states.2" guard="true;"/>
+  <states name="A" action="if (elementsInA > 0 and moveAToB) {&#xD;&#xA;&#x9;elementsInA--;&#xD;&#xA;} else {&#xD;&#xA;&#x9;moveAToB=false;&#xD;&#xA;}" outgoing="//@transitions.1 //@transitions.2" incoming="//@transitions.0 //@transitions.3"/>
+  <states xsi:type="statemachine:FinalState" action="elementsInA.println(&quot;Final Number of elements in A &quot;);&#xD;&#xA;elementsInB.println(&quot;Final Number of elements in B &quot;);" incoming="//@transitions.1"/>
+  <states name="B" action="elementsInB ++;" outgoing="//@transitions.3" incoming="//@transitions.2"/>
+</statemachine:StateMachine>

@@ -1,0 +1,1 @@
+operation allReports(){return self.closure(t | t.directReports);}

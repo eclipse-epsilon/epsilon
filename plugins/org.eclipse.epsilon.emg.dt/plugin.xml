@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.epsilon.emg.dt.editor.EmgEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="emg"
+            icon="icons/epl.gif"
+            id="org.eclipse.epsilon.emg.dt.EmgEditor"
+            name="Epsilon Model Generator Language Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.epsilon.emg.eclipse.dt.launching.EmgLaunchConfigurationDelegate"
+            icon="icons/epl.gif"
+            id="EMGTransformation">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.epsilon.emg.dt.launching.EmgLaunchConfigurationDelegate"
+            id="org.epsilon.emg.eclipse.dt.launching.EmgLaunchConfigurationDelegate"
+            modes="run, debug"
+            name="EMG Program"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.epsilon.emg.dt.launching.EmgLaunchConfigurationTabGroup"
+            description="Create a configuration to launch an EMG Program"
+            id="org.eclipse.epsilon.eclipse.dt.launching.EmgLaunchConfigurationTabGroup"
+            type="org.epsilon.emg.eclipse.dt.launching.EmgLaunchConfigurationDelegate">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.emg.dt.wizards.NewEmgFileWizard"
+            icon="icons/epl.gif"
+            id="org.eclipse.epsilon.emg.dt.wizards.NewEmgFileWizard"
+            name="EMG Program">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.tool">
+      <tool
+            class="org.eclipse.epsilon.emg.EmgModule"
+            defaultName="module">
+      </tool>
+   </extension>
+
+</plugin>

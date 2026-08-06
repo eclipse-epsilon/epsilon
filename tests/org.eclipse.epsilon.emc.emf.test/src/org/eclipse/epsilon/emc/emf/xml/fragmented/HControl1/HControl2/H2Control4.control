@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="ASCII"?>
+<wt:ControlSubsystem xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:wt="http://mondo.org/WT" xsi:schemaLocation="http://mondo.org/WT ../../../../11.ScopeVisibilityHawk/org.miso.wind.turbine.cs/WT_DesignPatterns.ecore" name="H2Control4"/>

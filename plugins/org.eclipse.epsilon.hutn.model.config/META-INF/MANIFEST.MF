@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Human Usable Textual Notation Configuration Model
+Bundle-SymbolicName: org.eclipse.epsilon.hutn.model.config;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-Localization: plugin
+Export-Package: org.eclipse.epsilon.hutn.model.config,
+ org.eclipse.epsilon.hutn.model.config.hutnConfig,
+ org.eclipse.epsilon.hutn.model.config.hutnConfig.impl,
+ org.eclipse.epsilon.hutn.model.config.hutnConfig.util
+Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.epsilon.common
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.hutn.model.config

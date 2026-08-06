@@ -1,0 +1,12 @@
+@namespace(uri="SimpleTrace", prefix="SimpleTrace")
+package SimpleTrace;
+
+class Trace {
+   val TraceLink[*] links;
+}
+
+class TraceLink {
+   ref EObject[*] sources;
+   ref EObject[*] targets;
+   attr String description;
+}

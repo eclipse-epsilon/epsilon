@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.epsilon.ewl.emf" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.eclipse.epsilon.ewl.emf" id="org.eclipse.epsilon.ewl.emf.wizards" name="Wizards"/>
+      </appinfo>
+      <documentation>
+         [Enter description of this extension point.]
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <sequence>
+            <element ref="wizards" minOccurs="1" maxOccurs="unbounded"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="wizards">
+      <annotation>
+         <appinfo>
+            <meta.element labelAttribute="extension"/>
+         </appinfo>
+      </annotation>
+      <complexType>
+         <attribute name="namespaceURI" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The namespace URI of the EPackage that contains the EClasses on which wizards can be executed (e.g. ).
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="file" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The .ewl file that contains the wizard definitions.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="resource"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="extraPackages" type="string">
+            <annotation>
+               <documentation>
+                  By default, the EWL script can access all the types in the EPackage pointed to by the namespaceURI attribute, and in the EPackages it depends upon.
+
+If set, this attribute allows for accessing types from other EPackages as well. The expected format is a comma-separated list of the namespace URIs of the relevant EPackages. These will be added to the package registry of the model the EWL script is run on.
+
+As an example, consider a wizard on an UML2 Activity, annotated with a MARTE GaScenario stereotype. The user can only right click on the UML2 activity, so the namespaceURI is set to the UML2 EPackage URI. Since the wizard might need to access the MARTE GaScenario type, the MARTE EPackage URI should be specified in extraPackages.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         [Enter the first release in which this extension point appears.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         [Enter extension point usage example here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiInfo"/>
+      </appinfo>
+      <documentation>
+         [Enter API information here.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+
+</schema>

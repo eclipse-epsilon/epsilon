@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flowchart>
+  <action name="Wake up"/>
+  <action name="Hit snooze"/>
+  <action name="Get up"/>
+</flowchart>

@@ -1,0 +1,12 @@
+@namespace(uri="http://eclipse.org/epsilon/examples/person")
+package person;
+
+class Model {
+	val Person[*] people;
+}
+
+class Person {
+	attr String firstName;
+	attr String lastName;
+	ref Person[*] friends;
+}

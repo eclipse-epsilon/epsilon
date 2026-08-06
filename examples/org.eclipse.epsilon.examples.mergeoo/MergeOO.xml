@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<project default="main">
+	
+	<target name="main" depends="loadModels, compare, merge">
+	
+	</target>
+	
+	<target name="loadModels">
+		
+	    <epsilon.emf.loadModel name="Left" profile="true"
+                                   aliases="Source"
+                                   modelFile="models/Educational.model"
+                                   metamodelUri="OO"
+                                   read="true" store="false"/>
+			
+	    <epsilon.emf.loadModel name="Right" profile="true"
+                                   aliases="Source"
+                                   modelFile="models/Management.model"
+                                   metamodelUri="OO"
+                                   read="true" store="false"/>
+		
+	    <epsilon.emf.loadModel name="Target" profile="true"
+                                   modelFile="models/Merged.model"
+                                   metamodelUri="OO"
+                                   read="false" store="true"/>
+	</target>
+	
+	<target name="compare">
+		<epsilon.ecl src="MatchOO.ecl" 
+				exportmatchtrace="trace">
+			<model ref="Left"/>
+			<model ref="Right"/>
+		</epsilon.ecl>
+	</target>
+	
+	<target name="merge">
+		<epsilon.eml src="MergeOO.eml" 
+				usematchtrace="trace">
+			<model ref="Left"/>
+			<model ref="Right"/>
+			<model ref="Target"/>
+		</epsilon.eml>
+	</target>
+	
+</project>

@@ -1,0 +1,22 @@
+@Spec {
+	Metamodel "FamiliesMetamodel" {
+		nsUri: "families"
+	}
+}
+
+Families {
+	Family "The Smiths" {
+		name : "The Smiths"
+		numberOfChildren: 23e1
+		pets: Pet "Fido", Pet "Lassie"
+	}
+	
+	Pet "Fido" {
+		name : "Fido"
+		male : true
+	}
+	
+	~male Pet "Lassie" {
+		name: "Lassie"
+	}
+}

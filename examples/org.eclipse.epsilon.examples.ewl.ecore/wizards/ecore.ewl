@@ -1,0 +1,65 @@
+wizard Rename {
+	
+	guard : self.isKindOf(EClass)
+
+	title : 'Rename Class ' + self.name		
+	
+	do {
+		self.name := 'boo';
+	}
+
+}
+
+wizard Rename {
+	
+	guard : self.isKindOf(EReference)
+
+	title : 'Rename Reference ' + self.name		
+	
+	do {
+		self.name := 'boo';
+	}
+
+}
+
+wizard CreateClass {
+	
+	guard : self.isKindOf(EPackage)
+
+	title : 'Create a new class...'
+
+	do {
+		var c : new EClass;
+		c.name := 'NewEClass';
+		self.eClassifiers.add(c);
+	}
+
+}
+
+wizard CreateSubClass {
+	
+	guard : self.isKindOf(EClass)
+
+	title : 'Create subclass '
+	
+	do {
+		var c : new EClass;
+		c.name := 'Subtype';
+		self.ePackage.eClassifiers.add(c);
+		c.eSuperTypes.add(self);
+	}
+}
+
+wizard CreateSetter {
+
+	guard : self.isKindOf(EAttribute)
+
+	title : 'Create set' + self.name.firstToUpperCase() + '() operation'
+
+	do {
+		var o : new EOperation;
+		o.name := 'set' + self.name.firstToUpperCase();
+		self.eContainingClass.eOperations.add(o);
+	}	
+
+}

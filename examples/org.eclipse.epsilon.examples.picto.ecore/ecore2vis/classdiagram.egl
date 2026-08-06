@@ -1,0 +1,541 @@
+[%
+// If the root EPackage has a @constraints(file="foo.evl")
+// annotation, parse the constraints into an EVL module
+var module = getValidationModule();
+
+// Compute the set of classes to be shown in this diagram
+var main = getMainClass();
+var classes = getVisibleClasses();
+
+var subgraphs : Sequence;
+var unclusteredClasses : Sequence;
+unclusteredClasses.addAll(classes);
+
+var visibleReferences = getVisibleReferences();
+
+if (clusters.isDefined()) {
+	for (cluster in clusters) {
+		var clusterClasses = unclusteredClasses.select(c|cluster.contains(c.name));
+		unclusteredClasses.removeAll(clusterClasses);
+		subgraphs.add(clusterClasses);
+	}
+}
+
+subgraphs.add(unclusteredClasses);
+
+%]
+digraph G {
+	graph[splines=ortho, nodesep=0.6[%if (K.isDefined()){%],K=[%=K%][%}%]]
+	node[fontname=Tahoma, fontsize=10, shape=record]
+	edge[fontname=Tahoma, fontsize=10, arrowsize=0.7]
+	
+	[%for (subgraph in subgraphs){%]
+	
+		[*If tehre's only one subgraph, we don't need subgraphs*]
+		[%if (subgraphs.size() > 1){%]
+		subgraph cluster_[%=loopCount%] {
+			style=invis;
+		[%}%]
+		
+		[% var message = validate(); if (message.isDefined()){%]
+		__ValidationMessage[label="[%=message.toMultiline()%]", style=filled, fillcolor="mistyrose"];
+		[%}%]
+		
+		[%for (c in subgraph) { %]
+			[** Create a node for the class **]
+			[%=c.getNodeName()%][shape=none, margin=0, label = <[%=c.getLabel()%]>]
+			
+			[%if ((main.isDefined() and c == main) or main.isUndefined()){%]
+				
+				[** Create nodes for all the constraints of the class*]
+				[%if (constraintsVisible() and module.constraintContexts.exists(ctx|ctx.typeName=c.name)){%]
+					[%=c.getNodeName()%]_Constraints[shape=none, margin=0, label=<[%=c.getConstraintsLabel()%]>]
+					[%=c.getNodeName()%]_Constraints->[%=c.getNodeName()%][arrowhead=none, style=dashed, name="[%=c.getNodeName()%]_Constraints"]
+					{rank=same;[%=c.getNodeName()%]_Constraints;[%=c.getNodeName()%]}
+				[%}%]
+				
+				[** Create node for all the documentation annotations of the class*]
+				[%if (isLayerActive("documentation")){%]
+				[%var documentation = c.getAnnotationValue("http://www.eclipse.org/emf/2002/GenModel", "documentation");%]
+				[%if (documentation.isDefined()){%]
+					[%=c.getNodeName()%]_Documentation[shape="note", label="[%=documentation.toMultiline()%]", style="filled", fillcolor="azure"]
+					[%=c.getNodeName()%]_Documentation->[%=c.getNodeName()%][arrowhead=none, style=dashed, name="[%=c.getNodeName()%]_Documentation"];
+				[%}%]
+				[%}%]
+			[%}%]
+			
+			[%if (rerank.isUndefined() or rerank == "true"){%]
+				[%for (other in subgraph.select(other|c.hasSameRank(other))){%]
+					[%if (isLayerActive("referenceLabels")){%]
+						[%for (r in getUnidirectionalReferences().includingAll(getBidirectionalReferences()).select(r|r.eContainer = c and r.eType = other)){%]
+						{rank=same;[%=c.getNodeName()%];[%=other.getNodeName()%];[%=r.getNodeName()%]}
+						[%}%]
+					[%}else{%]
+						{rank=same;[%=c.getNodeName()%];[%=other.getNodeName()%]}
+					[%}%]
+				[%}%]
+			[%}%]
+			
+			[%if (isLayerActive("referenceLabels")){%]
+				[%for (r in getBidirectionalReferences().select(r|r.eContainer = c)){%]
+				[%=r.getNodeName()%][label="[%=r.getEdgeLabel()%]/\n[%=r.eOpposite.getEdgeLabel()%]", shape=plaintext, margin=0,width=0,height=0]
+				[%}%]
+				
+				[%for (r in getUnidirectionalReferences().select(r|r.eContainer = c)){%]
+				[%=r.getNodeName()%][label="[%=r.getEdgeLabel()%]", shape=plaintext, margin=0,width=0,height=0]
+				[%}%]
+			[%}%]
+			
+		[%}%]
+		
+		
+		[*If tehre's only one subgraph, we don't need subgraphs*]
+		[%if (subgraphs.size() > 1){%]
+		}
+		[%}%]
+		
+	[%}%]
+	
+	[%for (c in classes) { %]
+		[%if ((main.isDefined() and c == main) or main.isUndefined()){%]	
+			[** Create edges for the supertypes of the class **]
+			[%if (isLayerActive("supertypes")){%]
+			[%for (s in c.eSuperTypes.select(s|classes.includes(s))){%]
+				[%if (isInheritanceVisible(c, s)){%][%=s.getNodeName()%]->[%=c.getNodeName()%][name="[%=s.getNodeName()%]-isSuperTypeOf-[%=c.getNodeName()%]", arrowtail="empty", dir="back", arrowsize=0.9][%}%]
+			[%}%]
+			[%}%]
+			
+			[** ... and for its subtypes **]
+			[%if (isLayerActive("subtypes") and main.isDefined()){%]
+			[%for (s in classes.select(cl|cl.eSuperTypes.includes(c))){%]
+				[%if (isInheritanceVisible(s, c)){%][%=c.getNodeName()%]->[%=s.getNodeName()%][name="[%=c.getNodeName()%]-isSuperTypeOf-[%=s.getNodeName()%]", arrowtail="empty", dir="back", arrowsize=0.9][%}%]
+			[%}%]
+			
+			[%}%]
+			
+		[%}%]
+	[%}%]
+	
+	[* ... and for its references *]
+	[%if (isLayerActive("referenceLabels")){%] [* ... if reference labels layers is active*]
+		[%for (r in getUnidirectionalReferences()) {%]
+			[%var c = r.eContainer;%]
+			[%if (r.containment){%]
+				[%=c.getNodeName()%]->[%=r.getNodeName()%][arrowtail=[%=r.getArrowTail()%],tooltip="[%=r.name%]",name="[%=r.getIdentifier()%]_headFragment", dir=back];
+				[%=r.getNodeName()%]->[%=r.eType.getNodeName()%][name="[%=r.getIdentifier()%]_tailFragment"]
+			[%}else{%]
+				[%=c.getNodeName()%]->[%=r.getNodeName()%][arrowhead=none, name="[%=r.getIdentifier()%]_headFragment"]
+				[%=r.getNodeName()%]->[%=r.eType.getNodeName()%][arrowhead=[%=r.getArrowHead()%],tooltip="[%=r.name%]",name="[%=r.getIdentifier()%]_tailFragment"];
+			[%}%]
+		[%}%]
+		[%for (r in getBidirectionalReferences()) {%]
+			[%var c = r.eContainer;%]
+			[%=c.getNodeName()%]->[%=r.getNodeName()%][arrowhead=[%=r.getArrowTail()%],tooltip="[%=r.name%]",name="[%=r.getIdentifier()%]", dir=back];
+			[%=r.getNodeName()%]->[%=r.eType.getNodeName()%][arrowtail=[%=r.getArrowHead()%],tooltip="[%=r.name%]",name="[%=r.getIdentifier()%]"];
+		[%}%]
+	[%}else{%] [* ... if reference labels layers is inactive*]
+		[%for (r in getUnidirectionalReferences()) {%]
+			[%var c = r.eContainer;%]
+			[%if (r.containment){%]
+				[%=c.getNodeName()%]->[%=r.eType.getNodeName()%][arrowtail=[%=r.getArrowTail()%],tooltip="[%=r.name%]",name="[%=r.getIdentifier()%]", dir=back];
+			[%}else{%]
+				[%=c.getNodeName()%]->[%=r.eType.getNodeName()%][arrowhead=[%=r.getArrowHead()%],tooltip="[%=r.name%]",name="[%=r.getIdentifier()%]"];
+			[%}%]
+		[%}%]
+		[%for (r in getBidirectionalReferences()) {%]
+			[%var c = r.eContainer;%]
+			[%=c.getNodeName()%]->[%=r.eType.getNodeName()%][arrowtail=[%=r.getArrowHead()%],arrowhead=[%=r.getArrowTail()%],tooltip="[%=r.name%]",name="[%=r.getIdentifier()%]", dir=both];
+		[%}%]
+	[%}%]	
+}
+
+[%
+
+operation EReference getEdgeLabel() {
+	var label = "";
+	if (self.isDerived()) label = "/" + label;
+	label += self.name + self.getEdgeMultiplicityLabel();
+	return label;
+}
+
+operation EReference getEdgeMultiplicityLabel() {
+	if (self.isMany()) {
+		return self.getMultiplicityLabel();
+	}
+	else {
+		return "[" + self.lowerBound + ".." + self.upperBound + "]";
+	}
+}
+
+operation EStructuralFeature getMultiplicityLabel() {
+	var label = "";
+	if (self.isMany) {
+		label += "[";
+		if (self.lowerBound <> 0) label += self.lowerBound + "..";
+		if (self.upperBound == -1) {
+			label += "*";
+		}
+		else {
+			label += self.upperBound;
+		}
+		label += "]";
+	}
+	return label;
+}
+
+operation EClass getLabel() {
+	var fillcolor = "#fffcdc"; if (self==main) fillcolor="#c8f0a1";
+	var label = "<table cellspacing='0' cellborder='0' cellpadding='1' bgcolor='" + fillcolor + "'>";
+	var features = self.eStructuralFeatures;
+	
+	if (isLayerActive("inherited")) {
+		features = self.eAllStructuralFeatures.select(sf|not self.eSuperTypes.exists(st|classes.contains(st) and st.eAllStructuralFeatures.includes(sf)));
+	}
+	
+	if (not isLayerActive("derived")) features = features.reject(f|f.isDerived);
+	
+	if (self.eSuperTypes.includes(main)) features = features.excludingAll(main.eAllStructuralFeatures);
+	
+	var javascript = "javascript:top.showView(['Model', 'Classes', '" + self.name + "'])";
+	var tooltip = "Show class diagram for " + self.name;
+	if (self==main) {
+		javascript = "javascript:top.showElement('" + self.id + "','" + self.eResource.uri + "')";
+		tooltip = "Go to " + self.name + " in the Ecore editor";
+	}
+	
+	label += "<tr><td sides='B' colspan='2' border='1'>" + 
+		"<table border='0' cellspacing='0' cellborder='0' cellpading='0'>" + 
+		"<tr><td align='right' valign='middle'><img src='" + self.getIcon()+ "'></img></td>" + 
+		"<td align='left' valign='middle' href=\""+javascript+"\" tooltip='" + tooltip + "'>" + self.name + "</td></tr></table></td></tr>";
+	
+	label += "<tr><td></td><td></td></tr>";
+	
+	// Remove features that shouldn't be shown
+	if (not isLayerActive("features")) features = new Sequence;
+	else features = features.excludingAll(getHiddenFeatures());
+	
+	if (not isLayerActive("inlineReferences")) features = features.select(f|f.isTypeOf(EAttribute));
+	
+	for (f in features.sortBy(f|f.name.toLowerCase())) {
+		label += "<tr>";
+		label += "<td><img src='" + f.getIcon() + "'></img></td><td align='left'>" + f.getLabel() + "</td>";
+		label += "</tr>";
+	}
+	
+	if (features.isEmpty()){
+		label += "<tr>";
+		label += "<td> </td><td> </td>";
+		label += "</tr>";
+	}
+	
+	if (isLayerActive("operations")){
+		for (op in self.eOperations) {
+			var border = "";
+			if (loopCount == 1) border = "sides='T' border='1'";
+			label += "<tr>";
+			label += "<td " + border + "><img src='" + op.getIcon() + "'></img></td><td align='left' " + border + ">" + op.getLabel() + "</td>";
+			label += "</tr>";
+		}
+		
+		if (self.eOperations.isEmpty()){
+			label += "<tr>";
+			label += "<td sides='T' border='1'> </td><td sides='T' border='1'> </td>";
+			label += "</tr>";
+		}
+	}
+	
+	label += "</table>";
+	return label;
+}
+
+operation EClass getConstraintsLabel() {
+	var label = "<table border='1' cellspacing='0' cellborder='0' cellpadding='4'>";
+	for (constraint in 
+		module.constraintContexts.select(ctx|ctx.typeName=self.name).
+			collect(ctx|ctx.constraints).flatten()) {
+		
+		label+="<tr><td bgcolor='" + constraint.getConstraintColour() + "'>" + constraint.getConstraintLabel() + "</td></tr>";
+	
+	}
+	label += "</table>";
+	return label;
+}
+
+operation EStructuralFeature getLabel() {
+	var label = self.name;
+	if (self.isDerived()) label = "/" + label;
+	if (self.eType.isDefined()) label += " : " + self.eType.name;
+	label += self.getMultiplicityLabel();
+	label += "  ";
+	return label; 
+}
+
+operation EOperation getLabel() {
+	var label = self.name + "(" + self.eParameters.collect(p|p.getLabel()).concat(", ") + ")";
+	if (self.eType.isDefined()) {
+		label += " : " + self.eType.name;
+		if (self.isMany) {
+			label += "["+"*"+"]";
+		}
+	}
+	return label;
+}
+
+operation EParameter getLabel() {
+	var label = self.name;
+	if (self.eType.isDefined()) {
+		label += " : " + self.eType.name;
+		if (self.isMany) {
+			label += "["+"*"+"]";
+		}
+	}
+	return label;
+}
+
+operation EReference getArrowHead() {
+	if (self.eOpposite.isDefined() and self.eOpposite.containment) {
+		return "diamond";
+	}
+	return "open";
+}
+
+operation EReference getArrowTail() {
+	if (self.containment) {
+		return "diamond";
+	}
+	else {
+		if (self.eOpposite.isDefined()) {
+			return "open";
+		}
+		else {
+			return "none";
+		}
+	}
+	
+}
+
+operation EReference getIdentifier() {
+	return self.eContainingClass.name + "_" + self.name;
+}
+
+operation Any getConstraintLabel() {
+	var label = "";
+	if (isLayerActive("constraintNames")) label += self.name;
+	if (self.comments.notEmpty() and isLayerActive("constraintDescriptions")) {
+		if (isLayerActive("constraintNames")) label += ": ";
+		label += self.comments.first();
+	}
+	return "<table cellspacing='0' border='0' cellpadding='0'><tr><td align='left'>" + 
+		label.toMultiline("</td></tr><tr><td align='left'>") +
+		"</td></tr></table>";
+}
+
+operation Any getConstraintColour() {
+	if (self.isCritique()) return "khaki1";
+	else return "mistyrose";
+}
+
+
+operation getVisibleClasses() {
+	var main = getMainClass();
+	if (main.isDefined()) {
+		var classes : OrderedSet;
+		classes.add(main);
+		if (isLayerActive("supertypes")) classes.addAll(main.eSuperTypes); // All its supertypes
+		if (isLayerActive("subtypes")) classes.addAll(EClass.all.select(o|o.eSuperTypes.includes(main))); // All its subtypes
+		classes.addAll(getVisibleReferences().eType);
+		return classes;
+	}
+	else {
+		return EClass.all.select(c|classNames.includes(c.name));
+	}
+}
+
+@cached
+operation getMainClass() {
+	if (mainClassName.isDefined()) {
+		return EClass.all.selectOne(c|c.name = mainClassName);
+	}
+}
+
+@cached
+operation getUnidirectionalReferences() {
+	var bidirectionalReferences = getBidirectionalReferences();
+	return getVisibleReferences().excludingAll(bidirectionalReferences).
+		excludingAll(bidirectionalReferences.eOpposite);
+}
+
+@cached
+operation getBidirectionalReferences() {
+	var references = getVisibleReferences();
+	return references.select(r|r.eOpposite.isDefined() and references.indexOf(r) < references.indexOf(r.eOpposite));
+}
+
+@cached
+operation getVisibleReferences() { 
+	var visibleReferences : OrderedSet;
+	var main = getMainClass();
+	if (main.isDefined()){
+		visibleReferences.addAll(main.eReferences);
+		visibleReferences.addAll(main.eReferences.eOpposite);
+		visibleReferences.remove(null);
+	}
+	else {
+		visibleReferences.addAll(classes.eReferences.flatten().select(r|classes.includes(r.eType)));
+	}
+	
+	if (not isLayerActive("referencesToSelf")) visibleReferences = visibleReferences.reject(r|r.eType = r.eContainer);
+	if (not isLayerActive("derived")) visibleReferences = visibleReferences.reject(r|r.isDerived);
+	
+	// Remove explicitly hidden features
+	visibleReferences = visibleReferences.excludingAll(getHiddenFeatures());
+	
+	return visibleReferences;
+}
+
+@cached
+operation getHiddenFeatures() {
+	var hiddenFeatures : Sequence;
+	if (hide.isDefined()) {
+		for (item in hide) {
+			var parts = item.split("\\.");
+			if (parts.size() == 2) {
+				var eClass = EClass.all.selectOne(c|c.name = parts.at(0));
+				if (eClass.isDefined()) {
+					hiddenFeatures.addAll(eClass.eStructuralFeatures.select(sf|sf.isHidden(parts.at(0), parts.at(1))));
+				}
+			}
+		}
+	}
+	return hiddenFeatures;
+}
+
+operation EStructuralFeature isHidden(hiddenClass : String, hiddenFeature : String) {
+	return self.eContainer.name = hiddenClass and (hiddenFeature == "*" or hiddenFeature == self.name);
+}
+
+operation getValidationModule() {
+	var module = new Native("org.eclipse.epsilon.evl.EvlModule");
+	var constraints = EPackage.all.first().getAnnotationValue("constraints", "file");
+	if (not constraints.isDefined()) return module;
+	
+	var constraintsUrl = new Native("java.net.URL")(new Native("java.net.URL")(M.resource.uri.toString()), constraints);
+	module.parse(constraintsUrl.toURI());
+	return module;
+}
+
+operation EModelElement getAnnotationValue(name : String, detail : String) : Any {
+	var ann = self.eAnnotations.selectOne(a|a.source = name);
+	var det;
+
+	if (ann.isDefined()) {
+		det = ann.details.selectOne(d|d.key = detail);
+	}
+
+	if (det.isDefined()) {
+		return det.value;
+	}
+	
+	return det;	
+}
+
+operation String toMultiline() : String {
+	return self.toMultiline("\\l");
+}
+
+operation String toMultiline(newline : String) : String {
+	var multiline = "";
+	
+	for (line in self.split("\\n")) {
+		var length = 0;
+		for (part in line.split(" ")) {
+			multiline += part + " ";
+			if (length > 30) {
+				multiline += newline;
+				length = 0;
+			}
+			else {
+				length += part.length();
+			}
+		}
+		if (not multiline.endsWith(newline)) multiline += newline;
+		if (hasMore) multiline += "\\n";
+	}
+	if (not multiline.endsWith(newline)) multiline += newline;
+	
+	multiline = multiline.replaceAll('"', '\\\\"');
+	
+	return multiline;
+}
+
+operation EClass getNodeName() {
+	return "_" + self.name;
+}
+
+operation EReference getNodeName() {
+	return "_" + self.eContainer.name + "_" + self.name;
+}
+
+operation isLayerActive(id : String) {
+	var layer = layers.selectOne(l|l.id = id);
+	if (layer.isDefined()) {
+		return layer.active;
+	}
+	else {
+		return true;
+	}
+}
+
+operation Any getIcon() {
+	return getImage("icons/" + self.eClass.name + ".gif");
+}
+
+operation constraintsVisible() {
+	return isLayerActive("constraintNames") or isLayerActive("constraintDescriptions");
+}
+
+operation EClassifier inSameSubgraph(other : EClass) {
+	return subgraphs.exists(s|s.includes(self) and s.includes(other));
+}
+
+operation EClassifier hasSameRank(other : EClass) {
+	var ref = self.eReferences.reject(r|getVisibleReferences().excludes(r)).selectOne(r|(not r.containment) and r.eType=other);
+	return ref.isDefined();
+}
+
+operation isInheritanceVisible(sub : EClass, super : EClass) {
+	if (hide.isDefined()) {
+		for (item in hide) {
+			var parts = item.split("-");
+			if (parts.size() == 2) {
+				if (sub.name == parts.at(0) and super.name == parts.at(1)) return false;
+			}
+		}
+	}
+	return true;
+}
+
+operation validate() {
+	
+	var message = "";
+	
+	var missingClasses = classNames.excludingAll(EClass.all.name);
+	
+	if (missingClasses.notEmpty()) {
+		if (missingClasses.size() == 1) message = "Referenced class " + missingClasses.concat(", ") + " does not exist. ";
+		else message = "Referenced classes " + missingClasses.concat(", ") + " do not exist. ";
+	}
+	
+	if (clusters.isDefined()) {
+		
+		var missingClasses = clusters.flatten().asSet().excludingAll(getVisibleClasses().name);
+		if (missingClasses.notEmpty()) {
+			if (missingClasses.size() == 1) message += "Class " + missingClasses.concat(", ") + " is not in the view.";
+			else message += "Classes " + missingClasses.concat(", ") + " are not in the view.";
+		}
+	}
+	
+	return message;
+}
+
+%]

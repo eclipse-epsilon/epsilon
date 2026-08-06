@@ -1,0 +1,17 @@
+context SimpleOO!Class {
+	constraint BothAbstractOrNot {		
+		guard : self.getMatching().isDefined()		
+		check : self.getMatching().isAbstract = self.isAbstract	
+		message : "Inconsistent value in feature 'abstract' " 
+			+ "of class " + self.name
+	}
+}
+
+@cached
+operation SimpleOO!Class getMatching() : Any {
+	var match := matchTrace.matches.selectOne
+		(m|m.left = self or m.right = self);
+	if (not match.isDefined()) { return null; }
+	if (match.left = self) { return match.right; }
+	else { return match.left; }
+}

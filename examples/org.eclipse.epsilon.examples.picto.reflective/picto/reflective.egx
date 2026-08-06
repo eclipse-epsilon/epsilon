@@ -1,0 +1,18 @@
+import "ecoreutil.eol";
+
+pre {
+	var diagramElements = M.allContents.select(e|e.isDiagram());
+}
+
+rule Diagram2View
+	transform d in: diagramElements {
+	
+	template : "diagram.egl"
+	
+	parameters : Map {
+		"path" = Sequence{"Diagrams", d.getTitle()},
+		"format" = "graphviz-dot"
+	}
+	
+}
+

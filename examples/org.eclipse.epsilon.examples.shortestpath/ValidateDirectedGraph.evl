@@ -1,0 +1,53 @@
+context Node {
+	
+	constraint NotInCycle {
+		check : not self.allIncoming().includes(self)
+		message : "Node " + self.label + 
+			" is part of a directed cycle"
+	}
+	
+}
+
+context Edge {
+	
+	constraint MustDefineSource {
+		
+		check : self.source.isDefined()
+		
+		message : "Edge does not have a source node"
+		
+	}
+	
+	constraint MustDefineTarget {
+		check : self.target.isDefined()
+		
+		message : "Edge does not have a target node"
+	}
+	
+	constraint PositiveWeight {
+		
+		guard : self.satisfies("MustDefineSource") and 
+			self.satisfies("MustDefineTarget")
+		
+		check : self.weight >= 0
+		
+		message : "Edge " + self.source.label + "->" + 
+			self.target.label + " has a negative weight" 
+		
+	}
+	
+}
+
+operation Node allIncoming() : Set {
+	return self.allIncoming(Set{});
+}
+
+operation Node allIncoming(visited : Set) : Set {
+	for (n in self.incoming.collect(e|e.source)) {
+		if (not visited.includes(n)) {
+			visited.add(n);
+			visited.addAll(n.allIncoming(visited));
+		}
+	}
+	return visited;
+}

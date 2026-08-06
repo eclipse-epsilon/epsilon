@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EWL GMF UML Plug-in
+Bundle-SymbolicName: org.eclipse.epsilon.examples.ewl.uml;singleton:=true
+Bundle-Version: 1.0.0
+Require-Bundle: org.eclipse.epsilon.ewl.emf

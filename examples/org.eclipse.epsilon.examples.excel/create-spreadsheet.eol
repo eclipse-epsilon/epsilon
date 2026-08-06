@@ -1,0 +1,27 @@
+// Create the modules
+var MSD = new Module(id="MSD", 
+  title="Modelling and System Design", term="Autumn");
+
+var HCI = new Module(id="HCI", 
+  title="Human Computer Interaction", term="Spring");
+
+var RQE = new Module(id="RQE", 
+  title="Requirements Engineering", term="Spring");
+   
+// Create the staff  
+var matthew = new Staff(id="mt506", firstname="Matthew",
+  lastname="Thomas", teaches=Sequence{MSD, RQE});
+
+var matthew = new Staff(id="dj503", firstname="Daniel",
+  lastname="Jackson", teaches=Sequence{HCI});
+
+// Create the students
+var joe = new Student(id="jt501", firstname="Joe", 
+  lastname="Thompson", age="23", supervisor=matthew, modules=Sequence{MSD, RQE});
+
+var jane = new Student(id="js502", firstname="Jane", 
+  lastname="Smith", age="22", supervisor=matthew, modules=Sequence{MSD, HCI});
+
+// Create the marks
+new Mark(student=joe, module=MSD, mark=62);
+new Mark(student=jane, module=HCI, mark=74);

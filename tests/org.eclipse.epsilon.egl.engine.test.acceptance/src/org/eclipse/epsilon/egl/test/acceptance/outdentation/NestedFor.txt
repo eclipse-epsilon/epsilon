@@ -1,0 +1,6 @@
+class Post {
+	public String title1;
+	public String title2;
+	public String content1;
+	public String content2;
+}

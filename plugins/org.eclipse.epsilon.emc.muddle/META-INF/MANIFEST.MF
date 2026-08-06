@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Muddle Model Support
+Bundle-SymbolicName: org.eclipse.epsilon.emc.muddle;singleton:=true
+Automatic-Module-Name: org.eclipse.epsilon.emc.muddle
+Bundle-Version: 2.9.0.qualifier
+Bundle-ClassPath: .
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.emc.muddle,
+ org.eclipse.epsilon.emc.muddle.impl,
+ org.eclipse.epsilon.emc.muddle.util
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.epsilon.eol.engine
+Bundle-ActivationPolicy: lazy

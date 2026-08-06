@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Document xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="Xml">
+  <rootElement name="Application">
+    <contents xsi:type="Element" name="Text">
+      <contents xsi:type="Text" cdata="1-0"/>
+      <attributes name="name" value="Arsenal vs. Bolton"/>
+    </contents>
+    <contents xsi:type="Element" name="Vote">
+      <contents xsi:type="Element" name="Choice">
+        <attributes name="name"/>
+      </contents>
+      <attributes name="name"/>
+    </contents>
+    <contents xsi:type="Element" name="Menu">
+      <contents xsi:type="Element" name="Menu">
+        <contents xsi:type="Element" name="Vote">
+          <contents xsi:type="Element" name="Label">
+            <attributes name="name"/>
+          </contents>
+          <contents xsi:type="Element" name="Choice">
+            <attributes name="name"/>
+          </contents>
+          <attributes name="name"/>
+        </contents>
+        <attributes name="name"/>
+      </contents>
+      <attributes name="name"/>
+    </contents>
+    <attributes name="name"/>
+  </rootElement>
+</Document>

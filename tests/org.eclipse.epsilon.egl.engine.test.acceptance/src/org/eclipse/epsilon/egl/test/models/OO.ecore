@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="OO">
+  <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//Package">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="model"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PackageableElement" abstract="true"
+      eSuperTypes="#//NamedElement">
+    <eAnnotations source="exeed">
+      <details key="referenceLabel" value="var str : String;&#xD;&#xA;self->closure(self.package).collect(p|p.name).println();&#xD;&#xA;str := self->closure(self.package).collect(p|p.name).invert().asString('.');&#xD;&#xA;if (self.package.isDefined()){&#xD;&#xA;&#x9;str := str + '.';&#xD;&#xA;}&#xD;&#xA;str := str + self.name;&#xD;&#xA;return str;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="package" ordered="false"
+        lowerBound="1" eType="#//Package" eOpposite="#//Package/contents"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AnnotatedElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="annotations" ordered="false"
+        upperBound="-1" eType="#//Annotation" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Annotation">
+    <eAnnotations source="exeed">
+      <details key="label" value="return self.key + ' -> ' + self.value;"/>
+      <details key="classIcon" value="annotation"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" ordered="false" unique="false"
+        lowerBound="1" eType="#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" ordered="false"
+        unique="false" lowerBound="1" eType="#//String"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true" eSuperTypes="#//AnnotatedElement">
+    <eAnnotations source="exeed">
+      <details key="label" value="return self.name;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" ordered="false" unique="false"
+        lowerBound="1" eType="#//String"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#//PackageableElement">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="package"/>
+      <details key="label" value="return self.name;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" ordered="false"
+        upperBound="-1" eType="#//PackageableElement" containment="true" eOpposite="#//PackageableElement/package"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="uses" upperBound="-1" eType="#//Package"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Classifier" abstract="true" eSuperTypes="#//PackageableElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ExternalClass" eSuperTypes="#//Class"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Class" eSuperTypes="#//Classifier">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="class"/>
+      <details key="label" value="var label : String;&#xD;&#xA;label := self.name;&#xD;&#xA;if (self.extends.isDefined()){&#xD;&#xA;&#x9;label := label + ' extends ' + self.extends.name;&#xD;&#xA;}&#xD;&#xA;return label;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" ordered="false"
+        lowerBound="1" eType="#//Class" eOpposite="#//Class/extendedBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="extendedBy" ordered="false"
+        upperBound="-1" eType="#//Class" eOpposite="#//Class/extends"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
+        eType="#//Feature" containment="true" eOpposite="#//Feature/owner"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAbstract" ordered="false"
+        unique="false" lowerBound="1" eType="#//Boolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Datatype" eSuperTypes="#//Classifier">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="datatype"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Feature" abstract="true" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owner" ordered="false"
+        lowerBound="1" eType="#//Class" eOpposite="#//Class/features"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false" lowerBound="1"
+        eType="#//Classifier"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="visibility" ordered="false"
+        unique="false" lowerBound="1" eType="#//VisibilityEnum"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StructuralFeature" abstract="true" eSuperTypes="#//Feature">
+    <eAnnotations source="exeed">
+      <details key="label" value="var label : String;&#xD;&#xA;label := self.name;&#xD;&#xA;if (self.type.isDefined()){&#xD;&#xA;&#x9;if (self.isMany) {&#xD;&#xA;&#x9;&#x9;label := label + ' [*]';&#xD;&#xA;&#x9;}&#xD;&#xA;&#x9;label := label + '  : ' + self.type.name;&#xD;&#xA;}&#xD;&#xA;return label;"/>
+      <details key="icon" value="if (self.visibility = VisibilityEnum#private) {&#xD;&#xA;&#x9;return 'private';&#xD;&#xA;}&#xD;&#xA;else {&#xD;&#xA;&#x9;return 'public';&#xD;&#xA;}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isMany" ordered="false"
+        unique="false" lowerBound="1" eType="#//Boolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Operation" eSuperTypes="#//Feature">
+    <eAnnotations source="exeed">
+      <details key="label" value="var label : String;&#xD;&#xA;label := self.name + ' (';&#xD;&#xA;for (p in self.parameters) {&#xD;&#xA;&#x9;label := label + p.name;&#xD;&#xA;&#x9;if (p.type.isDefined()) {&#xD;&#xA;&#x9;&#x9;label := label + ' : ' + p.type.name;&#xD;&#xA;&#x9;}&#xD;&#xA;&#x9;if (hasMore) {&#xD;&#xA;&#x9;&#x9;label := label + ', ';&#xD;&#xA;&#x9;}&#xD;&#xA;}&#xD;&#xA;label := label + ')';&#xD;&#xA;if (self.type.isDefined()) {&#xD;&#xA;&#x9;label := label + ' : ' + self.type.name;&#xD;&#xA;}&#xD;&#xA;return label;"/>
+      <details key="classIcon" value="operation"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" ordered="false"
+        upperBound="-1" eType="#//Parameter" containment="true" eOpposite="#//Parameter/owner"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter" eSuperTypes="#//NamedElement">
+    <eAnnotations source="exeed">
+      <details key="label" value="var label : String;&#xD;&#xA;label := self.name;&#xD;&#xA;if (self.type.isDefined()){&#xD;&#xA;&#x9;label := label + ' : ' + self.type.name;&#xD;&#xA;}&#xD;&#xA;return label;"/>
+      <details key="classIcon" value="parameter"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" ordered="false" lowerBound="1"
+        eType="#//Classifier"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owner" ordered="false"
+        lowerBound="1" eType="#//Operation" eOpposite="#//Operation/parameters"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Reference" eSuperTypes="#//StructuralFeature"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//StructuralFeature"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="VisibilityEnum">
+    <eLiterals name="public" value="1"/>
+    <eLiterals name="private" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="String"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Integer"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="Boolean"/>
+</ecore:EPackage>

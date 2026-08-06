@@ -1,0 +1,18 @@
+[%
+include("Operations.egl");
+var scopedElementVariable = "se";
+%]
+[%=op()%]
+[%
+operation op() : String {
+	var scopedElementVariable = "localSe";
+	var r = "`" + scopedElementVariable + "`.";
+	
+	// Tests for bug 558543
+	r.toString()->println() == r->toString().println();
+	"in op()".println(r) == "in op()"->println(r);
+	Sequence{}.forAll(e|true) == Sequence{}->forAll(e|true);
+	
+	return r;
+}
+%]

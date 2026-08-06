@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate">
+<booleanAttribute key="fine_grained_profiling" value="false"/>
+<listAttribute key="models">
+<listEntry value="name=Index&#10;readOnLoad=false&#10;storeOnDisposal=false&#10;aliases=&#10;uri=&#10;cached=true&#10;file=&#10;fileBased=false&#10;type=HTML"/>
+<listEntry value="name=Bibtex&#10;readOnLoad=false&#10;storeOnDisposal=false&#10;aliases=&#10;uri=&#10;cached=true&#10;file=&#10;fileBased=false&#10;type=HTML"/>
+</listAttribute>
+<listAttribute key="parameters"/>
+<booleanAttribute key="profile_model_loading" value="false"/>
+<booleanAttribute key="profiling_enabled" value="false"/>
+<booleanAttribute key="reset_profiler" value="false"/>
+<stringAttribute key="source" value="/org.eclipse.epsilon.emc.html.examples.dblp/fetch-bibtex.eol"/>
+</launchConfiguration>

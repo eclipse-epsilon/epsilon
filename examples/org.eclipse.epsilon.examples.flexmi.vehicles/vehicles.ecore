@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="vehicles" nsURI="vehicles" nsPrefix="">
+  <eClassifiers xsi:type="ecore:EClass" name="Vehicle">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="reg" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="colour" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="wheels" upperBound="-1"
+        eType="#//Wheel" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="engine" eType="#//Engine"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Engine" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cc" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DieselEngine" eSuperTypes="#//Engine"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PetrolEngine" eSuperTypes="#//Engine"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Wheel">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="size" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Human Usable Textual Notation Development Tools
+Bundle-SymbolicName: org.eclipse.epsilon.hutn.dt;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Export-Package: org.eclipse.epsilon.hutn.dt.actions,
+ org.eclipse.epsilon.hutn.dt.editor,
+ org.eclipse.epsilon.hutn.dt.editor.contentAssist,
+ org.eclipse.epsilon.hutn.dt.markers,
+ org.eclipse.epsilon.hutn.dt.util
+Require-Bundle: org.eclipse.epsilon.hutn.engine,
+ org.eclipse.epsilon.common.dt,
+ org.eclipse.jface.text;visibility:=reexport,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.epsilon.emc.emf,
+ org.eclipse.emf.ecore.editor,
+ org.eclipse.epsilon.emf.dt,
+ org.eclipse.epsilon.emc.composite
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.hutn.dt

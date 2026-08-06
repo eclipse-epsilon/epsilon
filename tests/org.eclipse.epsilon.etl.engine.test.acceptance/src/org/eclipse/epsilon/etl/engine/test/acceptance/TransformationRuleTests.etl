@@ -1,0 +1,24 @@
+rule testLazyRuleIdentification 
+	transform t : Tree!Tree 
+	to n : Graph!Node {}
+
+@isLazy
+@lazy
+rule testLazyRuleIdentificationWhenLazyAnnotated 
+	transform t : Tree!Tree 
+	to n : Graph!Node {}
+
+@abstract
+rule testLazyRuleIdentificationWhenAbstractAndAnyType 
+	transform t : Any
+	to n : Any {}
+
+@isLazy
+rule testLazyRuleIdentificationWhenAnyType
+	transform t : Any
+	to n : Any {}
+
+rule testLazyRuleIdentificationExtendingAbstract
+	transform t : Tree!Tree 
+	to n : Graph!Node 
+	extends testLazyRuleIdentificationWhenAbstractAndAnyType {}

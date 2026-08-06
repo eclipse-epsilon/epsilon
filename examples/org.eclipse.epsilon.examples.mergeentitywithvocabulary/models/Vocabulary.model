@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ASCII"?>
+<DomainVocabulary:Vocabulary xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:DomainVocabulary="DomainVocabulary">
+  <term name="Writer">
+    <alias name="Author"/>
+    <alias name="Composer"/>
+  </term>
+  <term name="Publication">
+    <alias name="Book"/>
+  </term>
+  <term name="Publishing Organization">
+    <alias name="Publisher"/>
+  </term>
+</DomainVocabulary:Vocabulary>

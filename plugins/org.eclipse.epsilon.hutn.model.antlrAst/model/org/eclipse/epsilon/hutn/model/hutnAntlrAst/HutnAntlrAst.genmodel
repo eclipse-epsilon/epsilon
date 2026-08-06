@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="*******************************************************************************&#xA;Copyright (c) 2008 The University of York.&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v1.0&#xA;which accompanies this distribution, and is available at&#xA;http://www.eclipse.org/legal/epl-v10.html&#xA;&#xA;Contributors:&#xA;    Louis Rose - initial API and implementation&#xA;******************************************************************************"
+    modelDirectory="/org.eclipse.epsilon.hutn.model.antlrAst/src" modelPluginID="org.eclipse.epsilon.hutn.model.antlrAst"
+    modelName="HutnAntlrAst" importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0"
+    copyrightFields="false">
+  <foreignModel>HutnAntlrAst.ecore</foreignModel>
+  <genPackages prefix="HutnAntlrAst" basePackage="org.eclipse.epsilon.hutn.model"
+      disposableProviderFactory="true" ecorePackage="HutnAntlrAst.ecore#/">
+    <genClasses ecoreClass="HutnAntlrAst.ecore#//AdjectiveNode"/>
+    <genClasses ecoreClass="HutnAntlrAst.ecore#//TextualValueNode"/>
+    <genClasses ecoreClass="HutnAntlrAst.ecore#//NumericValueNode"/>
+    <genClasses ecoreClass="HutnAntlrAst.ecore#//NameNode"/>
+    <genClasses ecoreClass="HutnAntlrAst.ecore#//NullNode"/>
+    <genClasses ecoreClass="HutnAntlrAst.ecore#//TrueNode"/>
+    <genClasses ecoreClass="HutnAntlrAst.ecore#//FalseNode"/>
+  </genPackages>
+  <genPackages prefix="AntlrAst" basePackage="org.eclipse.epsilon.antlr.postprocessor.model"
+      disposableProviderFactory="true" ecorePackage="AntlrAst.ecore#/">
+    <genClasses ecoreClass="AntlrAst.ecore#//Ast">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference AntlrAst.ecore#//Ast/roots"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="AntlrAst.ecore#//Node">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AntlrAst.ecore#//Node/text"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AntlrAst.ecore#//Node/line"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute AntlrAst.ecore#//Node/column"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference AntlrAst.ecore#//Node/parent"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference AntlrAst.ecore#//Node/children"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

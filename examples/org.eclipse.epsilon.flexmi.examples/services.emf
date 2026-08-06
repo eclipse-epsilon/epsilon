@@ -1,0 +1,29 @@
+@namespace(uri="services", prefix="")
+package services;
+
+class Model {
+	val Service[*] services;
+	val Type[*] types;
+}
+
+class Service { val Operation[*] operations; }
+
+class Operation {
+	attr String name;
+	val TypedElement[*] incoming;
+	val TypedElement[*] outgoing;
+}
+
+class TypedElement {
+	attr String name;
+	attr boolean many;	
+	ref Type type;
+}
+
+abstract class Type { attr String name; }
+
+class PrimitiveType extends Type {}
+
+class Struct extends Type {
+	val TypedElement[*] fields;
+}

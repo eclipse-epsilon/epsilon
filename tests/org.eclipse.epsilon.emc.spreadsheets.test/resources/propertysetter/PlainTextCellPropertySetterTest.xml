@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spreadsheet>
+	
+	<worksheet name="Sheet1" dataTypeStrict="false">
+		<column index="1" name="id" many="false"></column>
+		<column index="2" many="false" dataType="String"></column>
+		<column index="3" many="true" dataType="String"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet2" dataTypeStrict="true">
+		<column index="1" name="id" many="false"></column>
+		<column index="2" many="false" dataType="Integer"></column>
+		<column index="3" many="true" dataType="Integer"></column>
+	</worksheet>
+	
+</spreadsheet>

@@ -1,0 +1,48 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<_>
+	<package name="p1">
+		<t1/>
+	</package>
+	
+	<package name="p2">
+		<t2/>
+	</package>
+	
+	<package name="p3">
+		<t3 n="5" abstract="true"/>
+	</package>
+
+	<package name="p4">
+		<t3 n="5" abstract="true"/>
+	</package>
+	
+	<:template name="t1">
+		<content language="EOL">
+		<![CDATA[
+			for (i in 1.to(10)){
+				new t_class(a_name = "C" + i);
+			}
+		]]>
+		</content>
+	</:template>
+	
+	<:template name="t2">
+		<content language="EOL">
+		<![CDATA[
+			new t_class(a_name = "C11");
+		]]>
+		</content>
+	</:template>
+	
+	<:template name="t3">
+		<parameter name="n"/>
+		<content language="EOL">
+		<![CDATA[
+			for (i in 1.to(n.asInteger())){
+				new t_class(a_name = "C" + i);
+			}
+		]]>
+		</content>
+	</:template>
+	
+</_>

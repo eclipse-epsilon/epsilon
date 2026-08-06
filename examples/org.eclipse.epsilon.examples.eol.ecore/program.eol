@@ -1,0 +1,4 @@
+// Print the names of all classes in the metamodel
+for (c in EClass.all) {
+	c.name.println();
+}

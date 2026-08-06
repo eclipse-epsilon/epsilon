@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.eclipse.epsilon</groupId>
+		<artifactId>plugins</artifactId>
+		<version>2.9.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>org.eclipse.epsilon.workflow.csv</artifactId>
+	<packaging>eclipse-plugin</packaging>
+
+	<build>
+		<plugins>
+			<!-- The Tycho-built default .jar has the tasks in lib/*.jar, just as 
+				in the plugin that we'd like to distribute. However, we need them here as 
+				a regular .jar in order to be able to compile this plugin. We'll add the 
+				.jar straight to Tycho's classpath only for compilation, as we do in Eclipse. -->
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<extraClasspathElements>
+						<extraClasspathElement>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>org.eclipse.epsilon.workflow</artifactId>
+							<version>${project.version}</version>
+							<classifier>taskjar</classifier>
+						</extraClasspathElement>
+					</extraClasspathElements>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>build-jar</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<xslt
+									style="../org.eclipse.epsilon.workflow/pluginxml2tasksxml.xslt"
+									in="plugin.xml"
+									out="ant/org/eclipse/epsilon/workflow/tasks/csv/tasks.xml" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Attach the workflow.jar as a separate artifact so it is available 
+				for compilation of other workflow projects -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>lib/org.eclipse.epsilon.workflow.csv.jar</file>
+									<type>jar</type>
+									<classifier>taskjar</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

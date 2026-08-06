@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ASCII"?>
+<OO:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:OO="OO" name="educational">
+  <contents xsi:type="OO:Class" name="School" isAbstract="false">
+    <features xsi:type="OO:Reference" name="classes" type="//@contents.1" isMany="true"/>
+    <features xsi:type="OO:Reference" name="principal" type="//@contents.2" isMany="false"/>
+  </contents>
+  <contents xsi:type="OO:Class" name="Class" isAbstract="false">
+    <features xsi:type="OO:Attribute" name="grade" type="//@contents.4" isMany="false"/>
+    <features xsi:type="OO:Reference" name="students" type="//@contents.3" isMany="true"/>
+    <features xsi:type="OO:Reference" name="modules" type="//@contents.5" isMany="true"/>
+  </contents>
+  <contents xsi:type="OO:Class" name="Teacher" isAbstract="false">
+    <features xsi:type="OO:Reference" name="teaches" type="//@contents.1" isMany="true"/>
+  </contents>
+  <contents xsi:type="OO:Class" name="Student" isAbstract="false">
+    <features xsi:type="OO:Reference" name="supervisor" type="//@contents.2" isMany="false"/>
+  </contents>
+  <contents xsi:type="OO:Datatype" name="Integer"/>
+  <contents xsi:type="OO:Class" name="Module" isAbstract="false">
+    <features xsi:type="OO:Attribute" name="subject" type="//@contents.6" isMany="false"/>
+  </contents>
+  <contents xsi:type="OO:Datatype" name="String"/>
+</OO:Model>

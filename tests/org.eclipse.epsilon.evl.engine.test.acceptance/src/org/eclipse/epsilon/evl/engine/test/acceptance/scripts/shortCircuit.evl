@@ -1,0 +1,175 @@
+@cached
+operation t_b foo(expr : Integer) : Boolean {
+	return expr <= 0;
+}
+
+operation t_c foo() : String {
+	return false.asString();
+}
+
+@cached
+operation returnFalse() : Boolean {
+	return false;
+}
+
+context t_a {
+
+	constraint SelfVisibleInGuard {
+		guard: self.isDefined()
+		check: true
+	}
+	
+	constraint TerminateOnFailNoAnnotation {
+		check: false
+	}
+}
+
+$parallel preVar.length() > 3
+context t_a {
+
+	guard: not self.isDefined()
+	
+	constraint NeverChecked {
+		check : false
+	}
+}
+
+context t_b {
+	
+	@terminate
+	constraint DontTerminateOnFailWithAnnotation {
+		check: self.satisfies("AlwaysTrue")
+	}
+	
+	constraint AlwaysFalse { 
+		check: false
+	}
+	
+	constraint AlwaysTrue {
+		check: true
+	}
+	
+	constraint ElementOperationInConstraint {
+		check: self.foo(1 + 2)
+	}
+	
+	@terminate
+	constraint DontTerminate {
+		guard: false
+		check {
+			throw "IllegalStateException in DontTerminate";
+		}
+	}
+	
+	constraint NeverChecked {
+		guard: self.isTypeOf(t_c)
+		check: false
+	}
+	
+	constraint RequiresNonLazyConstraint {
+		guard: self.satisfies("AlwaysFalse")
+		check {
+			return 1 > 0;
+		}
+	}
+	
+	@lazy
+	constraint LazyWithGuard {
+		guard: "true".asBoolean()
+		check {
+			return true;
+		}
+	}
+	
+	constraint RequiresLazyConstraint {
+		guard: self.satisfies("LazyWithGuard")
+		check: false
+	}
+	
+	constraint RequiresContextlessLazy {
+		check {return self.satisfies("LazyContextlessCallsLazy");}
+	}
+	
+	constraint InsaneLazyChain {
+		guard {return not self.satisfies("RequiresContextlessLazy");}
+		check: false
+	}
+}
+
+context t_c {
+
+	guard {
+		self.~extendedProperty = self.isTypeOf(t_c);
+		return true;
+	}
+	
+	constraint WrongType {
+		check: self.isTypeOf(t_b)
+	}
+	
+	constraint AlwaysTrueOperation {
+		check: not self.foo().asBoolean()
+	}
+	
+	constraint AlwaysFalseOperation {
+		check: self.foo().asBoolean()
+	}
+	
+	constraint SatisfiesOneLazyAndNonLazy {
+		guard: self.satisfiesOne("LazyAlwaysFalseOperation", "AlwaysTrueOperation", "AlwaysFalseOperation")
+		check: false
+	}
+	
+	constraint SatisfiesAllLazyAndNonLazy {
+		check: self.satisfiesAll("LazyAlwaysFalseOperation", "AlwaysTrueOperation", "AlwaysFalseOperation")
+	}
+	
+	constraint NeverCalledLazyGuard {
+		guard: self.satisfies("LazyAlwaysFalseOperation")
+		check: false
+	}
+	
+	@lazy
+	constraint LazyAlwaysFalseOperation {
+		check: self.foo().asBoolean()
+	}
+	
+	constraint ExtendedPropertyCanBeAccessed {
+		check: self.~extendedProperty
+	}
+}
+
+@lazy
+constraint LazyContextlessNeverCalled {
+	check: returnFalse()
+}
+
+@lazy
+constraint LazyContextlessCallsLazy {
+	check: self.satisfies("LazyContextlessDependedOn")
+}
+
+@lazy
+constraint LazyContextlessDependedOn {
+	guard: true
+	check: false
+}
+
+constraint Contextless {
+	check: t_a.all.size + t_b.all.size > 2
+}
+
+context t_c {
+
+	@terminate
+	constraint TerminateOnFailWithAnnotation {
+		check: false
+	}
+	
+	constraint NeverCheckedAfterTerminate {
+		guard {
+			throw "Constraint 'NeverCheckedAfterTerminate' was executed!";
+		}
+		check: false
+	}
+}

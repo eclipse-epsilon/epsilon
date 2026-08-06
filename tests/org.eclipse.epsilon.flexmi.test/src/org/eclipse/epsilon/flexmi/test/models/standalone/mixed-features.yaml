@@ -1,0 +1,10 @@
+$nsuri: http://www.eclipse.org/emf/2002/Ecore
+class:
+  name: c1
+  features:
+    - $type: eref
+      name: r1
+    - $type: eattr
+      name: a1
+    - $type: eref
+      name: r2

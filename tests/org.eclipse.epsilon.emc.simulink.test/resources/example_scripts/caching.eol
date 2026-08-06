@@ -1,0 +1,23 @@
+//M.clearCache();
+
+assert(SubSystem.all.size().println("size: ") == 0);
+assert(`Stateflow.Chart`.all.size().println("SF size: ") == 0);
+
+var ch1 = new `sflib/Chart`;
+
+assert( SubSystem.all.size().println("size: ") == 1);
+assert(not `Stateflow.Chart`.all.isEmpty().println("is empty: "));
+assert(`Stateflow.Chart`.all.size().println("SF size: ") == 1);
+
+var first = `Stateflow.Chart`.all.first();
+var ch2 = new `sflib/Chart`;
+
+assert(SubSystem.all.println.size().println("size: ") == 2);
+assert(`Stateflow.Chart`.println.all.size().println("SF size: ") == 2);
+
+delete ch2;
+assert(SubSystem.all.size().println("size: ") == 1);
+assert(`Stateflow.Chart`.all.size().println("SF size: ") == 1);
+
+//delete first;
+

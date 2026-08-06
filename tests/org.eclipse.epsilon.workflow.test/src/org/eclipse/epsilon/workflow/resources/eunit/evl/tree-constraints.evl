@@ -1,0 +1,11 @@
+context Tree {
+  constraint LabelsStartWithT {
+    check   : self.label.startsWith('t')
+    message : 'Label starts with t'
+  }
+
+  critique LabelsEndInN {
+    check   : self.label.endsWith('n')
+    message : 'Label ends with n'
+  }
+}

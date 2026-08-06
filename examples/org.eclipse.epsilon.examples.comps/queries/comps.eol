@@ -1,0 +1,12 @@
+var ports : Sequence;
+ports = Port.all.select(p|p.name.startsWith("t"));
+
+for (port in ports) {
+	var portName : String;
+	portName = port.getLabel();
+	portName.println();
+}
+
+operation Port getLabel() : String {
+	return self.name + ":" + self.type;
+}

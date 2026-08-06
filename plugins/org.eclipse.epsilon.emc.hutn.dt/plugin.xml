@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.hutn.HutnModel"
+            dialog="org.eclipse.epsilon.emc.hutn.dt.HutnModelConfigurationDialogue"
+            icon="icons/hutn.png"
+            label="EMF Model expressed in HUTN"
+            stable="false"
+            type="EMF_HUTN">
+      </modelType>
+   </extension>
+
+</plugin>

@@ -1,0 +1,574 @@
+@test
+operation testInit() {
+	Sequence{};
+	Set{};
+	OrderedSet{};
+	Bag{};
+	Map{};
+	Tuple{};
+	ConcurrentMap{};
+	ConcurrentSet{};
+	ConcurrentBag{};
+}
+
+@test
+operation testCorrectTypes() {
+	var c;
+	c = new Sequence;
+	assertTrue(c.getClass().getName().endsWith("Sequence"));
+	c = new Set;
+	assertTrue(c.getClass().getName().endsWith("Set"));
+	c = new OrderedSet;
+	assertTrue(c.getClass().getName().endsWith("OrderedSet"));
+	c = new Bag;
+	assertTrue(c.getClass().getName().endsWith("Bag"));
+	c = new Map;
+	assertTrue(c.getClass().getName().endsWith("Map"));
+	c = new Tuple;
+	assertTrue(c.getClass().getName().endsWith("Tuple"));
+	c = new ConcurrentMap;
+	assertTrue(c.getClass().getName().endsWith("ConcurrentMap"));
+	c = new ConcurrentSet;
+	assertTrue(c.getClass().getName().endsWith("ConcurrentSet"));
+	c = new ConcurrentBag;
+	assertTrue(c.getClass().getName().endsWith("ConcurrentBag"));
+}
+
+
+@test
+operation testSelectByKindType() {
+	var c = Bag{0, null, 1, "a str", "2", 2, true, Sequence{}, Sequence{5}, Map{}, Set{3, 3}, false, 0.4, 8l, 9d, ConcurrentBag{}, ConcurrentSet{}};
+	var result = c.selectByKind(Collection);
+	assertEquals(5, result.size());
+	assertTrue(result.forAll(e|e.isKindOf(Collection)));
+	
+	result = c.selectByType(List);
+	assertEquals(2, result.size());
+	assertTrue(result.forAll(e|e.isTypeOf(Sequence)));
+	
+	result = c.selectByType(Any);
+	assertEquals(0, result.size());
+	
+	result = c.selectByKind(Any);
+	assertEquals(c, result);
+	
+	result = c.selectByKind(Integer);
+	assertEquals(c.select(e|e.isKindOf(Integer)), result);
+	
+	result = c.selectByType(Integer);
+	assertEquals(c.select(e|e.isTypeOf(Integer)), result);
+}
+
+@test
+operation testFirst() {
+	assertEquals(1, Sequence{1, 2, 3}.first);
+}
+
+@test
+operation testIncludesCollection() {
+	var seq = Sequence{Set{1, 2}};
+	assertEquals(seq.includes(Set{1, 2}), true);
+}
+
+@test
+operation testSetsNotEqual() {
+	assertNotEquals(Set{Set{1}, 2, Set{3}}, Set{Set{1}, 2, Sequence{3}});
+}
+
+@test
+operation testSetsEqual() {
+	assertEquals(Set{Set{1}, 2, Set{3}}, Set{Set{1}, 2, Set{3}});
+}
+
+@test
+operation testSequencesNotEqual() {
+	assertNotEquals(Sequence{Set{1}, 2, Set{3}}, Sequence{Set{1}, 2, Sequence{3}});
+}
+
+@test
+operation testSequencesEqual() {
+	assertEquals(Sequence{Set{1}, 2, Set{3}}, Sequence{Set{1}, 2, Set{3}});
+}
+
+@test
+operation testIncludes() {
+	assertEquals(Set{Set{2}}.includes(Set{2}), true);
+}
+
+@test
+operation testExcludes() {
+	assertEquals(Set{Set{2}}.excludes(Set{3}), true);
+}
+
+@test
+operation testExcluding() {
+	assertEquals(Sequence{1, 2, 3}.excluding(2), Sequence{1, 3});
+}
+
+@test
+operation testExcludingAll() {
+	assertEquals(Sequence{1, 2, 3}.excludingAll(Sequence{1, 2}), Sequence{3});
+}
+
+@test
+operation testIncluding() {
+	assertEquals(Sequence{1, 2, 3}.including(4), Sequence{1, 2, 3, 4});
+}
+
+@test
+operation testIncludingAll() {
+	assertEquals(Sequence{1, 2, 3}.includingAll(Sequence{4, 5}), Sequence{1, 2, 3, 4, 5});
+}
+
+@test
+operation testLast() {
+	assertEquals(Sequence{1, 2, 3}.last(), 3);
+}
+
+@test
+operation testSequenceEquals() {
+	assertEquals(Sequence{1, 2}, Sequence{1, 2});
+}
+
+@test
+operation testModifiedSetUniqueness() {
+	var s = Set{1, 2, 3};
+	s.add(1);
+	assertEquals(s.size(), 3);
+}
+
+@test
+operation testRemoveDuplicates() {
+	var seq = Sequence{1, 1, 2, 3};
+	assertEquals(seq.asSet().size(), 3);
+}
+
+@test
+operation testEolSetFromUnmodifiableSet() {
+	var grp1 : Map;
+	grp1.put("a", "aaa");
+	grp1.put("b", "bbb");
+	grp1.keySet().println();
+}
+
+@test
+operation testSortByOnOrderedSet() {
+	
+	var a = 1;
+	a.~x = 3;
+	var b = 2;
+	b.~x = 2;
+	var c = 3;
+	c.~x = 1;
+	
+	assertEquals(OrderedSet{a, b, c}.sortBy(i|i.~x), Sequence{c, b, a});
+}
+
+@test
+operation testSortWithDuplicates() {
+	assertEquals(Sequence{1, 1, 2, 3}.sortBy(x|x), Sequence{1, 1, 2, 3});
+}
+
+@test
+operation testSortSquare() {
+	assertEquals(Sequence{2, 1, -1}.sortBy(x|x.pow(2)), Sequence{1, -1, 2});
+}
+
+@test
+operation testDeclaredSetUniqueness() {
+	assertEquals(Set{1, 1, 2, 3}.size(), 3);
+}
+
+@test
+operation testSetIncludesObject() {
+	var eClass = EClass.all.random();
+	var set : Set;
+	set.add(eClass);
+	assertEquals(set.includes(eClass), true);
+}
+
+@test
+operation testSequenceIncludesObject() {
+	var eClass = EClass.all.random();
+	var seq : Sequence;
+	seq.add(eClass);
+	assertEquals(seq.includes(eClass), true);
+}
+
+@test
+operation testSetIncludesPrimitive() {
+	var prim = 1;
+	var set : Set;
+	set.add(prim);
+	assertEquals(set.includes(prim), true);
+}
+
+@test
+operation testSequenceIncludesPrimitive() {
+	var prim = 1;
+	var seq : Sequence;
+	seq.add(prim);
+	assertEquals(seq.includes(prim), true);
+}
+
+@test
+operation testConvertedSetUniqueness() {
+	assertEquals(Sequence{1, 1, 2, 3}.asSet().size(), 3);
+}
+
+@test
+operation testCount() {
+	assertEquals(Sequence{1, 2, 2, 3}.count(2), 2);
+}
+
+@test
+operation testRandom() {
+	assertEquals(Sequence{1, 1, 1}.random(), 1);
+}
+
+@test
+operation testIncludingSize() {
+	assertEquals(Sequence{1, 2, 3}.including(4).size(), 4);
+}
+
+@test
+operation testBagEquals() {
+	assertNotEquals(Bag{1, 1, 2}, Bag{1, 2, 2});
+	assertEquals(Bag{null}, Bag{null});
+	assertEquals(Bag{}, Bag{});
+	assertNotEquals(Bag{null}, Bag{});
+	assertEquals(Bag{0, null}, Bag{null, 0});
+	assertEquals(Bag{0, null}, Bag{0, null});
+	assertEquals(Bag{0, 1}, Bag{1, 0});
+	assertNotEquals(Bag{0, 1}, Bag{0, 1, null});
+}
+
+@test
+operation testBagEqualsDifferentOrder() {
+	assertTrue(Bag{1, 2} == Bag{2, 1});
+}
+
+@test
+operation testReorderedSetEquals() {
+	assertEquals(Set{1, 2, 3}, Set{2, 1, 3});
+}
+
+@test
+operation testOrderedSetAt() {
+	assertEquals(OrderedSet{1, 2, 3}.at(1), 2);
+}
+
+@test
+operation testSequenceAt() {
+	assertEquals(Sequence{1, 2, 3}.at(1), 2);
+}
+
+@test
+operation testIncludesAll() {
+	assertEquals(Sequence{"a", "b"}.includesAll(Sequence{"c"}), false);
+}
+
+@test
+operation testSequenceRange() {
+	assertEquals(Sequence{1..10}.size(), 10);
+}
+
+@test
+operation testInvalidSequenceRanges() {
+	assertError(Sequence{0.1..10});
+	assertError(Sequence{"foo".."bar"});
+}
+
+@test
+operation testReverseSequenceRange() {
+	assertEquals(Sequence{10..5}, Sequence{10, 9, 8, 7, 6, 5});
+}
+
+@test
+operation testInvert() {
+	assertEquals(Sequence{1, 2, 3}.invert(), Sequence{3, 2, 1});
+}
+
+@test
+operation testSelectCorrectTypeSequence() {
+	assertEquals(Sequence{1, 2, 3}.select(x|true).isTypeOf(Sequence), true);
+}
+
+@test
+operation testSelectCorrectTypeSet() {
+	assertEquals(Set{1, 2, 3}.select(x|true).isTypeOf(Set), true);
+}
+
+@test
+operation testCollectCorrectTypeSet() {
+	assertEquals(Set{1, 2, 3}.collect(x|x).isTypeOf(Bag), true);
+}
+
+@test
+operation testSelectCorrectTypeOrderedSet() {
+	assertEquals(OrderedSet{1, 2, 3}.select(x|true).isTypeOf(OrderedSet), true);
+}
+
+@test
+operation testCollectCorrectTypeOrderedSet() {
+	assertEquals(OrderedSet{1, 2, 3}.collect(x|x).isTypeOf(Sequence), true);
+}
+
+@test
+operation testSelectCorrectTypeBag() {
+	assertEquals(Bag{1, 2, 3}.select(x|true).isTypeOf(Bag), true);
+}
+
+@test
+operation testRemoveByIndexInSequence() {
+	var s = Sequence{"a", "b", "c"};
+	s.removeAt(1);
+	assertEquals(s, Sequence{"a", "c"});
+}
+
+@test
+operation testRemoveByIndexInOrderedSet() {
+	var s = OrderedSet{1, 2, 3};
+	s.removeAt(1);
+	assertEquals(OrderedSet{1, 3}, s);
+}
+
+@test
+operation testRemove() {
+	var s = Sequence{1, 2, 3};
+	s.remove(1);
+	assertEquals(s, Sequence{2, 3});
+}
+
+@test
+operation testConcat() {
+	var s = Sequence{1, 2, 3};
+	assertEquals(s.concat(), "123");
+}
+
+@test
+operation testConcatEmpty() {
+	var s = Sequence{};
+	assertEquals(s.concat(), "");
+}
+
+@test
+operation testConcatWithGlue() {
+	var s = Sequence{1, 2, 3};
+	assertEquals(s.concat("-"), "1-2-3");
+}
+
+@test
+operation testClosure() {
+	var s = Sequence{Sequence{1, 2}, 3, Sequence{4, 5}};
+	var expected = OrderedSet{Sequence{1, 2}, Sequence{4, 5}};
+	var flattened = expected.flatten;
+
+	// The result of the body of the closure is traversed as
+	// a collection, and its elements are added to the closure:
+	// if we want to preserve the original sequences
+	assertEquals(expected, s.closure(e : Sequence|Sequence{e}));
+
+	// If we do not do that, the elements in the subsequences
+	// will be collected into a "flattened" list
+	assertEquals(flattened, s.closure(e : Sequence|e).asSequence());
+}
+
+@test
+operation testEmptyClosure() {
+	var result = Sequence {}.closure(e | e);
+	assertTrue(result.isEmpty());
+	assertEquals("OrderedSet", result.type.name);
+}
+
+@test
+operation testAggregate() {
+	var s = Sequence{1, 2, 3};
+
+	// Doesn't work, as we need both the key and the value ASTs
+	assertError(s.aggregate(e|e * 2));
+
+	// Does work
+	var r = s.aggregate(e|e, e * 2);
+	assertEquals(3, r.size);
+	for (k in r.keySet) {
+		assertEquals(k * 2, r.get(k));
+	}
+}
+
+@test
+operation testEmptyMapLiteral() {
+	assertEquals(0, Map{}.size());
+}
+
+@test
+operation testMapLiteralWithOneElement() {
+	// not using a variable
+	assertEquals(1, Map{"c" = "d"}.size());
+	assertEquals("d", Map{"c" = "d"}.get("c"));
+
+	// using a variable
+	var m = Map{"a" = "b"};
+	assertEquals(1, m.size());
+	assertEquals("b", m.get("a"));
+}
+
+@test
+operation testMapLiteralWithTwoElements() {
+	var m = Map{"a" = 1, "b" = 3};
+	assertEquals(2, m.size());
+	assertEquals(1, m.get("a"));
+	assertEquals(3, m.get("b"));
+}
+
+@test
+operation testMapLiteralWithNestedEquals() {
+    // No ambiguity: keys cannot use logical or relational operators,
+    // unless between parenthesis
+	var m = Map{"x" = "x" = 3};
+	assertEquals(1, m.size());
+	assertEquals(false, m.get("x"));
+}
+
+@test
+operation testMapLiteralWithEqualsBetweenParens() {
+	var m = Map{("x" = "x") = 3};
+	assertEquals(1, m.size());
+	assertEquals(3, m.get(true));
+}
+
+@test
+operation testMapLiteralWithCollectionKeys() {
+	assertEquals(1, Map{Sequence{1..5} = "test"}.size());
+
+	var s = Sequence{1..3};
+	var m = Map{s = "me!"};
+	assertEquals(1, m.size());
+	assertEquals("me!", m.get(s));
+}
+
+@test
+operation testTupleProperty() {
+	var t = new Tuple;
+	t.prop1 = "a value";
+	t.p2 = null;
+	t.CustomProperty = 2.2;
+	assertEquals("a value", t.prop1);
+	assertEquals(2.2, t.CustomProperty);
+	assertEquals(null, t.p2);
+}
+
+@test
+operation testTupleConstructor() {
+	var t = new Tuple(prop1 = 1, fieldX = "Y", sp = "a str", components = Sequence{0..9});
+	assertEquals(1, t.prop1);
+	assertEquals("Y", t.fieldX);
+	assertEquals(10, t.components.size());
+}
+
+@test
+operation testTupleLiteral() {
+	var t = Tuple{bag = Bag{null, 0, "a str", true, 0.1}, map = Map{"a" = 1, "b" = 2}};
+	assertEquals(5, t.bag.size());
+	assertEquals(2, t.map.get("b"));
+}
+
+@test
+operation testSequenceSize() {
+	assertEquals(0, Sequence{}.size);
+}
+
+@test
+operation testBagSize() {
+	assertEquals(1, Bag{1}.size);
+}
+
+@test
+operation testMapSize() {
+	assertEquals(2, Map{1 = 2, 2 = 3}.size);
+}
+
+@test
+operation testParseConcurrentSet() {
+	var cs = new ConcurrentSet;
+	assertTrue(cs.getClass().getSimpleName().equals("EolConcurrentSet"));
+	cs.add(1);
+	cs.add(2);
+	cs.add(1);
+	assertEquals(2, cs.size());
+	assertEquals(4, ConcurrentSet{1, 1, 2, 3, 5}.size());
+	cs = ConcurrentSet{"str", 7, "str"};
+	assertTrue(cs.contains("str"));
+	assertTrue(cs.contains(7));
+	assertEquals(Set{"str", 7, "str"}.size(), cs.size());
+}
+
+@test
+operation testParseConcurrentBag() {
+	var cb = new ConcurrentBag;
+	assertTrue(cb.getClass().getSimpleName().equals("EolConcurrentBag"));
+	cb.add(1);
+	cb.add(2);
+	cb.add(1);
+	assertEquals(3, cb.size());
+	assertEquals(5, ConcurrentBag{1, 1, 2, 3, 5}.size());
+	assertEquals(Bag{-16..25}.asSequence(), ConcurrentBag{-16..25}.asSequence());
+}
+
+@test
+operation testParseConcurrentMap() {
+	var cm = new ConcurrentMap;
+	assertTrue(cm.getClass().getSimpleName().equals("EolConcurrentMap"));
+	cm.put(1, "a");
+	cm.put(2, "b");
+	cm.put(3, "c");
+	assertEquals(Map{1 = "a", 2 = "b", 3 = "c"}.entrySet().toString(), cm.entrySet().toString());
+	cm = ConcurrentMap{"a" = 1, "b" = 2, "c" = 3};
+	cm.put("a", 0);
+	assertEquals(3, cm.size());
+	cm.putIfAbsent("d", 4);
+	assertEquals(4, cm.size());
+	cm.putIfAbsent("d", 5);
+	assertEquals(4, cm.size());
+	assertEquals(4, cm.get("d"));
+}
+
+@test
+operation emptySequenceToString() {
+	assertEquals("Sequence {}", Sequence {}.asString());
+}
+
+@test
+operation emptyStringSequenceToString() {
+	assertEquals("Sequence {\"\"}", Sequence {""}.asString());
+}
+
+@test
+operation emptyMapKeyToString(){
+	assertEquals("Map {\"\"->1}", Map{""=1}.asString());
+}
+
+@test
+operation emptyMapValueToString(){
+	assertEquals("Map {1->\"\"}", Map{1=""}.asString());
+}
+
+@test
+operation setPreservesInsertionOrder() {
+	var s : new Set;
+	var items = Sequence{5, 3, 2, 7};
+	for (item in items) {
+		s.add(item);
+	}
+	assertEquals(items, s.asSequence());
+}
+
+@test
+operation mapPreservesInsertionOrder() {
+	var m : new Map;
+	var keys = Sequence{5, 3, 2, 7};
+	for (k in keys) {
+		m.put(k, k+1);
+	}
+	assertEquals(keys, m.keySet().asSequence());
+}

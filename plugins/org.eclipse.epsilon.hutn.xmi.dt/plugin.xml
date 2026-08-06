@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="org.eclipse.epsilon.hutn.xmi.dt.model"
+            nameFilter="*.model"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="org.eclipse.epsilon.hutn.xmi.dt.actions.GenerateHutn"
+               icon="icons/hutn.png"
+               id="org.eclipse.epsilon.dt.actions.GenerateHutn"
+               label="Generate HUTN"
+               menubarPath="org.eclipse.epsilon.hutn.xmi.dt.model.menu/actions">
+         </action>
+         <action
+               class="org.eclipse.epsilon.hutn.xmi.dt.actions.CheckModelAction"
+               icon="icons/check.png"
+               id="org.eclipse.epsilon.dt.actions.CheckModel"
+               label="Check conformance to registered metamodel"
+               menubarPath="org.eclipse.epsilon.hutn.xmi.dt.model.menu/actions">
+         </action>
+         <menu
+               id="org.eclipse.epsilon.hutn.xmi.dt.model.menu"
+               label="HUTN"
+               path="additions">
+            <separator
+                  name="actions">
+            </separator>
+         </menu>
+      </objectContribution>
+   </extension>
+</plugin>

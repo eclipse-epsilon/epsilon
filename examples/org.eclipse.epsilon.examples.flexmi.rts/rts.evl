@@ -1,0 +1,10 @@
+context Task {
+
+	constraint SensorProcessor {
+	
+		check : self.accesses.
+			forAll(d|d.processor = self.allocatedTo)
+		
+	}
+
+}

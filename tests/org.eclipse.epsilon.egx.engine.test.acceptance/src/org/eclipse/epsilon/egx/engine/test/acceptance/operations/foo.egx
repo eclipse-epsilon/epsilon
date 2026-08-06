@@ -1,0 +1,8 @@
+pre {
+	var temp = "foo.egl";
+}
+
+rule Foo {
+  template : temp
+  target : "foo.txt"
+}

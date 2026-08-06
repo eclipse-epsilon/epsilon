@@ -1,0 +1,37 @@
+@namespace(uri="http://www.york.ac.uk/qvt/examples/0.1/PetriNet", prefix="petrinet")
+package PetriNet;
+
+abstract class Element {
+  !ordered attr String[1] name;
+}
+
+class PetriNet extends Element {
+  val Place[+] places;
+  val Transition[*] transitions;
+  val Arc[*] arcs;
+}
+
+class Place extends Element {
+  !ordered ref TransToPlaceArc[*]#target incoming;
+  !ordered ref PlaceToTransArc[*]#source outgoing;
+}
+
+class Transition extends Element {
+  !ordered ref PlaceToTransArc[+]#target incoming;
+  !ordered ref TransToPlaceArc[+]#source outgoing;
+}
+
+class Arc {
+  !ordered attr int[1] weight;
+}
+
+class PlaceToTransArc extends Arc {
+  !ordered ref Place[1]#outgoing source;
+  !ordered ref Transition[1]#incoming target;
+}
+
+class TransToPlaceArc extends Arc {
+  !ordered ref Transition[1]#outgoing source;
+  !ordered ref Place[1]#incoming target;
+}
+

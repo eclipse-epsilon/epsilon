@@ -1,0 +1,25 @@
+import 'util.eol';
+
+rule Flowchart2Index
+	transform flowchart : Flowchart {
+	
+	template : "flowchart2index.egl"
+	
+	target : "../../website/index.html"
+}
+
+rule Action2Page 
+	transform action : Action {
+
+	template : "action2page.egl"
+
+	target : "../../website/" + action.name.clean() + ".html"
+}
+
+rule Decision2Page
+	transform decision : Decision {
+
+	template : "decision2page.egl"
+	
+	target : "../../website/" + decision.name.clean() + ".html"	
+}

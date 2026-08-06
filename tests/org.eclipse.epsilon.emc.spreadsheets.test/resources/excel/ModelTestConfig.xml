@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spreadsheet>
+	
+	<worksheet name="Sheet1">
+		<column index="0"></column>
+		<column index="1"></column>
+		<column index="2"></column>
+		<column index="3"></column>
+		<column index="4"></column>
+		<column index="5"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet2" createOnLoad="false">
+		<column index="0" name = "sheet2cname" many="false"></column>
+	</worksheet>
+	
+</spreadsheet>

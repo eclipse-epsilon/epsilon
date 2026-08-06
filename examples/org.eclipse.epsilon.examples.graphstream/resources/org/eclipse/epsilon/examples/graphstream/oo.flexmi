@@ -1,0 +1,19 @@
+<?nsuri OO?>
+<model name="acme">
+	<!-- 
+	An object oriented model with two
+	classes and a reference between them
+	-->
+	<class name="Customer">
+		<attr name="fullname" type="String"/>
+		<attr name="active" type="Boolean"/>
+	</class>
+	<class name="Account">
+		<attr name="number" type="String"/> 
+		<ref name="customer" type="Customer"/>
+		<attr name="balance" type="Real"/>
+	</class>
+	<type name="String"/>
+	<type name="Boolean"/>
+	<type name="Real"/>
+</model>

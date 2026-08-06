@@ -1,0 +1,23 @@
+if(consoleOutput) {
+	"\n-Start-\n".println();
+}
+
+var p1 = new Project;
+p1.title = 'My First Project';
+
+var p2 = new Project;
+p2.title = 'My Second Project';
+
+// EOL automatically adds new objects to the
+// resource. Remove them from the resource and
+// re-add them with a single addAll operation
+// to test this scenario.
+delete p1;
+delete p2;
+
+theModel.resource.contents.addAll(Sequence {p1, p2});
+
+if(consoleOutput) {
+	Model.contents.println();
+	"\n-End-\n".println();
+}

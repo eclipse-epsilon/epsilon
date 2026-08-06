@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.eclipse.epsilon</groupId>
+	<artifactId>examples.pojos</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<properties>
+		<epsilon.version>2.5.0</epsilon.version>
+		<epsilon.scope>compile</epsilon.scope>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.epsilon</groupId>
+			<artifactId>org.eclipse.epsilon.eol.engine</artifactId>
+			<version>${epsilon.version}</version>
+			<scope>${epsilon.scope}</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.epsilon</groupId>
+			<artifactId>org.eclipse.epsilon.egl.engine</artifactId>
+			<version>${epsilon.version}</version>
+			<scope>${epsilon.scope}</scope>
+		</dependency>		
+	</dependencies>
+
+</project>

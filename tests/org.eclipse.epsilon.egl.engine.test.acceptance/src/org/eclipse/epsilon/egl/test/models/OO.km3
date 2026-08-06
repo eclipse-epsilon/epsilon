@@ -1,0 +1,81 @@
+package OO {
+	
+	class Model extends Package {
+	
+	}
+	
+	abstract class PackageableElement extends NamedElement {
+		reference "package" : Package oppositeOf contents;
+	}
+	
+	abstract class AnnotatedElement {
+		reference annotations[*] container : Annotation;
+	}
+	
+	class Annotation {
+		attribute key : String;
+		attribute value : String;
+	}
+	
+	abstract class NamedElement extends AnnotatedElement {
+		attribute name : String;
+	}
+	
+	class Package extends PackageableElement {
+		reference contents[*] container : PackageableElement oppositeOf "package";
+	}
+	
+	abstract class Classifier extends PackageableElement {
+	
+	}
+	
+	class ExternalClass extends Class {
+	
+	}
+	
+	class Class extends Classifier {
+		reference "extends" : Class oppositeOf extendedBy;
+		reference extendedBy[*] : Class oppositeOf "extends";
+		reference features[*] container : Feature oppositeOf owner;
+		attribute isAbstract : Boolean;
+	}
+	
+	class Datatype extends Classifier {
+		
+	}
+	
+	abstract class Feature extends NamedElement {
+		reference owner : Class oppositeOf features;
+		reference type : Classifier;
+		attribute visibility : VisibilityEnum;
+	}
+	
+	abstract class StructuralFeature extends Feature {
+		attribute isMany : Boolean;
+	}
+	
+	class Operation extends Feature {
+		reference parameters[*] container : Parameter oppositeOf owner;
+	}
+	
+	class Parameter extends NamedElement {
+		reference type : Classifier;
+		reference owner : Operation oppositeOf parameters;
+	}
+	
+	class Reference extends StructuralFeature{
+	
+	}
+	
+	class Attribute extends StructuralFeature {
+	
+	}
+	
+	enumeration VisibilityEnum {
+		literal public;
+		literal private;
+	}
+	
+	datatype String;
+	datatype Boolean;
+}

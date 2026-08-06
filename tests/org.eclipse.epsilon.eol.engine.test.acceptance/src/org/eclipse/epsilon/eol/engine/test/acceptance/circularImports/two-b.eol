@@ -1,0 +1,5 @@
+/*
+  This time, we try importing b.eol from a.eol and vice versa.
+*/
+
+import 'two-a.eol';

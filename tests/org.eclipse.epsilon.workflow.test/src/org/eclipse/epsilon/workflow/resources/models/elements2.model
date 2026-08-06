@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<eu:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eu="http://cs.york.ac.uk/eunit/sample" xmi:id="_hPB90UMhEeCBRvCtflPR9z">
+  <elements xmi:id="_hxwZYEMhEeCBRvCtflPR9w" name="A"/>
+  <elements xmi:id="_i_MS4EMhEeCBRvCtflPR9w" name="B1"/>
+  <elements xmi:id="_i_MT5EMhEeCBRvCtflPR9w" name="B2"/>
+</eu:Model>

@@ -1,0 +1,43 @@
+@namespace(uri="picto", prefix="")
+package dom;
+
+class Picto {
+	attr String transformation;
+	attr String format;
+	attr boolean standalone;
+	val Model[*] models;
+	val Parameter[*] parameters;
+	val CustomView[*] customViews;
+}
+
+class Model {
+	attr String name;
+	attr String type;
+	val Parameter[*] parameters;
+}
+
+class Parameter {
+	attr String name;
+	attr Object value;
+	attr Object[*] values;
+	attr String file;
+	val Parameter[*] items;
+}
+
+class CustomView {
+	attr String[*] path;
+	attr String icon;
+	attr String format;
+	attr String type;
+	attr String source;
+	attr Integer position;
+	attr String[*] layers;
+	val Patch[*] patches;
+	val Parameter[*] parameters;
+}
+
+class Patch {
+	attr String format;
+	attr String content;
+	attr String applies;
+}

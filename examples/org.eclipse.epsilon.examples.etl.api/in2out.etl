@@ -1,0 +1,19 @@
+rule N2N
+	transform s : In!t_n
+	to t : Out!t_n {
+	
+	t.a_label = s.a_label;
+	
+	if (s == In.root) {
+		Out.root = t;
+	}
+	else {
+		s.parentNode.equivalent().appendChild(t);
+		
+		var copy = new Out!t_n;
+		copy.a_label = s.a_label + "_copy";
+		s.parentNode.equivalent().appendChild(copy);
+		
+	}
+		
+}

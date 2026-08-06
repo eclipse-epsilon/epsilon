@@ -1,0 +1,19 @@
+@namespace(uri="families")
+package Families;
+
+class Family {
+   attr String name;
+   attr String address;
+   ref Pet[*] pets;
+   attr Integer numberOfChildren;
+   val Person[*] members;
+}
+
+class Pet {
+   attr String name;
+   attr Boolean male;
+}
+
+class Person {
+   attr String name;
+}

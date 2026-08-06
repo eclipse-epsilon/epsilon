@@ -1,0 +1,57 @@
+// Class and table with the same name in the two models
+pattern ClassAndTable 
+	class : OO!Class,
+	table : DB!Table guard: class.name = table.name {
+	
+	onmatch {
+		// Synchronise table columns with class attributes
+		for (attr in class.attributes) {
+			var col = table.columns.selectOne(col|col.name=attr.name);
+			if (not col.isDefined()) {
+				col = new DB!Column;
+				table.columns.add(col);
+			}
+			sync(attr, col);
+		}
+	}
+	
+}
+
+// Class without corresponding table
+pattern ClassAndNoTable
+	class : OO!Class,
+	no table : DB!Table from: DB!Table.all.select(table|table.name = class.name) {
+	
+	onmatch {
+		// Create a table with that name
+		var table : new DB!Table;
+		DB!Database.all.first().tables.add(table);
+		table.name = class.name;
+		for (attr in class.attributes) {
+			var col = new DB!Column;
+			table.columns.add(col);
+			sync(attr, col);
+		}
+	}
+}
+
+// Table without corresponding class
+pattern TableAndNoClass
+	table : DB!Table,
+	no class : OO!Class from: OO!Class.all.select(class|class.name = table.name) {
+	
+	onmatch {
+		// Delete the table
+		delete table;
+	}
+}
+
+operation sync(attr : OO!Attribute, col : DB!Column) {
+	col.name = attr.name;
+	col.type = attr.type.toDbType();
+}
+
+operation String toDbType() {
+	if (self = "String") return "nvarchar";
+	else return "int";
+}

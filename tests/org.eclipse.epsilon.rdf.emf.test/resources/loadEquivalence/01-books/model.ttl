@@ -1,0 +1,9 @@
+@base <http://example/org/books/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix books: <http://eclipse.org/epsilon/rdf/books#> .
+@prefix fiction: <http://eclipse.org/epsilon/rdf/fiction#> .
+
+<#quijote>
+  books:title "El Quijote" ;
+  books:publisher "P Ublisher" ;
+  fiction:genres ( "Narration" "Picaresque" "Chivalric romance" ) .

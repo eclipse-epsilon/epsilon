@@ -1,0 +1,8 @@
+rule TreeWithTree
+	merge l : Left!t_tree
+	with r : Right!t_tree 
+	into t : Merged!t_tree {
+	
+	info.put("imported", true);
+	
+}

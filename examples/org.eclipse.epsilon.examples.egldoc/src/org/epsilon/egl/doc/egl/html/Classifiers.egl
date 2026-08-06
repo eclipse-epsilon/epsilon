@@ -1,0 +1,26 @@
+[% if (package.eClassifiers.select(d|d.isKindOf(EDataType)).size() > 0) { %]
+<h1>Datatypes</h1>
+<ul>
+	[% for (c in package.eClassifiers.select(d|d.isKindOf(EDataType)).sortBy(d|d.name)) { %]
+	<li><a href="[%=c.filename()%]">[%=c.name%]</a></li>
+	[% } %]
+</ul>
+[% } %]
+[% if (package.eClassifiers.select(c|c.isKindOf(EClass)).size() > 0) { %]
+<h1>Classes</h1>
+<ul>
+	[% for (c in package.eClassifiers.select(c|c.isKindOf(EClass)).sortBy(c|c.name)) { %]
+	<li><a href="[%=c.filename()%]">[%=c.name%]</a></li>
+	[% } %]
+</ul>
+[% } 
+
+	operation EPackage filename() : String {
+		return self.name + "-package-index.html";
+	}
+
+	operation EClassifier filename() : String {
+		return self.ePackage.name + "-" + self.name + ".html";
+	}
+	
+%]

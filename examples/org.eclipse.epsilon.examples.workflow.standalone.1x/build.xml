@@ -1,0 +1,24 @@
+<project default="main">
+	<taskdef resource="org/eclipse/epsilon/workflow/tasks/tasks.xml"/>
+	<taskdef resource="org/eclipse/epsilon/workflow/tasks/emf/tasks.xml"/>
+	
+	<target name="main">
+		<epsilon.emf.register file="library.ecore"/>
+		
+		<epsilon.emf.loadModel name="library" modelfile="library.model" metamodelUri="library" />
+		
+		<!-- Or alternatively (the impl attribute is necessary when running in standalone mode)
+		<epsilon.loadModel name="library" type="EMF" impl="org.eclipse.epsilon.emc.emf.EmfModel">
+			<parameter name="modelFile" file="library.model"/>
+			<parameter name="metamodelUri" value="library"/>
+			<parameter name="readOnLoad" value="true"/>
+		</epsilon.loadModel>
+		-->
+		
+		<epsilon.eol>
+			Book.all.first().title.println();
+			<model ref="library"/>
+		</epsilon.eol>
+	</target>
+	
+</project>

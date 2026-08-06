@@ -1,0 +1,11 @@
+import "../TestOperations.eol";
+
+var value = "alice";
+var position = 1;
+
+
+beforeChange(value, position);
+
+getNames().add(position, value);
+
+afterChange();

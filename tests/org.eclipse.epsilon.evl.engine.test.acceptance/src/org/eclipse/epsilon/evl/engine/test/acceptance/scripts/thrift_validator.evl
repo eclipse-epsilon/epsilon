@@ -1,0 +1,261 @@
+import "thrift-helper-functions.eol";
+
+pre {
+	doSetup();
+
+	// Cache the types as it will be needed in a constraint (@see line 155)
+	for (c in Const.allInstances()) {
+		c.thriftType();
+	}
+
+	var uniqueMsg : String = " is used multiple times.";
+	var referenceMsg : String = " does not refer to a known type.";
+	var allExceptions = Struct.allInstances().select(st | st.isException);
+	
+	var topLevelIdentifiers : new Bag;
+	topLevelIdentifiers.addAll(Service.allInstances().collect(service | service.identifier));
+	topLevelIdentifiers.addAll(Struct.allInstances().collect(structure | structure.identifier));
+	topLevelIdentifiers.addAll(Enum.allInstances().collect(enumeration | enumeration.identifier));
+	topLevelIdentifiers.addAll(Union.allInstances().collect(union | union.identifier));
+	topLevelIdentifiers.addAll(Typedef.allInstances().collect(typedef | typedef.identifier));
+	topLevelIdentifiers.addAll(Const.allInstances().collect(constant | constant.identifier));
+	topLevelIdentifiers.addAll(Senum.allInstances().collect(senum | senum.identifier));
+	
+	var fieldIdentifiers : new Bag;
+	fieldIdentifiers.addAll(Field.allInstances().collect(field | field.identifier));
+	fieldIdentifiers.addAll(FieldType.allInstances().collect(fieldType | fieldType.identifier));
+	
+	var allIdentifiers : new Bag;
+	allIdentifiers.addAll(Function.allInstances().collect(func | func.identifier));
+	allIdentifiers.addAll(topLevelIdentifiers);
+	allIdentifiers.addAll(fieldIdentifiers);
+	
+	var reservedWords = Set {
+		"BEGIN",
+		"END",
+		"__CLASS__",
+		"__DIR__",
+		"__FILE__",
+		"__FUNCTION__",
+		"__LINE__",
+		"__METHOD__",
+		"__NAMESPACE__",
+		"abstract",
+		"alias",
+		"and",
+		"args",
+		"as",
+		"assert",
+		"begin",
+		"break",
+		"case",
+		"catch",
+		"class",
+		"clone",
+		"continue",
+		"declare",
+		"def",
+		"default",
+		"del",
+		"delete",
+		"do",
+		"dynamic",
+		"elif",
+		"else",
+		"elseif",
+		"elsif",
+		"end",
+		"enddeclare",
+		"endfor",
+		"endforeach",
+		"endif",
+		"endswitch",
+		"endwhile",
+		"ensure",
+		"except",
+		"exec",
+		"finally",
+		"float",
+		"for",
+		"foreach",
+		"from",
+		"function",
+		"global",
+		"goto",
+		"if",
+		"implements",
+		"import",
+		"in",
+		"inline",
+		"instanceof",
+		"interface",
+		"is",
+		"lambda",
+		"module",
+		"native",
+		"new",
+		"next",
+		"nil",
+		"not",
+		"or",
+		"package",
+		"pass",
+		"public",
+		"print",
+		"private",
+		"protected",
+		"public",
+		"raise",
+		"redo",
+		"rescue",
+		"retry",
+		"register",
+		"return",
+		"self",
+		"sizeof",
+		"static",
+		"super",
+		"switch",
+		"synchronized",
+		"then",
+		"this",
+		"throw",
+		"transient",
+		"try",
+		"undef",
+		"union",
+		"unless",
+		"unsigned",
+		"until",
+		"use",
+		"var",
+		"virtual",
+		"volatile",
+		"when",
+		"while",
+		"with",
+		"xor",
+		"yield"
+	};
+}
+
+constraint isLegalIdentifier {
+	check: allIdentifiers.forAll(identifier | reservedWords.excludes(identifier))
+	message: "Some identifiers clash with some language keywords. Avoid names like 'if', 'public', 'while' etc."
+}
+
+constraint noTopLevelClashes {
+	check: topLevelIdentifiers.forAll(ident1 | topLevelIdentifiers.excluding(ident1).forAll(ident2 | ident1 <> ident2))
+	message: "Some identifiers at the top level (services, structs, unions etc.) are used multiple times."
+}
+
+context Const {
+	constraint assignmentsAreLegal {
+		check {
+			// This is where the program may crash under parallel execution if self.thriftType()
+			// hasn't been called in the pre block due to extended properties not being thread-safe!
+			return self.constVal.isOfType(self.thriftType());
+		}
+		message: "The constant value '"+self.identifier+"' is assigned to an incompatible type."// '"+self.constVal.deduceType()+"'."
+	}
+}
+
+context FieldType {
+	guard: self.identifier.isDefined()
+	constraint refersToExistingType {
+		check: topLevelIdentifiers.exists(topIdentifier | topIdentifier == self.identifier)
+		message: self.identifier+referenceMsg
+	}
+}
+
+context Field {
+	guard: self.eContainer.isDefined() 
+	constraint hasFieldType {
+		check: self.fieldType.isDefined()
+	}
+	constraint assignmentsAreLegal {
+		guard: self.hasValue
+		check: self.constVal.isOfType(self.thriftType())
+		message: "The field '"+self.identifier+"' is assigned to an incompatible value '"+self.constVal.getValue()+"'."
+	}
+	constraint uniqueFIDs {
+		guard: self.hasFID and self.eContainer.hasProperty("fields")
+		check: self.eContainer.fields.select(withFid | withFid.hasFID).select(field | field.fieldID == self.fieldID).size() <= 1
+		message: "'"+self.eContainer.identifier+"' has multiple fields with the ID '"+self.fieldID+"'."
+	}
+	constraint uniqueIdentifiers {
+		guard: self.eContainer.hasProperty("fields")
+		check: self.eContainer.fields.one(field | field.identifier == self.identifier)
+		message: "'"+self.eContainer.identifier+"' has multiple fields with the name '"+self.identifier+"'."
+	}
+	constraint uniqueFuncFIDs {
+		guard: self.hasFID and self.eContainer.hasProperty("args")
+		check: self.eContainer.args.select(withFid | withFid.hasFID).select(field | field.fieldID == self.fieldID).size() <= 1
+		message: "'"+self.eContainer.identifier+"' has multiple fields with the ID '"+self.fieldID+"'."
+	}
+	constraint uniqueFuncIdentifiers {
+		guard: self.eContainer.hasProperty("args")
+		check: self.eContainer.args.select(field | field.identifier == self.identifier).size() <= 1
+		message: "'"+self.eContainer.identifier+"' has multiple fields with the name '"+self.identifier+"'."
+	}
+	constraint uniqueExceptionFIDs {
+		guard: self.hasFID and self.eContainer.hasProperty("exceptions")
+		check: self.eContainer.exceptions.select(withFid | withFid.hasFID).select(field | field.fieldID == self.fieldID).size() <= 1
+		message: "'"+self.eContainer.identifier+"' has multiple fields with the ID '"+self.fieldID+"'."
+	}
+	constraint uniqueExceptionIdentifiers {
+		guard: self.eContainer.hasProperty("exceptions")
+		check: self.eContainer.exceptions.select(field | field.identifier == self.identifier).size() <= 1
+		message: "'"+self.eContainer.identifier+"' has multiple fields with the name '"+self.identifier+"'."
+	}
+}
+
+context EnumPair {
+	guard: self.eContainer.isDefined() and self.eContainer.hasProperty("pairs")
+	constraint uniqueFIDs {
+		guard: self.hasFID
+		check: self.eContainer.pairs.select(withFid | withFid.hasFID).one(epair | epair.fieldID == self.fieldID)
+		message: "'"+self.eContainer.identifier+"' has multiple fields with the ID '"+self.fieldID+"'."
+	}
+	constraint uniqueIdentifiers {
+		check: self.eContainer.pairs.one(epair | epair.identifier == self.identifier)
+		message: "'"+self.eContainer.identifier+"' has multiple fields with the name '"+self.identifier+"'."
+	}
+}
+
+context Function {
+	constraint knownExceptions {
+		guard: self.hasExceptions
+		check: self.exceptions.forAll(fex | allExceptions.one(stex | stex.identifier == fex.fieldType.identifier))
+		message: "'"+self.identifier+"' has exceptions which are not defined."
+	}
+	constraint functionsAreUnique {
+		guard: self.eContainer.isDefined() and self.eContainer.hasProperty("functions")
+		check: self.eContainer.functions.excluding(self).forAll(func | func.identifier <> self.identifier)
+		message: "The function '"+self.identifier+"' is defined multiple times in '"+self.eContainer.identifier+"'."
+	}
+	constraint onewaysMustBeVoid {
+		guard: self.isOneway
+		check: self.isVoid()
+		message: "The function '"+self.identifier+"' is oneway but not void."
+	}
+}
+
+context Service {
+	constraint extendsExistingService {
+		guard: self.supers.isDefined() and self.supers.length() > 0
+		check: Service.allInstances().excluding(self).exists(service | service.identifier == self.supers)
+		message: "'"+self.identifier+"'"+referenceMsg
+	}
+}
+
+context Senum {
+	critique isDeprecated {
+		check: Senum.allInstances().size() == 0
+		message: "'Senum' is deprecated and will be removed in future versions. Consider using 'string' instead."
+	}
+}
+
+post {
+		
+}

@@ -1,0 +1,126 @@
+@test
+operation testStringsEqual() {
+	assertEquals("foo", "foo");
+}
+
+@test
+operation testStringsEqualRegadlessOfQuotes() {
+	assertEquals("foo", 'foo');
+}
+
+@test
+operation testTrim() {
+	assertEquals(" foo ".trim(), "foo");
+}
+
+@test
+operation testSplit() {
+	assertEquals("foo,bar,buz".split(",").size(), 3);
+}
+
+@test
+operation testConvertBoolean() {
+	assertEquals(true.asString(), "true");
+}
+
+@test
+operation testAsCharSequence() {
+	assertEquals("abc".toCharSequence().size(), 3);
+}
+
+@test
+operation testAsSequence() {
+	assertEquals("abc".asSequence().size(), 1);
+}
+
+@test
+operation testNotEmptyStringIsDefined() {
+	assertEquals("".isDefined(), false);
+}
+
+@test
+operation testSize() {
+	assertEquals("abc".size(), 1);
+}
+
+@test
+operation testLength() {
+	assertEquals("abc".length(), 3);
+}
+
+@test
+operation testConcat() {
+	assertEquals("abc".concat("def"), "abcdef");
+}
+
+@test
+operation testStartsWith() {
+	assertEquals("abcd".startsWith("ab"), true);
+}
+
+@test
+operation testEndsWith() {
+	assertEquals("abcd".endsWith("cd"), true);
+}
+
+@test
+operation testSubstring() {
+	assertEquals("abcd".substring(2), "cd");
+}
+
+@test
+operation testSubstring2() {
+	assertEquals("abcdef".substring(2, 5), "cde");
+}
+
+@test
+operation testIsSubstringOf() {
+	assertEquals("ab".isSubstringOf("abcd"), true);
+}
+
+@test
+operation testSplit() {
+	assertEquals("foo,bar".split(",").first(), "foo");
+}
+
+@test
+operation testReplace1() {
+	assertEquals("aaa".replace("a", "b"), "bbb");
+}
+
+@test
+operation testReplace2() {
+	assertEquals("xyz".replace(".", "-"), "---");
+}
+
+@test
+operation testToString() {
+	assertEquals("foo".toString(), "foo");
+}
+
+@test
+operation testPad() {
+	assertEquals("foo".pad(5, "*", true), "foo**");
+	assertEquals("foo".pad(5, "*", false), "**foo");
+}
+
+@test
+operation testCharacterAt() {
+	assertEquals("fox".characterAt(0), "f");
+	assertEquals("fox".characterAt(1), "o");
+	assertEquals("fox".characterAt(2), "x");
+}
+
+@test
+operation testFirstToUpperCase() {
+	assertEquals("foo".ftuc(), "Foo");
+	assertEquals("".ftuc(), "");
+	assertEquals("Foo".ftuc(), "Foo");
+}
+
+@test
+operation testFirstToLowerCase() {
+	assertEquals("Foo".ftlc(), "foo");
+	assertEquals("".ftlc(), "");
+	assertEquals("foo".ftlc(), "foo");
+}

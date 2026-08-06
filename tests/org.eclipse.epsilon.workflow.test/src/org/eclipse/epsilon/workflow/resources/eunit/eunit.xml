@@ -1,0 +1,527 @@
+<project>
+
+	<property name="models.location" location="${basedir}/../models" />
+	<property name="elements1.model.location" location="${models.location}/elements1.model" />
+	<property name="elements2.model.location" location="${models.location}/elements2.model" />
+	<property name="graph1.model.location" location="${models.location}/graph1.model" />
+	<property name="graph2.model.location" location="${models.location}/graph2.model" />
+	<property name="tree.model.location" location="${models.location}/tree.model" />
+	<property name="uml.profile.model.location" location="${models.location}/onlyProfiles.uml" />
+
+	<property name="metamodels.location" location="${basedir}/../metamodels" />
+
+	<property name="elements.metamodel.location" location="${metamodels.location}/elements.ecore" />
+	<property name="elements.metamodel.uri" value="http://cs.york.ac.uk/eunit/sample" />
+
+	<property name="graph.metamodel.location" location="${metamodels.location}/graph.ecore" />
+	<property name="graph.metamodel.uri" value="Graph" />
+
+	<property name="tree.metamodel.location" location="${metamodels.location}/tree.ecore" />
+	<property name="tree.metamodel.uri" value="Tree" />
+
+	<property name="uml.metamodel.uri" value="http://www.eclipse.org/uml2/2.0.0/UML"/>
+
+	<target name="template">
+		<property name="eunit.todir" location="${basedir}" />
+		<property name="eunit.package" value="default" />
+
+		<epsilon.eunit src="${eunit.file}" todir="${eunit.todir}" failOnErrors="${eunit.failOnErrors}" package="${eunit.package}">
+			<modelTasks>
+				<epsilon.emf.loadModel
+					name="Model"
+					modelfile="${elements1.model.location}"
+					metamodelfile="${elements.metamodel.location}"/>
+			</modelTasks>
+		</epsilon.eunit>
+		<junitreport>
+			<fileset dir="${basedir}" includes="TEST-*.xml"/>
+			<report format="noframes" todir="."/>
+		</junitreport>
+	</target>
+
+	<target name="allPass">
+		<property name="eunit.file" location="basic/all-pass.eunit"/>
+		<property name="eunit.failOnErrors" value="true"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="allPassContextOperations">
+		<property name="eunit.file" location="basic/all-pass-context.eunit"/>
+		<property name="eunit.failOnErrors" value="true"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="allPassCustom">
+		<epsilon.eunit src="basic/all-pass.eunit" todir="${basedir}/..">
+			<modelTasks>
+				<epsilon.emf.loadModel
+					name="Model"
+					modelfile="${elements1.model.location}"
+					metamodelfile="${elements.metamodel.location}"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="allPassModelRef">
+		<epsilon.emf.loadModel
+			name="Model"
+			modelfile="${elements1.model.location}"
+			metamodelfile="${elements.metamodel.location}"/>
+		<epsilon.eunit src="basic/all-pass.eunit" todir="${basedir}/..">
+			<model ref="Model"/>
+		</epsilon.eunit>
+	</target>
+
+	<target name="allPassModelRefReportSuppressed">
+		<epsilon.emf.loadModel
+			name="Model"
+			modelfile="${elements1.model.location}"
+			metamodelfile="${elements.metamodel.location}"/>
+		<epsilon.eunit src="basic/all-pass.eunit" report="false">
+			<model ref="Model"/>
+		</epsilon.eunit>
+	</target>
+
+	<target name="failure">
+		<property name="eunit.file" location="basic/one-failure.eunit"/>
+		<property name="eunit.failOnErrors" value="false"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="failureFailOnError">
+		<property name="eunit.file" location="basic/one-failure.eunit"/>
+		<property name="eunit.failOnErrors" value="true"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="error">
+		<property name="eunit.file" location="basic/one-error.eunit"/>
+		<property name="eunit.failOnErrors" value="false"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="parametricHandleErrors">
+		<property name="eunit.file" location="parametric/handle-errors.eunit"/>
+		<property name="eunit.failOnErrors" value="false"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="parametric1level">
+		<property name="eunit.file" location="parametric/1level.eunit"/>
+		<property name="eunit.failOnErrors" value="false"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="parametric2levels">
+		<property name="eunit.file" location="parametric/2levels.eunit"/>
+		<property name="eunit.failOnErrors" value="false"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="parametric2levels-reused-op">
+		<property name="eunit.file" location="parametric/2levels-reused-op.eunit"/>
+		<property name="eunit.failOnErrors" value="false"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="suite-ops">
+		<property name="eunit.file" location="basic/suite-setup-teardown.eunit"/>
+		<property name="eunit.failOnErrors" value="true"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="package">
+		<property name="eunit.file" location="basic/all-pass.eunit"/>
+		<property name="eunit.failOnErrors" value="true"/>
+		<property name="eunit.package" value="mypackage"/>
+		<antcall target="template"/>
+	</target>
+
+	<target name="badImports">
+		<epsilon.eunit src="basic/bad-imports.eunit"/>
+	</target>
+
+	<target name="withAnnotation">
+		<property name="eunit.file" location="with/basic-usage.eunit"/>
+		<epsilon.eunit src="${eunit.file}" failOnErrors="false">
+			<modelTasks>
+				<epsilon.emf.loadModel
+					name="A"
+					modelfile="${elements1.model.location}"
+					metamodelfile="${elements.metamodel.location}"/>
+				<epsilon.emf.loadModel
+					name="B"
+					modelfile="${elements2.model.location}"
+					metamodelfile="${elements.metamodel.location}"/>
+			</modelTasks>
+		</epsilon.eunit>
+		<junitreport>
+			<fileset dir="${basedir}" includes="TEST-*.xml"/>
+			<report format="noframes" todir="."/>
+		</junitreport>
+	</target>
+
+	<target name="withAnnotationMissingModel">
+		<property name="eunit.file" location="with/missing-model.eunit"/>
+		<antcall target="withAnnotation"/>
+	</target>
+
+	<target name="withAnnotationCombineData">
+		<property name="eunit.file" location="with/combine-data.eunit"/>
+		<antcall target="withAnnotation"/>
+	</target>
+
+	<target name="withAnnotationCombineDataHandleErrors">
+		<property name="eunit.file" location="with/combine-data-handle-errors.eunit"/>
+		<antcall target="withAnnotation"/>
+	</target>
+
+	<target name="onlyWithAnnotation">
+		<property name="eunit.file" location="with/only-with.eunit"/>
+		<antcall target="withAnnotation"/>
+	</target>
+
+	<target name="variables">
+		<epsilon.eunit src="variables/variables.eunit"/>
+	</target>
+
+	<!-- Model comparison tests -->
+
+	<target name="emf-emf">
+		<epsilon.eunit src="model-comparison/emf-emf.eunit" failonerrors="false">
+			<modelTasks>
+				<epsilon.emf.loadModel name="Tree"
+					modelfile="${tree.model.location}" metamodelfile="${tree.metamodel.location}"
+					read="true" store="false"/>
+				<epsilon.emf.loadModel name="GraphExpected"
+					modelfile="${graph1.model.location}" metamodelfile="${graph.metamodel.location}"
+					read="true" store="false"/>
+				<epsilon.emf.loadModel name="GraphDifferent"
+					modelfile="${graph2.model.location}" metamodelfile="${graph.metamodel.location}"
+					read="true" store="false"/>
+
+				<!-- empty model used as destination for the transformation -->
+				<epsilon.emf.loadModel name="Graph"
+					modelfile="transformed.model" metamodelfile="${graph.metamodel.location}"
+					read="false" store="false"/>
+
+				<epsilon.etl src="model-comparison/Tree2Graph.etl">
+					<model ref="Tree"/>
+					<model ref="Graph"/>
+				</epsilon.etl>
+			</modelTasks>
+		</epsilon.eunit>
+
+		<junitreport>
+			<fileset dir="${basedir}" includes="TEST-*.xml"/>
+			<report format="noframes" todir="."/>
+		</junitreport>
+	</target>
+
+	<target name="emf-emf-refs">
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.emf.loadModel name="Tree"
+			modelfile="${tree.model.location}" metamodelfile="${tree.metamodel.location}"
+			read="true" store="false"/>
+		<epsilon.emf.loadModel name="GraphExpected"
+			modelfile="${graph1.model.location}" metamodeluri="${graph.metamodel.uri}"
+			read="true" store="false"/>
+		<epsilon.emf.loadModel name="GraphDifferent"
+			modelfile="${graph2.model.location}" metamodeluri="${graph.metamodel.uri}"
+			read="true" store="false"/>
+
+		<!-- empty model used as destination for the transformation -->
+		<epsilon.emf.loadModel name="Graph"
+			modelfile="transformed.model" metamodeluri="${graph.metamodel.uri}"
+			read="false" store="false"/>
+
+		<epsilon.eunit src="model-comparison/emf-emf.eunit" failonerrors="false">
+			<model ref="Tree"/>
+			<model ref="Graph"/>
+			<model ref="GraphExpected"/>
+			<model ref="GraphDifferent"/>
+			<modelTasks>
+				<epsilon.etl src="model-comparison/Tree2Graph.etl">
+					<model ref="Tree"/>
+					<model ref="Graph"/>
+				</epsilon.etl>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="emf-emf-generated">
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+
+		<!-- Note when running EMF comparisons: if you want to view the differences properly, you
+		     need to register permanently the EPackages of the metamodels and use the metamodeluri
+		     attribute, instead of the metamodelfile attribute. Otherwise, you get ugly exceptions
+		     when trying to compare features, for instance. -->
+		<epsilon.eunit src="model-comparison/emf-emf-generated.eunit">
+			<modelTasks>
+				<!-- all models are empty: we'll generate them on the fly -->
+				<epsilon.emf.loadModel name="Tree"
+					modelfile="${tree.model.location}" metamodelfile="${tree.metamodel.location}"
+					read="false" store="false"/>
+				<epsilon.emf.loadModel name="GraphExpected"
+					modelfile="${graph1.model.location}" metamodeluri="${graph.metamodel.uri}"
+					read="false" store="false"/>
+				<epsilon.emf.loadModel name="Graph"
+					modelfile="transformed.model" metamodeluri="${graph.metamodel.uri}"
+					read="false" store="false"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="emf-emf-copy">
+		<epsilon.emf.register file="${tree.metamodel.location}"/>
+
+		<tempfile property="copy.tmpfile"/>
+		<macrodef name="loadTree">
+			<attribute name="path"/>
+			<attribute name="name"/>
+			<sequential>
+				<epsilon.emf.loadModel name="@{name}"
+					modelfile="@{path}" metamodeluri="${tree.metamodel.uri}"
+					read="true" store="false"/>
+			</sequential>
+		</macrodef>
+
+		<epsilon.eunit src="model-comparison/emf-emf-copy.eunit">
+			<modelTasks>
+				<loadTree name="Tree" path="${tree.model.location}"/>
+				<epsilon.storeModel model="Tree" targetFile="${copy.tmpfile}"/>
+				<loadTree name="TreeCopy" path="${copy.tmpfile}"/>
+			</modelTasks>
+		</epsilon.eunit>
+
+		<delete file="${copy.tmpfile}" failonerror="no"/>
+	</target>
+
+	<target name="emf-emf-memory">
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.eunit src="model-comparison/emf-emf-memory.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="A" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyA.model"/>
+				<epsilon.emf.loadModel name="B" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyB.model"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="emf-emf-memory-customComparator">
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.eunit src="model-comparison/emf-emf-memory-caseIgnore.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="A" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyA.model"/>
+				<epsilon.emf.loadModel name="B" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyB.model"/>
+			</modelTasks>
+			<comparators>
+				<comparator classname="org.eclipse.epsilon.eunit.engine.test.comparators.IgnoreCaseComparator" />
+			</comparators>
+		</epsilon.eunit>
+	</target>
+
+	<target name="emf-emf-empty-left">
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.eunit src="model-comparison/emf-emf-empty.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="A" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyA.model"/>
+				<epsilon.emf.loadModel name="B" metamodeluri="${graph.metamodel.uri}" read="true" store="false"  modelfile="${graph1.model.location}"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="emf-emf-empty-right">
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.eunit src="model-comparison/emf-emf-empty.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="A" metamodeluri="${graph.metamodel.uri}" read="true" store="false" modelfile="${graph1.model.location}"/>
+				<epsilon.emf.loadModel name="B" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyB.model"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="emf-emf-empty-both">
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.eunit src="model-comparison/emf-emf-empty.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="A" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyA.model"/>
+				<epsilon.emf.loadModel name="B" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyB.model"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="emf-emf-empty-left-noteq">
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.eunit src="model-comparison/emf-emf-empty-noteq.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="A" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyA.model"/>
+				<epsilon.emf.loadModel name="B" metamodeluri="${graph.metamodel.uri}" read="true" store="false" modelfile="${graph1.model.location}"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="emf-emf-empty-right-noteq">
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.eunit src="model-comparison/emf-emf-empty-noteq.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="A" metamodeluri="${graph.metamodel.uri}" read="true" store="false" modelfile="${graph1.model.location}"/>
+				<epsilon.emf.loadModel name="B" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyB.model"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="emf-emf-empty-both-noteq">
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.eunit src="model-comparison/emf-emf-empty-noteq.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="A" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyA.model"/>
+				<epsilon.emf.loadModel name="B" metamodeluri="${graph.metamodel.uri}" read="false" store="false" modelfile="dummyB.model"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<!--
+		Sanity check for UML2: comparing a model with only a profile application against itself should not report any differences.
+	-->
+	<target name="uml-same">
+		<epsilon.eunit src="model-comparison/uml.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="Model" metamodeluri="${uml.metamodel.uri}" read="true" store="false" modelfile="${uml.profile.model.location}"	/>
+				<epsilon.emf.loadModel name="Expected" metamodeluri="${uml.metamodel.uri}" read="true" store="false" modelfile="${uml.profile.model.location}"	/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<!-- EVL tests -->
+
+	<target name="evl-macrodef">
+		<macrodef name="evl-eunit-test">
+			<attribute name="nodename" default="t1n"/>
+			<attribute name="evl" default="tree-constraints"/>
+			<attribute name="failOnErrors" default="true"/>
+			<attribute name="failOnWarnings" default="true"/>
+			<attribute name="exportAsModel" default="false"/>
+			<attribute name="script" default="tree-only-run-evl"/>
+			<sequential>
+				<property name="validate-tree.evl" value="evl/@{evl}.evl"/>
+				<property name="validate-tree.failOnErrors" value="@{failOnErrors}"/>
+				<property name="validate-tree.failOnWarnings" value="@{failOnWarnings}"/>
+				<property name="validate-tree.exportAsModel" value="@{exportAsModel}"/>
+				<epsilon.eunit src="evl/@{script}.eunit">
+					<parameter name="nodename" value="@{nodename}"/>
+					<modelTasks>
+						<epsilon.emf.loadModel name="Tree"
+							modelfile="${tree.model.location}" metamodelfile="${tree.metamodel.location}"
+							read="false" store="false"/>
+					</modelTasks>
+				</epsilon.eunit>
+			</sequential>
+		</macrodef>
+	</target>
+
+	<target name="evl-valid" depends="evl-macrodef">
+		<evl-eunit-test/>
+	</target>
+
+	<target name="evl-error-fails-build" depends="evl-macrodef">
+		<evl-eunit-test nodename="1n"/>
+	</target>
+
+	<target name="evl-failOnErrors-honored" depends="evl-macrodef">
+		<evl-eunit-test nodename="1n" failOnErrors="false"/>
+	</target>
+
+	<target name="evl-warning-fails-build" depends="evl-macrodef">
+		<evl-eunit-test nodename="t1"/>
+	</target>
+
+	<target name="evl-failOnWarnings-honored" depends="evl-macrodef">
+		<evl-eunit-test nodename="t1" failOnWarnings="false"/>
+	</target>
+
+	<target name="evl-exportAsModel" depends="evl-macrodef">
+		<evl-eunit-test script="tree-export-as-model" exportAsModel="EVL" failOnErrors="false" failOnWarnings="false"/>
+	</target>
+
+	<target name="evl-guarded-fixes" depends="evl-macrodef">
+		<evl-eunit-test script="guarded-fixes" evl="guarded-fixes" exportAsModel="EVL" failOnErrors="false" failOnWarnings="false" />
+	</target>
+
+	<!-- Inline model tests -->
+
+	<target name="inline-hutn">
+		<epsilon.emf.register file="${tree.metamodel.location}"/>
+		<epsilon.eunit src="inline/hutn.eunit"/>
+	</target>
+
+	<target name="inline-hutn-compare" description="Tests that regular EMF and HUTN-based models can be compared">
+		<epsilon.emf.register file="${tree.metamodel.location}"/>
+		<epsilon.eunit src="inline/hutn-compare.eunit">
+			<modelTasks>
+				<epsilon.emf.loadModel name="TreeEMF"
+					modelfile="${tree.model.location}" metamodelfile="${tree.metamodel.location}"
+					read="true" store="false"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="inline-emf">
+		<epsilon.eunit src="inline/emf.eunit"/>
+	</target>
+
+	<!-- EGL tests -->
+
+	<target name="egl-file-tests">
+		<epsilon.emf.register file="${tree.metamodel.location}"/>
+		<epsilon.eunit src="egl/file-tests.eunit" failOnErrors="false">
+			<parameter name="basedir" value="${basedir}"/>
+		</epsilon.eunit>
+	</target>
+
+	<target name="egl-dir-tests">
+		<epsilon.emf.register file="${tree.metamodel.location}"/>
+		<epsilon.eunit src="egl/dir-tests.eunit" failOnErrors="false">
+			<parameter name="basedir" value="${basedir}"/>
+		</epsilon.eunit>
+	</target>
+
+	<!-- Custom targets used from within the EUnit tests -->
+
+	<target name="eol-variables">
+		<epsilon.eol src="variables/variables.eol">
+			<uses ref="x" optional="false"/>
+			<exports ref="y" optional="false"/>
+		</epsilon.eol>
+	</target>
+
+	<target name="tree2graph">
+		<epsilon.etl src="model-comparison/Tree2Graph.etl">
+			<model ref="Tree"/>
+			<model ref="Graph"/>
+		</epsilon.etl>
+	</target>
+
+	<target name="validate-tree">
+		<epsilon.evl src="${validate-tree.evl}"
+			failOnErrors="${validate-tree.failOnErrors}"
+			failOnWarnings="${validate-tree.failOnWarnings}"
+			exportAsModel="${validate-tree.exportAsModel}">
+			<model ref="Tree"/>
+		</epsilon.evl>
+	</target>
+
+	<target name="tree2text">
+		<epsilon.egl src="egl/tree2text.egl" outputRoot="${basedir}/../../generated" target="tree.txt">
+			<model ref="Tree"/>
+		</epsilon.egl>
+	</target>
+
+	<target name="tree2dirs">
+		<epsilon.egl src="egl/tree2dirs.egl">
+			<uses  ref="basedir"/>
+			<uses  ref="prefix"/>
+			<model ref="Tree"/>
+		</epsilon.egl>
+	</target>
+
+</project>

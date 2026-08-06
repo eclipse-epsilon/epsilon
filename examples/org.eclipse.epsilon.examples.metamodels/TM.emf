@@ -1,0 +1,12 @@
+@namespace(uri="TM", prefix="TM")
+package TM;
+
+class TypeMap {
+  val TypeMapping[*] mappings;
+}
+
+class TypeMapping {
+  attr String source;
+  attr String target;
+}
+

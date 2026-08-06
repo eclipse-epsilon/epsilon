@@ -1,0 +1,40 @@
+@namespace(uri="virtualEmf", prefix="virtualEmf")
+package virtual;
+
+class VirtualModel {
+	val VirtualObject[*]#model objects;
+}
+
+abstract class TypedElement {
+  attr String type;
+}
+
+class VirtualObject extends TypedElement {
+  ref VirtualModel[1]#objects model;
+  val Slot[*]#owner slots;
+}
+
+abstract class Slot extends TypedElement {
+  ref VirtualObject[1]#slots owner;
+}
+
+class StringSlot extends Slot {
+  attr String[*] values;
+}
+
+class IntegerSlot extends Slot {
+  attr Integer[*] values;
+}
+
+class BooleanSlot extends Slot {
+  attr Boolean[*] values;
+}
+
+class FloatSlot extends Slot {
+  attr Float[*] values;
+}
+
+class ReferenceSlot extends Slot {
+  ref VirtualObject[*] values;
+}
+

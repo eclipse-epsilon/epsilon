@@ -1,0 +1,5 @@
+/*
+  This chain goes like this: A imports B, B imports C and C imports A.
+*/
+
+import 'three-b.eol';

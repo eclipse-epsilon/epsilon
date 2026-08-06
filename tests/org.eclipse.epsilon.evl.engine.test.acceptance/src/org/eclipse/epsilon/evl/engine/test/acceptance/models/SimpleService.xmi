@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="ASCII"?>
+<thriftIDL:Document xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:thriftIDL="http://www.apache.org/thrift/Thrift">
+  <definitions xsi:type="thriftIDL:Typedef" identifier="floatingPoint">
+    <aliasFor base="double"/>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Typedef" identifier="short">
+    <aliasFor base="i16"/>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Typedef" identifier="notText">
+    <aliasFor base="binary"/>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Typedef" identifier="ThirtyTwo">
+    <aliasFor base="i32"/>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Typedef" identifier="jlong">
+    <aliasFor base="i64"/>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Const" identifier="myConstant">
+    <fieldType>
+      <defType base="double"/>
+    </fieldType>
+    <constVal>
+      <double fractional="14">
+        <significant value="3"/>
+      </double>
+    </constVal>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Const" identifier="myMap">
+    <fieldType>
+      <defType>
+        <container xsi:type="thriftIDL:MapType" keyword="map">
+          <keyType>
+            <defType base="string"/>
+          </keyType>
+          <valType>
+            <defType base="i32"/>
+          </valType>
+        </container>
+      </defType>
+    </fieldType>
+    <constVal>
+      <map>
+        <pairs>
+          <key literal="&quot;str1&quot;"/>
+          <value>
+            <integer value="8"/>
+          </value>
+        </pairs>
+        <pairs>
+          <key literal="&quot;str_2&quot;"/>
+          <value>
+            <integer negative="true" value="15"/>
+          </value>
+        </pairs>
+        <pairs>
+          <key literal="&quot;str 3&quot;"/>
+          <value>
+            <integer value="2147483640"/>
+          </value>
+        </pairs>
+      </map>
+    </constVal>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Const" identifier="complexMap">
+    <fieldType>
+      <defType>
+        <container xsi:type="thriftIDL:MapType" keyword="map">
+          <keyType>
+            <defType>
+              <container xsi:type="thriftIDL:MapType" keyword="map">
+                <keyType>
+                  <defType base="string"/>
+                </keyType>
+                <valType>
+                  <defType base="bool"/>
+                </valType>
+              </container>
+            </defType>
+          </keyType>
+          <valType>
+            <defType base="double"/>
+          </valType>
+        </container>
+      </defType>
+    </fieldType>
+    <constVal>
+      <map>
+        <pairs>
+          <key>
+            <map>
+              <pairs>
+                <key literal="&quot;testStr&quot;"/>
+                <value>
+                  <integer value="1"/>
+                </value>
+              </pairs>
+            </map>
+          </key>
+          <value identifier="myConstant"/>
+        </pairs>
+        <pairs>
+          <key>
+            <map>
+              <pairs>
+                <key literal="&quot;false String&quot;"/>
+                <value bool="false"/>
+              </pairs>
+            </map>
+          </key>
+          <value>
+            <integer value="5"/>
+          </value>
+        </pairs>
+      </map>
+    </constVal>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Const" identifier="intSet">
+    <fieldType>
+      <defType>
+        <container xsi:type="thriftIDL:SetType" keyword="set">
+          <fieldType identifier="ThirtyTwo"/>
+        </container>
+      </defType>
+    </fieldType>
+    <constVal>
+      <list>
+        <constVals>
+          <integer value="32"/>
+        </constVals>
+        <constVals>
+          <integer value="2"/>
+        </constVals>
+        <constVals>
+          <integer value="4"/>
+        </constVals>
+        <constVals>
+          <integer value="8"/>
+        </constVals>
+        <constVals>
+          <integer value="16"/>
+        </constVals>
+      </list>
+    </constVal>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Const" identifier="insaneList">
+    <fieldType>
+      <defType>
+        <container xsi:type="thriftIDL:ListType" keyword="list">
+          <fieldType>
+            <defType>
+              <container xsi:type="thriftIDL:SetType" keyword="set">
+                <fieldType>
+                  <defType base="i32"/>
+                </fieldType>
+              </container>
+            </defType>
+          </fieldType>
+        </container>
+      </defType>
+    </fieldType>
+    <constVal>
+      <list>
+        <constVals>
+          <list>
+            <constVals>
+              <integer value="3"/>
+            </constVals>
+            <constVals>
+              <integer value="6"/>
+            </constVals>
+          </list>
+        </constVals>
+        <constVals identifier="intSet"/>
+        <constVals>
+          <list>
+            <constVals>
+              <integer value="15"/>
+            </constVals>
+            <constVals>
+              <integer value="7"/>
+            </constVals>
+            <constVals>
+              <integer value="5"/>
+            </constVals>
+            <constVals>
+              <integer value="6"/>
+            </constVals>
+          </list>
+        </constVals>
+      </list>
+    </constVal>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Const" identifier="structConst">
+    <fieldType identifier="simpleStruct"/>
+    <constVal>
+      <map>
+        <pairs>
+          <key literal="&quot;integerThing&quot;"/>
+          <value>
+            <integer value="85"/>
+          </value>
+        </pairs>
+      </map>
+    </constVal>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Const" identifier="insaneStruct">
+    <fieldType identifier="complexStruct"/>
+    <constVal>
+      <map>
+        <pairs>
+          <key literal="&quot;nestedStruct&quot;"/>
+          <value>
+            <map>
+              <pairs>
+                <key literal="&quot;longThing&quot;"/>
+                <value>
+                  <integer value="5000"/>
+                </value>
+              </pairs>
+              <pairs>
+                <key literal="&quot;simpleThing&quot;"/>
+                <value identifier="structConst"/>
+              </pairs>
+            </map>
+          </value>
+        </pairs>
+        <pairs>
+          <key literal="&quot;anotherSimpleStruct&quot;"/>
+          <value>
+            <map>
+              <pairs>
+                <key literal="&quot;integerThing&quot;"/>
+                <value>
+                  <integer value="6670"/>
+                </value>
+              </pairs>
+            </map>
+          </value>
+        </pairs>
+      </map>
+    </constVal>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Enum" identifier="myEnum" comment="/**&#xD;&#xA; * Example enum&#xD;&#xA; */">
+    <pairs identifier="sponge"/>
+    <pairs identifier="seagull" hasFID="true" fieldID="2"/>
+    <pairs identifier="patrick" hasFID="true" fieldID="3"/>
+    <pairs identifier="squid"/>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Struct" identifier="simpleStruct">
+    <fields fieldID="17" hasFID="true" identifier="integerThing">
+      <fieldType>
+        <defType base="i32"/>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Struct" identifier="complexStruct">
+    <fields fieldID="99" hasFID="true" identifier="nestedStruct">
+      <fieldType identifier="myStruct"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="78" hasFID="true" identifier="anotherSimpleStruct">
+      <fieldType identifier="simpleStruct"/>
+      <xsdFieldOpt/>
+    </fields>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Struct" identifier="myStruct" comment="/**&#xD;&#xA; * Example structure&#xD;&#xA; * Multi-line comment&#xD;&#xA; No asterisk on this one!&#xD;&#xA;&#xD;&#xA; */">
+    <fields fieldID="5" hasFID="true" identifier="mstrstrThing">
+      <fieldType>
+        <defType>
+          <container xsi:type="thriftIDL:MapType" keyword="map">
+            <keyType identifier="simpleStruct"/>
+            <valType>
+              <defType>
+                <container xsi:type="thriftIDL:ListType" keyword="list">
+                  <fieldType identifier="jlong"/>
+                </container>
+              </defType>
+            </valType>
+          </container>
+        </defType>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="12" hasFID="true" identifier="longThing">
+      <fieldType identifier="jlong"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="1" hasFID="true" fieldReq="optional" identifier="booleanThing">
+      <fieldType>
+        <defType base="bool"/>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="10" hasFID="true" identifier="my_integerSet_list">
+      <fieldType>
+        <defType>
+          <container xsi:type="thriftIDL:ListType" keyword="list">
+            <fieldType>
+              <defType>
+                <container xsi:type="thriftIDL:SetType" keyword="set">
+                  <fieldType>
+                    <defType>
+                      <container xsi:type="thriftIDL:ListType" keyword="list">
+                        <fieldType identifier="ThirtyTwo"/>
+                      </container>
+                    </defType>
+                  </fieldType>
+                </container>
+              </defType>
+            </fieldType>
+          </container>
+        </defType>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="11" hasFID="true" identifier="menumThing">
+      <fieldType identifier="myEnum"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="13" hasFID="true" identifier="binThing">
+      <fieldType identifier="notText"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="14" hasFID="true" identifier="simpleThing">
+      <fieldType identifier="simpleStruct"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="15" hasFID="true" identifier="strucList">
+      <fieldType>
+        <defType>
+          <container xsi:type="thriftIDL:ListType" keyword="list">
+            <fieldType identifier="simpleStruct"/>
+          </container>
+        </defType>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="16" hasFID="true" identifier="simpleSet">
+      <fieldType>
+        <defType>
+          <container xsi:type="thriftIDL:SetType" keyword="set">
+            <fieldType>
+              <defType base="bool"/>
+            </fieldType>
+          </container>
+        </defType>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="25" hasFID="true" identifier="binList">
+      <fieldType>
+        <defType>
+          <container xsi:type="thriftIDL:ListType" keyword="list">
+            <fieldType>
+              <defType base="binary"/>
+            </fieldType>
+          </container>
+        </defType>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Struct" identifier="myExc" isException="true">
+    <fields fieldID="1" hasFID="true" identifier="nestedStructure">
+      <fieldType identifier="myStruct"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="2" hasFID="true" identifier="bitsAndBytes">
+      <fieldType>
+        <defType base="binary"/>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="3" hasFID="true" identifier="nestedEnumeration">
+      <fieldType identifier="myEnum"/>
+      <xsdFieldOpt/>
+    </fields>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Union" identifier="myOnion" comment="/**&#xD;&#xA; * Example union&#xD;&#xA; */">
+    <fields fieldID="2" hasFID="true" identifier="structureThing">
+      <fieldType identifier="myStruct"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="5" hasFID="true" identifier="mstrstrThing">
+      <fieldType>
+        <defType>
+          <container xsi:type="thriftIDL:MapType" keyword="map">
+            <keyType identifier="simpleStruct"/>
+            <valType>
+              <defType>
+                <container xsi:type="thriftIDL:ListType" keyword="list">
+                  <fieldType identifier="jlong"/>
+                </container>
+              </defType>
+            </valType>
+          </container>
+        </defType>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="12" hasFID="true" identifier="longThing">
+      <fieldType identifier="jlong"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="1" hasFID="true" fieldReq="optional" identifier="booleanThing">
+      <fieldType>
+        <defType base="bool"/>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="10" hasFID="true" identifier="my_integerSet_list">
+      <fieldType>
+        <defType>
+          <container xsi:type="thriftIDL:ListType" keyword="list">
+            <fieldType>
+              <defType>
+                <container xsi:type="thriftIDL:SetType" keyword="set">
+                  <fieldType>
+                    <defType>
+                      <container xsi:type="thriftIDL:ListType" keyword="list">
+                        <fieldType identifier="ThirtyTwo"/>
+                      </container>
+                    </defType>
+                  </fieldType>
+                </container>
+              </defType>
+            </fieldType>
+          </container>
+        </defType>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="11" hasFID="true" identifier="menumThing">
+      <fieldType identifier="myEnum"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="13" hasFID="true" identifier="binThing">
+      <fieldType identifier="notText"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="14" hasFID="true" identifier="simpleThing">
+      <fieldType identifier="simpleStruct"/>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="15" hasFID="true" identifier="strucList">
+      <fieldType>
+        <defType>
+          <container xsi:type="thriftIDL:ListType" keyword="list">
+            <fieldType identifier="simpleStruct"/>
+          </container>
+        </defType>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+    <fields fieldID="16" hasFID="true" identifier="simpleSet">
+      <fieldType>
+        <defType>
+          <container xsi:type="thriftIDL:SetType" keyword="set">
+            <fieldType>
+              <defType base="bool"/>
+            </fieldType>
+          </container>
+        </defType>
+      </fieldType>
+      <xsdFieldOpt/>
+    </fields>
+  </definitions>
+  <definitions xsi:type="thriftIDL:Service" identifier="Calculator" comment="/**&#xD;&#xA; * Example service&#xD;&#xA; */">
+    <functions comment="/** ** *boo!&#xD;&#xA;&#x9; * -- Example function *&#xD;&#xA;&#x9;star */" identifier="myFunc">
+      <funcType>
+        <fieldType>
+          <defType base="binary"/>
+        </fieldType>
+      </funcType>
+      <args fieldID="1" hasFID="true" identifier="num1">
+        <fieldType>
+          <defType base="i16"/>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+      <args fieldID="2" hasFID="true" identifier="entries">
+        <fieldType>
+          <defType>
+            <container xsi:type="thriftIDL:MapType" keyword="map">
+              <keyType>
+                <defType base="string"/>
+              </keyType>
+              <valType>
+                <defType base="i32"/>
+              </valType>
+            </container>
+          </defType>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+      <args fieldID="3" hasFID="true" identifier="names">
+        <fieldType>
+          <defType>
+            <container xsi:type="thriftIDL:SetType" keyword="set">
+              <fieldType>
+                <defType base="string"/>
+              </fieldType>
+            </container>
+          </defType>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+      <args fieldID="4" hasFID="true" identifier="truth">
+        <fieldType>
+          <defType>
+            <container xsi:type="thriftIDL:ListType" keyword="list">
+              <fieldType>
+                <defType base="bool"/>
+              </fieldType>
+            </container>
+          </defType>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+    </functions>
+    <functions isOneway="true" identifier="inputOnly">
+      <funcType void="true"/>
+      <args fieldID="1" hasFID="true" identifier="firstOne">
+        <fieldType>
+          <defType base="i32"/>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+    </functions>
+    <functions identifier="blankFunc">
+      <funcType void="true"/>
+    </functions>
+    <functions identifier="standardFunc">
+      <funcType>
+        <fieldType>
+          <defType base="i32"/>
+        </fieldType>
+      </funcType>
+      <args fieldID="1" hasFID="true" identifier="input1">
+        <fieldType>
+          <defType base="double"/>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+      <args fieldID="2" hasFID="true" identifier="input2">
+        <fieldType>
+          <defType base="i16"/>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+    </functions>
+    <functions identifier="funcWithExceptions" hasExceptions="true">
+      <funcType>
+        <fieldType>
+          <defType base="string"/>
+        </fieldType>
+      </funcType>
+      <args fieldID="1" hasFID="true" identifier="bigNum">
+        <fieldType>
+          <defType base="i64"/>
+        </fieldType>
+        <xsdFieldOpt/>
+      </args>
+      <exceptions fieldID="5" hasFID="true" identifier="error">
+        <fieldType identifier="myExc"/>
+        <xsdFieldOpt/>
+      </exceptions>
+    </functions>
+  </definitions>
+</thriftIDL:Document>

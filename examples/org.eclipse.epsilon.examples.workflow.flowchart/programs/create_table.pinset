@@ -1,0 +1,5 @@
+dataset actions over a : Action {
+	properties[name]
+	column num_incoming : a.incoming.size()
+	column num_outgoing : a.outgoing.size()
+}

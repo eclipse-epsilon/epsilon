@@ -1,0 +1,30 @@
+@namespace(uri="minisd", prefix="")
+package minisd;
+
+class Scenario extends Block {
+	
+}
+
+class Participant {
+	attr String name;
+}
+
+abstract class Step {
+	
+}
+
+class Block extends Step {
+	attr String title;
+	val Step[*] steps;
+}
+
+class Alt extends Step {
+	attr String title;
+	val Block[*] blocks;
+}
+
+class Interaction extends Step {
+	ref Participant from;
+	ref Participant to;
+	attr String message;
+}

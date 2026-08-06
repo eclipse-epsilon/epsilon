@@ -1,0 +1,26 @@
+operation Any getPath(): Sequence {
+	var result = Sequence{};
+	if (self.eContainer <> null) {
+		result.addAll(self.eContainer.getPath());
+	}
+	result.add(self.getIdentifier());
+	return result;
+}
+
+/*
+	First option: 	an EAttribute defined as ID
+	Second option:	a name property
+	Third option: 	the position in the list of types 
+*/
+operation Any getIdentifier() {
+	var prefix = self.eClass.name + " ";
+	for (attribute in self.eClass.getEAllAttributes()) {
+		if (attribute.isID()) {
+			return prefix + self.eGet(attribute);
+		}
+	}
+	if (self.hasProperty("name")) {
+		return prefix + self.name;
+	}
+	return prefix + M.getAllOfType(self.eClass.name).indexOf(self);
+}

@@ -1,0 +1,91 @@
+context OO!NamedElement {
+	
+	// Every NamedElement must define a name
+	constraint HasName {
+		
+		check : self.name <> ""
+
+		message : "Element " + self + " must define a name"
+		
+	}
+} 
+
+context OO!Feature {
+	
+	// The name of a feature (attribute,referecne,parameter)
+	// should start with a lower case letter
+	critique NameMustStartWithLowerCase {
+		
+		guard : self.satisfies("HasName")
+		
+		check : self.name.substring(0,1) = 
+			self.name.substring(0,1).toLowerCase()
+		
+	}
+}
+
+context OO!Class {
+	
+	// The name of a class should start with
+	// an upper case letter
+	critique NameShouldStartWithUpperCase {
+		
+		guard : self.satisfies("HasName")
+		
+		check : self.name.substring(0,1) = 
+			self.name.substring(0,1).toUpperCase()
+		
+		message : "The name of class " + self.name + 
+			" should start with an upper-case letter"
+	
+		fix {
+			title : "Rename class " + self.name + " to " + 
+				self.name.firstToUpperCase()
+			
+			do {
+				self.name = self.name.firstToUpperCase();
+			}
+		}
+	}
+	
+	// A class must not directly or indirectly
+	// inherit from itself
+	constraint MustNotInheritItself {
+		
+		check : not self.inherits(self)
+		
+		message : "Class " + self.name + " inherits itself"
+		
+	}
+	
+	// A class is unused when it is not the type of a feature
+	// or a parameter and is not extended by another class
+	critique UnusedClass {
+		
+		check : Parameter.allInstances.exists(p|p.type = self) or 
+			Feature.allInstances.exists(f|f.type = self) or
+			Class.allInstances.exists(c|c.`extends` = self)
+		
+		message : "Unused class " + self.name
+		
+		fix {
+			title : "Delete class " + self.name
+			
+			do {
+				delete self;
+			}
+		}
+	}
+}
+
+// Returns if a class directly or indirectly
+// inherits from another class
+operation Class inherits(c : Class) : Boolean {
+	
+	if (self.`extends`.isDefined()) {
+		return self.`extends` = c or self.`extends`.inherits(c);
+	}
+	else {
+		return false;
+	}
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.epsilon.eol.dt.editor.EolEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="eolt"
+            id="org.eclipse.epsilon.examples.testlang.dt.editor"
+            name="Epsilon Example TestLang editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.examples.testlang.dt.wizard.NewTestLangWizard"
+            id="org.eclipse.epsilon.examples.testlang.dt.newTestLangWizard"
+            name="New TestLang Script...">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.epsilon.examples.testlang.dt.launching.TestLangLaunchConfigurationTabGroup"
+            id="org.eclipse.epsilon.examples.testlang.dt.launchConfigurationTabGroup"
+            type="org.eclipse.epsilon.examples.testlang.dt.launchConfigurationType">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.epsilon.examples.testlang.dt.launching.TestLangLaunchConfigurationDelegate"
+            id="org.eclipse.epsilon.examples.testlang.dt.launchConfigurationType"
+            modes="run,debug"
+            name="TestLang Launch Configuration"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.eclipse.epsilon.examples.testlang.dt.launchConfigurationType"
+            icon="icons/testlang.png"
+            id="org.eclipse.epsilon.examples.testlang.dt.launchConfigurationTypeImage1">
+      </launchConfigurationTypeImage>
+   </extension>
+
+</plugin>

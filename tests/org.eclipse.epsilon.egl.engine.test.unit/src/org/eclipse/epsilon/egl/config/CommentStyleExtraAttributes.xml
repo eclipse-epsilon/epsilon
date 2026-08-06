@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ContentTypes SYSTEM "http://www.epsilon.org/egl/ContentTypes.dtd">
+
+<ContentTypes>
+	<ContentType name="Java">
+		<CommentStyle startsWith="//">foo bar baz</CommentStyle>
+	</ContentType>
+</ContentTypes>

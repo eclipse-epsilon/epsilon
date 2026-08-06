@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT ContentTypes (ContentType*)>
+
+<!ELEMENT ContentType (CommentStyle+)>
+<!ATTLIST ContentType
+          name CDATA #REQUIRED>
+
+<!ELEMENT CommentStyle EMPTY>
+<!ATTLIST CommentStyle
+          startsWith CDATA ""
+          endsWith CDATA ""
+>

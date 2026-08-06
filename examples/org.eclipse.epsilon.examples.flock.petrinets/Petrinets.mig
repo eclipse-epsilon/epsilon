@@ -1,0 +1,15 @@
+migrate Transition {
+	for (source in original.src) {
+		var arc = new Migrated!PTArc;
+		arc.src = source.equivalent();
+		arc.dst = migrated;
+		arc.net = migrated.net;
+	}
+	
+	for (destination in original.dst) {
+		var arc = new Migrated!TPArc;
+		arc.src = migrated;
+		arc.dst = destination.equivalent();
+		arc.net = migrated.net;
+	}
+}

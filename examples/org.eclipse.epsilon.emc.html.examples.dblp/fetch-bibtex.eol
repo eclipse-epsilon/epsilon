@@ -1,0 +1,13 @@
+Index.uri = "http://dblp.uni-trier.de/pers/hd/k/Kolovos:Dimitrios_S=";
+Index.readOnLoad = true;
+Index.load();
+
+for (href in Index!t_a.all.select(a|a.a_href.indexOf("rec/bibtex") > -1).
+	collect(a|a.a_href).asSet()) {
+	
+	Bibtex.uri = href;
+	Bibtex.readOnLoad = true;
+	Bibtex.load();
+	
+	Bibtex!t_pre.all.first().text().println();	
+}

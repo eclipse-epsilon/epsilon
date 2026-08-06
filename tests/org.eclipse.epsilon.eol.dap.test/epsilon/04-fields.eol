@@ -1,0 +1,5 @@
+var p = new Person;
+p.name = 'John';
+p.lastName = 'Doe';
+
+(p.name + ' ' + p.lastName).println('Name of the person: ');

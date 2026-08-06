@@ -1,0 +1,16 @@
+@namespace(uri="library", prefix="library")
+package library;
+
+class Library {
+   val Book[*] books;
+   val Author[*] authors;
+}
+
+class Book {
+   attr String title;
+   ref Author[*] authors;
+}
+
+class Author {
+   attr String name;
+}

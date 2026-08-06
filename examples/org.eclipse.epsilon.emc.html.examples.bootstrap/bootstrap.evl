@@ -1,0 +1,12 @@
+context t_div {
+	
+	constraint ColMdUnderRow {
+		
+		guard : self.a_class.indexOf("col-md-") >= 0
+	
+		check : self.parent.a_class = "row"
+		
+		message : "Parent of div of class " + self.a_class + " is of class " + self.parent.a_class
+	}
+	
+}

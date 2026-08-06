@@ -1,0 +1,4 @@
+	public String toString() {
+		---
++		return "[%=c.name%]";
+	}

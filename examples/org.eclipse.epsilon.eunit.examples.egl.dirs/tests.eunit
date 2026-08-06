@@ -1,0 +1,25 @@
+var EXPECTED_PATH = basedir + '/expected/';
+var DESTDIR_PATH  = basedir + '/generated/';
+
+@setup
+operation createDestDir() {
+  var destdir = new Native('java.io.File')(DESTDIR_PATH);
+  destdir.mkdirs();
+}
+
+@teardown
+operation deleteDestDir() {
+  var destdir = new Native('java.io.File')(DESTDIR_PATH);
+  for (f in destdir.listFiles()) {
+    // We need to protect delete so it is not interpreted as the Epsilon reserved word
+    f.`delete`();
+  }
+  destdir.`delete`();
+}
+
+@test
+operation egl() {
+  exportVariable('destdir');
+  runTarget('egl');
+  assertEqualDirectories(EXPECTED_PATH, DESTDIR_PATH);
+}

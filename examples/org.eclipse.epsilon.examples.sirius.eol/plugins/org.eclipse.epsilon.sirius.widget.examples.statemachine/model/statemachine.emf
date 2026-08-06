@@ -1,0 +1,32 @@
+@namespace(uri="http://www.eclipse.org/epsilon/statemachine", prefix="statemachine")
+package statemachine;
+
+class StateMachine {
+	val InitialState initialState;
+	val Transition[*] transitions;
+	val State[*] states;
+}
+
+class NamedElement {
+	attr String name;
+}
+
+class State extends NamedElement {
+	attr String action;
+	ref Transition[*]#from outgoing;
+	ref Transition[*]#to incoming;
+}
+
+class InitialState extends State {
+	
+}
+
+class FinalState extends State {
+	
+}
+
+class Transition extends NamedElement {
+	ref State#incoming to;
+	ref State#outgoing from;
+	attr String guard;
+}

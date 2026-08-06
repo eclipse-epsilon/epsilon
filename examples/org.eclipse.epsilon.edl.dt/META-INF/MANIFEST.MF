@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Demo Language Development Tools
+Bundle-SymbolicName: org.eclipse.epsilon.edl.dt;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.edl.dt.EdlPlugin
+Bundle-Vendor: Eclipse.org
+Require-Bundle: org.eclipse.epsilon.eol.dt,
+ org.eclipse.jface.text,
+ org.eclipse.epsilon.common.dt,
+ org.eclipse.epsilon.edl.engine
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.epsilon.edl.dt,
+ org.eclipse.epsilon.edl.dt.editor,
+ org.eclipse.epsilon.edl.dt.editor.outline,
+ org.eclipse.epsilon.edl.dt.launching,
+ org.eclipse.epsilon.edl.dt.launching.tabs,
+ org.eclipse.epsilon.edl.dt.wizards
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

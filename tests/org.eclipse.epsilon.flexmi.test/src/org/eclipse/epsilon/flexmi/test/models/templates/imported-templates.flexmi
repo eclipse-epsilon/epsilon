@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<_>
+	<:template name="t1">
+		<content>
+			<class name="C1"/>
+		</content>
+	</:template>
+	<:template name="t2">
+		<content>
+			<class name="C2"/>
+		</content>
+	</:template>
+</_>

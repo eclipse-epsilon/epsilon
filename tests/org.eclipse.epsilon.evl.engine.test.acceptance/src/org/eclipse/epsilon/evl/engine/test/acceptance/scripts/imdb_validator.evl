@@ -1,0 +1,83 @@
+import "utils.eol";
+
+context Couple {
+	@parallel
+	constraint twoDifferentPeople {
+		guard: self.commonMovies.size() > 5
+		check {
+			if (self.p1.name == self.p2.name) {
+				return not self.p1.movies.includesAll(self.p2.movies);
+			}
+			return true;
+		}
+		message: "Couple contains the same person!"
+	}
+}
+
+context Group {
+	constraint hasCommonMovies {
+		check: self.commonMovies.size() > 0
+	}
+	@parallel
+	constraint averageIsValid {
+		guard: self.satisfies("hasCommonMovies")
+		check {
+			var total : Real = 0.0;
+			for (movie in self.movies) {
+				total += movie.rating;
+			}
+			return (total/self.movies.size()) == self.avgRating;
+		}
+	}
+}
+
+context Movie {
+	guard: self.satisfies("isValidTitle")
+	constraint someCode {
+		guard: self.rating > 5
+		check {
+			return true;
+		}
+	}
+	constraint isValidYear {
+		check {
+			var year : Integer = self.year;
+			switch (self.type.literal) {
+				case "TV": return year > 1920;
+				case "VIDEOGAME": return year > 1970;
+				default: return year > 1850;
+			}
+		}
+		fix {
+			title: "Fix for invalid year"
+			do {
+				("Encountered invalid year for "+self.type.literal+": "+self.year).println();
+			}
+		}
+	}
+	constraint isValidRating {
+		check:
+			self.rating >= 0 and
+			self.rating <= 10
+	}
+	@lazy
+	constraint isValidTitle {
+		check: self.`title`.length() > 0
+	}
+	critique hasPeople {
+		check: self.persons.size() > 0
+	}
+}
+
+$parallel Person.all.size() > 1024
+context Person {
+	constraint isValidName {
+		check:
+			self.name.length() > 3 and
+			self.name.contains(" ") and
+			self.name.substring(0,1).matches("[A-Z]")
+	}
+	constraint hasMovies {
+		check: self.movies.size() > 0
+	}
+}

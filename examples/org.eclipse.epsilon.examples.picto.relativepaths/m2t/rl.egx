@@ -1,0 +1,10 @@
+rule rulename 
+	transform r : Requirement {
+
+	template : "requirement.egl"
+	
+	parameters : Map {
+		"path" = Sequence{"Model", r.id},
+		"format" = "markdown"
+	}
+}

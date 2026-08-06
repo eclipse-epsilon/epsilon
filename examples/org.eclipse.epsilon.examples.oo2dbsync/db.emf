@@ -1,0 +1,15 @@
+package db;
+
+class Database {
+	val Table[*] tables;
+}
+
+class Table {
+	attr String name;
+	val Column[*] columns;
+}
+
+class Column {
+	attr String name;
+	attr String type;
+}

@@ -1,0 +1,191 @@
+@test
+operation testSequentialSelect() {
+	var data := Sequence {0..9};
+	var selected = data.sequentialSelect(n | (n > 3 and n <= 7) or n == 2);
+	var expected := Sequence {2, 4, 5, 6, 7};
+	assertEquals(expected, selected);
+	selected = data.sequentialSelect(n | n > 10);
+	assertEquals(Sequence{}, selected);
+	selected = data.sequentialSelect(n | n < 10);
+	assertEquals(data, selected);
+	data = Bag{};
+	selected = data.sequentialSelect(e|e);
+	assertEquals(selected.getClass(), data.getClass());
+	assertTrue(data.isEmpty());
+	assertEquals(selected.size(), data.size());
+}
+
+@test
+operation testSequentialSelectOne() {
+	var data := Sequence {0..9};
+	var selected = data.sequentialSelectOne(n | n < 4 and n > 1);
+	assertEquals(2, selected);
+	selected = data.sequentialSelectOne(n | n == 8);
+	assertEquals(8, selected);
+	selected = data.sequentialSelectOne(n | n > 9);
+	assertEquals(null, selected);
+}
+
+@test
+operation testSequentialReject() {
+	var data := Sequence {0..9};
+	var rejected = data.sequentialReject(n | n < 1 or n > 6 or n == 5 and n <> 9);
+	var expected := Sequence {1, 2, 3, 4, 6, 9};
+	assertEquals(expected, rejected);
+	rejected = data.sequentialReject(n | n > 10);
+	assertEquals(data, rejected);
+	rejected = data.sequentialReject(n | n < 10);
+	assertEquals(Sequence{}, rejected);
+}
+
+@test
+operation testSequentialRejectOne() {
+	var data := Sequence {0..9};
+	var rejected = data.rejectOne(n | n > 3);
+	data.remove(4);
+	assertEquals(data, rejected);
+	data.add(4);
+	rejected = data.rejectOne(n | n > 9);
+	assertEquals(data, rejected);
+}
+
+@test
+operation testSequentialExists() {
+	var data := Sequence {0..9};
+	var exists = data.sequentialExists(n | n > 3 and n < 8);
+	assertTrue(exists);
+	exists = data.sequentialExists(n | n < 0);
+	assertFalse(exists);
+}
+
+@test
+operation testSequentialOne() {
+	var data := Sequence {0..10};
+	var one = data.sequentialOne(n | n > 3 and n < 7);
+	assertFalse(one);
+	one = data.sequentialOne(n | n == 2 or (n > 1 and n < 3));
+	assertTrue(one);
+	one = data.sequentialOne(n | n < 0);
+	assertFalse(one);
+	one = data.sequentialOne(n | n < 5, 5);
+	assertFalse(one);
+	one = data.sequentialOne(n | n == 8, 0);
+	assertTrue(one);
+}
+
+@test
+operation testSequentialNone() {
+	var data := Sequence {0..10};
+	var none = data.sequentialNone(n | n == null);
+	assertTrue(none);
+	none = data.sequentialNone(n | n > 7);
+	assertFalse(none);
+	none = data.sequentialNone(n | n < 0, 10);
+	assertTrue(none);
+	none = data.sequentialNone(n | n == 5, 1);
+	assertFalse(none);
+	none = data.sequentialNone(n | n == null, 0);
+	assertTrue(none);
+}
+
+@test
+operation testSequentialAtMostNMatch() {
+	var data := Sequence {1..16};
+	assertTrue(data.sequentialAtMostNMatch(n | n.mod(3) == 0, 5));
+	assertFalse(data.sequentialAtMostNMatch(n | n.mod(2) == 0, 4));
+	assertTrue(data.sequentialAtMostNMatch(n | n > 1, 16));
+	assertFalse(data.sequentialAtMostNMatch(n | n == 5 or n == 11 or n == 0 or n == 16, 1));
+	assertTrue(data.sequentialAtMostNMatch(n | n <= 0 or n > 16, 0));
+}
+
+@test
+operation testSequentialAtLeastNMatch() {
+	var data := Sequence {1..16};
+	assertTrue(data.sequentialAtLeastNMatch(n | n.mod(3) == 0, 5));
+	assertFalse(data.sequentialAtLeastNMatch(n | n.mod(2) == 0, 9));
+	assertTrue(data.sequentialAtLeastNMatch(n | n.mod(4) == 0, 3));
+	assertFalse(data.sequentialAtLeastNMatch(n | n <= 0 or n > 16, 1));
+	assertTrue(data.sequentialAtLeastNMatch(n | n <= 0 or n > 16, 0));
+}
+
+@test
+operation testSequentialNMatch() {
+	var data := Sequence {1..11};
+	var three = data.sequentialNMatch(n | n.mod(3) == 0, 3);
+	assertTrue(three);
+	three = data.sequentialNMatch(n | n.mod(2) == 0, 3);
+	assertFalse(three);
+	var twelve = data.sequentialNMatch(n | n > 1, 12);
+	assertFalse(twelve);
+	var two = data.sequentialNMatch(n | n == 5 or n == 11, 2);
+	assertTrue(two);
+	two = data.sequentialNMatch(n | n == 0 or n == 10, 2);
+	assertFalse(two);
+	var twenty = data.sequentialNMatch(n | n < 12, 20);
+	assertFalse(twenty);
+}
+
+@test
+operation testSequentialCount() {
+	var data := Sequence {-15..9};
+	var actual = data.sequentialCount(i | i > 0);
+	assertEquals(9, actual);
+	actual = data.sequentialCount(i | i.mod(2) == 0 and i < -14);
+	assertEquals(0, actual);
+	actual = data.sequentialCount(i | i == 0);
+	assertEquals(1, actual);
+	actual = data.sequentialCount(i | true);
+	assertEquals(data.size(), actual);
+}
+
+@test
+operation testSequentialForAll() {
+	var data := Sequence {0..10};
+	var forAll = data.sequentialForAll(n | n > -1 and n <= 10);
+	assertTrue(forAll);
+	forAll = data.sequentialForAll(n | n < 9);
+	assertFalse(forAll);
+	forAll = data.sequentialForAll(n | n == 6, 1);
+	assertFalse(forAll);
+	forAll = data.sequentialForAll(n | n <> null and n.asString().length() <= 2, 17);
+	assertTrue(forAll);
+}
+
+@test
+operation testSequentialCollect() {
+	var data := Sequence {0..9};
+	var mapped = data.collect(n | n * n);
+	var expected := Sequence {0, 1, 4, 9, 16, 25, 36, 49, 64, 81};
+	assertEquals(expected, mapped);
+	data = Sequence {12, 10, null, false, true, "str", 3.14, 8};
+	mapped = data.collect(n | 10);
+	expected := Sequence {10, 10, 10, 10, 10, 10, 10, 10};
+	assertEquals(expected, mapped);
+}
+
+@test
+operation testSequentialSortBy() {
+	var data = Bag {"a", "aa", "", true, false, "          __a_ ", "---", 333, 1, 22, 666666};
+	var expected = Sequence {"", "a", 1, "aa", 22, "---", 333, true, false, 666666, "          __a_ "};
+	var sorted = data.sequentialSortBy(d | d.asString().length());
+	assertEquals(expected, sorted);
+}
+
+@test
+operation testSequentialMapBy() {
+	var data = Bag {"", 1, true, false, 98, 3, 55, 0, 4443, 768, 12024, "eol", 640, "four", "null"};
+	var expected : new Map;
+	expected.put(0, Sequence{""});
+	expected.put(1, Sequence{1, 3, 0});
+	expected.put(2, Sequence{98, 55});
+	expected.put(3, Sequence{768, "eol", 640});
+	expected.put(4, Sequence{true, 4443, "four", "null"});
+	expected.put(5, Sequence{false, 12024});
+	var actual = data.sequentialMapBy(n | n.toString().length());
+	assertEquals(expected, actual);
+	var actual = data.parallelMapBy(n | n.toString().length());
+	assertEquals(expected, actual);
+	data = Sequence{};
+	actual = data.sequentialMapBy(n | n.toString().length());
+	assertTrue(actual.entrySet().isEmpty());
+}

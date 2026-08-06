@@ -1,0 +1,8 @@
+[%
+	TemplateFactory.setDefaultFormatter(new Native('org.eclipse.epsilon.egl.formatter.simple.ReverseFormatter'));
+	
+	var first = TemplateFactory.load("FirstSubtemplate.egl");
+	var second = TemplateFactory.load("SecondSubtemplate.egl");
+%]
+[%=first.process()%]
+[%=second.process()%]

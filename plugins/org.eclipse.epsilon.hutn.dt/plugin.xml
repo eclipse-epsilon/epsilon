@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+<extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.epsilon.hutn.dt.editor.HutnEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="hutn"
+            icon="icons/hutn.png"
+            id="org.eclipse.epsilon.hutn.dt.editor.HutnEditor"
+            name="Epsilon Human-Usable Textual Notation Editor"/>
+   </extension>
+  
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.hutn.dt.wizards.NewHutnFileWizard"
+            icon="icons/hutn.png"
+            id="org.eclipse.epsilon.hutn.dt.wizards.NewHutnFileWizard"
+            name="HUTN File"/>
+   </extension>
+   <extension
+         id="org.eclipse.epsilon.hutn.dt.builder.HutnBuilder"
+         name="HUTN Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            callOnEmptyDelta="true"
+            hasNature="true"
+            isConfigurable="false">
+         <run
+               class="org.eclipse.epsilon.hutn.dt.nature.HutnBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="org.eclipse.epsilon.hutn.dt.nature.HutnNature"
+         name="HUTN Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.eclipse.epsilon.hutn.dt.nature.HutnNature">
+         </run>
+      </runtime>
+      <builder
+            id="org.eclipse.epsilon.hutn.dt.builder.HutnBuilder">
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="org.eclipse.epsilon.hutn.dt.project"
+            objectClass="org.eclipse.core.resources.IProject">
+         <action
+               class="org.eclipse.epsilon.hutn.dt.nature.ToggleHutnProjectNatureAction"
+               icon="icons/hutn.png"
+               id="org.eclipse.epsilon.dt.actions.ToggleEpsilonProjectNatureAction"
+               label="Enable HUTN Project Nature"
+               menubarPath="org.eclipse.epsilon.hutn.dt.project.menu/actions"
+               state="false"
+               style="toggle">
+         </action>
+         <menu
+               id="org.eclipse.epsilon.hutn.dt.project.menu"
+               label="HUTN"
+               path="additions">
+            <separator
+                  name="actions">
+            </separator>
+         </menu>
+      </objectContribution>
+      <objectContribution
+            id="org.eclipse.epsilon.hutn.dt.source"
+            nameFilter="*.hutn"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="org.eclipse.epsilon.hutn.dt.actions.GenerateDebugInformation"
+               icon="icons/debug.gif"
+               id="org.eclipse.epsilon.dt.actions.GenerateDebugInformation"
+               label="Generate Debugging Information"
+               menubarPath="org.eclipse.epsilon.hutn.dt.source.menu/actions">
+         </action>
+         <action
+               class="org.eclipse.epsilon.hutn.dt.actions.GenerateModelAction"
+               icon="icons/hutn.png"
+               id="org.eclipse.epsilon.dt.actions.GenerateModel"
+               label="Generate Model"
+               menubarPath="org.eclipse.epsilon.hutn.dt.source.menu/actions">
+         </action>
+         <menu
+               id="org.eclipse.epsilon.hutn.dt.source.menu"
+               label="HUTN"
+               path="additions">
+            <separator
+                  name="actions">
+            </separator>
+         </menu>
+      </objectContribution>
+   </extension>
+	<extension
+         id="inconsistency"
+         name="Model/Metamodel Inconsistency"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+</plugin>

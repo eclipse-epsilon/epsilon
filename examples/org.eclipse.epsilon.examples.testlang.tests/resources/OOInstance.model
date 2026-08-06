@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ASCII"?>
+<OO:Package xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:OO="OO" name="org">
+  <contents xsi:type="OO:Package" name="epsilon">
+    <contents xsi:type="OO:Package" name="demo">
+      <contents xsi:type="OO:Class" name="School" isAbstract="false">
+        <features xsi:type="OO:Attribute" name="address" type="#//@contents.0/@contents.0/@contents.5"
+            isMany="false"/>
+        <features xsi:type="OO:Reference" name="students" type="#//@contents.0/@contents.0/@contents.1"
+            isMany="true"/>
+        <features xsi:type="OO:Attribute" name="postCodesAccepted" type="#//@contents.0/@contents.0/@contents.5"
+            isMany="true"/>
+      </contents>
+      <contents xsi:type="OO:Class" name="Student" extends="#//@contents.0/@contents.0/@contents.2"
+          isAbstract="false">
+        <features xsi:type="OO:Attribute" name="grade" type="#//@contents.0/@contents.0/@contents.6"
+            isMany="false"/>
+      </contents>
+      <contents xsi:type="OO:Class" name="Person" extendedBy="#//@contents.0/@contents.0/@contents.3 #//@contents.0/@contents.0/@contents.1"
+          isAbstract="true">
+        <features xsi:type="OO:Attribute" name="details" type="#//@contents.0/@contents.0/@contents.5"
+            isMany="false"/>
+      </contents>
+      <contents xsi:type="OO:Class" name="Employee" extends="#//@contents.0/@contents.0/@contents.2"
+          extendedBy="#//@contents.0/@contents.0/@contents.4" isAbstract="true">
+        <features xsi:type="OO:Attribute" name="salary" type="#//@contents.0/@contents.0/@contents.6"
+            isMany="false"/>
+      </contents>
+      <contents xsi:type="OO:Class" name="Teacher" extends="#//@contents.0/@contents.0/@contents.3"
+          isAbstract="false">
+        <features xsi:type="OO:Reference" name="teaches" type="#//@contents.0/@contents.0/@contents.7"
+            isMany="true"/>
+      </contents>
+      <contents xsi:type="OO:Datatype" name="String"/>
+      <contents xsi:type="OO:Datatype" name="Real"/>
+      <contents xsi:type="OO:Class" name="Class" isAbstract="false">
+        <features xsi:type="OO:Reference" name="students" type="#//@contents.0/@contents.0/@contents.1"
+            isMany="true"/>
+      </contents>
+    </contents>
+  </contents>
+</OO:Package>

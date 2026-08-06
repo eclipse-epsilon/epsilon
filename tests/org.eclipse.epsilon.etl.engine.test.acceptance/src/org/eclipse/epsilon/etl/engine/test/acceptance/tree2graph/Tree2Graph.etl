@@ -1,0 +1,28 @@
+pre {
+	var x = 5;
+}
+
+rule Tree2Node 
+	transform t : Tree!Tree
+	to n : Graph!Node {
+	
+	guard {
+		x; // Check that x is accessible here
+		return true;
+	}
+	
+	n.name := t.label;
+	if (t.parent.isDefined()) {
+		var e : new Graph!Edge;
+		e.source ::= t.parent;
+		e.target := n;
+	}
+	
+	// Check that x is accessible here
+	x.foo();
+}
+
+operation Any foo() {
+	// Check that x is accessible here
+	x;
+}

@@ -1,0 +1,10 @@
+wizard Simple {
+
+	guard : self.isKindOf(String)
+
+	title : 'Print me'
+
+	do {
+		System.getOut.print(self);
+	}
+}

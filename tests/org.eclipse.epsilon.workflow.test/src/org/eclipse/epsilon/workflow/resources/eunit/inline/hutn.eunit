@@ -1,0 +1,75 @@
+@model
+operation emptyModel() {
+  loadHutn('Empty', '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+
+Model {}
+');
+}
+
+@model
+operation oneNode() {
+  loadHutn('OneNode', '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+
+Model {
+  Tree {
+    label : "t1"
+  }
+}
+');
+}
+
+@model
+operation twoNodes() {
+  loadHutn('TwoNodes', '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+
+Model {
+  Tree "t1" {
+    label : "t1"
+  }
+  Tree "t2" {
+    label : "t2"
+    parent : Tree "t1"
+  }
+}
+');
+}
+
+$with Map {"" = "OneNode"}
+$with Map {"" = "TwoNodes"}
+@test
+operation notEmpty() {
+  assertTrue(not Tree.allInstances.isEmpty());
+}
+
+$with Map {"" = "Empty"}
+@test
+operation empty() {
+  assertTrue(Tree.allInstances.isEmpty());
+}
+
+$with Map {"" = "OneNode"}
+@test
+operation oneNode() {
+  assertEquals(1, Tree.allInstances.size());
+}
+
+$with Map {"" = "TwoNodes"}
+@test
+operation twoNodes() {
+  assertEquals(2, Tree.allInstances.size());
+}

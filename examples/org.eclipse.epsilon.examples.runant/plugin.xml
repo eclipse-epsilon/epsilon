@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="org.eclipse.epsilon.examples.antrunner.contribution1"
+            nameFilter="build.xml"
+            objectClass="org.eclipse.core.resources.IFile">
+         <menu
+               label="Run ANT"
+               path="additions"
+               id="org.eclipse.epsilon.examples.antrunner.menu1">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               label="Run"
+               class="org.eclipse.epsilon.examples.runant.RunAntAction"
+               menubarPath="org.eclipse.epsilon.examples.antrunner.menu1/group1"
+               enablesFor="1"
+               id="org.eclipse.epsilon.examples.antrunner.newAction">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>

@@ -1,0 +1,105 @@
+[%var app = Application.all.selectOne(a|a.name=applicationName);%]
+
+digraph G {
+	[* Default fonts for edges and nodes *]
+	node[fontname=Tahoma, fontsize=10]
+	edge[fontname=Tahoma, fontsize=10]
+	
+	[* The graph should be drawn left to right *]
+	rankdir=LR
+	
+	[* All input ports of the application should appear vertically justified *]
+	{rank=same;[%=app.inPorts.name.concat(";")%]}
+	
+	[* The input ports of the application *]
+	[%for (p in app.inPorts){%]
+	[%=p.name%] [shape=none, margin=0, label=<<table cellspacing='1' cellborder='0' border="0" cellpadding="0"><tr><td align="right"><img src="[%=getIcon("port")%]"/></td><td align="left" valign="middle">[%=p.name%]</td></tr></table>>];
+	[%}%]
+	
+	[* The output ports of the application *]
+	[%=app.outPort.name%] [shape=none, margin=0, label=<<table cellspacing='1' cellborder='0' border="0" cellpadding="0"><tr><td align="right" valign="middle">[%=app.outPort.name%]</td><td align="left"><img src="[%=getIcon("port")%]"/></td></tr></table>>];
+	
+	[* The components of the application *]
+	[%for (c in app.components){%]
+	[%=c.toDot().replaceAll("\\R+", " ")%]
+	[%}%]
+	
+	[* The connectors of the application *]
+	[%for (c in app.connectors){%]
+	[%=c.source.getDotID()%] -> [%=c.target.getDotID()%][name="[%=c.source.getDotID() + "-" + c.target.getDotID()%]"]
+	[%}%]
+}
+
+[%
+/**
+ * Generates the dot representation of a component
+*/
+@template
+operation Component toDot() {
+%]
+	[%=self.name%] [shape=plaintext, label=<
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td border="1">
+				<table border="0" cellspacing="0" cellpadding="0" bgcolor="azure">
+					<tr>
+						<td> </td><td> </td><td cellpadding="2" align="right"><img src="[%=getIcon("component")%]"></img></td>
+					</tr>
+					[%if(self.inPorts.size() > 0){%]
+					[%for (i in 0.to(self.inPorts.size()-1)){%]
+					<tr>
+						[%=getPortCell(self.inPorts, i)%]
+						<td>            </td>
+						[%=getPortCell(Sequence{self.outPort}, i)%]
+					</tr>
+					<tr>
+						<td> </td>
+						<td> </td>
+						<td> </td>
+					</tr>
+					[%}%]
+					[%}%]
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td cellpadding="5">[%=self.name%]</td>
+		</tr>
+	</table>
+	>];
+[%
+}
+
+/**
+ * Gets a unique ID for each port
+ */ 
+operation Port getDotID(){
+	if (self.eContainer() == app) {
+		return self.name;
+	}
+	else {
+		return self.eContainer().name + ":" + self.name;
+	}
+}
+
+/**
+ * Comptutes the label of a component port
+ */
+operation getPortCell(ports : Collection, index : Integer) {
+	var cell = "<td cellpadding='2' align='left'";
+	if (ports.size > index) {
+		cell += " port='" + ports.at(index).name + 
+			"'><font color1='#727372' point-size='9'>" 
+			+ ports.at(index).name + "</font>";
+	}
+	else {
+		cell += ">";
+	}
+	cell += "</td>";
+	return cell;
+}
+
+operation getIcon(icon : String) {
+	return getImage("icons/" + icon + ".png");
+}
+%]

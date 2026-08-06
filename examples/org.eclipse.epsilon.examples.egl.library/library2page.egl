@@ -1,0 +1,9 @@
+[*- Heading *]
+<h1>Books</h1>
+
+[*- List of books *]
+<ul>
+[%for (book in library.c_book.select(b|b.b_public)) { %]
+	<li><a href="[%=book.e_id.text%].html">[%=book.a_title%]</a>
+[%}%]
+</ul>

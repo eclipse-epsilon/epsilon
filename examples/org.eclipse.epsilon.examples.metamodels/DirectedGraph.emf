@@ -1,0 +1,22 @@
+@namespace(uri="DirectedGraph", prefix="DirectedGraph")
+package DirectedGraph;
+
+class Graph {
+  val GraphElement[*]#graph contents;
+}
+
+abstract class GraphElement {
+  ref Graph#contents graph;
+}
+
+class Node extends GraphElement {
+  attr String label;
+  ref Edge[*]#source outgoing;
+  ref Edge[*]#target incoming;
+}
+
+class Edge extends GraphElement {
+  attr Integer weight;
+  ref Node#outgoing source;
+  ref Node#incoming target;
+}

@@ -1,0 +1,20 @@
+@namespace(uri="personshouses", prefix="")
+package personshouses;
+
+import "http://persons";
+import "http://houses";
+
+class PersonHouseRelationshipGroup {
+	val PersonHouseRelationship[*] personHouseRelationships;
+}
+
+class PersonHouseRelationship {
+	ref houses.House house;
+	ref persons.Person person;
+	attr PersonHouseRelationshipType type;
+}
+
+enum PersonHouseRelationshipType {
+	Owns;
+	Lets;
+}

@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Flexmi
+Bundle-SymbolicName: org.eclipse.epsilon.flexmi;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi,
+ com.google.guava,
+ org.apache.commons.lang3,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.egl.engine,
+ org.eclipse.epsilon.emc.plainxml,
+ org.eclipse.epsilon.emc.emf,
+ org.yaml.snakeyaml
+Export-Package: org.eclipse.epsilon.flexmi,
+ org.eclipse.epsilon.flexmi.actions,
+ org.eclipse.epsilon.flexmi.templates,
+ org.eclipse.epsilon.flexmi.xml,
+ org.eclipse.epsilon.flexmi.yaml
+Automatic-Module-Name: org.eclipse.epsilon.flexmi
+Bundle-Vendor: Eclipse Modeling Project

@@ -1,0 +1,12 @@
+[%
+  import 'tree2dirs.eol'; 
+%][%=prefix + node.label%][%
+  var dest   = new Native('java.io.File')(path);
+  var parent = dest.getCanonicalFile().getParentFile();
+  for (child in node.children) {
+    var subdir = new Native('java.io.File')(parent, child.label);
+    subdir.mkdir();
+    var childPath = new Native('java.io.File')(subdir, 'node.txt');
+    process(child, childPath.getCanonicalPath());
+  } 
+%]

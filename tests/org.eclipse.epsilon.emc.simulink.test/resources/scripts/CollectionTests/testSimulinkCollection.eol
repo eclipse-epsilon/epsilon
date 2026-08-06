@@ -1,0 +1,8 @@
+var result = 0;
+for (subsystem in SubSystem.all) {
+	for (child in Block.all.select(b|b.parent = subsystem) ) {
+		result = result + 1;
+	}
+}
+result.println;
+assert(result > 0);

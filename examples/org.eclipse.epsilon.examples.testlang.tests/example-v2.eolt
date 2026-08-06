@@ -1,0 +1,40 @@
+var rnd = new Native('java.util.Random');
+
+@test
+operation allInstancesWorks() {
+  areEqual(6, Class.all.size);
+}
+
+@test
+operation failingTest() {
+  areEqual(1, 1 + 1);
+}
+
+@test
+$times 10 * 10
+operation randomTest() {
+  var base = 2 + rnd.nextInt(9);
+  var exp = rnd.nextInt(10);
+  areEqual(slowPow(base, exp), fastPow(base, exp));
+}
+
+operation fastPow(base, exp) {
+  if (exp == 0) {
+    return 1;
+  } else if (exp == 1) {
+    return base;
+  } else if (exp.mod(2) == 0) {
+    return fastPow(base * base, exp/2);
+  } else {
+    return base * fastPow(base * base, (exp - 1)/2);
+  }
+}
+
+operation slowPow(base, exp) {
+  var result = 1;
+  while (exp >= 1) {
+    result *= base;
+    exp -= 1;
+  }
+  return result;
+}

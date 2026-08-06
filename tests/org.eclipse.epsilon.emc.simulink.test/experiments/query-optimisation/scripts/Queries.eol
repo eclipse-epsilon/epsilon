@@ -1,0 +1,11 @@
+Block.all().collect(b|b.Name);
+Block.all().sortBy(b|b.BlockType);
+Inport.all().select(i|i.OutDataTypeStr == "boolean");
+SubSystem.all().selectOne(i|i.Name == "Chart");
+`Stateflow.State`.all().reject(b|b.Decomposition == "PARALLEL_AND"); 
+`Stateflow.Transition`.all().select(t|not (t.SourceOClock == 0)).forAll(b|b.LabelString <> "?");
+`Stateflow.Transition`.all().collect(t|t.LabelString);
+`Stateflow.State`.all().exists(b|b.IsImplicitlyCommented == 1 or b.BadIntersection == 1 or b.IsExplicitlyCommented == 1);
+
+// TODO support b.IsBooleanProperty with no == true.
+// TODO support not b.IsBooleanProperty with no == false.

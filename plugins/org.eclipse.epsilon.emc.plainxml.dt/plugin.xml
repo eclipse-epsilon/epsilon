@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.plainxml.PlainXmlModel"
+            dialog="org.eclipse.epsilon.emc.plainxml.dt.PlainXmlModelConfigurationDialog"
+            icon="images/xml.png"
+            label="Plain XML Document"
+            stable="true"
+            type="PlainXML">
+      </modelType>
+   </extension>
+
+</plugin>

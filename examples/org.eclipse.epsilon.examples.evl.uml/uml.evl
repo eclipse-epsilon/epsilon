@@ -1,0 +1,5 @@
+context Class {
+	constraint Dummy {
+		check : false
+	}
+}

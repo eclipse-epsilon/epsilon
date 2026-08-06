@@ -1,0 +1,14 @@
+[%for (f in Sequence{1}) {-%]
+	[%=f%]
+[%}%]
+[%=t()%]
+[%
+@template
+operation t(){-%]
+	[%=t2()%]
+[%}%]
+[%
+@template
+operation t2(){-%]
+	[%=2%]
+[%}%]

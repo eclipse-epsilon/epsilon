@@ -1,0 +1,139 @@
+gunit Hutn;
+@header{package org.eclipse.epsilon.hutn.parse;}
+
+document:
+	// Document containing multiple packages
+	"FamilyPackage {}\nVehiclePackage {}" -> "FamilyPackage VehiclePackage"
+
+pkg:
+	// Empty and multi-line package
+	"FamilyPackage {}"     -> "FamilyPackage"
+	"FamilyPackage \n\t{}" -> "FamilyPackage"
+	
+	// Package with identifier
+	"FamilyPackage \"id-001\" {}" -> "(FamilyPackage \\\"id-001\\\")" 
+	
+	// Package containing classes
+	"FamilyPackage { Family {} }"            -> "(FamilyPackage Family)"
+	"FamilyPackage { Family \"id-002\" {} }" -> "(FamilyPackage (Family \\\"id-002\\\"))"
+	"FamilyPackage { Family {} Vehicle {} }" -> "(FamilyPackage Family Vehicle)"
+
+	// Package containing classifier level attributes, and classes
+	"FamilyPackage { Family.nuclear = true; }" -> "(FamilyPackage (CLS_LVL_ATTRIBUTE (Family (nuclear true))))"
+	"FamilyPackage {  Family {} Family.nuclear = true; Vehicle {} }" -> "(FamilyPackage Family (CLS_LVL_ATTRIBUTE (Family (nuclear true))) Vehicle)"
+
+	// Package containing association blocks, and classes
+	<<FamilyPackage {
+			vehicles {
+				Family "The Smiths"
+				Vehicle "Honda"
+			}
+			Family "The Smiths" {}
+			Vehicle "Honda" {}
+	}>> -> "(FamilyPackage (vehicles (Family \\\"The Smiths\\\") (Vehicle \\\"Honda\\\")) (Family \\\"The Smiths\\\") (Vehicle \\\"Honda\\\"))"
+	
+	// Package containing infix association, and classes
+	<<FamilyPackage {
+			Family "The Smiths" vehicles Vehicle "Honda";
+			Family "The Smiths" {}
+			Vehicle "Honda" {}
+	}>> -> "(FamilyPackage (vehicles (Family \\\"The Smiths\\\") (Vehicle \\\"Honda\\\")) (Family \\\"The Smiths\\\") (Vehicle \\\"Honda\\\"))"
+
+cls:
+	// Anonymous, identifiable and multi-line classes
+	"Family {}"                   -> "Family"
+	"Family \"id-002\" {}"        -> "(Family \\\"id-002\\\")"
+	"\n\tFamily \"id-002\" {} \n" -> "(Family \\\"id-002\\\")"
+	
+	// Shorthand
+	"Family;"                -> "Family"
+	"Family \"The Smiths\";" -> "(Family \\\"The Smiths\\\")"
+	
+	// Class with adjectives
+	"rich ~nuclear #migrant Family \"id-002\" {}" -> "(Family rich ~nuclear #migrant \\\"id-002\\\")"
+	
+	// Class with contents
+	"Family { #migrant\n name: \"The Smiths\"\n averageAge: 23.4 }" -> "(Family #migrant (name \\\"The Smiths\\\") (averageAge 23.4))" 
+	
+
+cls_contents:
+	// String attributes
+	"Address: \"7 Main Street\""  -> "(Address \\\"7 Main Street\\\")"
+	"Address = \"7 Main Street\"" -> "(Address \\\"7 Main Street\\\")"
+	
+	// Empty string, and strings containing unusual characters
+	"Address = \"\""                           -> "(Address \\\"\\\")"
+	"Formula = \"a > b and b < c\""            -> "(Formula \\\"a > b and b < c\\\")"
+    "Formula = \"(a and b) or c)\""            -> "(Formula \\\"(a and b) or c)\\\")"
+	"Address = \"The House, 120 Main Street\"" -> "(Address \\\"The House, 120 Main Street\\\")"
+	
+	// Escape sequences
+	"Name = \"John \\\"Invisible\\\" Doe\"" -> "(Name \\\"John \\\"Invisible\\\" Doe\\\")"
+	
+	// Null attribute
+	"Address: null"  -> "(Address null)"
+	
+	// Boolean attributes
+	"Nuclear = true"  -> "(Nuclear true)"
+	"Nuclear = false" -> "(Nuclear false)"
+	
+	// Numeric attributes
+	"NumberOfPets = 2"    -> "(NumberOfPets 2)"
+	"AverageAge   = 25.3" -> "(AverageAge 25.3)"
+	
+	// Multi-valued
+	"Address = \"7 Main Street\", \"17 Fulford Road\"" -> "(Address \\\"7 Main Street\\\" \\\"17 Fulford Road\\\")"
+	"Address = \"The House, 120 Main Street\", \"17 Fulford Road\"" -> "(Address \\\"The House, 120 Main Street\\\" \\\"17 Fulford Road\\\")"
+	"Nuclear = true, false, false, true"               -> "(Nuclear true false false true)"
+	
+	// Keywords
+	"migrant"   -> "migrant"
+	"~nuclear" -> "~nuclear"
+	"#migrant" -> "#migrant"
+	
+	// Enumerations
+	"breed = labrador" -> "(breed labrador)"
+	
+	
+	// References
+	"Friends: Family \"The Does\""                        -> "(Friends (Family \\\"The Does\\\"))"
+	"Friends: Family \"The Does\", Family \"The Bloggs\"" -> "(Friends (Family \\\"The Does\\\") (Family \\\"The Bloggs\\\"))"
+	
+	// Reference with adjective
+	"Friends: #migrant Family \"The Does\"" FAIL
+	
+	// Containment
+	"Pets: Pet \"Fido\" { Name: \"Fido\" }"       -> "(Pets (Pet \\\"Fido\\\" (Name \\\"Fido\\\")))"
+	"Pets: #Male Pet \"Fido\" { Name: \"Fido\" }" -> "(Pets (Pet #Male \\\"Fido\\\" (Name \\\"Fido\\\")))"
+	"Pets: Pet { Name: \"Fido\" }"                -> "(Pets (Pet (Name \\\"Fido\\\")))"
+	
+
+cls_level_attribute:
+	// Assignments using equals and colon symbols
+	"Family.nuclear = true;" -> (CLS_LVL_ATTRIBUTE (Family (nuclear true)))
+	"Family.nuclear: true;"  -> (CLS_LVL_ATTRIBUTE (Family (nuclear true)))
+	
+	// Multiple values
+	"Family.address = \"123 Main Street\", \"34 Fulford Road\";" -> "(CLS_LVL_ATTRIBUTE (Family (address \\\"123 Main Street\\\" \\\"34 Fulford Road\\\")))"
+	
+	// Missing terminating semicolon
+	"Family.nuclear = true"	FAIL
+	
+	
+assoc_block:
+	// Association block containing one, many and no associations
+	"vehicles { Family \"The Smiths\" Vehicle \"Honda\" }" -> "(vehicles (Family \\\"The Smiths\\\") (Vehicle \\\"Honda\\\"))"
+	"vehicles { Family \"The Smiths\" Vehicle \"Honda\" Family \"The Smiths\" Vehicle \"Toyota\" }" -> "(vehicles (Family \\\"The Smiths\\\") (Vehicle \\\"Honda\\\") (Family \\\"The Smiths\\\") (Vehicle \\\"Toyota\\\"))"
+	
+	"vehicles {}" FAIL
+	
+	
+infix_assoc:
+	// Terminated and unterminated
+	"Family \"The Smiths\" vehicles Vehicle \"Honda\";" -> "(vehicles (Family \\\"The Smiths\\\") (Vehicle \\\"Honda\\\"))"
+	"Family \"The Smiths\" vehicles Vehicle \"Honda\"" FAIL
+	
+	
+feature_contents:
+	// Should not permit mixed reference and contaiment values
+	"Family \"The Smiths\" { name: \"The Smiths\" }, Family \"The Does\"" FAIL

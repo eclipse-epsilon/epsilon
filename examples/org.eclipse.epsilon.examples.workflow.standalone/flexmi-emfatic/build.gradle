@@ -1,0 +1,34 @@
+configurations {
+    epsilon
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow:2.5.0'
+    epsilon 'org.eclipse.epsilon:org.eclipse.epsilon.workflow.emf:2.5.0'
+    epsilon 'org.eclipse.emfatic:org.eclipse.emfatic.core:1.1.0'
+}
+
+task setupEpsilonTasks {
+    // Set up the core Epsilon tasks
+    ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/tasks.xml', 
+        classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+    // Set up the Epsilon EMF tasks
+    ant.taskdef(resource: 'org/eclipse/epsilon/workflow/tasks/emf/tasks.xml', 
+        classpath: configurations.epsilon.asPath, loaderref: 'epsilon')
+    // Set logging level to info so that EOL's println() is not suppressed
+    ant.lifecycleLogLevel = 'INFO'
+}
+
+task run {
+    dependsOn tasks.setupEpsilonTasks
+    // Load the library.flexmi EMF model
+    ant.'epsilon.emf.loadModel'(name: 'Library', 
+        modelfile: '../library.flexmi', metamodelfile: '../library.emf')
+
+    // Run library.eol against it
+    ant.'epsilon.eol'(src: '../library.eol'){ model(ref: 'Library') }
+}

@@ -1,0 +1,12 @@
+<project>
+	<target name="default">
+		<epsilon.emf.register file="${basedir}/metamodels/Families.ecore"/>
+		<epsilon.loadModel type="EMF_HUTN" name="Model">
+			<parameter name="sourceFile" value="${basedir}/models/Demo.hutn"/>
+			<parameter name="readOnLoad" value="true"/>
+		</epsilon.loadModel>
+		<epsilon.eol src="main.eol">
+			<model ref="Model"/>
+		</epsilon.eol>
+	</target>
+</project>

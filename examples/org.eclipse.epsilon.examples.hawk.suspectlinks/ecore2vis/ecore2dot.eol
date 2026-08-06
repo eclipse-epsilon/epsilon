@@ -1,0 +1,48 @@
+operation getValidationModule() {
+	var module = new Native("org.eclipse.epsilon.evl.EvlModule");
+	
+	var constraints = EPackage.all.first().getAnnotationValue("constraints", "file");
+	if (not constraints.isDefined()) return module;
+	
+	var constraintsUrl = new Native("java.net.URL")(new Native("java.net.URL")(M.resource.uri.toString()), constraints);
+	module.parse(constraintsUrl.toURI());
+	return module;
+}
+
+operation EModelElement getAnnotationValue(name : String, detail : String) : Any {
+	var ann = self.eAnnotations.selectOne(a|a.source = name);
+	var det;
+
+	if (ann.isDefined()) {
+		det = ann.details.selectOne(d|d.key = detail);
+	}
+
+	if (det.isDefined()) {
+		return det.value;
+	}
+	
+	return det;	
+}
+
+operation String toMultiline() : String {
+	var multiline = "";
+	
+	for (line in self.split("\\n")) {
+		var length = 0;
+		for (part in line.split(" ")) {
+			multiline += part + " ";
+			if (length > 30) {
+				multiline += "\\l";
+				length = 0;
+			}
+			else {
+				length += part.length();
+			}
+		}
+		if (not multiline.endsWith("\\l")) multiline += "\\l";
+		if (hasMore) multiline += "\\n";
+	}
+	if (not multiline.endsWith("\\l")) multiline += "\\l";
+	
+	return multiline;
+}

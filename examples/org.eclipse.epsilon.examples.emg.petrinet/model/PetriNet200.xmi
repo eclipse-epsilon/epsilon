@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:petrinet="http://www.york.ac.uk/qvt/examples/0.1/PetriNet" xsi:schemaLocation="http://www.york.ac.uk/qvt/examples/0.1/PetriNet PetriNet.ecore">
+  <petrinet:PetriNet name="RandomActions">
+    <places name="Duck Drifting" outgoing="/0/@arcs.0 /0/@arcs.26"/>
+    <places name="Duck Spinning" incoming="/0/@arcs.1"/>
+    <places name="Bus Arrving" incoming="/0/@arcs.3" outgoing="/0/@arcs.2"/>
+    <places name="Chair Singing" incoming="/0/@arcs.39" outgoing="/0/@arcs.4 /0/@arcs.30"/>
+    <places name="Chair Arrving" incoming="/0/@arcs.5"/>
+    <places name="Ship Spinning" outgoing="/0/@arcs.6 /0/@arcs.56"/>
+    <places name="Ship Drifting" incoming="/0/@arcs.7"/>
+    <places name="Bus Singing" outgoing="/0/@arcs.8 /0/@arcs.24 /0/@arcs.72"/>
+    <places name="Bus Walking" incoming="/0/@arcs.9"/>
+    <places name="Person Diving" outgoing="/0/@arcs.10"/>
+    <places name="Person Singing" incoming="/0/@arcs.11"/>
+    <places name="Cow Drifting" incoming="/0/@arcs.29" outgoing="/0/@arcs.12"/>
+    <places name="Cow Diving" incoming="/0/@arcs.13"/>
+    <places name="Duck Waiting" outgoing="/0/@arcs.14 /0/@arcs.42"/>
+    <places name="Duck Drifting" incoming="/0/@arcs.15"/>
+    <places name="Plane Arrving" outgoing="/0/@arcs.16"/>
+    <places name="Plane Walking" incoming="/0/@arcs.17"/>
+    <places name="Plane Diving" outgoing="/0/@arcs.18 /0/@arcs.46"/>
+    <places name="Plane Arrving" incoming="/0/@arcs.19"/>
+    <places name="Person Singing" outgoing="/0/@arcs.20"/>
+    <places name="Person Diving" incoming="/0/@arcs.21"/>
+    <places name="Ship Diving" incoming="/0/@arcs.45" outgoing="/0/@arcs.22"/>
+    <places name="Ship Drifting" incoming="/0/@arcs.23"/>
+    <places name="Bus Spinning" incoming="/0/@arcs.25"/>
+    <places name="Duck Arrving" incoming="/0/@arcs.27"/>
+    <places name="Cow Drifting" outgoing="/0/@arcs.28 /0/@arcs.54"/>
+    <places name="Chair Diving" incoming="/0/@arcs.31"/>
+    <places name="Chair Drifting" outgoing="/0/@arcs.32 /0/@arcs.38"/>
+    <places name="Chair Arrving" incoming="/0/@arcs.33"/>
+    <places name="Duck Drifting" outgoing="/0/@arcs.34"/>
+    <places name="Duck Singing" incoming="/0/@arcs.35"/>
+    <places name="Chair Singing" outgoing="/0/@arcs.36"/>
+    <places name="Chair Arrving" incoming="/0/@arcs.37"/>
+    <places name="Cow Waiting" outgoing="/0/@arcs.40"/>
+    <places name="Cow Spinning" incoming="/0/@arcs.41"/>
+    <places name="Duck Walking" incoming="/0/@arcs.43"/>
+    <places name="Ship Singing" outgoing="/0/@arcs.44 /0/@arcs.66"/>
+    <places name="Plane Diving" incoming="/0/@arcs.47"/>
+    <places name="Bus Arrving" outgoing="/0/@arcs.48"/>
+    <places name="Bus Spinning" incoming="/0/@arcs.49"/>
+    <places name="Ship Spinning" incoming="/0/@arcs.57" outgoing="/0/@arcs.50"/>
+    <places name="Ship Drifting" incoming="/0/@arcs.51"/>
+    <places name="Plane Singing" incoming="/0/@arcs.53" outgoing="/0/@arcs.52"/>
+    <places name="Cow Drifting" incoming="/0/@arcs.55"/>
+    <places name="Chair Waiting" incoming="/0/@arcs.69" outgoing="/0/@arcs.58"/>
+    <places name="Chair Singing" incoming="/0/@arcs.59"/>
+    <places name="Bus Singing" outgoing="/0/@arcs.60 /0/@arcs.64"/>
+    <places name="Bus Diving" incoming="/0/@arcs.61"/>
+    <places name="Chair Drifting" outgoing="/0/@arcs.62 /0/@arcs.68"/>
+    <places name="Chair Spinning" incoming="/0/@arcs.63"/>
+    <places name="Bus Waiting" incoming="/0/@arcs.65"/>
+    <places name="Ship Arrving" incoming="/0/@arcs.67"/>
+    <places name="Bus Drifting" outgoing="/0/@arcs.70"/>
+    <places name="Bus Waiting" incoming="/0/@arcs.71"/>
+    <places name="Bus Singing" incoming="/0/@arcs.73"/>
+    <transitions name="Duck Moves" incoming="/0/@arcs.0" outgoing="/0/@arcs.1"/>
+    <transitions name="Bus Departs" incoming="/0/@arcs.2" outgoing="/0/@arcs.3"/>
+    <transitions name="Chair Dissapears" incoming="/0/@arcs.4" outgoing="/0/@arcs.5"/>
+    <transitions name="Ship Departs" incoming="/0/@arcs.6" outgoing="/0/@arcs.7"/>
+    <transitions name="Bus Moves" incoming="/0/@arcs.8" outgoing="/0/@arcs.9"/>
+    <transitions name="Person Moves" incoming="/0/@arcs.10" outgoing="/0/@arcs.11"/>
+    <transitions name="Cow Levels" incoming="/0/@arcs.12" outgoing="/0/@arcs.13"/>
+    <transitions name="Duck Departs" incoming="/0/@arcs.14" outgoing="/0/@arcs.15"/>
+    <transitions name="Plane Dissapears" incoming="/0/@arcs.16" outgoing="/0/@arcs.17"/>
+    <transitions name="Plane Levels" incoming="/0/@arcs.18" outgoing="/0/@arcs.19"/>
+    <transitions name="Person Breaks" incoming="/0/@arcs.20" outgoing="/0/@arcs.21"/>
+    <transitions name="Ship Stares" incoming="/0/@arcs.22" outgoing="/0/@arcs.23"/>
+    <transitions name="Bus Leaves" incoming="/0/@arcs.24" outgoing="/0/@arcs.25"/>
+    <transitions name="Duck Levels" incoming="/0/@arcs.26" outgoing="/0/@arcs.27"/>
+    <transitions name="Cow Levels" incoming="/0/@arcs.28" outgoing="/0/@arcs.29"/>
+    <transitions name="Chair Leaves" incoming="/0/@arcs.30" outgoing="/0/@arcs.31"/>
+    <transitions name="Chair Sits" incoming="/0/@arcs.32" outgoing="/0/@arcs.33"/>
+    <transitions name="Duck Breaks" incoming="/0/@arcs.34" outgoing="/0/@arcs.35"/>
+    <transitions name="Chair Sits" incoming="/0/@arcs.36" outgoing="/0/@arcs.37"/>
+    <transitions name="Chair Dissapears" incoming="/0/@arcs.38" outgoing="/0/@arcs.39"/>
+    <transitions name="Cow Leaves" incoming="/0/@arcs.40" outgoing="/0/@arcs.41"/>
+    <transitions name="Duck Docks" incoming="/0/@arcs.42" outgoing="/0/@arcs.43"/>
+    <transitions name="Ship Docks" incoming="/0/@arcs.44" outgoing="/0/@arcs.45"/>
+    <transitions name="Plane Stops" incoming="/0/@arcs.46" outgoing="/0/@arcs.47"/>
+    <transitions name="Bus Leaves" incoming="/0/@arcs.48" outgoing="/0/@arcs.49"/>
+    <transitions name="Ship Breaks" incoming="/0/@arcs.50" outgoing="/0/@arcs.51"/>
+    <transitions name="Plane Departs" incoming="/0/@arcs.52" outgoing="/0/@arcs.53"/>
+    <transitions name="Cow Moves" incoming="/0/@arcs.54" outgoing="/0/@arcs.55"/>
+    <transitions name="Ship Dissapears" incoming="/0/@arcs.56" outgoing="/0/@arcs.57"/>
+    <transitions name="Chair Breaks" incoming="/0/@arcs.58" outgoing="/0/@arcs.59"/>
+    <transitions name="Bus Levels" incoming="/0/@arcs.60" outgoing="/0/@arcs.61"/>
+    <transitions name="Chair Dissapears" incoming="/0/@arcs.62" outgoing="/0/@arcs.63"/>
+    <transitions name="Bus Stops" incoming="/0/@arcs.64" outgoing="/0/@arcs.65"/>
+    <transitions name="Ship Docks" incoming="/0/@arcs.66" outgoing="/0/@arcs.67"/>
+    <transitions name="Chair Sits" incoming="/0/@arcs.68" outgoing="/0/@arcs.69"/>
+    <transitions name="Bus Stares" incoming="/0/@arcs.70" outgoing="/0/@arcs.71"/>
+    <transitions name="Bus Departs" incoming="/0/@arcs.72" outgoing="/0/@arcs.73"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="7" source="/0/@places.0" target="/0/@transitions.0"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.0" target="/0/@places.1"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="7" source="/0/@places.2" target="/0/@transitions.1"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.1" target="/0/@places.2"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="10" source="/0/@places.3" target="/0/@transitions.2"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.2" target="/0/@places.4"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="9" source="/0/@places.5" target="/0/@transitions.3"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.3" target="/0/@places.6"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="3" source="/0/@places.7" target="/0/@transitions.4"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.4" target="/0/@places.8"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="10" source="/0/@places.9" target="/0/@transitions.5"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.5" target="/0/@places.10"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="5" source="/0/@places.11" target="/0/@transitions.6"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.6" target="/0/@places.12"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="10" source="/0/@places.13" target="/0/@transitions.7"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.7" target="/0/@places.14"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="6" source="/0/@places.15" target="/0/@transitions.8"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.8" target="/0/@places.16"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" source="/0/@places.17" target="/0/@transitions.9"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.9" target="/0/@places.18"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="1" source="/0/@places.19" target="/0/@transitions.10"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.10" target="/0/@places.20"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="6" source="/0/@places.21" target="/0/@transitions.11"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.11" target="/0/@places.22"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="10" source="/0/@places.7" target="/0/@transitions.12"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.12" target="/0/@places.23"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="4" source="/0/@places.0" target="/0/@transitions.13"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.13" target="/0/@places.24"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="1" source="/0/@places.25" target="/0/@transitions.14"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.14" target="/0/@places.11"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="5" source="/0/@places.3" target="/0/@transitions.15"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.15" target="/0/@places.26"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="4" source="/0/@places.27" target="/0/@transitions.16"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.16" target="/0/@places.28"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="9" source="/0/@places.29" target="/0/@transitions.17"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.17" target="/0/@places.30"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="2" source="/0/@places.31" target="/0/@transitions.18"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.18" target="/0/@places.32"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="10" source="/0/@places.27" target="/0/@transitions.19"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.19" target="/0/@places.3"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="5" source="/0/@places.33" target="/0/@transitions.20"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.20" target="/0/@places.34"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="4" source="/0/@places.13" target="/0/@transitions.21"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.21" target="/0/@places.35"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="1" source="/0/@places.36" target="/0/@transitions.22"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.22" target="/0/@places.21"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="1" source="/0/@places.17" target="/0/@transitions.23"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.23" target="/0/@places.37"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="10" source="/0/@places.38" target="/0/@transitions.24"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.24" target="/0/@places.39"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="1" source="/0/@places.40" target="/0/@transitions.25"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.25" target="/0/@places.41"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="5" source="/0/@places.42" target="/0/@transitions.26"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.26" target="/0/@places.42"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="8" source="/0/@places.25" target="/0/@transitions.27"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.27" target="/0/@places.43"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" source="/0/@places.5" target="/0/@transitions.28"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.28" target="/0/@places.40"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="2" source="/0/@places.44" target="/0/@transitions.29"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.29" target="/0/@places.45"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="6" source="/0/@places.46" target="/0/@transitions.30"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.30" target="/0/@places.47"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="6" source="/0/@places.48" target="/0/@transitions.31"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.31" target="/0/@places.49"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="10" source="/0/@places.46" target="/0/@transitions.32"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.32" target="/0/@places.50"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="6" source="/0/@places.36" target="/0/@transitions.33"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.33" target="/0/@places.51"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="5" source="/0/@places.48" target="/0/@transitions.34"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.34" target="/0/@places.44"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="9" source="/0/@places.52" target="/0/@transitions.35"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.35" target="/0/@places.53"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="3" source="/0/@places.7" target="/0/@transitions.36"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.36" target="/0/@places.54"/>
+  </petrinet:PetriNet>
+  <petrinet:Place name="Ship Spinning"/>
+  <petrinet:Place name="Plane Arrving"/>
+  <petrinet:Place name="Plane Arrving"/>
+  <petrinet:Place name="Person Drifting"/>
+  <petrinet:Place name="Plane Singing"/>
+  <petrinet:Place name="Duck Waiting"/>
+  <petrinet:Place name="Plane Singing"/>
+  <petrinet:Place name="Plane Spinning"/>
+  <petrinet:Place name="Person Waiting"/>
+  <petrinet:Place name="Duck Arrving"/>
+  <petrinet:Place name="Bus Spinning"/>
+  <petrinet:Place name="Plane Spinning"/>
+  <petrinet:Place name="Ship Drifting"/>
+  <petrinet:Place name="Person Diving"/>
+  <petrinet:Place name="Cow Walking"/>
+  <petrinet:Place name="Cow Spinning"/>
+  <petrinet:Place name="Person Walking"/>
+  <petrinet:Place name="Ship Waiting"/>
+  <petrinet:Place name="Duck Drifting"/>
+  <petrinet:Place name="Person Arrving"/>
+  <petrinet:Place name="Plane Waiting"/>
+  <petrinet:Place name="Plane Waiting"/>
+  <petrinet:Place name="Ship Diving"/>
+  <petrinet:Place name="Person Spinning"/>
+  <petrinet:Place name="Person Waiting"/>
+  <petrinet:Place name="Ship Arrving"/>
+  <petrinet:Place name="Duck Waiting"/>
+  <petrinet:Place name="Cow Walking"/>
+  <petrinet:Place name="Person Singing"/>
+  <petrinet:Place name="Duck Spinning"/>
+  <petrinet:Place name="Cow Arrving"/>
+  <petrinet:Place name="Ship Waiting"/>
+  <petrinet:Place name="Duck Singing"/>
+  <petrinet:Place name="Chair Arrving"/>
+</xmi:XMI>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ASCII"?>
+<clone:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:clone="clone">
+  <contents name="a1">
+    <details key="foo" value="bar"/>
+  </contents>
+  <contents name="a2">
+    <details key="foo" value="bar"/>
+  </contents>
+  <contents name="a3">
+    <details key="foo" value="bar"/>
+  </contents>
+  <contents name="a4">
+    <details key="foo" value="bar"/>
+  </contents>
+  <contents name="a5">
+    <details key="foo" value="bar"/>
+  </contents>
+  <contents name="b1">
+    <details key="bar" value="foo"/>
+  </contents>
+  <contents name="b2">
+    <details key="bar" value="foo"/>
+  </contents>
+  <contents name="b3">
+    <details key="bar" value="foo"/>
+  </contents>
+  <contents name="b4">
+    <details key="bar" value="foo"/>
+  </contents>
+  <contents name="b5">
+    <details key="bar" value="foo"/>
+  </contents>
+</clone:Model>

@@ -1,0 +1,11 @@
+rule Diagram2PlantUML 
+	transform diagram : JCD!Diagram {
+
+	template : "cd.egl"
+
+	parameters : Map{
+		"path" = Sequence{diagram.name},
+		"format" = "puml"
+	}
+	
+}

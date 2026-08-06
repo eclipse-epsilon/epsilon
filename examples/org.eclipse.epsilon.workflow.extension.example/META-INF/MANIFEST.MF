@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Workflow Extension Example Plug-in
+Bundle-SymbolicName: org.eclipse.epsilon.workflow.extension.example;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.ant.core,
+ org.apache.ant,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.workflow,
+ org.eclipse.epsilon.eol.dt;resolution:=optional
+Bundle-Vendor: Eclipse.org
+Export-Package: org.eclipse.epsilon.workflow.extension.example.tasks

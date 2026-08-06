@@ -1,0 +1,24 @@
+module tree2graph;
+create OUT : GraphMM from IN : TreeMM;
+
+rule CreateGraphNodes {
+	from t : TreeMM!Tree
+	to n : GraphMM!Node (
+		name <- t.label 
+	)
+}
+
+nodefault rule CreateGraph {
+	from t : TreeMM!Tree (t.parent.oclIsUndefined())
+	to g : GraphMM!Graph (
+		nodes <- TreeMM!Tree.allInstances()
+	)
+}
+
+nodefault rule CreateGraphEdges {
+	from t : TreeMM!Tree (not t.parent.oclIsUndefined())
+	to e : GraphMM!Edge (
+		source <- t.parent,
+		target <- t
+	)
+}

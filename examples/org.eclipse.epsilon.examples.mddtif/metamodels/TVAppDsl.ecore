@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="TVAppDsl">
+  <eClassifiers xsi:type="ecore:EClass" name="Application" eSuperTypes="#//NamedElement">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="application"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" upperBound="-1"
+        eType="#//Content" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
+    <eAnnotations source="exeed">
+      <details key="label" value="return self.name;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Content" abstract="true" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Text" eSuperTypes="#//Content">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="text"/>
+      <details key="label" value="return self.name + ': ' + self.information;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="information" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="exeed">
+        <details key="multiLine" value="true"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="history" upperBound="-1"
+        eType="#//TextHistory" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TextHistory">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="history"/>
+      <details key="label" value="return 'Revision ' + self.revision + ': ' + self.information;"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="revision" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="information" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Vote" eSuperTypes="#//Content">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="vote"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" upperBound="-1"
+        eType="#//VoteContent" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VoteContent" abstract="true" eSuperTypes="#//NamedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Choice" eSuperTypes="#//VoteContent">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="choice"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Label" eSuperTypes="#//VoteContent">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="information"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Menu" eSuperTypes="#//Content">
+    <eAnnotations source="exeed">
+      <details key="classIcon" value="menu"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" upperBound="-1"
+        eType="#//Content" containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

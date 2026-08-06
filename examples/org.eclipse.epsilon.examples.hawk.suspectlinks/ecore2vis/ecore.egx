@@ -1,0 +1,66 @@
+pre {
+	var classes = EClass.all.sortBy(c|c.name);
+}
+
+rule Barchart {
+	
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "html",
+		"path" = List{"Model", "Stats"},
+		"icon" = "barchart"
+	}
+	
+	template: "barchart.egl"
+	
+}
+
+rule ClassDiagram {
+	
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "graphviz-dot",
+		"path" = List{"Model", "(All Classes)"},
+		"icon" = "diagram-ff0000"
+	}
+	
+	template: "ecore2dot.egl"
+	
+}
+
+rule Ecore23D {
+	
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "html",
+		"path" = List{"Model", "3D inheritance"},
+		"icon" = "diagram-fffbd7"
+	}
+	
+	template: "ecore23d.egl"
+	
+}
+
+rule EClass2ClassDiagram 
+	transform c : EClass in: classes {
+	
+	parameters {
+		
+		return Map{
+			"format" = "graphviz-dot",
+			"path" = Sequence{"Model", "Classes", c.name},
+			"icon" = "diagram-fffbd7",
+			"layers" = Sequence {
+				Map {"id"="documentation", "title"="Documentation"},
+				Map {"id"="constraints", "title"="Constraints"},
+				Map {"id"="subtypes", "title"="Subtypes", "active"=false},
+				Map {"id"="supertypes", "title"="Supertypes"},
+				Map {"id"="derived", "title"="Derived features", "active"=false},
+				Map {"id"="inherited", "title"="Inherited features", "active"=false}
+			}
+		};
+	}
+	
+	template: "eclass2dot.egl"
+	
+}

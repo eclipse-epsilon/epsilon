@@ -1,0 +1,10 @@
+[% import "common.egl"; %]
+digraph G {
+[%
+  renderRDFNode(rdfRes, Map {rdfRes.uri="rdfRes"});
+  for (eob in eObjects) {
+    renderEObject(eob, "eob" + loopCount); %]
+  eob[%=loopCount%] -> rdfRes [dir=back]
+  [% }
+%]
+}

@@ -1,0 +1,51 @@
+@data depth
+operation depths() {
+  return 1.to(4);
+}
+
+@setup
+operation createTree() {
+  var current   := new Tree!Tree;
+  current.label := 'root';
+  for (i in 1.to(depth)) {
+    var child   := new Tree!Tree;
+    child.label := 't' + i;
+    child.parent := current;
+    current := child;
+  } 
+}
+
+@setup
+operation createGraph() {
+  var graph    := new GraphExpected!Graph;
+  var current  := new GraphExpected!Node;
+  current.name := 'root';
+  graph.nodes.add(current);
+
+  for (i in 1.to(depth)) {
+    var child := new GraphExpected!Node;
+    child.name := 't' + i;
+    graph.nodes.add(child);
+
+    var edge := new GraphExpected!Edge;
+    edge.source := current;
+    edge.target := child;
+    current := child; 
+  } 
+}
+
+@test
+operation transform() {
+  runTarget("tree2graph");
+  assertEqualModels("GraphExpected", "Graph");
+}
+
+@test
+operation treeNodes() {
+  assertEquals(depth + 1, Tree!Tree.allInstances.size());
+}
+
+@test
+operation graphExpectedNodes() {
+  assertEquals(depth + 1, GraphExpected!Node.allInstances.size());
+}

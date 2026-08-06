@@ -1,0 +1,22 @@
+[% import "common.egl"; %]
+digraph G {
+  node [shape=rectangle]
+  edge [minlen=2]
+
+  // nodes
+  [%
+    for (ob in rootObjects) {
+      renderEObject(ob, "ob" + rootIDs.get(ob));
+    }
+  %]
+
+  // references between objects
+  [% for (ob in rootObjects) { %]
+    [% for (eRef in ob.eClass.eAllReferences) {
+      var targets = ob.eGet(eRef).asSequence();
+      for (target in targets) {
+        if (rootIDs.containsKey(target)) { %]
+        ob[%=rootIDs.get(ob)%] -> ob[%=rootIDs.get(target)%] [label="[%=eRef.eContainer.eContainer.name%]:[%=eRef.name%]"]
+    [% }}} %]
+  [% } %]
+}

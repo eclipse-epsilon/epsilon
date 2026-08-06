@@ -1,0 +1,10 @@
+@namespace(uri="path", prefix="path")
+package path;
+
+class Path {
+	ordered val Stop[*] stops;
+}
+
+class Stop {
+	attr String[1] label;
+}

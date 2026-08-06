@@ -1,0 +1,6 @@
+[%  
+	var t: Template := TemplateFactory.load('OOClass2JavaClass.egl');
+	t.populate('name', 'Animal');
+%]
+Hello world from Template!
+[%=t.generate('OO2Java.txt')%]

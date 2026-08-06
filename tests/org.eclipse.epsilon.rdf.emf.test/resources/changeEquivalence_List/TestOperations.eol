@@ -1,0 +1,42 @@
+operation getNames () {
+		if(consoleOutput) {"Attribute, names ".println;}
+	return (Model.all())[0].entities[0].names;
+}
+
+operation showModel (label : String) {
+	("\n" + label).println();
+	(Model.all())[0].entities[0].label.println();
+	(Model.all())[0].entities[0].names.println("names: ");
+}
+
+operation beforeChange (value) {
+	if(consoleOutput) {
+		"\n Running EOL".println();
+		showModel(" * Before change");
+		value.println("\n * Change:\nValue, ");
+	}
+}
+
+operation beforeChange(value, position) {
+	if(consoleOutput) {
+	"\n Running EOL".println();
+
+		showModel(" * Before change");
+
+		value.println("\n * Change:\nValue, ");
+		position.println("Position, ");
+	}
+}
+
+operation beforeAnotherChange (value) {
+	if(consoleOutput) {
+		showModel(" * Before change");
+		value.println("\n * Change:\nValue, ");
+	}
+}
+
+operation afterChange () {
+	if(consoleOutput) {
+		showModel(" * After change");
+	}
+}

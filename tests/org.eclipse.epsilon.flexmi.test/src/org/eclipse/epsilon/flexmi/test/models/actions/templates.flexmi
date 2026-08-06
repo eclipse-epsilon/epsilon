@@ -1,0 +1,23 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?eol template-operations.eol?>
+<_>
+	<:template name="c5">
+		<parameter name="concrete"/>
+		<content language="EGL">
+			<![CDATA[
+			<class name="[%=c5()%]" abstract="[%=concrete == 'true' ? false : true%]"/>
+			]]>
+		</content>
+	</:template>
+	
+	<:template name="c6">
+		<parameter name="concrete"/>
+		<content language="EOL">
+			<![CDATA[
+				var c : new t_class;
+				c.a_name = c6();
+				c.a_abstract = (concrete == 'true' ? false : true);
+			]]>
+		</content>
+	</:template>
+</_>

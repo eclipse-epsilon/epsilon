@@ -1,0 +1,69 @@
+context t_b {
+
+    // this should be turned into t_b.all.select(b|not (b.a_x.asInteger() > 0))
+	constraint NoGuardAlwaysTrue {
+	  check : self.a_x.asInteger() > 0
+	}
+
+    constraint NoGuardAlwaysFalse {
+      check : self.a_x.asInteger() < 0
+    }
+
+    // this should be turned into t_b.all.select(b|b.a_x.asInteger() < 0 and not self.a_y = 'meh') 
+    constraint GuardedEmpty {
+      guard : self.a_x.asInteger() < 0
+      check : self.a_y = 'meh'
+    }
+
+    // this should be turned into t_b.all.select(b|b.a_x.asInteger() > 1 and not self.a_y = 'meh') 
+    constraint GuardedNonEmpty {
+      guard : self.a_x.asInteger() > 1
+      check : self.a_y = 'b' // one true, one false
+    }
+
+    // A guard with a single return statement should be equivalent to just putting an expression
+    constraint SingleReturnBlockGuard {
+      guard { return self.a_x.asInteger() > 1; }
+      check : self.a_y = 'b' or self.a_y = 'x'
+    }
+
+    // A check with a single return statement should be equivalent to just putting an expression
+    constraint SingleReturnBlockCheck {
+      guard : self.a_x.asInteger() = 1
+      check { return self.a_y = 'a' or self.a_y = 'x'; }
+    }
+
+    // Note: anything with satisfies, satisfiesAll or satisfiesAny cannot be optimized at the moment,
+    // even if it's just an expression.
+    constraint Satisfies {
+      guard : self.satisfies('NoGuardAlwaysFalse')
+      check : false
+    }
+
+    constraint SatisfiesAll {
+      guard : self.satisfiesAll('NoGuardAlwaysFalse', 'NoGuardAlwaysTrue')
+      check : false
+    }
+
+    constraint SatisfiesOne {
+      guard : self.satisfiesOne('NoGuardAlwaysFalse', 'NoGuardAlwaysTrue')
+      check : false
+    }
+
+    // Anything with a 'complex' block as a guard cannot be optimized
+    constraint ComplexBlockGuard {
+      guard {
+        var x = self.a_x.asInteger();
+        return x * 2 > 2;
+      }
+      check : false
+    }
+
+    // Anything with a 'complex' block as a check cannot be optimized
+    constraint ComplexBlockCheck {
+      check {
+        var x = self.a_x.asInteger();
+        return x * 2 > 2;
+      }
+    } 
+}

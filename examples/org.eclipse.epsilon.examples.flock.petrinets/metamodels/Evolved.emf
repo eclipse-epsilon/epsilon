@@ -1,0 +1,39 @@
+@namespace(uri="petrinets2", prefix="petrinets2")
+package petrinets;
+
+class Net {
+   val Place[*]#net places;
+   val Transition[*]#net transitions;
+   val Arc[*]#net arcs;
+}
+
+class Place {
+	ref Net[1]#places net;
+ 	attr String name;
+ 	
+ 	ref TPArc[*]#dst in;
+ 	ref PTArc[*]#src out;
+}
+
+class Transition {
+	ref Net[1]#transitions net;
+	attr String name;
+	
+	ref PTArc[1..*]#dst in;
+ 	ref TPArc[1..*]#src out;
+}
+
+
+abstract class Arc {
+   ref Net[1]#arcs net;
+}
+
+class PTArc extends Arc {
+   ref Place[1]#out src;
+   ref Transition[1]#in dst;
+}
+
+class TPArc extends Arc {
+   ref Transition[1]#out src;
+   ref Place[1]#in dst;
+}

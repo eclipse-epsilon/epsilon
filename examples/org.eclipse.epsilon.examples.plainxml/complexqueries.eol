@@ -1,0 +1,32 @@
+// Store all books in a collection variable
+var books = t_book.all;
+
+// Print the total number of pages in all books
+books.collect(b|b.i_pages).sum().println();
+	
+// Print the titles of books with more than 1 authors
+for (book in books) {
+	if (book.c_author.size() > 1) {
+		book.a_title.println();
+	}
+}
+
+// Print the title of the book with the most pages
+var maxPages = books.collect(b|b.i_pages).max;
+books.selectOne(b|b.i_pages = maxPages).a_title.println();
+
+// Print the title of all books written by Ed Merks.
+// Demonstrates navigating to the parent node.
+for (author in t_author.all) {
+	if (author.text = "Ed Merks") {
+		author.parentNode.a_title.println();
+	}
+}
+
+// Print the tag and text of all children 
+// of each book (author + published)
+for (book in books) {
+	for (child in book.children) {
+		(child.tagName + "->" + child.text).println();
+	}
+}

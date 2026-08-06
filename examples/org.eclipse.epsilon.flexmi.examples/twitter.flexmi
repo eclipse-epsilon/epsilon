@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<?nsuri services?>
+<model>
+	<service name="Followers">
+		<op name="get">
+			<in name="user" type="String"/>
+			<out type="User" many="true"/>
+		</op>
+	</service>
+	<struct name="User">
+		<f name="id" type="String"/>
+		<f name="bio" type="String"/>
+	</struct>
+	<primitive name="String"/>
+</model>

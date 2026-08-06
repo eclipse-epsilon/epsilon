@@ -1,0 +1,13 @@
+pre {
+	Target.root = new Target!t_flowchart;
+}
+
+rule Action2Element 
+	transform s : Source!Action
+	to t : Target!t_action {
+	
+	t.a_name = s.name;
+	
+	Target.root.appendChild(t);
+	
+}

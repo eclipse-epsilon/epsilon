@@ -1,0 +1,40 @@
+// Get hold of the ActivityFunctions profile
+// that contains the Function stereotype
+var profile = ActivityFunctionsProfile!Profile.all.first();
+
+// Get hold of the Function stereotype
+var functionStereotype = profile.getPackagedElement("Function");
+
+// Create a new plain UML Model element
+var newModel : new UML!Model(name="NewModel");
+// Apply the ActivityFunctions profile to it
+newModel.applyProfile(profile);
+
+// Create a new plain UML Activity element
+var newActivity : new UML!Activity(name="NewActivity");
+// ... add it as a child of the Model created above
+newModel.packagedElement.add(newActivity);
+
+// ... and apply the Function stereotype to it
+var newFunction = newActivity.applyStereotype(functionStereotype);
+// Set the value of the body property of the Function stereotype
+newFunction.body = "return 42;";
+
+// If we now try to query Function.all, the call will fail
+// as the model is not aware of the Function type
+
+// To remedy this we need to get hold of the EPackage 
+// representation of the ActivityProfile
+var profileEPackage = newModel.profileApplications.first().appliedDefinition;
+// ... and add it to the package registry of our UML model
+UML.resource.resourceSet.packageRegistry.put(profileEPackage.nsURI, profileEPackage);
+
+// We can then use all the stereotypes in the profile
+// as regular types
+newFunction = UML!Function.all.first();
+newFunction.body.println();
+
+// The function and its underlying activity are still
+// two separate elements in the model, linked via
+// the function's base_Activity reference
+newFunction.base_Activity.name.println();

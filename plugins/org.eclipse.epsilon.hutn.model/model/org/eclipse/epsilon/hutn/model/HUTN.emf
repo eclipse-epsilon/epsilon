@@ -1,0 +1,73 @@
+@namespace(uri="http://www.eclipse.org/gmt/epsilon/hutn", prefix="hutn")
+package hutn;
+
+import "platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore";
+
+class Spec {
+  val NsUri[*] nsUris;
+  val PackageObject[*] objects;
+  attr ecore.EString modelFile;
+  attr String sourceFile; 
+}
+
+class NsUri extends ModelElement {
+  attr String[1] value;
+}
+
+class ModelElement {
+  attr int line;
+  attr int col;
+}
+
+abstract class Object extends ModelElement {
+  attr String type;
+  attr String identifier;
+}
+
+class PackageObject extends Object {
+  op ecore.EClass[*] getAllEClasses();
+  ref ecore.EPackage[*] metamodel;
+  val ClassObject[*] classObjects;
+}
+
+class ClassObject extends Object {
+  op Slot<?> findSlot(String feature);
+  op PackageObject[1] getPackageObject();
+  op ecore.EClass getEClass();
+  op boolean[1] hasEClass();
+  op boolean[1] typeCompatibleWith(ecore.EClass[1] eClass);
+  op AttributeSlot findOrCreateAttributeSlot(String feature);
+  op ReferenceSlot findOrCreateReferenceSlot(String feature);
+  op ContainmentSlot findOrCreateContainmentSlot(String feature);
+  val Slot<?>[*]#owner slots;
+}
+
+abstract class Slot <T>  extends ModelElement {
+  op boolean[1] typeCompatibleWith(ecore.EStructuralFeature[1] eStructuralFeature);
+  op boolean[1] multiplicityCompatibleWith(ecore.EStructuralFeature[1] eStructuralFeature);
+  op boolean[1] compatibleWith(ecore.EStructuralFeature[1] eStructuralFeature);
+  op ecore.EStructuralFeature getEStructuralFeature();
+  op boolean[1] hasEStructuralFeature();
+  attr String feature;
+  ref ClassObject[1]#slots owner;
+  !unique readonly attr T[*] values;
+  
+   op void setValues(T[*] values);
+}
+
+class AttributeSlot extends Slot<EJavaObject> {
+}
+
+abstract class ClassObjectSlot <T>  extends Slot<T> {
+  op ClassObject[*] getClassObjects();
+  op void setClassObjects(ClassObject[*] classObjects);
+  op void addClassObject(ClassObject classObject);
+}
+
+class ContainmentSlot extends ClassObjectSlot<ClassObject> {
+  val ClassObject[*] classObjects;
+}
+
+class ReferenceSlot extends ClassObjectSlot<String> {
+}
+

@@ -1,0 +1,10 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?render-egx ecore.egx?>
+<?import filesystem.flexmi?>
+<_>
+	
+	<class name="WordFile" super="File"/>
+	<class name="ExcelFile" super="File"/>
+	<class name="PDFFile" super="File"/>
+	
+</_>

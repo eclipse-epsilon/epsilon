@@ -1,0 +1,7 @@
+context T1!Tree {
+	$parallel self.children.size() > 10
+    constraint isParentNode {
+        guard: not self.children.isEmpty()
+        check: self.parent.isUndefined()
+    }
+}

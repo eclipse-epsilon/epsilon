@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:petrinet="http://www.york.ac.uk/qvt/examples/0.1/PetriNet" xsi:schemaLocation="http://www.york.ac.uk/qvt/examples/0.1/PetriNet PetriNet.ecore">
+  <petrinet:PetriNet name="RandomActions">
+    <places name="Plane Waiting" incoming="/0/@arcs.3" outgoing="/0/@arcs.2"/>
+    <places name="Cow Arrving" outgoing="/0/@arcs.4"/>
+    <places name="Cow Singing" incoming="/0/@arcs.5"/>
+    <places name="Bus Arrving" incoming="/0/@arcs.7" outgoing="/0/@arcs.6"/>
+    <places name="Plane Diving" incoming="/0/@arcs.9" outgoing="/0/@arcs.8"/>
+    <places name="Cow Drifting" incoming="/0/@arcs.11" outgoing="/0/@arcs.10"/>
+    <transitions name="Bus Departs" incoming="/0/@arcs.0 /0/@arcs.6" outgoing="/0/@arcs.1 /0/@arcs.7"/>
+    <transitions name="Plane Docks" incoming="/0/@arcs.2 /0/@arcs.8" outgoing="/0/@arcs.3 /0/@arcs.9"/>
+    <transitions name="Cow Levels" incoming="/0/@arcs.4 /0/@arcs.10" outgoing="/0/@arcs.5 /0/@arcs.11"/>
+    <transitions name="Person Leaves" incoming="/0/@arcs.12" outgoing="/0/@arcs.13"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="3" source="/2/@places.1" target="/0/@transitions.0"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.0" target="/2/@places.1"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="1" source="/0/@places.0" target="/0/@transitions.1"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.1" target="/0/@places.0"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="7" source="/0/@places.1" target="/0/@transitions.2"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.2" target="/0/@places.2"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="4" source="/0/@places.3" target="/0/@transitions.0"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.0" target="/0/@places.3"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="5" source="/0/@places.4" target="/0/@transitions.1"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.1" target="/0/@places.4"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="6" source="/0/@places.5" target="/0/@transitions.2"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.2" target="/0/@places.5"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" source="/2/@places.4" target="/0/@transitions.3"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/0/@transitions.3" target="/2/@places.4"/>
+  </petrinet:PetriNet>
+  <petrinet:Place name="Chair Spinning"/>
+  <petrinet:PetriNet name="RandomActions">
+    <places name="Chair Arrving" incoming="/2/@arcs.1" outgoing="/2/@arcs.0"/>
+    <places name="Bus Drifting" incoming="/0/@arcs.1 /2/@arcs.3" outgoing="/0/@arcs.0 /2/@arcs.2"/>
+    <places name="Cow Arrving" outgoing="/2/@arcs.4"/>
+    <places name="Cow Diving" incoming="/2/@arcs.5"/>
+    <places name="Person Drifting" incoming="/0/@arcs.13 /2/@arcs.7" outgoing="/0/@arcs.12 /2/@arcs.6"/>
+    <transitions name="Chair Sits" incoming="/2/@arcs.0" outgoing="/2/@arcs.1"/>
+    <transitions name="Bus Sits" incoming="/2/@arcs.2" outgoing="/2/@arcs.3"/>
+    <transitions name="Cow Sits" incoming="/2/@arcs.4" outgoing="/2/@arcs.5"/>
+    <transitions name="Person Levels" incoming="/2/@arcs.6" outgoing="/2/@arcs.7"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="6" source="/2/@places.0" target="/2/@transitions.0"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/2/@transitions.0" target="/2/@places.0"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" source="/2/@places.1" target="/2/@transitions.1"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/2/@transitions.1" target="/2/@places.1"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="8" source="/2/@places.2" target="/2/@transitions.2"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/2/@transitions.2" target="/2/@places.3"/>
+    <arcs xsi:type="petrinet:PlaceToTransArc" weight="9" source="/2/@places.4" target="/2/@transitions.3"/>
+    <arcs xsi:type="petrinet:TransToPlaceArc" source="/2/@transitions.3" target="/2/@places.4"/>
+  </petrinet:PetriNet>
+  <petrinet:Place name="Ship Drifting"/>
+  <petrinet:Place name="Duck Arrving"/>
+  <petrinet:Place name="Chair Diving"/>
+  <petrinet:Place name="Plane Singing"/>
+  <petrinet:Place name="Duck Diving"/>
+</xmi:XMI>

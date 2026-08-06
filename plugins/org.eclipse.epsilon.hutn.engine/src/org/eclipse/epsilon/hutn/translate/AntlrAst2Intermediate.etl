@@ -1,0 +1,431 @@
+pre {
+	var EmfTool := new Native('org.eclipse.epsilon.emc.emf.tools.EmfTool');
+
+	var ast    := AntlrAst!Ast.allInstances().first();
+	var config := Config!Configuration.allInstances().first();
+	
+	var spec := Intermediate!Spec.allInstances().first();
+	
+	for (root in ast.roots) {
+		if (AntlrAst!NameNode.isType(root) and root.text.toLowerCase() = '@spec') {		
+			for (child in root.children) {		
+			
+				// process @Spec.model package	
+				if (child.text.toLowerCase() = 'model') {
+					var modelFileAttribute := child.children.selectOne(n : AntlrAst!NameNode | n.text = 'file');
+					
+					if (modelFileAttribute.isDefined()) {
+						var modelFileValue := modelFileAttribute.children.selectOne(t : AntlrAst!TextualValueNode | true);
+						
+						if (modelFileValue.isDefined()) {
+							spec.modelFile = modelFileValue.getValue();	
+						}
+					}
+
+				// process all other @Spec packages as metamodel specifications
+				} else {
+				
+					for (grandchild in child.children.select(n : AntlrAst!NameNode | n.text.toLowerCase() = 'nsuri')) {
+						for (valueNode in grandchild.children.select(t : AntlrAst!TextualValueNode | true)) {
+							var nsUri := new Intermediate!NsUri;
+							nsUri.value := valueNode.getValue();
+							nsUri.addTraceabilityInfo(valueNode.parent);
+							spec.nsUris.add(nsUri);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+rule NameNode2PackageObject
+	transform n : AntlrAst!NameNode
+	to p : Intermediate!PackageObject {
+	
+	guard : n.parent.isUndefined() and n.text.toLowerCase() <> '@spec'
+	
+	spec.objects.add(p);
+	
+	p.type := n.text;
+	p.addIdentifier(n, false);
+	p.addTraceabilityInfo(n);
+	
+	if (not spec.nsUris.isEmpty()) {
+		for (nsUri in spec.nsUris) {
+			var package := EmfTool.getEPackage(nsUri.value);
+			
+			if (package.isDefined()) {
+				p.metamodel.add(package);
+			}
+		}
+	}
+	
+	for (child in n.children.select(n : AntlrAst!NameNode | true)) {
+		p.classObjects.add(child.equivalent());
+	}
+	
+	// Transform association blocks and infix associations
+	for (a : AntlrAst!AssociationInstanceNode in n.children) {
+		a.createReferences(p);
+	}
+}
+
+rule NameNode2ClassObject
+	transform n : AntlrAst!NameNode
+	to c : Intermediate!ClassObject {
+	
+	guard : n.isClass() and n.parent.text.toLowerCase() <> '@spec'
+	
+	createClassObject(c, n);
+}
+
+// TODO: refactor this to: rule AssocationInstanceNode2ReferenceSlot
+operation AntlrAst!AssociationInstanceNode createReferences(package : Intermediate!PackageObject) {
+
+	var slot : Intermediate!ReferenceSlot;	
+	var currentChildIsSource := true;
+	
+	for (ref in self.children) {
+		var cls := Intermediate!ClassObject.allInstances().selectOne(c|c.identifier = ref.children.first().text.stripQuotes());
+		
+		if (cls.isUndefined()) {
+			cls := createClassObject(ref);
+			package.classObjects.add(cls);
+		}
+		
+		if (currentChildIsSource) {
+			slot := cls.slots.selectOne(r : Intermediate!ReferenceSlot | r.feature = self.text);
+			
+			if (slot.isUndefined()) {
+				slot := new Intermediate!ReferenceSlot;
+				slot.feature := self.text;
+				cls.slots.add(slot);
+			}
+		
+		} else {
+			slot.values.add(cls.identifier);
+		}
+		
+		currentChildIsSource := not currentChildIsSource;
+	}
+}
+
+
+
+operation AntlrAst!Node isClass() : Boolean {
+	if (self.parent.isUndefined()) {
+		return false;
+	} else {
+		return ast.roots.includes(self.parent);
+	}
+}
+
+operation Intermediate!ModelElement addTraceabilityInfo(node : AntlrAst!Node) :  Intermediate!ModelElement {
+	self.line := node.line;
+	self.col  := node.column;
+	return self;
+}
+
+operation Intermediate!Object addIdentifier(node : AntlrAst!Node) {
+	self.addIdentifier(node, true);
+}
+
+operation Intermediate!Object addIdentifier(node : AntlrAst!Node, infer : Boolean) {
+	var identifierNode : AntlrAst!Node := node.children.select(t : AntlrAst!TextualValueNode | true).first();
+	
+	if (identifierNode.isDefined()) {
+		self.identifier := identifierNode.text.stripQuotes();
+	
+	} else if (infer) {
+		var nameSlot : Intermediate!AttributeSlot := self.slots.select(s: Intermediate!AttributeSlot | s.feature = self.getIdentifierAttributeName()).first();
+		
+		if (nameSlot.isDefined() and nameSlot.values.size() = 1) {
+			self.identifier := nameSlot.values.first();
+		} 
+	}
+}
+
+operation Intermediate!ClassObject inferAttributeValueFromIdentifier() {
+	if (self.identifier.isDefined() and self.getIdentifierAttributeName().isDefined() and not self.slots.exists(s : Intermediate!AttributeSlot | s.feature = self.getIdentifierAttributeName())) {
+		var slot := new Intermediate!AttributeSlot;
+		slot.feature := self.getIdentifierAttributeName();
+		slot.values.add(self.identifier);
+		self.slots.add(slot);
+	}
+}
+
+operation Intermediate!ClassObject getIdentifierAttributeName() : String {
+	var idRule : Config!IdentifierRule := config.rules.select(r : Config!IdentifierRule | r.classifier = self.type).first();
+
+	if (config.isDefined() and idRule.isDefined()) {
+		return idRule.attribute;
+	} 
+}
+
+operation Intermediate!ClassObject addDefaultValuesForAttributes() {
+	var classifierLevelAttributes := AntlrAst!ClassifierLevelAttributeNode.allInstances().select(cla | cla.children.first().text = self.type).collect(cla | cla.children.first());
+	
+	for (cla in classifierLevelAttributes) {
+		var attribute         := cla.children.first().text;
+		var defaultValues := cla.children.first().children.collect(node | node.text.stripQuotes());
+	
+		if (not self.slots.exists(s : Intermediate!AttributeSlot | s.feature = attribute)) {
+			self.slots.add(createSlotFor(defaultValues, attribute).addTraceabilityInfo(cla));
+		}
+	}
+	
+	var defaultValueRules := config.rules.select(r : Config!DefaultValueRule | r.classifier = self.type);
+	
+	for (defaultValueRule in defaultValueRules) {
+		if (not self.slots.exists(s : Intermediate!AttributeSlot | s.feature = defaultValueRule.attribute)) {
+			self.slots.add(createSlotFor(defaultValueRule.defaultValue, defaultValueRule.attribute));
+		}
+	}
+}
+
+// Default Value Rules //
+operation createSlotFor(defaultValue : String, attribute : String) : Intermediate!Slot {
+	var defaultValues := new Sequence;
+	defaultValues.add(defaultValue);
+	
+	return createSlotFor(defaultValues, attribute);
+}
+
+operation createSlotFor(defaultValues : Collection, attribute : String) : Intermediate!Slot {
+	var slot : Intermediate!Slot := defaultValues.first().inferType().toSlot();
+
+	slot.feature := attribute;
+
+	for (value in defaultValues) {
+		slot.values.add(value.inferType());
+	}
+	
+	return slot;
+}
+
+operation String inferType() : Any {
+	// Boolean?
+	if (self = 'true') {
+		return true;
+		
+	} else if (self = 'false') {
+		return false;
+	
+	// Int?
+	} else if (self.isInteger()) {
+		return self.asInteger();
+		
+	// Real?
+	} //else if (self.isReal()) {
+	//	return self.asFloat();
+	//
+	//// String
+	//} 
+	else {
+		return self;
+	}
+}
+
+operation String stripQuotes() : String {
+	var result : String := self;
+	
+	if (result.startsWith('"')) {
+		result := result.substring(1);
+	}
+	
+	if (result.endsWith('"')) {
+		result := result.substring(0, result.length() - 1);
+	}
+	
+	return result; 
+}
+
+operation Intermediate!ClassObject addAdjective(a : AntlrAst!AdjectiveNode) {
+	var slot := new Intermediate!AttributeSlot;
+	slot.feature := a.getFeature();
+	slot.values.add(a.getValue());
+	
+	slot.addTraceabilityInfo(a);
+	
+	self.slots.add(slot);
+}
+
+operation AntlrAst!AdjectiveNode getFeature() : String {
+	if (self.text.startsWith('~') or self.text.startsWith('#')) {
+		return self.text.substring(1);
+	
+	} else {
+		return self.text;
+	}
+}
+
+operation AntlrAst!AdjectiveNode getValue() : Boolean {
+	return not self.text.startsWith('~');
+}
+
+operation Intermediate!ClassObject addAttribute(n : AntlrAst!NameNode) {
+	var slot := self.findSlot(n.text);
+	
+	// Don't create (or remove the existing) slot if the value is null
+	if (AntlrAst!NullNode.isType(n.children.first())) {
+		delete slot; // "Overwrite" any existing slot with null
+
+	// Otherwise, go ahead and create or re-use a slot			
+	} else {
+		if (slot.isUndefined() or slot.isDifferentTypeTo(n.children.first().toSlot())) {
+			slot := n.children.first().toSlot();
+			slot.feature := n.text;
+		}
+		
+		if (Intermediate!ReferenceSlot.isType(slot)) {
+			for (valueNode in n.children) {
+				slot.values.add(valueNode.getValue());
+			}
+				
+		} else {
+			for (valueNode in n.children) {
+				if (valueNode.text.isDefined()) {
+					slot.values.add(valueNode.getValue());
+				}
+			}
+		}
+		
+		slot.addTraceabilityInfo(n);
+		self.slots.add(slot);
+	}
+}
+
+post {
+	for (s in Intermediate!AttributeSlot.all) {
+		s.coerceValues();
+	}
+}
+
+operation Intermediate!Slot isDifferentTypeTo(other : Intermediate!Slot) {
+	return self.eClass.name <> other.eClass.name;
+}
+
+// Booleans //
+operation Boolean toSlot() : Intermediate!Slot {
+	return new Intermediate!AttributeSlot;
+}
+
+operation AntlrAst!TrueNode toSlot() : Intermediate!Slot {
+	return new Intermediate!AttributeSlot;
+}
+
+operation AntlrAst!TrueNode getValue() : Boolean {
+	return true;
+}
+
+operation AntlrAst!FalseNode toSlot() : Intermediate!Slot {
+	return new Intermediate!AttributeSlot;
+}
+
+operation AntlrAst!FalseNode getValue() : Boolean {
+	return false;
+}
+
+// Strings //
+operation String toSlot() : Intermediate!Slot {
+	return new Intermediate!AttributeSlot;
+}
+
+operation AntlrAst!TextualValueNode toSlot() : Intermediate!Slot {
+	return new Intermediate!AttributeSlot;
+}
+
+operation AntlrAst!TextualValueNode getValue() : String {
+	return self.text.stripQuotes();
+}
+
+// Numbers //
+operation Integer toSlot() : Intermediate!Slot {
+	return new Intermediate!AttributeSlot;
+}
+
+operation Real toSlot() : Intermediate!Slot {
+	return new Intermediate!AttributeSlot;
+}
+
+operation String isReal() : Boolean {
+	return '.'.isSubstringOf(self) or 'e'.isSubstringOf(self) or 'E'.isSubstringOf(self);
+}
+
+operation AntlrAst!NumericValueNode toSlot() : Intermediate!Slot {
+	return new Intermediate!AttributeSlot;
+}
+
+operation AntlrAst!NumericValueNode getValue() : Any {
+	if (self.text.isReal()) {
+		return self.text.asDouble();
+	} else {
+		return self.text.asInteger();
+	}
+}
+
+// References
+operation AntlrAst!ReferenceNode toSlot() : Intermediate!Slot {
+	return new Intermediate!ReferenceSlot;
+}
+
+operation AntlrAst!ReferenceNode getValue() : Any {
+	var value = self.children.first().text.stripQuotes();
+	
+	if (value.isExternalObjectReference()) {
+	    var base = Intermediate!Spec.all.first.sourceFile;
+		value = EmfTool.resolveURI(value, base);
+	}
+	
+	return value;
+}
+
+operation String isExternalObjectReference() : Boolean {
+	return self.contains("#");
+}
+
+// Containment and Enumerations //
+operation AntlrAst!NameNode toSlot() : Intermediate!Slot {
+	if (self.children.isEmpty()) {
+		return new Intermediate!AttributeSlot;
+		
+	} else {
+		return new Intermediate!ContainmentSlot;
+	}	
+}
+
+operation AntlrAst!NameNode getValue() : Any {
+	if (self.children.isEmpty()) {
+		return self.text;
+		
+	} else {
+		return createClassObject(self);
+	}
+}
+
+operation createClassObject(n : AntlrAst!Node) : Intermediate!ClassObject {
+	var c := new Intermediate!ClassObject;
+	createClassObject(c, n);
+	return c;
+}
+
+operation createClassObject(c : Intermediate!ClassObject, n : AntlrAst!Node) {
+	c.type := n.text;
+	c.addTraceabilityInfo(n);
+	
+	for (a : AntlrAst!AdjectiveNode in n.children) {
+		c.addAdjective(a);
+	}
+
+	for (n : AntlrAst!NameNode in n.children) {
+		c.addAttribute(n);
+	}
+	
+	//n.children.forAll(a : AntlrAst!AdjectiveNode | c.addAdjective(a));
+	//n.children.forAll(n : AntlrAst!NameNode      | c.addAttribute(n));
+	
+	c.addIdentifier(n);
+	c.inferAttributeValueFromIdentifier();
+	c.addDefaultValuesForAttributes();
+}

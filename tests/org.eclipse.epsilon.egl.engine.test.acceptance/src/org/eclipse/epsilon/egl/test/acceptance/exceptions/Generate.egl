@@ -1,0 +1,4 @@
+[% 
+	var t : Template := TemplateFactory.load('Valid.egl');
+	t.generate('Inval*idPath.txt');
+%]

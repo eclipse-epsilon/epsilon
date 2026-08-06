@@ -1,0 +1,14 @@
+<project default="main">
+	<target name="main">
+		<epsilon.xml.loadModel name="M">
+			<![CDATA[
+			  <tree label="t1"/>
+			]]>
+		</epsilon.xml.loadModel>
+		
+		<epsilon.eol>
+			assert(t_tree.all.first().a_label == "t1");
+			<model ref="M"/>
+		</epsilon.eol>
+	</target>
+</project>

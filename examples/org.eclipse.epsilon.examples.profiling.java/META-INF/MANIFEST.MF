@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Example for Java-based use of EOL Profiler
+Bundle-SymbolicName: org.eclipse.epsilon.examples.profiling.java
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.profiling
+Bundle-Vendor: Eclipse.org
+Automatic-Module-Name: org.eclipse.epsilon.examples.profiling.java
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

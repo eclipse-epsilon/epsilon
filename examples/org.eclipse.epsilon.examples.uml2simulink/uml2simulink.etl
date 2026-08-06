@@ -1,0 +1,140 @@
+post {
+	// After all rules have executed, create constants for inputs and a scope to monitor output
+	var topActivity = UML!Activity.all.selectOne(a|not a.eContainer().isTypeOf(UML!Activity));
+	var topBlock = topActivity.equivalent();
+	
+	var outports = topActivity.ownedNode.select(n|n.isOut());
+	var inports = topActivity.ownedNode.select(n|n.isIn());
+	
+	// Create constants for inputs
+	for (i in Sequence{1..inports.size()}) {
+		var constant : new Simulink!`simulink/Sources/Constant`;
+		constant.link(topBlock, 1, i);
+	}
+	
+	// Create a scope to monitor output 
+	var scope : new Simulink!`simulink/Sinks/Scope`;
+	scope.numInputPorts = outports.size();
+	for (i in Sequence{1..outports.size()}) {
+		topBlock.link(scope, i, i);
+	}
+}
+
+rule Activity2Subsystem 
+	transform s : UML!Activity
+	to t : Simulink!`simulink/Ports & Subsystems/Subsystem` {
+	
+	guard : not s.isFunction()
+	
+	t.name = s.name;
+	
+	if (s.eContainer().isTypeOf(UML!Activity)) {
+		t.parent ::= s.eContainer();
+	}
+	
+}
+
+rule Activity2Function 
+	transform s : UML!Activity
+	to t : Simulink!`simulink/User-Defined Functions/MATLAB Function` {
+	
+	guard : s.isFunction()
+	
+	t.name = s.name;
+	t.parent ::= s.eContainer();
+	t.script = s.getScript();
+}
+
+@abstract
+rule ActivityParameter2Port
+	transform s : UML!ActivityParameterNode
+	to t : Any {
+	
+	guard : not s.eContainer().isFunction()
+	
+	t.parent ::= s.eContainer();
+	t.name = s.parameter.name;
+	
+}
+
+rule ActivityParameter2Inport 
+	transform s : UML!ActivityParameterNode
+	to t : Simulink!`simulink/Ports & Subsystems/In1` 
+	extends ActivityParameter2Port {
+	
+	guard : s.isIn()
+	
+}
+
+rule ActivityParameter2Outport 
+	transform s : UML!ActivityParameterNode
+	to t : Simulink!`simulink/Ports & Subsystems/Out1` 
+	extends ActivityParameter2Port {
+	
+	guard : s.isOut()
+	
+}
+
+rule ControlFlow2Link
+	transform s : UML!ControlFlow
+	to t : Sequence {
+	
+	deleteAutoPorts();
+	
+	var sourceBlock; var targetBlock;
+	var sourcePort; var targetPort;
+	
+	// The connected activities are at the same level
+	if (s.source.eContainer().eContainer() == s.target.eContainer().eContainer()) {
+		sourceBlock = s.source.eContainer().equivalent();
+		targetBlock = s.target.eContainer().equivalent();
+		sourcePort = s.source.getSiblings().indexOf(s.source) + 1;
+		targetPort = s.target.getSiblings().indexOf(s.target) + 1;
+	} 
+	// The target activity is the parent of the source activity
+	else if (s.source.eContainer().eContainer() = s.target.eContainer()) { 
+		sourceBlock = s.source.eContainer().equivalent();
+		targetBlock = s.target.equivalent();
+		sourcePort = s.source.getSiblings().indexOf(s.source) + 1;
+		targetPort = 1;
+	}
+	// The source activity is the parent of the target activity
+	else {
+		sourceBlock = s.source.equivalent();
+		targetBlock = s.target.eContainer().equivalent();
+		sourcePort = 1;
+		targetPort = s.target.getSiblings().indexOf(s.target) + 1;
+	}
+	sourceBlock.link(targetBlock, sourcePort, targetPort);
+	//("Connecting " + sourceBlock.name + "[" + sourcePort + "] to " + targetBlock.name + "[" + targetPort + "]").println();
+}
+
+operation deleteAutoPorts() {
+	// Delete all the auto-generated ports in subsystems
+	delete Simulink!Inport.all.select(p|p.name = "In1").outports.flatten().lines.flatten();
+	delete Simulink!Inport.all.select(p|p.name = "In1");
+	delete Simulink!Outport.all.select(p|p.name = "Out1");
+}
+
+operation UML!ActivityParameterNode isOut() {
+	return self.parameter.direction = UML!ParameterDirectionKind#out;
+}
+
+operation UML!ActivityParameterNode isIn() {
+	return not self.isOut();
+}
+
+operation UML!ActivityParameterNode getSiblings(){ 
+	return self.eContainer().ownedNode.select(n|n.parameter.direction = self.parameter.direction);
+}
+
+operation UML!Activity getScript() {
+	var script = "function " + self.ownedNode.selectOne(n|n.isOut()).parameter.name + " = fcn(" + 
+		self.ownedNode.select(n|n.isIn()).collect(n|n.name).concat(",") + ")\\n";
+	script += self.stereotypeApplications.first.body.replaceAll("\\n","\\\\n");
+	return script;
+}
+
+operation UML!Activity isFunction() {
+	return self.appliedStereotypes.exists(s|s.name = "Function");
+}

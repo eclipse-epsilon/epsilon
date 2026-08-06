@@ -1,0 +1,40 @@
+[%import "sdl.eol";%]
+[%var components = b.getAllComponents();%]
+@startuml
+
+
+skinparam hyperlinkColor Black
+skinparam hyperlinkUnderline false
+skinparam shadowing false
+skinparam object {
+	BackgroundColor FloralWhite
+	ArrowColor Grey
+	BorderColor Wheat
+}
+
+[*For every component generate a PlantUML object*]
+[%for (c in components){%]
+!define hyperlink javascript:top.showView(Array.of('Components','[%=c.name.replace(" ","%20")%]'))
+object "[[hyperlink [%=c.name%]]]" as [%=c.getId()%] {
+	[%if (isLayerActive("jars")){%]
+	[%for (j in c.jars){%]
+	[%=j.filename%]
+	[%}%]
+[%}%]
+}
+
+[%}%]
+
+[*For every dependency between components generate an edge between the respective objects*]
+[%for (c in components){%]
+[%for(d in c.dependencies){%]
+[%=c.getId()%] ..> [%=d.getId()%]
+[%}%]
+[%}%]
+@enduml
+
+[%
+operation sdl::Component getId() {
+	return "C" + components.indexOf(self);
+}
+%]

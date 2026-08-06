@@ -1,0 +1,13 @@
+// Get all the books contained in this library
+var allBooks = BookType.all();
+
+// Print the total number of pages of all books
+var total = 0;
+for (aBook in allBooks) {
+	total = total + aBook.pages;
+}
+("Total pages: " + total).println();
+
+// ... the same using collect() and sum() 
+// instead of a for loop
+BookType.all().collect(b|b.pages).sum().println();

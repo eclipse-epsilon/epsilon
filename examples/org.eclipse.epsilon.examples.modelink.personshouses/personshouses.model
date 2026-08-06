@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<PersonHouseRelationshipGroup xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="personshouses" xmi:id="_hsG9oId6EeKR9d8FZw9fDw">
+  <personHouseRelationships xmi:id="_iWHj8Id6EeKR9d8FZw9fDw">
+    <house href="houses.model#_EdSTAId6EeKR9d8FZw9fDw"/>
+    <person href="persons.model#_OuAU4Id6EeKR9d8FZw9fDw"/>
+  </personHouseRelationships>
+</PersonHouseRelationshipGroup>

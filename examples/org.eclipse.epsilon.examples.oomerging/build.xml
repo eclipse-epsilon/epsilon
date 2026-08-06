@@ -1,0 +1,50 @@
+<project default="merge">
+	
+	<target name="loadModels">
+		
+		<epsilon.emf.register file="SimpleOO.ecore"/>
+		
+		<epsilon.emf.loadModel name="Left"
+                                       modelFile="Left.model"
+                                       metamodelUri="SimpleOO"
+                                       read="true" store="false" />
+		
+		<epsilon.emf.loadModel name="Right"
+                                       modelFile="Right.model"
+                                       metamodelUri="SimpleOO"
+                                       read="true" store="false" />
+ 
+		<epsilon.emf.loadModel name="Target"
+                                       modelFile="Target.model"
+                                       metamodelUri="SimpleOO"
+                                       read="false" store="true" />
+		
+	</target>
+	
+	<target name="merge" depends="validate">
+		<epsilon.eml src="MergeSimpleOO.eml"
+			usematchtrace="matchTrace">
+			<model ref="Left" alias="Source"/>
+			<model ref="Right" alias="Source"/>
+			<model ref="Target"/>
+		</epsilon.eml>
+	</target>
+	
+	<target name="compare" depends="loadModels">
+		<epsilon.ecl src="CompareSimpleOO.ecl" 
+			exportmatchtrace="matchTrace">
+			
+			<model ref="Left" alias="Source"/>
+			<model ref="Right" alias="Source"/>
+		</epsilon.ecl>
+	</target>
+	
+	<target name="validate" depends="compare">
+		<epsilon.evl src="ValidateSimpleOO.evl">
+			<model ref="Left" alias="SimpleOO"/>
+			<model ref="Right" alias="SimpleOO"/>
+			<uses ref="matchTrace"/>
+		</epsilon.evl>
+	</target>	
+	
+</project>

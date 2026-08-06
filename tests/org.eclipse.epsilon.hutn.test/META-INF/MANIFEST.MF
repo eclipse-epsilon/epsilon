@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Human Usable Textual Notation Test Suites (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.hutn.test
+Bundle-Version: 2.9.0.qualifier
+Require-Bundle: org.eclipse.epsilon.hutn.test.dependencies,
+ org.eclipse.epsilon.hutn.test.acceptance,
+ org.eclipse.epsilon.hutn.test.unit,
+ org.eclipse.epsilon.hutn.dt.test
+Bundle-Vendor: Eclipse.org
+Export-Package: org.eclipse.epsilon.hutn.test
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.hutn.test

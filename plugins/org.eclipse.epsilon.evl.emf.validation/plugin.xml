@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="org.eclipse.epsilon.evl.emf.validation" name="EVL Constraints" schema="schema/org.eclipse.epsilon.evl.emf.validation.exsd"/>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="org.eclipse.epsilon.evl.emf.validation.EValidatorPopulator">
+      </startup>
+   </extension>
+
+</plugin>

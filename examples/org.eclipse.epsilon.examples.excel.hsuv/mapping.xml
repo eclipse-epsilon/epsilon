@@ -1,0 +1,6 @@
+<spreadsheet>
+	<worksheet name="Requirement">
+		<column name="derived" many="true" delimiter=","/>
+	</worksheet>
+	<reference source="Requirement->derived" target="Requirement->id" many="true"/>
+</spreadsheet>

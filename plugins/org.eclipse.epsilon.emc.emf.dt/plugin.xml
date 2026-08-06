@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         id="emf"
+         name="emf"
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.emf.EmfModel"
+            dialog="org.eclipse.epsilon.emc.emf.dt.EmfModelConfigurationDialog"
+            icon="icons/emf.gif"
+            label="EMF Model"
+            stable="true"
+            type="EMF"/>
+      <modelType
+            class="org.eclipse.epsilon.emc.emf.m0.EmfM0Model"
+            dialog="org.eclipse.epsilon.emc.emf.dt.EmfM0ModelConfigurationDialog"
+            icon="icons/emfm0.gif"
+            label="M0 EMF Model"
+            type="EMFM0"/>
+      <modelType
+            class="org.eclipse.epsilon.emc.emf.EmfMetaModel"
+            dialog="org.eclipse.epsilon.emc.emf.dt.EmfMetaModelConfigurationDialog"
+            icon="icons/register.png"
+            label="Registered EMF EPackage"
+            stable="true"
+            type="EMF_M2">
+      </modelType>
+      <modelType
+            class="org.eclipse.epsilon.eol.emc.emf.virtual.VirtualEmfModel"
+            dialog="org.eclipse.epsilon.emc.emf.dt.VirtualEmfModelConfigurationDialog"
+            icon="icons/emf.gif"
+            label="Virtual EMF Model"
+            type="V_EMF">
+      </modelType>
+      <modelType
+            class="org.eclipse.epsilon.emc.emf.xml.XmlModel"
+            dialog="org.eclipse.epsilon.emc.emf.dt.XmlModelConfigurationDialog"
+            icon="icons/xml.gif"
+            label="XML document backed by XSD (EMF)"
+            type="XML">
+      </modelType>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.prettyPrinter">
+      <prettyPrinter class="org.eclipse.epsilon.emc.emf.EmfPrettyPrinter"/>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.tool">
+      <tool
+            class="org.eclipse.epsilon.emc.emf.tools.EmfTool"
+            defaultName="emfTool">
+      </tool>
+   </extension>
+
+
+</plugin>

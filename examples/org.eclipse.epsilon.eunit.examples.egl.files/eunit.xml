@@ -1,0 +1,16 @@
+<project default="run-tests">
+
+	<target name="run-tests">
+		<epsilon.emf.register file="tree.ecore"/>
+		<epsilon.eunit src="tests.eunit" failOnErrors="false">
+			<parameter name="basedir" value="${basedir}"/>
+		</epsilon.eunit>
+	</target>
+
+	<target name="tree2text">
+		<epsilon.egl src="tree2text.egl" target="tree.txt">
+			<model ref="Tree"/>
+		</epsilon.egl>
+	</target>
+
+</project>

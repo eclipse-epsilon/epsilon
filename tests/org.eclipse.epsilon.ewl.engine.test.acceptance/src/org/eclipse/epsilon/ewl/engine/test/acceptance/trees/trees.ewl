@@ -1,0 +1,10 @@
+wizard DeleteWizard {
+	
+	guard : self.isTypeOf(t_tree)
+	
+	title : "Delete " + self.a_label
+	
+	do {
+		info.put("deleted", true);
+	}
+}

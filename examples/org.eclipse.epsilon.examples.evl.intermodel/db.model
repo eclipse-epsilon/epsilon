@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<DB:Database xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:DB="DB" xmi:id="_GhKVoCwiEd-7NbMLkFh99w">
+  <contents xsi:type="DB:Table" xmi:id="_GhKVoSwiEd-7NbMLkFh99w" name="T_Customer"/>
+</DB:Database>

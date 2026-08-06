@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Cookbooks xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="Cookbooks">
+  <cookbooks name="cbk1" contents="//@categories.0/@recipes.0 //@categories.1/@recipes.0 //@categories.1/@recipes.1 //@categories.0/@recipes.1 //@categories.1/@recipes.2"/>
+  <categories name="cat1">
+    <recipes name="rcp1.2" dependencies="//@categories.1/@recipes.0">
+      <instructions name="ist1.2.1">
+        <instruction>ins1.2.1.1</instruction>
+      </instructions>
+    </recipes>
+    <recipes name="rcp1.1">
+      <instructions name="ist1.1.1">
+        <instruction>ins1.1.1.1</instruction>
+      </instructions>
+    </recipes>
+  </categories>
+  <categories name="cat2">
+    <recipes name="rcp2.2" dependencies="//@categories.1/@recipes.1">
+      <instructions name="ist2.2.1"/>
+      <ingredients name="ing2.2.1" amount="221.0" otherUnit="otherUnit2.2.1"/>
+    </recipes>
+    <recipes name="rcp2.3" dependencies="//@categories.1/@recipes.2">
+      <instructions name="ist2.3.1">
+        <instruction>ins2.3.1.1</instruction>
+        <instruction>ins2.3.1.2</instruction>
+        <instruction>ins2.3.1.3</instruction>
+      </instructions>
+      <ingredients name=""/>
+    </recipes>
+    <recipes name="rcp2.1" dependencies="//@categories.0/@recipes.0">
+      <instructions name="ist2.1.1">
+        <instruction>ins2.1.1.1</instruction>
+        <instruction>ins2.1.1.2</instruction>
+      </instructions>
+      <ingredients name="ing2.1.1" amount="-221.0" measurement="ounces"/>
+    </recipes>
+  </categories>
+</Cookbooks>

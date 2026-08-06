@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<_>
+	
+	<c1>
+		<attr name="a1"/>
+	</c1>
+	
+	<:template name="c1">
+		<content language="EGL">
+			<![CDATA[
+			<class>
+				<:slot/>
+			</class>
+			]]>
+		</content>
+	</:template>
+	
+</_>

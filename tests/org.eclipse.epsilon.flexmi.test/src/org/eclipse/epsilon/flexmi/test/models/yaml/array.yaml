@@ -1,0 +1,6 @@
+?nsuri: http://www.eclipse.org/emf/2002/Ecore
+package:
+  class: [
+    {name: c3, abstract: true},
+    {name: c4}
+  ]

@@ -1,0 +1,63 @@
+pattern ConnectedSegments
+  sensor : Sensor
+
+  in: Sensor.all.select(s|s.monitors.select(s:Segment|true).size() > 5),
+
+  segment1 : Segment from: sensor.monitors,
+  segment2 : Segment from: segment1.connectsTo.select(s|s.monitoredBy.includes(sensor)),
+  segment3 : Segment from: segment2.connectsTo.select(s|s.monitoredBy.includes(sensor)),
+  segment4 : Segment from: segment3.connectsTo.select(s|s.monitoredBy.includes(sensor)),
+  segment5 : Segment from: segment4.connectsTo.select(s|s.monitoredBy.includes(sensor)),
+  segment6 : Segment from: segment5.connectsTo.select(s|s.monitoredBy.includes(sensor)) {
+
+  do {
+    Sequence {
+      sensor,
+      segment1, segment2, segment3,
+      segment4, segment5, segment6
+    }.println('ConnectedSegments: ');
+  }
+
+}
+
+pattern PosLength
+  segment : Segment in: Segment.all.select(s|s.length <= 0) {
+
+  do {
+    segment.println('PosLength: ');
+  }
+}
+
+pattern RouteSensor
+  route: Route,
+  swP: SwitchPosition from: route.follows,
+  sw: Switch from: swP.target,
+  sensor: Sensor from: sw.monitoredBy.select(s|route.gathers.excludes(s))
+{
+  do {
+    Sequence {
+      route, swP, sw, sensor
+    }.println('RouteSensor: ');
+  }
+}
+
+pattern SwitchMonitored
+  sw : Switch from: Switch.all.select(sw|sw.monitoredBy.size = 0) {
+
+  do {
+    sw.println('SwitchMonitored: ');
+  }
+}
+
+pattern SwitchSet
+  route: Route,
+  semaphore: Semaphore from: Sequence{route.entry}.select(e | e.isDefined() and e.signal = 'GO'),
+  swP: SwitchPosition from: route.follows,
+  sw: Switch from: swP.target.select(t | t.currentPosition <> swP.position)
+{
+  do {
+    Sequence {
+      route, semaphore, swP, sw
+    }.println('SwitchSet: ');
+  }
+}

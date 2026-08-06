@@ -1,0 +1,17 @@
+<project default="main">
+	<target name="main">
+		<epsilon.emf.register file="model/PetriNet.ecore"/>
+		
+		<epsilon.emf.loadModel name="M" modelfile="model/PetriNet2000.xmi" 
+				metamodeluri="http://www.york.ac.uk/qvt/examples/0.1/PetriNet"
+				read="false" store="true"/>
+		
+		<epsilon.emg src="scripts/PetriNet.emg">
+			<model ref="M"/>
+			<parameter name="nouns" value="Person,Bus,Cow,Plane,Duck,Ship,Chair"/>
+			<parameter name="places" value="Waiting,Arrving,Walking,Diving,Singing,Drifting,Spinning"/>
+			<parameter name="transitions" value="Moves,Stops,Leaves,Sits,Levels,Stares,Docks,Departs,Breaks,Dissapears"/>
+			<parameter name="total" value="2000"/>		
+		</epsilon.emg>
+	</target>
+</project>

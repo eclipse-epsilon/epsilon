@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ASCII"?>
+<DirectedGraph:Graph xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:DirectedGraph="DirectedGraph" xmi:id="_h6n-wICvEd2O1qWkkEg7zA">
+  <contents xsi:type="DirectedGraph:Node" xmi:id="_h6n-wYCvEd2O1qWkkEg7zA" label="a"
+      outgoing="#_h6n-xYCvEd2O1qWkkEg7zA #_h6n-yICvEd2O1qWkkEg7zA"/>
+  <contents xsi:type="DirectedGraph:Node" xmi:id="_h6n-woCvEd2O1qWkkEg7zA" label="b"
+      outgoing="#_h6n-xoCvEd2O1qWkkEg7zA" incoming="#_h6n-xYCvEd2O1qWkkEg7zA #_h6n-yYCvEd2O1qWkkEg7zA"/>
+  <contents xsi:type="DirectedGraph:Node" xmi:id="_h6n-w4CvEd2O1qWkkEg7zA" label="c"
+      outgoing="#_h6n-x4CvEd2O1qWkkEg7zA" incoming="#_h6n-xoCvEd2O1qWkkEg7zA"/>
+  <contents xsi:type="DirectedGraph:Node" xmi:id="_h6n-xICvEd2O1qWkkEg7zA" label="d"
+      outgoing="#_h6n-yYCvEd2O1qWkkEg7zA" incoming="#_h6n-x4CvEd2O1qWkkEg7zA #_h6n-yICvEd2O1qWkkEg7zA"/>
+  <contents xsi:type="DirectedGraph:Edge" xmi:id="_h6n-xYCvEd2O1qWkkEg7zA" weight="1"
+      source="#_h6n-wYCvEd2O1qWkkEg7zA" target="#_h6n-woCvEd2O1qWkkEg7zA"/>
+  <contents xsi:type="DirectedGraph:Edge" xmi:id="_h6n-xoCvEd2O1qWkkEg7zA" weight="2"
+      source="#_h6n-woCvEd2O1qWkkEg7zA" target="#_h6n-w4CvEd2O1qWkkEg7zA"/>
+  <contents xsi:type="DirectedGraph:Edge" xmi:id="_h6n-x4CvEd2O1qWkkEg7zA" weight="1"
+      source="#_h6n-w4CvEd2O1qWkkEg7zA" target="#_h6n-xICvEd2O1qWkkEg7zA"/>
+  <contents xsi:type="DirectedGraph:Edge" xmi:id="_h6n-yICvEd2O1qWkkEg7zA" weight="3"
+      source="#_h6n-wYCvEd2O1qWkkEg7zA" target="#_h6n-xICvEd2O1qWkkEg7zA"/>
+  <contents xsi:type="DirectedGraph:Edge" xmi:id="_h6n-yYCvEd2O1qWkkEg7zA" weight="-2"
+      source="#_h6n-xICvEd2O1qWkkEg7zA" target="#_h6n-woCvEd2O1qWkkEg7zA"/>
+</DirectedGraph:Graph>

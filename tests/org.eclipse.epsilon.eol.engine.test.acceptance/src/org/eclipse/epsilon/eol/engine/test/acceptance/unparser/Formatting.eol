@@ -1,0 +1,248 @@
+operation ECore!EClass createFigure() {
+	
+	var shapeName = self.getFormatOption("figure");
+	var marginSize = self.getFormatOption("margin");
+	if (marginSize.isUndefined()) {
+		marginSize = 5;
+	}
+	else {
+		marginSize = marginSize.asInteger();
+	}
+
+	var shape;
+	if (shapeName = "rectangle") {
+		shape = new GmfGraph!Rectangle;
+	}
+	else if (shapeName = "ellipse") {
+		shape = new GmfGraph!Ellipse;
+	}
+	else if (shapeName = "polygon") {
+		shape = new GmfGraph!ScalablePolygon;
+		var polygonX = self.getFormatOption("polygon.x").trim().split("\\s+");
+		var polygonY = self.getFormatOption("polygon.y").trim().split("\\s+");
+		for (i in 0.to(polygonX.size() - 1)) {
+			var point = new GmfGraph!Point;
+			point.x = polygonX.get(i).asInteger();
+			point.y = polygonY.get(i).asInteger();
+			shape.template.add(point);
+		}
+	}
+	else if (shapeName = "svg") {
+		shape = new GmfGraph!SVGFigure;
+		shape.documentURI = self.getFormatOption("svg.uri");
+	}
+	else if (shapeName.isUndefined() or shapeName = "rounded") {
+		shape = new GmfGraph!RoundedRectangle;
+		shape.cornerHeight = 8;
+		shape.cornerWidth = 8;
+	}
+	else {
+		shape = new GmfGraph!CustomFigure;
+		shape.qualifiedClassName = shapeName;
+		marginSize = 0;
+	}
+
+    
+	if (marginSize > 0) {
+		var marginBorder = new GmfGraph!MarginBorder;
+		var insets = new GmfGraph!Insets;
+		var border = marginSize;
+		insets.top = border;
+		insets.bottom = border;
+		insets.left = border;
+		insets.right = border;
+		marginBorder.insets = insets;
+		shape.border = marginBorder;
+	}
+	
+	shape.formatNode(self);
+	
+	return shape;
+}
+
+operation GmfGraph!Figure formatLine(color : String, width : String, style : String) {
+	
+	if (color.isDefined()) {
+		self.foregroundColor = createColor(color);
+	}
+	
+	if (width.isDefined() and self.isKindOf(GmfGraph!Shape)) {
+		self.lineWidth = width.asInteger();
+	}
+	
+	if (style.isDefined() and self.isKindOf(GmfGraph!Shape)) {
+		if (style = "dash") {
+			self.lineKind = GmfGraph!LineKind#LINE_DASH;
+		}
+		else if (style = "dot") {
+			self.lineKind = GmfGraph!LineKind#LINE_DOT;
+		}
+		else if (style = "solid") {
+			self.lineKind = GmfGraph!LineKind#LINE_SOLID;
+		}
+	}
+	
+}
+
+operation GmfGraph!Figure formatNode(e : ECore!EModelElement) {
+	
+	var backgroundColor = e.getFormatOption("color");
+	if (backgroundColor.isDefined()) {
+		self.backgroundColor = createColor(backgroundColor);
+	}
+	var size = e.getFormatOption("size");
+	
+	if (size.isDefined()) {
+		self.preferredSize = createDimension(size);
+	}
+	
+	self.formatLine(e.getFormatOption("border.color"), e.getFormatOption("border.width"), e.getFormatOption("border.style"));
+}
+
+operation GmfGraph!PolylineConnection formatConnection(e) {
+	self.sourceDecoration = createPolylineDecoration(self.name + "SourceDecoration", e.getFormatOption("source.decoration"));
+	self.targetDecoration = createPolylineDecoration(self.name + "TargetDecoration", e.getFormatOption("target.decoration"));
+
+	self.formatLine(e.getFormatOption("color"), e.getFormatOption("width"), e.getFormatOption("style"));
+}
+
+operation createPolylineDecoration(name : String, type : String) {
+	var polylineDecoration;
+	
+	if (type = "none" or type.isUndefined()) {
+	
+	}
+	else if (type = "arrow") {
+		polylineDecoration = new GmfGraph!PolylineDecoration;
+		polylineDecoration.name = name;
+	}
+	else if (type = "rhomb") {
+		polylineDecoration = createRhomb(false);
+	}
+	else if (type = "filledrhomb") {
+		polylineDecoration = createRhomb(true);
+	}
+	else if (type = "closedarrow") {
+		polylineDecoration = createClosedArrow(false);
+	}
+	else if (type = "filledclosedarrow") {
+		polylineDecoration = createClosedArrow(true);
+	}
+	else if (type = "square") {
+		polylineDecoration = createSquare(false);
+	}
+	else if (type = "filledsquare") {
+		polylineDecoration = createSquare(true);
+	}
+	else {
+		polylineDecoration = new GmfGraph!CustomDecoration;
+		polylineDecoration.qualifiedClassName = type;
+		polylineDecoration.name = name;
+	}
+	
+	if (polylineDecoration.isDefined() and figureGallery.figures.excludes(polylineDecoration)) {
+		figureGallery.figures.add(polylineDecoration);
+	}
+	
+	return polylineDecoration;
+	
+}
+
+@cached
+operation createRhomb(filled : Boolean) : GmfGraph!PolygonDecoration {
+	var rhomb = new GmfGraph!PolygonDecoration;
+	rhomb.name = "Rhomb";
+	if (filled) {
+		rhomb.name = "Filled" + rhomb.name;
+	}
+	rhomb.template.add(createPoint(-1, 1));
+	rhomb.template.add(createPoint(0, 0));
+	rhomb.template.add(createPoint(-1, -1));
+	rhomb.template.add(createPoint(-2, 0));
+	rhomb.template.add(createPoint(-1, 1));
+	
+	if (not filled) {
+		var bg = new GmfGraph!ConstantColor;
+		bg.value = GmfGraph!ColorConstants#white;
+		rhomb.backgroundColor = bg;
+	}
+	
+	return rhomb;
+}
+
+@cached
+operation createClosedArrow(filled : Boolean) : GmfGraph!PolygonDecoration {
+	var arrow = new GmfGraph!PolygonDecoration;
+	arrow.name = "ClosedArrow";
+	if (filled) {
+		arrow.name = "Filled" + arrow.name;
+	}
+	
+	arrow.template.add(createPoint(0, 0));
+	arrow.template.add(createPoint(-2, 2));
+	arrow.template.add(createPoint(-2, -2));
+	arrow.template.add(createPoint(0, 0));
+	
+	if (not filled) {
+		var bg = new GmfGraph!ConstantColor;
+		bg.value = GmfGraph!ColorConstants#white;
+		arrow.backgroundColor = bg;
+	}
+	
+	return arrow;
+}
+
+@cached
+operation createSquare(filled : Boolean) : GmfGraph!PolygonDecoration {
+	var rect = new GmfGraph!PolygonDecoration;
+	rect.name = "Sqare";
+	if (filled) {
+		rect.name = "Filled" + rect.name;
+	}
+	
+	rect.template.add(createPoint(0, 1));
+	rect.template.add(createPoint(-1, 1));
+	rect.template.add(createPoint(-1, -1));
+	rect.template.add(createPoint(0, -1));
+	rect.template.add(createPoint(0, 1));
+	
+	if (not filled) {
+		var bg = new GmfGraph!ConstantColor;
+		bg.value = GmfGraph!ColorConstants#white;
+		rect.backgroundColor = bg;
+	}
+	
+	return rect;
+}
+
+operation createPoint(x : Integer, y : Integer) : GmfGraph!Point {
+	var p : new GmfGraph!Point;
+	p.x = x;
+	p.y = y;
+	return p;
+}
+
+operation createColor(rgb : String) : GmfGraph!Color {
+	var color = new GmfGraph!RGBColor;
+	var parts = rgb.split(",");
+	color.red = parts.at(0).asInteger();
+	color.green = parts.at(1).asInteger();
+	color.blue = parts.at(2).asInteger();
+	return color;
+}
+
+operation createDimension(size : String) : GmfGraph!Dimension {
+	var parts = size.split(",");
+	var dimension = new GmfGraph!Dimension;
+	dimension.dx = parts.first.asInteger();
+	dimension.dy = parts.last.asInteger();
+	return dimension;
+}
+
+operation ECore!EModelElement getFormatOption(option : String) : String {
+	var value = self.getAnnotationValue("gmf.node", option);
+	if (value.isUndefined()) {
+		value = self.getAnnotationValue("gmf.link", option);
+	}
+	return value;
+}

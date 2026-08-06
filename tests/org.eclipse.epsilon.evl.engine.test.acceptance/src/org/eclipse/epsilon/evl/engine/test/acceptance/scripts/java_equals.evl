@@ -1,0 +1,27 @@
+$parallel self.getPublicMethods().size() > 5
+context ClassDeclaration {
+	constraint hasEquals {
+		guard : self.satisfies("hasHashCode")
+		check : self.getPublicMethods().exists(method |
+			method.name == "equals" and
+			method.parameters.size() == 1 and
+			method.parameters.first().type.type.name == "Object" and
+			method.returnType.type.isTypeOf(PrimitiveTypeBoolean)
+		)
+	}
+	
+	@lazy
+	constraint hasHashCode {
+		check : self.getPublicMethods().exists(method |
+			method.name == "hashCode" and
+			method.parameters.isEmpty() and
+			method.returnType.type.isTypeOf(PrimitiveTypeInt)
+		)
+	}
+}
+
+@cached
+operation AbstractTypeDeclaration getPublicMethods() : Collection {
+    return self.bodyDeclarations.select(bd | bd.isKindOf(MethodDeclaration) and 
+        bd.modifier.isDefined() and bd.modifier.visibility == VisibilityKind#public);
+}

@@ -1,0 +1,89 @@
+pre {
+	var emfTool : new Native("org.eclipse.epsilon.emc.emf.tools.EmfTool");
+	emfTool.eCoreUtil.resolveAll(M.resource.resourceSet);
+	var classes = EClass.all.sortBy(c|c.name);
+}
+
+rule Barchart {
+	
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "html",
+		"path" = List{"Model", "Stats"},
+		"icon" = "barchart"
+	}
+	
+	template: "barchart.egl"
+	
+}
+
+rule ClassDiagram {
+	
+	parameters : Map {
+		"mainClassName" = "",
+		"classNames" = EClass.all.name, 
+		"format" = "graphviz-dot",
+		"path" = List{"Model", "(All Classes)"},
+		"icon" = "diagram-ff0000",
+		"layers" = Sequence {
+			Map {"id"="documentation", "title"="Documentation", "active"=false},
+			Map {"id"="constraintDescriptions", "title"="Constraint descriptions", "active"=false},
+			Map {"id"="constraintNames", "title"="Constraint names", "active"=false},
+			Map {"id"="features", "title"="Features"},
+			Map {"id"="inlineReferences", "title"="Inline references", "active"=false},
+			Map {"id"="referenceLabels", "title"="Reference labels", "active"=false},
+			Map {"id"="derived", "title"="Derived features", "active"=false},
+			Map {"id"="inherited", "title"="Inherited features", "active"=false},
+			Map {"id"="referencesToSelf", "title"="References to self", "active"=false},
+			Map {"id"="operations", "title"="Operations", "active"=false}
+		}
+	}
+	
+	template: "classdiagram.egl"
+	
+}
+
+rule Ecore23D {
+	
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "html",
+		"path" = List{"Model", "3D inheritance"},
+		"icon" = "diagram-fffbd7"
+	}
+	
+	template: "3d.egl"
+	
+}
+
+rule EClass2ClassDiagram 
+	transform c : EClass in: classes {
+	
+	parameters {
+		
+		return Map{
+			"mainClassName" = c.name,
+			"classNames" = Sequence{},
+			"format" = "graphviz-dot",
+			"path" = Sequence{"Model", "Classes", c.name},
+			"icon" = "diagram-fffbd7",
+			"layers" = Sequence {
+				Map {"id"="documentation", "title"="Documentation"},
+				Map {"id"="constraintDescriptions", "title"="Constraint descriptions"},
+				Map {"id"="constraintNames", "title"="Constraint names"},
+				Map {"id"="features", "title"="Features"},
+				Map {"id"="inlineReferences", "title"="Inline references"},
+				Map {"id"="referenceLabels", "title"="Reference labels", "active"=false},
+				Map {"id"="subtypes", "title"="Subtypes", "active"=false},
+				Map {"id"="supertypes", "title"="Supertypes"},
+				Map {"id"="derived", "title"="Derived features", "active"=false},
+				Map {"id"="inherited", "title"="Inherited features", "active"=false},
+				Map {"id"="referencesToSelf", "title"="References to self", "active"=false},
+				Map {"id"="operations", "title"="Operations", "active"=false}
+			}
+		};
+	}
+	
+	template: "classdiagram.egl"
+	
+}

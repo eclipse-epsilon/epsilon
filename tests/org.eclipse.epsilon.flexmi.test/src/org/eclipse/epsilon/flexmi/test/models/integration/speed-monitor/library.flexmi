@@ -1,0 +1,30 @@
+<?nsuri comps?>
+<_>
+	<:template name="binary_operator">
+		<parameter name="in"/>
+		<parameter name="out"/>
+		<content>
+			<comp>
+				<in name="in1" type="${in}"/>
+				<in name="in2" type="${in}"/>
+				<out name="result" type="${out}"/>
+			</comp>
+		</content>
+	</:template>
+
+	<:template name="nary_operator">
+		<parameter name="n"/>
+		<parameter name="in"/>
+		<parameter name="out"/>
+		<content language="EGL">
+			<![CDATA[
+			<comp>
+				[%for (i in 1.to(n.asInteger())){%]
+				<in name="in[%=i%]" type="${in}"/>
+				[%}%]
+				<out name="result" type="${out}"/>
+			</comp>
+			]]>
+		</content>
+	</:template>
+</_>

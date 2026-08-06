@@ -1,0 +1,13 @@
+<project default="default">
+	<target name="default">
+		
+		<xslt style="../org.eclipse.epsilon.workflow/pluginxml2tasksxml.xslt" in="plugin.xml" out="ant/org/eclipse/epsilon/workflow/tasks/csv/tasks.xml"/>		
+		<xslt style="../org.eclipse.epsilon.workflow/pluginxml2antlibxml.xslt" in="plugin.xml" out="ant/org/eclipse/epsilon/workflow/tasks/csv/antlib.xml">
+			<param name="removePrefix" expression="epsilon.csv."/>
+		</xslt>
+		<echo>Building ANT CSV jar</echo>
+		<mkdir dir="lib"/>
+		<jar destfile="lib/org.eclipse.epsilon.workflow.csv.jar" basedir="bin"/>
+		
+	</target>
+</project>

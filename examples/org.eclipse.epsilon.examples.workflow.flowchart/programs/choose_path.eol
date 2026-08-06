@@ -1,0 +1,28 @@
+// Create an empty path
+var path = new FlowchartPath!Path;
+
+// Find the start node
+var start : Flowchart!Node = Flowchart!Node.all.selectOne(n|n.isStart());
+var current : Flowchart!Node = start;
+
+// Walk through the flowchart until we reach a final state
+while (not current.isFinal()) {
+	// Create a stop on the path for this node
+	var stop = new FlowchartPath!Stop;
+	stop.label = current.type.name + " " + current.name;
+	path.stops.add(stop);
+	
+	// Select an outgoing transition at random
+	var chosenTransition = current.outgoing.random();
+
+	// Continue with the node from the chosen outgoing transition
+	current = chosenTransition.target;
+}
+
+operation Flowchart!Node isStart() : Boolean {
+	return self.incoming.isEmpty(); 
+}
+
+operation Flowchart!Node isFinal() : Boolean {
+	return self.outgoing.isEmpty();
+}

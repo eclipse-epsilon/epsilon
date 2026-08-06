@@ -1,0 +1,90 @@
+digraph G {
+	node[fontname=Arial, fontsize=11]
+
+[%
+var AllContextOfFiltered = AllContextOf;
+if (not isLayerActive("contexts")) AllContextOfFiltered = new Sequence; %]
+	
+[%for (g in AllGoals) {%]
+  { rank = same;
+    [%=g.nodeLabel("rect", "", "mintcream")%]
+[%    for (c in AllContextOfFiltered.select(c | c.source == g)) { %]
+    [%=c.target.nodeLabel("rect", "rounded", "linen")%]
+[%    }%]
+  }
+[%}%]
+[%for (s in AllStrategies) { %]
+  { rank = same;
+    [%=s.nodeLabel("polygon skew=0.3 margin=0 height=1.5 width=3 fixedsize=true", "", "floralwhite")%]
+[%  var ctxs = AllContextOfFiltered.select(c | c.source == s);
+    if (ctxs.size() > 0) {%]
+    node[group=[%=s.name%]];
+[%      for (c in ctxs) { %]
+    [%=c.target.nodeLabel("rect", "rounded", "azure")%]
+[%      }%]
+    [%=ctxs.target.name.concat("->")%][style=invis];
+[%  }%]
+  }
+[%}%]
+[%for (s in AllSolutions) {%]
+  { rank = same;
+    [%=s.nodeLabel("circle margin=0", "", "cornsilk")%]
+  }
+[%}%]	
+[%for (s in AllSupportedBy) { %]
+  [%=s.source.name%] -> [%=s.target.name%];
+[%}%]
+	
+[%for (s in AllContextOfFiltered) { %]
+  [%=s.source.name%] -> [%=s.target.name%] [arrowhead = onormal];
+[%}%]
+}
+[%
+/** Table for Node content */
+@template
+operation Node nodeLabel(shape, style, colour) {%]
+[%=self.name%] [shape=[%=shape%] [%if(style.length()>0){%] style=[%=style%][%}%] style=filled fillcolor=[%=colour%] label=<
+    <TABLE border="0" cellborder="0" cellspacing="0" cellpading="0">
+      <tr>
+        <td align="left">[%=self.name%]</td>
+      </tr>
+      <tr>
+        <td> </td>
+      </tr>
+      <tr>
+        <td>[%=self.breakDesc()%]</td>
+      </tr>
+    </TABLE>>];
+[%}
+
+/** Break the description string by adding &#13;&#10; (\n) characters
+ */
+operation Node breakDesc() : String {
+    var result = "";
+    var slices = 15;
+    for (w in self.description.split(" ")) {
+        result += w;
+        if (hasMore) {
+            if (result.length() > slices) {
+	            result += "<br align=\"left\"/>";         // "&#13;&#10;";
+	            slices = result.length() + 15;
+	        }
+	        else {
+	            result += " ";
+	        }
+        }
+    }
+    result += "<br align=\"left\"/>";
+    return result;
+}
+
+operation isLayerActive(id : String) {
+	var layer = layers.selectOne(l|l.id = id);
+	if (layer.isDefined()) {
+		return layer.active;
+	}
+	else {
+		return true;
+	}
+}
+%]

@@ -1,0 +1,19 @@
+- Features
+-- Fix accuracy of trace for INESS example
+--- TDD EglContext#appendToFineGrainedTrace and the TraceCombiner
+
+-- Tracing for [% out.print("abc") %] and similar statements
+--- Should OutputBuffer just implement Printer, rather than use OutputBufferPrintAdaptor?
+--- Should other operations of OutputBuffer be implemented with contributors, to help modularise the class?
+
+-- TextLocations
+--- TextLocation#resources should be accurate when > 1 file is generated
+--- TextLocation#resources should be updated when EglLaunchConfigDelegate saves a file to disk (maybe LaunchConfigDelegate should use a template to generate the file and hence automatically update the trace) 
+
+-- Is the trace accurate when @template operations are used?
+-- How to deal with model locations that are not EMF models?
+-- Decide what to do with old traceability code
+-- TextLocation should be updated when generating to a file
+-- Find a way to turn off traceability when running outside of Eclipse
+   so that we don't have to maintain separate POJO and EMF domain models.
+   Might need to speak to Dimitris about best way to achieve this...

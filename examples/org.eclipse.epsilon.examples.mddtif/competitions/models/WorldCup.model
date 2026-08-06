@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Competition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="CompetitionDsl" xmi:id="_-I2dQOB4EdypNL9JDfkphQ" name="World Cup">
+  <groups xmi:id="_-I2dQeB4EdypNL9JDfkphQ" name="A" competitors="_-I_nMeB4EdypNL9JDfkphQ _-I_nMuB4EdypNL9JDfkphQ"/>
+  <groups xmi:id="_-I2dQuB4EdypNL9JDfkphQ" name="B" competitors="_-I_nMOB4EdypNL9JDfkphQ _-I_nM-B4EdypNL9JDfkphQ"/>
+  <competitors xmi:id="_-I_nMOB4EdypNL9JDfkphQ" name="Germany" information="" group="_-I2dQuB4EdypNL9JDfkphQ"/>
+  <competitors xmi:id="_-I_nMeB4EdypNL9JDfkphQ" name="Italy" group="_-I2dQeB4EdypNL9JDfkphQ"/>
+  <competitors xmi:id="_-I_nMuB4EdypNL9JDfkphQ" name="France" information="" group="_-I2dQeB4EdypNL9JDfkphQ"/>
+  <competitors xmi:id="_-I_nM-B4EdypNL9JDfkphQ" name="Spain" group="_-I2dQuB4EdypNL9JDfkphQ"/>
+</Competition>

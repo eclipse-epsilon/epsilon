@@ -1,0 +1,24 @@
+<project default="main">
+	
+	<target name="main" depends="generate_site, refresh"/>
+	
+	<target name="generate_site">
+		<echo>Generating examples</echo>
+		
+		<taskdef name="epsilon.egl"
+		        classname="org.eclipse.epsilon.workflow.tasks.EglTask"/>
+		<taskdef name="epsilon.xml.loadmodel"
+		        classname="org.eclipse.epsilon.workflow.tasks.xml.LoadXmlModel"/>  
+		
+		<epsilon.xml.loadmodel name="Examples" uri="http://eclipse.org/epsilon/examples/examples.xml"/>
+		
+		<epsilon.egl src="main.egx"> 
+			<model ref="Examples"/>
+		</epsilon.egl>
+	</target>
+	
+	<target name="refresh">
+		<eclipse.refreshLocal resource="org.eclipse.epsilon.common.dt.examples" depth="infinite" />
+	</target>
+	
+</project> 

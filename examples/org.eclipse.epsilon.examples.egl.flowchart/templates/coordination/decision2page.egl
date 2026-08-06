@@ -1,0 +1,10 @@
+[%import 'util.eol';%]
+<h1>[%=decision.name%]</h1>
+<br/>
+[%
+var options = decision.outgoing;
+%]
+
+[%for (option in options){%]
+<a href="[%=option.target.name.clean()%].html">[%=option.name%]</a><br>
+[%}%]

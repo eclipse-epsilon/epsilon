@@ -1,0 +1,11 @@
+package SimpleOO;
+
+class Model {
+	attr String name;
+	val ~Class[*] contents;
+}
+
+class ~Class {
+	attr String name;
+	attr Boolean isAbstract;
+}

@@ -1,0 +1,4 @@
+for (c in City.all) {
+	(c.roads.collect(r|r.name).concat(", ") + 
+		" can get you to " + c.name).println();
+}

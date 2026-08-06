@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Common Development Tools Tests (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.common.dt.test;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse.org
+Require-Bundle: org.eclipse.epsilon.common.dt;visibility:=reexport,
+ org.eclipse.epsilon.test.dependencies
+Export-Package: org.eclipse.epsilon.common.dt.nature,
+ org.eclipse.epsilon.common.dt.test,
+ org.eclipse.epsilon.common.dt.test.util
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.common.dt.test

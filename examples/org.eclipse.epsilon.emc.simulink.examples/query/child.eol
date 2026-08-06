@@ -1,0 +1,19 @@
+var subsystems = Simulink!SubSystem.all();
+		
+var children;
+
+for (s in subsystems){
+	
+	if (s.parent == null){  
+	    
+	    s.name.println("name: ");
+	    
+		children = s.children;
+		
+	    for (c in children)
+	    {
+	        ("Found : " + c.name).println();
+	    }   
+	}
+}
+"Finished".println();

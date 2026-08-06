@@ -1,0 +1,15 @@
+@model
+operation prepareModels() {
+   var gA  := new A!Graph;
+   var nA  := new A!Node;
+   nA.name := 'bar';
+
+   var gB  := new B!Graph;
+   var nB  := new B!Node;
+   nB.name := 'Bar';
+}
+
+@test
+operation shouldBeEqual() {
+  assertEqualModels("A", "B");
+}

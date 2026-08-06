@@ -1,0 +1,363 @@
+operation t_b retFalse() : Boolean {
+	return self.getClass().getName().length() < 1;
+}
+
+pre {
+	var preVar = "Hello from pre";
+	blackboard.put("preVar", preVar);
+	if (blackboard.get("preVar").isUndefined() or preVar.isUndefined())
+		throw "Expected preVar";
+}
+
+pattern B
+	b : t_b {}
+	
+pattern BC
+	b : t_b,
+	c : t_c {}
+
+pattern BfromAll
+	b : t_b from : t_b.all {}
+	
+pattern BfromReturnAll
+	b : t_b from { return t_b.all; } {}
+	
+pattern Bmatch
+	b : t_b {
+	match : true
+}
+
+pattern NoB
+	b : t_b {
+	
+	match { return false; }
+}
+
+pattern NoBguardReturn
+	b : t_b guard { return false; } {}
+
+pattern Bguard
+	b : t_b guard : b.isDefined() {}
+
+pattern BCinactive
+	b : t_b,
+	c : t_c active : false {}
+	
+pattern BCactive 
+	b : t_b,
+	c : t_c active { return b.isDefined(); }
+
+pattern Binactive
+	b : t_b active : false {
+	do {
+		throw "[Binactive] Shouldn't be here! Matched '"+b+"' of "+b.getClass();
+	}
+}
+
+pattern BinactiveCfromAll
+	c1, c2 : t_c active : false,
+	b1 : t_b in {return t_b.all;} active : c1.isDefined(),
+	b2 : t_b active : b1.retFalse() {
+	onmatch {
+		throw "[BinactiveCfromAll] Shouldn't be here!";
+	}
+	nomatch {
+		throw "[BinactiveCfromAll] Shouldn't be here!";
+	}
+}
+
+pattern Bonmatch
+	b : t_b {
+	
+	onmatch {
+		blackboard.put("Bonmatch", blackboard.get("Bonmatch") + "x");
+	}	
+}
+
+pattern Bnomatch
+	b : t_b {
+	
+	match : false
+	
+	nomatch {
+		blackboard.put("Bnomatch", blackboard.get("Bnomatch") + "x");
+	}
+}
+
+pattern BCdo
+	b : t_b,
+	c : t_c {
+	
+	onmatch {
+		blackboard.put("BCdo", blackboard.get("BCdo") + "x");
+	}	
+}
+
+pattern BnoC
+	b : t_b,
+	no c : t_c guard : true {}
+
+pattern BnonoC
+	b : t_b,
+	no c : t_c guard : false {}
+
+pattern BnoCinactiveB
+	b : t_b active : false,
+	no c : t_c {
+	
+	onmatch {
+		throw "[BnoCinactiveB] Shouldn't be here!";
+	}
+	nomatch {
+		throw "[BnoCinactiveB] Shouldn't be here!";
+	}
+}
+
+pattern B2Csubset
+	b1 : t_b,
+	c : t_c
+		guard : b1.retFalse() or true
+		in : t_c.allInstances().reject(tc | tc.a_x.asInteger() == 1) {
+	
+	match : c.isDefined() and b1.a_x == c.a_x
+	onmatch {
+		if (b1.a_x.asInteger() == 1)
+			throw "[B2Csubset] Unexpected value for b1: "+b1.a_x;
+	}
+	nomatch {
+		if (b1.isUndefined())
+			throw "[B2Csubset] Expected b1";
+	}
+}
+
+pattern AccessSelf
+	bSelf : t_b
+		guard : bSelf.a_x.asInteger == 1,
+	cSelf : t_c
+		guard : cSelf.a_x.asInteger() <> 1 {
+	
+	onmatch {
+		if (bSelf.a_x == cSelf.a_x)
+			throw "[AccessSelf] b.x="+bSelf.a_x+", c.x="+cSelf.a_x;
+	}
+}
+
+pattern NegativeAccessPredecessor
+	bP : t_b,
+	no cS : t_c
+		guard : bP.a_x.asInteger() <> 1 {
+	
+	onmatch {
+		if (cS.isDefined() and bP.a_x.asInteger() == 1)
+			throw "[NegativeAccessSelf] Didn't expect 1!";
+	}
+	nomatch {
+		if (bP.a_x.asInteger() <> 1)
+			throw "[NegativeAccessSelf] Expected 1 but got "+bP.a_x;
+	}
+}
+
+pattern NegativeAccessSelf
+	anSelf : t_a in : Bag{},
+	no bnSelf : t_b
+		guard : bnSelf.a_x.asInteger() == 1
+		from : t_b.allInstances(),
+	no b2s : t_b
+		guard : bnSelf.a_x.asInteger() >= b2s.a_x.asInteger(),
+	no cnSelf : t_c
+		guard : cnSelf.a_x <> 1 {
+	
+	onmatch {
+		if (bnSelf.a_x <> cnSelf.a_x)
+			throw "[NegativeAccessSelf] b.x="+bnSelf.a_x+", c.x="+cnSelf.a_x;
+	}
+}
+
+pattern MultipleInactive
+	a : t_a
+		active : false,
+	b : t_b
+		active : a <> null,
+	c : t_c
+		active : c.isDefined() {
+	
+	onmatch {
+		if (b.isUndefined())
+			throw "[MultipleInactive] Expected b";
+		if (a.isDefined())
+			throw "[MultipleInactive] Unexpected a: "+a;
+		if (c.isDefined())
+			throw "[MultipleInactive] Unexpected c: "+c;
+	}
+	nomatch {
+		throw "[MultipleInactive] Shouldn't be here!";
+	}
+}
+
+pattern CardinalityMany
+	a : t_a [1],
+	b : t_b [*],
+	b1 : t_b,
+	c2 : t_c [2] {
+	onmatch {
+		if (a.isUndefined())
+			throw "[CardinalityMany] Expected a";
+		if (b.isUndefined())
+			throw "[CardinalityMany] Expected b";
+		if (b1.isUndefined())
+			throw "[CardinalityMany] Expected b1";
+		if (c2.isUndefined())
+			throw "[CardinalityMany] Expected c2";
+	}
+	nomatch {
+		throw "[CardinalityMany] Shouldn't be here!";
+	}
+}
+
+pattern CardinalityRange
+	b : t_b [1..2],
+	c1 : t_c [0..*]
+		in : t_c.allInstances().select(tc | tc.a_x.asInteger() == 1),
+	c2 : t_c [0..1]
+		in : t_c.allInstances().select(tc | tc.a_x.asInteger() == 2) {
+	match {
+		assertTrue(b.a_x.size() == 2);
+		return b.a_x[0] == c1.a_x[0]
+			or b.a_x[1] == c2.a_x[0]
+			or b.a_x[0] == c2.a_x[0]
+			or b.a_x[1] == c1.a_x[0];
+	}
+	onmatch {
+		if (b.isUndefined())
+			throw "[CardinalityRange] Expected b";
+		if (c1.isUndefined() and c2.isUndefined())
+			throw "[CardinalityRange] Expected c1 or c2";
+		if (c1.a_x == c2.a_x)
+			throw "[CardinalityRange] c1 and c2 should be different!";
+	}
+	nomatch {
+		if (b.isUndefined())
+			throw "[CardinalityRange] Expected b";
+		if (c1.isUndefined() and c2.isUndefined())
+			throw "[CardinalityRange] Expected c1 or c2";
+	}
+}
+
+pattern CardinalityZero
+	a : t_a [0],
+	b : t_b {
+	onmatch {
+		throw "[CardinalityZero] Shouldn't be here!";
+	}
+	nomatch {
+		if (b.isUndefined())
+			throw "[CardinalityZero] Expected b";
+	}
+}
+
+pattern CardinalityNegative
+	a : t_a [1],
+	c : t_c [2]
+		from : a.children,
+	no b : t_b [1]
+		from : t_b.allInstances().select(tb | not c.a_x.contains(tb.a_x)) {
+	onmatch {
+		if (b.isDefined())
+			throw "[CardinalityNegative] Didn't expect "+b;
+		if (a.isUndefined())
+			throw "[CardinalityNegative] Expected a";
+		if (c.isUndefined())
+			throw "[CardinalityNegative] Expected c";
+	}
+	nomatch {
+		if (b.isUndefined())
+			throw "[CardinalityNegative] Expected b";
+	}
+}
+
+pattern OptionalActive
+	a : t_a,
+	b : t_b
+		optional : a.isDefined()
+		active : true,
+	c : t_c
+		from : t_c.allInstances().select(tc | tc.a_x == b.a_x)
+		optional : b.retFalse() {
+	
+	onmatch {
+		if (a.isUndefined())
+			throw "[OptionalActive] Expected a";
+		if (b.isUndefined())
+			throw "[OptionalActive] Expected b";
+	}
+	nomatch {
+		if (a.isUndefined())
+			throw "[OptionalActive] Expected a";
+		if (b.isUndefined())
+			throw "[OptionalActive] Expected b";
+	}
+}
+
+pattern OptionalInactiveMultipleDomains
+	a : t_a,
+	b11, b12 : t_b
+		optional : a.isDefined()
+		active : false,
+	c1 : t_c
+		in : t_c.allInstances().select(tc | tc.a_x.asInteger() == 1)
+		optional : false,
+	b21 : t_b
+		optional : c1.isDefined(),
+	c2 : t_c
+		from : t_c.allInstances().select(tc | tc.a_x <> c1.a_x)
+		optional : b21.isDefined() and c1.a_x == 2 {
+
+	onmatch {
+		if (a.isUndefined())
+			throw "[OptionalInactive] Expected a";
+		if (b21.isUndefined())
+			throw "[OptionalInactive] Expected b21";
+		if (c1.isUndefined() or c1.a_x.asInteger() <> 1)
+			throw "[OptionalInactive] Expected c1=1";
+		if (c2.isUndefined() or c2.a_x.asInteger() <> 2)
+			throw "[OptionalInactive] Expected c2=2";
+	}
+	nomatch {
+		throw "[OptionalInactive] Shouldn't be here!";
+	}
+}
+/*
+pattern OptionalNegativeGuard
+	b : t_b,
+	b1, b2 : t_b
+		guard : b1.a_x <> b2.a_x
+		optional : b.retFalse(),
+	no c : t_c
+		guard : c.a_x == b1.a_x
+		optional : b2.isDefined(),
+	no a : t_a
+		guard : a.children.size() <> 4
+		active : b.isDefined() {
+	
+	onmatch {
+		if (b.isUndefined())
+			throw "[OptionalNegativeGuard] Expected b";
+	}
+	nomatch {
+		if (b.isUndefined())
+			throw "[OptionalNegativeGuard] Expected b";
+	}
+}
+/*
+pattern OptionalCardinality
+
+}
+/*
+pattern KitchenSink
+
+}
+*/
+post {
+	if (preVar.isUndefined() or blackboard.get("preVar").isUndefined())
+		throw "Expected preVar";
+}

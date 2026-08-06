@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="eol.dap.example">
+	<target name="01-hello-debug">
+		<epsilon.eol src="epsilon/01-hello.eol" debug="true" debugPort="4040"/>
+    </target>
+
+	<target name="02-imports-debug">
+		<epsilon.eol src="epsilon/02-imports-main.eol" debug="true" debugPort="4040"/>
+    </target>
+
+	<target name="05-hello">
+		<epsilon.egl src="epsilon/05-hello.egl" debug="true" debugPort="4040" />
+	</target>
+
+	<target name="04-inspectObject">
+		<epsilon.emf.loadModel name="M"
+			metamodelfile="epsilon/models/person.ecore"
+			modelfile="epsilon/models/person.model"
+			read="true" store="false" />
+
+		<epsilon.eol src="epsilon/04-inspectObject.eol" debug="true" debugPort="4040">
+			<model ref="M"/>
+		</epsilon.eol>
+
+		<epsilon.disposeModel model="M" />
+    </target>
+
+	<target name="07-orchestration">
+		<epsilon.emf.loadModel name="M"
+			metamodelfile="epsilon/models/person.ecore"
+			modelfile="epsilon/models/person.model"
+			read="true" store="false" />
+
+		<epsilon.egl src="epsilon/07-orchestration.egx" debug="true" debugPort="4040">
+			<model ref="M"/>
+		</epsilon.egl>
+
+		<epsilon.disposeModel model="M" />
+	</target>
+
+	<target name="09-validate">
+		<epsilon.emf.loadModel name="M"
+			metamodelfile="epsilon/models/person.ecore"
+			modelfile="epsilon/models/invalidPerson.model"
+			read="true" store="true" />
+
+		<epsilon.evl src="epsilon/09-validate.evl" debug="true" debugPort="4040" failOnErrors="false" fix="true">
+			<model ref="M"/>
+		</epsilon.evl>
+
+		<epsilon.disposeModel model="M" />
+	</target>
+
+	<target name="start-server">
+		<epsilon.startDebugServer />
+	</target>
+
+	<target name="stop-server">
+		<epsilon.stopDebugServer />
+	</target>
+
+	<target name="multiple-server-debug"
+		depends="start-server,01-hello-debug,02-imports-debug,04-inspectObject,05-hello,07-orchestration,stop-server" />
+	
+</project>

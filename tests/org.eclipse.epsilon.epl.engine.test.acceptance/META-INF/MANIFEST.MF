@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Pattern Language Acceptance Tests
+Bundle-SymbolicName: org.eclipse.epsilon.epl.engine.test.acceptance
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse.org
+Export-Package: org.eclipse.epsilon.epl.engine.test.acceptance
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.eclipse.epsilon.epl,
+ org.junit
+Require-Bundle: org.eclipse.epsilon.test.dependencies,
+ org.eclipse.epsilon.eol.engine.test.acceptance,
+ org.eclipse.epsilon.epl.engine
+Automatic-Module-Name: org.eclipse.epsilon.epl.engine.test.acceptance

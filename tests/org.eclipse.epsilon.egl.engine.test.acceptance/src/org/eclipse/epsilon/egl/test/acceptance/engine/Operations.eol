@@ -1,0 +1,37 @@
+operation Class extensionString() : String {
+	if (self.extends.isDefined()) {
+		return 'extends' + ' ' + self.extends.name + ' ';
+	}
+
+	return '';
+}
+
+operation Parameter toString() : String {
+	return self.type.name + ' ' + self.name;
+}
+
+operation Attribute toString() : String {
+	var type : String;
+	
+	type := self.type.name;
+	
+	if (self.isMany) {
+		type := 'List<' + type + '>';
+	} 
+
+	return self.visibility.name + ' ' + type + ' ' + self.name;
+}
+
+operation Operation toString() : String {
+	var params : String;
+	
+	for (param in self.parameters) {
+		params := params + param.toString();
+
+		if (hasMore) {
+			params := params + ', ';
+		}
+	}
+
+	return self.visibility.name + ' ' + self.type.name + ' ' + self.name + '(' + params + ')';
+}

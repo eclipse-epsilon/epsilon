@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon EMF Virtual Model Support
+Bundle-SymbolicName: org.eclipse.epsilon.emc.emf.virtual;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-Localization: plugin
+Export-Package: org.eclipse.epsilon.emc.emf.virtual,
+ org.eclipse.epsilon.emc.emf.virtual.impl,
+ org.eclipse.epsilon.emc.emf.virtual.util,
+ org.eclipse.epsilon.eol.emc.emf.virtual
+Require-Bundle: org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.eol.engine
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.emc.emf.virtual

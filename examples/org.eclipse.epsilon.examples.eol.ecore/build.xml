@@ -1,0 +1,14 @@
+<project default="main">
+    <target name="main">
+        <!-- Load the psl.ecore EMF metamodel -->
+        <epsilon.emf.loadModel name="M" modelfile="psl.ecore" metamodeluri="http://www.eclipse.org/emf/2002/Ecore" />
+        
+        <!-- Run program.eol against it -->
+        <epsilon.eol src="program.eol">
+            <model ref="M" />
+        </epsilon.eol>
+        
+        <!-- Dispose of the metamodel -->
+        <epsilon.disposeModel model="M"/>
+    </target>
+</project>

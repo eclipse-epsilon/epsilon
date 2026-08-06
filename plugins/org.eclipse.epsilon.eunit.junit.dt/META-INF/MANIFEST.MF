@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JUnit bridge for Epsilon EUnit (Eclipse)
+Bundle-SymbolicName: org.eclipse.epsilon.eunit.junit.dt
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: org.eclipse.core.runtime,
+ org.junit;version="4.5.0",
+ org.junit.runner;version="4.5.0",
+ org.junit.runner.notification;version="4.5.0",
+ org.junit.runners;version="4.5.0",
+ org.junit.runners.model;version="4.5.0"
+Require-Bundle: org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.eunit.junit,
+ org.eclipse.epsilon.eol.dt
+Export-Package: org.eclipse.epsilon.eunit.junit.dt
+Automatic-Module-Name: org.eclipse.epsilon.eunit.junit.dt

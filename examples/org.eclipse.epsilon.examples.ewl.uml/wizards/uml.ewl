@@ -1,0 +1,109 @@
+wizard CreateOneToManyAssociation {
+	
+	guard : self.isKindOf(Collection) and self.size() = 2
+		and self.forAll(c|c.isKindOf(Class))
+		
+	title : 'Create 1 (' + self.at(0).name + ') .. * (' + self.at(1).name + ') association'
+	
+	do {
+		var c1 : Class := self.at(0);
+		var c2 : Class := self.at(1);
+		
+		var assoc := new Association;
+		c1.owner.packagedElement.add(assoc);
+		
+		assoc.createProperty(c1, false); 
+		assoc.createProperty(c2, true);
+	}
+	
+}
+
+wizard CreateFactory {
+	
+	guard : self.isKindOf(Class)
+	
+	title : 'Create factory'
+	
+	do {
+		
+		var factory : new Class;
+		self.owner.packagedElement.add(factory);
+		factory.name := self.name + 'Factory';
+		
+		var createOperation : new Operation;
+		createOperation.name := 'create' + self.name;
+		factory.ownedOperation.add(createOperation);
+		
+		var returnParameter : new Parameter;
+		--var paramSet : new ParameterSet;
+		--createOperation.ownedParameterSet.add(paramSet);
+		--paramSet.parameter.add(returnParameter);
+		--returnParameter.type := self;
+		--returnParameter.direction := ParameterDirectionKind#"return";
+		--createOperation.templateParameter.add(returnParameter);
+		
+		var d : new Dependency;
+		self.owner.packagedElement.add(d);
+		d.name := 'creates';
+		d.supplier.add(self);
+		d.client.add(factory);
+		
+	}
+	
+}
+
+wizard ExtractInterface {
+	
+	guard : self.isKindOf(Class)
+	
+	title : 'Extract interface'
+	
+	do {
+		
+		var i : new Interface;
+		self.owner.packagedElement.add(i);
+		i.name := 'I' + self.name;
+		
+		var g : new Generalization;
+		self.generalization.add(g);
+		g.general := i;
+	
+		for (p : Property in Property.allInstances.select(p|p.type = self)) {
+			p.type := i;
+		}
+		
+		for (o : Operation in self.ownedOperation.clone()) {
+			i.ownedOperation.add(o);
+		}
+		
+	}
+	
+}
+
+operation Association createProperty(type : Class, many : Boolean) : Property {
+		var p := new Property;
+		p.type := type;
+		p.name := type.name.firstToLowerCase();
+		
+		if (many) {
+			p.name := p.name + 's';
+		}
+		
+		var lv := new LiteralInteger;
+		var uv;
+		if (many) {
+			uv := new LiteralUnlimitedNatural;
+		}
+		else {
+			uv := new LiteralInteger;
+		}
+		
+		uv.value := 1;
+		lv.value := 1;
+		
+		p.lowerValue := lv;
+		p.upperValue := uv;
+		
+		self.ownedEnd.add(p);
+		return p;
+}

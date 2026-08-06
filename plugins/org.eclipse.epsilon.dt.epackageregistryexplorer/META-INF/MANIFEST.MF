@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EPackage Registry Explorer Plug-in
+Bundle-SymbolicName: org.eclipse.epsilon.dt.epackageregistryexplorer;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.dt.epackageregistryexplorer.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.edit.ui,
+ org.eclipse.epsilon.emc.emf
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.dt.epackageregistryexplorer
+Bundle-Vendor: Eclipse Modeling Project
+Automatic-Module-Name: org.eclipse.epsilon.dt.epackageregistryexplorer

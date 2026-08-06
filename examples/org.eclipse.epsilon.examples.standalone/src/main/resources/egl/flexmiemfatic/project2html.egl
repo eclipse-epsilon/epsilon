@@ -1,0 +1,24 @@
+<html>
+<head>
+[*Bootstrap CSS*]
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+</head>
+
+<table class="table table-striped">
+[*Generate a header row with the names of all persons*]
+<tr>
+	<th></th>
+	[%for (p in Person.all){%]
+	<th>[%=p.name%]</th>
+	[%}%]
+</tr>
+[*Generate one row per task with the participants' effort*]
+[%for (t in Task.all){%]
+<tr>
+	<th>[%=t.title%]</th>
+	[%for (p in Person.all){%]
+	<td>[%=t.effort.selectOne(e|e.person = p)?.percentage ?: 0%]%</td>
+	[%}%]
+</tr>
+[%}%]
+</table>

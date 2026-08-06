@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.epsilon.evl.dt.editor.EvlEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            default="true"
+            extensions="evl"
+            icon="icons/evl.gif"
+            id="org.eclipse.epsilon.evl.dt.editor.EvlEditor"
+            name="Epsilon Validation Language Editor"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.epsilon.evl.eclipse.dt.launching.EvlLaunchConfigurationDelegate"
+            icon="icons/evl.gif"
+            id="EVLValidation"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.eclipse.epsilon.evl.dt.launching.EvlLaunchConfigurationDelegate"
+            id="org.epsilon.evl.eclipse.dt.launching.EvlLaunchConfigurationDelegate"
+            modes="run, debug"
+            name="EVL Validation"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.epsilon.evl.dt.launching.EvlLaunchConfigurationTabGroup"
+            description="Create a configuration to launch an EVL Validation"
+            id="org.eclipse.epsilon.evl.dt.launching.EvlLaunchConfigurationTabGroup"
+            type="org.epsilon.evl.eclipse.dt.launching.EvlLaunchConfigurationDelegate"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.evl.dt.wizards.NewEvlFileWizard"
+            icon="icons/evl.gif"
+            id="org.eclipse.epsilon.evl.dt.wizards.NewEvlFileWizard"
+            name="EVL Validation"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.evl.dt.views.ValidationView"
+            icon="icons/evl.gif"
+            id="org.eclipse.epsilon.evl.dt.views.ValidationView"
+            name="Validation"/>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.moduleImplementation">
+      <implementation
+            class="org.eclipse.epsilon.evl.EvlModule"
+            default="true"
+            dialog="org.eclipse.epsilon.evl.dt.launching.tabs.EvlModuleConfiguration"
+            language="EVL"
+            name="Sequential">
+      </implementation>
+      <implementation
+            class="org.eclipse.epsilon.evl.concurrent.EvlModuleParallelAnnotation"
+            default="false"
+            dialog="org.eclipse.epsilon.evl.dt.launching.tabs.EvlModuleParallelConfiguration"
+            language="EVL"
+            name="Parallel (Annotations)">
+      </implementation>
+      <implementation
+            class="org.eclipse.epsilon.evl.concurrent.EvlModuleParallelElements"
+            default="false"
+            dialog="org.eclipse.epsilon.evl.dt.launching.tabs.EvlModuleParallelConfiguration"
+            language="EVL"
+            name="Parallel (Elements)">
+      </implementation>
+      <implementation
+            class="org.eclipse.epsilon.evl.concurrent.EvlModuleParallelContextAtoms"
+            default="false"
+            dialog="org.eclipse.epsilon.evl.dt.launching.tabs.EvlModuleParallelConfiguration"
+            language="EVL"
+            name="Parallel (ContextAtoms) [Recommended]">
+      </implementation>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.tool">
+      <tool
+            class="org.eclipse.epsilon.evl.EvlModule"
+            defaultName="module">
+      </tool>
+   </extension>
+</plugin>

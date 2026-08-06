@@ -1,0 +1,162 @@
+import 'ReferenceInferrence.eol';
+
+post {
+	// Infer simple inheritance hierachy
+	var obsoleteFeatures := new Set(EStructuralFeature);
+	
+	for (feature in MetaModel!EStructuralFeature.allInstances()) {
+		if (obsoleteFeatures.excludes(feature)) {
+			var relatedFeatures := MetaModel!EStructuralFeature.allInstances().reject(f|f = feature).select(f|f.name = feature.name and f.eType = feature.eType);
+		
+			if (not relatedFeatures.isEmpty()) {
+				var superclass := new MetaModel!EClass;
+				superclass.name := 'Has' + feature.name.firstToUppercase();
+			
+				var subtypes := relatedFeatures.collect(f|f.eContainingClass);
+				subtypes.add(feature.eContainingClass);
+				
+				subtypes.forAll(c|c.eSuperTypes.add(superclass));
+				
+				// Add superclass to correct package, add feature to superclass, make superclass abstract
+				feature.eContainingClass.ePackage.eClassifiers.add(superclass);
+				superclass.eStructuralFeatures.add(feature);
+				superclass.`abstract` := true;
+				
+				obsoleteFeatures.addAll(relatedFeatures);
+			}
+		}
+	}
+	
+	for (obsoleteFeature in obsoleteFeatures) {
+		delete obsoleteFeature;
+	}
+}
+
+rule PackageObject2Package
+	transform o : Intermediate!PackageObject
+	to p : MetaModel!EPackage {
+	
+	p.name  := o.type;
+	p.nsURI := o.type; 
+}
+
+rule ClassObject2Class
+	transform o : Intermediate!ClassObject
+	to c : MetaModel!EClass {
+
+	guard: o.notProcessed()
+	
+	c.name := o.type;
+	
+	o.getPackage().equivalent().eClassifiers.add(c);
+}
+
+@abstract
+rule Slot2Attribute
+	transform s : Intermediate!Slot
+	to a : MetaModel!EAttribute {
+   
+	guard: s.notProcessed()
+
+	a.name := s.feature;
+	s.owner.getEClass().eStructuralFeatures.add(a);
+} 
+
+rule StringSlot2Attribute
+	transform s : Intermediate!StringSlot
+	to a : MetaModel!EAttribute
+	extends Slot2Attribute {
+	
+	a.eType := 'EString'.asEDataType();
+}
+
+rule FloatSlot2Attribute
+	transform s : Intermediate!FloatSlot
+	to a : MetaModel!EAttribute
+	extends Slot2Attribute {
+	
+	a.eType := 'EFloatObject'.asEDataType();
+}
+
+rule IntegerSlot2Attribute
+	transform s : Intermediate!IntegerSlot
+	to a : MetaModel!EAttribute
+	extends Slot2Attribute {
+	
+	a.eType := 'EIntegerObject'.asEDataType();
+}
+
+rule BooleanSlot2Attribute
+	transform s : Intermediate!BooleanSlot
+	to a : MetaModel!EAttribute
+	extends Slot2Attribute {
+	
+	a.eType := 'EBooleanObject'.asEDataType();
+}
+
+rule ReferenceSlot2Reference
+	transform s : Intermediate!ReferenceSlot
+	to r : MetaModel!EReference {
+	
+	guard: s.notProcessed() 
+	
+	r.name  := s.feature;
+	r.eType := s.getEType();
+	
+	if (s.isMany()) {
+		r.upperBound := -1;
+	}
+	
+	s.owner.getEClass().eStructuralFeatures.add(r);
+}
+
+rule ContainmentSlot2Reference
+	transform s : Intermediate!ContainmentSlot
+	to r : MetaModel!EReference {
+	
+	guard: Intermediate!ClassObject.isType(s.owner) and s.notProcessed() 
+	
+	r.name        := s.feature;
+	r.containment := true;
+	r.eType       := s.getEType();
+	
+	if (s.isMany()) {
+		r.upperBound := -1;
+	}
+	
+	s.owner.getEClass().eStructuralFeatures.add(r);
+}
+
+operation getEClass(name : String) : MetaModel!EClass {
+	return MetaModel!EClass.allInstances().select(c|c.name = name).first();
+}
+
+operation Intermediate!ClassObject getEClass() : MetaModel!EClass {
+	return getEClass(self.type);
+}
+
+operation Intermediate!ClassObject notProcessed() : Boolean {
+	return self.getEClass().isUndefined();
+}
+
+operation Intermediate!Slot notProcessed() : Boolean {
+	return self.owner.getEClass().eStructuralFeatures.select(c|c.name = self.feature).isEmpty();
+}
+
+operation Intermediate!ClassObject getPackage() : Intermediate!PackageObject {
+	var owner : Intermediate!Object := self.getOwner();
+	
+	while (not Intermediate!PackageObject.isType(owner)) {
+		owner := owner.getOwner();
+	}
+	
+	return owner;
+}
+
+operation Intermediate!ClassObject getOwner() : Intermediate!Object {
+	return Intermediate!ContainmentSlot.allInstances().select(cs | cs.objects.includes(self)).first().owner;	
+}
+
+operation String asEDataType() : Ecore!EDataType {
+	return Ecore!EDataType.allInstances().select(d | d.name = self).first();
+}

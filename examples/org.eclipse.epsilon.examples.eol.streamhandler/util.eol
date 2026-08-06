@@ -1,0 +1,3 @@
+operation f() {
+  return 456;
+}

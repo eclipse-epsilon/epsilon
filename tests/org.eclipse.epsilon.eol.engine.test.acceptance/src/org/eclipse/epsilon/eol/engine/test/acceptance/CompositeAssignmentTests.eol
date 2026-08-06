@@ -1,0 +1,30 @@
+@test
+operation testPlusEquals() {
+	var i : Integer;
+	i += 2;
+	assertEquals(2, i);
+}
+
+@test
+operation testMinusEquals() {
+	var i : Integer;
+	i = 5;
+	i -= 2;
+	assertEquals(3, i);
+}
+
+@test
+operation testTimesEquals() {
+	var i : Integer;
+	i = 5;
+	i *= 2;
+	assertEquals(10, i);
+}
+
+@test
+operation testDivEquals() {
+	var i : Integer;
+	i = 8;
+	i /= 4;
+	assertEquals(2, i);
+}

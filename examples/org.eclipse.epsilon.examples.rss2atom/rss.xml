@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:media="http://search.yahoo.com/mrss/"
+	>
+
+<channel>
+	<title>Dimitris Kolovos</title>
+	<atom:link href="http://kolovos.wordpress.com/feed/" rel="self" type="application/rss+xml" />
+	<link>http://kolovos.wordpress.com</link>
+	<description>Software Engineer. Lecturer at University of York. Foe of fish, spinning doors and semantics.</description>
+	<lastBuildDate>Mon, 23 Sep 2013 22:05:53 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.com/</generator>
+<cloud domain='kolovos.wordpress.com' port='80' path='/?rsscloud=notify' registerProcedure='' protocol='http-post' />
+<image>
+		<url>http://s2.wp.com/i/buttonw-com.png</url>
+		<title>Dimitris Kolovos</title>
+		<link>http://kolovos.wordpress.com</link>
+	</image>
+	<atom:link rel="search" type="application/opensearchdescription+xml" href="http://kolovos.wordpress.com/osd.xml" title="Dimitris Kolovos" />
+	<atom:link rel='hub' href='http://kolovos.wordpress.com/?pushpress=hub'/>
+		<item>
+		<title>Composite and nested filesets in ANT</title>
+		<link>http://kolovos.wordpress.com/2013/09/14/composite-and-nested-filesets-in-ant/</link>
+		<comments>http://kolovos.wordpress.com/2013/09/14/composite-and-nested-filesets-in-ant/#comments</comments>
+		<pubDate>Sat, 14 Sep 2013 02:02:44 +0000</pubDate>
+		<dc:creator>Dimitris Kolovos</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[ANT]]></category>
+
+		<guid isPermaLink="false">http://kolovos.wordpress.com/?p=105</guid>
+		<description><![CDATA[I haven&#8217;t found a sensible way to combine/nest filesets in ANT so I&#8217;ve implemented a ResourceCollectionGroup DataType/ResourceCollection, which allows for deep nesting of filesets/groups. An example of using ResourceCollectionGroup is available here.<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=105&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></description>
+				<content:encoded><![CDATA[<p>I haven&#8217;t found a sensible way to combine/nest filesets in ANT so I&#8217;ve implemented a <a href="http://dev.eclipse.org/svnroot/modeling/org.eclipse.epsilon/trunk/standalone/org.eclipse.epsilon.standalone/src/org/eclipse/epsilon/standalone/ResourceCollectionGroup.java">ResourceCollectionGroup</a> DataType/ResourceCollection, which allows for deep nesting of filesets/groups. An example of using ResourceCollectionGroup is available <a href="http://dev.eclipse.org/svnroot/modeling/org.eclipse.epsilon/trunk/standalone/org.eclipse.epsilon.standalone/build-jars.xml">here</a>.</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/105/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/105/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=105&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://kolovos.wordpress.com/2013/09/14/composite-and-nested-filesets-in-ant/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/7c3777a06d6d0861869ef58dbfe1e26c?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">Dimitris Kolovos</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Basic username/password authentication for ksoap2 on Android</title>
+		<link>http://kolovos.wordpress.com/2013/08/25/basic-usernamepassword-authentication-for-ksoap2-on-android/</link>
+		<comments>http://kolovos.wordpress.com/2013/08/25/basic-usernamepassword-authentication-for-ksoap2-on-android/#comments</comments>
+		<pubDate>Sun, 25 Aug 2013 21:18:30 +0000</pubDate>
+		<dc:creator>Dimitris Kolovos</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://kolovos.wordpress.com/?p=100</guid>
+		<description><![CDATA[The built-in HttpTransportBasicAuth class provided by ksoap2 doesn&#8217;t seem to be part of the ksoap2 Android assembly. The following class (adapted from here) works fine for me. import java.io.IOException; import org.kobjects.base64.Base64; import org.ksoap2.transport.HttpTransportSE; import org.ksoap2.transport.ServiceConnection; public class HttpTransportBasicAuth extends HttpTransportSE { private String username; private String password; public HttpTransportBasicAuth(String url, String username, String password) { [&#8230;]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=100&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></description>
+				<content:encoded><![CDATA[<p>The built-in HttpTransportBasicAuth class provided by ksoap2 doesn&#8217;t seem to be part of the ksoap2 Android assembly. The following class (adapted from <a href="https://code.google.com/p/ec-android-pilot/source/browse/trunk/src/com/ec/prod/android/pilot/client/HttpTransportBasicAuth.java?spec=svn138&amp;r=138">here</a>) works fine for me.</p>
+<pre>
+import java.io.IOException;
+
+import org.kobjects.base64.Base64;
+import org.ksoap2.transport.HttpTransportSE;
+import org.ksoap2.transport.ServiceConnection;
+
+public class HttpTransportBasicAuth extends HttpTransportSE {
+
+  private String username;
+  private String password;
+
+  public HttpTransportBasicAuth(String url, String username, String password) {
+    super(url);
+    this.username = username;
+    this.password = password;
+  }
+
+  @Override
+  public ServiceConnection getServiceConnection() throws IOException {
+    ServiceConnection serviceConnection = super.getServiceConnection();
+    addBasicAuthentication(serviceConnection);
+    return serviceConnection;
+  }
+
+  protected void addBasicAuthentication(ServiceConnection serviceConnection) 
+      throws IOException {
+    
+    if (username != null &amp;&amp; password != null) {
+      StringBuffer buffer = new StringBuffer(username);
+      buffer.append(':').append(password);
+      byte[] bytes = buffer.toString().getBytes();
+      buffer.setLength(0);
+      buffer.append("Basic ");
+      Base64.encode(bytes, 0, bytes.length, buffer);
+      serviceConnection.setRequestProperty
+        ("Authorization", buffer.toString());
+    }
+  }
+}
+</pre>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/100/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/100/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=100&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://kolovos.wordpress.com/2013/08/25/basic-usernamepassword-authentication-for-ksoap2-on-android/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/7c3777a06d6d0861869ef58dbfe1e26c?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">Dimitris Kolovos</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Sharing GWT projects to SVN with Subclipse</title>
+		<link>http://kolovos.wordpress.com/2012/11/15/sharing-gwt-projects-to-svn-with-subclipse/</link>
+		<comments>http://kolovos.wordpress.com/2012/11/15/sharing-gwt-projects-to-svn-with-subclipse/#comments</comments>
+		<pubDate>Thu, 15 Nov 2012 22:01:06 +0000</pubDate>
+		<dc:creator>Dimitris Kolovos</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://kolovos.wordpress.com/?p=94</guid>
+		<description><![CDATA[If you try to add your GWT project to an SVN repository with Subclipse, by default Subclipse will also put all GWT-generated files (which can be several MBs in size) under version control. To avoid this, before sharing your project you should mark the following folders of your project as derived in Eclipse, so that [&#8230;]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=94&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></description>
+				<content:encoded><![CDATA[<p>If you try to add your GWT project to an SVN repository with Subclipse, by default Subclipse will also put all GWT-generated files (which can be several MBs in size) under version control. To avoid this, before sharing your project you should mark the following folders of your project as derived in Eclipse, so that Subclipse ignores them when it tries to share the project.</p>
+<ul>
+<li>war/WEB-INF/deploy</li>
+<li>war/&lt;module_name&gt;</li>
+<li>gwt-unitCache</li>
+</ul>
+<p>To mark a folder as derived in Eclipse you need to right-click it in the Package Explorer view, click Properties, check the Derived option in the Resource panel and click OK.</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/94/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/94/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=94&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://kolovos.wordpress.com/2012/11/15/sharing-gwt-projects-to-svn-with-subclipse/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/7c3777a06d6d0861869ef58dbfe1e26c?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">Dimitris Kolovos</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Model Transformation Papers</title>
+		<link>http://kolovos.wordpress.com/2012/08/14/model-transformation-papers/</link>
+		<comments>http://kolovos.wordpress.com/2012/08/14/model-transformation-papers/#comments</comments>
+		<pubDate>Tue, 14 Aug 2012 08:54:55 +0000</pubDate>
+		<dc:creator>Dimitris Kolovos</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://kolovos.wordpress.com/?p=90</guid>
+		<description><![CDATA[Below is a short list of papers and other resources in the area of model(-to-model) transformation aimed at newcomers to the field. Classification of Model Transformation Approaches Feature-based Survey of Model Transformation Approaches A Taxonomy of Model Transformation Model Transformation: The Heart and Soul of Model-Driven Software Development The Epsilon Transformation Language Transforming Models with [&#8230;]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=90&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></description>
+				<content:encoded><![CDATA[<p>Below is a short list of papers and other resources in the area of model(-to-model) transformation aimed at newcomers to the field.</p>
+<ul>
+<li><a href="http://users.dsic.upv.es/~einsfran/mda/czarnecki_helsen.pdf">Classification of Model Transformation Approaches</a></li>
+<li><a href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arnumber=5386627">Feature-based Survey of Model Transformation Approaches</a></li>
+<li><a href="http://www.sciencedirect.com/science/article/pii/S1571066106001435">A Taxonomy of Model Transformation</a></li>
+<li><a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=01231150">Model Transformation: The Heart and Soul of Model-Driven Software Development</a></li>
+<li><a href="http://www.springerlink.com/content/r575u280706p0371/">The Epsilon Transformation Language</a></li>
+<li><a href="http://www.springerlink.com/content/7143g735r4j59463/">Transforming Models with ATL</a></li>
+<li><a href="http://www.omg.org/spec/QVT/1.1/">QVT 1.1 Specification</a></li>
+<li><a href="http://www.springerlink.com/content/31pt5242j7745410/">Model Transformations? Transformation Models!</a></li>
+</ul>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/90/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/90/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=90&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://kolovos.wordpress.com/2012/08/14/model-transformation-papers/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/7c3777a06d6d0861869ef58dbfe1e26c?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">Dimitris Kolovos</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Reviewing PDF Documents using Skim</title>
+		<link>http://kolovos.wordpress.com/2012/08/01/reviewing-pdf-documents-using-skim/</link>
+		<comments>http://kolovos.wordpress.com/2012/08/01/reviewing-pdf-documents-using-skim/#comments</comments>
+		<pubDate>Wed, 01 Aug 2012 10:18:26 +0000</pubDate>
+		<dc:creator>Dimitris Kolovos</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+		<category><![CDATA[MacOS]]></category>
+
+		<guid isPermaLink="false">http://kolovos.wordpress.com/?p=85</guid>
+		<description><![CDATA[When reviewing PDF documents (papers, reports etc.) I often need to produce a list of comments in a separate text file. For quite some time I&#8217;ve been doing this by switching back and forth between the PDF viewer and a text editor but I&#8217;ve recently found a more efficient way of doing this so I [&#8230;]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=85&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></description>
+				<content:encoded><![CDATA[<p>When reviewing PDF documents (papers, reports etc.) I often need to produce a list of comments in a separate text file. For quite some time I&#8217;ve been doing this by switching back and forth between the PDF viewer and a text editor but I&#8217;ve recently found a more efficient way of doing this so I thought I&#8217;d share it. </p>
+<p>To avoid switching between applications, I started marking my comments using highlights in <a href="http://skim-app.sourceforge.net">Skim</a> and exporting them using <b>File-&gt;Export-&gt;Notes as Text</b> which creates a file with the following format.</p>
+<pre>
+* Highlight, page 2
+some bold claim -&gt; needs reference
+
+* Highlight, page 3
+confusing sentence -&gt; Not entirely clear what this means
+
+* Highlight, page 4
+tyop -&gt; typo
+</pre>
+<p>This was not quite the format I wanted, so to fix this I&#8217;ve created a new Skim template (<a href="https://dl.dropbox.com/u/5636547/kolovos.wordpress.com/Compact%20Notes.txt">Compact Notes.txt</a>) which produces notes in the following format:</p>
+<pre>
+Page 2: some bold claim -&gt; needs reference
+Page 3: confusing sentence -&gt; Not entirely clear what this means
+Page 4: tyop -&gt; typo
+</pre>
+<p>To use Compact Notes.txt, you need to <a href="https://dl.dropbox.com/u/5636547/kolovos.wordpress.com/Compact%20Notes.txt">download</a> and place it under <b>/Library/Application Support/Skim/Templates/</b> (you&#8217;ll need to create any missing folders in this hierarchy). Once the template is in place, you can choose it in the <b>File Format</b> drop down menu as displayed below:</p>
+<p><a href="http://kolovos.files.wordpress.com/2012/08/skim-export-notes.png"><img src="http://kolovos.files.wordpress.com/2012/08/skim-export-notes.png?w=590" alt="" title="skim-export-notes"   class="alignnone size-full wp-image-86" /></a></p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/85/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/85/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=85&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://kolovos.wordpress.com/2012/08/01/reviewing-pdf-documents-using-skim/feed/</wfw:commentRss>
+		<slash:comments>5</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/7c3777a06d6d0861869ef58dbfe1e26c?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">Dimitris Kolovos</media:title>
+		</media:content>
+
+		<media:content url="http://kolovos.files.wordpress.com/2012/08/skim-export-notes.png" medium="image">
+			<media:title type="html">skim-export-notes</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Eclipse LaunchConfigurationDelegate prone to memory leaks</title>
+		<link>http://kolovos.wordpress.com/2012/06/16/eclipse-launchconfigurationdelegate-prone-to-memory-leaks/</link>
+		<comments>http://kolovos.wordpress.com/2012/06/16/eclipse-launchconfigurationdelegate-prone-to-memory-leaks/#comments</comments>
+		<pubDate>Sat, 16 Jun 2012 14:00:25 +0000</pubDate>
+		<dc:creator>Dimitris Kolovos</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://kolovos.wordpress.com/?p=82</guid>
+		<description><![CDATA[LaunchConfigurationDelegates in Eclipse remain in memory after their launch method has executed. As such, they also prevent any object they reference from being garbage-collected. For example in the following code class MyLaunchConfigurationDelegate extends LaunchConfigurationDelegate { protected BigObject bigObject = null; public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor progressMonitor) throws CoreException { this.bigObject = [&#8230;]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=82&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></description>
+				<content:encoded><![CDATA[<p>LaunchConfigurationDelegates in Eclipse remain in memory after their launch method has executed. As such, they also prevent any object they reference from being garbage-collected. For example in the following code</p>
+<pre>
+class MyLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
+
+    protected BigObject bigObject = null;
+
+    public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor progressMonitor) throws CoreException {
+        this.bigObject = createBigObject();		
+    }
+}
+</pre>
+<p>bigObject will remain in memory for ever, so it&#8217;s worth keeping this in mind and cleaning up before returning from launch().</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/82/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/82/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=82&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://kolovos.wordpress.com/2012/06/16/eclipse-launchconfigurationdelegate-prone-to-memory-leaks/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/7c3777a06d6d0861869ef58dbfe1e26c?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">Dimitris Kolovos</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Reduce space below LaTeX images</title>
+		<link>http://kolovos.wordpress.com/2012/03/31/reduce-space-below-latex-images/</link>
+		<comments>http://kolovos.wordpress.com/2012/03/31/reduce-space-below-latex-images/#comments</comments>
+		<pubDate>Sat, 31 Mar 2012 21:39:04 +0000</pubDate>
+		<dc:creator>Dimitris Kolovos</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://kolovos.wordpress.com/?p=77</guid>
+		<description><![CDATA[To reduce the amount of whitespace between an image and its caption, and between the image&#8217;s caption and the next item in your document, you can use the following commands \addtolength{\belowcaptionskip}{-7mm} \addtolength{\abovecaptionskip}{-5mm}<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=77&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></description>
+				<content:encoded><![CDATA[<p>To reduce the amount of whitespace between an image and its caption, and between the image&#8217;s caption and the next item in your document, you can use the following commands</p>
+<pre>
+\addtolength{\belowcaptionskip}{-7mm}
+\addtolength{\abovecaptionskip}{-5mm}
+</pre>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/77/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/77/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=77&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://kolovos.wordpress.com/2012/03/31/reduce-space-below-latex-images/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/7c3777a06d6d0861869ef58dbfe1e26c?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">Dimitris Kolovos</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>LaTeX lstlisting XML formatting</title>
+		<link>http://kolovos.wordpress.com/2012/03/31/latex-lstlisting-xml-formatting/</link>
+		<comments>http://kolovos.wordpress.com/2012/03/31/latex-lstlisting-xml-formatting/#comments</comments>
+		<pubDate>Sat, 31 Mar 2012 21:07:01 +0000</pubDate>
+		<dc:creator>Dimitris Kolovos</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://kolovos.wordpress.com/?p=69</guid>
+		<description><![CDATA[To format XML code in LaTeX using lstlisting, you can use the following language definition (adapted from here) \lstdefinelanguage{XML} { morestring=[b]", morestring=[s]{&#62;}{&#60;}, morecomment=[s]{}, identifierstyle=\textbf, showstringspaces=false }<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=69&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></description>
+				<content:encoded><![CDATA[<p>To format XML code in LaTeX using lstlisting, you can use the following language definition (adapted from <a href="http://tex.stackexchange.com/questions/10255/xml-syntax-highlighting">here</a>)</p>
+<pre>
+\lstdefinelanguage{XML} {
+  morestring=[b]",
+  morestring=[s]{&gt;}{&lt;},
+  morecomment=[s]{},
+  identifierstyle=\textbf,
+  showstringspaces=false
+}
+</pre>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/69/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/69/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=69&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://kolovos.wordpress.com/2012/03/31/latex-lstlisting-xml-formatting/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/7c3777a06d6d0861869ef58dbfe1e26c?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">Dimitris Kolovos</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>MDE/modelling Mailing Lists</title>
+		<link>http://kolovos.wordpress.com/2012/03/26/mdemodelling-mailing-lists/</link>
+		<comments>http://kolovos.wordpress.com/2012/03/26/mdemodelling-mailing-lists/#comments</comments>
+		<pubDate>Mon, 26 Mar 2012 21:24:33 +0000</pubDate>
+		<dc:creator>Dimitris Kolovos</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://kolovos.wordpress.com/?p=61</guid>
+		<description><![CDATA[Below are some mailing lists/groups related to MDE/modelling. Please feel free to suggest by leaving a reply below. Planet MDE mailing list PUML mailing list MDA Discussion mailing list LinkedIn MDD group LinkedIn DSM group LinkedIn MDA group<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=61&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></description>
+				<content:encoded><![CDATA[<div><span style="line-height:13px;">Below are some mailing lists/groups related to MDE/modelling. Please feel free to suggest by leaving a reply below.</span></div>
+<div></div>
+<ul>
+<li><span style="line-height:13px;"><a href="http://listes.imag.fr/wws/subrequest/planetmde">Planet MDE mailing list</a></span></li>
+<li><span style="line-height:13px;"><a href="http://www.cs.york.ac.uk/puml/joining.html">PUML mailing list</a></span></li>
+<li><span style="line-height:13px;"><a href="http://tech.groups.yahoo.com/group/mda-discussion/">MDA Discussion mailing list</a></span></li>
+<li><span style="line-height:13px;"><a href="http://www.linkedin.com/groups?home=&amp;gid=155446">LinkedIn MDD group</a></span></li>
+<li><span style="line-height:13px;"><a href="http://www.linkedin.com/groups/DSM-Forum-138803">LinkedIn DSM group</a></span></li>
+<li><a href="http://www.linkedin.com/groups/Model-Driven-Architecture-50539">LinkedIn MDA group</a></li>
+</ul>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/61/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/61/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=61&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://kolovos.wordpress.com/2012/03/26/mdemodelling-mailing-lists/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/7c3777a06d6d0861869ef58dbfe1e26c?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">Dimitris Kolovos</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Mac OS X Lion + Subclipse 1.8.x = Incompatible JavaHL library loaded. 1.7.x or later required.</title>
+		<link>http://kolovos.wordpress.com/2012/02/03/mac-os-x-lion-subclipse-1-8-x-incompatible-javahl-library-loaded-1-7-x-or-later-required/</link>
+		<comments>http://kolovos.wordpress.com/2012/02/03/mac-os-x-lion-subclipse-1-8-x-incompatible-javahl-library-loaded-1-7-x-or-later-required/#comments</comments>
+		<pubDate>Fri, 03 Feb 2012 12:59:45 +0000</pubDate>
+		<dc:creator>Dimitris Kolovos</dc:creator>
+				<category><![CDATA[Uncategorized]]></category>
+
+		<guid isPermaLink="false">http://kolovos.wordpress.com/?p=56</guid>
+		<description><![CDATA[The problem appears to be that Subclipse 1.8.x needs Subversion 1.7 to run. Installing Subversion 1.7 from http://www.wandisco.com/get/?f=subversion-binaries/1.7/Subversion-1.7.2_10.7.x.pkg gets everything to work like a charm once again (a complete list of downloads is available here: http://www.ubersvn.com/download)<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=56&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></description>
+				<content:encoded><![CDATA[<p>The problem appears to be that Subclipse 1.8.x needs Subversion 1.7 to run. Installing Subversion 1.7 from <a href="http://www.wandisco.com/get/?f=subversion-binaries/1.7/Subversion-1.7.2_10.7.x.pkg">http://www.wandisco.com/get/?f=subversion-binaries/1.7/Subversion-1.7.2_10.7.x.pkg</a> gets everything to work like a charm once again (a complete list of downloads is available here:<a href="http://www.ubersvn.com/download"> http://www.ubersvn.com/download</a>)</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/kolovos.wordpress.com/56/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/kolovos.wordpress.com/56/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=kolovos.wordpress.com&#038;blog=2565049&#038;post=56&#038;subd=kolovos&#038;ref=&#038;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://kolovos.wordpress.com/2012/02/03/mac-os-x-lion-subclipse-1-8-x-incompatible-javahl-library-loaded-1-7-x-or-later-required/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/7c3777a06d6d0861869ef58dbfe1e26c?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">Dimitris Kolovos</media:title>
+		</media:content>
+	</item>
+	</channel>
+</rss>

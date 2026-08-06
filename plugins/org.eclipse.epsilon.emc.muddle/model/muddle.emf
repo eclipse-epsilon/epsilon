@@ -1,0 +1,71 @@
+@namespace(uri="http://www.eclipse.org/epsilon/emc/muddle", prefix="")
+@emf.gen(basePackage="org.eclipse.epsilon.emc", modelDirectory="/org.eclipse.epsilon.emc.muddle/src-gen")
+package muddle;
+
+class Muddle {
+	val Type[*] types;
+	val MuddleElement[*]#muddle elements;
+}
+
+class MuddleElement {
+	attr String ~id;
+	val Slot[*]#owningElement slots;
+	ref MuddleElementType#instances type;
+	ref Muddle#elements muddle;
+	val MuddleElementStyle[0..1] style;
+}
+
+class MuddleElementStyle {
+	attr String color;
+	attr String shape;
+	attr double width;
+	attr double height;
+	attr double borderWidth;
+	attr int labelFontSize;
+	attr double x;
+	attr double y;
+}
+
+class Slot {
+	attr EJavaObject[*] values;
+	ref Feature#slots feature;
+	ref MuddleElement#slots owningElement;
+}
+
+abstract class Type {
+	attr String name;
+}
+
+class Feature {
+	attr String name;
+	attr boolean many = false;
+	attr boolean primary = false;
+	attr boolean runtime = false;
+	ref Type type;
+	ref MuddleElementType#features owningType;
+	ref Slot[*]#feature slots;
+}
+
+class MuddleElementType extends Type {
+	ref MuddleElement[*]#type instances;
+	val Feature[*]#owningType features;
+	ref MuddleElementType[*]#subTypes superTypes;
+	ref MuddleElementType[*]#superTypes subTypes;
+}
+
+class LinkElementType extends MuddleElementType {
+	ref Feature sourceFeature;
+	ref Feature targetFeature;
+	val Feature roleInSourceFeature;
+	val Feature roleInTargetFeature;
+}
+
+abstract class PrimitiveType extends Type {}
+
+class IntegerType extends PrimitiveType {}
+
+class StringType extends PrimitiveType {}
+
+class BooleanType extends PrimitiveType {}
+
+class RealType extends PrimitiveType {}

@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Wizard Language EMF Support
+Bundle-SymbolicName: org.eclipse.epsilon.ewl.emf;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.ewl.emf.EwlEmfPlugin
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.common.dt,
+ org.eclipse.epsilon.ewl.engine,
+ org.eclipse.epsilon.eol.dt,
+ org.eclipse.emf.ecore.editor,
+ org.eclipse.epsilon.emf.dt
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.epsilon.ewl.emf
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.ewl.emf

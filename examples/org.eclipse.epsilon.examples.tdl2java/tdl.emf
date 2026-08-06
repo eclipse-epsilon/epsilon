@@ -1,0 +1,13 @@
+package tdl;
+
+class Table {
+	attr String name;
+	attr String ~package;
+	val Column[*] columns;
+}
+
+class Column {
+	attr String name;
+	attr String type;
+	attr boolean searchable;
+}

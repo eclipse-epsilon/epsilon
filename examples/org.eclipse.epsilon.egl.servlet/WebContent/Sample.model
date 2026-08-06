@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Tree:Tree xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Tree="Tree" xmi:id="_v1akwXzNEd6WKvVoUB7SAw" label="t1">
+  <children xmi:id="_w9iqcHzNEd6WKvVoUB7SAw" label="t2">
+    <children xmi:id="_zowTgHzNEd6WKvVoUB7SAw" label="t3"/>
+    <children xmi:id="_139WAHzNEd6WKvVoUB7SAw" label="t4"/>
+  </children>
+</Tree:Tree>

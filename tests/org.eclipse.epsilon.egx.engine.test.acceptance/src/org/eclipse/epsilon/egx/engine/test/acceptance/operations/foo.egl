@@ -1,0 +1,2 @@
+[%include("bar.egl");%]
+foo.egl

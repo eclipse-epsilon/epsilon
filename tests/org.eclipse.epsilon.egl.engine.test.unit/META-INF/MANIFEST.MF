@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Generation Language Unit Tests (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.egl.engine.test.unit
+Bundle-Version: 2.9.0.qualifier
+Export-Package: org.eclipse.epsilon.egl,
+ org.eclipse.epsilon.egl.config,
+ org.eclipse.epsilon.egl.execute.context,
+ org.eclipse.epsilon.egl.formatter.language,
+ org.eclipse.epsilon.egl.formatter.linebyline,
+ org.eclipse.epsilon.egl.merge,
+ org.eclipse.epsilon.egl.merge.output,
+ org.eclipse.epsilon.egl.merge.partition,
+ org.eclipse.epsilon.egl.output,
+ org.eclipse.epsilon.egl.parse,
+ org.eclipse.epsilon.egl.preprocessor,
+ org.eclipse.epsilon.egl.test.unit,
+ org.eclipse.epsilon.egl.util
+Require-Bundle: org.eclipse.epsilon.test.dependencies;visibility:=reexport,
+ org.eclipse.epsilon.egl.engine;visibility:=reexport
+Bundle-Vendor: Eclipse.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.egl.engine.test.unit

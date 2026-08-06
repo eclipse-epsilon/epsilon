@@ -1,0 +1,322 @@
+[%
+	out.setContentType("HTML");
+	
+	var type : String = "";
+		
+	if (class.isAbstract()) {	
+		type = "Abstract Class";
+	} else {
+		if (class.isInterface()) {
+			type = "Interface";
+		} else {
+			type = "Class";
+		}
+	}
+	
+	var package : String = class.getEPackage().name;
+%]
+<h1>Package: [%=package%]</h1>
+<h2>[%=type%] [%=class.name%]</h2>
+
+[% if (class.eSuperTypes.size() > 0) { %]
+	<h3>Inherits from:</h3>
+	<ul>
+		[% for (supertype in class.eSuperTypes.sortBy(st|st.name)) { %]
+			<li><a href="[%=supertype.filename()%]">[%=supertype.name%]</a></li>
+		[% } %]
+	</ul>
+[% } %]
+
+[% if (class.subtypes().size() > 0) { %]		
+<h3>Direct subclasses:</h3>
+	<ul>
+		[% for (subtype in class.subtypes()) { %]
+			<li><a href="[%=subtype.filename()%]">[%=subtype.name%]</a></li>
+		[% } %]
+	</ul>
+[% } %]
+			
+[% if (class.getEAnnotation("doc").isDefined()) { %]
+
+	[% for (entry in class.getEAnnotation("doc").getDetails().select(e|e.key="description")) { %]
+		<hr />
+		<p id="description">
+			[%=entry.value%]
+		</p>
+	[% } %]
+	
+	[% for (entry in class.getEAnnotation("doc").getDetails()) { %]
+		[% if (entry.key = "version") { %]
+			<h3>Version:</h3>
+			<p id="version">[%=entry.value%]</p>
+		[% } %]
+		[% if (entry.key = "see") { %]
+			<h3>See also: </h3>
+			<ul>
+				[% for (see in entry.value.split(",")) { %]
+					<li><a href="[%=see.trim().asClassifierFileName(package)%]">[%=see.trim()%]</a></li>
+				[% } %]
+			</ul>
+		[% } %]
+	[% } %]
+[% } %]
+
+<hr />
+
+[% if (class.eAllAttributes.size() > 0) { %]
+	<h4>Attributes</h4>
+	<table cellspacing="0">
+		<tr>
+			<th class="inheritedFrom">&nbsp;</th>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Changeable</th>
+			<th>Required</th>
+			<th>Description</th>
+		</tr>
+		[% for (attribute in class.eAllAttributes.sortBy(a|a.name)) { %]
+			[% if (attribute.eContainingClass = class) { %]
+				<tr>
+					<td class="inheritedFrom">&nbsp;</td>
+			[% } else { %]
+				<tr class="inheritedFeature">
+					<td class="inheritedFrom">
+						<a href="[%=attribute.eContainingClass.filename()%]">
+							<img src="../img/arrow_up.png" alt="Inherited from [%=attribute.eContainingClass.name%]" />
+						</a>
+					</td>
+			[% } %]		
+			
+			<td>[%=attribute.name%]</td>
+			
+			[% if (attribute.eType.isDefined()) { %]
+					<td><a href="[%=attribute.eType.name.asClassifierFileName(package)%]">[%=attribute.eType.name%]</a></td>
+			[% } else { %]
+					<td>&nbsp;</td>
+			[% } %]
+			
+			[% if (attribute.isChangeable()) { %]
+				<td>true</td>
+			[% } else { %]
+				<td>false</td>
+			[% } %]
+			
+			[% if (attribute.isRequired()) { %]
+				<td>true</td>
+			[% } else { %]
+				<td>false</td>
+			[% } %]
+			
+			[% if (attribute.getEAnnotation("doc").isDefined()) { %]
+				[% for (entry in attribute.getEAnnotation("doc").getDetails()) { %]
+					[% if (entry.key = "description") { %]
+						<td>[%=entry.value%]</td>
+					[% } %]
+				[% } %]
+			[% }  else { %]
+						<td>&nbsp;</td>
+			[% } %]
+			</tr>
+		[% } %]
+	</table>
+[% } %]
+	
+[% if (class.eAllAttributes.size() > 0) { %]
+	<hr />
+[% } %]
+	
+[% if (class.eAllOperations.size() > 0) { %]
+	<h4>Operations</h4>
+	<table cellspacing="0">
+		<tr>
+			<th class="inheritedFrom">&nbsp;</th>
+			<th>Signature</th>
+			<th>Type</th>
+			<th>Description</th>
+		</tr>
+		[% for (op in class.eAllOperations.sortBy(o|o.name)) { %]
+			[% if (op.eContainingClass = class) { %]
+				<tr>
+					<td class="inheritedFrom">&nbsp;</td>
+			[% } else { %]
+				<tr class="inheritedFeature">
+					<td class="inheritedFrom">
+						<a href="[%=op.eContainingClass.filename()%]">
+							<img src="../img/arrow_up.png" alt="Inherited from [%=op.eContainingClass.name%]" />
+						</a>
+					</td>
+			[% } %]	
+			
+			<td>[%=op.signature()%]</td>
+			
+			[% if (op.eType.isDefined()) { %]
+						<td><a href="[%=op.eType.name.asClassifierFileName(package)%]">[%=op.eType.name%]</a></td>
+			[% } else { %]
+						<td>&nbsp;</td>
+			[% } %]
+			
+			[% if (op.getEAnnotation("doc").isDefined()) { %]
+				[% for (entry in op.getEAnnotation("doc").getDetails()) { %]
+					[% if (entry.key = "description") { %]
+						<td>[%=entry.value%]</td>
+					[% } %]
+				[% } %]
+			[% } else { %]
+						<td>&nbsp;</td>
+			[% } %]
+			
+			</tr>
+		[% } %]
+	</table>
+[% } %]
+
+[% if (class.eAllOperations.size() > 0) { %]
+	<hr />
+[% } %]
+	
+[% if (class.eAllReferences.size() > 0) { %]
+	<h4>References</h4>
+	<table cellspacing="0">
+		<tr>
+			<th>&nbsp;</th>
+			<th>Name</th>
+			<th>Type</th>
+			<th>Changeable</th>
+			<th>Required</th>
+			<th>Ordered</th>
+			<th>Unqiue</th>
+			<th>Cardinality</th>
+			<th>Description</th>
+		</tr>
+		[% for (ref in class.eAllReferences.sortBy(r|r.name)) { %]
+			[% if (ref.eContainingClass = class) { %]
+				<tr>
+					<td class="inheritedFrom">&nbsp;</td>
+			[% } else { %]
+				<tr class="inheritedFeature">
+					<td class="inheritedFrom">
+						<a href="[%=ref.eContainingClass.filename()%]">
+							<img src="../img/arrow_up.png" alt="Inherited from [%=ref.eContainingClass.name%]" />
+						</a>
+					</td>
+			[% } %]	
+			
+			<td>[%=ref.name%]</td>
+			
+			[% if (ref.eType.isDefined()) { %]
+				<td><a href="[%=ref.eType.name.asClassifierFileName(package)%]">[%=ref.eType.name%]</a></td>
+			[% } else { %]
+				<td>&nbsp;</td>
+			[% } %]
+			
+			[% if (ref.isChangeable()) { %]
+				<td>true</td>
+			[% } else { %]
+				<td>false</td>
+			[% } %]
+			
+			[% if (ref.isRequired()) { %]
+				<td>true</td>
+			[% } else { %]
+				<td>false</td>
+			[% } %]
+			
+			[% if (ref.isOrdered()) { %]
+				<td>true</td>
+			[% } else { %]
+				<td>false</td>
+			[% } %]
+			
+			[% if (ref.isUnique()) { %]
+				<td>true</td>
+			[% } else { %]
+				<td>false</td>
+			[% } %]
+			
+			<td>[%=ref.cardinality()%]</td>
+			
+			[% if (ref.getEAnnotation("doc").isDefined()) { %]
+				[% for (entry in ref.getEAnnotation("doc").getDetails()) { %]
+					[% if (entry.key = "description") { %]
+						<td>[%=entry.value%]</td>
+					[% } %]
+				[% } %]
+			[% } else { %]
+						<td>&nbsp;</td>
+			[% } %]	
+							
+			</tr>
+		[% } %]
+	</table>
+[% } %]
+
+[%
+	operation ETypedElement cardinality() : String {
+		var upperBound : String = self.getUpperBound().toString();
+		
+		if (upperBound = "-1") {
+			upperBound = "*";
+		}
+		
+		return self.getLowerBound() + ".." + upperBound;
+	}
+	
+	operation EClass subtypes() : Sequence {
+		var subtypes : new Sequence;
+		
+		for (class in EClass.allInstances()) {
+			for (supertype in class.eSuperTypes) {
+				if (supertype = self) {
+					subtypes.add(class);
+				}
+			}
+		}
+		
+		return subtypes;
+	}
+
+	operation EOperation signature() : String {
+		var params : String = "";
+	
+		for (param in self.eParameters) {
+			if (param.eType.isDefined()) {
+				params = params + param.eType.name + " ";
+			}
+			
+			params = params + param.name;
+			
+			if (hasMore) {
+				params = params + ", ";
+			}
+		}
+		
+		var exceptions : String = "";
+	
+		if (self.eExceptions.size() > 0) {
+	
+			exceptions = " throws ";
+	
+			for (ex in self.eExceptions) {
+				exceptions = exceptions + ex.name;
+				
+				if (hasMore) {
+					exceptions = exceptions + ", ";
+				}
+			}
+		}
+		
+		return self.name + "(" + params + ")" + exceptions;
+	}
+	
+	operation EPackage filename() : String {
+		return self.name + "-package-index.html";
+	}
+
+	operation EClassifier filename() : String {
+		return self.ePackage.name + "-" + self.name + ".html";
+	}
+
+	operation Any asClassifierFileName(package : String) : String {
+		return package + "-" + self + ".html";
+	}
+%]

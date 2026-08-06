@@ -1,0 +1,26 @@
+@namespace(uri="vehicles", prefix="")
+package vehicles;
+
+
+class Vehicle {
+	attr String reg;
+	attr String colour;
+	val Wheel[*] wheels;
+	val Engine engine;
+}
+
+abstract class Engine {
+	attr int cc;
+}
+
+class DieselEngine extends Engine {
+	
+}
+
+class PetrolEngine extends Engine {
+	
+}
+
+class Wheel {
+	attr int size;
+}

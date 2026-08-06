@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ASCII"?>
+<DirectedGraph:Graph xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:DirectedGraph="DirectedGraph" xmi:id="_MgK-0M63EdyWs5oF2LiBCA">
+  <contents xsi:type="DirectedGraph:Node" xmi:id="_MiG4gM63EdyWs5oF2LiBCA" label="a"
+      outgoing="#_Miaag863EdyWs5oF2LiBCA #_Miaahs63EdyWs5oF2LiBCA"/>
+  <contents xsi:type="DirectedGraph:Node" xmi:id="_MiaagM63EdyWs5oF2LiBCA" label="b"
+      outgoing="#_MiaahM63EdyWs5oF2LiBCA" incoming="#_Miaag863EdyWs5oF2LiBCA"/>
+  <contents xsi:type="DirectedGraph:Node" xmi:id="_Miaagc63EdyWs5oF2LiBCA" label="c"
+      outgoing="#_Miaahc63EdyWs5oF2LiBCA" incoming="#_MiaahM63EdyWs5oF2LiBCA"/>
+  <contents xsi:type="DirectedGraph:Node" xmi:id="_Miaags63EdyWs5oF2LiBCA" label="d"
+      incoming="#_Miaahc63EdyWs5oF2LiBCA #_Miaahs63EdyWs5oF2LiBCA"/>
+  <contents xsi:type="DirectedGraph:Edge" xmi:id="_Miaag863EdyWs5oF2LiBCA" weight="1"
+      source="#_MiG4gM63EdyWs5oF2LiBCA" target="#_MiaagM63EdyWs5oF2LiBCA"/>
+  <contents xsi:type="DirectedGraph:Edge" xmi:id="_MiaahM63EdyWs5oF2LiBCA" weight="2"
+      source="#_MiaagM63EdyWs5oF2LiBCA" target="#_Miaagc63EdyWs5oF2LiBCA"/>
+  <contents xsi:type="DirectedGraph:Edge" xmi:id="_Miaahc63EdyWs5oF2LiBCA" weight="1"
+      source="#_Miaagc63EdyWs5oF2LiBCA" target="#_Miaags63EdyWs5oF2LiBCA"/>
+  <contents xsi:type="DirectedGraph:Edge" xmi:id="_Miaahs63EdyWs5oF2LiBCA" weight="3"
+      source="#_MiG4gM63EdyWs5oF2LiBCA" target="#_Miaags63EdyWs5oF2LiBCA"/>
+</DirectedGraph:Graph>

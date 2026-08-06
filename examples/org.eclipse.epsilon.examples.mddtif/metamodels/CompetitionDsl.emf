@@ -1,0 +1,20 @@
+package CompetitionDsl;
+
+class NamedElement {
+  attr String name;
+}
+
+class Competition extends NamedElement {
+  val Group[*] groups;
+  val Competitor[*] competitors;
+}
+
+class Competitor extends NamedElement {
+  attr String information;
+  ref Group#competitors group;
+}
+
+class Group extends NamedElement {
+  ref Competitor[*]#group competitors;
+}
+

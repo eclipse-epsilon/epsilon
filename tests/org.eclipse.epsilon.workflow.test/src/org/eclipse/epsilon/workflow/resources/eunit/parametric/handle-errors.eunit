@@ -1,0 +1,10 @@
+@data x
+operation myData() {
+  return null.toString();
+}
+
+@test
+operation testA() {}
+
+@test
+operation testB() {}

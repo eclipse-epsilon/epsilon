@@ -1,0 +1,40 @@
+@test
+operation integers() {
+  assertEquals(2, 1 + 1);
+  assertNotEquals(10, 1 + 1);
+}
+
+@test
+operation floats() {
+  // Floating-point math: 0.01 * 10 is not exactly equal to 0.1
+  assertNotEquals(0.1, 0.01 * 10);
+
+  // We need to define an error margin. We use ulps, as in Math.ulp(double).
+  // Here we use a margin of 10 ulps around the expected value (0.1). 
+  assertEquals(0.1, 0.01 * 10, 10);
+}
+
+@test
+operation strings() {
+  // assertEquals also works with Strings
+  assertEquals("A", "A");
+  assertNotEquals("A", "B");
+}
+
+@test
+operation errors() {
+  // assertError only passes if an exception is thrown when evaluating its expression
+  assertError(null.toString());
+}
+
+@test
+operation customAssertion() {
+  assertStringContainsFoo("FooBar");
+  assertError(assertStringContainsFoo("Bar"));
+}
+
+operation assertStringContainsFoo(s: String) {
+  if (not s.contains("Foo")) {
+    fail("String '" + s + "' did not contain Foo");
+  }
+}

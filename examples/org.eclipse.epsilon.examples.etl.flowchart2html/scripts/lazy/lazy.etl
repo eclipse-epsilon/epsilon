@@ -1,0 +1,31 @@
+rule Flowchart2Heading
+	transform f : Flowchart!Flowchart
+	to div : HTML!DIV {
+	
+	div.children.addAll(f.nodes.equivalent());
+}
+
+@lazy
+rule Action2Heading 
+	transform a : Flowchart!Action
+	to h1 : HTML!H1 {
+	
+	h1.value = a.name;
+}
+
+@lazy
+rule Decision2Heading 
+	transform d : Flowchart!Decision
+	to h1 : HTML!H1 {
+	
+	h1.value = d.name;
+}
+
+// Note that the following rule is never invoked
+@lazy
+rule Transition2Heading 
+	transform t : Flowchart!Transition
+	to h1 : HTML!H1 {
+	
+	h1.value = t.name;
+}

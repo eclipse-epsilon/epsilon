@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spreadsheet>
+	
+	<worksheet name="Sheet1" dataTypeStrict="false">
+		<column index="1" dataType="String"  many="false"></column>
+		<column index="2" dataType="Integer" many="false"></column>
+		<column index="3" dataType="Double"  many="false"></column>
+		<column index="4" dataType="Float"   many="false"></column>
+		<column index="5" dataType="Boolean" many="false"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet2" dataTypeStrict="false">
+		<column index="1" dataType="String"  many="true"></column>
+		<column index="2" dataType="Integer" many="true"></column>
+		<column index="3" dataType="Double"  many="true"></column>
+		<column index="4" dataType="Float"   many="true"></column>
+		<column index="5" dataType="Boolean" many="true"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet3" dataTypeStrict="true">
+		<column index="1" dataType="String"  many="false"></column>
+		<column index="2" dataType="Integer" many="false"></column>
+		<column index="3" dataType="Double"  many="false"></column>
+		<column index="4" dataType="Float"   many="false"></column>
+		<column index="5" dataType="Boolean" many="false"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet4" dataTypeStrict="true">
+		<column index="1" dataType="String"  many="true"></column>
+		<column index="2" dataType="Integer" many="true"></column>
+		<column index="3" dataType="Double"  many="true"></column>
+		<column index="4" dataType="Float"   many="true"></column>
+		<column index="5" dataType="Boolean" many="true"></column>
+	</worksheet>
+	
+</spreadsheet>

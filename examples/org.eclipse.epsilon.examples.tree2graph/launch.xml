@@ -1,0 +1,39 @@
+<?xml version="1.0"?> 
+
+<!--
+	The following build script illustrates how to launch the example via ANT.
+	Ensure that External Tools Configuration specifies that the JRE to be used
+	is the same as the workspace.
+		1) Click External Tools Configuration... from the External Tools dropdown.
+		2) Select the ANT build for this build script.
+		3) Click the JRE tab.
+		4) Select the option that reads: "Run in the same JRE as the workspace."
+		5) Click Apply.
+		6) Click Run.
+-->
+
+<project default="main">
+
+ 	<target name="loadModels">
+ 		<epsilon.emf.register file="../org.eclipse.epsilon.examples.metamodels/Tree.ecore"/>
+ 		<epsilon.emf.register file="../org.eclipse.epsilon.examples.metamodels/Graph.ecore"/>
+ 		 		
+ 		<epsilon.emf.loadModel name="Tree"
+                                       modelFile="tree.model"
+                                       metamodelUri="Tree"
+                                       read="true" store="false"/>
+ 		
+ 		<epsilon.emf.loadModel name="Graph"
+                                       modelFile="graph.model"
+                                       metamodelUri="Graph"
+                                       read="false" store="true"/>
+ 	</target>
+ 	
+	<target name="main" depends="loadModels">		
+		<epsilon.etl src="Tree2Graph.etl">
+			<model ref="Tree"/>
+			<model ref="Graph"/>
+		</epsilon.etl>
+	</target>
+</project>
+

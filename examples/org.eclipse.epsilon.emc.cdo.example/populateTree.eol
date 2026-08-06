@@ -1,0 +1,4 @@
+var t = new Tree;
+t.label = 'Root';
+
+Model.allInstances.size.println('Now there are these many instances: ');

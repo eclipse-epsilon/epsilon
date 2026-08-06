@@ -1,0 +1,41 @@
+<project default="main">
+	
+	<target name="main" depends="expr, fileset, statements, target"/>
+	
+	<epsilon.epl moduleImplementation="org.eclipse.epsilon.emg.EmgModule">
+		pre { "Hello world".println(); }
+	</epsilon.epl>
+	
+	<target name="expr">
+		<!-- Evaluates the expr EOL expresssion and executes echo for every result -->
+		<epsilon.for var="it" expr="Sequence{1..2}">
+			<echo message="Echoing ${it}"/>
+		</epsilon.for>
+	</target>
+	
+	<target name="fileset">
+		<!-- Executes echo for every file in the fileset -->
+		<epsilon.for var="it">
+			<fileset dir="empty"/>
+			<echo message="Echoing ${it}"/>
+		</epsilon.for>
+	</target>
+	
+	<target name="statements">
+		<!-- Evaluates the embedded EOL code and executes echo for every result -->
+		<epsilon.for var="it">
+			<echo message="Echoing ${it}"/>
+			return Sequence{1..2};
+		</epsilon.for>
+	</target>
+	
+	<target name="target">
+		<!-- Evaluates the expr EOL expresssion and executes the "invoked" target for every result -->
+		<epsilon.for var="it" expr="Sequence{1..2}" target="invoked"/>
+	</target>
+	
+	<target name="invoked">
+		<echo message="Echoing ${it}"/>
+	</target>
+	
+</project>

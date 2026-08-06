@@ -1,0 +1,63 @@
+[*
+	This M2T transformation must be executed with the following parameter:
+		classes : Collection(EClass) - the types for which transformation rules
+		(of the form ClassObject2Type) will be generated.
+*]
+pre {
+	var EmfTool := new Native('org.eclipse.epsilon.emc.emf.tools.EmfTool');
+}
+
+[% if (not PackageObject.all.isEmpty()) { %]
+	[% for (class in classes) { %][* Note classes is a parameter to the script, as discussed above. *]
+	rule Object2[%=class.name%]
+	  transform o : Intermediate!ClassObject
+	  to t : Model!`[%=class.name%]` {
+		
+		guard: o.type = '[%=class.name%]'
+		
+	[% for (attribute in class.eAllAttributes) { %]
+		if (o.findSlot('[%=attribute.name%]').isDefined()) {
+			[% if (attribute.isMany()) { %]
+				for (value in o.findSlot('[%=attribute.name%]').values) {
+					t.`[%=attribute.name%]`.add(value);
+				}
+			[% } else { %]
+
+					t.`[%=attribute.name%]` := o.findSlot('[%=attribute.name%]').values.first;
+			[% } %]
+		}
+	[% } %]
+	
+	[% for (reference in class.eAllReferences) { %]
+		if (o.findSlot('[%=reference.name%]').isDefined()) {
+			[% if (reference.isMany()) { %]
+				for (object in o.findSlot('[%=reference.name%]').getEObjects()) {
+					t.`[%=reference.name%]`.add(object);
+				}
+			[% } else { %]
+				t.`[%=reference.name%]` := o.findSlot('[%=reference.name%]').getEObjects().first();
+			[% } %]
+		}
+	[% } %]
+	}
+	[% } %]
+[% } %]
+
+operation ReferenceSlot getEObjects() : Sequence {
+	return self.values.collect(i:String | i.getEObject(self));
+}
+
+operation ContainmentSlot getEObjects() : Sequence {
+	return self.classObjects.collect(o:Intermediate!ClassObject | o.equivalent());
+}
+
+operation String getEObject(slot : ReferenceSlot) : Any {
+	if ('#'.isSubstringOf(self)) {
+		// External object reference, locate in external model
+		return EmfTool.getEObject(self);
+	
+	} else {
+		// Internal object reference, located in current model
+		return slot.getClassObjects().selectOne(c|c.identifier = self).equivalent();
+	}
+}

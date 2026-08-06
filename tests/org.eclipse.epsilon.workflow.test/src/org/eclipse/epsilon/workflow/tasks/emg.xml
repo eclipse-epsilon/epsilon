@@ -1,0 +1,11 @@
+<project default="main">
+	<target name="main">
+		<taskdef resource="org/eclipse/epsilon/workflow/tasks/tasks.xml"/>
+		<taskdef resource="org/eclipse/epsilon/workflow/emf/tasks/tasks.xml"/>
+		<epsilon.emf.loadModel name="M" metamodeluri="http://www.eclipse.org/emf/2002/Ecore" read="false" store="false"/>
+		<epsilon.emg>
+			pre { new EClass; }
+			<model ref="M"/>
+		</epsilon.emg>
+	</target>
+</project>

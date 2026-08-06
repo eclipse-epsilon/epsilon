@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Ecore="http://www.eclipse.org/uml2/schemas/Ecore/5" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.eclipse.org/uml2/schemas/Ecore/5 pathmap://UML_PROFILES/Ecore.profile.uml#_z1OFcHjqEdy8S4Cr8Rc_NA">
+  <uml:Model xmi:id="_oLlUAG4cEeiWZfcoca2ClQ" name="p">
+    <packagedElement xmi:type="uml:Class" xmi:id="_oLnJMG4cEeiWZfcoca2ClQ" name="c"/>
+    <profileApplication xmi:id="_oLmiIG4cEeiWZfcoca2ClQ">
+      <eAnnotations xmi:id="_oLmiIW4cEeiWZfcoca2ClQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Ecore.profile.uml#_z1OFcHjqEdy8S4Cr8Rc_NA"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Ecore.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <Ecore:EClass xmi:id="_oN62UG4cEeiWZfcoca2ClQ" base_Class="_oLnJMG4cEeiWZfcoca2ClQ"/>
+</xmi:XMI>

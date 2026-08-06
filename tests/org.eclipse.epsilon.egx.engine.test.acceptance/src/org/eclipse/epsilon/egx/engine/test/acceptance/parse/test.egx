@@ -1,0 +1,57 @@
+pre {
+  var outDirLib : String = "../libraries/";
+  var libFileSizes = new Map;
+}
+
+rule Lib2XML transform lib : Library {
+  guard : lib.name.length() > 3 and lib.books.size() > 10
+  pre {
+    var eligibleBooks = lib.books.select(b | b.isValid());
+    var isBigLibrary = eligibleBooks.size() > 9000;
+  }
+  overwrite : not isBigLibrary
+  merge : isBigLibrary
+  template {
+    var libTemplate = "rel/path/to/Lib2XML";
+    if (isBigLibrary) {
+      libTemplate = libTemplate + "_minified";
+    }
+    return libTemplate+".egl";
+  }
+  parameters : Map {
+    "name" = lib.name,
+    "id" = lib.id,
+    "books" = lib.books
+  }
+  target {
+    var outFile = outDirLib + lib.name;
+    if (isBigLibrary) {
+      outFile = outFile + "_compact";
+    }
+    return outFile + ".xml";
+  }
+  post {
+    libFileSizes.put(generated.getName(), generated.length());
+  }
+  formatter {
+    return new Native('org.eclipse.epsilon.egl.formatter.language.XmlFormatter');
+  }
+}
+
+rule AuthorsAndBooks {
+  template : "AuthorsAndBooks.egl"
+  parameters : Map {
+    "authors" = Authors.allInstances(),
+    "books" = Book.allInstances()
+  }
+  target : "AllAuthorsBooks.txt"
+}
+
+post {
+  libFileSizes.println();
+    ("Total: "+libFileSizes.values().sum()).println();
+}
+
+operation Book isValid() : Boolean {
+  return self.isbn.isDefined() and self.isbn.length() == 13;
+}

@@ -1,0 +1,40 @@
+<?nsuri minisd?>
+<?render-egx minisd2plantuml.egx?>
+<_>
+	<participant name="Customer"/>
+	<participant name="ATM"/>
+	
+	<scenario title="Customer-ATM">
+		<int from="Customer" to="ATM" msg="Insert card"/>
+		<int from="ATM" to="Customer" msg="Request PIN"/>
+		<int from="Customer" to="ATM" msg="Enter PIN"/>
+		<alt title="Check PIN">
+			<block title="PIN valid">
+				<int from="ATM" to="Customer" msg="Display options"/>
+				<alt title="Options">
+					<block title="Cash withdrawal">
+						<int from="Customer" to="ATM" msg="Select cash withdrawal"/>
+						<int from="ATM" to="Customer" msg="Ask for amount"/>
+						<int from="Customer" to="ATM" msg="Enter amount"/>
+						<alt title="Check funds">
+							<block title="Sufficient funds">
+								<int from="ATM" to="Customer" msg="Produce cash"/>
+							</block>
+							<block title="Insufficient funds">
+								<int from="ATM" to="Customer" msg="Produce error message"/>
+							</block>
+						</alt>
+					</block>
+					<block title="Balance display">
+						<int from="Customer" to="ATM" msg="Select balance display"/>
+						<int from="ATM" to="Customer" msg="Display balance"/>
+						<int from="ATM" to="Customer" msg="Return card"/>
+					</block>
+				</alt>
+			</block>
+			<block title="PIN invalid">
+				<int from="ATM" to="Customer" msg="Try again"/>
+			</block>
+		</alt>
+	</scenario>
+</_>

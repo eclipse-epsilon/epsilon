@@ -1,0 +1,10 @@
+@data modelName
+operation getData() {
+  return Sequence {"A", "B"};
+}
+
+$with Map {"" = modelName}
+@test
+operation hasOneA() {
+  assertEquals("The model has one A", 1, Element.allInstances.select(e|e.name='A').size()); 
+}

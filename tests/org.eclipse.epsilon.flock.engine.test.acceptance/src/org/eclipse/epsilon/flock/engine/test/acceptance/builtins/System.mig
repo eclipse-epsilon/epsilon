@@ -1,0 +1,3 @@
+migrate EClass {
+	System.getOut.print("Running Flock");
+}

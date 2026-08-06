@@ -1,0 +1,17 @@
+import "CopyTVApp.etl";
+
+rule MergeReportWithText
+	merge ot : OldTVApp!Text
+	with r : Report!Report 
+	into nt : NewTVApp!Text {
+	
+	nt.name = ot.name;
+	nt.information = ot.information;
+	nt.history ::= ot.history;
+	
+	var h : new NewTVApp!TextHistory;
+	h.information = ot.information;
+	h.revision = ot.history.collect(h|h.revision).max(0) + 1;
+	nt.history.add(h);
+	nt.information = r.information;
+}

@@ -1,0 +1,11 @@
+if(consoleOutput) {
+	"\n-Start-\n".println();
+	Model.contents.println();
+}
+
+delete Project.all.first;
+
+if(consoleOutput) {
+	Model.contents.println();
+	"\n-End-\n".println();
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Entity:System xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:Entity="Entity">
+  <entity name="Book"/>
+  <entity name="Author"/>
+  <entity name="Publisher"/>
+  <entity name="Chapter"/>
+</Entity:System>

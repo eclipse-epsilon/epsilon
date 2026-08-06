@@ -1,0 +1,6 @@
+<antlib>
+    <taskdef name="epsilon.emf.loadModel" classname="org.eclipse.epsilon.workflow.tasks.emf.LoadEmfModelTask"/>
+    <taskdef name="epsilon.emf.register" classname="org.eclipse.epsilon.workflow.tasks.emf.RegisterTaskStandalone"/>
+    <taskdef name="epsilon.emf.loadRegisteredMetamodel" classname="org.eclipse.epsilon.workflow.tasks.emf.LoadRegisteredMetaModelTask"/>
+    <taskdef name="epsilon.emf.loadXmlModel" classname="org.eclipse.epsilon.workflow.tasks.emf.LoadXmlModelTask"/>
+</antlib>

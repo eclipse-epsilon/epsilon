@@ -1,0 +1,88 @@
+[%	
+	var headerTemplate : Template = TemplateFactory.load("html/Header.egl");
+	var footerTemplate : Template = TemplateFactory.load("html/Footer.egl");
+
+	var packagesTemplate    : Template = 
+		TemplateFactory.load("html/Packages.egl");	
+	var classifiersTemplate : Template = 
+		TemplateFactory.load("html/Classifiers.egl");
+	var classTemplate       : Template = 
+		TemplateFactory.load("html/Class.egl");
+	var dataTypeTemplate    : Template = 
+		TemplateFactory.load("html/DataType.egl");
+	
+	var title : String = metaModelName + " Meta-Model";
+	
+	if (classifier.isDefined()) {
+		title = package.name + "." + classifier.name + " - " + title;	
+	
+	} else {
+		if (package.isDefined()) {
+			title = package.name + " Package - " + title;
+		}
+	}
+	
+	headerTemplate.populate("title", title);
+	
+	classifiersTemplate.populate("package", package);
+	
+	classTemplate.populate("class", classifier);
+%]
+[%=headerTemplate.process()%]
+<div id="container">
+	<div id="header">
+		<h1><a href="index.html">[%=metaModelName%] Meta-Model</a></h1>
+	</div>
+
+	<div id="wrapper">
+		<div id="sidebar">
+			[% if (classifier.isDefined()) { %]
+				<div id="controls">
+					<h1>Controls</h1>
+					<form action="noAction()">
+						<fieldset>
+							<input type="checkbox" id="inherited" 
+								name="inherited" 
+								onclick="saveShowInherited();" />
+							<label for="inherited">
+								Show inherited features
+							</label>
+						</fieldset>
+					</form>
+				</div>
+			[% } %]
+			
+			<div id="packages">
+				[%=packagesTemplate.process()%]
+			</div>
+
+			<div id="classifiers">
+				[% if (package.isDefined()) { %]
+					[%=classifiersTemplate.process()%]
+				[% } %]
+			</div>
+		</div>
+			
+		<div id="content">
+			[% if (classifier.isDefined()) {
+				if (classifier.isKindOf(EDataType)) {
+					var dataType : EDataType = classifier;
+					dataTypeTemplate.populate("dataType", dataType);
+					out.print(dataTypeTemplate.process());
+				
+				} else {
+					var class : EClass = classifier;
+					classTemplate.populate("class", class);
+					out.print(classTemplate.process());
+				}
+			 } else {
+				if (not package.isDefined()) { %]
+					<img src="../img/[%=metaModelName%].png"
+					   alt="Overview of the [%=metaModelName%] metamodel"/>
+[%
+				}
+			}
+%]
+				</div>
+			</div>
+[%=footerTemplate.process()%]

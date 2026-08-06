@@ -1,0 +1,9 @@
+<project default="main">
+	<target name="main">
+		<jar destfile="org.eclipse.epsilon.egl.servlet.jar" basedir="build/classes"/>
+		<zip destfile="egl-servlet-full.zip">
+			<fileset dir="WebContent/WEB-INF/lib"></fileset>
+			<fileset file="org.eclipse.epsilon.egl.servlet.jar"/>
+		</zip>
+	</target>
+</project>

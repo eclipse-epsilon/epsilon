@@ -1,0 +1,73 @@
+context Rule {
+	constraint ClassifierMustExist {
+		guard: self.classifier.isDefined()
+		check: self.classifier.existsAsClassifier()
+		message: 'There is no classifier with name "' + self.classifier + '"'
+	}
+
+	constraint AttributeMustExistForClassifier {
+		guard: self.attribute.isDefined() and
+		       self.satisfies('ClassifierMustExist')
+		check: self.getAttributeObject().isDefined()
+		message: 'No attribute with name "' + self.attribute + '" for the classifier, "' + self.classifier + '"'
+	}
+}
+
+context IdentifierRule {
+	constraint AttributeMustBeStringTyped {
+		guard: self.satisfies('AttributeMustExistForClassifier')
+		check: self.getAttributeType() = 'java.lang.String'
+		message: 'The attribute "' + self.attribute + '" for the classifier "' + self.classifier + '" does not accept String values.'
+	}
+	
+	constraint AttributeMustBeSingleValued {
+		guard: self.satisfies('AttributeMustExistForClassifier')
+		check: not self.getAttributeObject().isMany()
+		message: 'The attribute "' + self.attribute + '" for the classifier "' + self.classifier + '" accepts multiple values.'
+	}
+}
+
+context DefaultValueRule {
+	constraint ValueMustBeTypeCompatiableWithAttribute {
+		guard: self.satisfies('AttributeMustExistForClassifier')
+		check: self.defaultValue.isCompatiableWith(self.getAttributeType())
+		message: 'The attribute "' + self.attribute + '" for the classifier "' + self.classifier + '" is not compatible with the value: ' + self.defaultValue
+	}
+}
+
+operation Rule getAttributeType() : String {
+	return self.getAttributeObject().eType.instanceTypeName;
+}
+
+operation Rule getAttributeObject() : MetaModel!EStructuralFeature {
+	return self.attribute.toStructuralFeature(self.classifier.toClassifier());
+}
+
+operation String existsAsClassifier() : Boolean {
+	return MetaModel!EClassifier.allInstances.exists(c : MetaModel!EClassifier | c.name = self);
+}
+
+operation String toClassifier() : MetaModel!EClassifier {
+	return MetaModel!EClassifier.allInstances.select(c : MetaModel!EClassifier | c.name = self).first();
+}
+
+operation String toStructuralFeature(classifier : MetaModel!EClassifier) : MetaModel!EStructuralFeature {
+	return classifier.eAllStructuralFeatures.select(c|c.name = self).first();
+}
+
+operation String isCompatiableWith(type : String) : Boolean {
+	if (self = 'true' or self = 'false') {
+		return type = 'java.lang.Boolean' or type = 'boolean';
+	}
+	
+	if (self.isInteger()) {
+		return type = 'java.lang.Integer' or type = 'int';
+	}
+	
+	if (self.isReal()) {
+		return type = 'java.lang.Float'    or type = 'float' or
+		       type = 'java.lang.Double' or type = 'double';
+	}
+	
+	return type = 'java.lang.String';
+} 

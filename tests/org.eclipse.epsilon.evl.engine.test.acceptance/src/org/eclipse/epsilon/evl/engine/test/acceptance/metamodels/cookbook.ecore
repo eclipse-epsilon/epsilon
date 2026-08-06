@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="Cookbooks" nsURI="Cookbooks" nsPrefix="">
+  <eAnnotations source="gmf"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Cookbooks">
+    <eAnnotations source="gmf.diagram"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="cookbooks" upperBound="-1"
+        eType="#//Cookbook" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="categories" upperBound="-1"
+        eType="#//Category" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Cookbook" eSuperTypes="#//NamedElement">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="name"/>
+      <details key="label.placement" value="internal"/>
+      <details key="margin" value="15"/>
+      <details key="border.width" value="6"/>
+      <details key="border.color" value="44,128,8"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contents" lowerBound="5"
+        upperBound="-1" eType="#//Recipe">
+      <eAnnotations source="gmf.link">
+        <details key="label.text" value="Can be found in"/>
+        <details key="source.decoration" value="arrow"/>
+        <details key="target.decoration" value="square"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Category" eSuperTypes="#//NamedElement">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="name"/>
+      <details key="label.placement" value="internal"/>
+      <details key="margin" value="14"/>
+      <details key="border.width" value="5"/>
+      <details key="border.color" value="23,65,178"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="meta" lowerBound="1" eType="#//FoodType"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="recipes" lowerBound="1"
+        upperBound="-1" eType="#//Recipe" containment="true">
+      <eAnnotations source="gmf.link">
+        <details key="label.text" value="Contains"/>
+        <details key="source.decoration" value="filledrhomb"/>
+        <details key="target.decoration" value="closedarrow"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Recipe" eSuperTypes="#//NamedElement">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="name"/>
+      <details key="phantom" value="true"/>
+      <details key="label.placement" value="internal"/>
+      <details key="figure" value="rectangle"/>
+      <details key="border.width" value="3"/>
+      <details key="border.color" value="167,22,48"/>
+      <details key="border.style" value="dot"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instructions" lowerBound="1"
+        upperBound="3" eType="#//InstructionSet" containment="true">
+      <eAnnotations source="gmf.compartment">
+        <details key="layout" value="list"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
+        eType="#//Recipe">
+      <eAnnotations source="gmf.link">
+        <details key="label.text" value="Requires"/>
+        <details key="target.decoration" value="filledclosedarrow"/>
+        <details key="style" value="dash"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ingredients" upperBound="-1"
+        eType="#//Ingredient" containment="true">
+      <eAnnotations source="gmf.compartment"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="serves" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Ingredient" eSuperTypes="#//NamedElement">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="name"/>
+      <details key="figure" value="ellipse"/>
+      <details key="margin" value="6"/>
+      <details key="border.width" value="1"/>
+      <details key="border.color" value="193,97,48"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="amount" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EFloat"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="measurement" lowerBound="1"
+        eType="#//Unit"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" eType="#//Scale"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="otherUnit" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InstructionSet" eSuperTypes="#//NamedElement">
+    <eAnnotations source="gmf.node">
+      <details key="label" value="name"/>
+      <details key="margin" value="9"/>
+      <details key="border.width" value="1"/>
+      <details key="border.color" value="199,183,10"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="instruction" lowerBound="1"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="FoodType">
+    <eLiterals name="Other"/>
+    <eLiterals name="Breakfast" value="1"/>
+    <eLiterals name="Lunch" value="2"/>
+    <eLiterals name="Dinner" value="3"/>
+    <eLiterals name="Pudding" value="4"/>
+    <eLiterals name="Snack" value="5"/>
+    <eLiterals name="Beverage" value="6"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Unit">
+    <eLiterals name="other"/>
+    <eLiterals name="grams" value="1"/>
+    <eLiterals name="litres" value="2"/>
+    <eLiterals name="ounces" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Scale">
+    <eLiterals name="none"/>
+    <eLiterals name="milli" value="1"/>
+    <eLiterals name="centi" value="2"/>
+    <eLiterals name="kilo" value="3"/>
+  </eClassifiers>
+</ecore:EPackage>

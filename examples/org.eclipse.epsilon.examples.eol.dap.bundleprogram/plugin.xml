@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="org.eclipse.epsilon.examples.eol.dap.bundleprogram.category"
+            name="Epsilon Bundle Debug">
+      </category>
+      <command
+            categoryId="org.eclipse.epsilon.examples.eol.dap.bundleprogram.category"
+            defaultHandler="org.eclipse.epsilon.examples.eol.dap.bundleprogram.RunHandler"
+            id="org.eclipse.epsilon.examples.eol.dap.bundleprogram.cmd.run"
+            name="Run EOL Hello World">
+      </command>
+      <command
+            categoryId="org.eclipse.epsilon.examples.eol.dap.bundleprogram.category"
+            defaultHandler="org.eclipse.epsilon.examples.eol.dap.bundleprogram.DebugHandler"
+            id="org.eclipse.epsilon.examples.eol.dap.bundleprogram.cmd.debug"
+            name="Debug EOL Hello World">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.ui.popup.any?before=compareWithMenu">
+         <command
+               commandId="org.eclipse.epsilon.examples.eol.dap.bundleprogram.cmd.run"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.epsilon.examples.eol.dap.bundleprogram.cmd.debug"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+
+</plugin>

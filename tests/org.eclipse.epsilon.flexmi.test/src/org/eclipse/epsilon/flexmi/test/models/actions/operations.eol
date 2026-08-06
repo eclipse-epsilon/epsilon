@@ -1,0 +1,5 @@
+import "imported-operations.eol";
+
+operation c4() : String {
+	return importedC4();
+}

@@ -1,0 +1,12 @@
+var note : new NoteType;
+note.to = "John";
+note.from = "Nick";
+note.heading = "Reminder";
+note.body = "Don't forget me this weekend!";
+note.addText("Some text", 0);
+
+var root : new DocumentRoot;
+root.note = note;
+root.xSISchemaLocation.put("xsdxml", "note.xsd");
+root.xMLNSPrefixMap.put("", "xsdxml");
+root.xMLNSPrefixMap.put("xsi", "http://www.w3.org/2001/XMLSchema-instance");

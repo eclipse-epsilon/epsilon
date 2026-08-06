@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmi:id="_dF1R4FuNEemnK64eMxisZw" type="Ecore" measurementUnit="Pixel">
+  <children xmi:type="notation:Shape" xmi:id="_dSAssFuNEemnK64eMxisZw" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_dSDwAFuNEemnK64eMxisZw" type="5001"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSGzUFuNEemnK64eMxisZw" type="7001">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSGzUVuNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSGzUluNEemnK64eMxisZw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSGzU1uNEemnK64eMxisZw" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSGzVFuNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSGzVVuNEemnK64eMxisZw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSGzVluNEemnK64eMxisZw" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSGzV1uNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSGzWFuNEemnK64eMxisZw"/>
+    </children>
+    <element xmi:type="ecore:EClass" href="vehicles.ecore#//Vehicle"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dSAssVuNEemnK64eMxisZw" x="179" y="45"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_dSHaYFuNEemnK64eMxisZw" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_dSHaYluNEemnK64eMxisZw" type="5001"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSHaY1uNEemnK64eMxisZw" type="7001">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSHaZFuNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSHaZVuNEemnK64eMxisZw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSHaZluNEemnK64eMxisZw" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSHaZ1uNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSHaaFuNEemnK64eMxisZw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSHaaVuNEemnK64eMxisZw" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSHaaluNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSHaa1uNEemnK64eMxisZw"/>
+    </children>
+    <element xmi:type="ecore:EClass" href="vehicles.ecore#//Engine"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dSHaYVuNEemnK64eMxisZw" x="332" y="180"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_dSHabFuNEemnK64eMxisZw" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_dSHabluNEemnK64eMxisZw" type="5001"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSHab1uNEemnK64eMxisZw" type="7001">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSHacFuNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSHacVuNEemnK64eMxisZw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSIBcFuNEemnK64eMxisZw" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSIBcVuNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSIBcluNEemnK64eMxisZw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSIBc1uNEemnK64eMxisZw" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSIBdFuNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSIBdVuNEemnK64eMxisZw"/>
+    </children>
+    <element xmi:type="ecore:EClass" href="vehicles.ecore#//DieselEngine"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dSHabVuNEemnK64eMxisZw" x="276" y="292"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_dSIBdluNEemnK64eMxisZw" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_dSIBeFuNEemnK64eMxisZw" type="5001"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSIBeVuNEemnK64eMxisZw" type="7001">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSIBeluNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSIBe1uNEemnK64eMxisZw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSIBfFuNEemnK64eMxisZw" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSIBfVuNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSIBfluNEemnK64eMxisZw"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSIBf1uNEemnK64eMxisZw" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSIBgFuNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSIBgVuNEemnK64eMxisZw"/>
+    </children>
+    <element xmi:type="ecore:EClass" href="vehicles.ecore#//PetrolEngine"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dSIBd1uNEemnK64eMxisZw" x="388" y="292"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_dSIBgluNEemnK64eMxisZw" type="2001" fontName=".SF NS Text">
+    <children xmi:type="notation:DecorationNode" xmi:id="_dSIogFuNEemnK64eMxisZw" type="5001"/>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSIogVuNEemnK64eMxisZw" type="7001">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSIogluNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSIog1uNEemnK64eMxisZw"/>
+      <layoutConstraint xmi:type="notation:Ratio" xmi:id="_gHUF4FuNEemnK64eMxisZw" value="0.2033898305084746"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSIohFuNEemnK64eMxisZw" type="7002">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSIohVuNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSIohluNEemnK64eMxisZw"/>
+      <layoutConstraint xmi:type="notation:Ratio" xmi:id="_gHUs8FuNEemnK64eMxisZw" value="0.3220338983050847"/>
+    </children>
+    <children xmi:type="notation:BasicCompartment" xmi:id="_dSIoh1uNEemnK64eMxisZw" type="7003">
+      <styles xmi:type="notation:SortingStyle" xmi:id="_dSIoiFuNEemnK64eMxisZw"/>
+      <styles xmi:type="notation:FilteringStyle" xmi:id="_dSIoiVuNEemnK64eMxisZw"/>
+      <layoutConstraint xmi:type="notation:Ratio" xmi:id="_gHUs8VuNEemnK64eMxisZw" value="0.2033898305084746"/>
+    </children>
+    <element xmi:type="ecore:EClass" href="vehicles.ecore#//Wheel"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_dSIBg1uNEemnK64eMxisZw" x="92" y="180"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_dF1R4VuNEemnK64eMxisZw"/>
+  <element xmi:type="ecore:EPackage" href="vehicles.ecore#/"/>
+  <edges xmi:type="notation:Connector" xmi:id="_dWlqsFuNEemnK64eMxisZw" type="4003" source="_dSAssFuNEemnK64eMxisZw" target="_dSIBgluNEemnK64eMxisZw">
+    <children xmi:type="notation:DecorationNode" xmi:id="_dWmRwFuNEemnK64eMxisZw" type="6002">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_dWmRwVuNEemnK64eMxisZw" x="60" y="17"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_dWm40FuNEemnK64eMxisZw" type="6004">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_dWm40VuNEemnK64eMxisZw" x="-26" y="-13"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_dWlqsVuNEemnK64eMxisZw" fontName=".SF NS Text"/>
+    <element xmi:type="ecore:EReference" href="vehicles.ecore#//Vehicle/wheels"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_dWlqsluNEemnK64eMxisZw" points="[0, 0, 0, -60]$[0, 60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_dYu_wFuNEemnK64eMxisZw" id="(0.4948453608247423,1.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_dYu_wVuNEemnK64eMxisZw" id="(0.5,0.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_dXVRkFuNEemnK64eMxisZw" type="4003" source="_dSAssFuNEemnK64eMxisZw" target="_dSHaYFuNEemnK64eMxisZw">
+    <children xmi:type="notation:DecorationNode" xmi:id="_dXV4oFuNEemnK64eMxisZw" type="6002">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_dXV4oVuNEemnK64eMxisZw" x="58" y="-19"/>
+    </children>
+    <children xmi:type="notation:DecorationNode" xmi:id="_dXV4oluNEemnK64eMxisZw" type="6004">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_dXV4o1uNEemnK64eMxisZw" x="-28" y="13"/>
+    </children>
+    <styles xmi:type="notation:FontStyle" xmi:id="_dXVRkVuNEemnK64eMxisZw" fontName=".SF NS Text"/>
+    <element xmi:type="ecore:EReference" href="vehicles.ecore#//Vehicle/engine"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_dXVRkluNEemnK64eMxisZw" points="[0, 0, -102, -60]$[102, 60, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_dYu_wluNEemnK64eMxisZw" id="(0.7422680412371134,1.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_dYu_w1uNEemnK64eMxisZw" id="(0.24705882352941178,0.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_dXaKEFuNEemnK64eMxisZw" type="4004" source="_dSHabFuNEemnK64eMxisZw" target="_dSHaYFuNEemnK64eMxisZw">
+    <styles xmi:type="notation:FontStyle" xmi:id="_dXaKEVuNEemnK64eMxisZw" fontName=".SF NS Text"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_dXaKEluNEemnK64eMxisZw" points="[0, 0, 0, -83]$[0, 83, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_dYvm0FuNEemnK64eMxisZw" id="(0.5,1.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_dYvm0VuNEemnK64eMxisZw" id="(0.49411764705882355,0.0)"/>
+  </edges>
+  <edges xmi:type="notation:Connector" xmi:id="_dXfCkFuNEemnK64eMxisZw" type="4004" source="_dSIBdluNEemnK64eMxisZw" target="_dSHaYFuNEemnK64eMxisZw">
+    <styles xmi:type="notation:FontStyle" xmi:id="_dXfCkVuNEemnK64eMxisZw" fontName=".SF NS Text"/>
+    <element xsi:nil="true"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_dXfCkluNEemnK64eMxisZw" points="[0, 0, 114, -83]$[-114, 83, 0, 0]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_dYvm0luNEemnK64eMxisZw" id="(0.49333333333333335,1.0)"/>
+    <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_dYvm01uNEemnK64eMxisZw" id="(0.7411764705882353,0.0)"/>
+  </edges>
+</notation:Diagram>

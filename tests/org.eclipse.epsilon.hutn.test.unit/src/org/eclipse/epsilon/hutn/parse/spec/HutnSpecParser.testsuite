@@ -1,0 +1,19 @@
+gunit HutnSpec;
+@header{package org.eclipse.epsilon.hutn.parse.spec;}
+
+preamble:
+	// Empty
+	"@Spec {}" -> "@Spec"
+	
+	// Simple
+	"@Spec { metamodel { nsUri: \"family\" } }" -> "(@Spec (metamodel (nsUri \\\"family\\\")))"
+	"@Spec { metamodel { nsUri: \"family\" configFile: \"family.config\" } }" -> "(@Spec (metamodel (nsUri \\\"family\\\") (configFile \\\"family.config\\\")))"
+
+	// Two metamodels
+	"@Spec { metamodel1 { nsUri: \"family\" configFile: \"family.config\" } metamodel2 { nsUri: \"pets\" } }" -> "(@Spec (metamodel1 (nsUri \\\"family\\\") (configFile \\\"family.config\\\")) (metamodel2 (nsUri \\\"pets\\\")))"	
+
+	// Preamble and body
+	"@Spec { metamodel { nsUri: \"family\" } } families { Family \"The Smiths\" {} }" -> "(@Spec (metamodel (nsUri \\\"family\\\")))"	
+	
+	// No preamble
+	"families { Family \"The Smiths\" {} }" FAIL	

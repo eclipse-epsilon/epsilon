@@ -1,0 +1,39 @@
+[%import "sdl.eol";%]
+[%var bundles = sdl::Bundle.all.select(b|b.getAllComponents().includes(c));%]
+@startuml
+
+skinparam hyperlinkColor Black
+skinparam hyperlinkUnderline false
+skinparam shadowing false
+skinparam object {
+	BackgroundColor FloralWhite
+	ArrowColor Grey
+	BorderColor Wheat
+}
+skinparam node {
+	BackgroundColor Lavender
+	BorderColor LightGrey
+	FontSize 12
+	BorderWidth 1
+}
+
+!define hyperlink javascript:top.showElement('[%=c.eResource().getURIFragment(c)%]','[%=c.eResource().uri%]')
+object "[[hyperlink [%=c.name%]]]" as Component {
+	[%for (j in c.jars){%]
+	[%=j.filename%]
+	[%}%]	
+}
+
+[%for (b in bundles){%]
+node "[%=b.name%]" as [%=b.getId()%] {
+}
+
+Component --> [%=b.getId()%] 
+
+[%}%]
+@enduml
+[%
+operation sdl::Bundle getId() {
+	return "B" + bundles.indexOf(self);
+}
+%]

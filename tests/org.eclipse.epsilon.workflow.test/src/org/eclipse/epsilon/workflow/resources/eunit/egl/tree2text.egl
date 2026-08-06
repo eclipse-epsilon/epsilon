@@ -1,0 +1,14 @@
+[%
+  var sb := new Native('java.lang.StringBuilder');
+  var newLine = Native('java.lang.System').lineSeparator;
+  process(sb, '', Tree.allInstances.selectOne(s | s.parent.isUndefined()));
+
+%][%=sb.toString()%][%
+
+  operation process(sb, indent : String, node : Tree) : String {
+    sb.append(indent + "- " + node.label + newLine);
+    for (child in node.children) {
+	  process(sb, indent + "  ", child);
+    }
+  }
+%]

@@ -1,0 +1,4 @@
+operation produceGreeting(firstName: String, lastName: String) {
+  var fullName = firstName + ' ' + lastName;
+  return 'Hello ' + fullName;
+}

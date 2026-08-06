@@ -1,0 +1,8 @@
+rule XmlTree2EmfTree
+	transform s : Xml!t_tree
+	to t : Emf!Tree {
+	
+	t.label = s.a_name;
+	t.children ::= s.c_tree;
+	
+}

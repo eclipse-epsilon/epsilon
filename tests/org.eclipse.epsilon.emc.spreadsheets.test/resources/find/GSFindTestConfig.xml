@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spreadsheet>
+	
+	<worksheet name="Sheet1">
+		<column index="0" many="false"></column>
+		<column index="2" many="true"></column>
+	</worksheet>
+	
+</spreadsheet>

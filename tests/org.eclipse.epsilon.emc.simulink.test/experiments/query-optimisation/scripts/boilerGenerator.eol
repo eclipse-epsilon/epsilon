@@ -1,0 +1,167 @@
+// TODO block.getChildren()
+// TODO getports vs getinternalports
+// TODO methods deletePorts()
+var total: Integer = val;
+var iterations = Sequence{1..total};
+
+var sinewave = new `simulink/Sources/Sine Wave`;
+sinewave.Amplitude = 5;
+sinewave.Bias = 17;
+
+var scope = new `simulink/Commonly Used Blocks/Scope`;
+scope.NumInputPorts = total + 1 ;
+sinewave.linkTo(scope, total + 1);
+
+for (i in iterations){
+	var constant = new `simulink/Commonly Used Blocks/Constant`;
+	constant.OutDataTypeStr = "double";
+	var constVal : Real = (13.0 + ((10.0/total.asReal())*i.asReal())); 
+	constant.Value = (constVal *100.0).round().asReal() /100.0 ;
+	
+	var subsys = new `simulink/Ports & Subsystems/Subsystem`;
+	clearDefaultPortsAndLines();	
+	
+	createOutport("action", subsys);
+	createInport("setPoint", subsys);
+	createInport("temperature", subsys);
+	var p = createInport("state", subsys);
+	p.OutDataTypeStr = "boolean";
+	
+	var delay = new `simulink/Commonly Used Blocks/Delay`;
+	delay.DelayLength = 1;
+	delay.setParent(subsys);
+	delay = subsys.getDelay();
+	
+	var diff = new `simulink/Math Operations/Subtract`;
+	diff.setParent(subsys);
+	diff = subsys.getSubtract();
+	
+	var simchart = new `sflib/Chart`;
+	simchart.Name = "Chart";
+	simchart.setParent(subsys);
+	simchart = subsys.getChart("Chart");
+	
+	var chart = `Stateflow.Chart`.all().last();
+	populateChartContents(chart);
+	
+	simchart.link(delay);
+	diff.linkTo(simchart,1);
+	delay.link(subsys.getOutports().first());
+	
+	subsys.getInports().selectOne(i|i.Name=="setPoint").link(diff);
+	subsys.getInports().selectOne(i|i.Name=="temperature").linkTo(diff,2);
+	subsys.getInports().selectOne(i|i.Name=="state").linkTo(simchart,2);
+	
+	arrange(subsys);
+
+	constant.linkTo(subsys,1);
+	subsys.link(subsys,1,3);
+	
+	sinewave.linkTo(subsys,2);
+	subsys.linkTo(scope,i);
+
+}
+
+arrange();
+
+operation arrange(){
+	M.statement("Simulink.BlockDiagram.arrangeSystem('"+M.getSimulinkModelName()+"');");
+}
+operation arrange(subsystem: SubSystem){
+	M.statement("Simulink.BlockDiagram.arrangeSystem('"+subsystem.getPath()+"');");
+}
+
+operation clearDefaultPortsAndLines(){
+	delete Inport.all.select(p|p.name = "In1").outports.flatten().lines.flatten();
+	delete Inport.all.select(p|p.name = "In1");
+	delete Outport.all.select(p|p.name = "Out1");
+}	
+operation createInport(name : String, parent : SubSystem) : Inport {
+	var p = new `simulink/Commonly Used Blocks/In1`;
+	p.Name = name;
+	p.setParent(parent);
+	return p;
+}
+operation createOutport(name : String, parent : SubSystem) : Outport{
+	var p = new `simulink/Commonly Used Blocks/Out1`;
+	p.Name = name;
+	p.setParent(parent);
+	return p;
+}
+operation Block getInports() : Any {
+	return Inport.all().select(i|i.getParent() == self);
+}
+operation Block getOutports() : Any {
+	return Outport.all().select(i|i.getParent() == self);
+}
+operation Block getSubtract() : Any {
+	return Sum.all().selectOne(i|i.getParent() == self);
+}
+operation Block getChart(name: String) : Any {
+	return SubSystem.all().select(i|i.Name == name).selectOne(i|i.getParent() == self);
+}
+operation Block getDelay() : Any {
+	return Delay.all().selectOne(i|i.getParent() == self);
+}
+operation populateChartContents(chart){
+	
+	// States
+	var MainState = new `Stateflow.State`(chart);
+	MainState.Name = "Main";
+	MainState.Position = Sequence{150.0, 120.0, 1000.0, 300.0};
+	MainState.Decomposition = "PARALLEL_AND";
+	
+	var ExecutionState = new `Stateflow.State`(MainState);
+	ExecutionState.Name = "Exec";
+	ExecutionState.Position = Sequence{160.0, 140.0, 980.0, 200.0};
+	
+	var ValueState = new `Stateflow.State`(MainState);
+	ValueState.Name = "Value";
+	ValueState.LabelString = "['Value' newline 'du: action=in(Exec.On)']";
+	ValueState.Position = Sequence{160.0, 360.0, 980.0, 50.0};
+	
+	var OnState = new `Stateflow.State`(ExecutionState);
+	OnState.Name = "On";
+	OnState.Position = Sequence{170.0, 160.0, 300.0, 100.0};
+	
+	var OffState = new `Stateflow.State`(ExecutionState);
+	OffState.Name = "Off";
+	OffState.Position = Sequence{660.0, 160.0, 300.0, 100.0};
+	
+	// Transitions
+	var t1 = new `Stateflow.Transition`(chart);
+	t1.LabelString ="'[delta<0 && state==1]'";
+	t1.Source = OnState;
+	t1.Destination = OffState;
+	
+	var t2 = new `Stateflow.Transition`(chart);
+	t2.LabelString ="'[delta>1 && state==0]'";
+	t2.Source = OffState;
+	t2.Destination = OnState;
+	
+	var t3 = new `Stateflow.Transition`(chart);
+	t3.LabelString ="'[state==1]'";
+	t3.Source = OffState;
+	t3.Destination = OffState;
+	
+	var t4 = new `Stateflow.Transition`(chart);
+	t4.LabelString ="'[state==0]'";
+	t4.Source = OnState;
+	t4.Destination = OnState;
+	
+	var tDefault = new `Stateflow.Transition`(chart);
+	tDefault.Destination = OffState;
+	
+	// Data
+	var data = new `Stateflow.Data`(chart);
+	data.Name = "delta";
+	data.Scope = "Input";
+	
+	var data = new `Stateflow.Data`(chart);
+	data.Name = "state";
+	data.Scope = "Input";
+	
+	data = new `Stateflow.Data`(chart);
+	data.Name = "action";
+	data.Scope = "Output";
+}

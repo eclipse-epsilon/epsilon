@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="strategy" name="Migration Strategy" schema="schema/strategy.exsd"/>
+   <extension point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="org.eclipse.epsilon.migration.dt.source"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="org.eclipse.epsilon.flock.dt.emf.actions.ExecuteMigrationStrategy"
+               icon="icons/flock16.png"
+               id="org.eclipse.epsilon.migration.dt.actions.ExecuteMigration"
+               label="Execute Migration Strategy"
+               menubarPath="org.eclipse.epsilon.migration.dt.source.menu/actions">
+         </action>
+         <menu
+               id="org.eclipse.epsilon.migration.dt.source.menu"
+               label="Epsilon Flock"
+               path="additions">
+            <separator
+                  name="actions">
+            </separator>
+         </menu>
+      </objectContribution>
+      <objectContribution
+            id="org.eclipse.epsilon.migration.dt.backupFile"
+            nameFilter="*_backup*"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="org.eclipse.epsilon.flock.dt.emf.actions.RestoreBackup"
+               icon="icons/restore_backup.png"
+               id="org.eclipse.epsilon.migration.dt.actions.RestoreBackup"
+               label="Restore Backup"
+               menubarPath="org.eclipse.epsilon.migration.dt.source.menu/actions">
+         </action>
+      </objectContribution>
+   </extension>
+</plugin>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<library>
+	<book title="Book0" author="Author0">
+	</book>
+	<book title="Book1">
+		<author>Author1.1</author>
+		<author>Author1.2</author>
+	</book>
+</library>

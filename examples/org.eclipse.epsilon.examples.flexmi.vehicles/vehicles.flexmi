@@ -1,0 +1,46 @@
+<?nsuri vehicles?>
+<?render-egx vehicles.egx?>
+<_>
+	
+	<vehicle reg="SUP 3R1O" colour="c0c0c0">
+		<wheel size="12"/>
+		<wheel size="14"/>
+		<wheel size="12"/>
+		<wheel size="14"/>
+		<wheel size="10"/>
+		<wheel size="10"/>
+		<diesel cc="2800"/>
+ 	</vehicle>
+
+	<car wheel-size="14" colour="c0c0c0" reg="YY55 ABC">
+		<diesel cc="1600"/>
+	</car>
+	
+	<car wheel-size="16" colour="c0c0c0" reg="YY55 BCD">
+		<petrol cc="1400"/>
+	</car>
+	
+	<smallcar reg="B0R 1NG5" colour="e7817c"/>
+	
+	<:template name="smallcar">
+		<content>
+			<car wheel-size="14">
+				<petrol cc="1000"/>
+			</car>
+		</content>
+	</:template>
+	
+	<:template name="car">
+		<parameter name="wheel-size"/>
+		<content>
+			<vehicle>
+				<wheel size="${wheel-size}"/>
+				<wheel size="${wheel-size}"/>
+				<wheel size="${wheel-size}"/>
+				<wheel size="${wheel-size}"/>
+				<:slot/>
+			</vehicle>
+		</content>
+	</:template>
+	
+</_>

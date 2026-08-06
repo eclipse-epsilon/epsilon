@@ -1,0 +1,56 @@
+pre {
+	var toParallelise = 1 > 2;
+	var Thread = Native("java.lang.Thread");
+}
+
+operation currentThreadName() {
+	return Thread.currentThread().getName();
+}
+
+$parallel toParallelise or not toParallelise
+// That is the question!
+context VariableDeclaration {
+	guard: currentThreadName() <> "main"
+	constraint neverUsedTwice {
+		check: self.usageInVariableAccess
+			.collect(u | u.variable)
+			.parallelNone(v | v.usageInVariableAccess.size() == 2)
+	}
+}
+
+@parallel
+context AbstractMethodDeclaration {
+	constraint parametersEffectivelyFinal {
+		guard: self.body.isDefined() and self.parameters.notEmpty()
+		check: self.body.statements
+				.parallelSelect(s |
+					s.isKindOf(ExpressionStatement) and
+					s.expression.isKindOf(Assignment)
+				)
+				.collect(s | s.expression)
+				.select(assignment |
+					assignment.leftHandSide.isKindOf(SingleVariableAccess) and
+					assignment.operator == AssignmentKind#ASSIGN and
+					assignment.leftHandSide.isKindOf(SingleVariableAccess) and
+					self.parameters.excludes(assignment.leftHandSide.variable)
+				)
+				.isEmpty()
+	}
+}
+
+context ClassDeclaration {
+	$parallel self.name.length() > 0
+	constraint noObscuredVariables {
+		guard: currentThreadName() == "main"
+		check {
+			var fields = self.bodyDeclarations.parallelSelect(bd | bd.isKindOf(FieldDeclaration));
+			return
+				self.bodyDeclarations
+					.parallelSelect(bd | bd.isKindOf(AbstractMethodDeclaration))
+					.parallelForAll(md | md.body.isDefined() implies md.body.statements
+						.select(s | s.isKindOf(VariableDeclaration))
+						.sequentialForAll(vd | fields.parallelForAll(fd | fd.name <> vd.name))
+					);
+		}
+	}
+}

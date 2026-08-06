@@ -1,0 +1,8 @@
+@namespace(uri="ecoreLite", prefix="ecoreLite")
+
+package ecoreLite;
+
+class EClass {
+   
+}
+

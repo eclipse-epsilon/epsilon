@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.eclipse.epsilon.evl.engine.test.acceptance
+Bundle-ManifestVersion: 2
+Bundle-Name: EVL Engine Acceptance Tests (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.evl.engine.test.acceptance
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.evl.engine.test.acceptance,
+ org.eclipse.epsilon.evl.engine.test.acceptance.equivalence
+Import-Package: org.junit
+Require-Bundle: org.eclipse.epsilon.test.dependencies,
+ org.eclipse.epsilon.eol.engine.test.acceptance,
+ org.eclipse.epsilon.evl.engine

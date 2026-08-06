@@ -1,0 +1,23 @@
+@namespace(uri="petrinets1", prefix="petrinets1")
+package petrinets;
+
+class Net {
+   val Place[*]#net places;
+   val Transition[*]#net transitions;
+}
+
+class Place {
+	ref Net[1]#places net;
+ 	attr String name;
+ 	
+ 	ref Transition[*]#dst src;
+ 	ref Transition[*]#src dst;
+}
+
+class Transition {
+	ref Net[1]#transitions net;
+	attr String name;
+	
+	ref Place[1..*]#dst src;
+ 	ref Place[1..*]#src dst;
+}

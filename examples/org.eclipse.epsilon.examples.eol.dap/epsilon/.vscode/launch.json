@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "epsilon",
+            "request": "attach",
+            "name": "Debug 01-hello",
+            "port": 4040,
+            "preLaunchTask": "epsilonDebug: hello"
+        },
+        {
+            "type": "epsilon",
+            "request": "attach",
+            "name": "Debug 04-inspectObject",
+            "port": 4040,
+            "preLaunchTask": "epsilonDebug: inspectObject"
+        },
+        {
+            "type": "epsilon",
+            "request": "attach",
+            "name": "Debug 07-orchestration",
+            "port": 4040,
+            "preLaunchTask": "epsilonDebug: debugEGX"
+        }
+    ]
+}

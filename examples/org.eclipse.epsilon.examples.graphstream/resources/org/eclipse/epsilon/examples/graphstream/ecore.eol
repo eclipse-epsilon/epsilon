@@ -1,0 +1,10 @@
+for (e in ENamedElement.all) { 
+	e.name.println(); 
+}
+
+EClass.all.collect(c|c.name);
+
+for (a in EAttribute.all) {
+	a.name.println();
+	a.eContainer().name.println();
+}

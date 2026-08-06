@@ -1,0 +1,58 @@
+digraph G {
+	node[shape=record, fontname=Tahoma, fontsize=10, style=filled, fillcolor=azure]
+	edge[fontname=Tahoma, fontsize=10, fontcolor=grey]
+	
+	[%
+	var elements = M.allInstances();
+	var colors = Sequence{"azure", "beige", "floralwhite", "lemonchiffon", "mistyrose", "palegreen", "pink", "wheat", "plum"};
+	%]
+	
+	[*Generate a node for every element in the model*]
+	[%for (e in elements) { %]
+	[%=e.getNodeId()%][label = "{[%=e.getNodeLabel()%]|[%=e.getNodeAttributes()%]}", fillcolor="[%=colors.get(e.eClass().eContainer().eContents().indexOf(e.eClass()).mod(colors.size()))%]"]
+	[%}%]
+	
+	[*Generate an edge for every reference between elements omitting opposites*]
+	[%for (e in elements) {%]
+	[%for (r in e.getReferenced()) {%]
+	[%for (v in r.at(0).select(r|M.allInstances().includes(r))){%]
+	[%if (r.at(1).eOpposite.isUndefined() or r.at(1).eOpposite.name.compareTo(r.at(1).name) > 0){%]
+	
+	[%=e.getNodeId()%] -> [%=v.getNodeId()%][%=getReferenceLabel(e, v, r.at(1))%]
+	[%}}}}%]
+}
+[%
+operation Any getNodeId() {
+	return "N" + M.allInstances().indexOf(self);
+}
+operation Any getNodeLabel() {
+	return ":" + self.eClass().name;
+}
+operation Any getNodeAttributes() {
+	return self.eClass().getEAllAttributes().collect(a|a.name + " = " + self.eGet(a)).concat("\\n");
+}
+operation Any getReferenced() {
+
+	if (self.isUndefined()) return Sequence{};
+
+	var c = self.eClass();
+	var referenced : Sequence;
+	for (r in c.getEAllReferences()) {
+		referenced.add(Sequence{self.eGet(r).asSequence(), r});
+	}
+	return referenced;
+}
+operation getReferenceLabel(s, t, r) {
+	
+	for (ref in s.eClass().getEAllReferences()) {
+		if (ref.eType.isSuperTypeOf(t.eClass()) and r <> ref) {
+			return "[label=\"  " + r.name + "  \"]";
+		}
+	}
+	return "";
+}
+
+operation Integer mod(i : Integer) {
+return self - (self/i * i);
+}
+%]

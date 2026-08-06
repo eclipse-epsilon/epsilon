@@ -1,0 +1,20 @@
+import "comps.eol";
+
+@greedy
+rule Component2Dot 
+	transform r : comps::Component {
+	
+	guard : r.components.notEmpty()
+	
+	parameters { 
+		
+		return Map {
+			"path" = r.getPath(),
+			"icon" = "diagram-ff0000",
+			"format" = "graphviz-dot"
+		};
+	}
+	template : "comp2dot.egl"
+	
+}
+

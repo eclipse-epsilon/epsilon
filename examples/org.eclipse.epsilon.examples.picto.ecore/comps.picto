@@ -1,0 +1,8 @@
+<?nsuri picto?>
+<picto format="egx" transformation="ecore2vis/ecore.egx" standalone="true">
+	<model type="EMF">
+		<parameter name="name" value="M"/>
+		<parameter name="modelFile" file="comps.ecore"/>
+		<parameter name="metamodelUri" value="http://www.eclipse.org/emf/2002/Ecore"/>
+	</model>
+</picto>

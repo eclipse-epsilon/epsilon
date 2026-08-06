@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="org.eclipse.epsilon.dt.exeed.customizer" name="Tree Viewer Customizer" schema="schema/org.eclipse.epsilon.dt.exeed.viewerCustomizer.exsd"/>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.epsilon.dt.exeed.ExeedEditor"
+            contributorClass="org.eclipse.epsilon.dt.exeed.ExeedActionBarContributor"
+            default="true"
+            extensions="model,bim"
+            icon="icons/emfmodel.gif"
+            id="org.eclipse.epsilon.dt.exeed.ExeedEditor"
+            name="Exeed Editor">
+      </editor>
+      <editor
+            class="org.eclipse.epsilon.dt.exeed.ExeedEditor"
+            contributorClass="org.eclipse.epsilon.dt.exeed.ExeedActionBarContributor"
+            extensions="registered"
+            icon="icons/register.gif"
+            id="org.eclipse.epsilon.dt.exeed.RegisteredEPackageEditor"
+            name="Registered EPackage Viewer">
+      </editor>
+      <editor
+            class="org.eclipse.epsilon.dt.exeed.ExeedEditor"
+            contributorClass="org.eclipse.epsilon.dt.exeed.ExeedActionBarContributor"
+            default="false"
+            extensions="ecore,xmi,xml,inv"
+            icon="icons/emfmodel.gif"
+            id="org.eclipse.epsilon.dt.exeed.ExeedEditor"
+            name="Exeed Editor">
+      </editor>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.epsilon.dt.exeed.modelink.ModeLinkStarter"
+            default="true"
+            extensions="modelink"
+            icon="icons/modelink.gif"
+            id="org.eclipse.epsilon.dt.exeed.modelink.ModeLinkStarter"
+            name="ModeLink Editor"/>
+      <editor
+            class="org.eclipse.epsilon.dt.exeed.modelink.ModeLinkEditor"
+            default="false"
+            icon="icons/modelink.gif"
+            id="org.eclipse.epsilon.dt.exeed.modelink.ModeLinkEditor"
+            name="ModeLink Editor"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="org.eclipse.epsilon.dt.exeed.contribution1"
+            nameFilter="*.modelink"
+            objectClass="org.eclipse.core.resources.IFile">
+         <action
+               class="org.eclipse.epsilon.dt.exeed.modelink.ConfigureModeLinkAction"
+               enablesFor="1"
+               icon="icons/modelink.gif"
+               id="org.eclipse.epsilon.dt.exeed.newAction"
+               label="Configure..."/>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.dt.exeed.modelink.NewModeLinkWizard"
+            icon="icons/modelink.gif"
+            id="org.eclipse.epsilon.dt.exeed.modelink.NewModeLinkWizard"
+            name="EMF ModeLink"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="Epsilon"
+            class="org.eclipse.epsilon.dt.exeed.ExeedPreferencePage"
+            id="ExeedPreferencePage"
+            name="Exeed">
+      </page>
+   </extension>
+   
+</plugin>

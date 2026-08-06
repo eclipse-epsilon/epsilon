@@ -1,0 +1,25 @@
+pre {
+	var package = Application.all.first().name.toLowerCase();
+}
+
+rule Application2Class 
+	transform s : Application {
+
+	template : "application2class.egl"
+
+	parameters : Map {"package" = package}
+
+	target : "src/" + package + "/" + s.name + ".java"
+	
+}
+
+rule Component2Class 
+	transform c : Component {
+
+	template : "component2class.egl"
+
+	parameters : Map {"package" = package}
+
+	target : "src/" + package + "/" + c.name + ".java"
+	
+}

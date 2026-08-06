@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension-point id="org.eclipse.epsilon.sirius.widget" name="EmbeddedWidget" schema="schema/org.eclipse.epsilon.sirius.widget.exsd"/>
+   <extension
+         point="org.eclipse.eef.ide.ui.eefLifecycleManagerProvider">
+      <descriptor
+            class="org.eclipse.epsilon.sirius.widget.PartialViewerLifecycleManagerProvider"
+            description="Sirius Embedded Widget"
+            id="org.eclipse.epsilon.sirius.widget"
+            label="Sirius Embedded Widget">
+      </descriptor>
+   </extension>
+</plugin>

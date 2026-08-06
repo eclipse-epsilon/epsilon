@@ -1,0 +1,10 @@
+@namespace(uri="http://eclipse.org/epsilon/examples/traceability/requirements", prefix="")
+package requirements;
+
+class RequirementsModel {
+	val Requirement[*] requirements;
+}
+
+class Requirement {
+	attr String ~id;
+}

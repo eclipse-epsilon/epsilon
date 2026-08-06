@@ -1,0 +1,312 @@
+import "utils.eol";
+
+pre {
+	foo();
+	var Thread = Native("java.lang.Thread");
+	var preVar = "my variable";
+}
+
+pre anotherPre {
+	preVar.printlnIf("sealed".isJavaKeyword());
+}
+
+post {
+	assert(preVar.isDefined() or EOL().isUndefined(), "preVar is undefined!");
+	printIfDefined(null);
+	assert(Thread.currentThread().getName().isDefined(), "No name for thread!");
+}
+
+@cached
+operation t_b foo(expr : Integer) : Boolean {
+	return expr <= 0;
+}
+
+operation t_c foo() : String {
+	return false.asString();
+}
+
+@cached
+operation returnFalse() : Boolean {
+	return false;
+}
+
+constraint EolTest {
+	check: "UndecEmber".isValidMonth()
+}
+
+constraint CanAccessPre {
+	check: Thread.isDefined()
+}
+
+context t_a {
+
+	constraint SelfVisibleInGuard {
+		guard: self.isDefined()
+		check: true
+	}
+	
+	@parallel
+	constraint GuardVariableInvisibleInBlock {
+		guard {
+			var condition = true;
+			return condition;
+		}
+		check {
+			return frameStack.get("condition").isUndefined();
+		}
+	}
+	
+	constraint CheckVariableVisibleInMessage {
+		check {
+			if (frameStack.get("condition").isDefined())
+				throw "condition variable has leaked";
+			
+			var msg = "error";
+			return false;
+		}
+		message : msg
+	}
+	
+	constraint CheckVariableVisibleInFix {
+		check {
+			var msg = "error";
+			return false;
+		}
+		fix {
+			title : "Fix " + msg
+			do {
+				blackboard.put("fix-do-executed", "true");
+				msg; // Check that the msg variable from the check part is visible
+				self; // Check that the self variable is visible
+			}
+		}
+	}
+}
+
+$parallel preVar.length() > 3
+context t_a {
+
+	guard: not self.isDefined()
+	
+	constraint NeverChecked {
+		check : false
+	}
+}
+
+context t_b {
+	
+	@terminate
+	constraint DontTerminate {
+		guard: false
+		check {
+			throw "IllegalStateException in DontTerminate";
+		}
+	}
+	
+	$parallel t_b.all.size() > 1
+	constraint EolTest2 {
+		guard: '>'.isJavaToken()
+		check: "Optional".isJavaPrimitive(true)
+	}
+	
+	constraint AlwaysFalse { 
+		check: false
+	}
+	
+	constraint AlwaysTrue {
+		check: true
+	}
+	
+	constraint ElementOperationInConstraint {
+		check: self.foo(1 + 2)
+	}
+	
+	constraint NeverChecked {
+		guard: self.isTypeOf(t_c)
+		check: false
+	}
+	
+	constraint RequiresNonLazyConstraint {
+		guard: self.satisfies("AlwaysFalse")
+		check {
+			return 1 > 0;
+		}
+	}
+	
+	@lazy
+	constraint LazyWithGuard {
+		guard: "true".asBoolean()
+		check {
+			return true;
+		}
+	}
+	
+	constraint RequiresLazyConstraint {
+		guard: self.satisfies("LazyWithGuard")
+		check: false
+	}
+	
+	constraint RequiresContextlessLazy {
+		check {return self.satisfies("LazyContextlessCallsLazy");}
+	}
+	
+	constraint InsaneLazyChain {
+		guard {return not self.satisfies("RequiresContextlessLazy");}
+		check: false
+	}
+}
+
+context t_c {
+
+	guard {
+		self.~extendedProperty = self.isTypeOf(t_c);
+		return true;
+	}
+	
+	constraint WrongType {
+		check: self.isTypeOf(t_b)
+	}
+	
+	constraint AlwaysTrueOperation {
+		check: not self.foo().asBoolean()
+	}
+	
+	constraint AlwaysFalseOperation {
+		check: self.foo().asBoolean()
+	}
+	
+	constraint SatisfiesOneLazyAndNonLazy {
+		guard: self.satisfiesOne("LazyAlwaysFalseOperation", "AlwaysTrueOperation", "AlwaysFalseOperation")
+		check: false
+	}
+	
+	constraint SatisfiesAllLazyAndNonLazy {
+		check: self.satisfiesAll("LazyAlwaysFalseOperation", "AlwaysTrueOperation", "AlwaysFalseOperation")
+	}
+	
+	constraint NeverCalledLazyGuard {
+		guard: self.satisfies("LazyAlwaysFalseOperation")
+		check: false
+	}
+	
+	@lazy
+	constraint LazyAlwaysFalseOperation {
+		check: self.foo().asBoolean()
+	}
+	
+	constraint ExtendedPropertyCanBeAccessed {
+		check: self.~extendedProperty
+	}
+}
+
+@lazy
+constraint LazyContextlessNeverCalled {
+	check: returnFalse()
+}
+
+@lazy
+constraint LazyContextlessCallsLazy {
+	check: self.satisfies("LazyContextlessDependedOn")
+}
+
+@lazy
+constraint LazyContextlessDependedOn {
+	guard: true
+	check: false
+}
+
+constraint ImportedOperationWithoutContext {
+	guard: true
+	check: "January".isValidMonth()
+}
+
+constraint Contextless {
+	check: t_a.all.size + t_b.all.size > 2
+}
+
+context test!t_c {
+    constraint TestModelNameRef {
+        check : false
+    }
+
+    constraint TestTestModelNameRefSatisfies {
+        guard: self.satisfies("TestModelNameRef")
+        check: false
+    }
+    
+    constraint duplicateTC {
+		check : self.isTypeOf(t_c)
+	}
+}
+
+constraint duplicateGlobal {
+	check : false
+}
+
+constraint duplicateGlobal {
+	check : false
+}
+
+constraint duplicate {
+	check : false
+}
+
+context t_c {
+	constraint duplicateTC {
+		check : self.isTypeOf(t_c)
+	}
+	constraint duplicate {
+		check : not self.isKindOf(t_c)
+	}
+}
+
+context t_b {
+	constraint duplicate {
+		check : not self.isKindOf(t_b)
+	}
+}
+
+context t_a {
+	@lazy
+	constraint dependedOn {
+		check : false
+	}
+}
+
+context t_b {
+	@lazy
+	constraint dependedOn {
+		check : false
+	}
+}
+
+context t_c {
+	@lazy
+	constraint dependedOn {
+		check : false
+	}
+}
+
+@lazy
+constraint dependedOn {
+	check : false
+}
+
+post postDuplicate {
+	assertFalse(returnFalse());
+}
+
+context t_b {
+	constraint SatisfiesGuardAmbigious {
+		guard : self.satisfies("dependedOn")
+		check : self == null
+	}
+	constraint SatisfiesCheckAmbigious {
+		guard : self.isDefined() and self.isTypeOf(t_b)
+		check : self.satisfies("dependedOn")
+	}
+}
+
+post postDuplicate {
+	assertTrue(not returnFalse());
+}

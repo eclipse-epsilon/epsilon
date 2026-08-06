@@ -1,0 +1,13 @@
+List of activities
+------------------
+
+[% for (a : Activity in Activity.all) { %]
+- [%=a.name%]
+[% } %]
+
+List of executable nodes
+------------------------
+
+[% for (a in ExecutableNode.all) { %]
+- [%=a.name%]
+[% } %]

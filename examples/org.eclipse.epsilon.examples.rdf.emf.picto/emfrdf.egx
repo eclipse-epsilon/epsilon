@@ -1,0 +1,119 @@
+pre {
+  var rootObjects = Model.resource.contents;
+  var rootIDs : Map;
+  for (ob in rootObjects) {
+    rootIDs.put(ob, loopCount);
+  }
+
+  var rdfResources = Model.resource.getRDFResources();
+
+  var namespaceURLs = rdfResources
+    .collect(r | r.getNamespaceURLs(Set {}))
+    .flatten().asSet();
+
+  var namespacesInactiveByDefault = Set {
+    'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+    'http://www.w3.org/2000/01/rdf-schema#',
+    'http://www.w3.org/2002/07/owl#'
+  };
+
+  var namespaceLayers = namespaceURLs
+    .asSequence()
+    .sortBy(ns | ns)
+    .collect(ns | Map {
+      "id" = ns,
+      "title" = ns,
+      "active" = not namespacesInactiveByDefault.contains(ns)
+    });
+
+  var rdfLayers = Sequence {
+    Map {"id"="unlimited", "title"="Unlimited depth", "active"=false}
+  };
+  rdfLayers.addAll(namespaceLayers);
+}
+
+rule RootEObjects transform root in: Sequence {"root"} {
+  template: "rootObjects.egl"
+  parameters: Map {
+    "path" = Sequence { "EObjects" },
+    "icon" = "diagram-ffffff",
+    "format" = "graphviz-dot",
+    "rootObjects" = rootObjects,
+    "rootIDs" = rootIDs
+  }
+}
+
+rule EObject transform eob in: Model.allContents {
+  template: "singleObject.egl"
+  parameters: Map {
+    "path" = eob.objectPath(),
+    "icon" = "diagram-ffff00",
+    "format" = "graphviz-dot",
+    "rdfResource" = Model.resource.getRDFResource(eob),
+    "layers" = rdfLayers,
+    "namespacesInactiveByDefault"=namespacesInactiveByDefault,
+    "rootIDs" = rootIDs
+  }
+}
+
+rule RootResources transform root in: Sequence {"root"} {
+  template: "rootResources.egl"
+  parameters: Map {
+    "path" = Sequence { "RDF resources" },
+    "icon" = "diagram-ff00ff",
+    "format" = "graphviz-dot",
+    "rdfResources" = rdfResources,
+    "layers" = rdfLayers,
+    "namespacesInactiveByDefault"=namespacesInactiveByDefault
+  }
+}
+
+rule RDFResource transform rdfRes in: rdfResources {
+  template: "singleResource.egl"
+  parameters: Map {
+    "path" = Sequence { "RDF resources", rdfRes.uri },
+    "icon" = "diagram-00ffff",
+    "format" = "graphviz-dot",
+    "eObjects" = Model.resource.getEObjects(rdfRes),
+    "layers" = rdfLayers,
+    "namespacesInactiveByDefault"=namespacesInactiveByDefault,
+    "rootIDs" = rootIDs
+  }
+}
+
+operation Any childPosition() {
+  if (self.eContainer.isDefined()) {
+    return (1 + self.eContainer.eContents().indexOf(self)).asString();
+  } else {
+    return (1 + Model.resource.contents.indexOf(self)).asString();
+  }
+}
+
+operation Any pathSegment() {
+  return self.eClass.name + ' ' + self.childPosition();
+}
+
+operation Any objectPath() {
+  var path = Sequence { "EObjects" };
+  path.addAll(self.closure(ob|ob.eContainer).collect(ob | ob.pathSegment()).invert());
+  path.add(self.pathSegment());
+  return path;
+}
+
+operation Any getNamespaceURLs(visited: Set) {
+  var urls : Set;
+  if (not self.isResource()) {
+    return urls;
+  }
+
+  var itStmt = self.listProperties();
+  while (itStmt.hasNext()) {
+    var stmt = itStmt.nextStatement();
+    urls.add(stmt.predicate.namespace);
+    if (visited.add(stmt.object)) {
+      urls.addAll(stmt.object.getNamespaceURLs(visited));
+    }
+  }
+
+  return urls;
+}

@@ -1,0 +1,5 @@
+// Print the names of all
+// classes in the model
+for (c in Class.all) {
+	c.name.println();
+}

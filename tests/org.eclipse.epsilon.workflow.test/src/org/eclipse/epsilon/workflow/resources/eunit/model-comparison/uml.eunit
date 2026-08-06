@@ -1,0 +1,4 @@
+@test
+operation simpleTest() {
+	assertEqualModels("Expected", "Model");
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Graph="Graph">
+  <Graph:Node xmi:id="_0pRVAAtxEd6tCvOilyvb-g" name="t1">
+    <outgoing xmi:id="_0pRVAgtxEd6tCvOilyvb-g" target="_0pRVAQtxEd6tCvOilyvb-g"/>
+  </Graph:Node>
+  <Graph:Node xmi:id="_0pRVAQtxEd6tCvOilyvb-g" name="t2" incoming="_0pRVAgtxEd6tCvOilyvb-g"/>
+</xmi:XMI>

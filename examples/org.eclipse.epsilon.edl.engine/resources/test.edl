@@ -1,0 +1,7 @@
+process b : t_book {
+	b.getTitle().println();
+}
+
+operation t_book getTitle() : String {
+	return self.a_title;
+}

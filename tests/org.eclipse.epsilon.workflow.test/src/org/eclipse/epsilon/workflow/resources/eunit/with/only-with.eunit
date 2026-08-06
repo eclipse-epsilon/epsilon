@@ -1,0 +1,41 @@
+$onlyWith Map {"Model" = "A"}
+@test
+operation hasOneA() {
+  // this test should pass
+  assertEquals("The model has one A", 1, Model!Element.allInstances.select(e|e.name='A').size()); 
+}
+
+$onlyWith Map {"Model" = "B"}
+@test
+operation hasTwoB() {
+  // this test should pass
+  assertEquals("The model has two B", 2, Model!Element.allInstances.select(e|e.name.startsWith('B')).size());
+}
+
+$onlyWith Map {"" = "A"}
+@test
+operation hasTwoElements_bIsRemoved() {
+  // this test should produce an error (A is unavailable)
+  assertEquals("A has two elements", 2, A!Element.allInstances.size());
+}
+
+$onlyWith Map {"" = "B"}
+@test
+operation hasTwoElements_aIsRemoved() {
+  // this test should produce an error (A is unavailable)
+  assertEquals("A has two elements", 2, A!Element.allInstances.size());
+}
+
+$onlyWith Map {"" = "A"}
+@test
+operation hasThreeElements_bIsRemoved() {
+  // this test should produce an error (B is unavailable)
+  assertEquals("B has three elements", 3, B!Element.allInstances.size());
+}
+
+$onlyWith Map {"" = "B"}
+@test
+operation hasThreeElements_aIsRemoved() {
+  // this test should produce an error (B is unavailable)
+  assertEquals("B has three elements", 3, B!Element.allInstances.size());
+}

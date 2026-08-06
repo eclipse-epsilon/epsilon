@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Wizard Language GMF Support
+Bundle-SymbolicName: org.eclipse.epsilon.ewl.gmf;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Require-Bundle: org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.common.dt,
+ org.eclipse.epsilon.ewl.emf,
+ org.eclipse.gmf.runtime.diagram.ui,
+ org.eclipse.emf.edit
+Export-Package: org.eclipse.epsilon.ewl.gmf
+Bundle-Activator: org.eclipse.epsilon.ewl.gmf.EwlEmfGmfPlugin
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.ewl.gmf

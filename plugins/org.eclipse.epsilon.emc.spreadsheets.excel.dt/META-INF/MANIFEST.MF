@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Excel Spreadsheets Model Support Development Tools
+Bundle-SymbolicName: org.eclipse.epsilon.emc.spreadsheets.excel.dt;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Activator: org.eclipse.epsilon.emc.spreadsheets.excel.dt.Activator
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Eclipse Modeling Project
+Export-Package: org.eclipse.epsilon.emc.spreadsheets.excel.dt
+Require-Bundle: org.eclipse.epsilon.common.dt,
+ org.eclipse.epsilon.emc.spreadsheets.excel,
+ org.eclipse.equinox.security;bundle-version="1.2.0"
+Automatic-Module-Name: org.eclipse.epsilon.emc.spreadsheets.excel.dt

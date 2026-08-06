@@ -1,0 +1,43 @@
+@test
+operation basicEquality() {
+	assertTrue(newTrue());
+	assertFalse(newFalse());
+}
+
+@test
+operation operatorNot() {
+	assertTrue(not newFalse());
+	assertFalse(not newTrue());
+}
+
+@test
+operation operatorAnd() {
+	assertFalse(newFalse() and newFalse());
+	assertFalse(newFalse() and newTrue());
+	assertFalse(newTrue() and newFalse());
+	assertTrue(newTrue() and newTrue());
+}
+
+@test
+operation operatorOr() {
+	assertFalse(newFalse() or newFalse());
+	assertTrue(newFalse() or newTrue());
+	assertTrue(newTrue() or newFalse());
+	assertTrue(newTrue() or newTrue());
+}
+
+@test
+operation operatorXor() {
+	assertFalse(newFalse() xor newFalse());
+	assertTrue(newFalse() xor newTrue());
+	assertTrue(newTrue() xor newFalse());
+	assertFalse(newTrue() xor newTrue());
+}
+
+operation newTrue() {
+	return new Native("java.lang.Boolean")("true");
+}
+
+operation newFalse() {
+	return new Native("java.lang.Boolean")("false");
+}

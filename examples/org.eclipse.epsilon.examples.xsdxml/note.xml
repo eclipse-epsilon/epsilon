@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<note xmlns="xsdxml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <to>John</to>
+  <from>Nick</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+  Some text
+</note>

@@ -1,0 +1,25 @@
+@namespace(uri="comps", prefix="")
+package comps;
+
+class Model extends Component {
+	val Component[*] components;
+	val Connector[*] connectors;
+}
+
+class Component {
+	attr String name;
+	val Port[*] inPorts;
+	val Port outPort;
+}
+
+class Port {
+	attr String name;
+	attr String type;
+	ref Connector[1]#source outgoing;
+	ref Connector[1]#target incoming;
+}
+
+class Connector {
+	ref Port[1]#outgoing source;
+	ref Port[1]#incoming target;
+}

@@ -1,0 +1,4 @@
+Child [%=out.getCurrentLineNumber()%]
+Child [%=out.getCurrentLineNumber()%]
+Child [%=out.getCurrentLineNumber()%]
+Child [%=out.getCurrentLineNumber()%]

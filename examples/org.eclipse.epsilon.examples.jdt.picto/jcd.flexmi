@@ -1,0 +1,39 @@
+<?nsuri jcd?>
+<_>
+	<diagram name="Kitchen Sink">
+		<include name="Employee"/>
+		<include name="Product"/>
+		<include name="Order"/>
+		<include name="OrderItem"/>
+		<include name="Person"/>
+		<include name="Shippable"/>
+		<include name="Address"/>
+		<include name="Customer"/>
+		<constraint below="Order" above="Employee"/>
+		<constraint below="OrderItem" above="Product"/>
+		<constraint above="Customer" below="Order"/>
+		<constraint right="Customer" left="Address"/>
+	</diagram>
+	
+	<diagram name="Employee and Person">
+		<preamble>
+		skinparam monochrome true
+		skinparam handwritten true
+		</preamble>
+		<postamble>
+		note left of Employee: People working for our company
+		note right of Person::"lastName : String"
+		The person's last name
+		end note
+		</postamble>
+		<include name="Employee"/>
+		<include name="Person"/>
+	</diagram>
+	
+	<diagram name="Order and Shippable">
+		<include name="Order"/>
+		<include name="Shippable"/>
+		<constraint right="Order" left="Shippable"/>
+	</diagram>
+	
+</_>

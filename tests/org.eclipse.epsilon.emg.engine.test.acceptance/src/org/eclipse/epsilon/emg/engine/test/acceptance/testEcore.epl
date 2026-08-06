@@ -1,0 +1,23 @@
+$instances 10
+operation EClass create(){
+self.name= randomString();
+for(n in Sequence{1..randomInteger(1,3)}){
+	var ann = new EAnnotation;
+	ann.source= randomString();
+	ann.container=self;
+	for(n in Sequence{1..randomInteger(1,4)}){
+		var st= new EStringToMapEntry;
+		st.key=randomString();
+		st.value=randomString();
+		ann.details.add(st);
+	}
+}
+}
+@probability 0.2
+pattern EClass
+	clas: EClass, clas2:EClass
+	guard: clas2.`extends`.isUndefined() and clas<>clas2{
+		onmatch{
+			clas.isExtendedBy.add(clas2);
+		}
+	}

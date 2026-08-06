@@ -1,0 +1,60 @@
+<project default="createTable">
+	
+	<!-- Prepare our flowchart model for processing with Epsilon --> 
+	<target name="loadFlowchartModel">
+		<epsilon.emf.register file="../org.eclipse.epsilon.examples.metamodels/Flowchart.ecore" />
+		<epsilon.emf.loadModel
+			name="Flowchart"
+			read="true"
+			store="false"
+			metamodeluri="flowchart"
+			modelfile="models/wakeup.model"
+		/>
+	</target>
+	
+	<!-- First check that our flowchart is well-formed -->
+	<target name="validate" depends="loadFlowchartModel">
+		<!-- Note that this task will fail if the model is not valid due to the failonerrors=true
+		     attribute. To see how an invalid model causes a failure, try changing 
+		     modelfile="models/wakeup.model" to modelfile="models/invalid.model" on line 11
+		  -->
+		<epsilon.evl src="programs/validate_flowchart.evl" failonerrors="true">
+			<model ref="Flowchart" />
+		</epsilon.evl>
+	</target>
+	
+	<!-- Next prepare a new and empty path model for use in the EOL and EGL scripts -->
+	<target name="loadPathModel">
+		<epsilon.emf.register file="metamodel/path.ecore" />
+		<epsilon.emf.loadModel
+			name="FlowchartPath"
+			read="false"
+			store="false"
+			metamodeluri="path"
+			modelfile="models/path.model"
+		/>
+	</target>
+	
+	<!-- Invoke EOL to select a path through the flowchart, and then
+	     invoke EGL to transform the chosen path to HTML -->
+	<target name="showPath" depends="validate,loadPathModel">
+		<epsilon.eol src="programs/choose_path.eol">
+			<model ref="Flowchart" />
+			<model ref="FlowchartPath" />
+		</epsilon.eol>
+		
+		<!-- Save the generated HTML in path.html -->
+		<epsilon.egl src="programs/path_to_html.egl" target="path.html">
+			<model ref="FlowchartPath" />
+		</epsilon.egl>
+	</target>
+	
+	<target name="createTable" depends="showPath">
+		<epsilon.pinset src="programs/create_table.pinset" outputfolder="tables">
+			<model ref="Flowchart"/>
+		</epsilon.pinset>
+
+		<!-- Force Eclipse to refresh our project so we can see the newly generated files -->
+		<eclipse.refreshLocal resource="org.eclipse.epsilon.examples.workflow.flowchart" depth="-1" />
+	</target>
+</project>

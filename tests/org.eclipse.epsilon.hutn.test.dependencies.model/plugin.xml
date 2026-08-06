@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+ <copyright>
+ </copyright>
+
+ $Id$
+-->
+
+<plugin>
+
+
+   <extension
+         point="org.eclipse.emf.ecore.dynamic_package">
+      <resource
+            location="models/org/eclipse/epsilon/hutn/test/models/Families.ecore"
+            uri="families">
+      </resource>
+   </extension>
+   
+   <extension
+         point="org.eclipse.emf.ecore.dynamic_package">
+      <resource
+            location="models/org/eclipse/epsilon/hutn/test/models/BankAccounts.ecore"
+            uri="bankAccounts">
+      </resource>
+   </extension>
+
+</plugin>

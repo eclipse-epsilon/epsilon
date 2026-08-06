@@ -1,0 +1,126 @@
+import 'CopyOO.etl';
+
+rule MergeModel
+	merge l : Left!Model
+	with r : Right!Model 
+	into t : Target!Model {
+	
+	t.name = l.name + ' and ' + r.name;
+	t.package ::= l.package;
+	t.annotations ::= l.annotations + r.annotations;
+	t.contents ::= l.contents + r.contents;
+	
+}
+rule MergeAnnotation
+	merge l : Left!Annotation
+	with r : Right!Annotation 
+	into t : Target!Annotation {
+	
+	t.key = l.key;
+	t.value = l.value;
+	
+}
+rule MergePackage
+	merge l : Left!Package
+	with r : Right!Package 
+	into t : Target!Package {
+	
+	t.name = l.name;
+	t.package ::= l.package;
+	t.annotations ::= l.annotations + r.annotations;
+	t.contents ::= l.contents + r.contents;
+	
+}
+rule MergeExternalClass
+	merge l : Left!ExternalClass
+	with r : Right!ExternalClass 
+	into t : Target!ExternalClass {
+	
+ 
+	t.name = l.name;
+	t.isAbstract = l.isAbstract;
+	t.package ::= l.package;
+	t.`extends` ::= l.`extends`;
+	t.annotations ::= l.annotations + r.annotations;
+	t.extendedBy ::= l.extendedBy + r.extendedBy;
+	t.features ::= l.features + r.features;
+	
+}
+rule MergeClass
+	merge l : Left!Class
+	with r : Right!Class 
+	into t : Target!Class {
+	
+ 
+	t.name = l.name;
+	t.isAbstract = l.isAbstract;
+	t.package ::= l.package;
+	t.`extends` ::= l.`extends`;
+	t.annotations ::= l.annotations + r.annotations;
+	t.extendedBy ::= l.extendedBy + r.extendedBy;
+	t.features ::= l.features + r.features;
+	
+}
+rule MergeDatatype
+	merge l : Left!Datatype
+	with r : Right!Datatype 
+	into t : Target!Datatype {
+	
+ 
+	t.name = l.name;
+	t.package ::= l.package;
+	t.annotations ::= l.annotations + r.annotations;
+	
+}
+rule MergeOperation
+	merge l : Left!Operation
+	with r : Right!Operation 
+	into t : Target!Operation {
+	
+ 
+	t.name = l.name;
+	t.visibility = l.visibility;
+	t.owner ::= l.owner;
+	t.type ::= l.type;
+	t.annotations ::= l.annotations + r.annotations;
+	t.parameters ::= l.parameters + r.parameters;
+	
+}
+rule MergeParameter
+	merge l : Left!Parameter
+	with r : Right!Parameter
+	into t : Target!Parameter {
+	
+	t.name = l.name;
+	t.type ::= l.type;
+	t.owner ::= l.owner;
+	t.annotations ::= l.annotations + r.annotations;
+	
+}
+rule MergeReference
+	merge l : Left!Reference
+	with r : Right!Reference 
+	into t : Target!Reference {
+	
+	t.name = l.name;
+	t.visibility = l.visibility;
+	t.isMany = l.isMany;
+	t.owner ::= l.owner;
+	t.type ::= l.type;
+	t.annotations ::= l.annotations + r.annotations;
+	
+}
+rule MergeAttribute
+	merge l : Left!Attribute
+	with r : Right!Attribute 
+	into t : Target!Attribute {
+	
+	t.name = l.name;
+	t.visibility = l.visibility;
+	t.isMany = l.isMany;
+	t.owner ::= l.owner;
+	t.type ::= l.type;
+	t.annotations ::= l.annotations + r.annotations;
+	
+}
+

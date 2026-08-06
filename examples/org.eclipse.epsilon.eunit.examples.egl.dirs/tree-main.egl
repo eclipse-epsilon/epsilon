@@ -1,0 +1,11 @@
+[%
+  var tInner = TemplateFactory.load("tree-report.egl");
+  tInner.populate("nodes", Tree.all.reject(s | s.children.isEmpty));
+  tInner.process();
+  tInner.generate(destdir + "/inner.txt");
+
+  var tOuter = TemplateFactory.load("tree-report.egl");
+  tOuter.populate("nodes", Tree.all.select(s | s.children.isEmpty));
+  tOuter.process();
+  tOuter.generate(destdir + "/outer.txt");
+%]

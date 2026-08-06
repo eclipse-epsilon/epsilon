@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="Cookbooks" xsi:schemaLocation="Cookbooks ../metamodels/cookbook.ecore">
+  <Cookbooks>
+    <cookbooks name="Pasta" contents="/0/@categories.1/@recipes.1 /0/@categories.1/@recipes.0 /0/@categories.2/@recipes.0 /0/@categories.0/@recipes.0 /1"/>
+    <categories name="All-day breakfasts" meta="Breakfast">
+      <recipes name="Full English" serves="1">
+        <instructions name="">
+          <instruction>Cook.</instruction>
+          <instruction>Eat.</instruction>
+        </instructions>
+        <ingredients name="Eggs" amount="2.0"/>
+        <ingredients name="Sausages" amount="2.0" otherUnit=""/>
+        <ingredients name="Baked Beans" amount="0.65" otherUnit="tin"/>
+        <ingredients name="Sliced Bread" amount="2.0" otherUnit="slices"/>
+        <ingredients name="Hash Brown" amount="2.0"/>
+      </recipes>
+    </categories>
+    <categories name="Healthy dinner" meta="Dinner">
+      <recipes name="Pasta" serves="2">
+        <instructions name="Cooking">
+          <instruction>Do something...</instruction>
+          <instruction>Do another thing.</instruction>
+          <instruction>Boil something.</instruction>
+          <instruction>Wait for it to boil.</instruction>
+          <instruction>Cook the pasta.</instruction>
+        </instructions>
+        <ingredients name="Pasta" amount="250.0" measurement="grams"/>
+      </recipes>
+      <recipes name="Spaghetti Bolognese" dependencies="/0/@categories.1/@recipes.0" serves="2">
+        <instructions name="Preparation"/>
+        <instructions name="Cooking">
+          <instruction>Cooking instruction 1</instruction>
+          <instruction>Cooking instruction 2.</instruction>
+          <instruction>cooking instruction 3</instruction>
+          <instruction>cooking instruction 4.</instruction>
+        </instructions>
+        <instructions name="Serving">
+          <instruction>Serving instruction 1.</instruction>
+          <instruction>2notASentence,</instruction>
+        </instructions>
+        <ingredients name="Mince meat" amount="235.0" measurement="grams"/>
+        <ingredients name="Tomato pureé"/>
+        <ingredients name="Onion" amount="1.5"/>
+        <ingredients name="Garlic" amount="1.0" otherUnit="clove"/>
+        <ingredients name="Parmesan cheese"/>
+      </recipes>
+    </categories>
+    <categories name="Nutritious snacks" meta="Snack">
+      <recipes name="Flapjack" serves="1">
+        <instructions name="Eating">
+          <instruction>Buy it!</instruction>
+          <instruction>Eat it!</instruction>
+        </instructions>
+        <ingredients name="Flapjack" amount="1.0" otherUnit="bar"/>
+      </recipes>
+    </categories>
+  </Cookbooks>
+  <Recipe name="some random recipe"/>
+</xmi:XMI>

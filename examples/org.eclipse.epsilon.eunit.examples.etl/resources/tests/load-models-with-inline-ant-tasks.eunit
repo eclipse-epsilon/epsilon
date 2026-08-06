@@ -1,0 +1,35 @@
+/*
+ antProject is Ant's Project object, and is supplied by EUnit.
+*/
+operation createEmfLoadTask(modelName : String, modelFilename : String, metamodelFilename : String) {
+  var task = antProject.createTask("epsilon.emf.loadModel");
+  var basedir = antProject.getBaseDir();
+  task.setModelFile(new Native('java.io.File')(basedir, "resources/models/" + modelFilename));
+  task.setMetamodelFile(new Native('java.io.File')(basedir, "resources/metamodels/" + metamodelFilename));
+  task.setName(modelName);
+  task.setRead(true);
+  task.setStore(false);
+  return task;
+}
+
+@model
+operation loadModels() {
+  var loadTree  = createEmfLoadTask("Tree", "tree.model", "tree.ecore");
+  var loadGraph = createEmfLoadTask("Graph", "graph-expected.model", "graph.ecore");
+  var loadExpectedGraph = createEmfLoadTask("GraphExpected", "graph-expected.model", "graph.ecore");
+
+  // Do not read the graph-expected.model in loadGraph: we only
+  // want an empty model that we can use as destination for the ETL
+  // transformation.
+  loadGraph.setRead(false);
+
+  loadTree.execute();
+  loadGraph.execute();
+  loadExpectedGraph.execute();
+}
+
+@test
+operation transformationWorksAsExpected() {
+  runTarget("tree2graph");
+  assertEqualModels("GraphExpected", "Graph");
+}

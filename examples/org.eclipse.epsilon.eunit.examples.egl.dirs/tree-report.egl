@@ -1,0 +1,3 @@
+[% for (n in nodes) { %]
+Node: [%=n.label%]
+[% } %]

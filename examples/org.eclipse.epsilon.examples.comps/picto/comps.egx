@@ -1,0 +1,17 @@
+rule Application2Dot 
+	transform s : Application {
+	
+	parameters { 
+		
+		return Map {
+			"applicationName" = s.isDefined() ? s.name : "",
+			"path" = Sequence{s.isDefined() ? s.name : ""},
+			"icon" = "diagram-ff0000",
+			"format" = "graphviz-dot"
+		};
+	}
+	
+	template : "application2dot.egl"
+	
+}
+

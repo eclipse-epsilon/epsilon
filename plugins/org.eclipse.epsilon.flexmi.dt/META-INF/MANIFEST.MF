@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Flexmi Development Tools
+Bundle-SymbolicName: org.eclipse.epsilon.flexmi.dt;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Require-Bundle: org.eclipse.jface.text,
+ org.eclipse.epsilon.flexmi,
+ org.eclipse.emf.ecore.editor,
+ org.eclipse.epsilon.emc.emf;resolution:=optional,
+ org.eclipse.epsilon.common.dt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.flexmi.dt,
+ org.eclipse.epsilon.flexmi.dt.preferences,
+ org.eclipse.epsilon.flexmi.dt.xml,
+ org.eclipse.epsilon.flexmi.dt.yaml
+Automatic-Module-Name: org.eclipse.epsilon.flexmi.dt
+Bundle-Activator: org.eclipse.epsilon.flexmi.dt.FlexmiPlugin
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Eclipse Modeling Project

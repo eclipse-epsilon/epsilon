@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate">
+<listAttribute key="models">
+<listEntry value="#&#13;&#10;#Thu Mar 18 13:29:15 GMT 2010&#13;&#10;aliases=&#13;&#10;name=XMLDoc&#13;&#10;file=/org.eclipse.epsilon.examples.plainxml/library.xml&#13;&#10;type=PlainXML&#13;&#10;uri=&#13;&#10;storeOnDisposal=false&#13;&#10;fileBased=true&#13;&#10;readOnLoad=true&#13;&#10;"/>
+</listAttribute>
+<stringAttribute key="source" value="/org.eclipse.epsilon.examples.plainxml/complexqueries.eol"/>
+</launchConfiguration>

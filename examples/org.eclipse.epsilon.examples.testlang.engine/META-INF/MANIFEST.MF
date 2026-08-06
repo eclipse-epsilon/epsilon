@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Annotation-based test language example (engine)
+Bundle-SymbolicName: org.eclipse.epsilon.examples.testlang.engine
+Bundle-Version: 1.5.0.qualifier
+Bundle-Vendor: Eclipse.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.epsilon.eol.engine
+Export-Package: org.eclipse.epsilon.examples.testlang.engine

@@ -1,0 +1,17 @@
+@namespace(uri="http://eclipse.org/epsilon/rdf/inheritance", prefix="")
+package inheritance;
+
+class Model {
+    attr String name;
+    val Element[*] elements;
+}
+
+abstract class Element {}
+
+class Rule extends Element {
+    attr String name;
+}
+
+class Action extends Element {
+    attr String action;
+}

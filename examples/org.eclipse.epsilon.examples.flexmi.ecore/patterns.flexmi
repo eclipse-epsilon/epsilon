@@ -1,0 +1,42 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?render-egx ecore.egx?>
+<_>
+
+	<singleton name="Log">
+		<prop name="level" type="Integer"/>
+	</singleton> 
+
+	<factory creates="Log"/>
+
+	<type name="Integer"/>
+	
+	<:template name="factory">
+		<parameter name="creates"/>
+		<content>
+			<class name="${creates}Factory">
+				<op name="create${creates}" type="${creates}"/>
+				<:slot/>
+			</class>
+		</content>
+	</:template>
+
+	<:template name="singleton">
+		<content>
+			<class :local="c">
+				<ref name="instance" :type="c"/>
+				<op name="getInstance" :type="c"/>
+				<:slot/>
+			</class>
+		</content>
+	</:template>
+	
+	<:template name="prop">
+		<content>
+			<attr :var="attr"/>
+			<op :name="'get' + attr.name.ftuc()" :type="attr.eType"/>
+			<op :name="'set' + attr.name.ftuc()">
+				<param :name="attr.name" :type="attr.eType"/>
+			</op>
+		</content>
+	</:template>
+</_>

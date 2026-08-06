@@ -1,0 +1,39 @@
+/*********************************************************************
+ * Copyright (c) 2020 The University of York.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *********************************************************************/
+
+#contents {
+	position:absolute;
+	top:40px;
+	margin-left: 10px;
+	width:95%;
+}
+
+.logo {
+	width: 20%;
+	margin: 5px;
+}
+
+i {
+	display:block;
+}
+
+/* following font face declarations need to be removed for DBCS */
+
+body, h1, h2, h3, h4, h5, h6, p, table, td, caption, th, ul, ol, dl, li, dd, dt {font-family: Arial, Helvetica, sans-serif; color: #000000}
+
+/* end font face declarations */
+
+body	     { font-size: 83%; background: #FFFFFF; margin-bottom: 1em }
+h1           { font-size: 140%; margin-top: 25px; margin-bottom: 3px }
+h2           { font-size: 110%; margin-top: 20px; margin-bottom: 3px }
+
+dd {
+	margin-bottom: 1em;
+}

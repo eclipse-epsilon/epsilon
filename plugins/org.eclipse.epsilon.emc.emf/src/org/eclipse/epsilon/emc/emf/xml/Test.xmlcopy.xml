@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestSuite
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestCases TestCases.xsd">
+  <TestCase>
+    <Function name="Assign" precondition="1" returnValue="false"/>
+    <instance bitwidth="5" command="Check AssignReg4_1_4 for 5 int, exactly 2 DepartmentState, exactly 4 Student, exactly 3 Lecturer, exactly 3 Course"
+        filename="C:\PhD\ALLOY\case_studies\CourseAssignment\EnhancedVersion\TestGen\Regions\Assign_Region4_Pre1.als">
+      <sig extends="univ" isBuiltin="true" name="Int">
+        <atom name="-16"/>
+        <atom name="-15"/>
+        <atom name="-14"/>
+        <atom name="-13"/>
+        <atom name="-12"/>
+        <atom name="-11"/>
+        <atom name="-10"/>
+        <atom name="-9"/>
+        <atom name="-8"/>
+        <atom name="-7"/>
+        <atom name="-6"/>
+        <atom name="-5"/>
+        <atom name="-4"/>
+        <atom name="-3"/>
+        <atom name="-2"/>
+        <atom name="-1"/>
+        <atom name="0"/>
+        <atom name="1"/>
+        <atom name="2"/>
+        <atom name="3"/>
+        <atom name="4"/>
+        <atom name="5"/>
+        <atom name="6"/>
+        <atom name="7"/>
+        <atom name="8"/>
+        <atom name="9"/>
+        <atom name="10"/>
+        <atom name="11"/>
+        <atom name="12"/>
+        <atom name="13"/>
+        <atom name="14"/>
+        <atom name="15"/>
+      </sig>
+      <sig extends="Int" isBuiltin="true" name="seq/Int">
+        <atom name="0"/>
+        <atom name="1"/>
+        <atom name="2"/>
+        <atom name="3"/>
+      </sig>
+      <sig extends="univ" isOne="true" name="cs/Constants">
+        <atom name="cs/Constants$0"/>
+      </sig>
+      <sig extends="univ" isAbstract="true" name="cs/Person">
+        <atom name="cs/Student$0"/>
+        <atom name="cs/Student$1"/>
+        <atom name="cs/Student$2"/>
+        <atom name="cs/Student$3"/>
+        <atom name="cs/Lecturer$0"/>
+        <atom name="cs/Lecturer$1"/>
+        <atom name="cs/Lecturer$2"/>
+      </sig>
+      <sig extends="cs/Person" name="cs/Student">
+        <atom name="cs/Student$0"/>
+        <atom name="cs/Student$1"/>
+        <atom name="cs/Student$2"/>
+        <atom name="cs/Student$3"/>
+      </sig>
+      <sig extends="cs/Person" name="cs/Lecturer">
+        <atom name="cs/Lecturer$0"/>
+        <atom name="cs/Lecturer$1"/>
+        <atom name="cs/Lecturer$2"/>
+      </sig>
+      <sig extends="univ" name="cs/Course">
+        <atom name="cs/Course$0"/>
+        <atom name="cs/Course$1"/>
+        <atom name="cs/Course$2"/>
+      </sig>
+      <sig extends="univ" name="cs/DepartmentState">
+        <atom name="cs/DepartmentState$0"/>
+        <atom name="cs/DepartmentState$1"/>
+      </sig>
+      <field name="Max_Attendees">
+        <type>
+          <sig name="cs/Constants"/>
+          <sig name="Int"/>
+        </type>
+        <tuple>
+          <atom name="cs/Constants$0"/>
+          <atom name="7"/>
+        </tuple>
+      </field>
+      <field name="Max_CourseSubscription">
+        <type>
+          <sig name="cs/Constants"/>
+          <sig name="Int"/>
+        </type>
+        <tuple>
+          <atom name="cs/Constants$0"/>
+          <atom name="6"/>
+        </tuple>
+      </field>
+      <field name="Max_LecturerAssignment">
+        <type>
+          <sig name="cs/Constants"/>
+          <sig name="Int"/>
+        </type>
+        <tuple>
+          <atom name="cs/Constants$0"/>
+          <atom name="3"/>
+        </tuple>
+      </field>
+      <field name="Min_ExpYear">
+        <type>
+          <sig name="cs/Constants"/>
+          <sig name="Int"/>
+        </type>
+        <tuple>
+          <atom name="cs/Constants$0"/>
+          <atom name="3"/>
+        </tuple>
+      </field>
+      <field name="age">
+        <type>
+          <sig name="cs/Person"/>
+          <sig name="Int"/>
+        </type>
+        <tuple>
+          <atom name="cs/Student$0"/>
+          <atom name="15"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Student$1"/>
+          <atom name="7"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Student$2"/>
+          <atom name="6"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Student$3"/>
+          <atom name="6"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Lecturer$0"/>
+          <atom name="7"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Lecturer$1"/>
+          <atom name="3"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Lecturer$2"/>
+          <atom name="11"/>
+        </tuple>
+      </field>
+      <field name="sYear">
+        <type>
+          <sig name="cs/Student"/>
+          <sig name="Int"/>
+        </type>
+        <tuple>
+          <atom name="cs/Student$0"/>
+          <atom name="4"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Student$1"/>
+          <atom name="4"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Student$2"/>
+          <atom name="4"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Student$3"/>
+          <atom name="4"/>
+        </tuple>
+      </field>
+      <field name="lExpYear">
+        <type>
+          <sig name="cs/Lecturer"/>
+          <sig name="Int"/>
+        </type>
+        <tuple>
+          <atom name="cs/Lecturer$0"/>
+          <atom name="15"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Lecturer$1"/>
+          <atom name="15"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Lecturer$2"/>
+          <atom name="15"/>
+        </tuple>
+      </field>
+      <field name="cID">
+        <type>
+          <sig name="cs/Course"/>
+          <sig name="Int"/>
+        </type>
+        <tuple>
+          <atom name="cs/Course$0"/>
+          <atom name="13"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Course$1"/>
+          <atom name="14"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Course$2"/>
+          <atom name="15"/>
+        </tuple>
+      </field>
+      <field name="cAllowedYears">
+        <type>
+          <sig name="cs/Course"/>
+          <sig name="Int"/>
+        </type>
+        <tuple>
+          <atom name="cs/Course$0"/>
+          <atom name="4"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Course$1"/>
+          <atom name="1"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Course$1"/>
+          <atom name="3"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Course$1"/>
+          <atom name="4"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/Course$2"/>
+          <atom name="4"/>
+        </tuple>
+      </field>
+      <field name="CourseAssignment">
+        <type>
+          <sig name="cs/DepartmentState"/>
+          <sig name="cs/Student"/>
+          <sig name="cs/Course"/>
+        </type>
+        <tuple>
+          <atom name="cs/DepartmentState$0"/>
+          <atom name="cs/Student$0"/>
+          <atom name="cs/Course$1"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/DepartmentState$0"/>
+          <atom name="cs/Student$1"/>
+          <atom name="cs/Course$2"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/DepartmentState$0"/>
+          <atom name="cs/Student$2"/>
+          <atom name="cs/Course$0"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/DepartmentState$0"/>
+          <atom name="cs/Student$3"/>
+          <atom name="cs/Course$0"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/DepartmentState$1"/>
+          <atom name="cs/Student$0"/>
+          <atom name="cs/Course$1"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/DepartmentState$1"/>
+          <atom name="cs/Student$1"/>
+          <atom name="cs/Course$2"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/DepartmentState$1"/>
+          <atom name="cs/Student$2"/>
+          <atom name="cs/Course$0"/>
+        </tuple>
+        <tuple>
+          <atom name="cs/DepartmentState$1"/>
+          <atom name="cs/Student$3"/>
+          <atom name="cs/Course$0"/>
+        </tuple>
+      </field>
+      <field name="TeachingAssignment">
+        <type>
+          <sig name="cs/DepartmentState"/>
+          <sig name="cs/Course"/>
+          <sig name="cs/Lecturer"/>
+        </type>
+        <tuple>
+          <atom name="cs/DepartmentState$1"/>
+          <atom name="cs/Course$2"/>
+          <atom name="cs/Lecturer$2"/>
+        </tuple>
+      </field>
+      <set name="$AssignReg4_1_4_d" type="cs/DepartmentState">
+        <atom name="cs/DepartmentState$1"/>
+      </set>
+      <set name="$AssignReg4_1_4_d'" type="cs/DepartmentState">
+        <atom name="cs/DepartmentState$0"/>
+      </set>
+      <set name="$AssignReg4_1_4_lec" type="cs/Lecturer">
+        <atom name="cs/Lecturer$2"/>
+      </set>
+      <set name="$AssignReg4_1_4_c" type="cs/Course">
+        <atom name="cs/Course$2"/>
+      </set>
+    </instance>
+  </TestCase>
+</TestSuite>

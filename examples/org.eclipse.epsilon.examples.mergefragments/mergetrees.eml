@@ -1,0 +1,21 @@
+rule Trees 
+	merge l : Core!Tree
+	with r : Fragment!Tree
+	into t : Target!Tree {
+	
+	t.label = l.label;
+	t.children ::= l.children + r.children;
+	
+}
+
+rule Tree2Tree 
+	transform s : Tree!Tree
+	to t : Target!Tree {
+	
+	guard : s.label <> "f_root"
+	
+	t.label = s.label;
+	t.children ::= s.children;
+	
+}
+

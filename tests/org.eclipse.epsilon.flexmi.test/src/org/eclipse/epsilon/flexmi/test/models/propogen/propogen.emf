@@ -1,0 +1,12 @@
+@namespace(uri="propogen", prefix="")
+package propogen;
+
+class Project {
+	val Partner[*] partners;
+}
+
+class Partner {
+	id attr String ~id;
+	attr String name;
+	attr String country;
+}

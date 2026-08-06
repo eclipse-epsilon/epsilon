@@ -1,0 +1,5 @@
+validationMode: jena-valid
+dataModels:
+  - model.ttl
+schemaModels:
+  - schema.ttl

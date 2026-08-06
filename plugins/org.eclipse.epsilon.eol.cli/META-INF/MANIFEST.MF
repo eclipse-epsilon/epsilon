@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EOL CLI
+Bundle-SymbolicName: org.eclipse.epsilon.eol.cli
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Automatic-Module-Name: org.eclipse.epsilon.eol.cli
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.common.cli;visibility:=reexport,
+ org.eclipse.epsilon.eol.engine;visibility:=reexport
+Export-Package: org.eclipse.epsilon.eol.cli

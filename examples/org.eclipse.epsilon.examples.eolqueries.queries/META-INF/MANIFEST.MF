@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Queries Plug-in
+Bundle-SymbolicName: org.eclipse.epsilon.examples.eolqueries.queries
+Bundle-Version: 1.0.0
+Bundle-Activator: org.eclipse.epsilon.examples.eolqueries.queries.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.epsilon.examples.eolqueries.library,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.emc.emf
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

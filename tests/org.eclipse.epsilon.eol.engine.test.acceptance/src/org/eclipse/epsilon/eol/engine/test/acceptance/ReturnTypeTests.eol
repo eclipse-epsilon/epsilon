@@ -1,0 +1,55 @@
+@test
+operation stringWhenShouldBeInt() {
+	assertError(o1a());
+	o1b();
+}
+
+@test
+operation intWhenShouldBeString() {
+	assertError(o2a());
+	o2b();
+}
+
+@test
+operation mapWhenShouldBeSequence() {
+	assertError(o3a());
+	o3b();
+}
+
+@test
+operation sequenceWhenShouldBeMap() {
+	assertError(o4a());
+	o4b();
+}
+
+operation o1a() : Integer {
+	return "wrong";
+}
+
+operation o1b() : Integer {
+	return 42;
+}
+
+operation o2a() : String {
+	return 500;
+}
+
+operation o2b() : String {
+	return "500";
+}
+
+operation o3a() : Sequence {
+	return new Map;
+}
+
+operation o3b() : Sequence {
+	return new Sequence;
+}
+
+operation o4a() : Map {
+	return new Sequence;
+}
+
+operation o4b() : Map {
+	return new Map;
+}

@@ -1,0 +1,99 @@
+"starting".println;
+
+var reference = new `simulink/Sources/Step`;
+assert(Step.all.size() = 1);  
+
+var sum = new `simulink/Math Operations/Sum`;
+assert(Sum.all.size() = 1);  
+
+var controller = new `simulink/Ports & Subsystems/Subsystem`;
+assert(SubSystem.all.size() = 1);  
+
+var plant = new `simulink/Ports & Subsystems/Subsystem`;
+assert(SubSystem.all.size() = 2);  
+
+var pidController = new `simulink/Continuous/PID Controller`; // Controller subsystem
+assert(SubSystem.all.size() = 3);  
+
+var transferFcn = new `simulink/Continuous/Transfer Fcn`; // Plant subsystem
+assert(TransferFcn.all.size() = 1);  
+
+reference.name = "Reference";
+assert(reference.name = "Reference");
+
+controller.name = "Controller";
+assert(controller.name = "Controller");
+
+plant.name = "Plant";
+assert(plant.name = "Plant");
+
+pidController.name = "PID Controller";
+assert(pidController.name = "PID Controller");
+
+// Position them on the diagram
+reference.position = "[100 100 130 130]";
+assert(reference.position.at(0) = 100);
+assert(reference.position.at(1) = 100);
+assert(reference.position.at(2) = 130);
+assert(reference.position.at(3) = 130);
+
+sum.position = "[200 100 230 130]";
+assert(sum.position.at(0) = 200);
+assert(sum.position.at(1) = 100);
+assert(sum.position.at(2) = 230);
+assert(sum.position.at(3) = 130);
+
+controller.position = "[300 100 400 130]";
+assert(controller.position.at(0) = 300);
+assert(controller.position.at(1) = 100);
+assert(controller.position.at(2) = 400);
+assert(controller.position.at(3) = 130);
+
+plant.position = "[500 100 600 130]";
+assert(plant.position.at(0) = 500);
+assert(plant.position.at(1) = 100);
+assert(plant.position.at(2) = 600);
+assert(plant.position.at(3) = 130);
+
+pidController.parent = controller;  // Parent is read only
+"PID 1dof block (mask) parameter 'Parent' is read-only".println;
+
+transferFcn.parent = plant; // Parent is read only
+"TransferFcn block parameter 'Parent' is read-only".println;
+
+var inports = Inport.all;
+assert(inports.size() = 2);
+
+var errorInport = inports.selectOne(ip|ip.parent = controller and ip.name="In1");
+
+errorInport.name = "Error";
+assert(errorInport.name = "Error");
+
+var outports = Outport.all;
+assert(outports.size() = 2);
+
+var controlOutport = outports.selectOne(op|op.parent = controller and op.name="Out1"); 
+
+controlOutport.name = "Control";
+assert(controlOutport.name = "Control");
+
+var plantInport = inports.selectOne(ip|ip.parent = plant);
+var plantOutport = outports.selectOne(op|op.parent = plant);
+
+"LINKING STARTS".println;
+
+errorInport.unlink(controlOutport);
+errorInport.link(pidController);
+pidController.link(controlOutport);
+
+plantInport.unlink(plantOutport);
+plantInport.link(transferFcn);
+transferFcn.link(plantOutport);
+
+reference.link(sum); 
+sum.link(controller); 
+controller.link(plant); 
+plant.linkTo(sum, 2);
+
+
+"finished".println;

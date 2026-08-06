@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<_>
+	<package name="p1">
+		<t1 p="C1"/>
+	</package>
+	
+	<package name="p2">
+		<t1 p="C2"/>
+	</package>
+	
+	<package name="p1">
+		<t1 p="C3">
+			<attr name="a2"/>
+		</t1>
+	</package>
+	
+	<p1>
+		<attr name="a3"/>
+	</p1>
+	
+	<p1>
+		<attr name="a4"/>
+		<attr name="a5"/>
+	</p1>
+	
+	<empty>
+		<class name="C4"/>
+	</empty>
+	
+	<:template name="t1">
+		<parameter name="p"/>
+		<content>
+			<class name="${p}">
+				<attr name="a1"/>
+				<:slot/>
+			</class>
+		</content>
+	</:template>
+	
+	<:template name="p1">
+		<content>
+			<package name="p">
+				<class name="c">
+					<:slot/>
+				</class>
+			</package>
+		</content>
+	</:template>
+	
+	<:template name="empty">
+		<content>
+			<:slot/>
+		</content>
+	</:template>
+</_>

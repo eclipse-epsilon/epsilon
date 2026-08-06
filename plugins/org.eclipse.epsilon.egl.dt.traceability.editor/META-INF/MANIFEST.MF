@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EGL Development Tools: Textlink Editor
+Bundle-SymbolicName: org.eclipse.epsilon.egl.dt.traceability.editor;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.epsilon.emc.emf,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.egl.dt.traceability.fine.emf;visibility:=reexport,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.jface.text,
+ org.eclipse.emf.ecore.editor
+Export-Package: org.eclipse.epsilon.egl.dt.traceability.editor,
+ org.eclipse.epsilon.egl.dt.traceability.editor.hyperlinks
+Automatic-Module-Name: org.eclipse.epsilon.egl.dt.traceability.editor

@@ -1,0 +1,70 @@
+rule Network2Graphviz 
+	transform n : socialnetwork::SocialNetwork {
+
+	template : "socialnetwork2graphviz.egl"
+
+	parameters : Map{
+		"path" = Sequence{"Social Network"},
+		"icon" = "diagram-ffffff",
+		"format" = "graphviz-circo",
+		
+		"layers" = Sequence {
+			Map {"id"="likes", "title"="Likes", "active"=true},
+			Map {"id"="dislikes", "title"="Dislikes", "active"=true}
+		},
+		
+		"people" = n.people
+	}
+	
+}
+
+rule Person2Graphviz 
+	transform p : socialnetwork::Person {
+
+	template : "socialnetwork2graphviz.egl"
+
+	parameters : Map{
+		"path" = Sequence{"Social Network", p.name},
+		"icon" = "diagram-c0c0c0",
+		"format" = "graphviz-dot",
+		
+		"layers" = Sequence {
+			Map {"id"="likes", "title"="Likes", "active"=true},
+			Map {"id"="dislikes", "title"="Dislikes", "active"=true}
+		},
+		
+		"people" = Sequence{p}
+	}
+	
+}
+
+rule Persons2Table {
+
+	template : "persons2table.pinset"
+
+	parameters : Map {
+		"path" = Sequence{"Stats"},
+		"icon" = "table",
+		"format" = "csv"
+		
+		// ,"pinsetrule" = "otherStats"
+	}
+}
+
+@lazy
+rule Persons2Graphviz {
+
+	template : "socialnetwork2graphviz.egl"
+
+	parameters : Map {
+		"format" = "graphviz-dot",
+
+		"layers" = Sequence {
+			Map {"id"="likes", "title"="Likes", "active"=true},
+			Map {"id"="dislikes", "title"="Dislikes", "active"=true}
+		},
+
+		"people" = names.isDefined() ? Person.all.select(p | names.includes(p.name)) : Sequence {}
+	}
+
+}

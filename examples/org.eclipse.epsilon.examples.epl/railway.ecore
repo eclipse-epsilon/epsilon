@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="railway" nsURI="http://www.semanticweb.org/ontologies/2015/trainbenchmark"
+    nsPrefix="hu.bme.mit.trainbenchmark">
+  <eClassifiers xsi:type="ecore:EClass" name="Segment" eSuperTypes="#//TrackElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="semaphores" upperBound="-1"
+        eType="#//Semaphore" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="neighbors" lowerBound="2"
+        upperBound="2" eType="#//TrackElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TrackElement" abstract="true" eSuperTypes="#//RailwayElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="monitoredBy" upperBound="-1"
+        eType="#//Sensor" eOpposite="#//Sensor/monitors"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connectsTo" upperBound="-1"
+        eType="#//TrackElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Switch" eSuperTypes="#//TrackElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="currentPosition" lowerBound="1"
+        eType="#//Position"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="positions" upperBound="-1"
+        eType="#//SwitchPosition" eOpposite="#//SwitchPosition/target"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="left" lowerBound="1" eType="#//TrackElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="right" lowerBound="1" eType="#//TrackElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="from" lowerBound="1" eType="#//TrackElement"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Route" eSuperTypes="#//RailwayElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entry" lowerBound="1" eType="#//Semaphore"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="follows" upperBound="-1"
+        eType="#//SwitchPosition" containment="true" eOpposite="#//SwitchPosition/route"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exit" lowerBound="1" eType="#//Semaphore"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="gathers" lowerBound="2"
+        upperBound="-1" eType="#//Sensor"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Semaphore" eSuperTypes="#//RailwayElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="signal" lowerBound="1"
+        eType="#//Signal"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SwitchPosition" eSuperTypes="#//RailwayElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//Switch" eOpposite="#//Switch/positions"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="position" lowerBound="1"
+        eType="#//Position"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="route" lowerBound="1" eType="#//Route"
+        eOpposite="#//Route/follows"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RailwayElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="_id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Sensor" eSuperTypes="#//RailwayElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="monitors" upperBound="-1"
+        eType="#//TrackElement" eOpposite="#//TrackElement/monitoredBy"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Signal">
+    <eLiterals name="FAILURE" value="1"/>
+    <eLiterals name="STOP"/>
+    <eLiterals name="GO" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Position">
+    <eLiterals name="FAILURE"/>
+    <eLiterals name="STRAIGHT" value="1"/>
+    <eLiterals name="DIVERGING" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RailwayContainer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="routes" upperBound="-1"
+        eType="#//Route" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="regions" upperBound="-1"
+        eType="#//Region" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Region" eSuperTypes="#//RailwayElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+        eType="#//TrackElement" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sensors" upperBound="-1"
+        eType="#//Sensor" containment="true"/>
+  </eClassifiers>
+</ecore:EPackage>

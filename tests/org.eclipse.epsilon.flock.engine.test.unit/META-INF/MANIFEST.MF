@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Flock Engine Unit Tests (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.flock.engine.test.unit
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse.org
+Require-Bundle: org.eclipse.epsilon.flock.engine;visibility:=reexport,
+ org.eclipse.epsilon.test.dependencies;visibility:=reexport,
+ org.eclipse.epsilon.hutn.test.dependencies.model;visibility:=reexport
+Export-Package: org.eclipse.epsilon.flock.test.unit
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: org.eclipse.epsilon.flock.engine.test.unit

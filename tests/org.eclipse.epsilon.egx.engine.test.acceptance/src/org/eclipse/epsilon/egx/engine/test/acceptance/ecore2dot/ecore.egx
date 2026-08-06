@@ -1,0 +1,54 @@
+pre {
+	var outputRoot = "output/";
+}
+
+rule All2Dot {
+	template : "ecore2dot.egl"
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "graphviz-dot",
+		"path" = List{"Model", "(All classes)"},
+		"icon" = "diagram-ff0000"
+	}
+	target : outputRoot+"ecoredot.txt"
+}
+
+rule Ecore23D {
+	template : "ecore23d.egl"
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "html",
+		"path" = List{"Model", "3D inheritance"},
+		"icon" = "diagram-fffbd7"
+	}
+	target : outputRoot+"ecore23d.txt"
+}
+
+rule Ecore2Barchart {
+	template : "stats.egl"
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "html",
+		"path" = List{"Model", "Stats"},
+		"icon" = "barchart"
+	}
+	target : outputRoot+"barchart.txt"
+}
+
+@parallel
+rule EClass2Dot transform c : EClass {
+	template : "eclass2dot.egl"
+	parameters {
+		var classes = Set{c};
+		classes.addAll(c.eReferences.eType);
+		classes.addAll(c.eSuperTypes);
+		//classes.addAll(EClass.all.select(o|o.eSuperTypes.includes(c)));	
+		return Map {
+			"classes" = classes, 
+			"format" = "graphviz-dot",
+			"path" = Sequence{"Model", "Classes", c.name},
+			"icon" = "diagram-fffbd7"
+		};
+	}
+	target : outputRoot+c.name+"_eclassdot.txt"
+}

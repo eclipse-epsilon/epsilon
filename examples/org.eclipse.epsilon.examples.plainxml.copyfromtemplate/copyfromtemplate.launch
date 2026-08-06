@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate">
+<listAttribute key="models">
+<listEntry value="#&#10;#Mon Jul 25 09:11:42 BST 2011&#10;name=Contacts&#10;readOnLoad=true&#10;storeOnDisposal=true&#10;aliases=&#10;uri=&#10;cached=true&#10;file=/org.eclipse.epsilon.examples.plainxml.copyfromtemplate/contacts.xml&#10;fileBased=true&#10;type=PlainXML&#10;"/>
+<listEntry value="#&#10;#Mon Jul 25 09:11:56 BST 2011&#10;name=Templates&#10;readOnLoad=true&#10;storeOnDisposal=false&#10;aliases=&#10;uri=&#10;cached=true&#10;file=/org.eclipse.epsilon.examples.plainxml.copyfromtemplate/templates.xml&#10;fileBased=true&#10;type=PlainXML&#10;"/>
+</listAttribute>
+<stringAttribute key="source" value="/org.eclipse.epsilon.examples.plainxml.copyfromtemplate/copyfromtemplate.eol"/>
+</launchConfiguration>

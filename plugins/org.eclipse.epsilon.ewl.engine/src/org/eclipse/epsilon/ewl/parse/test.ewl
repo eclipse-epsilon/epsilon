@@ -1,0 +1,153 @@
+wizard CreateDataLink {
+
+	guard : self.isKindOf(Collection) and
+		self.size() = 2 and
+		self.forAll(i|i.isTypeOf(DCM::ModelIntegration::Process))
+	
+	title : 'Create Datumlink from ' + self.at(0).identifier + ' to '
+		+ self.at(1).identifier 
+	
+	do {
+		var s := DCM::ModelIntegration::Datumline.allInstances();
+		var no := s.size() + 1;
+		var d := new DCM::ModelIntegration::Datumline;
+		d.hasProcessAsSource := self.at(0);
+		d.hasProcessAsTarget := self.at(1);
+		var package := DCM::MetamodelSpecificClasses::Package.allInstances().
+			selectOne(p|p.identifier = 'Datalines');
+		package.contains.add(d);
+		d.identifier := UserInput.prompt('Identifier', '' + no);
+		d.description := UserInput.prompt('Description', '');
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////-
+wizard CreateReverseDataLink {
+
+	guard : self.isKindOf(Collection) and
+		self.size() = 2 and
+		self.forAll(i|i.isTypeOf(DCM::ModelIntegration::Process))
+	
+	title : 'Create Datumlink from ' + self.at(1).identifier + ' to '
+		+ self.at(0).identifier 
+	
+	do {
+		var s := DCM::ModelIntegration::Datumline.allInstances();
+		var no := s.size() + 1;
+		var d := new DCM::ModelIntegration::Datumline;
+		d.hasProcessAsSource := self.at(1);
+		d.hasProcessAsTarget := self.at(0);
+		var package := DCM::MetamodelSpecificClasses::Package.allInstances().
+			selectOne(p|p.identifier = 'Datalines');
+		package.contains.add(d);
+		d.identifier := UserInput.prompt('Identifier', ''+ no);
+		d.description := UserInput.prompt('Description', '');
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////-
+wizard CreateApplicableDeviationsForAllProcesses {
+
+	guard : self.isKindOf(DCM::DDA::Guideword)
+
+	title: 'Create Applicable Deviations for ALL Processes'
+
+	do {
+		var p := DCM::ModelIntegration::Process.allInstances();
+		for (i in p) {
+			var np := new DCM::DDA::ApplicableDeviation;
+			np.ofSystemElement := i;
+			np.promptsWith := self;
+			np.identifier := self.identifier + '::Process ' +i.identifier;
+			np.description := self.identifier + ' ' +i.description;
+			var package := DCM::MetamodelSpecificClasses::Package.allInstances().
+				selectOne(p|p.identifier = 'Applicable Deviations');
+			package.contains.add(np);
+			
+		}
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////-
+wizard CreateApplicableDeviationsForAllDatumlines {
+
+	guard : self.isKindOf(DCM::DDA::Guideword)
+
+	title: 'Create (' +self.identifier+ ') Applicable Deviations for ALL Datumlines'
+	
+	do {
+		var p := DCM::ModelIntegration::Datumline.allInstances();
+		var d := DCM::DDA::ApplicableDeviation.allInstances();
+		//d.size().println('D');
+		//p.size().println('P');
+		
+		(p.size() * d.size()).println();
+		
+		for (i in p) {
+		
+			
+			//var np := new DCM::DDA::ApplicableDeviation;
+			// var np := new DCM::DDA::ApplicableDeviation;
+			
+			//np.ofSystemElement := i;
+			//np.promptsWith := self;
+			//np.identifier := self.identifier + '::Datumline ' +i.identifier;
+			//np.description := self.identifier + ' ' +i.description;		
+			
+			//d.size().println();
+			
+			//(d.exists(b|b.identifier = np.identifier)).println();
+			
+			//var ids := d.collect(g|g.identifier);
+			
+			//ids.select(x|false).println();
+			
+			//d.size().println('SIZE');
+			
+			var counter : Integer := 0;
+			//d.size().println('Size');
+			
+			for (target in d) {
+				
+				counter := counter + 1;
+				
+				//var x := 'xxx' + counter;
+				'xx'.println();
+				//x.println();
+				//	'Hello'.println();
+				//if (loopCount = 201) {
+				//	break;
+				//}
+				//target.identifier.println();
+			}
+			
+			counter.println();
+			//for (g in d) {
+			//	loopCount.println();
+				//g.identifier.println();
+			//	np.identifier.println();
+			//}
+			
+			//delete(np);
+			//if ((d.exists(b|b.identifier = np.identifier))) {
+				//('A deviation ' + np.identifier + ' already exists.').println();
+			//}
+			
+			//else {
+				//var package := DCM::MetamodelSpecificClasses::Package.allInstances().
+				//	selectOne(p|p.identifier = self.identifier+ ' Datumline Deviations');	
+				//package.contains.add(np);
+			//}
+		}
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////-
+wizard AskElementCountInPackage {
+	
+	guard: self.isKindOf(DCM::MetamodelSpecificClasses::Package)
+	
+	title: 'Count all elements within this Package'
+	
+	do {
+		//self.contains.size().println();
+		//MetamodelElement.allInstances.size().println();
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////////-

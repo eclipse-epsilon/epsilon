@@ -1,0 +1,18 @@
+@namespace(uri="coins")
+package coins;
+
+class Game {
+	val Coin[*] coins;
+}
+
+abstract class Coin {
+	
+}
+
+class SilverCoin extends Coin {
+	
+}
+
+class GoldCoin extends Coin {
+	
+}

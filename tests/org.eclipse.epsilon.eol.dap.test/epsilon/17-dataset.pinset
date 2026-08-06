@@ -1,0 +1,9 @@
+dataset personListing over p: Person {
+  column firstName: p.name
+  column lastName: p.lastName
+
+  column hasNameStartingWithJ {
+    var n = p.name; 
+    return n.startsWith('J');
+  }
+}

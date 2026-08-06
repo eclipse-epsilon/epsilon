@@ -1,0 +1,32 @@
+rule Action2Elements
+	transform a : Flowchart!Action
+	to container : HTML!DIV, title : HTML!H1, link : HTML!A {
+	
+	// Note that "Get up" is not transformed as it has no outgoing transitions
+	guard: a.outgoing.notEmpty() 
+	
+	title.value = a.name;
+	link.value = "Next steps";
+	link.ahref = a.outgoing.first.target.name;
+	
+	container.children.add(title);
+	container.children.add(link);
+}
+
+
+rule Decision2Elements
+	transform d : Flowchart!Decision
+	to container : HTML!DIV, title : HTML!H1, links : Sequence(HTML!A) {
+	
+	title.value = d.name;
+	
+	for (t in d.outgoing) {
+		var link = new HTML!A;
+		link.value = t.target.name;
+		link.ahref = t.target.name;
+		links.add(link);
+	}
+	
+	container.children.add(title);
+	container.children.addAll(links);
+}

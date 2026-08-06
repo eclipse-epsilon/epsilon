@@ -1,0 +1,8 @@
+[%
+	for (i in Sequence{1..3}) {
+    	var s : String  := 'SubTemplate'+i+'.egl';
+    	var t: Template := TemplateFactory.load(s); %]
+Preprocess
+[%=t.process()%]
+Postprocess
+[% } %]

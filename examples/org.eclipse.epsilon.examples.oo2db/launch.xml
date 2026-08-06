@@ -1,0 +1,64 @@
+<?xml version="1.0"?> 
+
+<!--
+	The following build script illustrates how to launch the example via ANT.
+	Ensure that External Tools Configuration specifies that the JRE to be used
+	is the same as the workspace.
+		1) Click External Tools Configuration... from the External Tools dropdown.
+		2) Select the ANT build for this build script.
+		3) Click the JRE tab.
+		4) Select the option that reads: "Run in the same JRE as the workspace."
+		5) Click Apply.
+		6) Click Run.
+-->
+
+<project default="main">
+
+ 	<target name="loadModels">
+ 		<epsilon.emf.register file="../org.eclipse.epsilon.examples.metamodels/OO.ecore"/>
+ 		<epsilon.emf.register file="../org.eclipse.epsilon.examples.metamodels/DB.ecore"/>
+ 		<epsilon.emf.register file="../org.eclipse.epsilon.examples.metamodels/SimpleTrace.ecore"/>
+ 		<epsilon.emf.register file="../org.eclipse.epsilon.examples.metamodels/TM.ecore"/>
+ 		 		
+ 		<epsilon.emf.loadModel name="OO"
+                                       modelFile="models/OOInstance.model"
+                                       metamodelUri="OO"
+                                       read="true" store="false"/>
+		
+		<epsilon.emf.loadModel name="OO2DB"
+                                       modelFile="models/OO2DB.model"
+                                       metamodelUri="TM"
+                                       read="true" store="false"/>
+		
+		<epsilon.emf.loadModel name="DB"
+                                       modelFile="models/DBInstance.model"
+                                       metamodelUri="DB"
+                                       read="false" store="true"/>
+		
+ 		<epsilon.emf.loadModel name="Trace"
+                                       modelFile="models/Trace.model"
+                                       metamodelUri="SimpleTrace"
+                                       read="false" store="true"/>
+ 	</target>
+ 	
+	<target name="main" depends="loadModels">
+		<epsilon.etl src="OO2DB.etl" exporttransformationtrace="OO2DBTrace">
+			<model ref="OO"/>
+			<model ref="OO2DB"/>
+			<model ref="DB"/>
+			<model ref="Trace"/>
+		</epsilon.etl>
+		
+		<epsilon.eol>
+			<uses ref="OO2DBTrace"/>
+			<model ref="OO"/>
+			<model ref="DB"/>
+			for (t in OO2DBTrace.transformations) {
+				("Class " + t.source.name + " was transformed to " +
+				"table " + t.targets.first().name).println();
+			}
+		</epsilon.eol>
+		
+	</target>
+</project>
+

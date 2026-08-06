@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spreadsheet>
+	
+	<worksheet name="Sheet1" alias="S1" dataTypeStrict="false">
+		<column index="0" name="column0" alias="c0"></column>
+		<column index="1" name="column1" alias="c1"></column>
+		<column index="2" name="column2" alias="c2"></column>
+		<column index="3" name="column3" alias="c3"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet2" alias="S2" dataTypeStrict="true">
+		<column index="0" name="column0" alias="c0" dataType="String"></column>
+		<column index="1" name="column1" alias="c1" dataType="Integer"></column>
+		<column index="2" name="column2" alias="c2" dataType="Double"></column>
+		<column index="3" name="column3" alias="c3" dataType="Boolean"></column>
+	</worksheet>
+	
+</spreadsheet>

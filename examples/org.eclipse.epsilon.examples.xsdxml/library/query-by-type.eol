@@ -1,0 +1,17 @@
+// Get the first library element in the document
+var library = LibraryType.all().first();
+
+// Get all the books contained in this library
+var allBooks = library.book;
+
+// We can get all the books in the document by querying directly the book type
+var allBooksAlternative = BookType.all();
+
+// Iterate through the collection of books, navigate the pages attribute and 
+// return the title of the book if it has more than 700 pages
+for (aBook in allBooks) {
+	if (aBook.pages > 700) {
+		aBook.isTypeOf(BookType).println();
+		("The " + aBook.title + " is a large book!").println();
+	}
+}

@@ -1,0 +1,6 @@
+[%
+	out.setContentType('Java');
+	
+	out.startPreserve('first', true);
+	out.startPreserve('second', true);
+%]

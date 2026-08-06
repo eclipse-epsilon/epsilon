@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Relativepaths
+Bundle-SymbolicName: org.eclipse.epsilon.examples.picto.relativepaths
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.eclipse.epsilon.examples.picto.relativepaths
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -1,0 +1,18 @@
+[% import 'util.eol' ;%]
+[% out.setContentType("HTML"); %]
+<html>
+<head>
+[%= out.startPreserve("style", true) %]
+	<style type="text/css">
+	</style>
+[%= out.stopPreserve()%]
+</head>
+<body>
+<h1>[%=decision.name%]</h1>
+<br/>
+[% var options = decision.outgoing; %]
+[% for (option in options){%]
+	<a href="[%=option.target.name.clean()%].html">[%=option.name%]</a><br>
+[% } %]
+</body>
+</html>

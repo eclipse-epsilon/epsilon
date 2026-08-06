@@ -1,0 +1,46 @@
+graph {
+	fill-color: #1E1E1E;
+}
+
+edge {
+	shape: cubic-curve;
+	/*stroke-mode: plain;*/
+	size: 2px;
+	fill-color: #C0C0C0;
+	stroke-color: #C0C0C0;
+}
+
+node {
+	size: 20px, 20px;
+	shape: circle;
+	fill-color: #FB8500;
+}
+
+node.EClass { 
+	fill-color: #8ECAE6;
+}
+
+node.EAttribute {
+	fill-color: #126782;
+}
+
+node.EReference {
+	fill-color: #FFB703;
+}
+
+node.EPackage {
+	fill-color: #FB8500;
+}
+
+node.EAnnotation {
+	fill-color: #FD9E02;
+}
+
+node.EEnum {
+	fill-color: #219EBC;
+}
+
+node.EEnumLiteral {
+	fill-color: #126782;
+}
+

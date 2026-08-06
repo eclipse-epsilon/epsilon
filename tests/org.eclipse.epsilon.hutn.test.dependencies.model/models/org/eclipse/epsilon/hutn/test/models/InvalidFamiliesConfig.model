@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="ASCII"?>
+<hutnConfig:Configuration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:hutnConfig="http://www.eclipse.org/gmt/epsilon/hutnConfig" xmi:id="_2ldP0b3zEdyxqupRGeR7-w">
+  <rules xsi:type="hutnConfig:IdentifierRule" xmi:id="_5SbzcL3zEdyxqupRGeR7-w" classifier="Family" attribute="address"/>
+</hutnConfig:Configuration>

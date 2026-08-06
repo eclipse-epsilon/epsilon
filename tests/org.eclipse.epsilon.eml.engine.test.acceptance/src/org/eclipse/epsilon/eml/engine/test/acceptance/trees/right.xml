@@ -1,0 +1,7 @@
+<tree label="t1">
+	<tree label="t2">
+		<tree label="t4"/>
+	</tree>
+	<tree label="t3"/>
+	<tree label="t5"/>
+</tree>

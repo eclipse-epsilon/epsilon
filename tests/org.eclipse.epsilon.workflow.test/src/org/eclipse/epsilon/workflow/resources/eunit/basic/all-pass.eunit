@@ -1,0 +1,14 @@
+@setup
+operation prepare() {
+  var firstElement  := Element.allInstances.first();
+}
+
+@test
+operation twoElements() {
+  assertEquals(2, Element.allInstances.size());
+}
+
+@test
+operation firstElement() {
+  assertEquals('A', firstElement.name);
+}

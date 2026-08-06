@@ -1,0 +1,49 @@
+@namespace(uri="comps", prefix="comps")
+@constraints(file="comps.evl")
+package comps;
+
+@GenModel(documentation="Abstract class for named elements")
+abstract class NamedElement {
+	attr String name;
+}
+
+@GenModel(documentation="Root entity that contains components, connectors and ports")
+class Model extends NamedElement {
+	val Component[*] components;
+	val Connector[*] connectors;
+	val Type[*] types;
+}
+
+@GenModel(documentation="Components are behavioural blocks that communicate through input and output ports")
+class Component extends NamedElement {
+	val Port[*] inPorts;
+	val Port[*] outPorts;
+	attr String action;
+	val Component[*]#parent children;
+	ref Component#children parent;
+	val Documentation#component documentation;
+}
+
+@GenModel(documentation="Free-text documentation for a component")
+class Documentation {
+	attr String text;
+	ref Component#documentation component;
+}
+
+@GenModel(documentation="Ports are used to model the input and output of components")
+class Port extends NamedElement {
+	ref Type type;
+	ref Connector[*]#to incoming;
+	ref Connector[*]#from outgoing;
+}
+
+@GenModel(documentation="Connectors connect ports of components")
+class Connector {
+	ref Port#outgoing from;
+	ref Port#incoming to;
+}
+
+@GenModel(documentation="Types of ports. The name should be a valid type name in the target programming language.")
+class Type extends NamedElement {
+	
+}

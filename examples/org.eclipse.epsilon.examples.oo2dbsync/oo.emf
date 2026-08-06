@@ -1,0 +1,15 @@
+package oo;
+
+class Model {
+	val Class[*] classes;
+}
+
+class Class {
+	attr String name;
+	val Attribute[*] attributes;
+}
+
+class Attribute {
+	attr String name;
+	attr String type;
+}

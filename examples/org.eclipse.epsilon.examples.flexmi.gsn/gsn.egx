@@ -1,0 +1,65 @@
+rule GSN2Dot {
+	
+	template: "gsn.egl"
+	
+	parameters: Map{
+		"AllContextOf" = ContextOf.all,
+		"AllSolutions" = Solution.all,
+		"AllSupportedBy" = SupportedBy.all,
+		"AllStrategies" = Strategy.all, 
+		"AllGoals" = Goal.all,
+		"path" = Sequence{"Model", "(All nodes)"},
+		"format" = "graphviz-dot",
+		"icon" = "diagram",
+		"layers" = Sequence {
+			Map { "id"="contexts", "title"="Contexts"}
+		}
+	}
+	
+	
+}
+
+/*
+rule GSN2DotNoContexts {
+	
+	template: "gsn.egl"
+	
+	parameters: Map{
+		"AllContextOf" = Sequence{},
+		"AllSolutions" = Solution.all,
+		"AllSupportedBy" = SupportedBy.all,
+		"AllStrategies" = Strategy.all, 
+		"AllGoals" = Goal.all,
+		"path" = Sequence{"Model", "(All nodes - No Contexts)"},
+		"format" = "graphviz-dot",
+		"icon" = "diagram"
+	}
+	
+}*/
+
+rule Goal2Dot 
+	transform g : Goal {
+	
+	template: "gsn.egl"
+	
+	parameters {
+	
+		var AllStrategies = SupportedBy.all.select(s|s.source = g and s.`target`.isTypeOf(Strategy)).`target`;
+	
+		return Map{
+			"AllContextOf" = ContextOf.all.select(c|c.source = g),
+			"AllSolutions" = SupportedBy.all.select(s|s.source = g and s.`target`.isTypeOf(Solution)).`target`,
+			"AllSupportedBy" = SupportedBy.all.select(s|s.source = g or AllStrategies.includes(s.source)),
+			"AllStrategies" = AllStrategies, 
+			"AllGoals" = Sequence{g}.includingAll(SupportedBy.all.select(s|AllStrategies.includes(s.source) and s.`target`.isTypeOf(Goal)).`target`),
+			"path" = Sequence{"Model", "Goals", "(" + g.name + ") " + g.description},
+			"format" = "graphviz-dot",
+			"icon" = "diagram",
+			"layers" = Sequence {
+				Map { "id"="contexts", "title"="Contexts"}
+			}
+		};
+	}
+	
+}
+

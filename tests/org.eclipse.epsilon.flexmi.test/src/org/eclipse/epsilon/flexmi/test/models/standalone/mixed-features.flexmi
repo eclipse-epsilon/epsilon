@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<class name="c1">
+  <eref name="r1" />
+  <eattr name="a1" />
+  <eref name="r2" />
+</class>

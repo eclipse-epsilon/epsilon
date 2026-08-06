@@ -1,0 +1,39 @@
+// QUERY
+var dictionary = D!Dictionary.all.println();
+var sections = D!Section.all.println();
+var entries = D!Entry.all.println();
+
+assert(dictionary.size()+sections.size()+entries.size() == D.allContents().size());
+
+var ddEntries = DesignDataEntry.all.println();
+var odEntries = OtherDataEntry.all.println();
+var cEntries = ConfigurationsEntry.all.println();
+//var ecEntries= EmbedderCoderEntry.all.println(); // Currently not supported
+
+// READ 
+entries.collect(e |e.Name.println("Name:")); 
+entries.collect(e |e.Value.println("Value:")); 
+entries.first().LastModified.println("LastModified: ");
+sections.first().Name.println("Section: ");
+D.Name.println("Dictionary: ");
+
+// CREATE
+var dde = new DesignDataEntry;
+var ode = new OtherDataEntry;
+var ce = new ConfigurationsEntry;
+//var ece = new EmbedderCoderEntry; // Currently not supported
+
+// MODIFY
+dde.Name = "MyNewEntrdasdfadadfy2hj";
+dde.Name.println("Name: ");
+dde.Value = "My Value";
+dde.Name.println("Name: ");
+dde.Value.println("Value: ");
+
+// METHODS
+
+// DELETE
+delete dde;
+delete ode;
+delete ce;
+//delete ece; // Currently not supported

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ASCII"?>
+<OO:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:OO="OO" xmi:id="_6ndPoAulEd2oi6lee4IBzQ" name="m">
+  <contents xsi:type="OO:Class" xmi:id="_6oDskAulEd2oi6lee4IBzQ" name="C1" extends="_6oDskwulEd2oi6lee4IBzQ" extendedBy="_6oDskwulEd2oi6lee4IBzQ">
+    <features xsi:type="OO:Attribute" xmi:id="_6oDskQulEd2oi6lee4IBzQ" name=""/>
+  </contents>
+  <contents xsi:type="OO:Package" xmi:id="_6oDskgulEd2oi6lee4IBzQ" name="p">
+    <contents xsi:type="OO:Class" xmi:id="_6oDskwulEd2oi6lee4IBzQ" name="c2" extends="_6oDskAulEd2oi6lee4IBzQ" extendedBy="_6oDskAulEd2oi6lee4IBzQ"/>
+  </contents>
+</OO:Model>

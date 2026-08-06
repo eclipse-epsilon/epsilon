@@ -1,0 +1,127 @@
+<!-- This project shows several ways EUnit can be used to test an ETL M2M transformation. -->
+<project>
+
+	<property name="models.location" location="${basedir}/resources/models" />
+	<property name="graph.model.location" location="${models.location}/graph-expected.model" />
+	<property name="tree.model.location" location="${models.location}/tree.model" />
+
+	<property name="metamodels.location" location="${basedir}/resources/metamodels" />
+	<property name="elements.metamodel.location" location="${metamodels.location}/elements.ecore" />
+	<property name="graph.metamodel.location" location="${metamodels.location}/graph.ecore" />
+	<property name="tree.metamodel.location" location="${metamodels.location}/tree.ecore" />
+	<property name="graph.metamodel.uri" value="Graph" />
+	<property name="tree.metamodel.uri" value="Tree" />
+
+	<property name="tests.location" location="${basedir}/resources/tests"/>
+	<property name="antmodels.eunit.location" location="${tests.location}/load-models-implicitly.eunit"/>
+	<property name="anttargetmodels.eunit.location" location="${tests.location}/load-models-running-ant-target.eunit"/>
+	<property name="inlineantmodels.eunit.location" location="${tests.location}/load-models-with-inline-ant-tasks.eunit"/>
+	<property name="hutnmodels.eunit.location" location="${tests.location}/load-models-with-hutn.eunit"/>
+
+	<!-- EUNIT TARGETS -->
+
+	<target name="with-model-refs" description="Loads models using standard executable module references">
+		<!--
+		  When loading models for comparison in EUnit, it's better not to use "metamodelfile",
+		  to avoid having multiple instances of the same EMF package and confusing EMF Compare.
+		-->
+		<epsilon.emf.register file="${tree.metamodel.location}"/>
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.emf.loadModel name="Tree"
+			modelfile="${tree.model.location}" metamodeluri="${tree.metamodel.uri}"
+			read="true" store="false"/>
+		<epsilon.emf.loadModel name="GraphExpected"
+			modelfile="${graph.model.location}" metamodeluri="${graph.metamodel.uri}"
+			read="true" store="false"/>
+		<epsilon.emf.loadModel name="Graph"
+			modelfile="transformed.model" metamodeluri="${graph.metamodel.uri}"
+			read="false" store="false"/>
+
+		<!-- EUnit will dispose and reload the referred models as needed -->
+		<epsilon.eunit src="${antmodels.eunit.location}" savemodeldeltas="true">
+			<model ref="Tree"/>
+			<model ref="Graph"/>
+			<model ref="GraphExpected"/>
+		</epsilon.eunit>
+	</target>
+
+	<target name="with-nested-model-tasks" description="Loads models using the nested modelTasks element">
+		<epsilon.emf.register file="${tree.metamodel.location}"/>
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+
+		<!-- EUnit will run the tasks inside <modelTasks> before each test, and
+		     dispose the models loaded in there after it. This is useful in case
+		     we want to do something more advanced for loading the models. -->
+		<epsilon.eunit src="${antmodels.eunit.location}">
+			<modelTasks>
+				<epsilon.emf.loadModel name="Tree"
+					modelfile="${tree.model.location}" metamodeluri="${tree.metamodel.uri}"
+					read="true" store="false"/>
+				<epsilon.emf.loadModel name="GraphExpected"
+					modelfile="${graph.model.location}" metamodeluri="${graph.metamodel.uri}"
+					read="true" store="false"/>
+				<epsilon.emf.loadModel name="Graph"
+					modelfile="transformed.model" metamodeluri="${graph.metamodel.uri}"
+					read="false" store="false"/>
+			</modelTasks>
+		</epsilon.eunit>
+	</target>
+
+	<target name="with-model-loading-target" description="Loads models using a separate Ant target">
+		<epsilon.emf.register file="${tree.metamodel.location}"/>
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+
+		<!-- We'll use a @models annotation and run a specific target in the Ant
+		     buildfile from there. This is useful if we want to reuse the same
+		     model loading tasks between different test suites. -->
+		<epsilon.eunit src="${anttargetmodels.eunit.location}"/>
+	</target>
+
+	<target name="with-inline-ant-tasks" description="Loads models using Ant tasks created inside the @models operation">
+		<!-- We'll use a @models annotation, creating the Ant tasks from inside
+		     it. This is useful if we want to do as much as possible from the
+		     .eunit file itself, without embedding the models in it. -->
+		<epsilon.eunit src="${inlineantmodels.eunit.location}"/>
+	</target>
+
+	<target name="with-hutn" description="Loads models using the loadHutn operation and runs ETL using inline Ant tasks">
+		<!-- We'll use a @models annotation, loading the tasks through the
+		     loadHutn operation. This allows us to embed the models inside the
+		     .eunit file itself.
+
+		     We will also use an inline Ant task to run the transformation, so
+		     everything except these three lines is inside the .eunit file. 
+
+		     Important: HUTN models require that the EPackages of the referenced
+		     metamodels are registered. If the metamodels have been permanently
+		     registered (right click on .ecore + "Register EPackages") the next
+		     two lines are not required. -->
+		<epsilon.emf.register file="${tree.metamodel.location}"/>
+		<epsilon.emf.register file="${graph.metamodel.location}"/>
+		<epsilon.eunit src="${hutnmodels.eunit.location}"/>
+	</target>
+
+	<!-- MODEL LOADING TARGETS -->
+
+	<target name="load-models" description="Used by with-model-loading-target to load models">
+		<epsilon.emf.loadModel name="Tree"
+			modelfile="${tree.model.location}" metamodeluri="${tree.metamodel.uri}"
+			read="true" store="false"/>
+		<epsilon.emf.loadModel name="GraphExpected"
+			modelfile="${graph.model.location}" metamodeluri="${graph.metamodel.uri}"
+			read="true" store="false"/>
+		<epsilon.emf.loadModel name="Graph"
+			modelfile="transformed.model" metamodeluri="${graph.metamodel.uri}"
+			read="false" store="false"/>
+	</target>
+
+	<!-- MODEL MANAGEMENT TARGETS -->
+
+	<target name="tree2graph" description="Used by the EUnit suites (except with-hutn) to run the ETL transformation">
+		<epsilon.etl src="${basedir}/resources/etl/Tree2Graph.etl">
+			<model ref="Tree"/>
+			<model ref="Graph"/>
+		</epsilon.etl>
+	</target>
+
+</project>

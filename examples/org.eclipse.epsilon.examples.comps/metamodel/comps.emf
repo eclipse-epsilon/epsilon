@@ -1,0 +1,25 @@
+@namespace(uri="http://eclipse.org/epsilon/examples/comps")
+package comps;
+
+class Application extends Component {
+	val Component[*] components;
+	val Connector[*] connectors;
+}
+
+class Component {
+	attr String name;
+	val Port[*] inPorts;
+	val Port outPort;
+}
+
+class Port {
+	attr String name;
+	attr String type;
+	ref Connector#source outgoing;
+	ref Connector#target incoming;
+}
+
+class Connector {
+	ref Port#outgoing source;
+	ref Port#incoming target;
+}

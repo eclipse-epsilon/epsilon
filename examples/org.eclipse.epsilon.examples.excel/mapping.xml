@@ -1,0 +1,36 @@
+<spreadsheet>
+  <worksheet name="Student">
+    <column index="0" name="id"/>
+  	<column index="1" name="firstname"/>
+  	<column index="2" name="lastname"/>
+    <column index="3" name="age" datatype="integer"/>
+    <column index="4" name="supervisor"/>
+    <column index="5" name="modules" many="true"/>
+  </worksheet>
+  <worksheet name="Mark">
+    <column index="0" name="student"/>
+    <column index="1" name="module"/>    
+    <column index="2" name="mark" datatype="integer"/>
+  </worksheet>
+  <worksheet name="Staff">
+    <column index="0" name="id"/>
+  	<column index="1" name="firstname"/>
+  	<column index="2" name="lastname"/>
+    <column index="3" name="teaches" many="true" delimiter=","/>
+  </worksheet>
+  <worksheet name="Module">
+  	<column index="0" name="id"/>
+  	<column index="1" name="title"/>
+  	<column index="2" name="term"/>
+  </worksheet>
+  <reference source="Student->supervisor"
+             target="Staff->id"/>
+  <reference source="Student->modules"
+             target="Module->id"/>           
+  <reference source="Staff->teaches"
+             target="Module->id"/>
+  <reference source="Mark->module"
+             target="Module->id"/>
+  <reference source="Mark->student"
+             target="Student->id"/>                      
+</spreadsheet>

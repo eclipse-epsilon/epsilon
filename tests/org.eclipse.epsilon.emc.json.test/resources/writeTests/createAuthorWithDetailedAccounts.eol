@@ -1,0 +1,18 @@
+M.root = new JSONObject;
+
+M.root.name = 'Antonio';
+M.root.email = 'antonio@example.com';
+M.root.id = 1234;
+
+M.root.accounts = new JSONArray;
+
+var firstAccount = new JSONObject;
+firstAccount.id = 123;
+firstAccount.followers = 10;
+
+var secondAccount = new JSONObject;
+secondAccount.id = 456;
+secondAccount.followers = 20;
+
+M.root.accounts.add(firstAccount);
+M.root.accounts.add(secondAccount);

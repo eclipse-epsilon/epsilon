@@ -1,0 +1,88 @@
+package org.eclipse.epsilon.egl.servlet;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+
+import javax.servlet.ServletContext;
+
+import org.eclipse.epsilon.commons.util.StringProperties;
+import org.eclipse.epsilon.emc.emf.EmfModel;
+import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
+import org.eclipse.epsilon.eol.models.IModel;
+import org.eclipse.epsilon.eol.models.ModelRepository;
+
+public class SessionModelManager {
+	
+	protected HashMap<String, Collection<IModel>> sessionModelsMap = new HashMap<String, Collection<IModel>>();
+	protected String currentSessionId;
+	protected ServletContext servletContext;
+	protected ModelRepository currentModelRepository;
+	
+	public void setCurrentModelRepository(ModelRepository currentModelRepository) {
+		this.currentModelRepository = currentModelRepository;
+	}
+	
+	public ModelRepository getCurrentModelRepository() {
+		return currentModelRepository;
+	}
+	
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+	}
+	
+	public ServletContext getServletContext() {
+		return servletContext;
+	}
+
+	
+	public void setCurrentSessionId(String currentSessionId) {
+		this.currentSessionId = currentSessionId;
+	}
+	
+	public String getCurrentSessionId() {
+		return currentSessionId;
+	}
+	
+	public void loadModel(String name, String aliases, String modelFile, String metamodelFile) throws EolModelLoadingException {
+		
+		EmfModel model = new EmfModel();
+		
+		StringProperties properties = new StringProperties();
+		properties.put(EmfModel.PROPERTY_NAME, name);
+		properties.put(EmfModel.PROPERTY_ALIASES, aliases);
+		properties.put(EmfModel.PROPERTY_MODEL_FILE, this.getServletContext().getRealPath(modelFile));
+		properties.put(EmfModel.PROPERTY_METAMODEL_FILE, this.getServletContext().getRealPath(metamodelFile));
+		properties.put(EmfModel.PROPERTY_IS_METAMODEL_FILE_BASED, "true");
+		properties.put(EmfModel.PROPERTY_READONLOAD, "true");
+		properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, "false");
+		model.load(properties, null);
+		//getSessionModels().add(model);
+		getCurrentModelRepository().addModel(model);
+		
+	}
+	
+	public void loadModel(String name, String modelFile, String metamodelFile) throws EolModelLoadingException {
+		loadModel(name, "", modelFile, metamodelFile);
+	}	
+	
+	public IModel getSessionModel(String name) {
+		for (IModel model : getSessionModels()) {
+			if (model.getName().equals(name)) {
+				return model;
+			}
+		}
+		return null;
+	}
+	
+	public Collection<IModel> getSessionModels() {
+		Collection<IModel> sessionModels = sessionModelsMap.get(currentSessionId);
+		if (sessionModels == null) {
+			sessionModels = new ArrayList<IModel>();
+			sessionModelsMap.put(currentSessionId, sessionModels);
+		}
+		return sessionModels;
+	}
+	
+}

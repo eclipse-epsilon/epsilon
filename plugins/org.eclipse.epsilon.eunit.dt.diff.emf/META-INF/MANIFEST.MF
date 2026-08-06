@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EUnit EMF Compare Integration (EMF Compare 3.1)
+Bundle-SymbolicName: org.eclipse.epsilon.eunit.dt.diff.emf;singleton:=true
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.eunit.dt,
+ org.eclipse.compare,
+ org.eclipse.emf.compare;bundle-version="3.1.0",
+ org.eclipse.emf.compare.edit;bundle-version="4.0.0",
+ org.eclipse.emf.compare.ide.ui;bundle-version="4.0.0",
+ org.eclipse.ui
+Export-Package: org.eclipse.epsilon.eunit.dt.diff.emf.v3
+Automatic-Module-Name: org.eclipse.epsilon.eunit.dt.diff.emf

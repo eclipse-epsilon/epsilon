@@ -1,0 +1,12 @@
+@namespace(uri="example", prefix="")
+package emfvalidator;
+
+/*
+ * This annotation is needed to make the EMF code generator produce a
+ * skeleton of a validator, which works with Diagnostician and from
+ * Exeed.
+ */
+@"http://www.eclipse.org/emf/2002/Ecore"(constraints="PositiveValue")
+class Model {
+	attr int positiveValue;
+}

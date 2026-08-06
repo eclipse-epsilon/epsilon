@@ -1,0 +1,2 @@
+var y := x + 1;
+y.println();

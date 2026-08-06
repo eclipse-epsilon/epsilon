@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore">
+  <ecore:EClass xmi:id="_BRTCQBU0EemAG8UR1qrzfA" name="Log">
+    <eOperations xmi:id="_BRTCQRU0EemAG8UR1qrzfA" name="getInstance" eType="_BRTCQBU0EemAG8UR1qrzfA"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="_BRTCQxU0EemAG8UR1qrzfA" name="instance" eType="_BRTCQBU0EemAG8UR1qrzfA"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="_BRTCRRU0EemAG8UR1qrzfA" name="level" eType="_BRTCShU0EemAG8UR1qrzfA"/>
+  </ecore:EClass>
+  <ecore:EClass xmi:id="_BRTCRxU0EemAG8UR1qrzfA" name="LogFactory">
+    <eOperations xmi:id="_BRTCSBU0EemAG8UR1qrzfA" name="createLog" eType="_BRTCQBU0EemAG8UR1qrzfA"/>
+  </ecore:EClass>
+  <ecore:EDataType xmi:id="_BRTCShU0EemAG8UR1qrzfA" name="Integer"/>
+</xmi:XMI>

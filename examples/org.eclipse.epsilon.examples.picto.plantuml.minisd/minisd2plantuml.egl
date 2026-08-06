@@ -1,0 +1,47 @@
+@startuml
+[%
+var excludedBlocks = Sequence{};
+if (mainBlock.isDefined()) {
+	var ancestors = mainBlock.closure(b|b.eContainer()).select(b|b.isTypeOf(Block)).including(mainBlock);
+	for (a in ancestors) {
+		if (a.eContainer().isDefined() and a.eContainer().isTypeOf(Alt)) {
+			excludedBlocks.addAll(a.eContainer().blocks.excluding(a));
+		}
+	}
+}
+%]
+[%=Scenario.all.first().toPlantUml()%]
+@enduml
+
+[%
+operation Scenario toPlantUml() {
+	return self.steps.collect(s|s.toPlantUml()).concat("\n");
+}
+
+operation Interaction toPlantUml() {
+	return self.from.name + "->" + self.to.name + ": " + self.message + "\n";
+}
+
+operation Alt toPlantUml() {
+	var plantUml = "";
+	var visibleBlocks = self.blocks.excludingAll(excludedBlocks);
+	for (b in visibleBlocks) {
+		if (loopCount == 1) {
+			plantUml += "alt";
+			if (mainBlock.isDefined() and mainBlock.eContainer == self) {
+				plantUml += " #azure";
+			}
+		}
+		else plantUml += "else ";
+		plantUml += " " + b.title;
+		plantUml += "\n" + b.toPlantUml();
+	}
+	if (visibleBlocks.notEmpty()) plantUml += "\nend\n";
+	return plantUml;
+}
+
+operation Block toPlantUml() {
+	if (excludedBlocks.contains(self)) return "";
+	return self.steps.collect(s|s.toPlantUml()).concat("");
+}
+%]

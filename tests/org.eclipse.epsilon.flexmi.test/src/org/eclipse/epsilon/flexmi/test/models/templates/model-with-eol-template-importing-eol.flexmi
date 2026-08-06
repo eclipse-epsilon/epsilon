@@ -1,0 +1,21 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?import subdir/template-importing-eol.flexmi?>
+<_>
+	<package name="p1">
+		<t1/>
+	</package>
+	
+	<package name="p2">
+		<t2/>
+	</package>
+	
+	<:template name="t1">
+		<content language="EOL">
+		<![CDATA[		
+			import "library.eol";
+			new t_class(a_name=c1());
+		]]>
+		</content>
+	</:template>
+	
+</_>

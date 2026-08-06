@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.acceleo.ui.language.interpreter">
+      <languageInterpreter
+            class="org.eclipse.epsilon.eol.dt.interpreter.EolInterpreter"
+            icon="icons/eol.png"
+            label="EOL">
+      </languageInterpreter>
+   </extension>
+
+</plugin>

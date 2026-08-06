@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Run ANT Example
+Bundle-SymbolicName: org.eclipse.epsilon.examples.runant;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.resources,
+ org.eclipse.ant.core,
+ org.eclipse.equinox.registry,
+ org.eclipse.debug.core,
+ org.eclipse.ant.launching,
+ org.eclipse.ui.externaltools
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.examples.runant

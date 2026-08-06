@@ -1,0 +1,67 @@
+@test
+operation testCase() {
+	
+	var a = 1;
+	var b = 0;
+	
+	switch (a) {
+		case 0: {
+			b = 0;
+		}
+		case 1: {
+			b = 1;
+		}
+		default: {
+			b = 0;
+		}
+	}
+	
+	assertEquals(1, b);
+	
+}
+
+@test
+operation testDefault() {
+	
+	var a = 2;
+	var b = 0;
+	
+	switch (a) {
+		case 0: {
+			b = 0;
+		}
+		case 1: {
+			b = 1;
+		}
+		default: {
+			b = 2;
+		}
+	}
+	
+	assertEquals(2, b);
+	
+}
+
+@test
+operation testContinue() {
+	
+	var a = 0;
+	var b = 0;
+	
+	switch (a) {
+		case 0: {
+			b = 1;
+			continue;
+		}
+		case 1: {
+			b = 2;
+		}
+		default: {
+			b = 3;
+			assertEquals(true, false);
+		}
+	}
+	
+	assertEquals(2, b);
+	
+}

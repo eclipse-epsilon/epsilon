@@ -1,0 +1,14 @@
+[%
+%]
+<h1>Packages</h1>
+<ul>
+[% for (p in EPackage.allInstances().sortBy(p|p.name)) { %]
+	<li><a href="[%=p.filename()%]">[%=p.name%]</a></li>
+[% } %]
+</ul>
+
+[% 
+	operation EPackage filename() : String {
+		return self.name + "-package-index.html";
+	}
+%]

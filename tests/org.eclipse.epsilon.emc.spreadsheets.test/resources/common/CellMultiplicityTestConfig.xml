@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spreadsheet>
+	
+	<worksheet name="Sheet1" alias="S1" dataTypeStrict="false">
+		<column index="0" name="column0" alias="c0" many="false"></column>
+		<column index="1" name="column1" alias="c1" many="true" delimiter="#"></column>
+	</worksheet>
+	
+	<worksheet name="Sheet2" alias="S2" dataTypeStrict="true">
+		<column index="0" name="column0" alias="c0" dataType="String" many="false" delimiter=";"></column>
+		<column index="1" name="column1" alias="c1" dataType="String" many="true" delimiter=";"></column>
+		<column index="2" name="column2" alias="c2" dataType="Integer" many="false" delimiter=";"></column>
+		<column index="3" name="column3" alias="c3" dataType="Integer" many="true" delimiter=";"></column>
+		<column index="4" name="column4" alias="c4" dataType="Double" many="false" delimiter=";"></column>
+		<column index="5" name="column5" alias="c5" dataType="Double" many="true" delimiter=";"></column>
+		<column index="6" name="column6" alias="c6" dataType="Boolean" many="false" delimiter=";"></column>
+		<column index="7" name="column7" alias="c7" dataType="Boolean" many="true" delimiter=";"></column>
+		<column index="8" name="column8" alias="c8" dataType="Float" many="false" delimiter=";"></column>
+		<column index="9" name="column9" alias="c9" dataType="Float" many="true" delimiter=";"></column>
+	</worksheet>
+	
+</spreadsheet>

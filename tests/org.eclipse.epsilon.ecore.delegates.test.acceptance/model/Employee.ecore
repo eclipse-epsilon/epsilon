@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="employee" nsURI="http://www.eclipse.org/OCL/examples/codegen/employee"
+    nsPrefix="emp">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="validationDelegates" value="http://eclipse.dev/epsilon/ecore/EVL"/>
+    <details key="invocationDelegates" value="http://eclipse.dev/epsilon/ecore/EOL"/>
+    <details key="settingDelegates" value="http://eclipse.dev/epsilon/ecore/EOL"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="Company">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="employees" upperBound="-1"
+        eType="#//Employee" containment="true" eOpposite="#//Employee/company"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="departments" upperBound="-1"
+        eType="#//Department" containment="true" eOpposite="#//Department/company"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Department">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="deptHasEmployees positiveID validName"/>
+    </eAnnotations>
+    <eAnnotations source="http://eclipse.dev/epsilon/ecore/EVL">
+      <details key="deptHasEmployees" value="not self.manager.isUndefined() implies self.employees.notEmpty()"/>
+      <details key="positiveID" value="self.deptID > 0"/>
+      <details key="validName" value="not self.name.isUndefined() and self.name.length() > 0"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="manager" eType="#//Employee"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="deptID" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="employees" ordered="false"
+        upperBound="-1" eType="#//Employee" changeable="false" volatile="true" transient="true"
+        derived="true" eOpposite="#//Employee/department">
+      <eAnnotations source="http://eclipse.dev/epsilon/ecore/EOL">
+        <details key="derivation" value="if (self.manager.isUndefined()) {&#xA;  return Sequence{};&#xA;} else {&#xA;  return self.manager.directReports;&#xA;}"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="company" eType="#//Company"
+        eOpposite="#//Company/departments"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Employee">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+      <details key="constraints" value="positiveID validName"/>
+    </eAnnotations>
+    <eAnnotations source="http://eclipse.dev/epsilon/ecore/EVL">
+      <details key="positiveID" value="self.empID > 0"/>
+    </eAnnotations>
+    <eOperations name="allReports" ordered="false" upperBound="-1" eType="#//Employee">
+      <eAnnotations source="http://eclipse.dev/epsilon/ecore/EOL">
+        <details key="body" value="return self.closure(t | t.directReports);"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="reportingChain" upperBound="-1" eType="#//Employee">
+      <eAnnotations source="http://eclipse.dev/epsilon/ecore/EOL">
+        <details key="body" value="if (self.manager.isUndefined()) {&#xA;&#x9;return Sequence{};&#xA;} else {&#xA;&#x9;var result = Sequence {self.manager};&#xA;&#x9;return result.includingAll(self.manager.reportingChain());&#xA;}"/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="reportsTo" ordered="false" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://eclipse.dev/epsilon/ecore/EOL">
+        <details key="body" value="return self.reportingChain().includes(mgr);"/>
+      </eAnnotations>
+      <eParameters name="mgr" eType="#//Employee"/>
+    </eOperations>
+    <eOperations name="validName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://eclipse.dev/epsilon/ecore/EVL">
+        <details key="body" value="not self.name.isUndefined() and self.name.length() > 0"/>
+      </eAnnotations>
+      <eParameters name="diagnostics" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDiagnosticChain"/>
+      <eParameters name="context">
+        <eGenericType eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EMap">
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+          <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+        </eGenericType>
+      </eParameters>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isManager" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://eclipse.dev/epsilon/ecore/EOL">
+        <details key="derivation" value="return self.directReports.notEmpty();"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="department" eType="#//Department"
+        changeable="false" volatile="true" transient="true" derived="true" eOpposite="#//Department/employees">
+      <eAnnotations source="http://eclipse.dev/epsilon/ecore/EOL">
+        <details key="derivation" value="return self.company.departments.selectOne(d | d.employees.includes(self));"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="manager" eType="#//Employee"
+        eOpposite="#//Employee/directReports"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="directReports" ordered="false"
+        upperBound="-1" eType="#//Employee" eOpposite="#//Employee/manager"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="empID" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="company" eType="#//Company"
+        eOpposite="#//Company/employees"/>
+  </eClassifiers>
+</ecore:EPackage>

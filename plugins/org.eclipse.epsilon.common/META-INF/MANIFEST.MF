@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon Common
+Bundle-SymbolicName: org.eclipse.epsilon.common
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.eclipse.epsilon.common.concurrent,
+ org.eclipse.epsilon.common.function,
+ org.eclipse.epsilon.common.module,
+ org.eclipse.epsilon.common.parse,
+ org.eclipse.epsilon.common.parse.problem,
+ org.eclipse.epsilon.common.launch,
+ org.eclipse.epsilon.common.util,
+ org.eclipse.epsilon.common.util.profiling
+Require-Bundle: org.antlr.runtime;bundle-version="[3.1.1,3.5.3)";visibility:=reexport
+Automatic-Module-Name: org.eclipse.epsilon.common

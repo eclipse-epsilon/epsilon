@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="comps" xmi:id="_bfpnEEbFEeqXnfGWlV2_8A" name="BoilerController">
+  <inPorts xmi:id="_bfpnEUbFEeqXnfGWlV2_8A" name="temperature" type="int" outgoing="_bfpnHUbFEeqXnfGWlV2_8A"/>
+  <inPorts xmi:id="_bfpnEkbFEeqXnfGWlV2_8A" name="targetTemperature" type="int" outgoing="_bfpnHkbFEeqXnfGWlV2_8A"/>
+  <inPorts xmi:id="_bfpnE0bFEeqXnfGWlV2_8A" name="boilerStatus" type="boolean" outgoing="_bfpnH0bFEeqXnfGWlV2_8A"/>
+  <outPort xmi:id="_bfpnFEbFEeqXnfGWlV2_8A" name="action" type="int" incoming="_bfpnIEbFEeqXnfGWlV2_8A"/>
+  <components xmi:id="_bfpnFUbFEeqXnfGWlV2_8A" name="TemperatureController">
+    <inPorts xmi:id="_bfpnFkbFEeqXnfGWlV2_8A" name="temperature" type="int" incoming="_bfpnHUbFEeqXnfGWlV2_8A"/>
+    <inPorts xmi:id="_bfpnF0bFEeqXnfGWlV2_8A" name="targetTemperature" type="int" incoming="_bfpnHkbFEeqXnfGWlV2_8A"/>
+    <outPort xmi:id="_bfpnGEbFEeqXnfGWlV2_8A" name="temperatureDifference" type="int" outgoing="_bfpnIUbFEeqXnfGWlV2_8A"/>
+  </components>
+  <components xmi:id="_bfpnGUbFEeqXnfGWlV2_8A" name="BoilerActuator">
+    <inPorts xmi:id="_bfpnGkbFEeqXnfGWlV2_8A" name="temperatureDifference" type="int" incoming="_bfpnIUbFEeqXnfGWlV2_8A"/>
+    <inPorts xmi:id="_bfpnG0bFEeqXnfGWlV2_8A" name="boilerStatus" type="boolean" incoming="_bfpnH0bFEeqXnfGWlV2_8A"/>
+    <outPort xmi:id="_bfpnHEbFEeqXnfGWlV2_8A" name="action" type="int" outgoing="_bfpnIEbFEeqXnfGWlV2_8A"/>
+  </components>
+  <connectors xmi:id="_bfpnHUbFEeqXnfGWlV2_8A" source="_bfpnEUbFEeqXnfGWlV2_8A" target="_bfpnFkbFEeqXnfGWlV2_8A"/>
+  <connectors xmi:id="_bfpnHkbFEeqXnfGWlV2_8A" source="_bfpnEkbFEeqXnfGWlV2_8A" target="_bfpnF0bFEeqXnfGWlV2_8A"/>
+  <connectors xmi:id="_bfpnH0bFEeqXnfGWlV2_8A" source="_bfpnE0bFEeqXnfGWlV2_8A" target="_bfpnG0bFEeqXnfGWlV2_8A"/>
+  <connectors xmi:id="_bfpnIEbFEeqXnfGWlV2_8A" source="_bfpnHEbFEeqXnfGWlV2_8A" target="_bfpnFEbFEeqXnfGWlV2_8A"/>
+  <connectors xmi:id="_bfpnIUbFEeqXnfGWlV2_8A" source="_bfpnGEbFEeqXnfGWlV2_8A" target="_bfpnGkbFEeqXnfGWlV2_8A"/>
+</Model>

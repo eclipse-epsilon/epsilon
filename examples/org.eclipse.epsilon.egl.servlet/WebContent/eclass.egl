@@ -1,0 +1,10 @@
+[%import 'models.eol'; loadModels();%]
+
+[%var eClass = EClass.all.selectOne(c|c.name = request.getParameter('name'));%]
+
+<h1>[%=eClass.name%]</h1>
+<ul>
+[%for (sf in eClass.eStructuralFeatures){%]
+	<li>[%=sf.name%] : <a href="eclass.egl?name=[%=sf.eType.name%]">[%=sf.eType.name%]</a>
+[%}%]
+</ul>

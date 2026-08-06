@@ -1,0 +1,7 @@
+package inheritance;
+
+public abstract class [%=c.name%]Base {
+	
+	public abstract [%=c.outPort.type%] execute([%=c.inPorts.collect(p|p.type + " " + p.name).concat(", ")%]);
+	
+}

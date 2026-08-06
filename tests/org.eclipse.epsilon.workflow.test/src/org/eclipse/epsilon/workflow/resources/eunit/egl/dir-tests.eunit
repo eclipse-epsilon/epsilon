@@ -1,0 +1,297 @@
+var EXPECTED_PATH  := basedir + "/egl/expected";
+var GENERATED_PATH := basedir + "/../../generated";
+var GENERATED_DIR_FILE := new Native('java.io.File')(GENERATED_PATH);
+var DEFAULT_PREFIX := '';
+
+
+var EXPECTED_MODEL := '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+Model {
+  Tree "A" {
+    label: "A"
+  }
+  Tree "B" {
+    label: "B"
+    parent: Tree "A"
+  }
+  Tree "C" {
+    label: "C"
+    parent: Tree "B"
+  }
+  Tree "D" {
+    label: "D"
+    parent: Tree "B"
+  }
+  Tree "E" {
+    label: "E"
+    parent: Tree "A"
+  }
+}  
+';
+
+
+var DIFFERENT_MODEL_MORE_FILES_L1 := '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+Model {
+  Tree "A" {
+    label: "A"
+  }
+  Tree "B" {
+    label: "B"
+    parent: Tree "A"
+  }
+  Tree "C" {
+    label: "C"
+    parent: Tree "B"
+  }
+  Tree "D" {
+    label: "D"
+    parent: Tree "B"
+  }
+  Tree "E" {
+    label: "E"
+    parent: Tree "A"
+  }
+  Tree "F" {
+    label: "F"
+    parent: Tree "A"
+  }
+}  
+';
+
+
+var DIFFERENT_MODEL_MORE_FILES_L2 := '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+Model {
+  Tree "A" {
+    label: "A"
+  }
+  Tree "B" {
+    label: "B"
+    parent: Tree "A"
+  }
+  Tree "C" {
+    label: "C"
+    parent: Tree "B"
+  }
+  Tree "D" {
+    label: "D"
+    parent: Tree "B"
+  }
+  Tree "E" {
+    label: "E"
+    parent: Tree "A"
+  }
+  Tree "F" {
+    label: "F"
+    parent: Tree "B"
+  }
+}  
+';
+
+
+var DIFFERENT_MODEL_EMPTY := '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+Model {}  
+';
+
+
+var DIFFERENT_MODEL_LESS_FILES_L1 := '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+Model {
+  Tree "A" {
+    label: "A"
+  }
+  Tree "B" {
+    label: "B"
+    parent: Tree "A"
+  }
+  Tree "C" {
+    label: "C"
+    parent: Tree "B"
+  }
+  Tree "D" {
+    label: "D"
+    parent: Tree "B"
+  }
+}
+';
+
+
+var DIFFERENT_MODEL_LESS_FILES_L2 := '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+Model {
+  Tree "A" {
+    label: "A"
+  }
+  Tree "B" {
+    label: "B"
+    parent: Tree "A"
+  }
+  Tree "C" {
+    label: "C"
+    parent: Tree "B"
+  }
+  Tree "E" {
+    label: "E"
+    parent: Tree "A"
+  }
+}
+';
+
+
+var DIFFERENT_MODEL_DIFF_FILES_L1 := '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+Model {
+  Tree "A" {
+    label: "A"
+  }
+  Tree "B" {
+    label: "B1"
+    parent: Tree "A"
+  }
+  Tree "C" {
+    label: "C"
+    parent: Tree "B"
+  }
+  Tree "D" {
+    label: "D"
+    parent: Tree "B"
+  }
+  Tree "E" {
+    label: "E"
+    parent: Tree "A"
+  }
+}
+';
+
+
+var DIFFERENT_MODEL_DIFF_FILES_L2 := '
+@Spec {
+	Metamodel "TreeMetamodel" {
+		nsUri: "Tree"
+	}
+}
+Model {
+  Tree "A" {
+    label: "A"
+  }
+  Tree "B" {
+    label: "B"
+    parent: Tree "A"
+  }
+  Tree "C" {
+    label: "C1"
+    parent: Tree "B"
+  }
+  Tree "D" {
+    label: "D"
+    parent: Tree "B"
+  }
+  Tree "E" {
+    label: "E"
+    parent: Tree "A"
+  }
+}
+';
+
+@data input
+operation listHutnModels() {
+  return Sequence {
+    // HUTN fragment, prefix, should be equal to expected files
+ 
+    //- same directories and same file content
+    Sequence { EXPECTED_MODEL, DEFAULT_PREFIX, true },
+
+    //- same directories, different file content
+    Sequence { EXPECTED_MODEL, 'foo', false },
+
+    //- different files and/or directories
+    Sequence { DIFFERENT_MODEL_MORE_FILES_L1, DEFAULT_PREFIX, false },
+    Sequence { DIFFERENT_MODEL_MORE_FILES_L2, DEFAULT_PREFIX, false },
+    Sequence { DIFFERENT_MODEL_LESS_FILES_L1, DEFAULT_PREFIX, false },
+    Sequence { DIFFERENT_MODEL_LESS_FILES_L2, DEFAULT_PREFIX, false },
+    Sequence { DIFFERENT_MODEL_DIFF_FILES_L1, DEFAULT_PREFIX, false },
+    Sequence { DIFFERENT_MODEL_DIFF_FILES_L2, DEFAULT_PREFIX, false },
+    Sequence { DIFFERENT_MODEL_EMPTY, DEFAULT_PREFIX, false }
+  };
+}
+
+@setup
+operation createGeneratedDir() {
+  GENERATED_DIR_FILE.mkdirs();
+}
+
+@teardown
+operation deleteGeneratedDir() {
+  var task = antProject.createTask('delete');
+  task.setDir(GENERATED_DIR_FILE);
+  task.execute();
+}
+
+
+@test
+operation shouldPass() {
+  // NOTE: cannot use input.remove(0) three times, as that'd affect the other tests.
+  // FIXME separate the tests better, so we can use input.remove(0) safely
+  var hutnModel   := input.get(0);
+  var prefix      := input.get(1);
+  var mustBeEqual := input.get(2);
+  checkResult(mustBeEqual, hutnModel, prefix);
+}
+
+@test
+operation shouldFail() {
+  var hutnModel   := input.get(0);
+  var prefix      := input.get(1);
+  var mustBeEqual := input.get(2);
+  checkResult(not mustBeEqual, hutnModel, prefix);
+}
+
+//// utility operations
+
+operation checkResult(mustBeEqual : Boolean, hutnModel : String, prefix : String) {
+  transform(hutnModel, prefix);
+  if (mustBeEqual) {
+    assertEqualDirectories(EXPECTED_PATH, GENERATED_PATH);
+  } else {
+    assertNotEqualDirectories(EXPECTED_PATH, GENERATED_PATH);
+  }
+}
+
+operation transform(hutn : String, prefix : String) {
+  loadHutn("Tree", hutn);
+
+  var basedir := GENERATED_PATH;
+  exportVariable("prefix");
+  exportVariable("basedir");
+  runTarget("tree2dirs");
+}

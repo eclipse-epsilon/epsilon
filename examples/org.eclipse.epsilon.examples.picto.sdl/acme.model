@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ASCII"?>
+<Vendor xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="sdl" xmi:id="_RZJHkJXmEea129ItJvRyRQ" name="ACME">
+  <bundles xmi:id="_RZJHkZXmEea129ItJvRyRQ" name="Sole Trader" components="_RZJHlZXmEea129ItJvRyRQ _RZJHnZXmEea129ItJvRyRQ _RZJHnpXmEea129ItJvRyRQ"/>
+  <bundles xmi:id="_RZJHkpXmEea129ItJvRyRQ" name="Services Company" components="_RZJHlZXmEea129ItJvRyRQ _RZJHnJXmEea129ItJvRyRQ _RZJHnpXmEea129ItJvRyRQ"/>
+  <bundles xmi:id="_RZJHk5XmEea129ItJvRyRQ" name="Manufacturing Company" components="_RZJHlZXmEea129ItJvRyRQ _RZJHlpXmEea129ItJvRyRQ _RZJHl5XmEea129ItJvRyRQ _RZJHmZXmEea129ItJvRyRQ _RZJHmpXmEea129ItJvRyRQ _RZJHm5XmEea129ItJvRyRQ _RZJHnJXmEea129ItJvRyRQ _RZJHnZXmEea129ItJvRyRQ _RZJHnpXmEea129ItJvRyRQ"/>
+  <bundles xmi:id="_RZJHlJXmEea129ItJvRyRQ" name="Large Manufacturing Company" components="_RZJHlZXmEea129ItJvRyRQ _RZJHlpXmEea129ItJvRyRQ _RZJHl5XmEea129ItJvRyRQ _RZJHmJXmEea129ItJvRyRQ _RZJHmZXmEea129ItJvRyRQ _RZJHmpXmEea129ItJvRyRQ _RZJHm5XmEea129ItJvRyRQ _RZJHnJXmEea129ItJvRyRQ _RZJHnZXmEea129ItJvRyRQ _RZJHnpXmEea129ItJvRyRQ"/>
+  <components xmi:id="_RZJHlZXmEea129ItJvRyRQ" name="Core" jars="_RZJHn5XmEea129ItJvRyRQ _RZJHoZXmEea129ItJvRyRQ _RZJHoJXmEea129ItJvRyRQ"/>
+  <components xmi:id="_RZJHlpXmEea129ItJvRyRQ" name="Warehouse" dependencies="_RZJHlZXmEea129ItJvRyRQ" jars="_RZJHoJXmEea129ItJvRyRQ _RZJHopXmEea129ItJvRyRQ"/>
+  <components xmi:id="_RZJHl5XmEea129ItJvRyRQ" name="Production" dependencies="_RZJHlpXmEea129ItJvRyRQ" jars="_RZJHppXmEea129ItJvRyRQ _RZJHo5XmEea129ItJvRyRQ"/>
+  <components xmi:id="_RZJHmJXmEea129ItJvRyRQ" name="Real-Time Warehouse Analytics" dependencies="_RZJHlpXmEea129ItJvRyRQ" jars="_RZJHqZXmEea129ItJvRyRQ _RZJHpJXmEea129ItJvRyRQ"/>
+  <components xmi:id="_RZJHmZXmEea129ItJvRyRQ" name="Procurement" dependencies="_RZJHlpXmEea129ItJvRyRQ" jars="_RZJHoJXmEea129ItJvRyRQ _RZJHpZXmEea129ItJvRyRQ _RZJHqpXmEea129ItJvRyRQ"/>
+  <components xmi:id="_RZJHmpXmEea129ItJvRyRQ" name="Governance" dependencies="_RZJHlZXmEea129ItJvRyRQ" jars="_RZJHq5XmEea129ItJvRyRQ _RZJHp5XmEea129ItJvRyRQ"/>
+  <components xmi:id="_RZJHm5XmEea129ItJvRyRQ" name="Accounting" dependencies="_RZJHlZXmEea129ItJvRyRQ" jars="_RZJHo5XmEea129ItJvRyRQ _RZJHrZXmEea129ItJvRyRQ"/>
+  <components xmi:id="_RZJHnJXmEea129ItJvRyRQ" name="Payroll" dependencies="_RZJHm5XmEea129ItJvRyRQ" jars="_RZJHrpXmEea129ItJvRyRQ _RZJHp5XmEea129ItJvRyRQ"/>
+  <components xmi:id="_RZJHnZXmEea129ItJvRyRQ" name="Sales" dependencies="_RZJHlZXmEea129ItJvRyRQ" jars="_RZJHr5XmEea129ItJvRyRQ _RZJHo5XmEea129ItJvRyRQ"/>
+  <components xmi:id="_RZJHnpXmEea129ItJvRyRQ" name="Customer Relationship Management" dependencies="_RZJHnZXmEea129ItJvRyRQ" jars="_RZJHsJXmEea129ItJvRyRQ _RZJHoJXmEea129ItJvRyRQ"/>
+  <jars xmi:id="_RZJHn5XmEea129ItJvRyRQ" filename="jdom.jar"/>
+  <jars xmi:id="_RZJHoJXmEea129ItJvRyRQ" filename="h2.jar"/>
+  <jars xmi:id="_RZJHoZXmEea129ItJvRyRQ" filename="core.jar"/>
+  <jars xmi:id="_RZJHopXmEea129ItJvRyRQ" filename="warehouse.jar"/>
+  <jars xmi:id="_RZJHo5XmEea129ItJvRyRQ" filename="xstream.jar"/>
+  <jars xmi:id="_RZJHpJXmEea129ItJvRyRQ" filename="esper.jar"/>
+  <jars xmi:id="_RZJHpZXmEea129ItJvRyRQ" filename="jdraw.jar"/>
+  <jars xmi:id="_RZJHppXmEea129ItJvRyRQ" filename="production.jar"/>
+  <jars xmi:id="_RZJHp5XmEea129ItJvRyRQ" filename="log4j.jar"/>
+  <jars xmi:id="_RZJHqJXmEea129ItJvRyRQ" filename="velocity.jar"/>
+  <jars xmi:id="_RZJHqZXmEea129ItJvRyRQ" filename="real-time-warehouse-analytics.jar"/>
+  <jars xmi:id="_RZJHqpXmEea129ItJvRyRQ" filename="procurement.jar"/>
+  <jars xmi:id="_RZJHq5XmEea129ItJvRyRQ" filename="governance.jar"/>
+  <jars xmi:id="_RZJHrJXmEea129ItJvRyRQ" filename="freemarker.jar"/>
+  <jars xmi:id="_RZJHrZXmEea129ItJvRyRQ" filename="accounting.jar"/>
+  <jars xmi:id="_RZJHrpXmEea129ItJvRyRQ" filename="payroll.jar"/>
+  <jars xmi:id="_RZJHr5XmEea129ItJvRyRQ" filename="sales.jar"/>
+  <jars xmi:id="_RZJHsJXmEea129ItJvRyRQ" filename="customer-relationship-management.jar"/>
+</Vendor>

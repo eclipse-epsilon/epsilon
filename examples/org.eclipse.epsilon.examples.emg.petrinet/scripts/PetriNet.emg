@@ -1,0 +1,71 @@
+pre {
+	var id = 0;
+	var num_nets = 1;
+	// Two random numbers 0..total
+	var quant = nextAddTo(2, total.asInteger()).sortBy(q | q);
+	var num_p = 1 + quant.at(0);  // Min 2 Places
+	// For each transition we need two arcs
+	var num_t = (quant.at(1)/3).ceiling();
+}
+
+$instances num_nets
+@list net
+operation PetriNet create() {
+	self.name = "RandomActions";
+}
+
+$instances num_p
+operation Place create() {
+	self.name = nextFromList("nouns") + " " + nextFromList("places");
+}
+
+$instances num_t
+operation Transition create() {
+	self.name = nextFromList("nouns") + " " + nextFromList("transitions");
+	nextFromList("net").transitions.add(self);
+}
+
+// Create an arc to connect the transition to 2 places, make sure the places and transitions use the same noun
+$probability 1/num_nets
+pattern Transition
+	net:PetriNet,
+	tra:Transition
+	  from: net.transitions
+	{
+		onmatch {
+			var size = 0;
+			var nound = tra.name.split(" ").at(0);
+			var matchingPlaces = Place.all().select(p | nound.isSubstringOf(p.name));
+			
+			var freeSources = matchingPlaces.select(p | p.incoming.size() == size);
+			while (freeSources.isEmpty()) {
+				size += 1;
+				freeSources = matchingPlaces.select(p | p.incoming.size() == size);
+			}
+			size = 0;
+			var freeTarget = matchingPlaces.select(p | p.incoming.size() == size);
+			while (freeTarget.isEmpty()) {
+				size += 1;
+				freeTarget = matchingPlaces.select(p | p.incoming.size() == size);
+			}
+			var source = nextFromCollection(freeSources);
+			var target = nextFromCollection(freeTarget);
+			var a1:Arc = new PlaceToTransArc();
+			a1.weight = nextInteger(10);
+			a1.source = source;
+			net.places.add(source);
+			a1.target = tra;
+			net.arcs.add(a1);
+			var a2:Arc = new TransToPlaceArc();
+			a1.weight = nextInteger(10);
+			a2.source = tra;
+			a2.target = target;
+			net.places.add(target);
+			net.arcs.add(a2);
+		}
+	}
+
+
+post {
+	"Model generation finished".println();
+}

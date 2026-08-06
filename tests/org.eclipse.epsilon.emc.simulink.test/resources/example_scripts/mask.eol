@@ -1,0 +1,7 @@
+var subs = SubSystem.all.first().println();
+subs.Mask.println();
+subs.gain = 10;
+subs.gain.println();
+subs.gain = "20";
+subs.gain.println();
+"done".println();

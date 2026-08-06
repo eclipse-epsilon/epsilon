@@ -1,0 +1,4 @@
+[%
+	out.startPreserve('//', null, 'first', true);
+	out.startPreserve('//', null, 'second', true);
+%]

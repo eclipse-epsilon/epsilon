@@ -1,0 +1,22 @@
+<?nsuri picto?>
+<picto format="egx" transformation="platform:/resource/org.eclipse.epsilon.examples.picto.ecore/ecore2vis/ecore.egx">
+
+	<!-- A custom view produced by invoking an EGX rule -->
+	<view path="Model, Custom, Core" icon="diagram-ff00ff" type="ClassDiagram" layers="documentation, features, inlineReferences">
+		<patch format="graphviz-dot" content_="comps/patches/connector-graphviz.patch"/>
+		<patch format="html" content_="comps/patches/core-html.patch"/>
+		<parameter name="classNames" values="Component, Port, Connector"/>
+	</view>
+	
+	<!-- Views with static content -->
+	<view path="Model, Readme (HTML)" format="html" source="comps/readme.html" position="0"/>
+	<view path="Model, Readme (Markdown)" format="markdown" source="comps/readme.md" position="0"/>
+	
+	<!-- Patches for existing views --> 
+	<view path="Model, Classes, Component" icon="diagram-ff0000"/>
+	
+	<view path="Model, (All Classes)" layers="features, inlineReferences">
+		<patch format="graphviz-dot" content_="comps/patches/allclasses-graphviz.patch" applies="referenceLabels"/>
+	</view>
+	
+</picto>

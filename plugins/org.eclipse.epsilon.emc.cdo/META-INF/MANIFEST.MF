@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Epsilon CDO Model Support
+Bundle-SymbolicName: org.eclipse.epsilon.emc.cdo
+Bundle-Version: 2.9.0.qualifier
+Bundle-Vendor: Eclipse Modeling Project
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.epsilon.emc.emf,
+ org.eclipse.emf.cdo,
+ org.eclipse.emf.cdo.net4j,
+ org.eclipse.epsilon.eol.engine
+Export-Package: org.eclipse.epsilon.emc.cdo
+Automatic-Module-Name: org.eclipse.epsilon.emc.cdo

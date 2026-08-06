@@ -1,0 +1,8 @@
+class [%="Post"%] {
+	[%for (f in Sequence{"title", "content"}) {-%]
+		[%
+		/**/
+		%]
+		public String [%=f%];
+	[%}%]
+}

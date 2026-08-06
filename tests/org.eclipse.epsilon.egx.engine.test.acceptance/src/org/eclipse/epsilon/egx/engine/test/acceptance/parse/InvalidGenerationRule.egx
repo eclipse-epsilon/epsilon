@@ -1,0 +1,26 @@
+rule r0{}
+
+rule r1 {
+	pre {}
+	target {}
+	template {}
+	pre {}
+	guard {}
+	merge {}
+	merge{}
+	overwrite{}
+}
+
+rule r2 transform e {
+	target : ""
+	post{}
+	parameters{}
+	post{}
+	target{}
+}
+
+rule r3 transform e : Any in : null {
+	template{}
+	template : null
+	parameters{}
+}

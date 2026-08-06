@@ -1,0 +1,9 @@
+[%import 'models.eol'; loadModels();%]
+
+<html>
+<ul>
+[%for (c in EClass.all){%]
+<li><a href="eclass.egl?name=[%=c.name%]">[%=c.name%]</a>
+[%}%]
+</ul>
+</html>

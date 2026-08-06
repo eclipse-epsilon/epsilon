@@ -1,0 +1,17 @@
+rule Model2Schema 
+	transform m : UML!Model
+	to s : XSD!XSDSchema {
+	
+	s.targetNamespace = m.name;
+	s.setSchemaForSchemaQNamePrefix("xsd");
+	s.getQNamePrefixToNamespaceMap().put("xsd", "http://www.w3.org/2001/XMLSchema");
+	s.contents ::= m.packagedElement;
+}
+
+rule Class2ComplexType 
+	transform c : UML!Class
+	to ct : XSD!XSDComplexTypeDefinition {
+	
+	ct.name = c.name;
+	
+}

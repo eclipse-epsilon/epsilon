@@ -1,0 +1,27 @@
+pre {
+  'Before'.println();
+}
+
+post {
+  'After'.println();
+}
+
+context Person {
+  constraint HasFirstName {
+    check: self.firstName.isDefined()
+    message: 'Missing first name'
+  }
+  constraint HasLastName {
+    guard: self.firstName.isDefined()
+    check: self.lastName.isDefined()
+    message: 'Missing last name for ' + self.firstName
+    fix {
+      guard: true
+      title: 'Add placeholder last name'
+      do {
+        var newLastName = 'Unknown';
+        self.lastName = newLastName;
+      }
+    }
+  }
+}

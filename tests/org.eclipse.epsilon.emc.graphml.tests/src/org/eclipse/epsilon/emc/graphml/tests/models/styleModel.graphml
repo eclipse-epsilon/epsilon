@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:java="http://www.yworks.com/xml/yfiles-common/1.0/java" xmlns:sys="http://www.yworks.com/xml/yfiles-common/markup/primitives/2.0" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:y="http://www.yworks.com/xml/graphml" xmlns:yed="http://www.yworks.com/xml/yed/3" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml/1.1/ygraphml.xsd">
+  <!--Created by yEd 3.18.1.1-->
+  <key attr.name="Description" attr.type="string" for="graph" id="d0"/>
+  <key for="port" id="d1" yfiles.type="portgraphics"/>
+  <key for="port" id="d2" yfiles.type="portgeometry"/>
+  <key for="port" id="d3" yfiles.type="portuserdata"/>
+  <key attr.name="Type" attr.type="string" for="node" id="d4">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="Properties" attr.type="string" for="node" id="d5">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="Default" attr.type="string" for="node" id="d6">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="Contents" attr.type="string" for="node" id="d7">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="url" attr.type="string" for="node" id="d8"/>
+  <key attr.name="description" attr.type="string" for="node" id="d9"/>
+  <key for="node" id="d10" yfiles.type="nodegraphics"/>
+  <key for="graphml" id="d11" yfiles.type="resources"/>
+  <key attr.name="Type" attr.type="string" for="edge" id="d12">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="Source" attr.type="string" for="edge" id="d13">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="Target" attr.type="string" for="edge" id="d14">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="Properties" attr.type="string" for="edge" id="d15">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="Role in source" attr.type="string" for="edge" id="d16">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="Role in target" attr.type="string" for="edge" id="d17">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="Default" attr.type="string" for="edge" id="d18">
+    <default xml:space="preserve"/>
+  </key>
+  <key attr.name="url" attr.type="string" for="edge" id="d19"/>
+  <key attr.name="description" attr.type="string" for="edge" id="d20"/>
+  <key for="edge" id="d21" yfiles.type="edgegraphics"/>
+  <graph edgedefault="directed" id="G">
+    <data key="d0" xml:space="preserve"/>
+    <node id="n0">
+      <data key="d4" xml:space="preserve"><![CDATA[Animal]]></data>
+      <data key="d6" xml:space="preserve"><![CDATA[name]]></data>
+      <data key="d7" xml:space="preserve"><![CDATA[children]]></data>
+      <data key="d8" xml:space="preserve"><![CDATA[Menu Item]]></data>
+      <data key="d10">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="130.0" x="220.5" y="-221.2"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="44.494140625" x="42.7529296875" xml:space="preserve" y="5.93359375">Animal<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+  </graph>
+  <data key="d11">
+    <y:Resources/>
+  </data>
+</graphml>

@@ -1,0 +1,20 @@
+post {
+  var sourceRoots = Source.getResource().contents; 
+
+  // We need to set the root of the model ourselves: creating a
+  // JSONObject does not immediately add it to the JSON contents
+  // as in EMF. The user is responsible for ensuring the JSON
+  // object ends up as the JSON model root or somewhere under it.
+
+  Target.root = sourceRoots.get(0).equivalent();
+}
+
+rule TreeToObject transform t: Source!Tree to o: Target!JSONObject {
+   o.label = t.label;
+
+   // Note: we have to create a JSONArray and not a regular Sequence,
+   // in order for owner model tracking to work.
+
+   o.children = new Target!JSONArray;
+   o.children.addAll(t.children.equivalent());
+}

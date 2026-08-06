@@ -1,0 +1,12 @@
+pre {
+	parameterPassedFromJava.println();
+}
+
+rule Tree2Tree
+	transform s : Source!Tree
+	to t : Target!Tree {
+	
+	t.label := 'CopyOf' + s.label;
+	t.children ::= s.children;
+	
+}

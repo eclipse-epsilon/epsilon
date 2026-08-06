@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.simulink.dt.SimulinkModelInEclipse"
+            dialog="org.eclipse.epsilon.emc.simulink.dt.SimulinkModelConfigurationDialog"
+            icon="images/matlab.png"
+            label="Simulink Model"
+            stable="true"
+            type="Simulink">
+      </modelType>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.modelElementLocator">
+      <modelElementLocator
+            class="org.eclipse.epsilon.emc.simulink.dt.SimulinkModelElementLocator">
+      </modelElementLocator>
+   </extension>
+</plugin>

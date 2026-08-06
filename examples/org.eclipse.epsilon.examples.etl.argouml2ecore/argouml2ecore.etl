@@ -1,0 +1,96 @@
+rule Model2EPackage 
+	transform m : ArgoUML!Model
+	to p : Ecore!EPackage {
+	
+	p.name = m.name;
+	p.nsURI = m.name;
+	p.nsPrefix = "";
+	p.eClassifiers.addAll(m.ownedElement.equivalent());
+}
+
+rule Class2EClass
+	transform c : ArgoUML!Class
+	to ec : Ecore!EClass {
+	
+	ec.name = c.name;
+	ec.`abstract` = c.isAbstract;
+}
+
+rule Attribute2EAttribute
+	transform a : ArgoUML!Attribute
+	to ea : Ecore!EAttribute {
+	
+	ea.name = a.name;
+	ea.eType = a.type.name.getEDataType();
+	ea.lowerBound = a.multiplicity.range[0].lower;
+	ea.upperBound = a.multiplicity.range[0].upper;
+	a.owner.equivalent().eStructuralFeatures.add(ea); 
+}
+
+rule AssociationEnd2EReference
+	transform ae : ArgoUML!AssociationEnd
+	to er : Ecore!EReference {
+	
+	// We are only interested in
+	// named association ends
+	guard : ae.name.isDefined()
+	
+	er.name = ae.name;
+	er.eType ::= ae.participant;
+	er.lowerBound = ae.multiplicity.range[0].lower;
+	er.upperBound = ae.multiplicity.range[0].upper;
+	ae.getOpposite().participant.equivalent().
+		eStructuralFeatures.add(er);
+		
+	if (ae.getOpposite().name.isDefined()) {
+		er.eOpposite = ae.getOpposite().equivalent();
+	}
+	
+	er.containment = (ae.getOpposite().aggregation == ArgoUML!AggregationKind#ak_composite);
+}
+
+rule Generalisation2Extension
+	transform g : ArgoUML!Generalization 
+	to nothing : Sequence {
+	
+	g.child.equivalent().eSuperTypes.add(g.parent.equivalent());
+}
+
+rule Enumeration2EEnum
+	transform e : ArgoUML!Enumeration
+	to ee : Ecore!EEnum {
+
+	ee.name = e.name;
+}
+
+rule EnumerationLiteral2EEnumLiteral
+	transform l : ArgoUML!EnumerationLiteral
+	to el : Ecore!EEnumLiteral {
+	
+	el.name = l.name;
+	var eLiterals = l.enumeration.equivalent().eLiterals;
+	eLiterals.add(el);
+	el.value = eLiterals.size();
+}
+
+
+operation ArgoUML!AssociationEnd getOpposite() {
+	return self.association.connection.
+		selectOne(ae|ae <> self);
+}
+
+@cached
+operation String getEDataType() {
+
+	var enumeration = ArgoUML!Enumeration.all.selectOne(e|e.name = self);
+	if (enumeration.isDefined()) {
+		return enumeration.equivalent();
+	}
+	else {
+		var edt = new Ecore!EDataType;
+		edt.name = self;
+		edt.instanceClassName = "java.lang." + self;
+		Ecore!EPackage.all.first().println().eClassifiers.add(edt);
+		return edt;
+	}
+}

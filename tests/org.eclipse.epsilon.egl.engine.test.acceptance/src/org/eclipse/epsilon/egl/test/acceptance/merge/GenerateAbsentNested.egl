@@ -1,0 +1,4 @@
+[%
+	var t : Template := TemplateFactory.load('GenerateAbsent.egl');
+	t.process();
+%]

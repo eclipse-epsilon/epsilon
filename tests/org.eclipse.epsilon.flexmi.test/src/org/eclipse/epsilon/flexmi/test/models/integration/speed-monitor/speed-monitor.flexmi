@@ -1,0 +1,22 @@
+<?nsuri comps?>
+<?import types.flexmi?>
+<?import library.flexmi?>
+<?render-egx comps.egx?>
+<_>
+	<comp name="SpeedMonitor" :local="sm"> 
+		<in name="speed" type="float"/>
+		<in name="location" type="geo"/>
+		<out name="warning" type="boolean"/>
+		
+		<?include speed-limit-calculator.flexmi?>
+		
+		<binary_operator name="Comparator" action="result = in1 &gt; in2"
+			in="float" out="boolean" :var="comp"/>
+		
+		<con :from="sm.location" :to="sm.SpeedLimitCalculator.location"/>
+		<con :from="sm.speed" :to="comp.in1"/>
+		<con :from="sm.SpeedLimitCalculator.speedLimit" :to="comp.in2"/>
+		<con :from="comp.result" :to="sm.warning"/>
+		
+	</comp>
+</_>

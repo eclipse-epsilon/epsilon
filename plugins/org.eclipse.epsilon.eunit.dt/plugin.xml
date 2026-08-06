@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.eclipse.epsilon.eunit.dt.diffviewer" name="EUnitDiffViewer" schema="schema/diffviewer.exsd"/>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Epsilon"
+            id="org.eclipse.epsilon.dt">
+      </category>
+      <view
+            name="EUnit"
+            icon="icons/eunit.png"
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.eunit.dt.ui.EUnitRunnerView"
+            id="org.eclipse.epsilon.eunit.runner.views.EUnitRunnerView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.workflow.eunit.listener">
+      <eunitListener
+            class="org.eclipse.epsilon.eunit.dt.listener.ShowEUnitViewTestListener">
+      </eunitListener>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            categoryId="org.eclipse.epsilon.eunit.dt.commands"
+            defaultHandler="org.eclipse.epsilon.eunit.dt.ui.EUnitRunnerView$RerunAllHandler"
+            description="Tests all the operations in the current EUnit launch"
+            id="org.eclipse.epsilon.eunit.dt.commands.rerunall"
+            name="Rerun All Tests">
+      </command>
+      <category
+            id="org.eclipse.epsilon.eunit.dt.commands"
+            name="EUnit">
+      </category>
+      <command
+            categoryId="org.eclipse.epsilon.eunit.dt.commands"
+            defaultHandler="org.eclipse.epsilon.eunit.dt.ui.EUnitRunnerView$RerunSameHandler"
+            description="Tests the same operations as in the current EUnit launch"
+            id="org.eclipse.epsilon.eunit.dt.commands.rerunsame"
+            name="Rerun Same Tests">
+      </command>
+      <command
+            categoryId="org.eclipse.epsilon.eunit.dt.commands"
+            defaultHandler="org.eclipse.epsilon.eunit.dt.ui.EUnitRunnerView$RerunOnlyFailedHandler"
+            description="Tests the operations which failed in the current EUnit launch"
+            id="org.eclipse.epsilon.eunit.dt.commands.rerunfailed"
+            name="Rerun Failed Tests">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commandImages">
+      <image
+            commandId="org.eclipse.epsilon.eunit.dt.commands.rerunall"
+            icon="icons/eunit.png">
+      </image>
+      <image
+            commandId="org.eclipse.epsilon.eunit.dt.commands.rerunsame"
+            icon="icons/eunit-same.png">
+      </image>
+      <image
+            commandId="org.eclipse.epsilon.eunit.dt.commands.rerunfailed"
+            icon="icons/eunit-err.png">
+      </image>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.epsilon.eunit.dt.commands.rerunall"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+E A">
+      </key>
+      <key
+            commandId="org.eclipse.epsilon.eunit.dt.commands.rerunsame"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+E S">
+      </key>
+      <key
+            commandId="org.eclipse.epsilon.eunit.dt.commands.rerunfailed"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M2+M3+E F">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.epsilon.eunit.runner.views.EUnitRunnerView">
+         <command
+               commandId="org.eclipse.epsilon.eunit.dt.commands.rerunall"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.epsilon.eunit.dt.commands.rerunsame"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.epsilon.eunit.dt.commands.rerunfailed"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.epsilon.eunit.runner.views.EUnitRunnerView">
+         <command
+               commandId="org.eclipse.epsilon.eunit.dt.commands.rerunall"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.epsilon.eunit.dt.commands.rerunsame"
+               style="push">
+         </command>
+         <command
+               commandId="org.eclipse.epsilon.eunit.dt.commands.rerunfailed"
+               style="push">
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.epsilon.common.dt.tool">
+      <tool
+            class="org.eclipse.epsilon.eunit.EUnitModule"
+            defaultName="module">
+      </tool>
+   </extension>
+
+</plugin>

@@ -1,0 +1,33 @@
+@test
+operation testSplit() {
+	"foo,bar".split(",").first().println();
+}
+
+@test
+operation testVarargs() {
+	var Paths = Native("java.nio.file.Paths");
+	var p = Paths.get("rel", "path", "to", "resource");
+	assertFalse(p.toFile().exists());
+	p = Paths.get("folder");
+	assertFalse(p.toFile().isFile());
+	p = Paths.get("first", "second");
+	assertFalse(p.toFile().exists());
+}
+
+@test
+operation testVarargsAmbigious() {
+	var s = Native("java.lang.String").format("foo");
+	assertEquals(3, s.length());
+	s = Native("java.lang.String").format("bazoo", null);
+	assertEquals(5, s.length());
+}
+
+@test
+operation testVarargsMissingParameters() {
+	assertError(Native("java.nio.file.Paths").get());
+}
+
+@test
+operation testVarargsInvalidNullLastParameter() {
+	assertError(Native("java.nio.file.Files").copy("a", "b", null));
+}

@@ -1,0 +1,121 @@
+[%import "comps.eol";%]
+digraph G {
+	node[fontname=Tahoma, fontsize=10]
+	edge[fontname=Tahoma, fontsize=10]
+	
+	rankdir=LR
+	
+	[%if (r.components.notEmpty()){%]
+	{rank = same [%=r.inPorts.name.concat(" ")%]}
+	{rank = same [%=r.outPorts.name.concat(" ")%]}
+	[%for (p in r.inPorts){%]
+	[%=p.name%] [shape=none, margin=0, label=<<table cellspacing='1' cellborder='0' border="0" cellpadding="0"><tr><td align="right"><img src="[%=getIcon("port")%]"/></td><td align="left" valign="middle">[%=p.name%]</td></tr></table>>];
+	[%}%]
+	[%for (p in r.outPorts){%]
+	[%=p.name%] [shape=none, margin=0, label=<<table cellspacing='1' cellborder='0' border="0" cellpadding="0"><tr><td align="right" valign="middle">[%=p.name%]</td><td align="left"><img src="[%=getIcon("port")%]"/></td></tr></table>>];
+	[%}%]
+	
+	[%for (g in r.groups){%]
+	subgraph cluster_c[%=loopCount%] {
+		style=filled;
+		fontname="Tahoma";
+		fontsize=9;
+		color="#c2e3ae";
+		labeljust="r";
+		label = <<b>[%=g.name%] </b>>;
+		[%for (c in g.components){%]
+		[%=c.toDot()%]
+		[%}%]
+	}
+	[%}%]
+	
+	[%for (c in r.components.excludingAll(r.groups.components.flatten())){%]
+	[%=c.toDot()%]
+	[%}%]
+	
+	[%for (c in r.components.inPorts.flatten().incoming.flatten().
+		includingAll(r.components.outPorts.flatten().outgoing.flatten()).asSet()){%]
+	[%=c.from.getDotID()%] -> [%=c.to.getDotID()%]
+	[%}%]
+	[%}else{%]
+	[%=r.toDot()%]
+	[%}%]
+}
+
+[%
+@template
+operation comps::Component toDot() {
+%]
+	[%=self.name%] [shape=plaintext, label=<
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td border="1">
+				<table border="0" cellspacing="0" cellpadding="0" bgcolor="#fffcdc:#ffffff" gradientangle="270">
+					<tr>
+						<td>&nbsp;</td><td>&nbsp;</td><td cellpadding="2" align="right"><img src="[%=getIcon("component")%]"></img></td>
+					</tr>
+					[%if(self.maxPorts() > 0){%]
+					[%for (i in 0.to(self.maxPorts()-1)){%]
+					<tr>
+						[%=getPortCell(self.inPorts, i)%]
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						[%=getPortCell(self.outPorts, i)%]
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					[%}%]
+					[%}%]
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td cellpadding="5" href="javascript:top.showView([[%=self.getPath().collect(i|"'" + i + "'").concat(", ")%]])">[%=self.name%]</td>
+		</tr>
+	</table>
+	>];
+[%
+}
+
+operation comps::Port getDotID(){
+	if (self.eContainer() == r) {
+		return self.name;
+	}
+	else {
+		return self.eContainer().name + ":" + self.name;
+	}
+}
+
+operation getPortCell(ports : Collection, index : Integer) {
+	var cell = "<td cellpadding='2' ";
+	if (ports.size > index) {
+		cell += " port='" + ports.at(index).name + 
+			"'><font color1='#727372' point-size='9'>" 
+			+ ports.at(index).name + "</font>";
+	}
+	else {
+		cell += ">";
+	}
+	cell += "</td>";
+	return cell;
+}
+
+operation comps::Component maxPorts() {
+	return Sequence{self.inPorts.size(), self.outPorts.size()}.max();
+}
+
+operation comps::Connector belongsToDiagram() {
+	return Sequence{self.from, self.to}.forAll(p|
+		r.inPorts.includes(p) or 
+		r.outPorts.includes(p) or 
+		r.components.inPorts.flatten().includes(p) or
+		r.components.outPorts.flatten().includes(p));
+}
+
+operation getIcon(name : String) {
+	return new Native("java.io.File")
+		(System.context.module.file.parent, "icons/" + name + ".png").absolutePath;
+}
+%]

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="tracelinks" nsURI="http://eclipse.org/epsilon/examples/suspectlinks/tracelinks"
+    nsPrefix="">
+  <eClassifiers xsi:type="ecore:EClass" name="TraceLinksModel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="traceLinks" upperBound="-1"
+        eType="#//TraceLink" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TraceLink">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="from" eType="#//TraceLinkEnd"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="to" eType="#//TraceLinkEnd"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TraceLinkEnd">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

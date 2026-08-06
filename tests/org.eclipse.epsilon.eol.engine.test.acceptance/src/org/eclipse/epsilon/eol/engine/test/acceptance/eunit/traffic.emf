@@ -1,0 +1,15 @@
+@namespace(uri="traffic", prefix="traffic")
+
+package traffic;
+
+class Model {
+	val TrafficLight[*] lights;
+}
+
+class TrafficLight {
+	attr TrafficLightState state;
+}
+
+enum TrafficLightState {
+	RED; YELLOW; GREEN;
+}

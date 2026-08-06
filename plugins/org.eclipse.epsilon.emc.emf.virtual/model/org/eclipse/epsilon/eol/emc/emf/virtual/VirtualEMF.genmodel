@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="*******************************************************************************&#xA;Copyright (c) 2008 The University of York.&#xA;All rights reserved. This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v1.0&#xA;which accompanies this distribution, and is available at&#xA;http://www.eclipse.org/legal/epl-v10.html&#xA;&#xA;Contributors:&#xA;    Louis Rose - initial API and implementation&#xA;******************************************************************************"
+    modelDirectory="/org.eclipse.epsilon.emc.emf.virtual/src" modelPluginID="org.eclipse.epsilon.emc.emf.virtual"
+    modelName="VirtualEMF" importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0"
+    copyrightFields="false">
+  <foreignModel>VirtualEMF.ecore</foreignModel>
+  <genPackages prefix="Virtual" basePackage="org.eclipse.epsilon.emc.emf" disposableProviderFactory="true"
+      ecorePackage="VirtualEMF.ecore#/">
+    <genClasses ecoreClass="VirtualEMF.ecore#//VirtualModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VirtualEMF.ecore#//VirtualModel/objects"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="VirtualEMF.ecore#//TypedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualEMF.ecore#//TypedElement/type"/>
+    </genClasses>
+    <genClasses ecoreClass="VirtualEMF.ecore#//VirtualObject">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference VirtualEMF.ecore#//VirtualObject/model"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference VirtualEMF.ecore#//VirtualObject/slots"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="VirtualEMF.ecore#//Slot">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference VirtualEMF.ecore#//Slot/owner"/>
+    </genClasses>
+    <genClasses ecoreClass="VirtualEMF.ecore#//StringSlot">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualEMF.ecore#//StringSlot/values"/>
+    </genClasses>
+    <genClasses ecoreClass="VirtualEMF.ecore#//IntegerSlot">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualEMF.ecore#//IntegerSlot/values"/>
+    </genClasses>
+    <genClasses ecoreClass="VirtualEMF.ecore#//BooleanSlot">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualEMF.ecore#//BooleanSlot/values"/>
+    </genClasses>
+    <genClasses ecoreClass="VirtualEMF.ecore#//FloatSlot">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute VirtualEMF.ecore#//FloatSlot/values"/>
+    </genClasses>
+    <genClasses ecoreClass="VirtualEMF.ecore#//ReferenceSlot">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference VirtualEMF.ecore#//ReferenceSlot/values"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

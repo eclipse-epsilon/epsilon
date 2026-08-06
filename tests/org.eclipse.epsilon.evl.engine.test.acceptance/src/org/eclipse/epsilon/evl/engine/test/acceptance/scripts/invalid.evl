@@ -1,0 +1,5 @@
+context t_a {
+	constraint shouldCrash {
+		check: self.invalidPropertyAccess
+	}
+}

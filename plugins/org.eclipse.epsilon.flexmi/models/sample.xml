@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<package name="foo" uri="foo" prefix="">
+	
+	<class name="Flowchart">
+		<ref name="nodes" type="Node" upper="-1" containment="true"/>
+	</class>
+	
+	<class name="Node">
+		<attr name="label" type="String"/> 
+		<ref name="outgoing" type="Transition" opposite="source" upper="-1"/>
+	</class>
+	
+	<class name="Transition">
+		<ref name="source" type="Node" opposite="outgoing"/>
+	</class>
+	
+	<datatype name="String" instanceType="java.lang.String"/>
+	
+</package>

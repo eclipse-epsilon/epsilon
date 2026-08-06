@@ -1,0 +1,6 @@
+$with Map {"" = "A"}
+$with Map {"" = "IDoNotExist"}
+@test
+operation hasOneA() {
+  assertEquals("The model has one A", 1, Element.allInstances.select(e|e.name='A').size()); 
+}

@@ -1,0 +1,5 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?import http://www.eclipse.org/emf/2002/Ecore?>
+<class name="A">
+	<attr name="a" type="//EString"/>
+</class>

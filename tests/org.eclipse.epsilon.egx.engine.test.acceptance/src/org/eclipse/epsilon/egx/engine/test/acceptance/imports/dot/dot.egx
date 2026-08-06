@@ -1,0 +1,10 @@
+rule All2Dot {
+	template : "dot/ecore2dot.egl"
+	parameters : Map {
+		"classes" = EClass.all, 
+		"format" = "graphviz-dot",
+		"path" = List{"Model", "(All classes)"},
+		"icon" = "diagram-ff0000"
+	}
+	target : "ecoredot.txt"
+}

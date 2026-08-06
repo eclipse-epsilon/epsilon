@@ -1,0 +1,16 @@
+<project default="main">
+	<target name="main">
+		<epsilon.xml.loadModel name="M">
+			<![CDATA[
+			<tree name="${name}"/>
+			]]>
+		</epsilon.xml.loadModel>
+		<epsilon.eol>
+			if (t_tree.all.first().a_name != "${expected}") {
+				throw "Tree name expected to be " + expected + " but was " +
+					t_tree.all.first().a_name + " instead";
+			}
+			<model ref="M"/>
+		</epsilon.eol>
+	</target>
+</project>

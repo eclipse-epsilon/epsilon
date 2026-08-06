@@ -1,0 +1,33 @@
+@namespace(uri="flowchart", prefix="")
+package flowchart;
+
+class Flowchart {
+  val Node[*] nodes;
+  val Transition[*] transitions;
+}
+
+class Node {
+  attr String[1] label;
+  ref Transition[*]#source outgoing;
+  ref Transition[*]#target incoming;
+}
+
+class Transition {
+  attr String[1] label;
+  ref Node#outgoing source;
+  ref Node#incoming target;
+}
+
+class Action extends Node {
+}
+
+class Decision extends Node {
+}
+
+enum ActionType {
+  regular = 0;
+  automatic = 0;
+}
+
+datatype String : java.lang.String;
+

@@ -1,0 +1,26 @@
+<project default="main">
+	<target name="main">
+		
+		<!-- Load t1.xml once as Ta -->
+		<epsilon.xml.loadModel name="Ta" file="t1.xml"/>
+		
+		<!-- For every XML file in the loop directory -->
+		<epsilon.for>
+			<fileset dir="loop" includes="*.xml"/>
+			
+			<!-- Load the file as Tb -->
+			<epsilon.xml.loadModel name="Tb" file="loop/${it}"/>
+			
+			<!-- Run an EOL program on Ta and Tb -->
+			<epsilon.eol>
+				Ta!t_tree.all.a_name.println();
+				Tb!t_tree.all.a_name.println();
+				<model ref="Ta"/>
+				<model ref="Tb"/>	
+			</epsilon.eol>
+			
+			<!-- Dispose of Tb -->
+			<epsilon.disposeModel model="Tb"/>
+		</epsilon.for>
+	</target>
+</project>

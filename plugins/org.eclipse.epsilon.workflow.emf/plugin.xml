@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ant.core.extraClasspathEntries">
+      <extraClasspathEntry
+            library="lib/org.eclipse.epsilon.workflow.emf.jar">
+      </extraClasspathEntry>
+   </extension>
+      <extension
+         point="org.eclipse.ant.core.antTasks">
+      <antTask
+            class="org.eclipse.epsilon.workflow.tasks.emf.LoadEmfModelTask"
+            library="lib/org.eclipse.epsilon.workflow.emf.jar"
+            name="epsilon.emf.loadModel">
+      </antTask>
+      <antTask
+            class="org.eclipse.epsilon.workflow.tasks.emf.RegisterTask"
+            library="lib/org.eclipse.epsilon.workflow.emf.jar"
+            name="epsilon.emf.register">
+      </antTask>
+      <antTask
+            class="org.eclipse.epsilon.workflow.tasks.emf.LoadRegisteredMetaModelTask"
+            library="lib/org.eclipse.epsilon.workflow.emf.jar"
+            name="epsilon.emf.loadRegisteredMetamodel">
+      </antTask>
+      <antTask
+            class="org.eclipse.epsilon.workflow.tasks.emf.LoadXmlModelTask"
+            library="lib/org.eclipse.epsilon.workflow.emf.jar"
+            name="epsilon.emf.loadXmlModel">
+      </antTask>
+   </extension>
+</plugin>

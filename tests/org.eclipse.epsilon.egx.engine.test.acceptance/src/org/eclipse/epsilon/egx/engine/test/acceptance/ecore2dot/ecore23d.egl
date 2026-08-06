@@ -1,0 +1,27 @@
+<head>
+  <style> body { margin: 0; } </style>
+
+  <script src="https://unpkg.com/3d-force-graph"></script>
+  <!--<script src="../../dist/3d-force-graph.js"></script>-->
+</head>
+
+<body>
+  <div id="3d-graph"></div>
+
+  <script>
+    const gData = {
+      nodes: [[%=EClass.all.collect(c|"{id:" + c.getId() + ", label:'" + c.name + "'}").concat(",")%]],
+      links: [[%=EClass.all.collect(c|c.eSuperTypes.collect(s|"{source:" + c.getId() + ", target:" + s.getId() + "}")).flatten().concat(",")%]]
+    };
+    const Graph = ForceGraph3D()
+      (document.getElementById('3d-graph'))
+     	.nodeLabel('label')
+        .graphData(gData);
+  </script>
+</body>
+
+[%
+operation EClass getId() {
+	return EClass.all.indexOf(self);
+}
+%]

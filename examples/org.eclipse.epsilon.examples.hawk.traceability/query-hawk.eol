@@ -1,0 +1,10 @@
+Requirement.all.id.println();
+Test.all.id.println();
+
+for (r in Requirement.all) {
+	(r.id + " ->").print();
+	for (t in Test.all.select(t|t.requirement = r)) {
+		t.id.print();
+	}
+	"".println();
+}

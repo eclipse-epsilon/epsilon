@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.epsilon.evl.eclipse.dt.launching.EvlLaunchConfigurationDelegate">
+<listAttribute key="models">
+<listEntry value="#&#10;#Wed Aug 31 13:39:43 CEST 2011&#10;isMetamodelFileBased=false&#10;name=OO&#10;readOnLoad=true&#10;storeOnDisposal=true&#10;aliases=&#10;cached=true&#10;fileBasedMetamodelUri=platform\:/resource/org.eclipse.epsilon.examples.validateoo/metamodels/OO.ecore&#10;metamodelUri=OO&#10;modelUri=platform\:/resource/org.eclipse.epsilon.examples.validateoo/models/OOInstance.model&#10;type=EMF&#10;modelFile=/org.eclipse.epsilon.examples.validateoo/models/OOInstance.model&#10;expand=false&#10;metamodelFile=/org.eclipse.epsilon.examples.validateoo/metamodels/OO.ecore&#10;"/>
+</listAttribute>
+<stringAttribute key="source" value="/org.eclipse.epsilon.examples.validateoo/ValidateOO.evl"/>
+<listAttribute key="tools"/>
+</launchConfiguration>

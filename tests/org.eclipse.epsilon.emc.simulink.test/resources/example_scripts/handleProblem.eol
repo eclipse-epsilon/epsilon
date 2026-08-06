@@ -1,0 +1,4 @@
+var all = SubSystem.all;
+for (s in all){
+	s.children.select(c | c.BlockType = 'Inport').println.ForegroundColor.excludes('green');
+}

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="simulink" nsURI="http://hu.bme.mit.massif/simulink/1.0" nsPrefix="simulink">
+  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+    <details key="documentation" value="The Simulink EPackage represents the core concepts of Matlab Simulink models with a strong focus on the structure&#xD;&#xA; and less focus on the behavior, simulation and layout specific details.&#xD;&#xA;&#xD;&#xA;The five main concepts (easily recognised by #{simulink.SimulinkElement} and its subtypes) are the following:&#xD;&#xA; * Elements on a Simulink model that can be identified and named are subtypes of #{simulink.SimulinkElement},&#xD;&#xA; which stores the identifier as a #{simulink.SimulinkReference} element.&#xD;&#xA; * The root element, #{simulink.SimulinkModel}, stores the file path and version for the original Simulink system it represents&#xD;&#xA; to help in handling changes in the represented system.&#xD;&#xA; * The Simulink model contains a hierarchy of #{simulink.Block} elements that may have properties and specify a source&#xD;&#xA; block from a Simulink library. The source block is set if the internal structure and behavior of the block is defined by a library block.&#xD;&#xA; * The communication between blocks is done through #{simulink.Port} elements, that can be either output or input. &#xD;&#xA; Each port is represented by a #{simulink.PortBlock}  inside the block.&#xD;&#xA; * The output ports are connected to input ports using #{simulink.Connection} elements that can be one-to-one single connections or one-to-many multiconnections."/>
+  </eAnnotations>
+  <eAnnotations source="http://www.eclipse.org/emf/2002/Ecore">
+    <details key="settingDelegates" value="org.eclipse.viatra.query.querybasedfeature"/>
+  </eAnnotations>
+  <eClassifiers xsi:type="ecore:EClass" name="SimulinkElement" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents the abstract supertype of elements in Simulink systems that can be identified uniquely with a fully qualified name consisting of a name and a qualifier."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="simulinkRef" eType="#//IdentifierReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The value is computed from the name feature of the #{simulink.SimulinkReference} stored in simulinkRef."/>
+      </eAnnotations>
+      <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
+        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.name"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Block" eSuperTypes="#//SimulinkElement">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents the basic building block of Simulink systems. Each block has properties, ports and&#xD;&#xA; can refer to a source block that was used as the template from a library to create the element.&#xD;&#xA;&#xD;&#xA;The properties are not a map, so the block may have multiple properties with the same name, or even same name-value pair.&#xD;&#xA;&#xD;&#xA;The different type of ports are accessible through computed filtered lists."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//Parameter" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ports" upperBound="-1"
+        eType="#//Port" containment="true" eOpposite="#//Port/container"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="trigger" eType="#//Trigger"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The values are computed by filtering Trigger ports from the values of the ports feature."/>
+      </eAnnotations>
+      <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
+        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.trigger"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enabler" eType="#//Enable"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The values are computed by filtering Enable ports from the values of the ports feature."/>
+      </eAnnotations>
+      <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
+        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.enabler"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inports" upperBound="-1"
+        eType="#//InPort" changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The values are computed by filtering Inports from the values of the ports feature."/>
+      </eAnnotations>
+      <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
+        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.inports"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outports" upperBound="-1"
+        eType="#//OutPort" changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The values are computed by filtering Outports from the values of the ports feature."/>
+      </eAnnotations>
+      <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
+        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.outports"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//SubSystem"
+        eOpposite="#//SubSystem/subBlocks"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceBlock" eType="#//Block"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The value of the reference is computed by finding the element with the same name and qualifier as stored in the sourceBlockRef.&#xD;&#xA;&#xD;&#xA;b{Validation}&#xD;&#xA; * WARN: Cannot find block specified by source block reference."/>
+      </eAnnotations>
+      <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
+        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.sourceBlock"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sourceBlockRef" eType="#//LibraryLinkReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Port" abstract="true" eSuperTypes="#//SimulinkElement">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents the abstract supertype of block ports that are used for allowing data communication and signaling between blocks.&#xA;&#xA;The properties are not a map, so the port may have multiple properties with the same name, or even same name-value pair."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="container" eType="#//Block"
+        eOpposite="#//Block/ports"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="portBlock" eType="#//PortBlock"
+        eOpposite="#//PortBlock/port"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="#//Parameter" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Parameter">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents properties of #{simulink.Block} elements. Each property has a name, a type and a value.&#xD;&#xA;The value is stored as a character string but is validated based on the type.&#xA;It also stores a readOnly flag about the parameter."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="b{Validation}&#xD;&#xA; * ERROR: Value type is not compatible with property type."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="readOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InPort" eSuperTypes="#//Port">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents an inport of a #{simulink.Block}.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/inport.html}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connection" eType="#//SingleConnection"
+        eOpposite="#//SingleConnection/to"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OutPort" eSuperTypes="#//Port">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents an outport of a #{simulink.Block}.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/outport.html}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connection" eType="#//Connection"
+        containment="true" eOpposite="#//Connection/from"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Connection" abstract="true" eSuperTypes="#//SimulinkElement">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents the connection between #{simulink.Block} elements in order to transfer data from an outport to one or more inports."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="from" eType="#//OutPort"
+        eOpposite="#//OutPort/connection"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lineName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Trigger" eSuperTypes="#//InPort">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a trigger port of a #{simulink.Block}.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/trigger.html}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="triggerType" eType="#//TriggerType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="statesWhenEnabling" eType="#//EnableStates"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Enable" eSuperTypes="#//InPort">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents an enable port of a #{simulink.Block}.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/enable.html}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="statesWhenEnabling" eType="#//EnableStates"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BusSelector" eSuperTypes="#//BusSpecification">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a bus selector block that separates the signals from the bus received on its inport into its outports.&#xD;&#xA;Since it is possible to select only some of the signals and even embedded signals from a bus inside the bus,&#xD;&#xA; mapping entries (#{simulink.BusSignalMapping}) are used to indicate which outport (mappingTo) selects which signals originating from a given outport (mappingFrom).&#xD;&#xA;&#xD;&#xA;The outputAsBus attribute is true if the selected signals are bundled into a bus and placed on a single outport.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/busselector.html}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
+        eType="#//BusSignalMapping" containment="true" eOpposite="#//BusSignalMapping/selector"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="outputAsBus" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="busCreator" eType="#//BusSpecification">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="This reference points to the creator of the incoming bus signal.&#xD;&#xA; Either a bus creator or a bus selector with outputAsBus = true.&#xD;&#xA; Always determined as backward navigation on signals is deterministic."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BusCreator" eSuperTypes="#//BusSpecification">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a bus creator block that bundles the signals on its inports into a bus on its outport.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/buscreator.html}"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Goto" eSuperTypes="#//VirtualBlock">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The Goto block passes its input to its corresponding #{simulink.From} blocks.&#xD;&#xA; From and #{simulink.Goto} blocks allow you to pass a signal from one block to another without actually connecting them.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/goto.html}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fromBlocks" upperBound="-1"
+        eType="#//From" eOpposite="#//From/gotoBlock"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tagVisibility" eType="#//TagVisibility"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="gotoTag" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VirtualBlock" abstract="true" eSuperTypes="#//Block">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents the abstract supertype of blocks that do not explicitly affect the simulation of the Simulink system.&#xD;&#xA;These blocks are called virtual and are added as syntactic sugar, for example #{simulink.Goto} and #{simulink.From} can be used &#xD;&#xA;instead of a direct #{simulink.Connection} to connect blocks.&#xD;&#xA;"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="From" eSuperTypes="#//VirtualBlock">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The From block accepts a signal from a corresponding #{simulink.Goto} block, then passes it as output.&#xD;&#xA; The data type of the output is the same as that of the input from the Goto block.&#xD;&#xA; From and Goto blocks allow you to pass a signal from one block to another without actually connecting them.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/from.html}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="gotoBlock" eType="#//Goto"
+        eOpposite="#//Goto/fromBlocks"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SimulinkModel" eSuperTypes="#//SimulinkElement">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents the root of an imported Simulink system that contains blocks. The version and file path informations are stored to allow change management. The library attribute stores whether the model was a library or a regular model in Matlab."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contains" upperBound="-1"
+        eType="#//Block" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="file" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="library" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MultiConnection" eSuperTypes="#//Connection">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a connection between a single #{simulink.OutPort} and multiple #{simulink.InPort}.&#xD;&#xA;Each inport is connected by a #{simulink.SingleConnection} contained by this connection."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="connections" upperBound="-1"
+        eType="#//SingleConnection" containment="true" eOpposite="#//SingleConnection/parent"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleConnection" eSuperTypes="#//Connection">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a simple connections between a single #{simulink.OutPort} and a single #{simulink.InPort}.&#xD;&#xA;The outport can be identified either through the from reference or through the parent #{simulink.MultiConnection}."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//MultiConnection"
+        eOpposite="#//MultiConnection/connections"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="to" eType="#//InPort" eOpposite="#//InPort/connection"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PortBlock" abstract="true" eSuperTypes="#//VirtualBlock">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents the abstract supertype of blocks that represent ports of a subsystem."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="port" eType="#//Port" eOpposite="#//Port/portBlock"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OutPortBlock" eSuperTypes="#//PortBlock">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a port block of a #{simulink.OutPort} with an inport that can be used by blocks inside the subsystem.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/outport.html}"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InPortBlock" eSuperTypes="#//PortBlock">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a port block of a #{simulink.InPort} with an outport that can be used by blocks inside the subsystem.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/inport.html}"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TriggerBlock" eSuperTypes="#//InPortBlock">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a port block of a #{simulink.Trigger} port with an outport that can be used by blocks inside the subsystem.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/trigger.html}"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EnableBlock" eSuperTypes="#//InPortBlock">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a port block of a #{simulink.Enable} port with an outport that can be used by blocks inside the subsystem.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/enable.html}"/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SimulinkReference" abstract="true">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This abstract EClass represents a reference for a Simulink element. The identifier is a fully qualified&#xD;&#xA; name constructed from a qualifier (the fully qualified name of the parent of the element) and a name.&#xD;&#xA;Since a #{simulink.SimulinkElement} can be identified based on its fully qualified name, it is possible&#xD;&#xA; to reference an element by cloning and storing the reference instead of a direct link to the element itself."/>
+    </eAnnotations>
+    <eOperations name="getFQN" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="if(qualifier != null)&#xD;&#xA;&#x9;return qualifier+&quot;/&quot;+name;&#xD;&#xA;else &#xD;&#xA;&#x9;return name;"/>
+      </eAnnotations>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="element" eType="#//SimulinkElement"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="qualifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="GotoTagVisibility" eSuperTypes="#//VirtualBlock">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The Goto Tag Visibility block defines the accessibility of #{simulink.Goto} block tags that have scoped visibility.&#xD;&#xA; The tag specified as the Goto tag parameter is accessible by #{simulink.From} blocks in the same subsystem that contains the Goto Tag Visibility block and in subsystems below it in the model hierarchy.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/gototagvisibility.html}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="gotoBlock" eType="#//Goto"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SubSystem" eSuperTypes="#//Block">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a Simulink block that may contain subblocks that specify its internal structure and behavior.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/subsystem.html}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subBlocks" upperBound="-1"
+        eType="#//Block" containment="true" eOpposite="#//Block/parent"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tag" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="EnableStates">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EEnum represents the possible settings of a #{simulink.Enable} port for specifying what happens to the states of blocks in the enabled system upon disabling.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/enable.html}"/>
+    </eAnnotations>
+    <eLiterals name="Held"/>
+    <eLiterals name="Reset" value="1"/>
+    <eLiterals name="Inherit" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="TriggerType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EEnum represents the possible events that can trigger the execution of a subsystem with a #{simulink.Trigger} port.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/trigger.html}"/>
+    </eAnnotations>
+    <eLiterals name="Rising"/>
+    <eLiterals name="Falling" value="1"/>
+    <eLiterals name="Either" value="2"/>
+    <eLiterals name="FunctionCall" value="3"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="TagVisibility">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The Tag Visibility is a parameter of #{simulink.Goto} blocks to determine the location of #{simulink.From} blocks that access the signal.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/goto.html}"/>
+    </eAnnotations>
+    <eLiterals name="Local"/>
+    <eLiterals name="Scoped" value="1"/>
+    <eLiterals name="Global" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelReference" eSuperTypes="#//Block">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a #{simulink.SimulinkModel} included as a block in this model.&#xD;&#xA;&#xD;&#xA;See @{http://www.mathworks.com/help/simulink/slref/model.html}"/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="referencedModel" eType="#//SimulinkModel"
+        changeable="false" volatile="true" transient="true" derived="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The value of the reference is computed by finding the model with the same name and qualifier as stored in the modelRef.&#xD;&#xA;&#xD;&#xA;b{Validation}&#xD;&#xA; * WARN: Cannot find model specified by model reference."/>
+      </eAnnotations>
+      <eAnnotations source="org.eclipse.viatra.query.querybasedfeature">
+        <details key="patternFQN" value="hu.bme.mit.massif.models.simulink.derived.referencedModel"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelRef" eType="#//IdentifierReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BusSpecification" abstract="true" eSuperTypes="#//Block">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass is an abstract supertype for blocks that handle bus signals. A bus signal is used for bundling a set of signals &#xD;&#xA;into one signal to reduce the number of ports and connections required in the model."/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BusSignalMapping">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a signal mapping entry in the #{simulink.BusSelector} to define which signals are selected from a bus."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="selector" eType="#//BusSelector"
+        eOpposite="#//BusSelector/mappings"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingFrom" eType="#//OutPort">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="b{Validation}&#xD;&#xA; * ERROR: Selected port is not an outport of a signal bundled in the bus&#xD;&#xA; * ERROR: Multiple mappings from the same outport"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingTo" eType="#//OutPort">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="b{Validation}&#xD;&#xA; * ERROR: Selected port is not an outport of selector&#xD;&#xA; * ERROR: Multiple mappings to the same outport"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappingPath" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="incomplete" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="A true value indicates that the mappingFrom OutPort is not the real source of the selected signal, when the actual source is not part of the model."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LibraryLinkReference" eSuperTypes="#//SimulinkReference">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This is a specific class used for representing links to Simulink elements."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="disabled" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Disabled links mean that the block was originally copied from a library but it was modified later."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="IdentifierReference" eSuperTypes="#//SimulinkReference">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This is a specific class used as a unique identifier for Simulink elements."/>
+    </eAnnotations>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="State" eSuperTypes="#//OutPort">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="This EClass represents a stateport of a #{simulink.Block}.&#xA;&#xA;See @{https://www.mathworks.com/help/simulink/slref/integrator.html#f7-890704.f7-1513490}"/>
+    </eAnnotations>
+  </eClassifiers>
+</ecore:EPackage>

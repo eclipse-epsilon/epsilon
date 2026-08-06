@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<library>
+  <book pages="744" title="EMF Eclipse Modeling Framework">
+    <author>Dave Steinberg</author>
+    <author>Frank Budinsky</author>
+    <author>Marcelo Paternostro</author>
+    <author>Ed Merks</author>
+  </book>
+  <book pages="736" title="Eclipse Modeling Project: A Domain-Specific Language (DSL) Toolkit">
+    <author>Richard Gronback</author>
+  </book>
+  <book pages="432" title="Official Eclipse 3.0 FAQs">
+    <author>John Arthorne</author>
+    <author>Chris Laffra</author>
+  </book>
+</library>

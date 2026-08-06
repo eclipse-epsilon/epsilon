@@ -1,0 +1,11 @@
+context Report!Report {
+	
+	constraint RefersToValidText {
+		
+		check : trace.matches.exists(m|m.matching and m.right = self)
+		
+		message : "Report " + self.name + " refers to an undefined text"
+		
+	}
+	
+}

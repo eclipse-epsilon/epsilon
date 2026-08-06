@@ -1,0 +1,50 @@
+package TVAppDsl;
+
+@exeed(classIcon="application")
+class Application extends NamedElement {
+  val Content[*] contents;
+}
+
+@exeed(label="return self.name;")
+abstract class NamedElement {
+  attr String name;
+}
+
+abstract class Content extends NamedElement {
+}
+
+@exeed(classIcon="text", label="return self.name + ': ' + self.information;")
+class Text extends Content {
+
+  @exeed(multiLine="true")
+  attr String information;
+  val TextHistory[*] history;
+}
+
+@exeed(classIcon="history", label="return 'Revision ' + self.revision + ': ' + self.information;")
+class TextHistory {
+  attr Integer revision;
+  attr String information;
+}
+
+@exeed(classIcon="vote")
+class Vote extends Content {
+  val VoteContent[*] contents;
+}
+
+abstract class VoteContent extends NamedElement {
+}
+
+@exeed(classIcon="choice")
+class Choice extends VoteContent {
+}
+
+@exeed(classIcon="information")
+class Label extends VoteContent {
+}
+
+@exeed(classIcon="menu")
+class Menu extends Content {
+  val Content[*] contents;
+}
+

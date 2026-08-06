@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.epsilon.evl.emf.validation">
+      <constraintsBinding
+            compose="true"
+            constraints="uml.evl"
+            namespaceURI="http://www.eclipse.org/uml2/5.0.0/UML">
+      </constraintsBinding>
+   </extension>
+
+</plugin>

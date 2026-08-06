@@ -1,0 +1,15 @@
+// For every task in the model
+for (t in Task.all) {
+	// Print the title and the total person-months of the task
+	(t.title + ": " + t.getTotalEffort()).println();
+}
+
+// Count the tasks that are undertaken by a single person
+Task.all.select(t|t.effort.size() = 1).size().
+	println("One-person tasks: ");
+
+// Returns the total person-months for a task
+operation Task getTotalEffort() {
+	return self.effort.
+		collect(e|self.duration*e.percentage/100.0).sum();
+}

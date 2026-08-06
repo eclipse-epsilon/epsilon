@@ -1,0 +1,11 @@
+context Requirement {
+	
+	constraint HasTitle {
+		
+		check : self.text.isDefined()
+		
+		message : "The text of requirement " + self.id + " is empty"
+		
+	}
+	
+}

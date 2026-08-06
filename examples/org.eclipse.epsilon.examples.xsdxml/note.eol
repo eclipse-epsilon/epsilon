@@ -1,0 +1,7 @@
+var note = NoteType.all.first();
+
+("From: " + note.from).println();
+("To: " + note.to).println();
+("Heading: " + note.heading).println();
+("Body: " + note.body).println();
+("Text: " + note.mixed.last().value.trim()).println();

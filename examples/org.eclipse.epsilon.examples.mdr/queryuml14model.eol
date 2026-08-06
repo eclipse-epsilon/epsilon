@@ -1,0 +1,6 @@
+for (c in Class.all) {
+	("class " + c.name).println();
+	for (f in c.feature) {
+		("  " + f.name + " : " + f.type.name).println();
+	}
+}

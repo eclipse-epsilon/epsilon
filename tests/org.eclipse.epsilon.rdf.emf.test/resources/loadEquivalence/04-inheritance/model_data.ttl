@@ -1,0 +1,21 @@
+@prefix : <file:///home/hmz514/git/emc-rdf/tests/org.eclipse.epsilon.rdf.emf.test/resources/equivalence/04-inheritance/model_data.ttl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix simple: <http://eclipse.org/epsilon/rdf/inheritance#> .
+
+#@base <http://example/org/inheritance> .
+@base <http://eclipse.org/epsilon/rdf/inheritance/>
+
+<myModel>
+    a simple:Model ;
+    simple:name "myModel" ;
+	simple:elements ( <firstRule> <secondAction> ).
+
+<firstRule>
+    a simple:Rule ;
+    simple:name "firstRule" .
+
+<secondAction>
+	a simple:Action ;
+	simple:action "secondAction" .

@@ -1,0 +1,110 @@
+rule CopyModel
+	transform s : Source!Model
+	to t : Target!Model {
+	
+	t.name = s.name;
+	t.package ::= s.package;
+	t.annotations ::= s.annotations;
+	t.contents ::= s.contents;
+	
+}
+
+rule CopyAnnotation
+	transform s : Source!Annotation
+	to t : Target!Annotation {
+ 
+	t.key = s.key; 
+	t.value = s.value;
+}
+
+rule CopyPackage
+	transform s : Source!Package
+	to t : Target!Package {
+	
+	t.name = s.name;
+	t.package ::= s.package;
+	t.annotations ::= s.annotations;
+	t.contents ::= s.contents;
+}
+
+rule CopyExternalClass
+	transform s : Source!ExternalClass
+	to t : Target!ExternalClass {
+	
+	t.name = s.name;
+	t.isAbstract = s.isAbstract;
+	t.package ::= s.package;
+	t.`extends` ::= s.`extends`;
+	t.annotations ::= s.annotations;
+	t.extendedBy ::= s.extendedBy;
+	t.features ::= s.features;
+}
+
+rule CopyClass
+	transform s : Source!Class
+	to t : Target!Class {
+	
+	t.name = s.name;
+	t.isAbstract = s.isAbstract;
+	t.package ::= s.package;
+	t.`extends` ::= s.`extends`;
+	t.annotations ::= s.annotations;
+	t.extendedBy ::= s.extendedBy;
+	t.features ::= s.features;
+}
+
+rule CopyDatatype
+	transform s : Source!Datatype
+	to t : Target!Datatype {
+	 
+	t.name = s.name; 
+	t.package ::= s.package;
+	t.annotations ::= s.annotations;
+}
+
+rule CopyOperation
+	transform s : Source!Operation
+	to t : Target!Operation {
+	
+	t.name = s.name;
+	t.visibility = s.visibility;
+	t.owner ::= s.owner;
+	t.type ::= s.type;
+	t.annotations ::= s.annotations;
+	t.parameters ::= s.parameters;
+}
+
+rule CopyParameter
+	transform s : Source!Parameter
+	to t : Target!Parameter {
+	
+	t.name = s.name; 
+	t.type ::= s.type;
+	t.owner ::= s.owner;
+	t.annotations ::= s.annotations;
+}
+
+rule CopyReference
+	transform s : Source!Reference
+	to t : Target!Reference {
+	
+ 
+	t.name = s.name; 
+	t.visibility = s.visibility;
+	t.isMany = s.isMany;
+	t.owner ::= s.owner;
+	t.type ::= s.type;
+	t.annotations ::= s.annotations;
+}
+
+rule CopyAttribute
+	transform s : Source!Attribute
+	to t : Target!Attribute {
+	 
+	t.name = s.name;
+	t.visibility = s.visibility;
+	t.isMany = s.isMany;
+	t.owner ::= s.owner;
+	t.type ::= s.type;
+	t.annotations ::= s.annotations;
+}

@@ -1,0 +1,89 @@
+<project default="main">
+	
+	<!-- ANT Taskdefs for ant-contrib -->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>  
+	
+	<target name="loadModels">
+		<epsilon.emf.register file="tree.ecore"/>		
+		<epsilon.emf.loadModel name="M" modelfile="tree.model" 
+				metamodeluri="Tree" read="false" store="true"/>
+	</target>
+	
+	<target name="Transformation1">
+		<epsilon.eol>
+			<model ref="M"/>
+			
+			var t : new Tree;
+			t.label = 't1';
+			
+		</epsilon.eol>
+	</target>
+	
+	<target name="Transformation2">
+		<epsilon.eol>
+			<model ref="M"/>
+			
+			var t : new Tree;
+			t.label = 't2';
+			
+		</epsilon.eol>
+	</target>
+
+	<target name="Validation1">
+		<epsilon.evl>
+			<model ref="M"/>
+			
+			context Tree {
+				constraint C1 {
+					check : true
+				}
+			}
+			
+		</epsilon.evl>
+	</target>
+	
+	<target name="Validation2">
+		<epsilon.evl>
+			<model ref="M"/>
+			
+			context Tree {
+				constraint C2 {
+					check : true -- Switch to false to make validation fail
+				}
+			}
+			
+		</epsilon.evl>
+	</target>
+	
+	<target name="Evaluation">
+		<epsilon.eol>
+			<model ref="M"/>
+			
+			Tree.all.size().println();
+			
+		</epsilon.eol>
+	</target>
+	
+	<target name="main" depends="loadModels">
+		<runtarget target="Transformation1"/>
+		<runtarget target="Validation1"/>		
+		
+		<trycatch>
+			<try>
+				<!--Start a transaction on M so that we can roll it back later on.-->
+				<epsilon.startTransaction name="Transaction1" models="M"/>
+				<runtarget target="Transformation2"/>
+				<runtarget target="Validation2"/>
+				<!-- No errors in the validation. Commit the transaction.-->
+				<epsilon.commitTransaction name="Transaction1"/>
+			</try>
+			<catch>
+				<!--If validation fails, roll back the transaction.-->
+				<epsilon.rollbackTransaction name="Transaction1"/>
+			</catch>
+		</trycatch>
+		
+		<runtarget target="Evaluation"/>
+	</target>
+	
+</project>

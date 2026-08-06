@@ -1,0 +1,10 @@
+<html>
+	<body>
+		<h1>Actions</h1>
+		<ul>
+		[%for (action in Action.all) { %]
+			<li> [%=action.name%]
+		[%}%]
+		</ul>
+	</body>
+</html>

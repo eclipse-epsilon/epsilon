@@ -1,0 +1,17 @@
+import "../TestOperations.eol";
+
+// TODO remove before merging
+
+"\n----\n".println();
+var t = Task.all.get(2);
+//show(Effort.all.get(0));
+showTaskEffort(t);
+"\n++++\n".println();
+t.effort.add(Effort.all.get(0));
+showTaskEffort(t);
+//show(t.effort);
+"\n----\n".println();
+
+
+
+

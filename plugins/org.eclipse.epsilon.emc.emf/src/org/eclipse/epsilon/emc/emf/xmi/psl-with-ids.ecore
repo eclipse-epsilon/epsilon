@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmi:id="_xuu_AE4zEeyk4dByKvvOIA" name="psl" nsURI="psl" nsPrefix="">
+  <eClassifiers xsi:type="ecore:EClass" xmi:id="_xuu_AU4zEeyk4dByKvvOIA" name="Project">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="_xuu_Ak4zEeyk4dByKvvOIA" name="title">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="_xuu_BE4zEeyk4dByKvvOIA" name="description">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="_xuu_Bk4zEeyk4dByKvvOIA" name="tasks" upperBound="-1" eType="_xuu_Ck4zEeyk4dByKvvOIA" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="_xuu_CE4zEeyk4dByKvvOIA" name="people" upperBound="-1" eType="_xuu_E04zEeyk4dByKvvOIA" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" xmi:id="_xuu_Ck4zEeyk4dByKvvOIA" name="Task">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="_xuu_C04zEeyk4dByKvvOIA" name="title">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="_xuu_DU4zEeyk4dByKvvOIA" name="start">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="_xuu_D04zEeyk4dByKvvOIA" name="duration">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="_xuu_EU4zEeyk4dByKvvOIA" name="effort" upperBound="-1" eType="_xuu_Fk4zEeyk4dByKvvOIA" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" xmi:id="_xuu_E04zEeyk4dByKvvOIA" name="Person">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="_xuu_FE4zEeyk4dByKvvOIA" name="name">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" xmi:id="_xuu_Fk4zEeyk4dByKvvOIA" name="Effort">
+    <eStructuralFeatures xsi:type="ecore:EReference" xmi:id="_xuu_F04zEeyk4dByKvvOIA" name="person" eType="_xuu_E04zEeyk4dByKvvOIA"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="_xuu_GU4zEeyk4dByKvvOIA" name="percentage" defaultValueLiteral="100">
+      <eType xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+</ecore:EPackage>

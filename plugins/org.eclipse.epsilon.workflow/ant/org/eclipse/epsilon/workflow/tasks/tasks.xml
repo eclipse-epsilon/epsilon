@@ -1,0 +1,26 @@
+<antlib>
+    <taskdef name="epsilon.for" classname="org.eclipse.epsilon.workflow.tasks.ForTask"/>
+    <taskdef name="epsilon.loadModel" classname="org.eclipse.epsilon.workflow.tasks.LoadModelTask"/>
+    <taskdef name="epsilon.eol" classname="org.eclipse.epsilon.workflow.tasks.EolTask"/>
+    <taskdef name="epsilon.eunit" classname="org.eclipse.epsilon.workflow.tasks.EUnitTask"/>
+    <taskdef name="epsilon.etl" classname="org.eclipse.epsilon.workflow.tasks.EtlTask"/>
+    <taskdef name="epsilon.ecl" classname="org.eclipse.epsilon.workflow.tasks.EclTask"/>
+    <taskdef name="epsilon.eml" classname="org.eclipse.epsilon.workflow.tasks.EmlTask"/>
+    <taskdef name="epsilon.evl" classname="org.eclipse.epsilon.workflow.tasks.EvlTask"/>
+    <taskdef name="epsilon.egl" classname="org.eclipse.epsilon.workflow.tasks.EglTask"/>
+    <taskdef name="epsilon.flock" classname="org.eclipse.epsilon.workflow.tasks.FlockTask"/>
+    <taskdef name="epsilon.pinset" classname="org.eclipse.epsilon.workflow.tasks.PinsetTask"/>
+    <taskdef name="epsilon.storeModel" classname="org.eclipse.epsilon.workflow.tasks.StoreModelTask"/>
+    <taskdef name="epsilon.disposeModel" classname="org.eclipse.epsilon.workflow.tasks.DisposeModelTask"/>
+    <taskdef name="epsilon.disposeModels" classname="org.eclipse.epsilon.workflow.tasks.DisposeModelsTask"/>
+    <taskdef name="epsilon.commitTransaction" classname="org.eclipse.epsilon.workflow.tasks.transactions.CommitTransactionTask"/>
+    <taskdef name="epsilon.startTransaction" classname="org.eclipse.epsilon.workflow.tasks.transactions.StartTransactionTask"/>
+    <taskdef name="epsilon.rollbackTransaction" classname="org.eclipse.epsilon.workflow.tasks.transactions.RollbackTransactionTask"/>
+    <taskdef name="epsilon.loadCompositeModel" classname="org.eclipse.epsilon.workflow.tasks.LoadCompositeModelTask"/>
+    <taskdef name="epsilon.xml.loadModel" classname="org.eclipse.epsilon.workflow.tasks.xml.LoadXmlModel"/>
+    <taskdef name="epsilon.epl" classname="org.eclipse.epsilon.workflow.tasks.EplTask"/>
+    <taskdef name="epsilon.emg" classname="org.eclipse.epsilon.workflow.tasks.EmgTask"/>
+    <taskdef name="epsilon.java.executeStaticMethod" classname="org.eclipse.epsilon.workflow.tasks.ExecuteStaticMethodTask"/>
+    <taskdef name="epsilon.startDebugServer" classname="org.eclipse.epsilon.workflow.tasks.debug.StartDebugServerTask"/>
+    <taskdef name="epsilon.stopDebugServer" classname="org.eclipse.epsilon.workflow.tasks.debug.StopDebugServerTask"/>
+</antlib>

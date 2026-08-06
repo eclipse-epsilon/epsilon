@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="hutn"
+    nsURI="http://www.eclipse.org/gmt/epsilon/hutn" nsPrefix="hutn">
+  <eClassifiers xsi:type="ecore:EClass" name="Spec">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nsUris" upperBound="-1"
+        eType="#//NsUri" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="objects" upperBound="-1"
+        eType="#//PackageObject" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="modelFile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceFile" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NsUri" eSuperTypes="#//ModelElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="line" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="col" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Object" abstract="true" eSuperTypes="#//ModelElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="identifier" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PackageObject" eSuperTypes="#//Object">
+    <eOperations name="getAllEClasses" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metamodel" upperBound="-1"
+        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EPackage"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classObjects" upperBound="-1"
+        eType="#//ClassObject" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassObject" eSuperTypes="#//Object">
+    <eOperations name="findSlot">
+      <eGenericType eClassifier="#//Slot">
+        <eTypeArguments/>
+      </eGenericType>
+      <eParameters name="feature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="getPackageObject" lowerBound="1" eType="#//PackageObject"/>
+    <eOperations name="getEClass" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eOperations name="hasEClass" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="typeCompatibleWith" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="eClass" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    </eOperations>
+    <eOperations name="findOrCreateAttributeSlot" eType="#//AttributeSlot">
+      <eParameters name="feature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="findOrCreateReferenceSlot" eType="#//ReferenceSlot">
+      <eParameters name="feature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eOperations name="findOrCreateContainmentSlot" eType="#//ContainmentSlot">
+      <eParameters name="feature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="slots" upperBound="-1"
+        containment="true" eOpposite="#//Slot/owner">
+      <eGenericType eClassifier="#//Slot">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Slot" abstract="true" eSuperTypes="#//ModelElement">
+    <eTypeParameters name="T"/>
+    <eOperations name="typeCompatibleWith" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="eStructuralFeature" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    </eOperations>
+    <eOperations name="multiplicityCompatibleWith" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="eStructuralFeature" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    </eOperations>
+    <eOperations name="compatibleWith" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="eStructuralFeature" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    </eOperations>
+    <eOperations name="getEStructuralFeature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    <eOperations name="hasEStructuralFeature" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eOperations name="setValues">
+      <eParameters name="values" upperBound="-1">
+        <eGenericType eTypeParameter="#//Slot/T"/>
+      </eParameters>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="feature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owner" lowerBound="1" eType="#//ClassObject"
+        eOpposite="#//ClassObject/slots"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="values" unique="false"
+        upperBound="-1" changeable="false">
+      <eGenericType eTypeParameter="#//Slot/T"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AttributeSlot">
+    <eGenericSuperTypes eClassifier="#//Slot">
+      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassObjectSlot" abstract="true">
+    <eTypeParameters name="T"/>
+    <eOperations name="getClassObjects" upperBound="-1" eType="#//ClassObject"/>
+    <eOperations name="setClassObjects">
+      <eParameters name="classObjects" upperBound="-1" eType="#//ClassObject"/>
+    </eOperations>
+    <eOperations name="addClassObject">
+      <eParameters name="classObject" eType="#//ClassObject"/>
+    </eOperations>
+    <eGenericSuperTypes eClassifier="#//Slot">
+      <eTypeArguments eTypeParameter="#//ClassObjectSlot/T"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContainmentSlot">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classObjects" upperBound="-1"
+        eType="#//ClassObject" containment="true"/>
+    <eGenericSuperTypes eClassifier="#//ClassObjectSlot">
+      <eTypeArguments eClassifier="#//ClassObject"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReferenceSlot">
+    <eGenericSuperTypes eClassifier="#//ClassObjectSlot">
+      <eTypeArguments eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+</ecore:EPackage>

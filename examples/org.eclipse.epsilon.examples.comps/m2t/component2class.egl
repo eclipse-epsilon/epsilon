@@ -1,0 +1,17 @@
+package [%=package%];
+
+public class [%=c.name%] {
+	
+	public [%=c.outPort.type%] execute([%=c.getParameters()%]) {
+		[%=out.startPreserve("//", "", "execute", true)%]
+		[%=out.stopPreserve()%]
+	}
+	
+}
+
+[%
+operation Component getParameters() {
+	return self.inPorts.collect(p|p.type + " " + p.name).
+		concat(", ");
+}
+%]

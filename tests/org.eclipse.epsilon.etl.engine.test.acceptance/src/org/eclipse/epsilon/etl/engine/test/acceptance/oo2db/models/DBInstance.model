@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ASCII"?>
+<DB:Database xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:DB="DB">
+  <contents xsi:type="DB:Table" name="School" primaryKeys="//@contents.0/@columns.0">
+    <columns name="schoolId" type="INT"/>
+    <columns name="address" type="NVARCHAR"/>
+    <columns name="postCodesAcceptedId" type="INT"/>
+  </contents>
+  <contents xsi:type="DB:Table" name="Student" primaryKeys="//@contents.1/@columns.0">
+    <columns name="studentId" type="INT"/>
+    <columns name="personId" type="INT"/>
+    <columns name="grade" type="NUMBER"/>
+    <columns name="studentsId" type="INT"/>
+    <columns name="studentsId" type="INT"/>
+  </contents>
+  <contents xsi:type="DB:Table" name="Person" primaryKeys="//@contents.2/@columns.0">
+    <columns name="personId" type="INT"/>
+    <columns name="details" type="NVARCHAR"/>
+  </contents>
+  <contents xsi:type="DB:ForeignKey" name="StudentExtendsPerson" parent="//@contents.2/@columns.0" child="//@contents.1/@columns.1"/>
+  <contents xsi:type="DB:Table" name="Employee" primaryKeys="//@contents.4/@columns.0">
+    <columns name="employeeId" type="INT"/>
+    <columns name="personId" type="INT"/>
+    <columns name="salary" type="NUMBER"/>
+  </contents>
+  <contents xsi:type="DB:ForeignKey" name="EmployeeExtendsPerson" parent="//@contents.2/@columns.0" child="//@contents.4/@columns.1"/>
+  <contents xsi:type="DB:Table" name="Teacher" primaryKeys="//@contents.6/@columns.0">
+    <columns name="teacherId" type="INT"/>
+    <columns name="employeeId" type="INT"/>
+  </contents>
+  <contents xsi:type="DB:ForeignKey" name="TeacherExtendsEmployee" parent="//@contents.4/@columns.0" child="//@contents.6/@columns.1"/>
+  <contents xsi:type="DB:Table" name="Class" primaryKeys="//@contents.8/@columns.0">
+    <columns name="classId" type="INT"/>
+    <columns name="teachesId" type="INT"/>
+  </contents>
+  <contents xsi:type="DB:Table" name="School_PostCodesAcceptedValues">
+    <columns name="id" type="INT"/>
+    <columns name="value" type="NVARCHAR"/>
+  </contents>
+  <contents xsi:type="DB:ForeignKey" parent="//@contents.9/@columns.0" child="//@contents.0/@columns.2"/>
+  <contents xsi:type="DB:ForeignKey" name="students" parent="//@contents.0/@columns.0" child="//@contents.1/@columns.3"/>
+  <contents xsi:type="DB:ForeignKey" name="teaches" parent="//@contents.6/@columns.0" child="//@contents.8/@columns.1"/>
+  <contents xsi:type="DB:ForeignKey" name="students" parent="//@contents.8/@columns.0" child="//@contents.1/@columns.4"/>
+</DB:Database>

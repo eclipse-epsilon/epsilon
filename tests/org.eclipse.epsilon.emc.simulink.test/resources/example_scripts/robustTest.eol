@@ -1,0 +1,48 @@
+" >> Define matlab function that contains a global variable a".println;
+
+M.statement("global e;");
+
+" >> Create all necessary objects".println;
+
+var pre = SubSystem.all.size();
+var simufc = new `simulink/User-Defined Functions/MATLAB Function`;
+assert(SubSystem.all.size() = pre + 1);
+
+pre = DataStoreMemory.all.size();
+var store1 = new `simulink/Signal Routing/Data Store Memory`;
+assert(DataStoreMemory.all.size() = pre + 1);
+
+var emChart = `Stateflow.EMChart`.all.first();
+
+var dataSize = `Stateflow.Data`.all.size();
+var data_new = new `Stateflow.Data`;
+emChart.add(data_new);
+assert(`Stateflow.Data`.all.size() = (dataSize + 1));
+
+" >> setting properties".println;
+
+simufc.Script="global a;"+"\\n"+"a=a+1;";
+simufc.script.println;
+
+emChart.Script = "global bb;";
+emChart.script.println;
+
+store1.position = "[100 100 130 130]";
+assert(store1.position.at(0) = 100);
+assert(store1.position.at(1) = 100);
+assert(store1.position.at(2) = 130);
+assert(store1.position.at(3) = 130);
+
+store1.Name="a";
+assert(store1.Name.println = "a");
+
+data_new.name = "bb";
+assert(data_new.name.println = "bb");
+
+data_new.Scope="Data Store Memory";
+assert(data_new.Scope.println = "Data Store Memory");
+
+store1.InitialValue = "2";
+assert(store1.InitialValue = "2");
+
+"finished".println;

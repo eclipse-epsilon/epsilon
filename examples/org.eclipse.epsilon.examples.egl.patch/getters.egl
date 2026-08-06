@@ -1,0 +1,15 @@
+[%for (a in c.eAllAttributes.excludingAll(c.eAttributes)) { %]
++
++	/**
++	 * @generated
++	 */
++	@Override
++	public [%=a.eType.instanceTypeName%] get[%=a.name.ftuc()%]() {
++		if ([%=a.name%] == null) {
++			return prototype.get[%=a.name.ftuc()%]();
++		}
++		else return [%=a.name%];
++	}
+[%}%]
+-} //[%=c.name%]Impl
++} //[%=c.name%]Impl (Patched)

@@ -1,0 +1,16 @@
+@namespace(uri="DomainVocabulary", prefix="DomainVocabulary")
+package DomainVocabulary;
+
+class Vocabulary {
+  val Term[*] term;
+}
+
+class Term {
+  attr String name;
+  val Alias[*] alias;
+}
+
+class Alias {
+  attr String name;
+}
+

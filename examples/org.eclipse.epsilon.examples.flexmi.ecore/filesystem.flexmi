@@ -1,0 +1,30 @@
+<?nsuri http://www.eclipse.org/emf/2002/Ecore?>
+<?render-egx ecore.egx?>
+<_>
+	
+	<class name="Filesystem">
+		<attr name="name" type="String"/>
+		<ref name="drives" type="Drive" upper="-1" cont="true"/>
+	</class>
+	
+	<class name="Folder" super="File">
+		<ref name="contents" type="File" upper="-1" cont="true"/>
+	</class>
+	
+	<class name="Drive" super="Folder"/>
+	
+	<class name="OperatingSystem">
+		<ref name="filesystem" type="Filesystem" cont="true"/>
+	</class>
+	
+	<class name="File">
+		<attr name="name" type="String"/>
+	</class>
+	
+	<?include filetypes.flexmi?>
+	
+	<class name="Shortcut" super="File"/>
+	
+	<type name="String"/>
+	
+</_>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.eclipse.epsilon.perspective.EpsilonPerspectiveFactory"
+            icon="icons/epsilon.javalike.gif"
+            id="org.eclipse.epsilon.perspective.EpsilonPerspectiveFactory"
+            name="Epsilon"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.epsilon.dt"
+            name="Epsilon"/>
+   </extension>
+	<extension point="org.eclipse.ui.popupMenus"> 
+	<viewerContribution 
+	      id="org.eclipse.epsilon.perspective.actions"
+	   targetID="#TextEditorContext"> 
+	   <action
+	         id="org.eclipse.epsilon.perspective.actions.CopyTextAsHtmlActionDelegate" 
+	         label="Copy as HTML"
+	         icon="icons/copyAsHtml.gif"
+	      menubarPath="additions" 
+	      class="org.eclipse.epsilon.perspective.actions.CopyTextAsHtmlActionDelegate"> 
+	      </action> 
+	   </viewerContribution> 
+	</extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.eclipse.epsilon.dt"
+            name="Epsilon"/>
+   </extension>
+
+</plugin>

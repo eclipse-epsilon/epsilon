@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmi:id="_GlNLgUAsEeCvY8DBcLxgbA" name="simple" nsURI="simple" nsPrefix="simple">
+  <eClassifiers xsi:type="ecore:EClass" xmi:id="_PHShUEAsEeCvY8DBcLxgbA" name="Simple">
+    <eOperations name="op" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eParameters name="p1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" xmi:id="_QtoNAEAsEeCvY8DBcLxgbA"
+        name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

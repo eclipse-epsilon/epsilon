@@ -1,0 +1,21 @@
+@prefix : <file:///home/hmz514/git/emc-rdf/tests/org.eclipse.epsilon.rdf.emf.test/resources/equivalence/03-containment/model_data.ttl#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix simple: <http://eclipse.org/epsilon/rdf/containment#>.
+
+@base <http://example/org/containment> .
+
+<theModel>
+    a simple:Model ;
+    simple:entities <firstEntity> ;
+    simple:name "theModel" .
+
+<firstEntity>
+    a simple:Entity ;
+    simple:subentities <secondEntity> ;
+    simple:name "firstEntity" .
+
+<secondEntity>
+    a simple:Entity ;
+    simple:name "secondEntity" .

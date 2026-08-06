@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.epsilon.common.dt.modelType">
+      <modelType
+            class="org.eclipse.epsilon.emc.yaml.YamlModel"
+            dialog="org.eclipse.epsilon.emc.yaml.dt.YamlModelConfigurationDialog"
+            icon="images/yaml.png"
+            label="YAML Document"
+            stable="true"
+            type="YAML">
+      </modelType>
+   </extension>
+</plugin>

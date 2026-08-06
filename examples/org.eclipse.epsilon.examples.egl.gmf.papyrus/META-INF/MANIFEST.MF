@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Example of EGL+GMF+Papyrus integration (Incubation)
+Bundle-SymbolicName: org.eclipse.epsilon.examples.egl.gmf.papyrus;singleton:=true
+Bundle-Version: 0.9.1.qualifier
+Bundle-Vendor: Eclipse.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.ui;bundle-version="3.6.0",
+ org.eclipse.gmf,
+ org.eclipse.gmf.runtime.diagram.ui,
+ org.eclipse.epsilon.eol.engine,
+ org.eclipse.epsilon.egl.engine,
+ org.eclipse.epsilon.emc.emf,
+ org.eclipse.papyrus.uml.diagram.activity;bundle-version="0.9.0",
+ org.eclipse.papyrus.infra.gmfdiag.common;bundle-version="0.9.0"
+Bundle-Activator: org.eclipse.epsilon.examples.egl.gmf.papyrus.ExampleM2TPlugin
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.epsilon.examples.egl.gmf.papyrus

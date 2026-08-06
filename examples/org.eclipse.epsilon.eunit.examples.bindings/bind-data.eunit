@@ -1,0 +1,40 @@
+import "loops.eol";
+
+@data numNodes
+operation nodes() {
+  return 1.to(3);
+}
+
+@data cycleLength
+operation cycLength() {
+  return 0.to(numNodes - 1);
+}
+
+@model
+operation populateGraph() {
+ // Here we populate the empty graph model with a sequence of nodes.
+ var g = new Graph;
+ for (i in 1.to(numNodes)) {
+   var n = new Node;
+   n.name = "n" + i;
+   if (i > 1) {
+     var e = new Edge;
+     e.source = g.nodes.get(n.size - 1);
+     e.target = n;
+   }
+   g.nodes.add(n);
+ }
+}
+
+@test
+operation originalHasNoLoops() {
+  assertFalse(hasLoop(Node.all.first));
+}
+
+@test
+operation loopIsDetected() {
+  var e = new Edge;
+  e.source = Node.all.select(n|n.name == "n" + (1 + cycleLength)).first;
+  e.target = Node.all.first;
+  assertTrue(hasLoop(Node.all.first));
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="hutnAntlrAst"
+    nsURI="http://www.eclipse.org/gmt/epsilon/hutnAntlrAst" nsPrefix="hutnAntlrAst">
+  <eClassifiers xsi:type="ecore:EClass" name="AdjectiveNode" eSuperTypes="AntlrAst.ecore#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TextualValueNode" eSuperTypes="AntlrAst.ecore#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NumericValueNode" eSuperTypes="AntlrAst.ecore#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NameNode" eSuperTypes="AntlrAst.ecore#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NullNode" eSuperTypes="AntlrAst.ecore#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TrueNode" eSuperTypes="AntlrAst.ecore#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FalseNode" eSuperTypes="AntlrAst.ecore#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ReferenceNode" eSuperTypes="AntlrAst.ecore#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassifierLevelAttributeNode" eSuperTypes="AntlrAst.ecore#//Node"/>
+  <eClassifiers xsi:type="ecore:EClass" name="AssociationInstanceNode" eSuperTypes="AntlrAst.ecore#//Node"/>
+</ecore:EPackage>
