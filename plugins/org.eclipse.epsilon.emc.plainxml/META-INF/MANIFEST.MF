@@ -4,7 +4,9 @@ Bundle-Name: Epsion Plain XML Model Support
 Bundle-SymbolicName: org.eclipse.epsilon.emc.plainxml
 Bundle-Version: 2.7.0.qualifier
 Require-Bundle: org.eclipse.epsilon.eol.engine
+Import-Package: org.apache.tools.ant;resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.eclipse.epsilon.emc.plainxml
+Export-Package: org.eclipse.epsilon.emc.plainxml,
+ org.eclipse.epsilon.emc.plainxml.tasks
 Bundle-Vendor: Eclipse Modeling Project
 Automatic-Module-Name: org.eclipse.epsilon.emc.plainxml
