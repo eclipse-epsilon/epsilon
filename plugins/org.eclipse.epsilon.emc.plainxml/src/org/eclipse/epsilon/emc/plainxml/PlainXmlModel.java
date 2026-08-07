@@ -60,6 +60,7 @@ public class PlainXmlModel extends CachedModel<Element> implements IOperationCon
 	protected static final String DEFAULT_NEW_TAG_NAME = "element";
 	public static final String PROPERTY_FILE = "file";
 	public static final String PROPERTY_URI = "uri";
+	public static final String PROPERTY_EXPAND = "expand";
 	
 	public PlainXmlModel() {
 		propertyGetter = new PlainXmlPropertyGetter(this);
@@ -364,10 +365,22 @@ public class PlainXmlModel extends CachedModel<Element> implements IOperationCon
 		return (instance instanceof Element);
 	}
 	
+
+	protected boolean expandEntityReferences = true;
+
+	public boolean isExpandEntityReferences() {
+		return expandEntityReferences;
+	}
+
+	public void setExpandEntityReferences(boolean expandEntityReferences) {
+		this.expandEntityReferences = expandEntityReferences;
+	}
+
 	@Override
 	protected synchronized void loadModel() throws EolModelLoadingException {
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			documentBuilderFactory.setExpandEntityReferences(this.expandEntityReferences);
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			
 			if (readOnLoad) {
@@ -404,6 +417,11 @@ public class PlainXmlModel extends CachedModel<Element> implements IOperationCon
 			uri = properties.getProperty(PlainXmlModel.PROPERTY_URI);
 		}
 		
+		if (properties.hasProperty(PlainXmlModel.PROPERTY_EXPAND)) {
+			this.expandEntityReferences = Boolean.parseBoolean(
+				properties.getProperty(PlainXmlModel.PROPERTY_EXPAND, "true"));
+		}
+
 		load();
 	}
 	

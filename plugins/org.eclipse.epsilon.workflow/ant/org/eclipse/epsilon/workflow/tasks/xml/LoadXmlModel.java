@@ -24,6 +24,7 @@ public class LoadXmlModel extends AbstractLoadModelTask {
 	protected boolean read = true;
 	protected boolean store = false;
 	protected boolean cached = true;
+	protected boolean expand = true;
 	protected String xml;
 	
 	@Override
@@ -35,6 +36,7 @@ public class LoadXmlModel extends AbstractLoadModelTask {
 		model.setReadOnLoad(read);
 		model.setStoredOnDisposal(store);
 		model.setCachingEnabled(cached);
+		model.setExpandEntityReferences(expand);
 		if (file != null) model.setFile(file);
 		if (uri != null) model.setUri(uri);
 		if (xml != null && !xml.trim().isEmpty()) model.setXml(xml.trim());
@@ -104,4 +106,13 @@ public class LoadXmlModel extends AbstractLoadModelTask {
 		this.cached = cached;
 	}
 	
+
+	public boolean isExpand() {
+		return expand;
+	}
+
+	public void setExpand(boolean expand) {
+		this.expand = expand;
+	}
+
 }
