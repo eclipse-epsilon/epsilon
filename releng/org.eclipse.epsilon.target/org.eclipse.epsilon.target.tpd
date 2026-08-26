@@ -1,10 +1,10 @@
-target "Epsilon Target Platform" environment JavaSE-17 with configurePhase requirements source
+target "Epsilon Target Platform" environment JavaSE-21 with configurePhase requirements source
 
 location "https://download.eclipse.org/cbi/updates/license" {
 	org.eclipse.license.feature.group lazy
 }
 
-location "https://download.eclipse.org/releases/2024-12" {
+location "https://download.eclipse.org/releases/2026-06" {
 	org.eclipse.e4.core.tools.feature.feature.group lazy
 	org.eclipse.emf.sdk.feature.group lazy
 	org.eclipse.emf.validation.sdk.feature.group lazy
@@ -26,19 +26,19 @@ location "https://download.eclipse.org/releases/2024-12" {
 	org.eclipse.xtext.runtime.feature.group lazy
 	org.eclipse.m2m.qvt.oml.sdk.feature.group lazy
 	org.eclipse.emf.cdo.sdk.feature.group lazy
-	org.apache.commons.logging 1.2.0
 	org.yaml.snakeyaml 2.2.0
+
+    // EMF Compare is already included, but not UML support 
+    org.eclipse.emf.compare.uml2.feature.group lazy
+
+    // 2026-06 has recent enough versions of LSP4J and LSP4E
+    org.eclipse.lsp4j.debug lazy
+    org.eclipse.lsp4e lazy
+    org.eclipse.lsp4e.debug lazy
 }
 
 location "https://download.eclipse.org/emfatic/update" {
 	org.eclipse.emf.emfatic.feature.group lazy
-}
-
-location "https://download.eclipse.org/modeling/emf/compare/updates/releases/3.3/R202401051648" {
-	org.eclipse.emf.compare.feature.group lazy
-	org.eclipse.emf.compare.ide.ui.feature.group lazy
-	org.eclipse.emf.compare.rcp.ui.feature.group lazy
-	org.eclipse.emf.compare.uml2.feature.group lazy
 }
 
 location "https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" {
@@ -63,37 +63,23 @@ location "https://download.eclipse.org/tools/orbit/downloads/drops/R202112131738
 	org.jsoup.source [1.7.2,1.7.3)
 	org.mockito [2.23.0,2.23.1)
 	org.objenesis [2.6.0,2.6.1)
-	org.slf4j.api [1.7.2,1.7.3)
 }
 
+// NOTE: Acceleo 4 does not have an interpreter view anymore
 location "https://download.eclipse.org/acceleo/updates/releases/3.7/" {
 	org.eclipse.acceleo.ui.interpreter.feature.group lazy
 }
 
-location "https://download.eclipse.org/lsp4j/updates/releases/0.24.0/" {
-	org.eclipse.lsp4j.debug lazy
-}
-
-location "https://download.eclipse.org/lsp4e/releases/0.27.1/" {
-	org.eclipse.lsp4e lazy
-	org.eclipse.lsp4e.debug lazy
-}
-
-// Needed by LSP4E from 0.26.1
-location "https://download.eclipse.org/mylyn/updates/release/4.3.0/" {
-	org.eclipse.mylyn.wikitext lazy
-	org.eclipse.mylyn.wikitext.markdown lazy
-	org.eclipse.mylyn.wikitext.markdown.ui lazy
-}
-
 // Needed by Picto
-location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-12" {
+location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-06" {
 	org.commonmark lazy
-	org.commonmark-gfm-strikethrough lazy
-	org.commonmark-gfm-tables lazy
-	org.commonmark-ins lazy
-	org.commonmark-yaml-front-matter lazy
-	org.commonmark-image-attributes lazy
+	org.commonmark.ext-gfm-strikethrough lazy
+	org.commonmark.ext-gfm-tables lazy
+	org.commonmark.ext-ins lazy
+	org.commonmark.ext-yaml-front-matter lazy
+	org.commonmark.ext-image-attributes lazy
+	org.apache.commons.logging 1.2.0
+	slf4j.api [1.7.36, 2.0.0)
 }
 
 maven MavenDependencies scope=compile dependencyDepth=infinite missingManifest=generate includeSources {

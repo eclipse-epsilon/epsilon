@@ -12,7 +12,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tycho.version>4.0.3</tycho.version>
     <tycho.scmUrl>scm:git:https://github.com/eclipse/epsilon.git</tycho.scmUrl>
-    <java.version>17</java.version>
+    <java.version>21</java.version>
     <epsilon.version>2.9.0-SNAPSHOT</epsilon.version>
   </properties>
 
