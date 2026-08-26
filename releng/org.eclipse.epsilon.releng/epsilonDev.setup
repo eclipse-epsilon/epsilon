@@ -28,9 +28,9 @@
   </annotation>
   <setupTask
       xsi:type="jdt:JRETask"
-      version="JavaSE-17"
-      location="${jre.location-17}"
-      name="JDK 17+">
+      version="JavaSE-21"
+      location="${jre.location-21}"
+      name="JDK 21+">
     <description>Define the JDK needed to compile and run the Java projects of ${scope.project.label}</description>
   </setupTask>
   <setupTask
