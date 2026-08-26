@@ -364,8 +364,12 @@
           name="org.eclipse.epsilon.emc.yaml.feature.feature.group"/>
       <requirement
           name="org.eclipse.epsilon.emc.yaml.dt.feature.feature.group"/>
+      <requirement
+          name="org.eclipse.epsilon.rdf.emf.feature"/>
+      <requirement
+          name="org.eclipse.epsilon.rdf.emf.dt.feature"/>
       <repository
-          url="http://download.eclipse.org/releases/2024-12"/>
+          url="http://download.eclipse.org/releases/2026-06"/>
       <repository
           url="http://download.eclipse.org/oomph/updates/milestone"/>
       <repository
@@ -375,9 +379,9 @@
       <repository
           url="http://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository"/>
       <repository
-          url="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-12"/>
+          url="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-06"/>
       <repository
-          url="https://download.eclipse.org/modeling/emf/query/updates/releases/"/>
+          url="https://download.eclipse.org/acceleo/updates/releases/3.7/"/>
     </setupTask>
     <description>Latest version of Epsilon</description>
   </version>
