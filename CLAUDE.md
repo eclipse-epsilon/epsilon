@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Eclipse Epsilon is a family of scripting languages and tools for model-based software engineering. It provides multiple DSLs for transforming, validating, comparing, generating, and migrating models (primarily EMF-based).
 
 - **Repository**: https://github.com/eclipse/epsilon
-- **Version**: 2.9.0-SNAPSHOT (Java 17+)
+- **Version**: 2.9.0-SNAPSHOT (Java 21+)
 
 ## Architecture
 
@@ -70,7 +70,7 @@ Key packages across all language engines:
 
 ### Prerequisites
 
-- Java 17+, Maven 3.9.5+
+- Java 21+, Maven 3.9.5+
 - On Linux, GTK libraries for SWT: `libwebkit2gtk-4.0-dev` (or equivalent)
 
 ### Full Build
@@ -158,7 +158,7 @@ module.getContext().getModelRepository().addModel(model);
 
 ## CI/CD
 
-- **GitHub Actions** (`.github/workflows/build-and-test.yml`): builds on Ubuntu 22.04, macOS 14, and Windows 2022 with JDK 17 and 21; runs both plugged-in and unit test suites
+- **GitHub Actions** (`.github/workflows/build-and-test.yml`): builds on Ubuntu 22.04, macOS 14, and Windows 2022 with JDK 21; runs both plugged-in and unit test suites
 - **Jenkinsfile**: internal Eclipse Foundation infrastructure builds
 
 Version management:
