@@ -78,7 +78,6 @@ location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026
 	org.commonmark.ext-ins lazy
 	org.commonmark.ext-yaml-front-matter lazy
 	org.commonmark.ext-image-attributes lazy
-	org.apache.commons.logging 1.2.0
 	slf4j.api [1.7.36, 2.0.0)
 }
 
