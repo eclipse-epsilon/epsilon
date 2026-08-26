@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Epsilon Target Platform" sequenceNumber="1787747231">
+<target name="Epsilon Target Platform" sequenceNumber="1787749063">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.license.feature.group" version="0.0.0"/>
@@ -75,7 +75,6 @@
       <unit id="org.commonmark.ext-ins" version="0.0.0"/>
       <unit id="org.commonmark.ext-yaml-front-matter" version="0.0.0"/>
       <unit id="org.commonmark.ext-image-attributes" version="0.0.0"/>
-      <unit id="org.apache.commons.logging" version="1.2.0"/>
       <unit id="slf4j.api" version="1.7.36"/>
       <repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-06"/>
     </location>
