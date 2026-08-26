@@ -29,7 +29,7 @@ pipeline {
     }
     tools {
         maven 'apache-maven-3.9.5'
-        jdk 'openjdk-jdk17-latest'
+        jdk 'openjdk-jdk21-latest'
     }
     triggers {
         pollSCM('H/5 * * * *')
