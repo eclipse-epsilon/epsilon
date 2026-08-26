@@ -7,5 +7,5 @@ Bundle-Vendor: Eclipse Modeling Project
 Export-Package: org.eclipse.epsilon.emc.spreadsheets
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.epsilon.eol.engine;visibility:=reexport,
- org.slf4j.api;bundle-version="1.7.2";visibility:=reexport
+ slf4j.api;bundle-version="1.7.2"
 Automatic-Module-Name: org.eclipse.epsilon.emc.spreadsheets
