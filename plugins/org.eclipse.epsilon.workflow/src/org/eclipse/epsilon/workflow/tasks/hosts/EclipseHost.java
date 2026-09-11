@@ -34,6 +34,7 @@ import org.eclipse.epsilon.common.dt.util.LogUtil;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dap.EpsilonDebugServer;
 import org.eclipse.epsilon.eol.dt.ExtensionPointToolNativeTypeDelegate;
+import org.eclipse.epsilon.eol.dt.launching.EclipseContextManager;
 import org.eclipse.epsilon.eol.dt.userinput.JFaceUserInput;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eunit.EUnitTestListener;
@@ -113,6 +114,15 @@ public class EclipseHost implements Host {
 	@Override
 	public void addNativeTypeDelegates(IEolModule module) {
 		module.getContext().getNativeTypeDelegates().add(new ExtensionPointToolNativeTypeDelegate());
+	}
+
+	@Override
+	public void addOperationContributors(IEolModule module) {
+		// Discover operation contributors registered through the
+		// org.eclipse.epsilon.common.dt.operationContributor extension point.
+		// Reuses EclipseContextManager so headless (Ant task) execution and the
+		// interactive Development Tools launch path share the same discovery logic.
+		EclipseContextManager.loadOperationContributors(module.getContext());
 	}
 
 	@Override

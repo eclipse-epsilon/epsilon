@@ -119,7 +119,16 @@ public class EclipseContextManager {
 		}
 	}
 	
-	private static void loadOperationContributors(IEolContext context) {
+	/**
+	 * Registers all {@link OperationContributor}s contributed through the
+	 * <code>org.eclipse.epsilon.common.dt.operationContributor</code> extension
+	 * point with the operation contributor registry of the given context.
+	 * 
+	 * <p>Made public in 2.7 so that headless execution paths (e.g. the
+	 * <code>org.eclipse.epsilon.workflow</code> Ant tasks) can reuse the same
+	 * discovery logic instead of duplicating it, keeping the two in sync.</p>
+	 */
+	public static void loadOperationContributors(IEolContext context) {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint extensionPoint = registry.getExtensionPoint("org.eclipse.epsilon.common.dt.operationContributor");
 		IConfigurationElement[] configurationElements =  extensionPoint.getConfigurationElements();
