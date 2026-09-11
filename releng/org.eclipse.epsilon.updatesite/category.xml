@@ -195,6 +195,6 @@
    <repository-reference location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" name="" enabled="true" />
    <repository-reference location="https://download.eclipse.org/lsp4e/releases/latest/" name="" enabled="true" />
    <repository-reference location="https://download.eclipse.org/mylyn/updates/release/latest/" name="" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/releases/2024-12" name="" enabled="true" />
-   <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2024-12" name="" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/releases/2026-06" enabled="true" />
+   <repository-reference location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-06" enabled="true" />
 </site>
