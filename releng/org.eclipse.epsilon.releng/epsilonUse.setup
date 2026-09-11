@@ -253,8 +253,6 @@
       <requirement
           name="org.eclipse.emf.workspace.feature.group"/>
       <requirement
-          name="org.eclipse.emf.query.feature.group"/>
-      <requirement
           name="org.eclipse.emf.validation.feature.group"/>
       <requirement
           name="org.eclipse.emf.validation.doc.feature.group"/>
@@ -365,9 +363,9 @@
       <requirement
           name="org.eclipse.epsilon.emc.yaml.dt.feature.feature.group"/>
       <requirement
-          name="org.eclipse.epsilon.rdf.emf.feature"/>
+          name="org.eclipse.epsilon.rdf.emf.feature.feature.group"/>
       <requirement
-          name="org.eclipse.epsilon.rdf.emf.dt.feature"/>
+          name="org.eclipse.epsilon.rdf.emf.dt.feature.feature.group"/>
       <repository
           url="http://download.eclipse.org/releases/2026-06"/>
       <repository
