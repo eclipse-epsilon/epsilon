@@ -212,7 +212,7 @@
     <description>Epsilon v2.8</description>
   </version>
   <version name="Interim"
-      requiredJavaVersion="17">
+      requiredJavaVersion="21">
     <setupTask
         xsi:type="setup.p2:P2Task"
         label="${scope.product.label} ${scope.product.version.label} tools">
