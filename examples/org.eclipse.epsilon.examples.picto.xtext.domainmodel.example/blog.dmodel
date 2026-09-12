@@ -1,7 +1,7 @@
 datatype String
 
 entity Blog {
-   "Main entity. A blog is composed of posts"
+    "Main entity. A blog is composed of posts"
 
     title: String
     many posts: Post
