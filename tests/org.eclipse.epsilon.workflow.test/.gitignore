@@ -1,6 +1,8 @@
 *.xml
 !pom.xml
+!plugin.xml
 !eunit.xml
 !sharedmodelrepository.xml
 !eol.xml
 !emg.xml
+!operationContributor.xml

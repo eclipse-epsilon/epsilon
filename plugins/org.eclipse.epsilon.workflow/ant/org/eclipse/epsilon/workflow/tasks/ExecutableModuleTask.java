@@ -137,6 +137,7 @@ public abstract class ExecutableModuleTask extends EpsilonTask {
 		// we must avoid these calls if we're running the Ant task inside
 		// a JUnit test
 		HostManager.getHost().addNativeTypeDelegates(module);
+		HostManager.getHost().addOperationContributors(module);
 		HostManager.getHost().configureUserInput(module, isGUI());
 		
 		module.getContext().setExtendedProperties(getExtendedProperties());

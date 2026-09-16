@@ -119,9 +119,45 @@ public class EclipseContextManager {
 		}
 	}
 	
-	private static void loadOperationContributors(IEolContext context) {
+	/**
+	 * Registers all {@link OperationContributor}s contributed through the
+	 * <code>org.eclipse.epsilon.common.dt.operationContributor</code> extension
+	 * point with the operation contributor registry of the given context.
+	 * 
+	 * <p>Made public in 2.7 so that headless execution paths (e.g. the
+	 * <code>org.eclipse.epsilon.workflow</code> Ant tasks) can reuse the same
+	 * discovery logic instead of duplicating it, keeping the two in sync.</p>
+	 *
+	 * <p>This method is a no-op when no Eclipse extension registry is available.
+	 * {@link Platform#getExtensionRegistry()} returns <code>null</code> whenever
+	 * there is no running Equinox extension registry service in the current
+	 * context &mdash; i.e. when the code is executing outside a live Eclipse
+	 * Platform. This is exactly the situation on parts of the headless workflow
+	 * path: the EUnit workflow tasks spawn a nested Ant build through the
+	 * <code>antRunner</code>, whose E*L tasks run in a plain classloader with no
+	 * OSGi/extension-registry service bound, so <code>getExtensionRegistry()</code>
+	 * yields <code>null</code>. Before the guard below, dereferencing that
+	 * <code>null</code> registry threw
+	 * <code>NullPointerException: Cannot invoke
+	 * "IExtensionRegistry.getExtensionPoint(String)" because "registry" is null</code>.
+	 * This never surfaced previously because the method was only ever reached
+	 * from {@link #setup}, which always runs with a live registry.</p>
+	 *
+	 * <p>Returning early in that case is also the correct semantics: extension-point
+	 * contributors can only be declared and discovered inside a live Eclipse
+	 * Platform, so when no registry is available there is simply nothing to
+	 * contribute, and the headless path must not fail.</p>
+	 */
+	public static void loadOperationContributors(IEolContext context) {
+		// Platform.getExtensionRegistry() is null when there is no live Eclipse
+		// extension registry (e.g. E*L tasks run through the nested antRunner in
+		// the EUnit workflow tests). Nothing can be contributed in that case, so
+		// return early rather than NPE on the null registry.
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
+		if (registry == null) return;
 		IExtensionPoint extensionPoint = registry.getExtensionPoint("org.eclipse.epsilon.common.dt.operationContributor");
+		// Defensive: a registry with the extension point undeclared returns null here.
+		if (extensionPoint == null) return;
 		IConfigurationElement[] configurationElements =  extensionPoint.getConfigurationElements();
 		for (int i=0;i<configurationElements.length; i++){
 			IConfigurationElement configurationElement = configurationElements[i];

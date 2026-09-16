@@ -1,0 +1,11 @@
+<project default="main">
+	<target name="main">
+		<epsilon.eol>
+			// sayHello() is contributed by HelloOperationContributor through the
+			// org.eclipse.epsilon.common.dt.operationContributor extension point.
+			// Before the fix for issue #235, this failed headlessly with
+			// "Method 'sayHello' not found for: World".
+			assert("World".sayHello() == "Hello, World");
+		</epsilon.eol>
+	</target>
+</project>
