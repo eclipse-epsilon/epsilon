@@ -1,7 +1,7 @@
 @NonCPS
 def getSlackMessage() {
     def duration = currentBuild.durationString.minus(" and counting")
-    def message = "Build <${env.BUILD_URL}|#${env.BUILD_NUMBER}> of <https://github.com/eclipse/epsilon/tree/${env.BRANCH_NAME}|${currentBuild.fullProjectName}> "
+    def message = "Build <${env.BUILD_URL}|#${env.BUILD_NUMBER}> of <https://github.com/eclipse-epsilon/epsilon/tree/${env.BRANCH_NAME}|${currentBuild.fullProjectName}> "
     
     message += (currentBuild.currentResult == "SUCCESS" ? "passed" : "failed") + " in ${duration}\n\n"
 

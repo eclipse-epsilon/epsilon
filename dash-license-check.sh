@@ -14,7 +14,7 @@
 # Configuration
 
 DASH_PROJECT_ID=modeling.epsilon
-DASH_REPO=https://github.com/eclipse/epsilon
+DASH_REPO=https://github.com/eclipse-epsilon/epsilon
 
 # Options
 

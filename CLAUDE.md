@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Eclipse Epsilon is a family of scripting languages and tools for model-based software engineering. It provides multiple DSLs for transforming, validating, comparing, generating, and migrating models (primarily EMF-based).
 
-- **Repository**: https://github.com/eclipse/epsilon
+- **Repository**: https://github.com/eclipse-epsilon/epsilon
 - **Version**: 2.9.0-SNAPSHOT (Java 21+)
 
 ## Architecture

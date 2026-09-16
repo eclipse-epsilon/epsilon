@@ -19,8 +19,8 @@ more.
 
 The project maintains the following source code repositories
 
-* https://github.com/eclipse/epsilon
-* https://github.com/eclipse/epsilon-website
+* https://github.com/eclipse-epsilon/epsilon
+* https://github.com/eclipse-epsilon/epsilon-website
 
 ## Eclipse Development Process
 

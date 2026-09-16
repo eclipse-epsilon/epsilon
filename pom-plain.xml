@@ -18,10 +18,10 @@
   </description>
 
   <scm>
-      <connection>scm:git:https://github.com/eclipse/epsilon.git</connection>
-      <developerConnection>scm:git:https://github.com/eclipse/epsilon.git</developerConnection>
+      <connection>scm:git:https://github.com/eclipse-epsilon/epsilon.git</connection>
+      <developerConnection>scm:git:https://github.com/eclipse-epsilon/epsilon.git</developerConnection>
       <tag>HEAD</tag>
-      <url>https://github.com/eclipse/epsilon</url>
+      <url>https://github.com/eclipse-epsilon/epsilon</url>
   </scm>
 
   <licenses>
