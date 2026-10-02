@@ -262,6 +262,9 @@ public class RDFGraphResourceImpl extends ResourceImpl {
 		Model rdfSchemaModel = schemaModelSet.getUnionModel();
 
 		this.dataModelSet = loadRDFModels(config.getDataModels());
+		if (config.isLenientDates()) {
+			correctIllFormedDates(dataModelSet);
+		}
 		Model rdfDataModel = dataModelSet.getUnionModel();
 
 		InfModel infModel = ModelFactory.createRDFSModel(rdfSchemaModel, rdfDataModel);
@@ -272,6 +275,18 @@ public class RDFGraphResourceImpl extends ResourceImpl {
 			throw new RDFValidationException(result.getText());
 		}
 		return rdfOntModel;
+	}
+
+	protected void correctIllFormedDates(Dataset dataset) {
+		// Collect the names first, as we will be changing the named models
+		List<Resource> names = new ArrayList<>();
+		dataset.listModelNames().forEachRemaining(names::add);
+		for (Resource name : names) {
+			int corrected = IllFormedDateCorrector.correct(dataset.getNamedModel(name));
+			if (corrected > 0) {
+				System.err.printf("Corrected %d ill-formed date/time literal(s) in %s%n", corrected, name.getURI());
+			}
+		}
 	}
 
 	protected Dataset loadRDFModels(Collection<String> uris) throws IOException, MalformedURLException {

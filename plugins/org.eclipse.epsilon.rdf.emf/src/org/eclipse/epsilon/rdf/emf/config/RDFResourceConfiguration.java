@@ -25,6 +25,7 @@ public class RDFResourceConfiguration {
 	private String validationMode = ValidationMode.NONE.getId();
 	private String multiValueAttributeMode = MultiValueAttributeMode.CONTAINER.getId();
 	private String defaultModelNamespace;
+	private boolean lenientDates = false;
 
 	public String getDefaultModelNamespace() {
 		return defaultModelNamespace;
@@ -74,6 +75,26 @@ public class RDFResourceConfiguration {
 		this.validationMode = validationMode;
 	}
 	
+	/**
+	 * Returns whether ill-formed date/time literals (e.g. an
+	 * {@code xsd:dateTime} with only a date, such as {@code 2026-09-10})
+	 * should be automatically corrected during loading, instead of failing.
+	 * It is false by default.
+	 */
+	public boolean isLenientDates() {
+		return lenientDates;
+	}
+
+	/**
+	 * Changes whether ill-formed date/time literals should be automatically
+	 * corrected during loading.
+	 *
+	 * @see #isLenientDates()
+	 */
+	public void setLenientDates(boolean lenientDates) {
+		this.lenientDates = lenientDates;
+	}
+
 	@Override
 	public String toString() {
 		return "RDFResourceConfiguration" +
@@ -82,6 +103,7 @@ public class RDFResourceConfiguration {
 				", schemaModels=" + schemaModels +
 				", validationMode=" + validationMode + 
 				", multiValueAttributeMode=" + multiValueAttributeMode +
+				", lenientDates=" + lenientDates +
 				" ]";
 	}
 
