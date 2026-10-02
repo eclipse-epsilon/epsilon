@@ -1,0 +1,4 @@
+lenientDates: true
+validationMode: jena-valid
+dataModels:
+  - model.rdf

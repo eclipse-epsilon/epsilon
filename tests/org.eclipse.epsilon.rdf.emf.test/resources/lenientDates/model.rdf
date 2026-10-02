@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:dates="http://eclipse.org/epsilon/rdf/lenientDates#">
+  <dates:Requirement rdf:about="http://example.org/req/dateOnly">
+    <dates:modifiedOn rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-09-10</dates:modifiedOn>
+  </dates:Requirement>
+  <dates:Requirement rdf:about="http://example.org/req/noSeconds">
+    <dates:modifiedOn rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-9-1 14:05+0200</dates:modifiedOn>
+  </dates:Requirement>
+  <dates:Requirement rdf:about="http://example.org/req/valid">
+    <dates:modifiedOn rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-09-10T11:12:13Z</dates:modifiedOn>
+  </dates:Requirement>
+</rdf:RDF>
