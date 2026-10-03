@@ -26,7 +26,7 @@ digraph G {
 [%
 operation Entity getLabel() {
 	
-	var onClick = "top.showView(['Model','" + self.name + "'])";
+	var onClick = "top.showView(['Entities-Graphviz','" + self.name + "'])";
 	
 	if (self == e) {
 		onClick = "top.showElement('" + self.id + "', '" + self.eResource.uri + "')";
@@ -54,6 +54,7 @@ operation Entity getLabel() {
 	}
 	
 	label += "</table>";
+
 	return label;
 }
 

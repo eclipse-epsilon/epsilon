@@ -17,12 +17,13 @@ import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.workspace.WorkspaceLockAccess.Result;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
+@SuppressWarnings("restriction")
 public class DmodelPictoSource extends EglPictoSource {
 	
 	@Override
 	protected Picto getRenderingMetadata(IEditorPart editorPart) {
 		Picto metadata = PictoFactory.eINSTANCE.createPicto();
-		metadata.setTransformation("platform:/plugin/org.eclipse.epsilon.examples.picto.xtext.domainmodel.picto/dmodel.egx");
+		metadata.setTransformation("platform:/plugin/org.eclipse.epsilon.examples.picto.xtext.domainmodel.picto/picto/dmodel.egx");
 		return metadata;
 	}
 
@@ -34,7 +35,7 @@ public class DmodelPictoSource extends EglPictoSource {
 			public Result exec(XtextResource state) throws Exception {
 				holder.setResource(state);
 				return null;
-			};
+			}
 		});
 		
 		return holder.getResource();
