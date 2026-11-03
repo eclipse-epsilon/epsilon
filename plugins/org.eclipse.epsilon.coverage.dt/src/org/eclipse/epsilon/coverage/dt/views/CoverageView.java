@@ -179,9 +179,12 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		else if (element instanceof CoverageElement) {
 			CoverageElement coverageElement = (CoverageElement) element;
 			String label = coverageElement.getLabel();
-			if (label == null || label.equals(coverageElement.getKind())) {
-				label = "StatementBlock".equals(coverageElement.getKind()) &&
-					coverageElement.getParent() == null ? "(main)" : coverageElement.getKind();
+			if ("StatementBlock".equals(coverageElement.getKind()) && coverageElement.getParent() == null) {
+				// The main block of the program (its recorded label is a snippet of its first statement)
+				label = "(main)";
+			}
+			else if (label == null) {
+				label = coverageElement.getKind();
 			}
 			return label + " [line " + coverageElement.getStartLine() + "]";
 		}
@@ -435,7 +438,9 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 
 	/**
 	 * Tree structure: session -> files -> named elements (operations, rules, constraints etc.)
-	 * Individual statements and expressions are not shown (they are highlighted in editors).
+	 * and the main block of the program. Individual statements and expressions are not shown
+	 * (so that the tree remains manageable for large programs); their coverage is highlighted
+	 * in editors instead.
 	 */
 	protected static class CoverageContentProvider implements ITreeContentProvider {
 
@@ -450,26 +455,41 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 			List<CoverageElement> children = new ArrayList<>();
 			if (parent instanceof SourceFile) {
 				for (CoverageElement element : ((SourceFile) parent).getElements()) {
-					if (element.isProbe()) continue;
-					if (isNamed(element) || "StatementBlock".equals(element.getKind())) children.add(element);
-					else collectNamed(element, children);
+					// The main block of the program is shown as "(main)"
+					if ("StatementBlock".equals(element.getKind())) children.add(element);
+					else collect(element, children);
 				}
 			}
 			else if (parent instanceof CoverageElement) {
-				collectNamed((CoverageElement) parent, children);
+				for (CoverageElement child : ((CoverageElement) parent).getChildren()) {
+					collect(child, children);
+				}
 			}
 			return children.toArray();
 		}
 
-		protected void collectNamed(CoverageElement parent, List<CoverageElement> result) {
-			for (CoverageElement child : parent.getChildren()) {
-				if (isNamed(child)) result.add(child);
-				else collectNamed(child, result);
+		/**
+		 * Adds the element to the result if it is a named element,
+		 * or otherwise looks for named elements among its children.
+		 */
+		protected void collect(CoverageElement element, List<CoverageElement> result) {
+			if (isNamed(element)) {
+				result.add(element);
+			}
+			else {
+				for (CoverageElement child : element.getChildren()) {
+					collect(child, result);
+				}
 			}
 		}
 
+		/**
+		 * Named elements (operations, rules, constraints etc.) are labelled
+		 * "Kind name" (or just "Kind" if they have no name) by the coverage recorder.
+		 */
 		protected boolean isNamed(CoverageElement element) {
-			return !element.isProbe() && element.getLabel() != null && !element.getLabel().equals(element.getKind());
+			String label = element.getLabel(), kind = element.getKind();
+			return !element.isProbe() && label != null && kind != null && (label.equals(kind) || label.startsWith(kind + " "));
 		}
 
 		@Override

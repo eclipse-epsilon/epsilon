@@ -27,9 +27,9 @@ public class CoverageDtPlugin extends AbstractUIPlugin {
 	
 	public static final String IMG_COVERAGE = "icons/coverage_view.png";
 	public static final String IMG_SESSION = "icons/session.png";
-	public static final String IMG_COVERED = "icons/covered.png";
-	public static final String IMG_PARTIAL = "icons/partial.png";
-	public static final String IMG_MISSED = "icons/missed.png";
+	public static final String IMG_COVERED = "icons/full_obj.png";
+	public static final String IMG_PARTIAL = "icons/partial_obj.png";
+	public static final String IMG_MISSED = "icons/missed_obj.png";
 	public static final String IMG_MERGE = "icons/merge.png";
 	public static final String IMG_IMPORT = "icons/import.png";
 	public static final String IMG_EXPORT = "icons/export.png";

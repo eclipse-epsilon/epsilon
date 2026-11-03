@@ -6,7 +6,6 @@
  ******************************************************************************/
 package org.eclipse.epsilon.coverage;
 
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,6 +54,8 @@ import org.eclipse.epsilon.eol.execute.control.IInheritableExecutionListener;
 public class CoverageRecorder implements IInheritableExecutionListener {
 
 	protected final CoverageProbes probes;
+
+	protected final CoverageNames names = CoverageNames.INSTANCE;
 
 	/** Hit counters for all known module elements (keyed by identity) */
 	protected final Map<Object, AtomicLong> counters = new ConcurrentHashMap<>();
@@ -262,34 +263,24 @@ public class CoverageRecorder implements IInheritableExecutionListener {
 		return false;
 	}
 
+	/**
+	 * Named elements (operations, rules, constraints, contexts, pre/post blocks etc.)
+	 * are labelled "Kind name" (or just "Kind" if they have no name). Other elements
+	 * are labelled with a snippet of their source code (or null if it is not available).
+	 */
 	protected String getLabel(ModuleElement node, boolean probe, SourceText text) {
-		if (!probe) {
-			String name = getName(node);
-			if (name != null) return node.getClass().getSimpleName() + " " + name;
+		String kind = node.getClass().getSimpleName();
+		if (!probe && names.isNamed(node)) {
+			String name = names.getName(node);
+			return name == null ? kind : kind + " " + name;
 		}
 		if (text != null) {
 			String snippet = text.getSnippet(node.getRegion());
 			if (snippet != null && !snippet.isEmpty()) return snippet;
 		}
-		return node.getClass().getSimpleName();
-	}
-
-	/**
-	 * Uses reflection to retrieve the name of named elements
-	 * (e.g. operations, rules, constraints).
-	 */
-	protected String getName(ModuleElement node) {
-		try {
-			Method method = node.getClass().getMethod("getName");
-			if (method.getParameterCount() == 0 && method.getReturnType() == String.class) {
-				return (String) method.invoke(node);
-			}
-		}
-		catch (Exception ex) {
-			// No name
-		}
 		return null;
 	}
+
 
 	protected URI getUri(IModule module, List<ModuleElement> roots) {
 		URI uri = module.getSourceUri();
