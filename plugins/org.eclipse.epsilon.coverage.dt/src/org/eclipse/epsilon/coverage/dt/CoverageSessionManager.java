@@ -30,7 +30,6 @@ public class CoverageSessionManager {
 	protected final List<CoverageSession> sessions = new ArrayList<>();
 	protected final List<ICoverageSessionListener> listeners = new CopyOnWriteArrayList<>();
 	protected CoverageSession activeSession;
-	protected boolean highlightingEnabled = true;
 	
 	public static CoverageSessionManager getInstance() {
 		return INSTANCE;
@@ -112,18 +111,6 @@ public class CoverageSessionManager {
 		}
 		addSession(session);
 		return session;
-	}
-	
-	public boolean isHighlightingEnabled() {
-		return highlightingEnabled;
-	}
-	
-	public void setHighlightingEnabled(boolean highlightingEnabled) {
-		if (this.highlightingEnabled == highlightingEnabled) return;
-		this.highlightingEnabled = highlightingEnabled;
-		inUiThread(() -> {
-			for (ICoverageSessionListener listener : listeners) listener.highlightingChanged(highlightingEnabled);
-		});
 	}
 	
 	public void addListener(ICoverageSessionListener listener) {

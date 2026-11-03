@@ -18,7 +18,8 @@ import org.eclipse.epsilon.workflow.tasks.EpsilonTask;
 
 /**
  * Stops recording coverage information (see {@link CoverageStartTask})
- * and saves it to an .ecv file.
+ * and saves it to an .ecv file. Does nothing if recording has been
+ * disabled through the enabled attribute of {@link CoverageStartTask}.
  * 
  * @since 2.10
  */
@@ -36,6 +37,11 @@ public class CoverageStopTask extends EpsilonTask {
 		}
 		
 		Object reference = getProject().getReference(CoverageStartTask.RECORDER_REFERENCE);
+		if (CoverageStartTask.DISABLED.equals(reference)) {
+			getProject().getReferences().remove(CoverageStartTask.RECORDER_REFERENCE);
+			log("Coverage recording is disabled: " + file + " has not been written", Project.MSG_INFO);
+			return;
+		}
 		if (!(reference instanceof CoverageRecorder) || !getExecutionListeners(getProject()).remove(reference)) {
 			fail("Coverage recording has not been started (use epsilon.coverage.start first)", null);
 			return;

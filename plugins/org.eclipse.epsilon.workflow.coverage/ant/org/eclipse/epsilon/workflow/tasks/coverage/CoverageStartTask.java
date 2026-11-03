@@ -7,6 +7,7 @@
 package org.eclipse.epsilon.workflow.tasks.coverage;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.eclipse.epsilon.coverage.CoverageRecorder;
 import org.eclipse.epsilon.workflow.tasks.EpsilonTask;
 
@@ -21,12 +22,29 @@ import org.eclipse.epsilon.workflow.tasks.EpsilonTask;
  * &lt;epsilon.coverage.stop file="coverage.ecv"/&gt;
  * </pre>
  * 
+ * Recording can be switched off without removing the tasks through the
+ * {@code enabled} attribute (true by default), typically bound to an Ant
+ * property that can be overridden from the command line or a launch
+ * configuration (e.g. {@code ant -Dcoverage=false}):
+ * 
+ * <pre>
+ * &lt;property name="coverage" value="true"/&gt;
+ * &lt;epsilon.coverage.start enabled="${coverage}"/&gt;
+ * </pre>
+ * 
+ * When disabled, the matching epsilon.coverage.stop task does nothing.
+ * 
  * @since 2.10
  */
 public class CoverageStartTask extends EpsilonTask {
 	
 	/** Name of the Ant project reference holding the active recorder */
 	public static final String RECORDER_REFERENCE = "epsilon.coverage.recorder";
+	
+	/** Value of {@link #RECORDER_REFERENCE} when recording has been disabled */
+	public static final String DISABLED = "disabled";
+	
+	protected boolean enabled = true;
 	
 	@Override
 	public void executeImpl() throws BuildException {
@@ -35,8 +53,21 @@ public class CoverageStartTask extends EpsilonTask {
 			warn("Coverage recording has already been started");
 			return;
 		}
+		if (!enabled) {
+			getProject().addReference(RECORDER_REFERENCE, DISABLED);
+			log("Coverage recording is disabled", Project.MSG_VERBOSE);
+			return;
+		}
 		CoverageRecorder recorder = new CoverageRecorder();
 		getProject().addReference(RECORDER_REFERENCE, recorder);
 		getExecutionListeners(getProject()).add(recorder);
+	}
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

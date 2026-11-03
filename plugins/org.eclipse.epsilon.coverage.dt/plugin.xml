@@ -108,7 +108,7 @@
             id="org.eclipse.epsilon.coverage.dt.launchGroup"
             mode="coverage"
             label="Coverage"
-            image="icons/coverage.png"
+            image="icons/coverage_launch.png"
             bannerImage="icons/coverage_wiz.png"/>
    </extension>
 
@@ -126,7 +126,8 @@
          <action
                id="org.eclipse.epsilon.coverage.dt.toolbarAction"
                class="org.eclipse.epsilon.coverage.dt.launching.CoverageToolbarAction"
-               icon="icons/coverage.png"
+               icon="icons/coverage_launch.png"
+               disabledIcon="icons/coverage_launch_disabled.png"
                label="Coverage"
                style="pulldown"
                toolbarPath="org.eclipse.debug.ui.launchActionSet/debug"
@@ -139,7 +140,7 @@
          <action
                id="org.eclipse.epsilon.coverage.dt.historyAction"
                class="org.eclipse.epsilon.coverage.dt.launching.CoverageHistoryAction"
-               icon="icons/coverage.png"
+               icon="icons/coverage_launch.png"
                label="Coverage History"
                menubarPath="org.eclipse.ui.run/coverageGroup"
                style="pulldown"/>
@@ -157,7 +158,7 @@
             id="org.eclipse.epsilon.coverage.dt.CoverageView"
             category="org.eclipse.epsilon.dt"
             class="org.eclipse.epsilon.coverage.dt.views.CoverageView"
-            icon="icons/coverage.png"
+            icon="icons/coverage_view.png"
             name="Coverage"/>
    </extension>
 
@@ -166,7 +167,7 @@
             id="org.eclipse.epsilon.coverage.dt.CoverageFileLauncher"
             launcher="org.eclipse.epsilon.coverage.dt.views.CoverageFileLauncher"
             extensions="ecv"
-            icon="icons/coverage.png"
+            icon="icons/coverage_view.png"
             name="Coverage View"
             default="true"/>
    </extension>
@@ -184,7 +185,7 @@
             label="Epsilon Full Coverage"
             icon="icons/covered.png"
             colorPreferenceKey="org.eclipse.epsilon.coverage.dt.fullCoverage.color"
-            colorPreferenceValue="180,230,190"
+            colorPreferenceValue="192,255,192"
             highlightPreferenceKey="org.eclipse.epsilon.coverage.dt.fullCoverage.highlight"
             highlightPreferenceValue="true"
             textPreferenceKey="org.eclipse.epsilon.coverage.dt.fullCoverage.text"
@@ -202,7 +203,7 @@
             label="Epsilon Partial Coverage"
             icon="icons/partial.png"
             colorPreferenceKey="org.eclipse.epsilon.coverage.dt.partialCoverage.color"
-            colorPreferenceValue="250,235,160"
+            colorPreferenceValue="255,255,128"
             highlightPreferenceKey="org.eclipse.epsilon.coverage.dt.partialCoverage.highlight"
             highlightPreferenceValue="true"
             textPreferenceKey="org.eclipse.epsilon.coverage.dt.partialCoverage.text"
@@ -220,7 +221,7 @@
             label="Epsilon No Coverage"
             icon="icons/missed.png"
             colorPreferenceKey="org.eclipse.epsilon.coverage.dt.noCoverage.color"
-            colorPreferenceValue="250,195,195"
+            colorPreferenceValue="255,160,160"
             highlightPreferenceKey="org.eclipse.epsilon.coverage.dt.noCoverage.highlight"
             highlightPreferenceValue="true"
             textPreferenceKey="org.eclipse.epsilon.coverage.dt.noCoverage.text"

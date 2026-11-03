@@ -7,6 +7,7 @@
 package org.eclipse.epsilon.workflow.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -15,12 +16,14 @@ import java.nio.file.Files;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.helper.ProjectHelper2;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.epsilon.coverage.CoverageResources;
 import org.eclipse.epsilon.coverage.model.CoverageElement;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
 import org.eclipse.epsilon.coverage.model.SourceFile;
+import org.eclipse.epsilon.workflow.tasks.EolTask;
 import org.eclipse.epsilon.workflow.tasks.coverage.CoverageStartTask;
 import org.eclipse.epsilon.workflow.tasks.coverage.CoverageStopTask;
 import org.junit.Rule;
@@ -83,6 +86,48 @@ public class CoverageTaskTests extends WorkflowTestCase {
 			}
 		}
 		assertTrue(foundFirst && foundMissed);
+	}
+	
+	protected File writeToggleableBuild() throws Exception {
+		write("program.eol", "'a'.println();\n");
+		return write("build.xml",
+			"<project default='main'>\n" +
+			"  <property name='coverage' value='true'/>\n" +
+			"  <target name='main'>\n" +
+			"    <epsilon.coverage.start enabled='${coverage}'/>\n" +
+			"    <epsilon.eol src='program.eol'/>\n" +
+			"    <epsilon.coverage.stop file='coverage.ecv'/>\n" +
+			"  </target>\n" +
+			"</project>\n");
+	}
+	
+	/**
+	 * Like {@link #runTarget(File, String)} but with user properties
+	 * (i.e. the equivalent of -Dname=value on the command line)
+	 */
+	protected void runTarget(File buildFile, String targetName, String... userProperties) throws Exception {
+		Project project = new Project();
+		project.init();
+		for (int i = 0; i < userProperties.length; i += 2) {
+			project.setUserProperty(userProperties[i], userProperties[i + 1]);
+		}
+		project.setBaseDir(buildFile.getParentFile());
+		addTaskDefinitionsTo(project);
+		project.addTaskDefinition("epsilon.eol", EolTask.class);
+		ProjectHelper2.configureProject(project, buildFile);
+		project.executeTarget(targetName);
+	}
+	
+	@Test
+	public void testEnabledByDefault() throws Exception {
+		runTarget(writeToggleableBuild(), "main");
+		assertTrue(new File(folder.getRoot(), "coverage.ecv").exists());
+	}
+	
+	@Test
+	public void testDisabledThroughProperty() throws Exception {
+		runTarget(writeToggleableBuild(), "main", "coverage", "false");
+		assertFalse(new File(folder.getRoot(), "coverage.ecv").exists());
 	}
 	
 	@Test(expected = BuildException.class)

@@ -19,9 +19,4 @@ public interface ICoverageSessionListener {
 	 * Called when the active session changes (session may be null)
 	 */
 	public void activeSessionChanged(CoverageSession session);
-	
-	/**
-	 * Called when editor highlighting is switched on or off
-	 */
-	public default void highlightingChanged(boolean enabled) {}
 }

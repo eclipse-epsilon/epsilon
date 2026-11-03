@@ -65,7 +65,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 
 	protected TreeViewer viewer;
 	protected final Map<CoverageSession, CoverageStatistics> statistics = new WeakHashMap<>();
-	protected IAction sessionsAction, removeAction, removeAllAction, saveAction, mergeAction, highlightAction, collapseAllAction, openAction;
+	protected IAction sessionsAction, removeAction, removeAllAction, saveAction, mergeAction, collapseAllAction, openAction;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -260,7 +260,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 				}
 			}
 		};
-		openAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER));
+		openAction.setImageDescriptor(CoverageDtPlugin.getImageDescriptor(CoverageDtPlugin.IMG_IMPORT));
 
 		saveAction = new Action("Save Coverage As...") {
 			@Override
@@ -282,7 +282,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 				}
 			}
 		};
-		saveAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_ETOOL_SAVEAS_EDIT));
+		saveAction.setImageDescriptor(CoverageDtPlugin.getImageDescriptor(CoverageDtPlugin.IMG_EXPORT));
 
 		mergeAction = new Action("Merge Sessions...") {
 			@Override
@@ -323,15 +323,6 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		};
 		removeAllAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_ELCL_REMOVEALL));
 
-		highlightAction = new Action("Highlight Coverage in Editors", IAction.AS_CHECK_BOX) {
-			@Override
-			public void run() {
-				manager.setHighlightingEnabled(isChecked());
-			}
-		};
-		highlightAction.setImageDescriptor(CoverageDtPlugin.getImageDescriptor(CoverageDtPlugin.IMG_HIGHLIGHT));
-		highlightAction.setChecked(manager.isHighlightingEnabled());
-
 		collapseAllAction = new Action("Collapse All") {
 			@Override
 			public void run() {
@@ -350,7 +341,6 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		toolbar.add(new Separator());
 		toolbar.add(sessionsAction);
 		toolbar.add(new Separator());
-		toolbar.add(highlightAction);
 		toolbar.add(collapseAllAction);
 		updateActions();
 	}
@@ -393,11 +383,6 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 				String.format("%.1f %%", counter.getRatio() * 100) + " (" + counter + " probes)");
 		}
 		updateActions();
-	}
-
-	@Override
-	public void highlightingChanged(boolean enabled) {
-		if (highlightAction != null) highlightAction.setChecked(enabled);
 	}
 
 	@Override

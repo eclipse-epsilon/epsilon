@@ -119,11 +119,7 @@ public class CoverageAnnotationManager implements ICoverageSessionListener {
 		if (!(model instanceof IAnnotationModelExtension)) return;
 		IAnnotationModelExtension extension = (IAnnotationModelExtension) model;
 		
-		SourceFile sourceFile = null;
-		CoverageSessionManager manager = CoverageSessionManager.getInstance();
-		if (manager.isHighlightingEnabled()) {
-			sourceFile = CoverageFiles.getSourceFile(manager.getActiveSession(), getUri(input));
-		}
+		SourceFile sourceFile = CoverageFiles.getSourceFile(CoverageSessionManager.getInstance().getActiveSession(), getUri(input));
 		
 		IAnnotationModel existing = extension.getAnnotationModel(CoverageAnnotationModel.KEY);
 		if (existing instanceof CoverageAnnotationModel && ((CoverageAnnotationModel) existing).getSourceFile() == sourceFile) {
@@ -152,11 +148,6 @@ public class CoverageAnnotationManager implements ICoverageSessionListener {
 	
 	@Override
 	public void activeSessionChanged(CoverageSession session) {
-		updateAll();
-	}
-	
-	@Override
-	public void highlightingChanged(boolean enabled) {
 		updateAll();
 	}
 }
