@@ -11,12 +11,7 @@ import org.eclipse.epsilon.coverage.model.CoverageSession;
 public interface ICoverageSessionListener {
 	
 	/**
-	 * Called when sessions are added or removed
+	 * Called when the current session changes (session may be null)
 	 */
-	public void sessionsChanged();
-	
-	/**
-	 * Called when the active session changes (session may be null)
-	 */
-	public void activeSessionChanged(CoverageSession session);
+	public void sessionChanged(CoverageSession session);
 }

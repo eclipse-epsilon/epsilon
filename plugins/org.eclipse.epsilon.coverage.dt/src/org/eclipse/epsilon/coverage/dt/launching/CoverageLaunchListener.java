@@ -56,7 +56,7 @@ public class CoverageLaunchListener implements EpsilonLaunchConfigurationDelegat
 		session.setLaunchConfiguration(configuration.getName());
 		recorder = null;
 		
-		CoverageSessionManager.getInstance().addSession(session);
+		CoverageSessionManager.getInstance().setSession(session);
 		
 		Display.getDefault().asyncExec(() -> {
 			try {

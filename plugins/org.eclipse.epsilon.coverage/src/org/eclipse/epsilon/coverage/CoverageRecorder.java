@@ -15,6 +15,7 @@ import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -214,7 +215,7 @@ public class CoverageRecorder implements IInheritableExecutionListener {
 				elements.addAll(createElements(root, text, visited));
 			}
 			// The same file may have been parsed by more than one module (e.g. in workflows)
-			CoverageResources.mergeElements(file.getElements(), elements);
+			addElements(file.getElements(), elements);
 		}
 
 		for (SourceFile file : files.values()) {
@@ -254,6 +255,37 @@ public class CoverageRecorder implements IInheritableExecutionListener {
 		element.setLabel(getLabel(node, probe, text));
 		element.getChildren().addAll(children);
 		return Collections.singletonList(element);
+	}
+
+	/**
+	 * Adds the elements to the elements of a file that has already been parsed by
+	 * another module; the hits of elements at the same position are summed up.
+	 */
+	protected void addElements(List<CoverageElement> targets, List<CoverageElement> sources) {
+		for (CoverageElement source : sources) {
+			CoverageElement target = findMatching(targets, source);
+			if (target == null) {
+				targets.add(source);
+			}
+			else {
+				target.setHits(target.getHits() + source.getHits());
+				addElements(target.getChildren(), new ArrayList<>(source.getChildren()));
+			}
+		}
+	}
+
+	protected CoverageElement findMatching(List<CoverageElement> candidates, CoverageElement element) {
+		for (CoverageElement candidate : candidates) {
+			if (candidate.getStartLine() == element.getStartLine() &&
+				candidate.getStartColumn() == element.getStartColumn() &&
+				candidate.getEndLine() == element.getEndLine() &&
+				candidate.getEndColumn() == element.getEndColumn() &&
+				candidate.isProbe() == element.isProbe() &&
+				Objects.equals(candidate.getKind(), element.getKind())) {
+				return candidate;
+			}
+		}
+		return null;
 	}
 
 	protected boolean hasProbes(List<CoverageElement> elements) {

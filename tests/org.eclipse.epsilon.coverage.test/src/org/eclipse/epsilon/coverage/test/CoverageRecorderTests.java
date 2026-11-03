@@ -116,6 +116,34 @@ public class CoverageRecorderTests {
 	}
 
 	@Test
+	public void testEmptyBlocks() throws Exception {
+		String code =
+			"import 'emptylib.eol';\n" +
+			"called();\n" +
+			"libCalled();\n" +
+			"if (true) {}\n" +
+			"while (false) {}\n" +
+			"operation called() {}\n" +
+			"operation uncalled() {}\n";
+		write(folder.getRoot(), "emptylib.eol", "operation libCalled() {}\noperation libUncalled() {}\n");
+		File file = write(folder.getRoot(), "empty.eol", code);
+		CoverageSession session = run(new EolModule(), file);
+		SourceFile sourceFile = getFile(session, file);
+
+		assertLine(sourceFile, lineOf(code, "if (true)"), Status.FULL);
+		assertLine(sourceFile, lineOf(code, "while (false)"), Status.PARTIAL);
+		assertLine(sourceFile, lineOf(code, "operation called"), Status.FULL);
+		assertLine(sourceFile, lineOf(code, "operation uncalled"), Status.NONE);
+		assertTrue(sourceFile.getElements().stream().anyMatch(e -> "Operation uncalled".equals(e.getLabel())));
+
+		SourceFile lib = getFile(session, new File(folder.getRoot(), "emptylib.eol"));
+		assertNotNull(lib);
+		assertLine(lib, 1, Status.FULL);
+		assertLine(lib, 2, Status.NONE);
+		assertEquals(2, lib.getElements().size());
+	}
+
+	@Test
 	public void testHitCounts() throws Exception {
 		String code = "for (i in Sequence{1..5}) {\n  i.println();\n}\n";
 		File file = write(folder.getRoot(), "loop.eol", code);
@@ -242,11 +270,10 @@ public class CoverageRecorderTests {
 	}
 
 	@Test
-	public void testSaveLoadMerge() throws Exception {
+	public void testSaveLoad() throws Exception {
 		String code = "var x = 1;\nif (x > 0) {\n  'a'.println();\n}\n";
 		File file = write(folder.getRoot(), "simple.eol", code);
 		CoverageSession first = run(new EolModule(), file);
-		CoverageSession second = run(new EolModule(), file);
 
 		File ecv = new File(folder.getRoot(), "simple.ecv");
 		CoverageResources.save(first, ecv);
@@ -254,13 +281,8 @@ public class CoverageRecorderTests {
 		assertEquals(first.getFiles().size(), loaded.getFiles().size());
 		assertEquals(getProbes(first).size(), getProbes(loaded).size());
 		assertNotNull(loaded.getFiles().get(0).getContentHash());
-
-		CoverageSession merged = CoverageResources.merge(loaded, second);
-		assertEquals(1, merged.getFiles().size());
-		List<CoverageElement> probes = getProbes(merged);
-		assertEquals(getProbes(first).size(), probes.size());
-		for (CoverageElement probe : probes) {
-			assertEquals(2, probe.getHits());
+		for (CoverageElement probe : getProbes(loaded)) {
+			assertEquals(1, probe.getHits());
 		}
 	}
 

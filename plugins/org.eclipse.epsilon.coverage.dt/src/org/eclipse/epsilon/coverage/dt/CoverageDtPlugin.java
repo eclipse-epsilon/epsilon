@@ -25,12 +25,10 @@ public class CoverageDtPlugin extends AbstractUIPlugin {
 	
 	public static final String VIEW_ID = PLUGIN_ID + ".CoverageView";
 	
-	public static final String IMG_COVERAGE = "icons/coverage_view.png";
-	public static final String IMG_SESSION = "icons/session.png";
+	public static final String IMG_COVERAGE = "icons/coverage.png";
 	public static final String IMG_COVERED = "icons/full_obj.png";
 	public static final String IMG_PARTIAL = "icons/partial_obj.png";
 	public static final String IMG_MISSED = "icons/missed_obj.png";
-	public static final String IMG_MERGE = "icons/merge.png";
 	public static final String IMG_IMPORT = "icons/import.png";
 	public static final String IMG_EXPORT = "icons/export.png";
 	
@@ -54,7 +52,7 @@ public class CoverageDtPlugin extends AbstractUIPlugin {
 	
 	@Override
 	protected void initializeImageRegistry(ImageRegistry registry) {
-		for (String path : new String[] {IMG_COVERAGE, IMG_SESSION, IMG_COVERED, IMG_PARTIAL, IMG_MISSED, IMG_MERGE, IMG_IMPORT, IMG_EXPORT}) {
+		for (String path : new String[] {IMG_COVERAGE, IMG_COVERED, IMG_PARTIAL, IMG_MISSED, IMG_IMPORT, IMG_EXPORT}) {
 			registry.put(path, imageDescriptorFromPlugin(PLUGIN_ID, path));
 		}
 	}

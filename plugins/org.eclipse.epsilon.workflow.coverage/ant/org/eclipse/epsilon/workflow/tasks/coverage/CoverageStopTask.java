@@ -27,7 +27,6 @@ public class CoverageStopTask extends EpsilonTask {
 	
 	protected File file;
 	protected String name;
-	protected boolean append = false;
 	
 	@Override
 	public void executeImpl() throws BuildException {
@@ -51,9 +50,6 @@ public class CoverageStopTask extends EpsilonTask {
 		CoverageSession session = recorder.createCoverageSession(name != null ? name : getProject().getName());
 		
 		try {
-			if (append && file.exists()) {
-				session = CoverageResources.merge(CoverageResources.load(file), session);
-			}
 			if (file.getParentFile() != null) file.getParentFile().mkdirs();
 			CoverageResources.save(session, file);
 		}
@@ -80,13 +76,5 @@ public class CoverageStopTask extends EpsilonTask {
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public boolean isAppend() {
-		return append;
-	}
-	
-	public void setAppend(boolean append) {
-		this.append = append;
 	}
 }

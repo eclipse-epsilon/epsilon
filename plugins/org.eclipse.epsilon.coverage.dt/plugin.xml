@@ -108,7 +108,7 @@
             id="org.eclipse.epsilon.coverage.dt.launchGroup"
             mode="coverage"
             label="Coverage"
-            image="icons/coverage_launch.png"
+            image="icons/coverage.png"
             bannerImage="icons/coverage_wiz.png"/>
    </extension>
 
@@ -126,7 +126,7 @@
          <action
                id="org.eclipse.epsilon.coverage.dt.toolbarAction"
                class="org.eclipse.epsilon.coverage.dt.launching.CoverageToolbarAction"
-               icon="icons/coverage_launch.png"
+               icon="icons/coverage.png"
                label="Coverage"
                style="pulldown"
                toolbarPath="org.eclipse.debug.ui.launchActionSet/debug"
@@ -136,13 +136,6 @@
                class="org.eclipse.epsilon.coverage.dt.launching.OpenCoverageConfigurationsAction"
                label="Coverage Configurations..."
                menubarPath="org.eclipse.ui.run/coverageGroup"/>
-         <action
-               id="org.eclipse.epsilon.coverage.dt.historyAction"
-               class="org.eclipse.epsilon.coverage.dt.launching.CoverageHistoryAction"
-               icon="icons/coverage_launch.png"
-               label="Coverage History"
-               menubarPath="org.eclipse.ui.run/coverageGroup"
-               style="pulldown"/>
       </actionSet>
    </extension>
 
@@ -157,7 +150,7 @@
             id="org.eclipse.epsilon.coverage.dt.CoverageView"
             category="org.eclipse.epsilon.dt"
             class="org.eclipse.epsilon.coverage.dt.views.CoverageView"
-            icon="icons/coverage_view.png"
+            icon="icons/coverage.png"
             name="Coverage"/>
    </extension>
 
@@ -166,7 +159,7 @@
             id="org.eclipse.epsilon.coverage.dt.CoverageFileLauncher"
             launcher="org.eclipse.epsilon.coverage.dt.views.CoverageFileLauncher"
             extensions="ecv"
-            icon="icons/coverage_view.png"
+            icon="icons/coverage.png"
             name="Coverage View"
             default="true"/>
    </extension>

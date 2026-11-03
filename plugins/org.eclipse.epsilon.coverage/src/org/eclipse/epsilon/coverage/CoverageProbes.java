@@ -8,6 +8,7 @@ package org.eclipse.epsilon.coverage;
 
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.Region;
+import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.dom.AnnotationBlock;
 import org.eclipse.epsilon.eol.dom.Annotation;
 import org.eclipse.epsilon.eol.dom.AssignmentStatement;
@@ -51,6 +52,15 @@ public class CoverageProbes {
 	
 	public boolean isProbe(ModuleElement element) {
 		if (!hasRegion(element)) return false;
+		
+		// Empty blocks (e.g. the bodies of empty operations or pre/post blocks) are
+		// executed on their own, so that the code that contains them can be reported
+		// as (not) covered. The main block of a program is excluded as it has no code
+		// of its own (and it is never executed for imported modules)
+		if (element instanceof StatementBlock) {
+			return element.getChildren().isEmpty() && !isMain(element);
+		}
+		
 		if (!(element instanceof Statement || element instanceof Expression)) return false;
 		if (element instanceof TypeExpression) return false;
 		
@@ -83,6 +93,10 @@ public class CoverageProbes {
 		}
 		
 		return true;
+	}
+	
+	protected boolean isMain(ModuleElement element) {
+		return element.getModule() instanceof IEolModule && ((IEolModule) element.getModule()).getMain() == element;
 	}
 	
 	public static boolean hasRegion(ModuleElement element) {

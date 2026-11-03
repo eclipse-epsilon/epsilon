@@ -26,34 +26,30 @@ import org.eclipse.epsilon.coverage.model.CoverageElement;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
 import org.eclipse.epsilon.coverage.model.SourceFile;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.ListSelectionDialog;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -64,8 +60,9 @@ import org.eclipse.ui.texteditor.ITextEditor;
 public class CoverageView extends ViewPart implements ICoverageSessionListener {
 
 	protected TreeViewer viewer;
+	protected ResourceManager resources;
 	protected final Map<CoverageSession, CoverageStatistics> statistics = new WeakHashMap<>();
-	protected IAction sessionsAction, removeAction, removeAllAction, saveAction, mergeAction, collapseAllAction, openAction;
+	protected IAction clearAction, saveAction, collapseAllAction, openAction;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -74,6 +71,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		viewer.getTree().setHeaderVisible(true);
 		viewer.getTree().setLinesVisible(false);
 		viewer.setUseHashlookup(true);
+		resources = new LocalResourceManager(JFaceResources.getResources(), viewer.getControl());
 		viewer.setContentProvider(new CoverageContentProvider());
 
 		createColumn("Element", 350, new ColumnLabelProvider() {
@@ -85,7 +83,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 			@Override
 			public Image getImage(Object element) {
 				if (element instanceof SourceFile) {
-					return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
+					return getFileImage((SourceFile) element);
 				}
 				Counter counter = getCounter(element);
 				if (counter == null) return null;
@@ -142,14 +140,11 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 			open(selected);
 		});
 
-		viewer.addDropSupport(DND.DROP_COPY | DND.DROP_LINK | DND.DROP_MOVE | DND.DROP_DEFAULT,
-			CoverageDropListener.TRANSFERS, new CoverageDropListener(parent.getShell()));
-
 		getSite().setSelectionProvider(viewer);
 		createActions();
 
 		CoverageSessionManager.getInstance().addListener(this);
-		activeSessionChanged(CoverageSessionManager.getInstance().getActiveSession());
+		sessionChanged(CoverageSessionManager.getInstance().getSession());
 	}
 
 	protected void createColumn(String title, int width, ColumnLabelProvider labelProvider) {
@@ -165,9 +160,28 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 	}
 
 	protected Counter getCounter(Object element) {
-		CoverageSession session = CoverageSessionManager.getInstance().getActiveSession();
+		CoverageSession session = CoverageSessionManager.getInstance().getSession();
 		if (session == null || !(element instanceof SourceFile || element instanceof CoverageElement)) return null;
 		return getStatistics(session).get((org.eclipse.emf.ecore.EObject) element);
+	}
+
+	/**
+	 * @return The icon of the editor associated with the file's type (e.g. the EVL icon for
+	 * .evl files), or the generic file icon if there is none
+	 */
+	protected Image getFileImage(SourceFile file) {
+		String uri = file.getUri();
+		if (uri != null) {
+			try {
+				String name = URI.createURI(uri).lastSegment();
+				ImageDescriptor descriptor = name == null ? null : PlatformUI.getWorkbench().getEditorRegistry().getImageDescriptor(name);
+				if (descriptor != null) return resources.create(descriptor);
+			}
+			catch (Exception ex) {
+				// Fall back to the generic file icon
+			}
+		}
+		return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
 	}
 
 	protected String getLabel(Object element) {
@@ -235,19 +249,6 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		CoverageSessionManager manager = CoverageSessionManager.getInstance();
 		ISharedImages images = PlatformUI.getWorkbench().getSharedImages();
 
-		sessionsAction = new Action("Coverage Sessions", IAction.AS_DROP_DOWN_MENU) {
-			@Override
-			public void run() {
-				// Cycle through sessions
-				List<CoverageSession> sessions = manager.getSessions();
-				if (sessions.size() < 2) return;
-				int index = sessions.indexOf(manager.getActiveSession());
-				manager.setActiveSession(sessions.get((index + 1) % sessions.size()));
-			}
-		};
-		sessionsAction.setImageDescriptor(CoverageDtPlugin.getImageDescriptor(CoverageDtPlugin.IMG_SESSION));
-		sessionsAction.setMenuCreator(new SessionsMenuCreator());
-
 		openAction = new Action("Open Coverage File...") {
 			@Override
 			public void run() {
@@ -268,7 +269,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		saveAction = new Action("Save Coverage As...") {
 			@Override
 			public void run() {
-				CoverageSession session = manager.getActiveSession();
+				CoverageSession session = manager.getSession();
 				if (session == null) return;
 				FileDialog dialog = new FileDialog(getSite().getShell(), SWT.SAVE);
 				dialog.setFilterExtensions(new String[] {"*." + CoverageResources.FILE_EXTENSION});
@@ -287,44 +288,13 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		};
 		saveAction.setImageDescriptor(CoverageDtPlugin.getImageDescriptor(CoverageDtPlugin.IMG_EXPORT));
 
-		mergeAction = new Action("Merge Sessions...") {
+		clearAction = new Action("Clear Coverage") {
 			@Override
 			public void run() {
-				List<CoverageSession> sessions = manager.getSessions();
-				if (sessions.size() < 2) return;
-				ListSelectionDialog dialog = new ListSelectionDialog(getSite().getShell(), sessions,
-					ArrayContentProvider.getInstance(), new LabelProvider() {
-						@Override
-						public String getText(Object element) {
-							return getSessionLabel((CoverageSession) element);
-						}
-					}, "Select the coverage sessions to merge:");
-				dialog.setTitle("Merge Coverage Sessions");
-				dialog.setInitialSelections(sessions.toArray());
-				if (dialog.open() != ListSelectionDialog.OK) return;
-				List<CoverageSession> selected = new ArrayList<>();
-				for (Object o : dialog.getResult()) selected.add((CoverageSession) o);
-				if (selected.size() > 1) manager.mergeSessions(selected);
+				manager.clear();
 			}
 		};
-		mergeAction.setImageDescriptor(CoverageDtPlugin.getImageDescriptor(CoverageDtPlugin.IMG_MERGE));
-
-		removeAction = new Action("Remove Active Session") {
-			@Override
-			public void run() {
-				CoverageSession session = manager.getActiveSession();
-				if (session != null) manager.removeSession(session);
-			}
-		};
-		removeAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_ELCL_REMOVE));
-
-		removeAllAction = new Action("Remove All Sessions") {
-			@Override
-			public void run() {
-				manager.removeAllSessions();
-			}
-		};
-		removeAllAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_ELCL_REMOVEALL));
+		clearAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_ELCL_REMOVE));
 
 		collapseAllAction = new Action("Collapse All") {
 			@Override
@@ -338,25 +308,16 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		toolbar.add(openAction);
 		toolbar.add(saveAction);
 		toolbar.add(new Separator());
-		toolbar.add(removeAction);
-		toolbar.add(removeAllAction);
-		toolbar.add(mergeAction);
-		toolbar.add(new Separator());
-		toolbar.add(sessionsAction);
+		toolbar.add(clearAction);
 		toolbar.add(new Separator());
 		toolbar.add(collapseAllAction);
 		updateActions();
 	}
 
 	protected void updateActions() {
-		CoverageSessionManager manager = CoverageSessionManager.getInstance();
-		int sessions = manager.getSessions().size();
-		boolean active = manager.getActiveSession() != null;
-		removeAction.setEnabled(active);
-		saveAction.setEnabled(active);
-		removeAllAction.setEnabled(sessions > 0);
-		mergeAction.setEnabled(sessions > 1);
-		sessionsAction.setEnabled(sessions > 0);
+		boolean available = CoverageSessionManager.getInstance().getSession() != null;
+		clearAction.setEnabled(available);
+		saveAction.setEnabled(available);
 	}
 
 	protected String getSessionLabel(CoverageSession session) {
@@ -368,13 +329,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 	}
 
 	@Override
-	public void sessionsChanged() {
-		if (viewer == null || viewer.getControl().isDisposed()) return;
-		updateActions();
-	}
-
-	@Override
-	public void activeSessionChanged(CoverageSession session) {
+	public void sessionChanged(CoverageSession session) {
 		if (viewer == null || viewer.getControl().isDisposed()) return;
 		viewer.setInput(session);
 		if (session == null) {
@@ -397,43 +352,6 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 	public void dispose() {
 		CoverageSessionManager.getInstance().removeListener(this);
 		super.dispose();
-	}
-
-	/**
-	 * Shows all coverage sessions in the drop-down menu of the sessions action
-	 */
-	protected class SessionsMenuCreator implements IMenuCreator {
-		protected Menu menu;
-
-		@Override
-		public Menu getMenu(Control parent) {
-			dispose();
-			menu = new Menu(parent);
-			CoverageSessionManager manager = CoverageSessionManager.getInstance();
-			int i = 1;
-			for (CoverageSession session : manager.getSessions()) {
-				Action action = new Action(i++ + " " + getSessionLabel(session), IAction.AS_RADIO_BUTTON) {
-					@Override
-					public void run() {
-						manager.setActiveSession(session);
-					}
-				};
-				action.setChecked(session == manager.getActiveSession());
-				new ActionContributionItem(action).fill(menu, -1);
-			}
-			return menu;
-		}
-
-		@Override
-		public Menu getMenu(Menu parent) {
-			return null;
-		}
-
-		@Override
-		public void dispose() {
-			if (menu != null && !menu.isDisposed()) menu.dispose();
-			menu = null;
-		}
 	}
 
 	/**
