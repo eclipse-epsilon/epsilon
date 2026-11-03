@@ -110,7 +110,7 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 			progressMonitor.subTask(subtask);
 			progressMonitor.beginTask(subtask, 100);
 
-			if ("run".equalsIgnoreCase(mode)) {
+			if (isRunMode(mode)) {
 				result = module.execute();
 			}
 			else if ("debug".equalsIgnoreCase(mode)) {
@@ -130,6 +130,7 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 			executed(configuration, mode, launch, progressMonitor, module, result);
 		} catch (Exception e) {
 			e = EolRuntimeException.wrap(e);
+			executionFailed(configuration, mode, launch, progressMonitor, module, e);
 			if (disposeModelRepository) {
 				module.getContext().getModelRepository().getModels().forEach(model -> { model.setStoredOnDisposal(false); });
 			}
@@ -143,7 +144,11 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 		
 		return true;
 	}
-
+	
+	protected boolean isRunMode(String mode) {
+		return !"debug".equalsIgnoreCase(mode);
+	}
+	
 	protected void setupModule(ILaunchConfiguration configuration, ILaunch launch, IProgressMonitor progressMonitor,
 			IEolModule module, boolean loadModels) throws Exception {
 		EclipseContextManager.setup(module.getContext(), configuration, progressMonitor, launch, loadModels);
@@ -281,6 +286,21 @@ public abstract class EpsilonLaunchConfigurationDelegate extends LaunchConfigura
 		postExecute(module);
 		for (EpsilonLaunchConfigurationDelegateListener listener : listeners) {
 			listener.executed(configuration, mode, launch, progressMonitor, module, result);
+		}
+	}
+	
+	@Override
+	public void executionFailed(ILaunchConfiguration configuration, String mode,
+			ILaunch launch, IProgressMonitor progressMonitor,
+			IEolModule module, Exception exception) {
+		
+		for (EpsilonLaunchConfigurationDelegateListener listener : listeners) {
+			try {
+				listener.executionFailed(configuration, mode, launch, progressMonitor, module, exception);
+			}
+			catch (Exception ex) {
+				LogUtil.log(ex);
+			}
 		}
 	}
 	

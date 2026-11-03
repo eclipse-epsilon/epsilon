@@ -1,0 +1,4 @@
+<antlib>
+  <taskdef name="start" classname="org.eclipse.epsilon.workflow.tasks.coverage.CoverageStartTask"/>
+  <taskdef name="stop" classname="org.eclipse.epsilon.workflow.tasks.coverage.CoverageStopTask"/>
+</antlib>

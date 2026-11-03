@@ -14,6 +14,8 @@
   <modules>
     <module>org.eclipse.epsilon.core.dt.feature</module>
     <module>org.eclipse.epsilon.core.feature</module>
+    <module>org.eclipse.epsilon.coverage.feature</module>
+    <module>org.eclipse.epsilon.coverage.dt.feature</module>
     <module>org.eclipse.epsilon.emc.cdo.feature</module>
     <module>org.eclipse.epsilon.emc.cdo.dt.feature</module>
     <module>org.eclipse.epsilon.emc.csv.feature</module>

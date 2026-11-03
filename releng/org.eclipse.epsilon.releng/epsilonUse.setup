@@ -311,6 +311,10 @@
       <requirement
           name="org.eclipse.epsilon.emf.dt.feature.feature.group"/>
       <requirement
+          name="org.eclipse.epsilon.coverage.feature.feature.group"/>
+      <requirement
+          name="org.eclipse.epsilon.coverage.dt.feature.feature.group"/>
+      <requirement
           name="org.eclipse.epsilon.uml.feature.feature.group"/>
       <requirement
           name="org.eclipse.epsilon.uml.dt.feature.feature.group"/>

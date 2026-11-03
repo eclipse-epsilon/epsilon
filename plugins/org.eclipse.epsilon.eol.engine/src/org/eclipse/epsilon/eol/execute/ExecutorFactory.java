@@ -130,6 +130,9 @@ public class ExecutorFactory implements BaseDelegate<ExecutorFactory> {
 		if (executionListeners != null) for (IExecutionListener listener : executionListeners) {
 			listener.aboutToExecute(moduleElement, context);
 		}
+		if (base != null) for (IExecutionListener listener : getInheritedExecutionListeners()) {
+			listener.aboutToExecute(moduleElement, context);
+		}
 	}
 	
 	/**
@@ -142,6 +145,9 @@ public class ExecutorFactory implements BaseDelegate<ExecutorFactory> {
 	 */
 	protected void postExecuteSuccess(ModuleElement moduleElement, Object result, IEolContext context) {
 		if (executionListeners != null) for (IExecutionListener listener : executionListeners) {
+			listener.finishedExecuting(moduleElement, result, context);
+		}
+		if (base != null) for (IExecutionListener listener : getInheritedExecutionListeners()) {
 			listener.finishedExecuting(moduleElement, result, context);
 		}
 		if (stackTraceManager != null) {
@@ -171,6 +177,9 @@ public class ExecutorFactory implements BaseDelegate<ExecutorFactory> {
 			exception = new EolInternalException(ex, moduleElement);
 		}
 		if (executionListeners != null) for (IExecutionListener listener : executionListeners) {
+			listener.finishedExecutingWithException(moduleElement, exception, context);
+		}
+		if (base != null) for (IExecutionListener listener : getInheritedExecutionListeners()) {
 			listener.finishedExecutingWithException(moduleElement, exception, context);
 		}
 
@@ -271,6 +280,33 @@ public class ExecutorFactory implements BaseDelegate<ExecutorFactory> {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Collects the {@link IInheritableExecutionListener}s registered with the
+	 * chain of base executor factories (e.g. the factory of the main thread for
+	 * thread-local factories used in parallel execution, or the factory of an
+	 * EGX module for the factory of an EGL template it invokes), excluding any
+	 * that are also registered directly with this factory.
+	 * 
+	 * @return the inherited listeners (never null)
+	 * @since 2.10
+	 */
+	public Collection<IExecutionListener> getInheritedExecutionListeners() {
+		Collection<IExecutionListener> inherited = null;
+		int depth = 0;
+		for (ExecutorFactory ancestor = base; ancestor != null && ancestor != this && depth < 64; ancestor = ancestor.base, depth++) {
+			if (ancestor.executionListeners == null) continue;
+			for (IExecutionListener listener : ancestor.executionListeners) {
+				if (listener instanceof IInheritableExecutionListener &&
+					(executionListeners == null || !executionListeners.contains(listener)) &&
+					(inherited == null || !inherited.contains(listener))) {
+					if (inherited == null) inherited = new ArrayList<>(1);
+					inherited.add(listener);
+				}
+			}
+		}
+		return inherited == null ? Collections.emptyList() : inherited;
 	}
 	
 	public ModuleElement getActiveModuleElement() {

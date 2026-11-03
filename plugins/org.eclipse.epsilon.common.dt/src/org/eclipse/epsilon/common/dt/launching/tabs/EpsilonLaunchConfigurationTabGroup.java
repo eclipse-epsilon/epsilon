@@ -45,6 +45,7 @@ public abstract class EpsilonLaunchConfigurationTabGroup extends AbstractLaunchC
 			IExtensionPoint extensionPoint = registry.getExtensionPoint("org.eclipse.epsilon.eol.dt.launchConfigurationExtension");
 
 			for (IConfigurationElement configurationElement : extensionPoint.getConfigurationElements()) {
+				if (configurationElement.getAttribute("tabContributor") == null) continue;
 				try {
 					EpsilonLaunchConfigurationTabContributor contributor = (EpsilonLaunchConfigurationTabContributor) configurationElement.createExecutableExtension("tabContributor");
 					for(ILaunchConfigurationTab tab : contributor.getTabs(this, dialog, mode)) {

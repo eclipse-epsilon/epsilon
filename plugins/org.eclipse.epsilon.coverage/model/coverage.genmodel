@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.epsilon.coverage/src-gen"
+    modelPluginID="org.eclipse.epsilon.coverage" modelName="Coverage" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>coverage.ecore</foreignModel>
+  <genPackages prefix="Coverage" basePackage="org.eclipse.epsilon.coverage" disposableProviderFactory="true"
+      ecorePackage="coverage.ecore#/">
+    <genClasses ecoreClass="coverage.ecore#//CoverageSession">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageSession/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageSession/timestamp"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageSession/launchConfiguration"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference coverage.ecore#//CoverageSession/files"/>
+    </genClasses>
+    <genClasses ecoreClass="coverage.ecore#//SourceFile">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//SourceFile/uri"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//SourceFile/language"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//SourceFile/contentHash"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference coverage.ecore#//SourceFile/session"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference coverage.ecore#//SourceFile/elements"/>
+    </genClasses>
+    <genClasses ecoreClass="coverage.ecore#//CoverageElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageElement/kind"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageElement/label"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageElement/startLine"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageElement/startColumn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageElement/endLine"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageElement/endColumn"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageElement/probe"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute coverage.ecore#//CoverageElement/hits"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference coverage.ecore#//CoverageElement/children"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference coverage.ecore#//CoverageElement/parent"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

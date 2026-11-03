@@ -69,5 +69,6 @@
     <module>org.eclipse.epsilon.test.dependencies</module>
     <module>org.eclipse.epsilon.test.fixtures.hutn</module>
     <module>org.eclipse.epsilon.workflow.test</module>
+    <module>org.eclipse.epsilon.coverage.test</module>
   </modules>
 </project>

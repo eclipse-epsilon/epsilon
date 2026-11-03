@@ -157,6 +157,7 @@
     <module>plugins/org.eclipse.epsilon.flock.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.pinset.engine/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.profiling/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.coverage/pom-plain.xml</module>
 
     <!-- EMF component -->
     <module>plugins/org.eclipse.epsilon.emc.emf/pom-plain.xml</module>
@@ -194,6 +195,7 @@
     <!-- Workflow component -->
     <module>plugins/org.eclipse.epsilon.workflow/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.workflow.csv/pom-plain.xml</module>
+    <module>plugins/org.eclipse.epsilon.workflow.coverage/pom-plain.xml</module>
     <module>plugins/org.eclipse.epsilon.workflow.emf/pom-plain.xml</module>
 
     <!-- Spreadsheets component -->

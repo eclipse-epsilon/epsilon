@@ -23,4 +23,6 @@ public interface EpsilonLaunchConfigurationDelegateListener {
 	
 	public void executed(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor progressMonitor, IEolModule module, Object result) throws Exception;
 	
+	public default void executionFailed(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor progressMonitor, IEolModule module, Exception exception) throws Exception {}
+	
 }

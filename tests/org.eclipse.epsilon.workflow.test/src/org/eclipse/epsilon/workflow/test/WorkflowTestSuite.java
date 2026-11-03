@@ -25,7 +25,8 @@ import org.junit.runners.Suite.SuiteClasses;
                EUnitBasicTests.class,
                EUnitWithEVLTests.class,
                EUnitWithEGLTests.class,
-               EUnitInlineModelTests.class})
+               EUnitInlineModelTests.class,
+               CoverageTaskTests.class})
 public class WorkflowTestSuite {
 	public static Test suite() {
 		return new JUnit4TestAdapter(WorkflowTestSuite.class);

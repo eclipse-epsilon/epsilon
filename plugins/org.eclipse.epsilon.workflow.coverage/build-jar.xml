@@ -1,0 +1,13 @@
+<project default="default">
+	<target name="default">
+		
+		<xslt style="../org.eclipse.epsilon.workflow/pluginxml2tasksxml.xslt" in="plugin.xml" out="ant/org/eclipse/epsilon/workflow/tasks/coverage/tasks.xml"/>		
+		<xslt style="../org.eclipse.epsilon.workflow/pluginxml2antlibxml.xslt" in="plugin.xml" out="ant/org/eclipse/epsilon/workflow/tasks/coverage/antlib.xml">
+			<param name="removePrefix" expression="epsilon.coverage."/>
+		</xslt>
+		<echo>Building ANT Coverage jar</echo>
+		<mkdir dir="lib"/>
+		<jar destfile="lib/org.eclipse.epsilon.workflow.coverage.jar" basedir="bin"/>
+		
+	</target>
+</project>

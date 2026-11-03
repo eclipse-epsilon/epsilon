@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <!-- Coverage launch mode, launch group and delegates for all Epsilon launch configuration types -->
+   <extension point="org.eclipse.debug.core.launchModes">
+      <launchMode
+            mode="coverage"
+            label="Coverage"
+            launchAsLabel="Coverage As"/>
+   </extension>
+
+   <extension point="org.eclipse.debug.core.launchDelegates">
+      <launchDelegate
+            id="org.eclipse.epsilon.coverage.dt.launchDelegate.eol"
+            delegate="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchDelegate"
+            delegateDescription="Runs the program and records which parts of it were executed."
+            modes="coverage"
+            name="Epsilon Coverage Launcher"
+            type="org.epsilon.eol.eclipse.dt.launching.EolLaunchConfigurationDelegate"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+      <launchDelegate
+            id="org.eclipse.epsilon.coverage.dt.launchDelegate.etl"
+            delegate="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchDelegate"
+            delegateDescription="Runs the program and records which parts of it were executed."
+            modes="coverage"
+            name="Epsilon Coverage Launcher"
+            type="org.epsilon.etl.eclipse.dt.launching.EtlLaunchConfigurationDelegate"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+      <launchDelegate
+            id="org.eclipse.epsilon.coverage.dt.launchDelegate.evl"
+            delegate="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchDelegate"
+            delegateDescription="Runs the program and records which parts of it were executed."
+            modes="coverage"
+            name="Epsilon Coverage Launcher"
+            type="org.epsilon.evl.eclipse.dt.launching.EvlLaunchConfigurationDelegate"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+      <launchDelegate
+            id="org.eclipse.epsilon.coverage.dt.launchDelegate.egl"
+            delegate="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchDelegate"
+            delegateDescription="Runs the program and records which parts of it were executed."
+            modes="coverage"
+            name="Epsilon Coverage Launcher"
+            type="org.epsilon.egl.eclipse.dt.launching.EglLaunchConfigurationDelegate"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+      <launchDelegate
+            id="org.eclipse.epsilon.coverage.dt.launchDelegate.ecl"
+            delegate="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchDelegate"
+            delegateDescription="Runs the program and records which parts of it were executed."
+            modes="coverage"
+            name="Epsilon Coverage Launcher"
+            type="org.epsilon.ecl.eclipse.dt.launching.EclLaunchConfigurationDelegate"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+      <launchDelegate
+            id="org.eclipse.epsilon.coverage.dt.launchDelegate.eml"
+            delegate="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchDelegate"
+            delegateDescription="Runs the program and records which parts of it were executed."
+            modes="coverage"
+            name="Epsilon Coverage Launcher"
+            type="org.epsilon.eml.eclipse.dt.launcing.EmlLaunchConfigurationDelegate"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+      <launchDelegate
+            id="org.eclipse.epsilon.coverage.dt.launchDelegate.epl"
+            delegate="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchDelegate"
+            delegateDescription="Runs the program and records which parts of it were executed."
+            modes="coverage"
+            name="Epsilon Coverage Launcher"
+            type="org.epsilon.epl.eclipse.dt.launching.EplLaunchConfigurationDelegate"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+      <launchDelegate
+            id="org.eclipse.epsilon.coverage.dt.launchDelegate.flock"
+            delegate="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchDelegate"
+            delegateDescription="Runs the program and records which parts of it were executed."
+            modes="coverage"
+            name="Epsilon Coverage Launcher"
+            type="org.epsilon.migration.eclipse.dt.launching.MigrationLaunchConfigurationDelegate"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+      <launchDelegate
+            id="org.eclipse.epsilon.coverage.dt.launchDelegate.emg"
+            delegate="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchDelegate"
+            delegateDescription="Runs the program and records which parts of it were executed."
+            modes="coverage"
+            name="Epsilon Coverage Launcher"
+            type="org.epsilon.emg.eclipse.dt.launching.EmgLaunchConfigurationDelegate"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+      <launchDelegate
+            id="org.eclipse.epsilon.coverage.dt.launchDelegate.pinset"
+            delegate="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchDelegate"
+            delegateDescription="Runs the program and records which parts of it were executed."
+            modes="coverage"
+            name="Epsilon Coverage Launcher"
+            type="org.eclipse.epsilon.pinset.dt.launching.PinsetLaunchConfigurationDelegate"
+            sourceLocatorId="org.eclipse.lsp4e.debug.sourceLocator"
+            sourcePathComputerId="org.eclipse.lsp4e.debug.sourcePathComputer"/>
+   </extension>
+
+   <extension point="org.eclipse.debug.ui.launchGroups">
+      <launchGroup
+            id="org.eclipse.epsilon.coverage.dt.launchGroup"
+            mode="coverage"
+            label="Coverage"
+            image="icons/coverage.png"
+            bannerImage="icons/coverage_wiz.png"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.eclipse.epsilon.coverage.dt.actionSet"
+            label="Epsilon Coverage"
+            visible="true">
+         <menu
+               id="org.eclipse.ui.run"
+               label="&amp;Run"
+               path="additions">
+            <separator name="coverageGroup"/>
+         </menu>
+         <action
+               id="org.eclipse.epsilon.coverage.dt.toolbarAction"
+               class="org.eclipse.epsilon.coverage.dt.launching.CoverageToolbarAction"
+               icon="icons/coverage.png"
+               label="Coverage"
+               style="pulldown"
+               toolbarPath="org.eclipse.debug.ui.launchActionSet/debug"
+               tooltip="Coverage"/>
+         <action
+               id="org.eclipse.epsilon.coverage.dt.openConfigurationsAction"
+               class="org.eclipse.epsilon.coverage.dt.launching.OpenCoverageConfigurationsAction"
+               label="Coverage Configurations..."
+               menubarPath="org.eclipse.ui.run/coverageGroup"/>
+         <action
+               id="org.eclipse.epsilon.coverage.dt.historyAction"
+               class="org.eclipse.epsilon.coverage.dt.launching.CoverageHistoryAction"
+               icon="icons/coverage.png"
+               label="Coverage History"
+               menubarPath="org.eclipse.ui.run/coverageGroup"
+               style="pulldown"/>
+      </actionSet>
+   </extension>
+
+   <extension point="org.eclipse.epsilon.eol.dt.launchConfigurationExtension">
+      <launchConfigurationExtension
+            listener="org.eclipse.epsilon.coverage.dt.launching.CoverageLaunchListener"/>
+   </extension>
+
+   <!-- Coverage view and .ecv files -->
+   <extension point="org.eclipse.ui.views">
+      <view
+            id="org.eclipse.epsilon.coverage.dt.CoverageView"
+            category="org.eclipse.epsilon.dt"
+            class="org.eclipse.epsilon.coverage.dt.views.CoverageView"
+            icon="icons/coverage.png"
+            name="Coverage"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.eclipse.epsilon.coverage.dt.CoverageFileLauncher"
+            launcher="org.eclipse.epsilon.coverage.dt.views.CoverageFileLauncher"
+            extensions="ecv"
+            icon="icons/coverage.png"
+            name="Coverage View"
+            default="true"/>
+   </extension>
+
+   <!-- Editor highlighting -->
+   <extension point="org.eclipse.ui.editors.annotationTypes">
+      <type name="org.eclipse.epsilon.coverage.dt.fullCoverageAnnotation"/>
+      <type name="org.eclipse.epsilon.coverage.dt.partialCoverageAnnotation"/>
+      <type name="org.eclipse.epsilon.coverage.dt.noCoverageAnnotation"/>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors.markerAnnotationSpecification">
+      <specification
+            annotationType="org.eclipse.epsilon.coverage.dt.fullCoverageAnnotation"
+            label="Epsilon Full Coverage"
+            icon="icons/covered.png"
+            colorPreferenceKey="org.eclipse.epsilon.coverage.dt.fullCoverage.color"
+            colorPreferenceValue="180,230,190"
+            highlightPreferenceKey="org.eclipse.epsilon.coverage.dt.fullCoverage.highlight"
+            highlightPreferenceValue="true"
+            textPreferenceKey="org.eclipse.epsilon.coverage.dt.fullCoverage.text"
+            textPreferenceValue="false"
+            overviewRulerPreferenceKey="org.eclipse.epsilon.coverage.dt.fullCoverage.overview"
+            overviewRulerPreferenceValue="true"
+            verticalRulerPreferenceKey="org.eclipse.epsilon.coverage.dt.fullCoverage.vertical"
+            verticalRulerPreferenceValue="true"
+            showInNextPrevDropdownToolbarActionKey="org.eclipse.epsilon.coverage.dt.fullCoverage.nextprev"
+            showInNextPrevDropdownToolbarAction="false"
+            includeOnPreferencePage="true"
+            presentationLayer="1"/>
+      <specification
+            annotationType="org.eclipse.epsilon.coverage.dt.partialCoverageAnnotation"
+            label="Epsilon Partial Coverage"
+            icon="icons/partial.png"
+            colorPreferenceKey="org.eclipse.epsilon.coverage.dt.partialCoverage.color"
+            colorPreferenceValue="250,235,160"
+            highlightPreferenceKey="org.eclipse.epsilon.coverage.dt.partialCoverage.highlight"
+            highlightPreferenceValue="true"
+            textPreferenceKey="org.eclipse.epsilon.coverage.dt.partialCoverage.text"
+            textPreferenceValue="false"
+            overviewRulerPreferenceKey="org.eclipse.epsilon.coverage.dt.partialCoverage.overview"
+            overviewRulerPreferenceValue="true"
+            verticalRulerPreferenceKey="org.eclipse.epsilon.coverage.dt.partialCoverage.vertical"
+            verticalRulerPreferenceValue="true"
+            showInNextPrevDropdownToolbarActionKey="org.eclipse.epsilon.coverage.dt.partialCoverage.nextprev"
+            showInNextPrevDropdownToolbarAction="false"
+            includeOnPreferencePage="true"
+            presentationLayer="1"/>
+      <specification
+            annotationType="org.eclipse.epsilon.coverage.dt.noCoverageAnnotation"
+            label="Epsilon No Coverage"
+            icon="icons/missed.png"
+            colorPreferenceKey="org.eclipse.epsilon.coverage.dt.noCoverage.color"
+            colorPreferenceValue="250,195,195"
+            highlightPreferenceKey="org.eclipse.epsilon.coverage.dt.noCoverage.highlight"
+            highlightPreferenceValue="true"
+            textPreferenceKey="org.eclipse.epsilon.coverage.dt.noCoverage.text"
+            textPreferenceValue="false"
+            overviewRulerPreferenceKey="org.eclipse.epsilon.coverage.dt.noCoverage.overview"
+            overviewRulerPreferenceValue="true"
+            verticalRulerPreferenceKey="org.eclipse.epsilon.coverage.dt.noCoverage.vertical"
+            verticalRulerPreferenceValue="true"
+            showInNextPrevDropdownToolbarActionKey="org.eclipse.epsilon.coverage.dt.noCoverage.nextprev"
+            showInNextPrevDropdownToolbarAction="false"
+            includeOnPreferencePage="true"
+            presentationLayer="1"/>
+   </extension>
+
+</plugin>

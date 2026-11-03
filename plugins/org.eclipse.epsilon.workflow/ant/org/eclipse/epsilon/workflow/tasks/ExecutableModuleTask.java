@@ -30,6 +30,7 @@ import org.eclipse.epsilon.eol.exceptions.models.EolModelLoadingException;
 import org.eclipse.epsilon.eol.exceptions.models.EolModelNotFoundException;
 import org.eclipse.epsilon.eol.execute.context.IEolContext;
 import org.eclipse.epsilon.eol.execute.context.Variable;
+import org.eclipse.epsilon.eol.execute.control.IExecutionListener;
 import org.eclipse.epsilon.eol.models.IModel;
 import org.eclipse.epsilon.eol.models.IReflectiveModel;
 import org.eclipse.epsilon.eol.models.ModelReference;
@@ -260,6 +261,10 @@ public abstract class ExecutableModuleTask extends EpsilonTask {
 
 			if (fine) {
 				module.getContext().getExecutorFactory().addExecutionListener(new ProfilingExecutionListener());
+			}
+			
+			for (IExecutionListener listener : getExecutionListeners(getProject())) {
+				module.getContext().getExecutorFactory().addExecutionListener(listener);
 			}
 			
 			if (!isDebug() || !HostManager.getHost().supportsDebugging()) {

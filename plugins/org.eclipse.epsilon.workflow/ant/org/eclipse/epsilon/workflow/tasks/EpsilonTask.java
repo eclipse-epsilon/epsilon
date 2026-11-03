@@ -11,8 +11,10 @@ package org.eclipse.epsilon.workflow.tasks;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -22,6 +24,7 @@ import org.eclipse.epsilon.eol.execute.context.ExtendedProperties;
 import org.eclipse.epsilon.eol.execute.context.Frame;
 import org.eclipse.epsilon.eol.execute.context.FrameType;
 import org.eclipse.epsilon.eol.execute.context.SingleFrame;
+import org.eclipse.epsilon.eol.execute.control.IExecutionListener;
 import org.eclipse.epsilon.eol.models.ModelRepository;
 import org.eclipse.epsilon.eol.models.ModelRepositoryManager;
 import org.eclipse.epsilon.workflow.tasks.debug.DebugServerSession;
@@ -35,6 +38,8 @@ public abstract class EpsilonTask extends Task {
 	static final String EPSILON_ACTIVETRANSACTIONS = "epsilon.activeTransactions";
 
 	static final String EPSILON_DEBUG_SESSION = "epsilon.debug.session";
+	
+	static final String EPSILON_EXECUTION_LISTENERS = "epsilon.executionListeners";
 
 	protected boolean profile;
 	protected boolean failOnErrors = true;
@@ -150,6 +155,23 @@ public abstract class EpsilonTask extends Task {
 		return new File(getProject().getBaseDir(),"\\");
 	}
 
+	/**
+	 * @return The (modifiable) collection of execution listeners that are
+	 * attached to all the modules executed by Epsilon tasks in the project
+	 * @since 2.10
+	 */
+	@SuppressWarnings("unchecked")
+	public static Collection<IExecutionListener> getExecutionListeners(Project project) {
+		synchronized (project) {
+			Object listeners = project.getReference(EPSILON_EXECUTION_LISTENERS);
+			if (!(listeners instanceof Collection)) {
+				listeners = new CopyOnWriteArrayList<IExecutionListener>();
+				project.addReference(EPSILON_EXECUTION_LISTENERS, listeners);
+			}
+			return (Collection<IExecutionListener>) listeners;
+		}
+	}
+	
 	public boolean isProfile() {
 		return profile;
 	}

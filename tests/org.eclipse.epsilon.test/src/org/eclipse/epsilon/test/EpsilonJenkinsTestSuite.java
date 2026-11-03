@@ -11,6 +11,7 @@
 package org.eclipse.epsilon.test;
 
 import org.eclipse.epsilon.commons.test.CommonsTestSuite;
+import org.eclipse.epsilon.coverage.test.CoverageTestSuite;
 import org.eclipse.epsilon.ecl.engine.test.acceptance.EclAcceptanceTestSuite;
 import org.eclipse.epsilon.egl.dt.test.EglDevelopmentToolsTestSuite;
 import org.eclipse.epsilon.egl.dt.traceability.editor.EglTraceabilityEditorTestSuite;
@@ -97,7 +98,8 @@ import junit.framework.Test;
 	EUnitJUnitTestSuite.class,
 	JSONModelTestSuite.class,
 	EpsilonDebugAdapterTestSuite.class,
-	RdfEmfModelTestSuite.class
+	RdfEmfModelTestSuite.class,
+	CoverageTestSuite.class
 })
 public class EpsilonJenkinsTestSuite {
 	public static Test suite() {

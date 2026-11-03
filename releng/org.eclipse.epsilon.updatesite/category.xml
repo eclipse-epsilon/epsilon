@@ -57,6 +57,12 @@
    <feature url="features/org.eclipse.epsilon.emc.spreadsheets.feature_2.10.0.qualifier.jar" id="org.eclipse.epsilon.emc.spreadsheets.feature" version="2.10.0.qualifier">
       <category name="Epsilon Spreadsheet Integration"/>
    </feature>
+   <feature url="features/org.eclipse.epsilon.coverage.feature_2.10.0.qualifier.jar" id="org.eclipse.epsilon.coverage.feature" version="2.10.0.qualifier">
+      <category name="Epsilon Core"/>
+   </feature>
+   <feature url="features/org.eclipse.epsilon.coverage.dt.feature_2.10.0.qualifier.jar" id="org.eclipse.epsilon.coverage.dt.feature" version="2.10.0.qualifier">
+      <category name="Epsilon Core"/>
+   </feature>
    <feature url="features/org.eclipse.epsilon.flexmi.feature_2.10.0.qualifier.jar" id="org.eclipse.epsilon.flexmi.feature" version="2.10.0.qualifier">
       <category name="Epsilon EMF Integration"/>
    </feature>
