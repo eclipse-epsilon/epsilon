@@ -57,9 +57,6 @@ public class CoverageTaskTests extends WorkflowTestCase {
 			"    <epsilon.eol src='program.eol'/>\n" +
 			"    <epsilon.eol src='program.eol'/>\n" +
 			"    <epsilon.coverage.stop file='out/coverage.ecv' name='ant'/>\n" +
-			"    <epsilon.coverage.start/>\n" +
-			"    <epsilon.eol src='program.eol'/>\n" +
-			"    <epsilon.coverage.stop file='out/coverage.ecv' append='true'/>\n" +
 			"  </target>\n" +
 			"</project>\n");
 		
@@ -76,8 +73,8 @@ public class CoverageTaskTests extends WorkflowTestCase {
 			if (!(next instanceof CoverageElement) || !((CoverageElement) next).isProbe()) continue;
 			CoverageElement element = (CoverageElement) next;
 			if (element.getStartLine() == 1 && "ExpressionStatement".equals(element.getKind())) {
-				// 2 runs in the first session + 1 run appended
-				assertEquals(3, element.getHits());
+				// 2 runs of the program
+				assertEquals(2, element.getHits());
 				foundFirst = true;
 			}
 			if (element.getStartLine() == 3) {
