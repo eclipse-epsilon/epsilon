@@ -62,7 +62,7 @@ public class Preprocessor {
 	
 	private void appendNewLineToEol(int eglLineNumber, boolean appendNewLine) {
 		if (appendNewLine) eol.append(NEWLINE);
-		trace.setEglLineNumberForCurrentEolLineNumber(eglLineNumber);
+		trace.setEglLineNumberForNextEolLineNumber(eglLineNumber);
 	}
 	
 	private boolean eolEndsWith(String suffix) {
@@ -172,6 +172,11 @@ public class Preprocessor {
 					// Ensure that this section generates a new line of EOL
 					if (!eolEndsWith(NEWLINE)) {
 						appendNewLineToEol(child.getLine());
+					}
+					else {
+						// The current (empty) line of EOL may have been generated for an
+						// earlier line of EGL (e.g. for an empty line before a %] tag)
+						trace.setEglLineNumberForCurrentEolLineNumber(child.getLine());
 					}
 					
 					if (TokenType.typeOf(child.getType()) == TokenType.START_TAG) {

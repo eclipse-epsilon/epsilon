@@ -251,6 +251,23 @@ public class TestPreprocessor {
 	}
 	
 	@Test
+	public void testTraceabilityOutputAfterEmptyLineInTag() {
+		final String program = "[%" + NEWLINE +
+		                       "  var x : Integer := 5;" + NEWLINE +
+		                       NEWLINE +
+		                       "%][%=x%][%" + NEWLINE +
+		                       "  x := x + 1;" + NEWLINE +
+		                       "%]";
+		
+		final String[] eol = preprocess(program).split(NEWLINE);
+		
+		assertEquals("out.printdyn(x);", eol[2].trim());
+		assertEquals(4, preprocessor.getTrace().getEglLineNumberFor(3));
+		assertEquals("x := x + 1;", eol[4].trim());
+		assertEquals(5, preprocessor.getTrace().getEglLineNumberFor(5));
+	}
+	
+	@Test
 	public void testTraceabilityTagsOnSeparateLines() {
 		final String program = "[%" + NEWLINE +
 		                       "  var x : Integer := 5;" + NEWLINE + 

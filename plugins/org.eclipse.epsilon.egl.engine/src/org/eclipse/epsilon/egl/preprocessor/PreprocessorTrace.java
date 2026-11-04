@@ -48,8 +48,12 @@ public class PreprocessorTrace {
 		return eolCol;
 	}
 
-	void setEglLineNumberForCurrentEolLineNumber(int eglLineNumber) {
+	void setEglLineNumberForNextEolLineNumber(int eglLineNumber) {
 		currentEolLine++;
+		setEglLineNumberForCurrentEolLineNumber(eglLineNumber);
+	}
+	
+	void setEglLineNumberForCurrentEolLineNumber(int eglLineNumber) {
 		lineNumberMapping.put(currentEolLine, eglLineNumber);
 		maximumEglLineNumber = Math.max(maximumEglLineNumber, eglLineNumber);
 	}
