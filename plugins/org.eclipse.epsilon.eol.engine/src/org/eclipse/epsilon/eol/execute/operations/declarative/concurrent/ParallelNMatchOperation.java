@@ -53,9 +53,11 @@ public class ParallelNMatchOperation extends NMatchOperation {
 		for (Object item : source) {
 			jobs.add(() -> {
 				if (keepSearching.get()) {
-					final int currentInt = predicate.testThrows(item) ?
-						currentMatches.incrementAndGet() : currentMatches.get(),
-						evaluatedInt = evaluated.incrementAndGet();
+					if (predicate.testThrows(item)) {
+						currentMatches.incrementAndGet();
+					}
+					final int evaluatedInt = evaluated.incrementAndGet(),
+						currentInt = currentMatches.get();
 					
 					if (shouldShortCircuit(sourceSize, targetMatches, currentInt, evaluatedInt)) {
 						keepSearching.set(false);
