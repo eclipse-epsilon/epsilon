@@ -1,0 +1,139 @@
+[%
+// Enable javascript links (disabled by default for security reasons)
+Native("java.lang.System").setProperty("PLANTUML_ALLOW_JAVASCRIPT_IN_LINK", "true");
+%]
+
+@startuml
+hide empty methods
+hide circle
+skinparam classBorderThickness 1
+!pragma layout smetana
+skinparam classFontName system-ui
+
+[%
+var mainEntity = getMainEntity();
+var entities = getVisibleEntities();
+%]
+
+[%for (ent in entities){%]
+	[% if (isLayerActive("documentation") and ent.doc != null) {%]
+		note "[%=ent.doc%]" as nn_[%=ent.name%] #f0ffff
+		nn_[%=ent.name%] .. [%=ent.name%]
+	[%}%]
+	class [%=ent.name%] [[javascript:top.[%=ent.getLink()%]]] [%=ent.getColour()%] {
+		
+		[%for (f in ent.features){%]
+			[% if (not f.type.isTypeOf(Entity) or isLayerActive("inlineReferences")) {%]
+				[%=f.name%] : [%=f.type.name%][%=(f.many ? " ["+"*"+"]" : "")%]
+			[%}%]
+		[%}%]
+	}
+[%}%]
+
+
+[%if (mainEntity <> null) {%]
+	
+	[%for (f in mainEntity.features.select(f|f.type.isTypeOf(Entity))){%]
+		[%=mainEntity.name%]-->[%=f.type.name%][%=f.getReferenceLabel()%]
+	[%}%]
+	
+	[%if (isLayerActive("supertype") and mainEntity.superType.isDefined()) {%]
+		[%=mainEntity.superType.Name%]<|--[%=mainEntity.name%]
+	[%}%]
+	
+	[%if (isLayerActive("subtypes")) {
+		for (subType in mainEntity.getSubTypes()) {%]
+			[%=mainEntity.name%]<|--[%=subType.name%]
+		[%}%]
+	[%}%]
+[%} else {%]
+	[%for (ent in entities){%]
+	[%for (f in ent.features.select(f|f.type.isTypeOf(Entity) and entities.includes(f.type))){%]
+		[%=ent.name%]-->[%=f.type.name%][%=f.getReferenceLabel()%]
+	[%}%]
+	
+	[%if (isLayerActive("supertype") and entities.includes(ent.superType)) {%]
+		[%=ent.superType.Name%]<|--[%=ent.name%]
+	[%}%]
+[%}%]
+	
+[%}%]
+@enduml
+[%
+//out.toString().println();
+%]
+[%
+
+operation getMainEntity() {
+	return e.isDefined() ? e : null;
+}
+
+operation getVisibleEntities() {
+	var visibleEntities : Set;
+	
+	if (mainEntity <> null) {
+		visibleEntities.add(mainEntity);
+	
+		// entity features
+		visibleEntities.addAll(
+				mainEntity.features.select(f|f.type.isTypeOf(Entity)).collect(f|f.type));
+	
+		// supertype
+		if (isLayerActive("supertype") and mainEntity.superType.isDefined()) {
+			visibleEntities.add(e.superType);
+		}
+	
+		// subtypes
+		if (isLayerActive("subtypes")) {
+			visibleEntities.addAll(mainEntity.getSubTypes());
+		}
+	}
+	else if (inputEntities.isDefined()) {
+		visibleEntities.addAll(Entity.all.select(en | inputEntities.includes(en.name)));
+	}
+
+	return visibleEntities;
+}
+
+@cached
+operation Entity getSubTypes() {
+	return Entity.all.select(ent | ent.superType = self);
+}
+
+operation Entity getColour() {
+	if (self == mainEntity) return "#DDFADC";
+	else return "#lemonchiffon";
+}
+
+// cannot use brackets (even encoded ones) in plantuml links, swapped with a string split
+operation getPath(path : Sequence) {
+	var separator = "@@";
+	return "'" + path.concat(separator) + "'" + ".split('" + separator + "')";
+}
+
+operation Entity getLink() {
+	if (self == mainEntity) {
+		return "showElement('" + self.id + "','" + self.eResource.uri + "')";
+	}
+	return "showView(" + getPath(Sequence{"Entities", self.name})% + ")";
+}
+
+operation Feature getReferenceLabel() {
+	var label = "";
+	if (isLayerActive("referenceLabels")) {
+		// the initial " : " comes from PlantUML's syntax to add a label
+		label = " : " + self.name + (self.many ? " ["+"*"+"]" : "");
+	}
+	return label;
+}
+
+operation isLayerActive(id : String) {
+	var layer = layers.selectOne(l|l.id = id);
+	if (layer.isDefined()) {
+		return layer.active;
+	}
+	else {
+		return true;
+	}
+}
+%]
