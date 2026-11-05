@@ -49,22 +49,22 @@ public class ParallelNMatchOperation extends NMatchOperation {
 		Collection<Callable<?>> jobs = new ArrayList<>(sourceSize);
 		CheckedEolPredicate<Object> predicate = resolvePredicate(operationNameExpression, iterators, expression, context);
 		AtomicBoolean keepSearching = new AtomicBoolean(true);
-		
+
 		for (Object item : source) {
 			jobs.add(() -> {
 				if (keepSearching.get()) {
-					if (predicate.testThrows(item)) {
-						currentMatches.incrementAndGet();
-					}
-					final int evaluatedInt = evaluated.incrementAndGet(),
-						currentInt = currentMatches.get();
-					
-					if (shouldShortCircuit(sourceSize, targetMatches, currentInt, evaluatedInt)) {
-						keepSearching.set(false);
+					final boolean matches = predicate.testThrows(item);
+					synchronized (jobs) {
+						final int currentInt = matches ? currentMatches.incrementAndGet() : currentMatches.get();
+						final int evaluatedInt = evaluated.incrementAndGet();
+						if (shouldShortCircuit(sourceSize, targetMatches, currentInt, evaluatedInt)) {
+							keepSearching.set(false);
+						}
 					}
 				}
 				return null;
 			});
+
 		}
 		
 		context.executeAll(expression, jobs);
