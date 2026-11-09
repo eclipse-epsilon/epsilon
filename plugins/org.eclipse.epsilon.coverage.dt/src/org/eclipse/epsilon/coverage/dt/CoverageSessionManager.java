@@ -61,7 +61,7 @@ public class CoverageSessionManager {
 	public CoverageSession load(URI uri) throws IOException {
 		CoverageSession session = CoverageResources.load(uri);
 		if (session.getName() == null || session.getName().isEmpty()) {
-			session.setName(uri.lastSegment());
+			session.setName(CoverageResources.FILE_EXTENSION.equals(uri.fileExtension()) ? uri.trimFileExtension().lastSegment() : uri.lastSegment());
 		}
 		setSession(session);
 		return session;

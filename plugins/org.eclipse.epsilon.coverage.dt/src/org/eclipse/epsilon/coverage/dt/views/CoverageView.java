@@ -274,7 +274,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 				FileDialog dialog = new FileDialog(getSite().getShell(), SWT.SAVE);
 				dialog.setFilterExtensions(new String[] {"*." + CoverageResources.FILE_EXTENSION});
 				dialog.setOverwrite(true);
-				dialog.setFileName((session.getName() == null ? "coverage" : session.getName().replaceAll("[^\\w\\-\\.]", "_")) + "." + CoverageResources.FILE_EXTENSION);
+				dialog.setFileName(getProposedFileName(session));
 				String path = dialog.open();
 				if (path == null) return;
 				try {
@@ -318,6 +318,18 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		boolean available = CoverageSessionManager.getInstance().getSession() != null;
 		clearAction.setEnabled(available);
 		saveAction.setEnabled(available);
+	}
+
+	/**
+	 * @return A file name for saving the session, without an extension: the save dialog
+	 * appends the extension of its filter (.ecv) on all platforms. Dots are replaced too,
+	 * so that the dialog does not mistake part of the name for an extension (e.g. for
+	 * sessions named after launch configurations such as "program.egx").
+	 */
+	protected String getProposedFileName(CoverageSession session) {
+		String name = session.getName() == null ? "" : session.getName().replaceAll("[^\\w\\-]", "_");
+		if (name.isEmpty()) name = "coverage";
+		return name;
 	}
 
 	protected String getSessionLabel(CoverageSession session) {
