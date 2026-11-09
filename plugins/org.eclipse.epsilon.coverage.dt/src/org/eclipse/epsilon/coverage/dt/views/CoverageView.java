@@ -281,6 +281,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 
 		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
 		toolbar.add(clearAction);
+		toolbar.add(new Separator());
 		toolbar.add(saveAction);
 		toolbar.add(new Separator());
 		toolbar.add(collapseAllAction);
