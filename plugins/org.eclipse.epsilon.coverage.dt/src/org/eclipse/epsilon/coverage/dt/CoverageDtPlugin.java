@@ -29,8 +29,6 @@ public class CoverageDtPlugin extends AbstractUIPlugin {
 	public static final String IMG_COVERED = "icons/full_obj.png";
 	public static final String IMG_PARTIAL = "icons/partial_obj.png";
 	public static final String IMG_MISSED = "icons/missed_obj.png";
-	public static final String IMG_IMPORT = "icons/import.png";
-	public static final String IMG_EXPORT = "icons/export.png";
 	
 	private static CoverageDtPlugin plugin;
 	
@@ -52,7 +50,7 @@ public class CoverageDtPlugin extends AbstractUIPlugin {
 	
 	@Override
 	protected void initializeImageRegistry(ImageRegistry registry) {
-		for (String path : new String[] {IMG_COVERAGE, IMG_COVERED, IMG_PARTIAL, IMG_MISSED, IMG_IMPORT, IMG_EXPORT}) {
+		for (String path : new String[] {IMG_COVERAGE, IMG_COVERED, IMG_PARTIAL, IMG_MISSED}) {
 			registry.put(path, imageDescriptorFromPlugin(PLUGIN_ID, path));
 		}
 	}

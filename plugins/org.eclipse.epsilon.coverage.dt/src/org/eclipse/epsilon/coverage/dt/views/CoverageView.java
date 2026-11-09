@@ -13,7 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.epsilon.coverage.CoverageResources;
 import org.eclipse.epsilon.coverage.CoverageStatistics;
@@ -42,14 +46,15 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerComparator;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -62,7 +67,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 	protected TreeViewer viewer;
 	protected ResourceManager resources;
 	protected final Map<CoverageSession, CoverageStatistics> statistics = new WeakHashMap<>();
-	protected IAction clearAction, saveAction, collapseAllAction, openAction;
+	protected IAction clearAction, saveAction, collapseAllAction;
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -249,44 +254,14 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		CoverageSessionManager manager = CoverageSessionManager.getInstance();
 		ISharedImages images = PlatformUI.getWorkbench().getSharedImages();
 
-		openAction = new Action("Open Coverage File...") {
-			@Override
-			public void run() {
-				FileDialog dialog = new FileDialog(getSite().getShell(), SWT.OPEN);
-				dialog.setFilterExtensions(new String[] {"*." + CoverageResources.FILE_EXTENSION, "*.*"});
-				String path = dialog.open();
-				if (path == null) return;
-				try {
-					manager.load(new File(path));
-				}
-				catch (Exception ex) {
-					MessageDialog.openError(getSite().getShell(), "Coverage", "Could not load " + path + ": " + ex.getMessage());
-				}
-			}
-		};
-		openAction.setImageDescriptor(CoverageDtPlugin.getImageDescriptor(CoverageDtPlugin.IMG_IMPORT));
-
-		saveAction = new Action("Save Coverage As...") {
+		saveAction = new Action("Save Coverage in Workspace...") {
 			@Override
 			public void run() {
 				CoverageSession session = manager.getSession();
-				if (session == null) return;
-				FileDialog dialog = new FileDialog(getSite().getShell(), SWT.SAVE);
-				dialog.setFilterExtensions(new String[] {"*." + CoverageResources.FILE_EXTENSION});
-				dialog.setOverwrite(true);
-				dialog.setFileName(getProposedFileName(session));
-				String path = dialog.open();
-				if (path == null) return;
-				try {
-					CoverageResources.save(session, URI.createFileURI(new File(path).getAbsolutePath()));
-					CoverageFiles.refresh(new File(path));
-				}
-				catch (Exception ex) {
-					MessageDialog.openError(getSite().getShell(), "Coverage", "Could not save " + path + ": " + ex.getMessage());
-				}
+				if (session != null) saveInWorkspace(session);
 			}
 		};
-		saveAction.setImageDescriptor(CoverageDtPlugin.getImageDescriptor(CoverageDtPlugin.IMG_EXPORT));
+		saveAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_ETOOL_SAVE_EDIT));
 
 		clearAction = new Action("Clear Coverage") {
 			@Override
@@ -305,10 +280,8 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		collapseAllAction.setImageDescriptor(images.getImageDescriptor(ISharedImages.IMG_ELCL_COLLAPSEALL));
 
 		IToolBarManager toolbar = getViewSite().getActionBars().getToolBarManager();
-		toolbar.add(openAction);
-		toolbar.add(saveAction);
-		toolbar.add(new Separator());
 		toolbar.add(clearAction);
+		toolbar.add(saveAction);
 		toolbar.add(new Separator());
 		toolbar.add(collapseAllAction);
 		updateActions();
@@ -321,10 +294,62 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 	}
 
 	/**
-	 * @return A file name for saving the session, without an extension: the save dialog
-	 * appends the extension of its filter (.ecv) on all platforms. Dots are replaced too,
-	 * so that the dialog does not mistake part of the name for an extension (e.g. for
-	 * sessions named after launch configurations such as "program.egx").
+	 * Asks for a file in the workspace and saves the session to it
+	 */
+	protected void saveInWorkspace(CoverageSession session) {
+		String extension = "." + CoverageResources.FILE_EXTENSION;
+		SaveAsDialog dialog = new SaveAsDialog(getSite().getShell());
+		dialog.setTitle("Save Coverage");
+		String fileName = getProposedFileName(session) + extension;
+		IContainer container = getDefaultContainer(session);
+		if (container != null) {
+			dialog.setOriginalFile(container.getFile(IPath.fromOSString(fileName)));
+		}
+		else {
+			dialog.setOriginalName(fileName);
+		}
+		if (dialog.open() != Window.OK || dialog.getResult() == null) return;
+
+		IPath path = dialog.getResult();
+		if (!extension.substring(1).equalsIgnoreCase(path.getFileExtension())) {
+			path = path.addFileExtension(extension.substring(1));
+		}
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		try {
+			if (file.getLocation() == null) {
+				throw new IllegalStateException(path + " is not stored in the local file system");
+			}
+			File target = file.getLocation().toFile();
+			target.getParentFile().mkdirs();
+			// Saved through the file system location (not a platform:/resource URI)
+			// so that the URIs of the source files can be stored relative to it
+			CoverageResources.save(session, URI.createFileURI(target.getAbsolutePath()));
+			// Refresh the nearest existing ancestor so that any new folders appear too
+			IContainer parent = file.getParent();
+			while (!parent.exists() && parent.getParent() != null) parent = parent.getParent();
+			parent.refreshLocal(IResource.DEPTH_INFINITE, null);
+		}
+		catch (Exception ex) {
+			MessageDialog.openError(getSite().getShell(), "Coverage", "Could not save " + path + ": " + ex.getMessage());
+		}
+	}
+
+	/**
+	 * @return The project of the first source file of the session that is in the workspace,
+	 * or null if there is none
+	 */
+	protected IContainer getDefaultContainer(CoverageSession session) {
+		for (SourceFile sourceFile : session.getFiles()) {
+			IFile file = CoverageFiles.getFile(sourceFile);
+			if (file != null) return file.getProject();
+		}
+		return null;
+	}
+
+	/**
+	 * @return A file name for saving the session, without an extension. Dots are replaced
+	 * too, so that sessions named after launch configurations (e.g. "program.egx") don't
+	 * produce file names that look like they have a different extension.
 	 */
 	protected String getProposedFileName(CoverageSession session) {
 		String name = session.getName() == null ? "" : session.getName().replaceAll("[^\\w\\-]", "_");

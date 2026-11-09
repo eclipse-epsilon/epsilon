@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.epsilon.coverage.SourceText;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
@@ -87,20 +86,6 @@ public class CoverageFiles {
 			check.stale = !sourceFile.getContentHash().equals(SourceText.hash(read(file)));
 			staleChecks.put(sourceFile, check);
 			return check.stale;
-		}
-	}
-	
-	/**
-	 * Refreshes the workspace resource(s) that correspond to a file in the file system
-	 */
-	public static void refresh(File file) {
-		try {
-			for (IFile iFile : ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(file.toURI())) {
-				iFile.refreshLocal(IResource.DEPTH_ZERO, null);
-			}
-		}
-		catch (Exception ex) {
-			// Not in the workspace
 		}
 	}
 	
