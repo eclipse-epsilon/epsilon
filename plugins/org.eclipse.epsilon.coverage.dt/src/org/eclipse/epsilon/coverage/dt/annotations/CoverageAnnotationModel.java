@@ -100,6 +100,19 @@ public class CoverageAnnotationModel implements IAnnotationModel {
 		fireModelChanged(oldAnnotations, newAnnotations);
 	}
 	
+	/**
+	 * Removes all annotations and notifies listeners. Must be called before
+	 * this model is detached from an editor's annotation model, as
+	 * IAnnotationModelExtension.removeAnnotationModel() does not notify
+	 * the editor, which would otherwise keep painting stale highlights.
+	 */
+	public void clear() {
+		if (annotations.isEmpty()) return;
+		List<CoverageAnnotation> oldAnnotations = annotations;
+		annotations = new ArrayList<>();
+		fireModelChanged(oldAnnotations, new ArrayList<>());
+	}
+
 	protected boolean sameLines(List<CoverageAnnotation> a, List<CoverageAnnotation> b) {
 		if (a.size() != b.size()) return false;
 		for (int i = 0; i < a.size(); i++) {

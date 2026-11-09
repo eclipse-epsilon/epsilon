@@ -126,6 +126,9 @@ public class CoverageAnnotationManager implements ICoverageSessionListener {
 			return;
 		}
 		if (existing != null) {
+			// removeAnnotationModel() doesn't fire a change event so clear
+			// the annotations first to make the editor repaint without them
+			if (existing instanceof CoverageAnnotationModel) ((CoverageAnnotationModel) existing).clear();
 			extension.removeAnnotationModel(CoverageAnnotationModel.KEY);
 		}
 		if (sourceFile != null) {
