@@ -137,7 +137,6 @@ public class CoverageRecorderTests {
 		assertTrue(sourceFile.getElements().stream().anyMatch(e -> "Operation uncalled".equals(e.getLabel())));
 
 		SourceFile lib = getFile(session, new File(folder.getRoot(), "emptylib.eol"));
-		assertNotNull(lib);
 		assertLine(lib, 1, Status.FULL);
 		assertLine(lib, 2, Status.NONE);
 		assertEquals(2, lib.getElements().size());
@@ -283,6 +282,37 @@ public class CoverageRecorderTests {
 		assertNotNull(loaded.getFiles().get(0).getContentHash());
 		for (CoverageElement probe : getProbes(loaded)) {
 			assertEquals(1, probe.getHits());
+		}
+	}
+
+	@Test
+	public void testSaveLoadRelativeUris() throws Exception {
+		File main = write(folder.getRoot(), "src/main.eol", "import 'lib/lib.eol';\nfoo();\n");
+		write(folder.getRoot(), "src/lib/lib.eol", "operation foo() { 'a'.println(); }\n");
+		CoverageSession session = run(new EolModule(), main);
+
+		File ecv = new File(folder.getRoot(), "out/coverage/main.ecv");
+		ecv.getParentFile().mkdirs();
+		CoverageResources.save(session, ecv);
+
+		String xml = new String(java.nio.file.Files.readAllBytes(ecv.toPath()), java.nio.charset.StandardCharsets.UTF_8);
+		assertTrue(xml, xml.contains("uri=\"../../src/main.eol\""));
+		assertTrue(xml, xml.contains("uri=\"../../src/lib/lib.eol\""));
+		assertFalse(xml, xml.contains("file:"));
+
+		// The in-memory session must still have absolute URIs
+		getFile(session, main);
+
+		// Move the whole tree and load from the new location
+		File moved = new File(folder.getRoot().getParentFile(), folder.getRoot().getName() + "-moved");
+		assertTrue(folder.getRoot().renameTo(moved));
+		try {
+			CoverageSession loaded = CoverageResources.load(new File(moved, "out/coverage/main.ecv"));
+			getFile(loaded, new File(moved, "src/main.eol"));
+			getFile(loaded, new File(moved, "src/lib/lib.eol"));
+		}
+		finally {
+			moved.renameTo(folder.getRoot());
 		}
 	}
 

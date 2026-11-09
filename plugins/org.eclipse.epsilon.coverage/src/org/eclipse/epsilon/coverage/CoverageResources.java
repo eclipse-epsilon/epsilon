@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.epsilon.coverage.model.CoveragePackage;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
+import org.eclipse.epsilon.coverage.model.SourceFile;
 
 /**
  * Utilities for saving and loading coverage sessions (*.ecv files).
@@ -46,10 +47,16 @@ public class CoverageResources {
 	
 	/**
 	 * Saves a copy of the session to the URI (the session is not moved to a new resource).
+	 * The URIs of the source files are saved relative to the URI where possible, so that
+	 * the saved session remains valid if it is moved together with the source files.
 	 */
 	public static void save(CoverageSession session, URI uri) throws IOException {
 		Resource resource = createResourceSet().createResource(uri);
-		resource.getContents().add(EcoreUtil.copy(session));
+		CoverageSession copy = EcoreUtil.copy(session);
+		for (SourceFile sourceFile : copy.getFiles()) {
+			sourceFile.setUri(deresolve(sourceFile.getUri(), uri));
+		}
+		resource.getContents().add(copy);
 		Map<String, Object> options = new HashMap<>();
 		options.put(XMLResource.OPTION_ENCODING, "UTF-8");
 		resource.save(options);
@@ -65,6 +72,42 @@ public class CoverageResources {
 		if (resource.getContents().isEmpty() || !(resource.getContents().get(0) instanceof CoverageSession)) {
 			throw new IOException(uri + " does not contain a coverage session");
 		}
-		return (CoverageSession) resource.getContents().get(0);
+		CoverageSession session = (CoverageSession) resource.getContents().get(0);
+		for (SourceFile sourceFile : session.getFiles()) {
+			sourceFile.setUri(resolve(sourceFile.getUri(), uri));
+		}
+		return session;
+	}
+	
+	/**
+	 * @return The source file URI relative to the base URI, or the source file URI
+	 * unchanged if it cannot be made relative (e.g. different scheme or drive)
+	 */
+	protected static String deresolve(String sourceUri, URI base) {
+		if (sourceUri == null || !base.isHierarchical() || base.isRelative()) return sourceUri;
+		try {
+			URI uri = URI.createURI(sourceUri);
+			if (!uri.isHierarchical() || uri.isRelative()) return sourceUri;
+			URI relative = uri.deresolve(base, true, true, false);
+			return relative.isRelative() && !relative.hasAbsolutePath() ? relative.toString() : sourceUri;
+		}
+		catch (IllegalArgumentException ex) {
+			return sourceUri;
+		}
+	}
+	
+	/**
+	 * @return The absolute URI of a (possibly relative) source file URI saved by
+	 * {@link #save(CoverageSession, URI)}
+	 */
+	protected static String resolve(String sourceUri, URI base) {
+		if (sourceUri == null || !base.isHierarchical() || base.isRelative()) return sourceUri;
+		try {
+			URI uri = URI.createURI(sourceUri);
+			return uri.isRelative() ? uri.resolve(base).toString() : sourceUri;
+		}
+		catch (IllegalArgumentException ex) {
+			return sourceUri;
+		}
 	}
 }
