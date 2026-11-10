@@ -59,6 +59,7 @@ public class CoverageFactoryImpl extends EFactoryImpl implements CoverageFactory
 			case CoveragePackage.COVERAGE_SESSION: return createCoverageSession();
 			case CoveragePackage.SOURCE_FILE: return createSourceFile();
 			case CoveragePackage.COVERAGE_ELEMENT: return createCoverageElement();
+			case CoveragePackage.COVERAGE_ELEMENT_TYPE: return createCoverageElementType();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -95,6 +96,17 @@ public class CoverageFactoryImpl extends EFactoryImpl implements CoverageFactory
 	public CoverageElement createCoverageElement() {
 		CoverageElementImpl coverageElement = new CoverageElementImpl();
 		return coverageElement;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public CoverageElementType createCoverageElementType() {
+		CoverageElementTypeImpl coverageElementType = new CoverageElementTypeImpl();
+		return coverageElementType;
 	}
 
 	/**

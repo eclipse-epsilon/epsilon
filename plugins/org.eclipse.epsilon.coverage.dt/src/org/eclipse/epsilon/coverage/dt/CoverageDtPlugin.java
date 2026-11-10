@@ -6,8 +6,6 @@
  ******************************************************************************/
 package org.eclipse.epsilon.coverage.dt;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
@@ -61,9 +59,5 @@ public class CoverageDtPlugin extends AbstractUIPlugin {
 	
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return getDefault().getImageRegistry().getDescriptor(path);
-	}
-	
-	public static void log(Throwable t) {
-		getDefault().getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, t.getMessage() == null ? t.toString() : t.getMessage(), t));
 	}
 }

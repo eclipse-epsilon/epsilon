@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * The coverage information recorded during one (or more, if merged) executions of Epsilon programs.
+ * The coverage information recorded during the execution of Epsilon programs.
  * <!-- end-model-doc -->
  *
  * <p>
@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link org.eclipse.epsilon.coverage.model.CoverageSession#getTimestamp <em>Timestamp</em>}</li>
  *   <li>{@link org.eclipse.epsilon.coverage.model.CoverageSession#getLaunchConfiguration <em>Launch Configuration</em>}</li>
  *   <li>{@link org.eclipse.epsilon.coverage.model.CoverageSession#getFiles <em>Files</em>}</li>
+ *   <li>{@link org.eclipse.epsilon.coverage.model.CoverageSession#getTypes <em>Types</em>}</li>
  * </ul>
  *
  * @see org.eclipse.epsilon.coverage.model.CoveragePackage#getCoverageSession()
@@ -111,5 +112,20 @@ public interface CoverageSession extends EObject {
 	 * @generated
 	 */
 	EList<SourceFile> getFiles();
+
+	/**
+	 * Returns the value of the '<em><b>Types</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.epsilon.coverage.model.CoverageElementType}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * <!-- begin-model-doc -->
+	 * The types of the elements of the session (shared between elements of the same type).
+	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>Types</em>' containment reference list.
+	 * @see org.eclipse.epsilon.coverage.model.CoveragePackage#getCoverageSession_Types()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<CoverageElementType> getTypes();
 
 } // CoverageSession

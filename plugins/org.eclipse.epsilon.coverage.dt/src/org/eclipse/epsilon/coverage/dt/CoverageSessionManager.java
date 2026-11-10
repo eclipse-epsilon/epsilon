@@ -13,6 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.epsilon.coverage.CoverageResources;
+import org.eclipse.epsilon.coverage.dt.annotations.CoverageAnnotationManager;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
 import org.eclipse.swt.widgets.Display;
 
@@ -90,7 +91,7 @@ public class CoverageSessionManager {
 	 */
 	static class CoverageAnnotationManagerStarter {
 		static void ensureStarted() {
-			inUiThread(() -> org.eclipse.epsilon.coverage.dt.annotations.CoverageAnnotationManager.getInstance().start());
+			inUiThread(() -> CoverageAnnotationManager.getInstance().start());
 		}
 	}
 }

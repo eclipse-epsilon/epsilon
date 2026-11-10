@@ -1,0 +1,45 @@
+@namespace(uri="http://www.eclipse.org/epsilon/coverage", prefix="coverage")
+package model;
+
+@GenModel(documentation="The coverage information recorded during the execution of Epsilon programs.")
+class CoverageSession {
+	attr String name;
+	attr EDate timestamp;
+	attr String launchConfiguration;
+	val SourceFile[*]#session files;
+
+	@GenModel(documentation="The types of the elements of the session (shared between elements of the same type).")
+	val CoverageElementType[*] types;
+}
+
+@GenModel(documentation="A source file (module) that was involved in the execution.")
+class SourceFile {
+	attr String uri;
+	attr String language;
+
+	@GenModel(documentation="Hash of the contents of the file at the time of recording; used to detect stale coverage information.")
+	attr String contentHash;
+	ref CoverageSession#files session;
+	val CoverageElement[*] elements;
+}
+
+@GenModel(documentation="An element of a source file. Probes are elements that are expected to be executed directly by the engine and contribute to coverage statistics. Non-probe elements (e.g. operations, rules) group other elements.")
+class CoverageElement {
+	ref CoverageElementType type;
+	attr String label;
+	attr int startLine;
+	attr int startColumn;
+	attr int endLine;
+	attr int endColumn;
+	attr boolean probe;
+	attr long hits;
+	val CoverageElement[*]#parent children;
+	ref CoverageElement#children parent;
+}
+
+@GenModel(documentation="The type of a coverage element, i.e. the class of the AST element it was recorded from.")
+class CoverageElementType {
+
+	@GenModel(documentation="Fully qualified name of the Java class of the AST element (e.g. org.eclipse.epsilon.eol.dom.StatementBlock).")
+	attr String impl;
+}

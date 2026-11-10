@@ -16,9 +16,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.eclipse.epsilon.coverage.model.CoverageElementType;
 import org.eclipse.epsilon.coverage.model.CoveragePackage;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
 import org.eclipse.epsilon.coverage.model.SourceFile;
@@ -35,6 +37,7 @@ import org.eclipse.epsilon.coverage.model.SourceFile;
  *   <li>{@link org.eclipse.epsilon.coverage.model.impl.CoverageSessionImpl#getTimestamp <em>Timestamp</em>}</li>
  *   <li>{@link org.eclipse.epsilon.coverage.model.impl.CoverageSessionImpl#getLaunchConfiguration <em>Launch Configuration</em>}</li>
  *   <li>{@link org.eclipse.epsilon.coverage.model.impl.CoverageSessionImpl#getFiles <em>Files</em>}</li>
+ *   <li>{@link org.eclipse.epsilon.coverage.model.impl.CoverageSessionImpl#getTypes <em>Types</em>}</li>
  * </ul>
  *
  * @generated
@@ -109,6 +112,16 @@ public class CoverageSessionImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected EList<SourceFile> files;
+
+	/**
+	 * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTypes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<CoverageElementType> types;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -216,6 +229,19 @@ public class CoverageSessionImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
+	public EList<CoverageElementType> getTypes() {
+		if (types == null) {
+			types = new EObjectContainmentEList<CoverageElementType>(CoverageElementType.class, this, CoveragePackage.COVERAGE_SESSION__TYPES);
+		}
+		return types;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -236,6 +262,8 @@ public class CoverageSessionImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case CoveragePackage.COVERAGE_SESSION__FILES:
 				return ((InternalEList<?>)getFiles()).basicRemove(otherEnd, msgs);
+			case CoveragePackage.COVERAGE_SESSION__TYPES:
+				return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -256,6 +284,8 @@ public class CoverageSessionImpl extends MinimalEObjectImpl.Container implements
 				return getLaunchConfiguration();
 			case CoveragePackage.COVERAGE_SESSION__FILES:
 				return getFiles();
+			case CoveragePackage.COVERAGE_SESSION__TYPES:
+				return getTypes();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -282,6 +312,10 @@ public class CoverageSessionImpl extends MinimalEObjectImpl.Container implements
 				getFiles().clear();
 				getFiles().addAll((Collection<? extends SourceFile>)newValue);
 				return;
+			case CoveragePackage.COVERAGE_SESSION__TYPES:
+				getTypes().clear();
+				getTypes().addAll((Collection<? extends CoverageElementType>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -306,6 +340,9 @@ public class CoverageSessionImpl extends MinimalEObjectImpl.Container implements
 			case CoveragePackage.COVERAGE_SESSION__FILES:
 				getFiles().clear();
 				return;
+			case CoveragePackage.COVERAGE_SESSION__TYPES:
+				getTypes().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -326,6 +363,8 @@ public class CoverageSessionImpl extends MinimalEObjectImpl.Container implements
 				return LAUNCH_CONFIGURATION_EDEFAULT == null ? launchConfiguration != null : !LAUNCH_CONFIGURATION_EDEFAULT.equals(launchConfiguration);
 			case CoveragePackage.COVERAGE_SESSION__FILES:
 				return files != null && !files.isEmpty();
+			case CoveragePackage.COVERAGE_SESSION__TYPES:
+				return types != null && !types.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}

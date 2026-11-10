@@ -12,14 +12,14 @@ import org.eclipse.emf.ecore.EObject;
  * <!-- end-user-doc -->
  *
  * <!-- begin-model-doc -->
- * An element (AST node) of a source file. Probes are elements that are expected to be executed directly by the engine and contribute to coverage statistics. Non-probe elements (e.g. operations, rules) group other elements.
+ * An element of a source file. Probes are elements that are expected to be executed directly by the engine and contribute to coverage statistics. Non-probe elements (e.g. operations, rules) group other elements.
  * <!-- end-model-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.epsilon.coverage.model.CoverageElement#getKind <em>Kind</em>}</li>
+ *   <li>{@link org.eclipse.epsilon.coverage.model.CoverageElement#getType <em>Type</em>}</li>
  *   <li>{@link org.eclipse.epsilon.coverage.model.CoverageElement#getLabel <em>Label</em>}</li>
  *   <li>{@link org.eclipse.epsilon.coverage.model.CoverageElement#getStartLine <em>Start Line</em>}</li>
  *   <li>{@link org.eclipse.epsilon.coverage.model.CoverageElement#getStartColumn <em>Start Column</em>}</li>
@@ -37,26 +37,26 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface CoverageElement extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Kind</b></em>' attribute.
+	 * Returns the value of the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Kind</em>' attribute.
-	 * @see #setKind(String)
-	 * @see org.eclipse.epsilon.coverage.model.CoveragePackage#getCoverageElement_Kind()
+	 * @return the value of the '<em>Type</em>' reference.
+	 * @see #setType(CoverageElementType)
+	 * @see org.eclipse.epsilon.coverage.model.CoveragePackage#getCoverageElement_Type()
 	 * @model
 	 * @generated
 	 */
-	String getKind();
+	CoverageElementType getType();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.epsilon.coverage.model.CoverageElement#getKind <em>Kind</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.epsilon.coverage.model.CoverageElement#getType <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Kind</em>' attribute.
-	 * @see #getKind()
+	 * @param value the new value of the '<em>Type</em>' reference.
+	 * @see #getType()
 	 * @generated
 	 */
-	void setKind(String value);
+	void setType(CoverageElementType value);
 
 	/**
 	 * Returns the value of the '<em><b>Label</b></em>' attribute.

@@ -103,13 +103,22 @@ public interface CoveragePackage extends EPackage {
 	int COVERAGE_SESSION__FILES = 3;
 
 	/**
+	 * The feature id for the '<em><b>Types</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COVERAGE_SESSION__TYPES = 4;
+
+	/**
 	 * The number of structural features of the '<em>Session</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COVERAGE_SESSION_FEATURE_COUNT = 4;
+	int COVERAGE_SESSION_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Session</em>' class.
@@ -204,13 +213,13 @@ public interface CoveragePackage extends EPackage {
 	int COVERAGE_ELEMENT = 2;
 
 	/**
-	 * The feature id for the '<em><b>Kind</b></em>' attribute.
+	 * The feature id for the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COVERAGE_ELEMENT__KIND = 0;
+	int COVERAGE_ELEMENT__TYPE = 0;
 
 	/**
 	 * The feature id for the '<em><b>Label</b></em>' attribute.
@@ -313,6 +322,44 @@ public interface CoveragePackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.epsilon.coverage.model.impl.CoverageElementTypeImpl <em>Element Type</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.epsilon.coverage.model.impl.CoverageElementTypeImpl
+	 * @see org.eclipse.epsilon.coverage.model.impl.CoveragePackageImpl#getCoverageElementType()
+	 * @generated
+	 */
+	int COVERAGE_ELEMENT_TYPE = 3;
+
+	/**
+	 * The feature id for the '<em><b>Impl</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COVERAGE_ELEMENT_TYPE__IMPL = 0;
+
+	/**
+	 * The number of structural features of the '<em>Element Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COVERAGE_ELEMENT_TYPE_FEATURE_COUNT = 1;
+
+	/**
+	 * The number of operations of the '<em>Element Type</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COVERAGE_ELEMENT_TYPE_OPERATION_COUNT = 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.epsilon.coverage.model.CoverageSession <em>Session</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -365,6 +412,17 @@ public interface CoveragePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getCoverageSession_Files();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.epsilon.coverage.model.CoverageSession#getTypes <em>Types</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Types</em>'.
+	 * @see org.eclipse.epsilon.coverage.model.CoverageSession#getTypes()
+	 * @see #getCoverageSession()
+	 * @generated
+	 */
+	EReference getCoverageSession_Types();
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.epsilon.coverage.model.SourceFile <em>Source File</em>}'.
@@ -442,15 +500,15 @@ public interface CoveragePackage extends EPackage {
 	EClass getCoverageElement();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.epsilon.coverage.model.CoverageElement#getKind <em>Kind</em>}'.
+	 * Returns the meta object for the reference '{@link org.eclipse.epsilon.coverage.model.CoverageElement#getType <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Kind</em>'.
-	 * @see org.eclipse.epsilon.coverage.model.CoverageElement#getKind()
+	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @see org.eclipse.epsilon.coverage.model.CoverageElement#getType()
 	 * @see #getCoverageElement()
 	 * @generated
 	 */
-	EAttribute getCoverageElement_Kind();
+	EReference getCoverageElement_Type();
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.epsilon.coverage.model.CoverageElement#getLabel <em>Label</em>}'.
@@ -552,6 +610,27 @@ public interface CoveragePackage extends EPackage {
 	EReference getCoverageElement_Parent();
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.epsilon.coverage.model.CoverageElementType <em>Element Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Element Type</em>'.
+	 * @see org.eclipse.epsilon.coverage.model.CoverageElementType
+	 * @generated
+	 */
+	EClass getCoverageElementType();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.epsilon.coverage.model.CoverageElementType#getImpl <em>Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Impl</em>'.
+	 * @see org.eclipse.epsilon.coverage.model.CoverageElementType#getImpl()
+	 * @see #getCoverageElementType()
+	 * @generated
+	 */
+	EAttribute getCoverageElementType_Impl();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -617,6 +696,14 @@ public interface CoveragePackage extends EPackage {
 		EReference COVERAGE_SESSION__FILES = eINSTANCE.getCoverageSession_Files();
 
 		/**
+		 * The meta object literal for the '<em><b>Types</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COVERAGE_SESSION__TYPES = eINSTANCE.getCoverageSession_Types();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.epsilon.coverage.model.impl.SourceFileImpl <em>Source File</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -677,12 +764,12 @@ public interface CoveragePackage extends EPackage {
 		EClass COVERAGE_ELEMENT = eINSTANCE.getCoverageElement();
 
 		/**
-		 * The meta object literal for the '<em><b>Kind</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute COVERAGE_ELEMENT__KIND = eINSTANCE.getCoverageElement_Kind();
+		EReference COVERAGE_ELEMENT__TYPE = eINSTANCE.getCoverageElement_Type();
 
 		/**
 		 * The meta object literal for the '<em><b>Label</b></em>' attribute feature.
@@ -755,6 +842,24 @@ public interface CoveragePackage extends EPackage {
 		 * @generated
 		 */
 		EReference COVERAGE_ELEMENT__PARENT = eINSTANCE.getCoverageElement_Parent();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.epsilon.coverage.model.impl.CoverageElementTypeImpl <em>Element Type</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.epsilon.coverage.model.impl.CoverageElementTypeImpl
+		 * @see org.eclipse.epsilon.coverage.model.impl.CoveragePackageImpl#getCoverageElementType()
+		 * @generated
+		 */
+		EClass COVERAGE_ELEMENT_TYPE = eINSTANCE.getCoverageElementType();
+
+		/**
+		 * The meta object literal for the '<em><b>Impl</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute COVERAGE_ELEMENT_TYPE__IMPL = eINSTANCE.getCoverageElementType_Impl();
 
 	}
 

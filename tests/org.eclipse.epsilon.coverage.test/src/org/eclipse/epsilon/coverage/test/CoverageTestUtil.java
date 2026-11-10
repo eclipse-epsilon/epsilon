@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.epsilon.coverage.CoverageElementTypes;
 import org.eclipse.epsilon.coverage.CoverageLines;
 import org.eclipse.epsilon.coverage.CoverageLines.Status;
 import org.eclipse.epsilon.coverage.model.CoverageElement;
@@ -68,7 +69,7 @@ public class CoverageTestUtil {
 	public static String describe(List<CoverageElement> elements) {
 		StringBuilder sb = new StringBuilder();
 		for (CoverageElement element : elements) {
-			sb.append("\n  ").append(element.getKind()).append(" @ ")
+			sb.append("\n  ").append(CoverageElementTypes.getSimpleName(element)).append(" @ ")
 				.append(element.getStartLine()).append(":").append(element.getStartColumn())
 				.append(" '").append(element.getLabel()).append("'");
 		}

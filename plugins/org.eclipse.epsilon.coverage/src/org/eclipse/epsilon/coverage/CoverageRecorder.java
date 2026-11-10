@@ -24,6 +24,7 @@ import org.eclipse.epsilon.common.module.IModule;
 import org.eclipse.epsilon.common.module.ModuleElement;
 import org.eclipse.epsilon.common.parse.Region;
 import org.eclipse.epsilon.coverage.model.CoverageElement;
+import org.eclipse.epsilon.coverage.model.CoverageElementType;
 import org.eclipse.epsilon.coverage.model.CoverageFactory;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
 import org.eclipse.epsilon.coverage.model.SourceFile;
@@ -191,6 +192,7 @@ public class CoverageRecorder implements IInheritableExecutionListener {
 		session.setTimestamp(new Date());
 
 		Map<String, SourceFile> files = new LinkedHashMap<>();
+		Map<String, CoverageElementType> types = new LinkedHashMap<>();
 		Set<ModuleElement> visited = Collections.newSetFromMap(new IdentityHashMap<>());
 		int inline = 0;
 
@@ -212,7 +214,7 @@ public class CoverageRecorder implements IInheritableExecutionListener {
 			if (text != null) file.setContentHash(text.getHash());
 			List<CoverageElement> elements = new ArrayList<>();
 			for (ModuleElement root : roots) {
-				elements.addAll(createElements(root, text, visited));
+				elements.addAll(createElements(root, text, visited, types));
 			}
 			// The same file may have been parsed by more than one module (e.g. in workflows)
 			addElements(file.getElements(), elements);
@@ -221,6 +223,7 @@ public class CoverageRecorder implements IInheritableExecutionListener {
 		for (SourceFile file : files.values()) {
 			if (!file.getElements().isEmpty()) session.getFiles().add(file);
 		}
+		session.getTypes().addAll(types.values());
 		return session;
 	}
 
@@ -228,14 +231,15 @@ public class CoverageRecorder implements IInheritableExecutionListener {
 	 * Converts an AST node into coverage elements. Nodes without a region are
 	 * skipped (but their children are retained), and so are non-probe nodes
 	 * that contain no probes. Nodes that are reachable from more than one parent
-	 * (e.g. EVL fixes) are only included once.
+	 * (e.g. EVL fixes) are only included once. The types of the elements are
+	 * shared through the types map (keyed by the Java class name of the AST node).
 	 */
-	protected List<CoverageElement> createElements(ModuleElement node, SourceText text, Set<ModuleElement> visited) {
+	protected List<CoverageElement> createElements(ModuleElement node, SourceText text, Set<ModuleElement> visited, Map<String, CoverageElementType> types) {
 		if (!visited.add(node)) return Collections.emptyList();
 		List<CoverageElement> children = new ArrayList<>();
 		for (ModuleElement child : node.getChildren()) {
 			if (child instanceof IModule || probes.isIgnored(child)) continue;
-			children.addAll(createElements(child, text, visited));
+			children.addAll(createElements(child, text, visited, types));
 		}
 
 		boolean probe = probes.isProbe(node);
@@ -245,7 +249,7 @@ public class CoverageRecorder implements IInheritableExecutionListener {
 
 		CoverageElement element = CoverageFactory.eINSTANCE.createCoverageElement();
 		Region region = node.getRegion();
-		element.setKind(node.getClass().getSimpleName());
+		element.setType(getType(node, types));
 		element.setStartLine(region.getStart().getLine());
 		element.setStartColumn(region.getStart().getColumn());
 		element.setEndLine(region.getEnd().getLine());
@@ -281,11 +285,22 @@ public class CoverageRecorder implements IInheritableExecutionListener {
 				candidate.getEndLine() == element.getEndLine() &&
 				candidate.getEndColumn() == element.getEndColumn() &&
 				candidate.isProbe() == element.isProbe() &&
-				Objects.equals(candidate.getKind(), element.getKind())) {
+				Objects.equals(CoverageElementTypes.getImpl(candidate), CoverageElementTypes.getImpl(element))) {
 				return candidate;
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * @return The (shared) type that corresponds to the Java class of the AST node
+	 */
+	protected CoverageElementType getType(ModuleElement node, Map<String, CoverageElementType> types) {
+		return types.computeIfAbsent(node.getClass().getName(), impl -> {
+			CoverageElementType type = CoverageFactory.eINSTANCE.createCoverageElementType();
+			type.setImpl(impl);
+			return type;
+		});
 	}
 
 	protected boolean hasProbes(List<CoverageElement> elements) {

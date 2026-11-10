@@ -10,6 +10,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.epsilon.common.dt.util.LogUtil;
 import org.eclipse.epsilon.coverage.CoverageRecorder;
 import org.eclipse.epsilon.coverage.dt.CoverageDtPlugin;
 import org.eclipse.epsilon.coverage.dt.CoverageSessionManager;
@@ -63,7 +64,7 @@ public class CoverageLaunchListener implements EpsilonLaunchConfigurationDelegat
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(CoverageDtPlugin.VIEW_ID);
 			}
 			catch (Exception ex) {
-				CoverageDtPlugin.log(ex);
+				LogUtil.log(ex);
 			}
 		});
 	}

@@ -19,6 +19,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.helper.ProjectHelper2;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.epsilon.coverage.CoverageElementTypes;
 import org.eclipse.epsilon.coverage.CoverageResources;
 import org.eclipse.epsilon.coverage.model.CoverageElement;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
@@ -72,7 +73,7 @@ public class CoverageTaskTests extends WorkflowTestCase {
 			EObject next = it.next();
 			if (!(next instanceof CoverageElement) || !((CoverageElement) next).isProbe()) continue;
 			CoverageElement element = (CoverageElement) next;
-			if (element.getStartLine() == 1 && "ExpressionStatement".equals(element.getKind())) {
+			if (element.getStartLine() == 1 && "ExpressionStatement".equals(CoverageElementTypes.getSimpleName(element))) {
 				// 2 runs of the program
 				assertEquals(2, element.getHits());
 				foundFirst = true;

@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.eclipse.epsilon.coverage.model.CoverageElement;
+import org.eclipse.epsilon.coverage.model.CoverageElementType;
 import org.eclipse.epsilon.coverage.model.CoverageFactory;
 import org.eclipse.epsilon.coverage.model.CoveragePackage;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
@@ -42,6 +43,13 @@ public class CoveragePackageImpl extends EPackageImpl implements CoveragePackage
 	 * @generated
 	 */
 	private EClass coverageElementEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass coverageElementTypeEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -159,6 +167,16 @@ public class CoveragePackageImpl extends EPackageImpl implements CoveragePackage
 	 * @generated
 	 */
 	@Override
+	public EReference getCoverageSession_Types() {
+		return (EReference)coverageSessionEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getSourceFile() {
 		return sourceFileEClass;
 	}
@@ -229,8 +247,8 @@ public class CoveragePackageImpl extends EPackageImpl implements CoveragePackage
 	 * @generated
 	 */
 	@Override
-	public EAttribute getCoverageElement_Kind() {
-		return (EAttribute)coverageElementEClass.getEStructuralFeatures().get(0);
+	public EReference getCoverageElement_Type() {
+		return (EReference)coverageElementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -329,6 +347,26 @@ public class CoveragePackageImpl extends EPackageImpl implements CoveragePackage
 	 * @generated
 	 */
 	@Override
+	public EClass getCoverageElementType() {
+		return coverageElementTypeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EAttribute getCoverageElementType_Impl() {
+		return (EAttribute)coverageElementTypeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public CoverageFactory getCoverageFactory() {
 		return (CoverageFactory)getEFactoryInstance();
 	}
@@ -357,6 +395,7 @@ public class CoveragePackageImpl extends EPackageImpl implements CoveragePackage
 		createEAttribute(coverageSessionEClass, COVERAGE_SESSION__TIMESTAMP);
 		createEAttribute(coverageSessionEClass, COVERAGE_SESSION__LAUNCH_CONFIGURATION);
 		createEReference(coverageSessionEClass, COVERAGE_SESSION__FILES);
+		createEReference(coverageSessionEClass, COVERAGE_SESSION__TYPES);
 
 		sourceFileEClass = createEClass(SOURCE_FILE);
 		createEAttribute(sourceFileEClass, SOURCE_FILE__URI);
@@ -366,7 +405,7 @@ public class CoveragePackageImpl extends EPackageImpl implements CoveragePackage
 		createEReference(sourceFileEClass, SOURCE_FILE__ELEMENTS);
 
 		coverageElementEClass = createEClass(COVERAGE_ELEMENT);
-		createEAttribute(coverageElementEClass, COVERAGE_ELEMENT__KIND);
+		createEReference(coverageElementEClass, COVERAGE_ELEMENT__TYPE);
 		createEAttribute(coverageElementEClass, COVERAGE_ELEMENT__LABEL);
 		createEAttribute(coverageElementEClass, COVERAGE_ELEMENT__START_LINE);
 		createEAttribute(coverageElementEClass, COVERAGE_ELEMENT__START_COLUMN);
@@ -376,6 +415,9 @@ public class CoveragePackageImpl extends EPackageImpl implements CoveragePackage
 		createEAttribute(coverageElementEClass, COVERAGE_ELEMENT__HITS);
 		createEReference(coverageElementEClass, COVERAGE_ELEMENT__CHILDREN);
 		createEReference(coverageElementEClass, COVERAGE_ELEMENT__PARENT);
+
+		coverageElementTypeEClass = createEClass(COVERAGE_ELEMENT_TYPE);
+		createEAttribute(coverageElementTypeEClass, COVERAGE_ELEMENT_TYPE__IMPL);
 	}
 
 	/**
@@ -413,6 +455,7 @@ public class CoveragePackageImpl extends EPackageImpl implements CoveragePackage
 		initEAttribute(getCoverageSession_Timestamp(), ecorePackage.getEDate(), "timestamp", null, 0, 1, CoverageSession.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCoverageSession_LaunchConfiguration(), ecorePackage.getEString(), "launchConfiguration", null, 0, 1, CoverageSession.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCoverageSession_Files(), this.getSourceFile(), this.getSourceFile_Session(), "files", null, 0, -1, CoverageSession.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCoverageSession_Types(), this.getCoverageElementType(), null, "types", null, 0, -1, CoverageSession.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(sourceFileEClass, SourceFile.class, "SourceFile", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getSourceFile_Uri(), ecorePackage.getEString(), "uri", null, 0, 1, SourceFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -422,7 +465,7 @@ public class CoveragePackageImpl extends EPackageImpl implements CoveragePackage
 		initEReference(getSourceFile_Elements(), this.getCoverageElement(), null, "elements", null, 0, -1, SourceFile.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(coverageElementEClass, CoverageElement.class, "CoverageElement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCoverageElement_Kind(), ecorePackage.getEString(), "kind", null, 0, 1, CoverageElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCoverageElement_Type(), this.getCoverageElementType(), null, "type", null, 0, 1, CoverageElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCoverageElement_Label(), ecorePackage.getEString(), "label", null, 0, 1, CoverageElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCoverageElement_StartLine(), ecorePackage.getEInt(), "startLine", null, 0, 1, CoverageElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCoverageElement_StartColumn(), ecorePackage.getEInt(), "startColumn", null, 0, 1, CoverageElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -432,6 +475,9 @@ public class CoveragePackageImpl extends EPackageImpl implements CoveragePackage
 		initEAttribute(getCoverageElement_Hits(), ecorePackage.getELong(), "hits", null, 0, 1, CoverageElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCoverageElement_Children(), this.getCoverageElement(), this.getCoverageElement_Parent(), "children", null, 0, -1, CoverageElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCoverageElement_Parent(), this.getCoverageElement(), this.getCoverageElement_Children(), "parent", null, 0, 1, CoverageElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(coverageElementTypeEClass, CoverageElementType.class, "CoverageElementType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getCoverageElementType_Impl(), ecorePackage.getEString(), "impl", null, 0, 1, CoverageElementType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

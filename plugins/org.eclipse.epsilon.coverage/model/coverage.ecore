@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="model" nsURI="http://www.eclipse.org/epsilon/coverage"
-    nsPrefix="coverage">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="model" nsURI="http://www.eclipse.org/epsilon/coverage" nsPrefix="coverage">
   <eClassifiers xsi:type="ecore:EClass" name="CoverageSession">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="The coverage information recorded during one (or more, if merged) executions of Epsilon programs."/>
+      <details key="documentation" value="The coverage information recorded during the execution of Epsilon programs."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="timestamp" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDate"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="launchConfiguration"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="launchConfiguration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="files" upperBound="-1"
         eType="#//SourceFile" containment="true" eOpposite="#//SourceFile/session"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
+        eType="#//CoverageElementType" containment="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="The types of the elements of the session (shared between elements of the same type)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SourceFile">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -31,9 +35,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CoverageElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="An element (AST node) of a source file. Probes are elements that are expected to be executed directly by the engine and contribute to coverage statistics. Non-probe elements (e.g. operations, rules) group other elements."/>
+      <details key="documentation" value="An element of a source file. Probes are elements that are expected to be executed directly by the engine and contribute to coverage statistics. Non-probe elements (e.g. operations, rules) group other elements."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//CoverageElementType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startLine" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="startColumn" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
@@ -45,5 +49,15 @@
         eType="#//CoverageElement" containment="true" eOpposite="#//CoverageElement/parent"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//CoverageElement"
         eOpposite="#//CoverageElement/children"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CoverageElementType">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="The type of a coverage element, i.e. the class of the AST element it was recorded from."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="impl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Fully qualified name of the Java class of the AST element (e.g. org.eclipse.epsilon.eol.dom.StatementBlock)."/>
+      </eAnnotations>
+    </eStructuralFeatures>
   </eClassifiers>
 </ecore:EPackage>

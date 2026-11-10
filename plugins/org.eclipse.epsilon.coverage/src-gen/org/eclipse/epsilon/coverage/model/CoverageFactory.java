@@ -49,6 +49,15 @@ public interface CoverageFactory extends EFactory {
 	CoverageElement createCoverageElement();
 
 	/**
+	 * Returns a new object of class '<em>Element Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Element Type</em>'.
+	 * @generated
+	 */
+	CoverageElementType createCoverageElementType();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

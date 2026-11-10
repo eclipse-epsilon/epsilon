@@ -10,13 +10,18 @@ import static org.eclipse.epsilon.coverage.test.CoverageTestUtil.*;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.epsilon.coverage.CoverageElementTypes;
 import org.eclipse.epsilon.coverage.CoverageLines.Status;
 import org.eclipse.epsilon.coverage.CoverageRecorder;
 import org.eclipse.epsilon.coverage.CoverageResources;
 import org.eclipse.epsilon.coverage.CoverageStatistics;
 import org.eclipse.epsilon.coverage.model.CoverageElement;
+import org.eclipse.epsilon.coverage.model.CoverageElementType;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
 import org.eclipse.epsilon.coverage.model.SourceFile;
 import org.eclipse.epsilon.egl.EglTemplateFactory;
@@ -26,6 +31,9 @@ import org.eclipse.epsilon.emc.plainxml.PlainXmlModel;
 import org.eclipse.epsilon.eol.EolModule;
 import org.eclipse.epsilon.eol.IEolModule;
 import org.eclipse.epsilon.eol.concurrent.EolModuleParallel;
+import org.eclipse.epsilon.eol.dom.ExpressionStatement;
+import org.eclipse.epsilon.eol.dom.GreaterThanOperatorExpression;
+import org.eclipse.epsilon.eol.dom.StatementBlock;
 import org.eclipse.epsilon.etl.EtlModule;
 import org.eclipse.epsilon.evl.EvlModule;
 import org.junit.Rule;
@@ -148,7 +156,7 @@ public class CoverageRecorderTests {
 		File file = write(folder.getRoot(), "loop.eol", code);
 		SourceFile sourceFile = getFile(run(new EolModule(), file), file);
 		CoverageElement println = getProbes(sourceFile).stream()
-			.filter(e -> e.getStartLine() == 2 && "ExpressionStatement".equals(e.getKind())).findFirst().get();
+			.filter(e -> e.getStartLine() == 2 && CoverageElementTypes.isOfType(e, ExpressionStatement.class)).findFirst().get();
 		assertEquals(5, println.getHits());
 	}
 
@@ -163,7 +171,7 @@ public class CoverageRecorderTests {
 		SourceFile sourceFile = getFile(run(new EolModuleParallel(), file), file);
 		assertFullyCovered(sourceFile);
 		CoverageElement condition = getProbes(sourceFile).stream()
-			.filter(e -> e.getStartLine() == 2 && "GreaterThanOperatorExpression".equals(e.getKind())).findFirst().get();
+			.filter(e -> e.getStartLine() == 2 && CoverageElementTypes.isOfType(e, GreaterThanOperatorExpression.class)).findFirst().get();
 		assertEquals(100, condition.getHits());
 	}
 
@@ -283,6 +291,44 @@ public class CoverageRecorderTests {
 		for (CoverageElement probe : getProbes(loaded)) {
 			assertEquals(1, probe.getHits());
 		}
+	}
+
+	@Test
+	public void testSharedTypes() throws Exception {
+		String code = "var x = 1;\nvar y = 2;\nif (x > 0) {\n  'a'.println();\n}\n";
+		File file = write(folder.getRoot(), "types.eol", code);
+		CoverageSession session = run(new EolModule(), file);
+
+		// One type per AST class, shared by all elements of that class
+		Set<String> impls = new HashSet<>();
+		for (CoverageElementType type : session.getTypes()) {
+			assertTrue("Duplicate type " + type.getImpl(), impls.add(type.getImpl()));
+		}
+		for (CoverageElement element : getElements(session)) {
+			assertNotNull(element.getType());
+			assertSame(session, element.getType().eContainer());
+		}
+		assertTrue(impls.contains(StatementBlock.class.getName()));
+		assertEquals("StatementBlock", CoverageElementTypes.getSimpleName(session.getTypes().stream()
+			.filter(t -> StatementBlock.class.getName().equals(t.getImpl())).findFirst().get()));
+
+		// Types (and the references to them) survive saving and loading
+		File ecv = new File(folder.getRoot(), "types.ecv");
+		CoverageResources.save(session, ecv);
+		CoverageSession loaded = CoverageResources.load(ecv);
+		assertEquals(session.getTypes().size(), loaded.getTypes().size());
+		List<CoverageElement> before = getElements(session), after = getElements(loaded);
+		assertEquals(before.size(), after.size());
+		for (int i = 0; i < before.size(); i++) {
+			assertEquals(CoverageElementTypes.getImpl(before.get(i)), CoverageElementTypes.getImpl(after.get(i)));
+			assertTrue(loaded.getTypes().contains(after.get(i).getType()));
+		}
+	}
+
+	protected List<CoverageElement> getElements(CoverageSession session) {
+		List<CoverageElement> elements = new ArrayList<>();
+		session.eAllContents().forEachRemaining(o -> { if (o instanceof CoverageElement) elements.add((CoverageElement) o); });
+		return elements;
 	}
 
 	@Test

@@ -7,9 +7,9 @@
 package org.eclipse.epsilon.coverage.dt.views;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.epsilon.common.dt.util.LogUtil;
 import org.eclipse.epsilon.coverage.dt.CoverageDtPlugin;
 import org.eclipse.epsilon.coverage.dt.CoverageSessionManager;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.IEditorLauncher;
 import org.eclipse.ui.PlatformUI;
 
@@ -25,8 +25,7 @@ public class CoverageFileLauncher implements IEditorLauncher {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(CoverageDtPlugin.VIEW_ID);
 		}
 		catch (Exception ex) {
-			MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-				"Coverage", "Could not open " + file + ": " + ex.getMessage());
+			LogUtil.log("Could not open " + file + ": " + ex.getMessage(), ex, true);
 		}
 	}
 }

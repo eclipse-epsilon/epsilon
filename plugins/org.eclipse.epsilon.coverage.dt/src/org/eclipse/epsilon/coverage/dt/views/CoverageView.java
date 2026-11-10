@@ -19,6 +19,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.epsilon.common.dt.util.LogUtil;
+import org.eclipse.epsilon.coverage.CoverageElementTypes;
 import org.eclipse.epsilon.coverage.CoverageResources;
 import org.eclipse.epsilon.coverage.CoverageStatistics;
 import org.eclipse.epsilon.coverage.CoverageStatistics.Counter;
@@ -29,6 +31,7 @@ import org.eclipse.epsilon.coverage.dt.ICoverageSessionListener;
 import org.eclipse.epsilon.coverage.model.CoverageElement;
 import org.eclipse.epsilon.coverage.model.CoverageSession;
 import org.eclipse.epsilon.coverage.model.SourceFile;
+import org.eclipse.epsilon.eol.dom.StatementBlock;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -198,12 +201,12 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		else if (element instanceof CoverageElement) {
 			CoverageElement coverageElement = (CoverageElement) element;
 			String label = coverageElement.getLabel();
-			if ("StatementBlock".equals(coverageElement.getKind()) && coverageElement.getParent() == null) {
+			if (CoverageElementTypes.isOfType(coverageElement, StatementBlock.class) && coverageElement.getParent() == null) {
 				// The main block of the program (its recorded label is a snippet of its first statement)
 				label = "(main)";
 			}
 			else if (label == null) {
-				label = coverageElement.getKind();
+				label = CoverageElementTypes.getSimpleName(coverageElement);
 			}
 			return label + " [line " + coverageElement.getStartLine() + "]";
 		}
@@ -240,7 +243,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 			}
 		}
 		catch (Exception ex) {
-			CoverageDtPlugin.log(ex);
+			LogUtil.log(ex);
 		}
 	}
 
@@ -331,7 +334,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 			parent.refreshLocal(IResource.DEPTH_INFINITE, null);
 		}
 		catch (Exception ex) {
-			MessageDialog.openError(getSite().getShell(), "Coverage", "Could not save " + path + ": " + ex.getMessage());
+			LogUtil.log("Could not save " + path + ": " + ex.getMessage(), ex, true);
 		}
 	}
 
@@ -412,7 +415,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 			if (parent instanceof SourceFile) {
 				for (CoverageElement element : ((SourceFile) parent).getElements()) {
 					// The main block of the program is shown as "(main)"
-					if ("StatementBlock".equals(element.getKind())) children.add(element);
+					if (CoverageElementTypes.isOfType(element, StatementBlock.class)) children.add(element);
 					else collect(element, children);
 				}
 			}
@@ -444,7 +447,7 @@ public class CoverageView extends ViewPart implements ICoverageSessionListener {
 		 * "Kind name" (or just "Kind" if they have no name) by the coverage recorder.
 		 */
 		protected boolean isNamed(CoverageElement element) {
-			String label = element.getLabel(), kind = element.getKind();
+			String label = element.getLabel(), kind = CoverageElementTypes.getSimpleName(element);
 			return !element.isProbe() && label != null && kind != null && (label.equals(kind) || label.startsWith(kind + " "));
 		}
 

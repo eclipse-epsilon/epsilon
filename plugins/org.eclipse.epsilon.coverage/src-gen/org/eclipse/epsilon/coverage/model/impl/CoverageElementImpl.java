@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.eclipse.epsilon.coverage.model.CoverageElement;
+import org.eclipse.epsilon.coverage.model.CoverageElementType;
 import org.eclipse.epsilon.coverage.model.CoveragePackage;
 
 /**
@@ -30,7 +31,7 @@ import org.eclipse.epsilon.coverage.model.CoveragePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.epsilon.coverage.model.impl.CoverageElementImpl#getKind <em>Kind</em>}</li>
+ *   <li>{@link org.eclipse.epsilon.coverage.model.impl.CoverageElementImpl#getType <em>Type</em>}</li>
  *   <li>{@link org.eclipse.epsilon.coverage.model.impl.CoverageElementImpl#getLabel <em>Label</em>}</li>
  *   <li>{@link org.eclipse.epsilon.coverage.model.impl.CoverageElementImpl#getStartLine <em>Start Line</em>}</li>
  *   <li>{@link org.eclipse.epsilon.coverage.model.impl.CoverageElementImpl#getStartColumn <em>Start Column</em>}</li>
@@ -46,24 +47,14 @@ import org.eclipse.epsilon.coverage.model.CoveragePackage;
  */
 public class CoverageElementImpl extends MinimalEObjectImpl.Container implements CoverageElement {
 	/**
-	 * The default value of the '{@link #getKind() <em>Kind</em>}' attribute.
+	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getKind()
+	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String KIND_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getKind() <em>Kind</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getKind()
-	 * @generated
-	 * @ordered
-	 */
-	protected String kind = KIND_EDEFAULT;
+	protected CoverageElementType type;
 
 	/**
 	 * The default value of the '{@link #getLabel() <em>Label</em>}' attribute.
@@ -240,8 +231,25 @@ public class CoverageElementImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
-	public String getKind() {
-		return kind;
+	public CoverageElementType getType() {
+		if (type != null && type.eIsProxy()) {
+			InternalEObject oldType = (InternalEObject)type;
+			type = (CoverageElementType)eResolveProxy(oldType);
+			if (type != oldType) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, CoveragePackage.COVERAGE_ELEMENT__TYPE, oldType, type));
+			}
+		}
+		return type;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CoverageElementType basicGetType() {
+		return type;
 	}
 
 	/**
@@ -250,11 +258,11 @@ public class CoverageElementImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 */
 	@Override
-	public void setKind(String newKind) {
-		String oldKind = kind;
-		kind = newKind;
+	public void setType(CoverageElementType newType) {
+		CoverageElementType oldType = type;
+		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CoveragePackage.COVERAGE_ELEMENT__KIND, oldKind, kind));
+			eNotify(new ENotificationImpl(this, Notification.SET, CoveragePackage.COVERAGE_ELEMENT__TYPE, oldType, type));
 	}
 
 	/**
@@ -531,8 +539,9 @@ public class CoverageElementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case CoveragePackage.COVERAGE_ELEMENT__KIND:
-				return getKind();
+			case CoveragePackage.COVERAGE_ELEMENT__TYPE:
+				if (resolve) return getType();
+				return basicGetType();
 			case CoveragePackage.COVERAGE_ELEMENT__LABEL:
 				return getLabel();
 			case CoveragePackage.COVERAGE_ELEMENT__START_LINE:
@@ -564,8 +573,8 @@ public class CoverageElementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case CoveragePackage.COVERAGE_ELEMENT__KIND:
-				setKind((String)newValue);
+			case CoveragePackage.COVERAGE_ELEMENT__TYPE:
+				setType((CoverageElementType)newValue);
 				return;
 			case CoveragePackage.COVERAGE_ELEMENT__LABEL:
 				setLabel((String)newValue);
@@ -607,8 +616,8 @@ public class CoverageElementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case CoveragePackage.COVERAGE_ELEMENT__KIND:
-				setKind(KIND_EDEFAULT);
+			case CoveragePackage.COVERAGE_ELEMENT__TYPE:
+				setType((CoverageElementType)null);
 				return;
 			case CoveragePackage.COVERAGE_ELEMENT__LABEL:
 				setLabel(LABEL_EDEFAULT);
@@ -649,8 +658,8 @@ public class CoverageElementImpl extends MinimalEObjectImpl.Container implements
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case CoveragePackage.COVERAGE_ELEMENT__KIND:
-				return KIND_EDEFAULT == null ? kind != null : !KIND_EDEFAULT.equals(kind);
+			case CoveragePackage.COVERAGE_ELEMENT__TYPE:
+				return type != null;
 			case CoveragePackage.COVERAGE_ELEMENT__LABEL:
 				return LABEL_EDEFAULT == null ? label != null : !LABEL_EDEFAULT.equals(label);
 			case CoveragePackage.COVERAGE_ELEMENT__START_LINE:
@@ -683,9 +692,7 @@ public class CoverageElementImpl extends MinimalEObjectImpl.Container implements
 		if (eIsProxy()) return super.toString();
 
 		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (kind: ");
-		result.append(kind);
-		result.append(", label: ");
+		result.append(" (label: ");
 		result.append(label);
 		result.append(", startLine: ");
 		result.append(startLine);

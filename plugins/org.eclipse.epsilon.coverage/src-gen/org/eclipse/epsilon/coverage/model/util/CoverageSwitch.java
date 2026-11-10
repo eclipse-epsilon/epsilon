@@ -84,6 +84,12 @@ public class CoverageSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case CoveragePackage.COVERAGE_ELEMENT_TYPE: {
+				CoverageElementType coverageElementType = (CoverageElementType)theEObject;
+				T result = caseCoverageElementType(coverageElementType);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -130,6 +136,21 @@ public class CoverageSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseCoverageElement(CoverageElement object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Element Type</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Element Type</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCoverageElementType(CoverageElementType object) {
 		return null;
 	}
 
