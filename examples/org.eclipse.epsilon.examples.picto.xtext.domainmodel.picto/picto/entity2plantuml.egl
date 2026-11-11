@@ -115,7 +115,7 @@ operation Entity getLink() {
 	if (self == mainEntity) {
 		return "showElement('" + self.id + "','" + self.eResource.uri + "')";
 	}
-	return "showView(" + getPath(Sequence{"Entities", self.name})% + ")";
+	return "showView(" + getPath(Sequence{"Entities", self.name}) + ")";
 }
 
 operation Feature getReferenceLabel() {
