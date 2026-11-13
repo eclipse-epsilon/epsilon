@@ -1,0 +1,6 @@
+target "Epsilon API Baseline Target Platform" environment JavaSE-21 with configurePhase requirements source
+
+location "https://download.eclipse.org/epsilon/updates/2.9/" {
+    org.eclipse.epsilon.core.feature.feature.group lazy
+    org.eclipse.epsilon.emf.feature.feature.group lazy
+}
