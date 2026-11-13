@@ -257,6 +257,12 @@
       name="Epsilon Target Platform">
     <description></description>
   </setupTask>
+  <setupTask
+      xsi:type="pde:APIBaselineFromTargetTask"
+      name="Epsilon API Baseline"
+      targetName="Epsilon API Baseline Target Platform">
+    <description>Creates and activates a PDE API baseline from the last Epsilon release, as defined in releng/org.eclipse.epsilon.target/org.eclipse.epsilon.baseline.target</description>
+  </setupTask>
   <stream name="main"
       label="Main">
     <setupTask
