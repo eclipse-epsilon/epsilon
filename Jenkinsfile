@@ -70,6 +70,20 @@ pipeline {
               sh 'mvn -B -f tests/org.eclipse.epsilon.test surefire:test -P ci'
             }
           }
+          stage('API check') {
+            when {
+              anyOf {
+                changeset comparator: 'REGEXP', pattern: "${baseTriggers}|(releng\\/org[.]eclipse[.]epsilon[.]target\\/.*)"
+                expression { return currentBuild.number == 1 }
+                triggeredBy 'UserIdCause'
+              }
+            }
+            steps {
+              /* Compare the API of the plugins against the latest release
+               * (see the api-check profile in pom.xml). */
+              sh 'mvn -B -f plugins verify -DskipTests -P api-check'
+            }
+          }
           stage('Javadocs') {
             when {
               anyOf {
