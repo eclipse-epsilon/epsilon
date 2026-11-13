@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Epsilon API Baseline Target Platform" sequenceNumber="1794575785">
+<target name="Epsilon API Baseline Target Platform" sequenceNumber="1794577079">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.epsilon.core.feature.feature.group" version="0.0.0"/>
       <unit id="org.eclipse.epsilon.emf.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.epsilon.eol.dap.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.epsilon.hutn.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.epsilon.flexmi.feature.feature.group" version="0.0.0"/>
+      <unit id="org.eclipse.epsilon.picto.feature.feature.group" version="0.0.0"/>
       <repository location="https://download.eclipse.org/epsilon/updates/2.9/"/>
     </location>
   </locations>
