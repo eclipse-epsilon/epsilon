@@ -227,5 +227,57 @@
         </plugins>
       </build>
     </profile>
+    <profile>
+      <id>api-check</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <properties>
+        <!--
+          tycho-apitools-plugin only accepts p2 repositories as baselines, not
+          target definitions. Keep these in sync with the repository locations in
+          releng/org.eclipse.epsilon.target/org.eclipse.epsilon.baseline.tpd
+          (and its generated .target), updating both after each release.
+        -->
+        <epsilon.api.baseline>https://download.eclipse.org/epsilon/updates/2.9/</epsilon.api.baseline>
+        <epsilon.api.baseline.orbit>https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository</epsilon.api.baseline.orbit>
+      </properties>
+      <build>
+        <plugins>
+          <!-- https://tycho.eclipseprojects.io/doc/latest/tycho-apitools-plugin/plugin-info.html -->
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-apitools-plugin</artifactId>
+            <version>${tycho.version}</version>
+            <configuration>
+              <baselines>
+                <repository>
+                  <url>${epsilon.api.baseline}</url>
+                </repository>
+                <repository>
+                  <url>${epsilon.api.baseline.orbit}</url>
+                </repository>
+              </baselines>
+              <!-- Default is false, which only logs a warning and skips the analysis -->
+              <failOnResolutionError>true</failOnResolutionError>
+            </configuration>
+            <executions>
+              <execution>
+                <id>generate</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>verify</id>
+                <goals>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 </project>
