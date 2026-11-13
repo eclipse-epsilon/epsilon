@@ -14,7 +14,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-22.04, macos-15, windows-2022]
+        os: [ubuntu-26.04, macos-15, windows-2022]
         jdk: [21]
     runs-on: ${{ matrix.os }}
     steps:
@@ -32,7 +32,7 @@ jobs:
           esm.ubuntu.com:443
     - uses: actions/checkout@v7.0.1
     - name: Install Webkit + GTK bindings
-      run: sudo apt update -yq && sudo apt-get install -yq libwebkit2gtk-4.0-dev
+      run: sudo apt update -yq && sudo apt-get install -yq libwebkit2gtk-4.1-dev
       if: runner.os == 'Linux'
     - name: Set up Maven 3.9.9
       uses: stCarolas/setup-maven@12eb41b233df95d49b0c11fc1b5bc8312e5d4ce0
@@ -56,6 +56,9 @@ jobs:
         run: mvn --batch-mode -f tests/org.eclipse.epsilon.test verify -P plugged
     - name: Full Test Suite
       run: mvn --batch-mode -f tests/org.eclipse.epsilon.test surefire:test -P unit
+    - name: API baseline check
+      run: mvn --batch-mode -f plugins verify -DskipTests -P api-check
+      if: runner.os == 'Linux'
     - name: Standalone Maven artifacts
       run: mvn --batch-mode -T 1C -f pom-plain.xml compile
     - name: Upload Log
