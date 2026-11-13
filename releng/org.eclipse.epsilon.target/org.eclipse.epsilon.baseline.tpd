@@ -8,3 +8,8 @@ location "https://download.eclipse.org/epsilon/updates/2.9/" {
     org.eclipse.epsilon.flexmi.feature.feature.group lazy
     org.eclipse.epsilon.picto.feature.feature.group lazy
 }
+
+// Dependencies of the baseline bundles which are not in the Epsilon update site
+location "https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" {
+	org.antlr.runtime [3.5.2.v20200724-1452,3.5.2.v20200724-1452]
+}
