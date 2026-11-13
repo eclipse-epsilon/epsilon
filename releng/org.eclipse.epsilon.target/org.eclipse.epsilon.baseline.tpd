@@ -13,3 +13,20 @@ location "https://download.eclipse.org/epsilon/updates/2.9/" {
 location "https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository" {
 	org.antlr.runtime [3.5.2.v20200724-1452,3.5.2.v20200724-1452]
 }
+
+location "https://download.eclipse.org/releases/2026-06" {
+    org.eclipse.emf lazy
+    org.eclipse.emf.ecore.change lazy
+    org.eclipse.emf.ecore.xmi lazy
+    org.eclipse.xsd lazy
+}
+
+location "https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-06" {
+    org.commonmark lazy
+    org.commonmark.ext-gfm-strikethrough lazy
+    org.commonmark.ext-gfm-tables lazy
+    org.commonmark.ext-ins lazy
+    org.commonmark.ext-yaml-front-matter lazy
+    org.commonmark.ext-image-attributes lazy
+    slf4j.api [1.7.36, 2.0.0)
+}

@@ -241,6 +241,8 @@
         -->
         <epsilon.api.baseline>https://download.eclipse.org/epsilon/updates/2.9/</epsilon.api.baseline>
         <epsilon.api.baseline.orbit>https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository</epsilon.api.baseline.orbit>
+        <epsilon.api.baseline.eclipse>https://download.eclipse.org/releases/2026-06</epsilon.api.baseline.eclipse>
+        <epsilon.api.baseline.commonmark>https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-06</epsilon.api.baseline.commonmark>
       </properties>
       <build>
         <plugins>
@@ -278,6 +280,12 @@
                 </repository>
                 <repository>
                   <url>${epsilon.api.baseline.orbit}</url>
+                </repository>
+                <repository>
+                  <url>${epsilon.api.baseline.eclipse}</url>
+                </repository>
+                <repository>
+                  <url>${epsilon.api.baseline.commonmark}</url>
                 </repository>
               </baselines>
               <!-- Default is false, which only logs a warning and skips the analysis -->

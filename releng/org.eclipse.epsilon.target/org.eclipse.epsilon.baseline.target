@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Epsilon API Baseline Target Platform" sequenceNumber="1794577079">
+<target name="Epsilon API Baseline Target Platform" sequenceNumber="1794582037">
   <locations>
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.epsilon.core.feature.feature.group" version="0.0.0"/>
@@ -15,6 +15,23 @@
     <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.antlr.runtime" version="3.5.2.v20200724-1452"/>
       <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
+      <unit id="org.eclipse.emf" version="0.0.0"/>
+      <unit id="org.eclipse.emf.ecore.change" version="0.0.0"/>
+      <unit id="org.eclipse.emf.ecore.xmi" version="0.0.0"/>
+      <unit id="org.eclipse.xsd" version="0.0.0"/>
+      <repository location="https://download.eclipse.org/releases/2026-06"/>
+    </location>
+    <location includeMode="planner" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
+      <unit id="org.commonmark" version="0.0.0"/>
+      <unit id="org.commonmark.ext-gfm-strikethrough" version="0.0.0"/>
+      <unit id="org.commonmark.ext-gfm-tables" version="0.0.0"/>
+      <unit id="org.commonmark.ext-ins" version="0.0.0"/>
+      <unit id="org.commonmark.ext-yaml-front-matter" version="0.0.0"/>
+      <unit id="org.commonmark.ext-image-attributes" version="0.0.0"/>
+      <unit id="slf4j.api" version="1.7.36"/>
+      <repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/2026-06"/>
     </location>
   </locations>
   <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21"/>
