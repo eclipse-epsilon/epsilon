@@ -82,6 +82,14 @@
         url="http://download.eclipse.org/releases/latest"/>
   </setupTask>
   <setupTask
+      xsi:type="setup.p2:P2Task">
+    <description>Install the Target Platform Definition DSL editor (for the .tpd files in releng)</description>
+    <requirement
+        name="org.eclipse.cbi.targetplatform.feature.feature.group"/>
+    <repository
+        url="https://download.eclipse.org/cbi/updates/tpd/release"/>
+  </setupTask>
+  <setupTask
       xsi:type="setup:ResourceCreationTask"
       excludedTriggers="STARTUP MANUAL"
       targetURL="${workspace.location|uri}/.metadata/.plugins/org.eclipse.jdt.ui/dialog_settings.xml"
@@ -238,7 +246,7 @@
           xsi:type="predicates:AndPredicate">
         <operand
             xsi:type="workingsets:ExclusionPredicate"
-            excludedWorkingSet="//@setupTasks.10/@workingSets[name='Epsilon%20Plugins'] //@setupTasks.10/@workingSets[name='Epsilon%20Examples'] //@setupTasks.10/@workingSets[name='Epsilon%20Features'] //@setupTasks.10/@workingSets[name='Epsilon%20Tests']"/>
+            excludedWorkingSet="//@setupTasks.11/@workingSets[name='Epsilon%20Plugins'] //@setupTasks.11/@workingSets[name='Epsilon%20Examples'] //@setupTasks.11/@workingSets[name='Epsilon%20Features'] //@setupTasks.11/@workingSets[name='Epsilon%20Tests']"/>
         <operand
             xsi:type="predicates:OrPredicate">
           <operand
@@ -256,6 +264,12 @@
       xsi:type="pde:TargetPlatformTask"
       name="Epsilon Target Platform">
     <description></description>
+  </setupTask>
+  <setupTask
+      xsi:type="pde:APIBaselineFromTargetTask"
+      name="Epsilon API Baseline"
+      targetName="Epsilon API Baseline Target Platform">
+    <description>Creates and activates a PDE API baseline from the last Epsilon release, as defined in releng/org.eclipse.epsilon.target/org.eclipse.epsilon.baseline.target</description>
   </setupTask>
   <stream name="main"
       label="Main">

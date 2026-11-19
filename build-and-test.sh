@@ -19,6 +19,9 @@ mvn -f tests/org.eclipse.epsilon.test verify -P plugged
 # Full test suite
 mvn -f tests/org.eclipse.epsilon.test surefire:test -P unit
 
+# Check plugin APIs against the baseline (see api-check profile in pom.xml)
+mvn -f plugins verify -DskipTests -P api-check
+
 # Build standalone Maven artifacts without Tycho
 mvn -T 1C -f pom-plain.xml compile
 
