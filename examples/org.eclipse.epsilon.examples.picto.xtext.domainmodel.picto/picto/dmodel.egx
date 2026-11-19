@@ -1,0 +1,74 @@
+rule AllEntities {
+
+	template : "entity2plantuml.egl"
+
+	parameters : Map{
+		"path" = Sequence{"All Entities"},
+		"icon" = "diagram-ffffff",
+		"format" = "plantuml",
+		"inputEntities" = Entity.all.name,
+		"layers" = Sequence {
+			Map {"id"="documentation", "title"="Documentation", "active"=false},
+			Map {"id"="supertype", "title"="Supertype"},
+			Map {"id"="inlineReferences", "title"="Inline references"},
+			Map {"id"="referenceLabels", "title"="Reference labels", "active"=false}
+		}
+	}
+}
+
+rule Entity2PlantUML
+	transform e : Entity {
+
+	template : "entity2plantuml.egl"
+
+	parameters : Map {
+		"path" = Sequence{"Entities", e.name},
+		"icon" = "diagram-ffffff",
+		"format" = "plantuml",
+		"layers" = Sequence {
+			Map {"id"="documentation", "title"="Documentation"},
+			Map {"id"="supertype", "title"="Supertype"},
+			Map {"id"="subtypes", "title"="Subtypes"},
+			Map {"id"="inlineReferences", "title"="Inline references"},
+			Map {"id"="referenceLabels", "title"="Reference labels"}
+		}
+	}
+}
+
+rule StatsChart {
+	template : "barchart.egl"
+	
+	parameters : Map {
+		"path" = List{"Stats"},
+		"icon" = "barchart",
+		"format" = "html"
+	}
+}
+
+rule TypesTable {
+	template : "typeStats.pinset"
+	
+	parameters : Map {
+		"path" = Sequence{"Types"},
+		"icon" = "table",
+		"format" = "csv"
+	}
+}
+
+// A lazy rule for custom views in the standalone visualization example
+@lazy
+rule Entities2PlantUML {
+
+	template : "entity2plantuml.egl"
+
+	parameters : Map {
+		// requires "inputEntities" to work
+		"format" = "plantuml",
+		"layers" = Sequence {
+			Map {"id"="documentation", "title"="Documentation"},
+			Map {"id"="supertype", "title"="Supertype", "active"=false},
+			Map {"id"="inlineReferences", "title"="Inline references", "active"=false},
+			Map {"id"="referenceLabels", "title"="Reference labels"}
+		}
+	}
+}

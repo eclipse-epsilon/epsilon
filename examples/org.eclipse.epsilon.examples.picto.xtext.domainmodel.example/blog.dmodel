@@ -1,6 +1,8 @@
 datatype String
 
 entity Blog {
+    "A collection of posts on related topics"
+
     title: String
     many posts: Post
 }
@@ -10,12 +12,16 @@ entity HasAuthor {
 }
 
 entity Post extends HasAuthor {
+    "A blog entry with a title and some content"
+
     title: String
     content: String
     many comments: Comment
 }
 
 entity Comment extends HasAuthor {
+    "A comment on a post or a reply to another comment"
+
     content: String
     many responses: Comment
 }
