@@ -53,7 +53,7 @@ public class ParallelMapByOperation extends MapByOperation {
 		Collection<Entry<?, ?>> intermediates = context.executeAll(expression, jobs);
 		
 		return intermediates
-			.parallelStream()
+			.stream().parallel()
 			.collect(Collectors.toMap(
 				Entry::getKey,
 				entry -> {

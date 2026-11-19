@@ -43,8 +43,13 @@ public class SortByOperation extends CollectBasedOperation {
 			decoratedObjects[i] = new DecoratedObject(sourceIter.next(), collectedIter.next());
 		}
 		
-		// This will automatically become a sequential sort if array size is small.
-		Arrays.parallelSort(decoratedObjects, new DecoratedObjectComparator(context.getPrettyPrinterManager()));
+		// A parallel sorted() delegates to Arrays.parallelSort, which automatically
+		// becomes a sequential sort if array size is small. The stream form is used
+		// because some Java runtimes (e.g. TeaVM) don't provide Arrays.parallelSort.
+		decoratedObjects = Arrays.stream(decoratedObjects)
+			.parallel()
+			.sorted(new DecoratedObjectComparator(context.getPrettyPrinterManager()))
+			.toArray(DecoratedObject[]::new);
 		
 		// Build a new collection of the original collection elements
 		// ordered by the result of sorting the collected items

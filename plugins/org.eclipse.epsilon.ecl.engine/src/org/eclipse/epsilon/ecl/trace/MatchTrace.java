@@ -435,7 +435,7 @@ public class MatchTrace implements Collection<Match> {
 	 */
 	@Override
 	public Stream<Match> parallelStream() {
-		return syncOnGraph((graph) -> graph.edges().parallelStream());
+		return syncOnGraph((graph) -> graph.edges().stream().parallel());
 	}
 
 }

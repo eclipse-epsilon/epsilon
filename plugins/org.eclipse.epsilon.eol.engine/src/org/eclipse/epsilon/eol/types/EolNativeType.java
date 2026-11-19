@@ -64,7 +64,7 @@ public class EolNativeType extends EolAnyType {
 	
 	public Class<?> getJavaClass() {
 		try {
-			return ClassLoader.getSystemClassLoader().loadClass(clazz);
+			return Class.forName(clazz, false, ClassLoader.getSystemClassLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}

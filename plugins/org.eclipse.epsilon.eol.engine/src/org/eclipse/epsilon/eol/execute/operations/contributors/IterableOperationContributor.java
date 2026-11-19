@@ -227,7 +227,7 @@ public class IterableOperationContributor extends OperationContributor {
 		Iterable<?> target = getTarget();
 		if (target instanceof Collection) {
 			Collection<?> col = ((Collection<?>) target);
-			return parallel ? col.parallelStream() : col.stream();
+			return parallel ? col.stream().parallel() : col.stream();
 		}
 		else {
 			return StreamSupport.stream(target.spliterator(), parallel);

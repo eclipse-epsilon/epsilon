@@ -32,7 +32,7 @@ public class EolClasspathNativeTypeDelegate extends AbstractToolNativeTypeDelega
 	@Override
 	public boolean knowsAbout(String clazz) {
 		try {
-			fClassLoader.loadClass(clazz);
+			Class.forName(clazz, false, fClassLoader);
 		} catch (ClassNotFoundException e) {
 			return false;
 		}
@@ -42,7 +42,7 @@ public class EolClasspathNativeTypeDelegate extends AbstractToolNativeTypeDelega
 	@Override
 	public Object createInstance(String clazz, List<Object> parameters) throws EolRuntimeException {
 		try {
-			Class<?> c = fClassLoader.loadClass(clazz);
+			Class<?> c = Class.forName(clazz, false, fClassLoader);
 			final int paramsSize = parameters.size();
 			if (paramsSize > 0) {
 				for (Constructor<?> con : c.getConstructors()) {

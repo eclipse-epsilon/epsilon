@@ -24,7 +24,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.nio.channels.FileChannel;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileSystem;
@@ -345,18 +344,15 @@ public class FileUtil {
 			}
 		}
 		else {
-			// Based on the second answer in http://stackoverflow.com/questions/106770
+			// Plain streams rather than FileChannels, which some Java runtimes (e.g. TeaVM) lack
 			try (
 				FileInputStream isSrc = new FileInputStream(srcFile);
 				FileOutputStream osDst = new FileOutputStream(dstFile);
-				FileChannel chSrc = isSrc.getChannel();
-				FileChannel chDst = osDst.getChannel();
 			) {
-				final long srcBytes = srcFile.length();
-				long transferred = 0;
-				while (transferred < srcBytes) {
-					transferred += chDst.transferFrom(chSrc, transferred, srcBytes);
-					chDst.position(transferred);
+				final byte[] buffer = new byte[8192];
+				int read;
+				while ((read = isSrc.read(buffer)) != -1) {
+					osDst.write(buffer, 0, read);
 				}
 			}
 		}

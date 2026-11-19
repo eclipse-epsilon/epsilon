@@ -55,15 +55,15 @@ public class ConcurrencyUtils {
 	}
 	
 	public static <T> Set<T> concurrentSet(Collection<T> initial) {
-		Set<T> cs = ConcurrencyUtils.<T, Boolean>newConcurrentHashMap(
+		Set<T> cs = Collections.newSetFromMap(ConcurrencyUtils.<T, Boolean>newConcurrentHashMap(
 				null, initial != null ? initial.size() : -1, -1
-			).keySet(Boolean.TRUE);
+			));
 		if (cs != null) cs.addAll(initial);
 		return cs;
 	}
 	
 	public static <T> Set<T> concurrentSet(int initialCapacity, int parallelism) {
-		return ConcurrencyUtils.<T, Boolean>newConcurrentHashMap(null, initialCapacity, parallelism).keySet(Boolean.TRUE);
+		return Collections.newSetFromMap(ConcurrencyUtils.<T, Boolean>newConcurrentHashMap(null, initialCapacity, parallelism));
 	}
 	
 	public static <K, V> ConcurrentMap<K, V> concurrentMap() {

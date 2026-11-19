@@ -12,6 +12,7 @@ package org.eclipse.epsilon.egl.test.unit;
 import junit.framework.JUnit4TestAdapter;
 import junit.framework.Test;
 
+import org.eclipse.epsilon.egl.config.TestDefaultContentTypeRepository;
 import org.eclipse.epsilon.egl.config.TestXMLConfigFileReader;
 import org.eclipse.epsilon.egl.config.TestXMLContentTypeRepository;
 
@@ -21,7 +22,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({TestXMLConfigFileReader.class,
-               TestXMLContentTypeRepository.class})
+               TestXMLContentTypeRepository.class,
+               TestDefaultContentTypeRepository.class})
 public class ConfigSuite {
 
 	public static Test suite() {

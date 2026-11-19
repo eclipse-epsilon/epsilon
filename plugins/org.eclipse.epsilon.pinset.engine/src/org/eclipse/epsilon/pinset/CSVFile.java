@@ -9,8 +9,11 @@
  *********************************************************************/
 package org.eclipse.epsilon.pinset;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +62,8 @@ public class CSVFile {
 	public void save() throws FileNotFoundException {
 		File file = new File(path);
 		file.getParentFile().mkdirs();
-		pw = new PrintWriter(file);
+		// Equivalent to new PrintWriter(file), which some Java runtimes (e.g. TeaVM) lack
+		pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file))));
 		headerRecord(dataset.getColumnNames());
 		for (List<ValueWrapper> wrappers : dataset.getRows()) {
 			rowRecord(wrappers);

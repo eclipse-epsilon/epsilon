@@ -82,10 +82,10 @@ public class DynamicOperation extends AbstractOperation {
 		
 		final int candidateParamCount = resolvedMethod.getParameterCount();
 		final Object[] candidateParameterValues = new Object[candidateParamCount];
-		final java.lang.reflect.Parameter[] candidateParameterTypes = resolvedMethod.getParameters();
+		final Class<?>[] candidateParameterTypes = resolvedMethod.getParameterTypes();
 		
 		for (int i = 0; i < candidateParamCount && entriesIter.hasNext(); i++) {
-			final Class<?> targetType = candidateParameterTypes[i].getType();
+			final Class<?> targetType = candidateParameterTypes[i];
 			final Map.Entry<Expression, List<Parameter>> complexExpr = entriesIter.next();
 			final Expression rawExpr = complexExpr.getKey();
 			

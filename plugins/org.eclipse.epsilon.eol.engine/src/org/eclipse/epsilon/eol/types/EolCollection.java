@@ -129,7 +129,7 @@ public abstract class EolCollection<T> implements Collection<T> {
 	
 	@Override
 	public Stream<T> parallelStream() {
-		return wrapped.parallelStream();
+		return wrapped.stream().parallel();
 	}
 	
 	@Override

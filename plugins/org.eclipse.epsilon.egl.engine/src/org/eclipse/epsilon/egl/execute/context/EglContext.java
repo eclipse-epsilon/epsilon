@@ -15,7 +15,7 @@ import java.util.List;
 import org.eclipse.epsilon.egl.EglTemplate;
 import org.eclipse.epsilon.egl.EglTemplateFactory;
 import org.eclipse.epsilon.egl.config.ContentTypeRepository;
-import org.eclipse.epsilon.egl.config.XMLContentTypeRepository;
+import org.eclipse.epsilon.egl.config.DefaultContentTypeRepository;
 import org.eclipse.epsilon.egl.execute.operations.EglOperationFactory;
 import org.eclipse.epsilon.egl.internal.IEglModule;
 import org.eclipse.epsilon.egl.merge.partition.CompositePartitioner;
@@ -33,7 +33,7 @@ public class EglContext extends EolContext implements IEglContext {
 	private EglTemplateFactory templateFactory;
 	private List<StatusMessage> statusMessages = new LinkedList<>();
 	private CompositePartitioner partitioner = new CompositePartitioner();
-	private ContentTypeRepository repository = new XMLContentTypeRepository(this);
+	private ContentTypeRepository repository = new DefaultContentTypeRepository();
 	private EglExecutionManager executionManager = new EglExecutionManager(this);
 	private IEolContext delegate;
 	
