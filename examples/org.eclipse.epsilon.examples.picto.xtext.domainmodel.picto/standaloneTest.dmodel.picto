@@ -1,8 +1,8 @@
 <?nsuri picto?>
-<picto format="egx" transformation="dmodel.egx" standalone="true">
+<picto format="egx" transformation="picto/dmodel.egx" standalone="true">
     <model type="EMF">
         <parameter name="name" value="M"/>
         <parameter name="metamodelUri" value="http://www.eclipse.org/epsilon/examples/picto/xtext/domainmodel/Domainmodel"/>
-        <parameter name="modelFile" file="test.dmodel"/>
+        <parameter name="modelFile" file="blog.dmodel"/>
     </model>
 </picto>
