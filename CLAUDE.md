@@ -96,6 +96,9 @@ bash build-and-test.sh
 # Build without tests
 mvn install -DskipTests
 
+# Check plugin APIs against the baseline (after a full install; repos set in the api-check profile of pom.xml)
+mvn -f plugins verify -DskipTests -P api-check
+
 # Build a single plugin
 mvn -f plugins/org.eclipse.epsilon.eol.engine install
 
