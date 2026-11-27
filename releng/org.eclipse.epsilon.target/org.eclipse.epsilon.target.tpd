@@ -85,7 +85,7 @@ maven MavenDependencies scope=compile dependencyDepth=infinite missingManifest=g
 	dependency {
 		groupId="net.sourceforge.plantuml"
 		artifactId="plantuml-epl"
-		version="1.2023.11"
+		version="1.2026.10"
 	}
 	dependency {
         groupId="org.apache.poi"
